@@ -53,5 +53,13 @@ module.exports = {
     clientId: 'Your Client ID',
     clientSecret: 'Your Client Secret',
     redirectUrl: 'http://localhost:3000/auth/foursquare/callback'
+  },
+
+  paypal: {
+    host: 'api.sandbox.paypal.com', // or api.paypal.com
+    client_id: 'Your Client ID',
+    client_secret: 'Your Client Secret',
+    returnUrl: 'http://localhost:3000/api/paypal/success',
+    cancelUrl: 'http://localhost:3000/api/paypal/cancel'
   }
 };
