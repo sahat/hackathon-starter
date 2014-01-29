@@ -10,7 +10,11 @@ var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
-
+var http = require('http');
+var io = require('socket.io');
+var app = express()
+  , server = require('http').createServer(app)
+  , io = io.listen(server);
 
 /**
  * Load controllers.
@@ -20,6 +24,7 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var dashboardController = require('./controllers/dashboard');
 
 /**
  * API keys + Passport configuration.
@@ -37,11 +42,15 @@ mongoose.connection.on('error', function() {
   console.log('✗ MongoDB Connection Error. Please make sure MongoDB is running.'.red);
 });
 
-var app = express();
-
 /**
  * Express configuration.
  */
+
+var hour  = 3600000;  //milliseconds
+var day   = (hour * 24);
+var week  = (day * 7);
+var month = (day * 30);
+
 app.locals.cacheBuster = Date.now();
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -69,17 +78,26 @@ app.use(function(req, res, next) {
 app.use(flash());
 app.use(less({ src: __dirname + '/public', compress: true }));
 app.use(app.router);
-app.use(express.static( path.join(__dirname, 'public'), { maxAge: 864000000 } ));
+app.use(express.static( path.join(__dirname, 'public'), { maxAge: week } ));
 app.use(function(req, res) {
   res.render('404', { status: 404 });
 });
 app.use(express.errorHandler());
 
 /**
+ * Start Server
+ */
+
+server.listen(app.get('port'), function(){
+  console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
+});
+
+/**
  * Application routes.
  */
 
 app.get('/', homeController.index);
+app.get('/dashboard', dashboardController.getDashboard);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -118,6 +136,54 @@ app.get('/auth/foursquare/callback', passport.authorize('foursquare', { failureR
 app.get('/auth/tumblr', passport.authorize('tumblr'));
 app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect: '/api' }), function(req, res) { res.redirect('/api/tumblr'); });
 
-app.listen(app.get('port'), function() {
-  console.log('✔ Express server listening on port ' + app.get('port'));
+/**
+ * Emit Pageviews on Socket.io
+ */
+
+io.configure('production', function(){
+  io.enable('browser client minification');  // send minified client
+  io.enable('browser client etag');          // apply etag caching logic based on version number
+  io.enable('browser client gzip');          // gzip the file
+  io.set('log level', 1);                    // reduce logging
+  io.set("polling duration", 10);            // increase polling frequency
+  io.set('transports', [                     // Manage transports
+      'websocket'
+    , 'htmlfile'
+    , 'xhr-polling'
+    , 'jsonp-polling'
+  ]);
+  io.set('authorization', function (handshakeData, callback) {
+    if (handshakeData.xdomain) {
+        callback('Cross-domain connections are not allowed');
+    } else {
+        callback(null, true);
+    }
+  });
+});
+
+io.configure('development', function(){
+  io.set('log level', 1);                    // reduce logging
+  io.set('transports', [
+    'websocket'                              // Let's just use websockets for development
+  ]);
+  io.set('authorization', function (handshakeData, callback) {
+    if (handshakeData.xdomain) {
+      callback('Cross-domain connections are not allowed');
+    } else {
+      callback(null, true);
+    }
+  });
+});
+
+io.sockets.on('connection', function (socket) {
+  socket.on('message', function (message) {
+    console.log("Got message: " + message);
+    var ip = socket.handshake.address.address;
+    var url = message;
+    io.sockets.emit('pageview', { 'connections': Object.keys(io.connected).length, 'ip': ip, 'url': url, 'xdomain': socket.handshake.xdomain, 'timestamp': new Date()});
+  });
+  socket.on('disconnect', function () {
+    console.log("Socket disconnected");
+    io.sockets.emit('pageview', { 'connections': Object.keys(io.connected).length});
+  });
 });
