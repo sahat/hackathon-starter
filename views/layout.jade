@@ -17,6 +17,16 @@ html
     script(src='/js/lib/jquery.js?v=#{cacheBuster}')
     script(src='/js/lib/bootstrap.js?v=#{cacheBuster}')
     script(src='/js/main.js?v=#{cacheBuster}')
+    script(src='/socket.io/socket.io.js?v=#{cacheBuster}')
+    //- For real-time monitoring
+    script.
+        var socket = io.connect();
+        socket.on('connect', function () {
+            socket.send(window.location.href);
+        });
+        window.onhashchange = function () {
+            socket.send(window.location.href);
+        }
   body
     #wrap
       include partials/navigation

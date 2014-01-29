@@ -28,6 +28,7 @@
     "twit": "~1.1.12",
     "underscore": "~1.5.2",
     "paypal-rest-sdk": "~0.6.4",
-    "connect-mongo": "~0.4.0"
+    "connect-mongo": "~0.4.0",
+    "socket.io": "0.9.16"
   }
 }
