@@ -1,4 +1,3 @@
-var secrets = require('../config/secrets');
 var User = require('../models/User');
 var querystring = require('querystring');
 var async = require('async');
@@ -8,7 +7,7 @@ var _ = require('underscore');
 var graph = require('fbgraph');
 var LastFmNode = require('lastfm').LastFmNode;
 var tumblr = require('tumblr.js');
-var foursquare = require('node-foursquare')({ secrets: secrets.foursquare });
+var foursquare = require('node-foursquare')({ secrets: app.settings.foursquare });
 var Github = require('github-api');
 var Twit = require('twit');
 var paypal = require('paypal-rest-sdk');
@@ -67,8 +66,8 @@ exports.getFoursquare = function(req, res, next) {
 exports.getTumblr = function(req, res) {
   var token = _.findWhere(req.user.tokens, { kind: 'tumblr' });
   var client = tumblr.createClient({
-    consumer_key: secrets.tumblr.consumerKey,
-    consumer_secret: secrets.tumblr.consumerSecret,
+    consumer_key: app.settings.tumblr.consumerKey,
+    consumer_secret: app.settings.tumblr.consumerSecret,
     token: token.accessToken,
     token_secret: token.tokenSecret
   });
@@ -165,7 +164,7 @@ exports.getAviary = function(req, res) {
  */
 
 exports.getNewYorkTimes = function(req, res, next) {
-  var query = querystring.stringify({ 'api-key': secrets.nyt.key, 'list-name': 'young-adult' });
+  var query = querystring.stringify({ 'api-key': app.settings.nyt.key, 'list-name': 'young-adult' });
   var url = 'http://api.nytimes.com/svc/books/v2/lists?' + query;
   request.get(url, function(error, request, body) {
     if (request.statusCode === 403) return next(Error('Missing or Invalid New York Times API Key'));
@@ -183,7 +182,7 @@ exports.getNewYorkTimes = function(req, res, next) {
  */
 
 exports.getLastfm = function(req, res, next) {
-  var lastfm = new LastFmNode(secrets.lastfm);
+  var lastfm = new LastFmNode(app.settings.lastfm);
   async.parallel({
     artistInfo: function(done) {
       lastfm.request("artist.getInfo", {
@@ -242,8 +241,8 @@ exports.getLastfm = function(req, res, next) {
 exports.getTwitter = function(req, res, next) {
   var token = _.findWhere(req.user.tokens, { kind: 'twitter' });
   var T = new Twit({
-    consumer_key: secrets.twitter.consumerKey,
-    consumer_secret: secrets.twitter.consumerSecret,
+    consumer_key: app.settings.twitter.consumerKey,
+    consumer_secret: app.settings.twitter.consumerSecret,
     access_token: token.accessToken,
     access_token_secret: token.tokenSecret
   });
@@ -262,15 +261,15 @@ exports.getTwitter = function(req, res, next) {
  */
 
 exports.getPayPal = function(req, res, next) {
-  paypal.configure(secrets.paypal);
+  paypal.configure(app.settings.paypal);
   var payment_details = {
     'intent': 'sale',
     'payer': {
       'payment_method': 'paypal'
     },
     'redirect_urls': {
-      'return_url': secrets.paypal.returnUrl,
-      'cancel_url': secrets.paypal.cancelUrl
+      'return_url': app.settings.paypal.returnUrl,
+      'cancel_url': app.settings.paypal.cancelUrl
     },
     'transactions': [{
       'description': 'Node.js Boilerplate',
