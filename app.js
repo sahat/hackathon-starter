@@ -10,6 +10,9 @@ var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
+var connectAssets = require('connect-assets');
+var _ = require('underscore');
+
 /**
  * Create Express server.
  */
@@ -59,6 +62,9 @@ app.locals.cacheBuster = Date.now();
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+// Temporary fix to support Jade 1.0.x
+app.settings.assets.helperContext = app.locals;
+app.use(connectAssets(app.settings.assets));
 app.use(express.compress());
 app.use(express.favicon());
 app.use(express.logger('dev'));
