@@ -1,5 +1,9 @@
 module.exports = {
-  db: 'localhost',
+  db: 'localhost/hackaton',
+
+  assets: {
+    build: true
+  },
 
   sendgrid: {
     user: 'Your SendGrid Username',
