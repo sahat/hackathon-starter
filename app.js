@@ -10,6 +10,19 @@ var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
+var connectAssets = require('connect-assets');
+var _ = require('underscore');
+
+/**
+ * Create Express server.
+ */
+
+app = express();
+
+/**
+ * Load environment configs
+ */
+_.extend(app.settings, require('./config/' + app.settings.env));
 
 /**
  * Load controllers.
@@ -21,24 +34,16 @@ var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 
 /**
- * API keys + Passport configuration.
+ * Passport initializer
  */
 
-var secrets = require('./config/secrets');
-var passportConf = require('./config/passport');
-
-/**
- * Create Express server.
- */
-
-var app = express();
-
+var passportInitializer = require('./initializers/passport');
 
 /**
  * Mongoose configuration.
  */
 
-mongoose.connect(secrets.db);
+mongoose.connect(app.settings.db);
 mongoose.connection.on('error', function() {
   console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
 });
@@ -57,6 +62,9 @@ app.locals.cacheBuster = Date.now();
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+// Temporary fix to support Jade 1.0.x
+app.settings.assets.helperContext = app.locals;
+app.use(connectAssets(app.settings.assets));
 app.use(express.compress());
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -100,20 +108,20 @@ app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
-app.get('/account', passportConf.isAuthenticated, userController.getAccount);
-app.post('/account/profile', passportConf.isAuthenticated, userController.postUpdateProfile);
-app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
-app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
-app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
+app.get('/account', passportInitializer.isAuthenticated, userController.getAccount);
+app.post('/account/profile', passportInitializer.isAuthenticated, userController.postUpdateProfile);
+app.post('/account/password', passportInitializer.isAuthenticated, userController.postUpdatePassword);
+app.post('/account/delete', passportInitializer.isAuthenticated, userController.postDeleteAccount);
+app.get('/account/unlink/:provider', passportInitializer.isAuthenticated, userController.getOauthUnlink);
 app.get('/api', apiController.getApi);
-app.get('/api/foursquare', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getFoursquare);
-app.get('/api/tumblr', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTumblr);
-app.get('/api/facebook', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getFacebook);
+app.get('/api/foursquare', passportInitializer.isAuthenticated, passportInitializer.isAuthorized, apiController.getFoursquare);
+app.get('/api/tumblr', passportInitializer.isAuthenticated, passportInitializer.isAuthorized, apiController.getTumblr);
+app.get('/api/facebook', passportInitializer.isAuthenticated, passportInitializer.isAuthorized, apiController.getFacebook);
 app.get('/api/scraping', apiController.getScraping);
-app.get('/api/github', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getGithub);
+app.get('/api/github', passportInitializer.isAuthenticated, passportInitializer.isAuthorized, apiController.getGithub);
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
-app.get('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTwitter);
+app.get('/api/twitter', passportInitializer.isAuthenticated, passportInitializer.isAuthorized, apiController.getTwitter);
 app.get('/api/aviary', apiController.getAviary);
 app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);

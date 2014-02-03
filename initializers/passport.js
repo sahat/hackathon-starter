@@ -7,7 +7,6 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var GitHubStrategy = require('passport-github').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var User = require('../models/User');
-var secrets = require('./secrets');
 var _ = require('underscore');
 
 passport.serializeUser(function(user, done) {
@@ -37,7 +36,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  * Sign in with Facebook.
  */
 
-passport.use(new FacebookStrategy(secrets.facebook, function (req, accessToken, refreshToken, profile, done) {
+passport.use(new FacebookStrategy(app.settings.facebook, function (req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ $or: [{ facebook: profile.id }, { email: profile.email }] }, function(err, existingUser) {
       if (existingUser) {
@@ -79,7 +78,7 @@ passport.use(new FacebookStrategy(secrets.facebook, function (req, accessToken, 
  * Sign in with GitHub.
  */
 
-passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refreshToken, profile, done) {
+passport.use(new GitHubStrategy(app.settings.github, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ $or: [{ github: profile.id }, { email: profile.email }] }, function(err, existingUser) {
       if (existingUser) {
@@ -122,7 +121,7 @@ passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refre
  * Sign in with Twitter.
  */
 
-passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tokenSecret, profile, done) {
+passport.use(new TwitterStrategy(app.settings.twitter, function(req, accessToken, tokenSecret, profile, done) {
   if (req.user) {
     User.findOne({ twitter: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -164,7 +163,7 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
  * Sign in with Google.
  */
 
-passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refreshToken, profile, done) {
+passport.use(new GoogleStrategy(app.settings.google, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ $or: [{ google: profile.id }, { email: profile.email }] }, function(err, existingUser) {
       if (existingUser) {
@@ -205,9 +204,9 @@ passport.use('tumblr', new OAuthStrategy({
     requestTokenURL: 'http://www.tumblr.com/oauth/request_token',
     accessTokenURL: 'http://www.tumblr.com/oauth/access_token',
     userAuthorizationURL: 'http://www.tumblr.com/oauth/authorize',
-    consumerKey: secrets.tumblr.consumerKey,
-    consumerSecret: secrets.tumblr.consumerSecret,
-    callbackURL: secrets.tumblr.callbackURL,
+    consumerKey: app.settings.tumblr.consumerKey,
+    consumerSecret: app.settings.tumblr.consumerSecret,
+    callbackURL: app.settings.tumblr.callbackURL,
     passReqToCallback: true
   },
   function (req, token, tokenSecret, profile, done) {
@@ -223,9 +222,9 @@ passport.use('tumblr', new OAuthStrategy({
 passport.use('foursquare', new OAuth2Strategy({
     authorizationURL: 'https://foursquare.com/oauth2/authorize',
     tokenURL: 'https://foursquare.com/oauth2/access_token',
-    clientID: secrets.foursquare.clientId,
-    clientSecret: secrets.foursquare.clientSecret,
-    callbackURL: secrets.foursquare.redirectUrl,
+    clientID: app.settings.foursquare.clientId,
+    clientSecret: app.settings.foursquare.clientSecret,
+    callbackURL: app.settings.foursquare.redirectUrl,
     passReqToCallback: true
   },
   function (req, accessToken, refreshToken, profile, done) {

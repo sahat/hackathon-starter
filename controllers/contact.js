@@ -1,5 +1,4 @@
-var secrets = require('../config/secrets');
-var sendgrid  = require('sendgrid')(secrets.sendgrid.user, secrets.sendgrid.password);
+var sendgrid  = require('sendgrid')(app.settings.sendgrid.user, app.settings.sendgrid.password);
 
 /**
  * GET /contact
