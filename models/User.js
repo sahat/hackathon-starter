@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var crypto = require('crypto');
 
 var userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
@@ -46,6 +47,17 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
     if(err) return cb(err);
     cb(null, isMatch);
   });
+};
+
+/**
+ *  Get a url to a User's Gravatar email
+ */
+userSchema.methods.gravatar = function(size,defaults) {
+  if (!size) size = 200;
+  if (!defaults) defaults = 'retro';
+  var md5 = crypto.createHash('md5');
+  md5.update(this.email);
+  return 'https://gravatar.com/avatar/' + md5.digest('hex').toString() + '?s='+size+'&d='+defaults;
 };
 
 module.exports = mongoose.model('User', userSchema);
