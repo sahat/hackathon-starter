@@ -68,7 +68,7 @@ passport.use(new FacebookStrategy(secrets.facebook, function (req, accessToken, 
       user.profile.name = profile.displayName;
       user.profile.gender = profile._json.gender;
       user.profile.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
-      user.profile.location = profile._json.location.name;
+      user.profile.location = (profile._json.location) ? profile._json.location.name : '';
       user.save(function(err) {
         done(err, user);
       });

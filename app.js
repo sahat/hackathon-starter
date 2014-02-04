@@ -22,7 +22,7 @@ var passportConf      = require('./config/passport');
  * Create Express server.
  */
 
-var app = express();
+var app               = express();
 
 
 /**
@@ -39,9 +39,9 @@ mongoose.connection.on('error', function() {
  * Express configuration.
  */
 
-var hour = 3600000;
-var day = (hour * 24);
-var week = (day * 7);
+var hour  = 3600000;
+var day   = (hour * 24);
+var week  = (day * 7);
 var month = (day * 30);
 
 app.set('port', process.env.PORT || 3000);
@@ -85,7 +85,7 @@ app.use(express.errorHandler());
 
 
 /**
- * dynamically include routes (via Controllers)
+ * Dynamically include routes (via controllers)
  */
 
 fs.readdirSync('./controllers').forEach(function (file) {
