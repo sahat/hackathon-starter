@@ -44,6 +44,13 @@ module.exports = {
     callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
+  
+  steam: {
+    returnURL: 'http://localhost:3000/auth/steam/callback',
+    realm: 'http://localhost:3000/',
+    apiKey: 'Your API Key',
+    passReqToCallback: true
+  },
 
   tumblr: {
     consumerKey: 'Your Consumer Key',
