@@ -1,10 +1,17 @@
 /**
- * GET /
- * Home page.
+ * Module Dependencies
  */
+// None
 
-exports.index = function(req, res) {
-  res.render('home', {
-    title: 'Home'
+module.exports.controller = function(app) {
+
+/**
+ * Home page route
+ */
+  app.get('/', function(req, res) {
+    res.render('home', {
+      title: 'Home'
+    });
   });
-};
+
+}
