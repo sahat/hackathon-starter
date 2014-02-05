@@ -44,10 +44,7 @@ module.exports = {
   },
   
   steam: {
-    returnURL: 'http://localhost:3000/auth/steam/callback',
-    realm: 'http://localhost:3000/',
-    apiKey: 'Your API Key',
-    passReqToCallback: true
+    apiKey: '28026C45B8C05F8001C96BC73E17173F',
   },
 
   tumblr: {
