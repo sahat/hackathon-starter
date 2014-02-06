@@ -49,6 +49,11 @@ module.exports = {
     apiKey: 'Your Steam API Key'
   },
 
+  twilio: {
+    sid: 'Your Account SID',
+    token: 'Your Auth Token'
+  },
+
   tumblr: {
     consumerKey: 'Your Consumer Key',
     consumerSecret: 'Your Consumer Secret',
