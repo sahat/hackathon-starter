@@ -46,7 +46,7 @@ module.exports = {
   },
   
   steam: {
-    apiKey: '28026C45B8C05F8001C96BC73E17173F'
+    apiKey: 'Your Steam API Key'
   },
 
   tumblr: {
