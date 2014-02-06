@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var i18n = require("i18next");
+//i18n.setLng('ug-CN', function(){});
 /**
  * Load controllers.
  */
@@ -97,7 +98,7 @@ app.use(express.errorHandler());
 var i18nOption = require('./config/i18n');
 i18n.registerAppHelper(app);
 i18n.init(i18nOption.option);
-
+console.log(i18n.lng());
 /**
  * Application routes.
  */
