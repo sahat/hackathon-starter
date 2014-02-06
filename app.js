@@ -9,7 +9,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
-
+var i18n = require("i18next");
 /**
  * Load controllers.
  */
@@ -55,6 +55,7 @@ var month = (day * 30);
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.use(i18n.handle);
 app.use(require('connect-assets')({
   src: 'public',
   helperContext: app.locals
@@ -90,6 +91,12 @@ app.use(function(req, res) {
   res.render('404');
 });
 app.use(express.errorHandler());
+/*
+* i18n
+*/
+var i18nOption = require('./config/i18n');
+i18n.registerAppHelper(app);
+i18n.init(i18nOption.option);
 
 /**
  * Application routes.

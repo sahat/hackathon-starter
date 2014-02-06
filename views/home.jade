@@ -1,14 +1,14 @@
 extends layout
 
 block content
-  h1 Bootstrap starter template
+  h1=t("home.headline")
   p.lead
-    | Use this document as a way to quickly start any new project.
+    !=t("home.description")
     br
-    | All you get is this text and a mostly barebones HTML document.
+    !=t("home.descriptionMore")
 
   if user
     .alert.alert-success.animated.flipInX
       i.fa.fa-check
-      strong Success!
-      |  You are logged in.
+      strong=t('common.sccess')
+      !=t("common.logged_in")
