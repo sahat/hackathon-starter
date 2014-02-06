@@ -12,6 +12,7 @@ var foursquare = require('node-foursquare')({ secrets: secrets.foursquare });
 var Github = require('github-api');
 var Twit = require('twit');
 var paypal = require('paypal-rest-sdk');
+var twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
 
 /**
  * GET /api
@@ -32,31 +33,31 @@ exports.getApi = function(req, res) {
 exports.getFoursquare = function(req, res, next) {
   var token = _.findWhere(req.user.tokens, { kind: 'foursquare' });
   async.parallel({
-    trendingVenues: function(callback) {
-      foursquare.Venues.getTrending('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken, function(err, results) {
-        callback(err, results);
-      });
+      trendingVenues: function(callback) {
+        foursquare.Venues.getTrending('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken, function(err, results) {
+          callback(err, results);
+        });
+      },
+      venueDetail: function(callback) {
+        foursquare.Venues.getVenue('49da74aef964a5208b5e1fe3', token.accessToken, function(err, results) {
+          callback(err, results);
+        });
+      },
+      userCheckins: function(callback) {
+        foursquare.Users.getCheckins('self', null, token.accessToken, function(err, results) {
+          callback(err, results);
+        });
+      }
     },
-    venueDetail: function(callback) {
-      foursquare.Venues.getVenue('49da74aef964a5208b5e1fe3', token.accessToken, function(err, results) {
-        callback(err, results);
+    function(err, results) {
+      if (err) return next(err);
+      res.render('api/foursquare', {
+        title: 'Foursquare API',
+        trendingVenues: results.trendingVenues,
+        venueDetail: results.venueDetail,
+        userCheckins: results.userCheckins
       });
-    },
-    userCheckins: function(callback) {
-      foursquare.Users.getCheckins('self', null, token.accessToken, function(err, results) {
-        callback(err, results);
-      });
-    }
-  },
-  function(err, results) {
-    if (err) return next(err);
-    res.render('api/foursquare', {
-      title: 'Foursquare API',
-      trendingVenues: results.trendingVenues,
-      venueDetail: results.venueDetail,
-      userCheckins: results.userCheckins
     });
-  });
 };
 
 /**
@@ -90,25 +91,25 @@ exports.getFacebook = function(req, res, next) {
   var token = _.findWhere(req.user.tokens, { kind: 'facebook' });
   graph.setAccessToken(token.accessToken);
   async.parallel({
-    getMe: function(done) {
-      graph.get(req.user.facebook, function(err, me) {
-        done(err, me);
-      });
+      getMe: function(done) {
+        graph.get(req.user.facebook, function(err, me) {
+          done(err, me);
+        });
+      },
+      getMyFriends: function(done) {
+        graph.get(req.user.facebook + '/friends', function(err, friends) {
+          done(err, friends.data);
+        });
+      }
     },
-    getMyFriends: function(done) {
-      graph.get(req.user.facebook + '/friends', function(err, friends) {
-        done(err, friends.data);
+    function(err, results) {
+      if (err) return next(err);
+      res.render('api/facebook', {
+        title: 'Facebook API',
+        me: results.getMe,
+        friends: results.getMyFriends
       });
-    }
-  },
-  function(err, results) {
-    if (err) return next(err);
-    res.render('api/facebook', {
-      title: 'Facebook API',
-      me: results.getMe,
-      friends: results.getMyFriends
     });
-  });
 };
 
 /**
@@ -185,53 +186,53 @@ exports.getNewYorkTimes = function(req, res, next) {
 exports.getLastfm = function(req, res, next) {
   var lastfm = new LastFmNode(secrets.lastfm);
   async.parallel({
-    artistInfo: function(done) {
-      lastfm.request("artist.getInfo", {
-        artist: 'Epica',
-        handlers: {
-          success: function(data) {
-            done(null, data);
-          },
-          error: function(err) {
-            done(err);
+      artistInfo: function(done) {
+        lastfm.request("artist.getInfo", {
+          artist: 'Epica',
+          handlers: {
+            success: function(data) {
+              done(null, data);
+            },
+            error: function(err) {
+              done(err);
+            }
           }
-        }
-      });
+        });
+      },
+      artistTopAlbums: function(done) {
+        lastfm.request("artist.getTopAlbums", {
+          artist: 'Epica',
+          handlers: {
+            success: function(data) {
+              var albums = [];
+              _.each(data.topalbums.album, function(album) {
+                albums.push(album.image.slice(-1)[0]['#text']);
+              });
+              done(null, albums.slice(0, 4));
+            },
+            error: function(err) {
+              done(err);
+            }
+          }
+        });
+      }
     },
-    artistTopAlbums: function(done) {
-      lastfm.request("artist.getTopAlbums", {
-        artist: 'Epica',
-        handlers: {
-          success: function(data) {
-            var albums = [];
-            _.each(data.topalbums.album, function(album) {
-              albums.push(album.image.slice(-1)[0]['#text']);
-            });
-            done(null, albums.slice(0,4));
-          },
-          error: function(err) {
-            done(err);
-          }
-        }
+    function(err, results) {
+      if (err) return next(err.message);
+      var artist = {
+        name: results.artistInfo.artist.name,
+        image: results.artistInfo.artist.image.slice(-1)[0]['#text'],
+        tags: results.artistInfo.artist.tags.tag,
+        bio: results.artistInfo.artist.bio.summary,
+        stats: results.artistInfo.artist.stats,
+        similar: results.artistInfo.artist.similar.artist,
+        topAlbums: results.artistTopAlbums
+      };
+      res.render('api/lastfm', {
+        title: 'Last.fm API',
+        artist: artist
       });
-    }
-  },
-  function(err, results) {
-    if (err) return next(err.message);
-    var artist = {
-      name: results.artistInfo.artist.name,
-      image: results.artistInfo.artist.image.slice(-1)[0]['#text'],
-      tags: results.artistInfo.artist.tags.tag,
-      bio: results.artistInfo.artist.bio.summary,
-      stats: results.artistInfo.artist.stats,
-      similar: results.artistInfo.artist.similar.artist,
-      topAlbums: results.artistTopAlbums
-    };
-    res.render('api/lastfm', {
-      title: 'Last.fm API',
-      artist: artist
     });
-  });
 };
 
 /**
@@ -258,7 +259,7 @@ exports.getTwitter = function(req, res, next) {
 
 /**
  * GET /api/paypal
- * PayPal SDK example
+ * PayPal SDK example.
  */
 
 exports.getPayPal = function(req, res, next) {
@@ -272,16 +273,18 @@ exports.getPayPal = function(req, res, next) {
       'return_url': secrets.paypal.returnUrl,
       'cancel_url': secrets.paypal.cancelUrl
     },
-    'transactions': [{
-      'description': 'Node.js Boilerplate',
-      'amount': {
-        'currency': 'USD',
-        'total': '2.99'
+    'transactions': [
+      {
+        'description': 'Node.js Boilerplate',
+        'amount': {
+          'currency': 'USD',
+          'total': '2.99'
+        }
       }
-    }]
+    ]
   };
-  paypal.payment.create(payment_details, function (error, payment) {
-    if(error){
+  paypal.payment.create(payment_details, function(error, payment) {
+    if (error) {
       console.log(error);
     } else {
       req.session.payment_id = payment.id;
@@ -299,14 +302,14 @@ exports.getPayPal = function(req, res, next) {
 
 /**
  * GET /api/paypal/success
- * PayPal SDK example
+ * PayPal SDK example.
  */
 
 exports.getPayPalSuccess = function(req, res, next) {
   var payment_id = req.session.payment_id;
   var payment_details = { 'payer_id': req.query.PayerID };
-  paypal.payment.execute(payment_id, payment_details, function(error, payment){
-    if(error){
+  paypal.payment.execute(payment_id, payment_details, function(error, payment) {
+    if (error) {
       res.render('api/paypal', {
         result: true,
         success: false
@@ -322,7 +325,7 @@ exports.getPayPalSuccess = function(req, res, next) {
 
 /**
  * GET /api/paypal/cancel
- * PayPal SDK example
+ * PayPal SDK example.
  */
 
 exports.getPayPalCancel = function(req, res, next) {
@@ -330,5 +333,82 @@ exports.getPayPalCancel = function(req, res, next) {
   res.render('api/paypal', {
     result: true,
     canceled: true
+  });
+};
+
+/**
+ * GET /api/steam
+ * Steam API example.
+ */
+
+exports.getSteam = function(req, res, next) {
+  var steamId = '76561197982488301';
+  var query = { l: 'english', steamid: steamId, key: secrets.steam.apiKey };
+
+  async.parallel({
+    playerAchievements: function(done) {
+      query.appid = '49520';
+      var qs = querystring.stringify(query);
+      request.get({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?' + qs, json: true }, function(error, request, body) {
+        if (request.statusCode === 401) return done(new Error('Missing or Invalid Steam API Key'));
+        done(error, body);
+      });
+    },
+    playerSummaries: function(done) {
+      query.steamids = steamId;
+      var qs = querystring.stringify(query);
+      request.get({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?' + qs, json: true }, function(error, request, body) {
+        if (request.statusCode === 401) return done(new Error('Missing or Invalid Steam API Key'));
+        done(error, body);
+      });
+    },
+    ownedGames: function(done) {
+      query.include_appinfo = 1;
+      query.include_played_free_games = 1;
+      var qs = querystring.stringify(query);
+      request.get({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?' + qs, json: true }, function(error, request, body) {
+        if (request.statusCode === 401) return done(new Error('Missing or Invalid Steam API Key'));
+        done(error, body);
+      });
+    }
+  },
+  function(err, results) {
+    if (err) return next(err);
+      res.render('api/steam', {
+      title: 'Steam Web API',
+      ownedGames: results.ownedGames.response.games,
+      playerAchievemments: results.playerAchievements.playerstats,
+      playerSummary: results.playerSummaries.response.players[0]
+    });
+  });
+};
+
+/**
+ * GET /api/twilio
+ * Twilio API example.
+ */
+
+exports.getTwilio = function(req, res, next) {
+  res.render('api/twilio', {
+    title: 'Twilio API'
+  });
+};
+
+
+/**
+ * POST /api/twilio
+ * Twilio API example.
+ */
+
+exports.postTwilio = function(req, res, next) {
+  var message = {
+    to: req.body.telephone,
+    from: '+13472235148',
+    body: 'Hello from the Hackathon Starter'
+  };
+  twilio.sendMessage(message, function(err, responseData) {
+    if (err) return next(err.message);
+    req.flash('success', { msg: 'Text sent to ' + responseData.to + '.'})
+    res.redirect('/api/twilio');
   });
 };

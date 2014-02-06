@@ -39,11 +39,12 @@ Table of Contents
 - [Useful Tools](#useful-tools)
 - [Recommended Design](#recommended-design)
 - [Recommended Node.js Libraries](#recommended-nodejs-libraries)
-- [Recommended Client-Side libraries](#recommended-client-side-libraries)
+- [Recommended Client-Side Libraries](#recommended-client-side-libraries)
 - [Pro Tips](#pro-tips)
 - [FAQ](#faq)
+- [How It Works](#how-it-works-mini-guides)
 - [Deployment](#deployment)
-- [TODO](#todo) 
+- [TODO](#todo)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -79,7 +80,7 @@ Prerequisites
  - **OpenSUSE**: `sudo zypper install --type pattern devel_basis`
 
 :exclamation: **Note**: If you are new to Node.js or Express framework,
-I highly recommend watching [Node.js and Express 101](http://www.youtube.com/watch?v=BN0JlMZCtNU) screencast by Alex Ford that teaches Node and Express from scratch.
+I highly recommend watching [Node.js and Express 101](http://www.youtube.com/watch?v=BN0JlMZCtNU) screencast by Alex Ford that teaches Node and Express from scratch. Alternatively, here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
 
 
 Getting Started
@@ -192,6 +193,14 @@ Obtaining API Keys
 - Click **✔Register**
 - Copy and paste *OAuth consumer key* and *OAuth consumer secret* keys into `config/secrets.js`
 
+<hr>
+
+<img src="http://www.outofoursystem.com/wp-content/uploads/2012/06/steam-logo-white.jpg" width="200">
+- Go to http://steamcommunity.com/dev/apikey
+- Sign in with your existing Steam account
+- Enter your *Domain Name*, then and click **Register**
+- Copy and paste *Key* into `config.secrets.js`
+
 Project Structure
 -----------------
 
@@ -204,18 +213,18 @@ Project Structure
 | **controllers**/home.js | Controller for home page (index).                                      |
 | **controllers**/user.js | Controller for user account management page.                           |
 | **models**/User.js | Mongoose schema and model for User.                                         |
-| **public/*** | Static assets, i.e. fonts, css, js, img.                                          |
-| **public/css**/styles.less | Main stylesheet for your app.                                       |
+| **public/***                       | Static assets (fonts, css, js, img)                         |
+| **public/css**/styles.less         | Main stylesheet for your app.                               |
 | **public/css/themes**/default.less | Some Bootstrap overrides to make it look prettier.          |
-| **views/account/*** | Templates relating to user account.                                        |
-| **views/api/*** | Templates relating to API Examples.                                            |
-| **views/partials**/flash.jade      | Error, info and success notifications.                      |
+| **views/account/***                | Templates for *login, signup, profile*.                     |
+| **views/api/***                    | Templates for API Examples.                                 |
+| **views/partials**/flash.jade      | Error, info and success flash notifications.                |
 | **views/partials**/navigation.jade | Navbar partial template.                                    |
 | **views/partials**/footer.jade     | Footer partial template.                                    |
 | **views**/layout.jade              | Base template.                                              |
 | **views**/home.jade                | Home page template.                                         |
 | app.js                             | Main application file.                                      |
-| cluster_app.js                     | Creates multiple instances of `app.js` via Node.js clusters.|
+| cluster_app.js                     | Creates multiple processes of `app.js` using Node.js clusters.|
 
 
 :exclamation: **Note:** There is no difference how you name or structure your views. You could place all your templates in a top-level `views` directory without having a nested folder structure, if that makes things easier for you. Just don't forget to update `extends ../layout`  and corresponding `res.render()` method in controllers. For smaller apps, I find having a flat folder structure to be easier to work with.
@@ -275,11 +284,19 @@ asynchronous tasks, and then render a page, but only when all tasks are complete
 want to scrape 3 different websites for some data (async operation) and render the results
 on a page after all 3 websites have been scraped.
 - Need to find a specific object inside an Array? Use [_.findWhere](http://underscorejs.org/#findWhere) function from Underscore.js. For example, this is how you would retrieve a Twitter token from database: `var token = _.findWhere(req.user.tokens, { kind: 'twitter' });`, where `req.user.tokens` is an Array, and a second parameter is an object with a given key/value.
-- If you right click and select **View Page Source**, notice how Express minified HTML for you. If you
-would like to see original, non-minified markup, add `app.locals.pretty = true;` to Express configuration.
+- If you right click and select **View Page Source**, notice how *Express*
+minified HTML for you. If you would like to see non-minified markup,
+add `app.locals.pretty = true;` to **app.js** with the rest of the Express configuration.
 
 FAQ
 ---
+### Why do I keep getting `403 Error: Forbidden` on submitting a **POST** request?
+You need to add this hidden input element to your form. This has been added in the
+pull request [#40](https://github.com/sahat/hackathon-starter/pull/40).
+```
+input(type='hidden', name='_csrf', value=token)
+```
+
 ### What is cluster_app.js?
 From the [Node.js Documentation](http://nodejs.org/api/cluster.html#cluster_how_it_works):
 > A single instance of Node runs in a single thread. To take advantage of multi-core systems
@@ -384,8 +401,8 @@ this feature. I have started working on it, but if it's really that important an
 it, check out the [forgot-password](https://github.com/sahat/hackathon-starter/tree/forgot-password) branch. So far it has a template, GET controller to render that template,
 POST controller to send an email via Nodemailer.
 
-How it works (mini guide)
--------------------------
+How It Works (mini guides)
+--------------------------
 This section is intended for giving you a detailed explanation about
 how a particular functionality works. Maybe you are just curious about
 how it works, or maybe you are lost and confused while reading the code,
@@ -743,6 +760,10 @@ And that's it, we are done!
 
 If you want to see a really cool real-time dashboard check out this [live example](http://hackathonstarter.herokuapp.com/dashboard). Refer to the [pull request #23](https://github.com/sahat/hackathon-starter/pull/23/files) to see how it is implemented.
 
+Mongoose Cheatsheet
+-------------------
+TODO
+
 Deployment
 ----------
 
@@ -776,17 +797,48 @@ experience, **Heroku** is the easiest to get started with, it will automatically
 - From *your app* directory run `heroku create`, followed by `git push heroku master`
 - Done!
 
-### OpenShift
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
+- First, install this Ruby gem: `sudo gem install rhc` :gem:
+- Run `rhc login` and enter your OpenShift credentials
+- From *your app* directory run `rhc app create MyApp nodejs-0.10`
+ - **Note**: *MyApp* is what you want to name your app (no spaces)
+- Once that is done, you will be provided with **URL**, **SSH** and **Git Remote** links
+- Visit that **URL** and you should see *Welcome to your Node.js application on OpenShift* page
+- Copy **Git Remote** and paste it into `git remote add openshift your_git_remote`
+- Before you push your app, you need to do a few modifications to your code
 
-- Install Ruby gem :gem: `sudo gem install rhc`
+Add these two lines to `app.js`, just place them anywhere before `app.listen()`:
+```js
+var IP_ADDRESS = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+```
 
+Then change `app.listen()` to:
+```js
+app.listen(PORT, IP_ADDRESS, function() {
+  console.log("✔ Express server listening on port %d in %s mode", PORT, app.settings.env);
+});
+```
+Add this to `package.json`, after *name* and *version*. This is necessary because, by default, OpenShift looks for `server.js` file. And by specifying `supervisor app.js` it will automatically restart the server when node.js process crashes.
 
-### Nodejitsu
+```js
+"main": "app.js",
+"scripts": {
+  "start": "supervisor app.js"
+},
+```
+
+- Finally, now you can push your code to OpenShift by running `git push -f openshift master`
+ - **Note**: The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. Please **do not** do `git pull` as it will create unnecessary merge conflicts.
+- And you are done! (Not quite as simple as Heroku, huh?)
+
 <img src="https://nodejs-in-production.nodejitsu.com/img/nodejitsu.png" width="200">
 
-### Azure
+TODO: Will be added soon.
+
 <img src="http://upload.wikimedia.org/wikipedia/en/f/ff/Windows_Azure_logo.png" width="200">
+
+TODO: Will be added soon.
 
 TODO
 ----
