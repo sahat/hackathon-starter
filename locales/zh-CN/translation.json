@@ -1,0 +1,16 @@
+{
+	"common":{
+		"success": "Success!",
+		"home": "首页",
+		"loggedIn": "You are logged in.",
+		"title": "__Title__ - Starter Template for Bootstrap"
+	},
+	"home" : {
+		"headline": "Bootstrap starter template",
+		"description": "Use this document as a way to quickly start any new project.",
+		"descriptionMore": "All you get is this text and a mostly barebones HTML document."
+		
+	}
+
+	
+}
