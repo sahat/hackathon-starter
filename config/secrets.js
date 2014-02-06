@@ -44,6 +44,10 @@ module.exports = {
     callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
+  
+  steam: {
+    apiKey: '28026C45B8C05F8001C96BC73E17173F',
+  },
 
   tumblr: {
     consumerKey: 'Your Consumer Key',
