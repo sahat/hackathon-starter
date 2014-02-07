@@ -1,7 +1,7 @@
 module.exports = {
   db: 'localhost',
 
-  localAuth: false,
+  localAuth: true,
   sessionSecret: "Your Session Secret goes here",
 
   sendgrid: {
