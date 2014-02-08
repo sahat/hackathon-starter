@@ -73,11 +73,11 @@ Prerequisites
 - [MongoDB](http://www.mongodb.org/downloads)
 - [Node.js](http://nodejs.org)
 - Command Line Tools
- - **Mac OS X**: [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9 Mavericks**: `xcode-select --install`)
- - **Windows**: [Visual Studio](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-8)
- - **Ubuntu**: `sudo apt-get install build-essential`
- - **Fedora**: `sudo yum groupinstall "Development Tools"`
- - **OpenSUSE**: `sudo zypper install --type pattern devel_basis`
+ - <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X**: [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9 Mavericks**: `xcode-select --install`)
+ - <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">&nbsp;**Windows**: [Visual Studio](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-8)
+ - <img src="https://lh5.googleusercontent.com/-2YS1ceHWyys/AAAAAAAAAAI/AAAAAAAAAAc/0LCb_tsTvmU/s46-c-k/photo.jpg" height="17">&nbsp;**Ubuntu**: `sudo apt-get install build-essential`
+ - <img src="http://i1-news.softpedia-static.com/images/extra/LINUX/small/slw218news1.png" height="17">&nbsp;**Fedora**: `sudo yum groupinstall "Development Tools"`
+ - <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE**: `sudo zypper install --type pattern devel_basis`
 
 :exclamation: **Note**: If you are new to Node.js or Express framework,
 I highly recommend watching [Node.js and Express 101](http://www.youtube.com/watch?v=BN0JlMZCtNU) screencast by Alex Ford that teaches Node and Express from scratch. Alternatively, here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
@@ -122,7 +122,7 @@ Obtaining API Keys
  - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
 - Copy and paste *Client ID* and *Client secret* keys into `config/secrets.js`
 
-:exclamation: **Note**: When you ready to deploy to production don't forget to add your new url to **Authorized Javascript origins** and **Authorized redirect URI**, e.g. `http://my-awesome-app.herokuapp.com` and `http://my-awesome-app.herokuapp.com/auth/google/callback` respectively. The same goes for other providers.
+:exclamation: **Note**: When you ready to deploy to production don't forget to add your new url to *Authorized Javascript origins* and *Authorized redirect URI*, e.g. `http://my-awesome-app.herokuapp.com` and `http://my-awesome-app.herokuapp.com/auth/google/callback` respectively. The same goes for other providers.
 
 <hr>
 
@@ -135,6 +135,8 @@ Obtaining API Keys
 - Click on *Settings* on the sidebar, then click **+ Add Platform**
 - Select **Website**
 - Enter `http://localhost:3000` for *Site URL*
+
+:exclamation: **Note**: After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
 <hr>
 
@@ -262,7 +264,6 @@ Recommended Client-Side libraries
 ---------------------------------
 - [Hover](https://github.com/IanLunn/Hover) - Awesome css3 animations on mouse hover.
 - [platform.js](https://github.com/bestiejs/platform.js) - Get client's operating system name, version, and other useful information.
-- [iCheck](https://github.com/fronteed/iCheck) - Custom nice looking radio and check boxes.
 - [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/) - Responsive jQuery Lightbox Plugin.
 - [jQuery Raty](http://wbotelhos.com/raty/) - Star Rating Plugin.
 - [Headroom.js](http://wicky.nillia.ms/headroom.js/) - Hide your header until you need it.
@@ -290,14 +291,14 @@ add `app.locals.pretty = true;` to **app.js** with the rest of the Express confi
 
 FAQ
 ---
-### Why do I keep getting `403 Error: Forbidden` on submitting a **POST** request?
+### Why do I get `403 Error: Forbidden` when submitting a POST form?
 You need to add this hidden input element to your form. This has been added in the
 pull request [#40](https://github.com/sahat/hackathon-starter/pull/40).
 ```
 input(type='hidden', name='_csrf', value=token)
 ```
 
-### What is cluster_app.js?
+### What is `cluster_app.js`?
 From the [Node.js Documentation](http://nodejs.org/api/cluster.html#cluster_how_it_works):
 > A single instance of Node runs in a single thread. To take advantage of multi-core systems
 > the user will sometimes want to launch a cluster of Node processes to handle the load.
@@ -503,7 +504,7 @@ to "info" and "success" flash messages, and you could even create a new one your
 
 **Data Usage Controller (Example)**
 ```
-req.flash('warning', 'You have exceeded 90% of your data usage');
+req.flash('warning', { msg: 'You have exceeded 90% of your data usage' });
 ```
 
 **User Account Page (Example)**
@@ -846,7 +847,7 @@ TODO
 
 Contributing
 ------------
-If something is unclear, confusing, or needs to be refactored, please let me know. Pull requests are always welcome, but due to the opinionated nature of this project, I cannot accept every pull request. Please open an issue before submitting a pull request.
+If something is unclear, confusing, or needs to be refactored, please let me know. Pull requests are always welcome, but due to the opinionated nature of this project, I cannot accept every pull request. Please open an issue before submitting a pull request. This project uses [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) with a few exceptions.
 
 License
 -------
