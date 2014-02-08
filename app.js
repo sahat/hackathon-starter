@@ -149,6 +149,8 @@ app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect:
   res.redirect('/api/tumblr');
 });
 
+app.post('/auth/browserid', passport.authenticate('browserid', { successRedirect: '/', failureRedirect: '/login' }));
+
 /**
  * Start Express server.
  */

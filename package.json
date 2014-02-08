@@ -1,6 +1,10 @@
 {
   "name": "hackathon-starter",
   "version": "0.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sahat/hackathon-starter"
+	},
   "dependencies": {
     "async": "~0.2.10",
     "bcrypt-nodejs": "~0.0.3",
@@ -23,6 +27,7 @@
     "passport-local": "~0.1.6",
     "passport-oauth": "~1.0.0",
     "passport-twitter": "~1.0.2",
+		"passport-browserid": "~0.1.4",
     "request": "~2.33.0",
     "sendgrid": "~0.4.6",
     "tumblr.js": "~0.0.4",

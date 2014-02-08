@@ -74,6 +74,10 @@ block content
   .page-header
     h3 Linked Accounts
 
+  form.form-horizontal(action='/auth/browserid', method='POST')
+    input(type='hidden', name='_csrf', value=token)
+    input(type='hidden', name='assertion')
+    
   if user.google
     p: a.text-danger(href='/account/unlink/google') Unlink your Google account
   else
@@ -93,3 +97,9 @@ block content
     p: a.text-danger(href='/account/unlink/github') Unlink your GitHub account
   else
     p: a(href='/auth/github') Link your GitHub account
+    
+  if user.browserid
+    p: a.text-danger(href='/account/unlink/browserid') Unlink your Persona account
+  else
+    p: a(id="browserid", href='#') Link your Persona account
+  

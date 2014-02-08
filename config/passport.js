@@ -6,6 +6,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GitHubStrategy = require('passport-github').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var BrowserIDStrategy = require('passport-browserid').Strategy;
 var User = require('../models/User');
 var secrets = require('./secrets');
 var _ = require('underscore');
@@ -201,6 +202,52 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
       user.save(function(err) {
         done(err, user);
       });
+    });
+  }
+}));
+
+/**
+ * Sign in with BrowserID/Persona
+ */
+passport.use(new BrowserIDStrategy(secrets.persona, function(req, email, done) {
+  if (req.user) {
+	  User.findOne({ browserid: email }, function(err, existingUser) {
+      if (existingUser) {
+        req.flash('errors', { msg: 'There is already a user linked to Persona using this email address. Sign in with that account or delete it, then link it with your current account.' });
+        done(err);
+      } else {
+        if (req.user.email === email) {
+          User.findById(req.user.id, function(err, user) {
+            user.browserid = email;
+            user.save(function(err) {
+              req.flash('info', { msg: 'Persona account has been linked.' });
+              done(err, user);
+            });
+          });
+        }
+      }
+    });
+  } else {
+    User.findOne({ $or: [{email: email }, { browserid: email }]}, function(err, existingUser) {
+      if (existingUser) {
+        if (!existingUser.browserid) {
+          existingUser.browserid = email;
+          existingUser.save(function(err) {
+            done(err, user);
+          })
+        }
+        else {
+          return done(null, existingUser);          
+        }
+			}
+      else {
+        var user = new User();
+        user.email = email;
+        user.browserid = email;
+        user.save(function(err) {
+          done(err, user);
+        });
+      }
     });
   }
 }));
