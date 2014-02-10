@@ -1,6 +1,7 @@
 module.exports = {
   db: 'localhost',
 
+  localAuth: true,
   sessionSecret: "Your Session Secret goes here",
 
   sendgrid: {
@@ -17,6 +18,7 @@ module.exports = {
     secret: 'Your API Secret'
   },
 
+  facebookAuth: true,
   facebook: {
     clientID: 'Your App ID',
     clientSecret: 'Your App Secret',
@@ -24,6 +26,7 @@ module.exports = {
     passReqToCallback: true
   },
 
+  githubAuth: true,
   github: {
     clientID: 'Your Client ID',
     clientSecret: 'Your Client Secret',
@@ -31,6 +34,7 @@ module.exports = {
     passReqToCallback: true
   },
 
+  twitterAuth: true,
   twitter: {
     consumerKey: 'Your Consumer Key',
     consumerSecret: 'Your Consumer Secret',
@@ -38,6 +42,7 @@ module.exports = {
     passReqToCallback: true
   },
 
+  googleAuth: true,
   google: {
     clientID: 'Your Client ID',
     clientSecret: 'Your Client Secret',
