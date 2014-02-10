@@ -2,6 +2,10 @@ extends ../layout
 
 block content
   .col-sm-8.col-sm-offset-2
+    form(method='POST', action='/auth/browserid')
+      input(type='hidden', name='_csrf', value=token)
+      input(type='hidden', name='assertion')
+  
     form(method='POST')
       input(type='hidden', name='_csrf', value=token)
       legend Sign In
@@ -19,6 +23,9 @@ block content
           a.btn.btn-google-plus(href='/auth/google')
             i.fa.fa-google-plus
             | Google
+          a.btn.btn-browserid(id="browserid",href="#")
+            img(src="/img/persona_logo_glyph.png")
+            | Persona
       .form-group
         label.control-label(for='email') Email
         input.form-control(type='text', name='email', id='email', placeholder='Email', autofocus=true)

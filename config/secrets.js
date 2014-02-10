@@ -45,6 +45,12 @@ module.exports = {
     passReqToCallback: true
   },
   
+	persona: {
+		audience: 'http://localhost:3000', //replace with your app URL or it will fail
+    assertionField: 'assertion', //do not modify
+    passReqToCallback: true  //do not modify
+	},
+	
   steam: {
     apiKey: 'Your Steam API Key'
   },
