@@ -42,6 +42,13 @@ mongoose.connection.on('error', function() {
   console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
 });
 
+/*
+* i18n
+*/
+var i18nOption = require('./config/i18n');
+i18n.registerAppHelper(app);
+i18n.init(i18nOption.option);
+
 /**
  * Express configuration.
  */
@@ -90,13 +97,6 @@ app.use(function(req, res) {
   res.render('404');
 });
 app.use(express.errorHandler());
-/*
-* i18n
-*/
-var i18nOption = require('./config/i18n');
-i18n.registerAppHelper(app);
-i18n.init(i18nOption.option);
-console.log(i18n.lng());
 /**
  * Application routes.
  */
