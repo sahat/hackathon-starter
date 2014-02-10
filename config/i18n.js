@@ -7,8 +7,7 @@ module.exports = {
 	  useCookie: false,
 	  detectLngQS: 'locale',
 	  cookieName: 'locale',
-	  lng: 'zh-CN',
-	  fallbackLng: 'en-US',
+	  fallbackLng: 'zh-CN',
 	  supportedLngs: ['en-US','ug-CN','zh-CN'] 
 	}
 }	

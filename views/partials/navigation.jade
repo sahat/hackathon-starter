@@ -6,23 +6,23 @@
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href='/') Project name
+      a.navbar-brand(href='/')=t('common.projectName')
     .collapse.navbar-collapse
       ul.nav.navbar-nav
-        li(class=title=='Home'?'active':undefined)
-          a(href='/') Home
-        li(class=title=='API Browser'?'active':undefined)
-          a(href='/api') API Browser
-        li(class=title=='Contact'?'active':undefined)
-          a(href='/contact') Contact
+        li(class=title==t('common.home')?'active':undefined)
+          a(href='/')=t('common.home')
+        li(class=title==t('common.apiBrowser')?'active':undefined)
+          a(href='/api')=t('common.apiBrowser')
+        li(class=title==t('common.contact')?'active':undefined)
+          a(href='/contact')=t('common.contact')
       ul.nav.navbar-nav.navbar-right
         if !user
-          li(class=title=='Login'?'active':undefined)
-            a(href='/login') Login
-          li(class=title=='Create Account'?'active':undefined)
-            a(href='/signup') Create Account
+          li(class=title==t('common.login')?'active':undefined)
+            a(href='/login')=t('common.login')
+          li(class=title==t('user.create')?'active':undefined)
+            a(href='/signup')=t('user.create')
         else
-          li.dropdown(class=title=='Account Management'?'active':undefined)
+          li.dropdown(class=title==t('user.accountManagement')?'active':undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown')
               if user.profile.picture
                 img.profile-image(src='#{user.profile.picture}')
@@ -31,6 +31,6 @@
               | #{user.profile.name || user.email || user.id}&nbsp;
               i.caret
             ul.dropdown-menu
-              li: a(href='/account') My Account
+              li: a(href='/account')=t('user.myAccount')
               li.divider
-              li: a(href='/logout') Logout
+              li: a(href='/logout')=t('user.logout')

@@ -2,12 +2,12 @@
   if messages.errors
     .alert.alert-danger.animated.fadeIn
       for error in messages.errors
-        div= error.msg
+        div=t('error.msg')
   if messages.info
     .alert.alert-info.animated.fadeIn
       for info in messages.info
-        div= info.msg
+        div=t('info.msg')
   if messages.success
     .alert.alert-success.animated.fadeIn
       for success in messages.success
-        div= success.msg
+        div=t('success.msg')

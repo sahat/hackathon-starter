@@ -2,6 +2,10 @@
 	"common":{
 		"success": "Success!",
 		"home": "Home",
+		"contact": "Contact",
+		"login": "Login",
+		"apiBrowser": "API Browser",
+		"projectName": "Project name",
 		"loggedIn": "You are logged in.",
 		"title": "__Title__ - Starter Template for Bootstrap"
 	},
@@ -10,6 +14,71 @@
 		"description": "Use this document as a way to quickly start any new project.",
 		"descriptionMore": "All you get is this text and a mostly barebones HTML document."
 		
+	},
+	"contact":{
+		"nameBlank": "Name cannot be blank",
+		"emailNotValid": "Email is not valid",
+		"messageBlank": "Message cannot be blank",
+		"subject": "API Example | Contact Form",
+		"success": "Email has been sent successfully!",
+		"form": "Contact Form",
+		"name": "Name",
+		"email": "Email",
+		"body": "Body",
+		"send": "Send"
+	},
+	"user":{
+		"passwordBlank": "Password cannot be blank",
+		"create": "Create Account",
+		"passwordLength": "Password must be at least 4 characters long",
+		"passwordNotMatch": "Passwords do not match",
+		"userEmailExist": "User with that email already exists.",
+		"accountManagement": "Account Management",
+		"profileUpdated": "Profile information updated.",
+		"passwordChanged": "Password has been changed.",
+		"accountUnlinked": "__Provider__ account has been unlinked.",
+		"myAccount": "My Account",
+		"logout": "Logout",
+		"signIn": "Sign In",
+		"email": "Email",
+		"password": "Password",
+		"signup": "Signup",
+		"confirmPassword": "Confirm Password",
+		"profileInfo": "Profile Information",
+		"gender": "Gender",
+		"location": "Location",
+		"website": "Website",
+		"male": "Male",
+		"female": "Female",
+		"gravatar": "Gravatar",
+		"updateProfile": "Update Profile",
+		"changePassword": "Change Password",
+		"newPassword": "New Password",
+		"deleteAccount": "Delete Account",
+		"deleteAccountNote": "You can delete your account, but keep in mind this action is irreversible.",
+		"deleteMyAccount": "Delete my account",
+		"linkedAccounts": "Linked Accounts",
+		"unlinkGoogleAccount": "Unlink your Google account",
+		"linkGoogleAccount": "Link your Google account",
+		"unlinkFacebookAccount": "Unlink your Facebook account",
+		"linkFacebookAccount": "Link your Facebook account",
+		"unlinkTwitterAccount": "Unlink your Twitter account",
+		"linkTwitterAccount": "Link your Twitter account",
+		"unlinkGithubAccount": "Unlink your Github account",
+		"linkGithubAccount": "Link your Github account"
+
+	},
+	"footer":{
+		"project": " Project",
+		"githubProject": "GitHub Project",
+		"issues": "Issues",
+		"createdBy": "Created by ",
+		"licence": "Code licensed under"
+	},
+	"missing":{
+		"title": "The page you were looking for doesn't exist (404)",
+		"h1": "404 Not Found",
+		"content": "The page you were looking for doesn't exist."
 	}
 
 	
