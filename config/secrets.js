@@ -4,6 +4,11 @@ module.exports = {
   localAuth: true,
   sessionSecret: "Your Session Secret goes here",
 
+  mailgun: {
+    login: 'Your Mailgun SMTP Username',
+    password: 'Your Mailgun SMTP Password'
+  },
+
   sendgrid: {
     user: 'Your SendGrid Username',
     password: 'Your SendGrid Password'
@@ -49,7 +54,7 @@ module.exports = {
     callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
-  
+
   steam: {
     apiKey: 'Your Steam API Key'
   },
