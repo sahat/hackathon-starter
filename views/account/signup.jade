@@ -3,21 +3,21 @@ extends ../layout
 block content
   form.form-horizontal(id='signup-form', method='POST')
     input(type='hidden', name='_csrf', value=token)
-    legend Signup
+    legend=t("user.signup")
     .form-group
-      label.col-sm-3.control-label(for='email') Email
+      label.col-sm-3.control-label(for='email')=t('user.email')
       .col-sm-7
-        input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus)
+        input.form-control(type='email', name='email', id='email', placeholder!=t('user.email'), autofocus)
     .form-group
-      label.col-sm-3.control-label(for='password') Password
+      label.col-sm-3.control-label(for='password')=t('user.password')
       .col-sm-7
-        input.form-control(type='password', name='password', id='password', placeholder='Password')
+        input.form-control(type='password', name='password', id='password', placeholder!=t('user.password'))
     .form-group
-      label.col-sm-3.control-label(for='confirmPassword') Confirm Password
+      label.col-sm-3.control-label(for='confirmPassword')=t('user.confirmPassword')
       .col-sm-7
-        input.form-control(type='password', name='confirmPassword', id='confirmPassword', placeholder='Confirm Password')
+        input.form-control(type='password', name='confirmPassword', id='confirmPassword', placeholder!=t('user.confirmPassword'))
     .form-group
       .col-sm-offset-3.col-sm-7
         button.btn.btn-success(type='submit')
           i.fa.fa-check
-          | Signup
+          !=t('user.signup')

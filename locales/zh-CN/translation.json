@@ -1,0 +1,84 @@
+{
+	"common":{
+		"success": "成功！",
+		"home": "首页",
+		"contact": "联系",
+		"login": "登陆",
+		"apiBrowser": "API 浏览",
+		"projectName": "项目名称",
+		"loggedIn": "你已经成功登入。",
+		"title": "__Title__ - Bootstrap 初始模板"
+	},
+	"home" : {
+		"headline": "Bootstrap 初始模板",
+		"description": "使用这个项目加快你的新项目。",
+		"descriptionMore": "你所得到的就是这个文字加上一些HTML文档。"
+		
+	},
+	"contact":{
+		"nameBlank": "名字不能为空",
+		"emailNotValid": "邮件地址不合法",
+		"messageBlank": "内容不能为空",
+		"subject": "API 例子 | 联系表单",
+		"success": "成功发送邮件!",
+		"form": "联系表单",
+		"name": "名字",
+		"email": "邮件地址",
+		"body": "内容",
+		"send": "发送"
+	},
+	"user":{
+		"passwordBlank": "密码不能为空",
+		"create": "创建账户",
+		"passwordLength": "密码必须长于4个字符",
+		"passwordNotMatch": "两次输入密码不一样",
+		"userEmailExist": "这个邮件地址已经存在！",
+		"accountManagement": "账户管理",
+		"profileUpdated": "个人信息修改成功。",
+		"passwordChanged": "密码修改成功。",
+		"accountUnlinked": "你取消了__Provider__ 账户链接。",
+		"myAccount": "我的账户",
+		"logout": "退出",
+		"signIn": "登陆",
+		"email": "邮件地址",
+		"password": "密码",
+		"signup": "创建账户",
+		"confirmPassword": "确认密码",
+		"profileInfo": "个人信息",
+		"gender": "性别",
+		"location": "位置",
+		"website": "网站",
+		"male": "男",
+		"female": "女",
+		"gravatar": "Gravatar",
+		"updateProfile": "修改个人信息",
+		"changePassword": "修改密码",
+		"newPassword": "新密码",
+		"deleteAccount": "删除账户",
+		"deleteAccountNote": "你可以删除你的账户，不过请记住这个操作是无法返回的",
+		"deleteMyAccount": "删除我的账户",
+		"linkedAccounts": "链接账户",
+		"unlinkGoogleAccount": "取消Google账户链接",
+		"linkGoogleAccount": "链接你的Google账户",
+		"unlinkFacebookAccount": "取消Facebook账户链接",
+		"linkFacebookAccount": "链接你的Facebook账户",
+		"unlinkTwitterAccount": "取消推特账户链接",
+		"linkTwitterAccount": "链接你的推特账户",
+		"unlinkGithubAccount": "取消Github账户链接",
+		"linkGithubAccount": "链接你的Github账户"
+
+	},
+	"footer":{
+		"project": "项目",
+		"githubProject": "GitHub 项目",
+		"issues": "问题提交",
+		"createdBy": "制作人： ",
+		"licence": "版权"
+	},
+	"missing":{
+		"title": "你要打开的页面不存在 (404)",
+		"h1": "404 未找到",
+		"content": "你要打开的页面不存在."
+	}
+	
+}

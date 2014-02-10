@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title The page you were looking for doesn't exist (404)
+    title=t('missing.title')
     style.
       body {
         background-color: #EFEFEF;
@@ -42,5 +42,5 @@ html
       }
   body
     .dialog
-      h1 404 Not Found
-      p The page you were looking for doesn't exist.
+      h1=t('missing.h1')
+      p=t('missing.content')

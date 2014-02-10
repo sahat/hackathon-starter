@@ -33,6 +33,8 @@
     "underscore": "~1.5.2",
     "paypal-rest-sdk": "~0.6.4",
     "connect-mongo": "~0.4.0",
-    "twilio": "~1.5.0"
+    "twilio": "~1.5.0",
+    "i18next": "1.7.1"
+   
   }
 }

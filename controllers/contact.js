@@ -8,7 +8,7 @@ var sendgrid  = require('sendgrid')(secrets.sendgrid.user, secrets.sendgrid.pass
 
 exports.getContact = function(req, res) {
   res.render('contact', {
-    title: 'Contact'
+    title: req.i18n.t('common.contact')
   });
 };
 
@@ -21,9 +21,9 @@ exports.getContact = function(req, res) {
  */
 
 exports.postContact = function(req, res) {
-  req.assert('name', 'Name cannot be blank').notEmpty();
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('message', 'Message cannot be blank').notEmpty();
+  req.assert('name', req.i18n.t('contact.nameBlank')).notEmpty();
+  req.assert('email', req.i18n.t('contact.emailNotValid')).isEmail();
+  req.assert('message', req.i18n.t('contact.messageBlank')).notEmpty();
 
   var errors = req.validationErrors();
 
@@ -36,7 +36,7 @@ exports.postContact = function(req, res) {
   var name = req.body.name;
   var body = req.body.message;
   var to = 'you@email.com';
-  var subject = 'API Example | Contact Form';
+  var subject = req.i18n.t('contact.subject');
 
   var email = new sendgrid.Email({
     to: to,
@@ -50,7 +50,7 @@ exports.postContact = function(req, res) {
       req.flash('errors', { msg: err.message });
       return res.redirect('/contact');
     }
-    req.flash('success', { msg: 'Email has been sent successfully!' });
+    req.flash('success', { msg: req.i18n.t('contact.success') });
     res.redirect('/contact');
   });
 };

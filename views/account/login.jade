@@ -4,7 +4,7 @@ block content
   .col-sm-8.col-sm-offset-2
     form(method='POST')
       input(type='hidden', name='_csrf', value=token)
-      legend Sign In
+      legend=t('user.signIn')
       .form-group
         .btn-group.btn-group-justified
           if secrets.facebookAuth
@@ -25,13 +25,12 @@ block content
               | Google
       if secrets.localAuth
         .form-group
-          label.control-label(for='email') Email
-          input.form-control(type='text', name='email', id='email', placeholder='Email', autofocus=true)
+          label.control-label(for='email')=('user.email')
+          input.form-control(type='text', name='email', id='email', placeholder!=t('user.email'), autofocus=true)
         .form-group
-          label.control-label(for='password') Password
-          input.form-control(type='password', name='password', id='password', placeholder='Password')
+          label.control-label(for='password')=t('user.password')
+          input.form-control(type='password', name='password', id='password', placeholder!=t('user.password'))
         .form-group
           button.btn.btn-primary(type='submit')
             i.fa.fa-unlock-alt
-            | Login
-
+            !=t('common.login')

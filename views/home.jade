@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  h1 Bootstrap starter template
+  h1=t("home.headline")
   p.lead
-    | Use this document as a way to quickly start any new project.
+    !=t("home.description")
     br
-    | All you get is this text and a mostly barebones HTML document.
+    !=t("home.descriptionMore")
