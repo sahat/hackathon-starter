@@ -42,24 +42,25 @@ block content
           !=t("user.updateProfile")
 
 
-  .page-header
-    h3=t('user.changePassword')
+  if secrets.localAuth
+    .page-header
+      h3=t('user.changePassword')
 
-  form.form-horizontal(action='/account/password', method='POST')
-    input(type='hidden', name='_csrf', value=token)
-    .form-group
-      label.col-sm-3.control-label(for='password')=t('user.newPassword')
-      .col-sm-4
-        input.form-control(type='password', name='password', id='password')
-    .form-group
-      label.col-sm-3.control-label(for='confirmPassword')=t('user.confirmPassword')
-      .col-sm-4
-        input.form-control(type='password', name='confirmPassword', id='confirmPassword')
-    .form-group
-      .col-sm-offset-3.col-sm-4
-        button.btn.btn.btn-primary(type='submit')
-          i.fa.fa-keyboard-o
-          !=t('user.changePassword')
+    form.form-horizontal(action='/account/password', method='POST')
+      input(type='hidden', name='_csrf', value=token)
+      .form-group
+        label.col-sm-3.control-label(for='password')=t('user.newPassword')
+        .col-sm-4
+          input.form-control(type='password', name='password', id='password')
+      .form-group
+        label.col-sm-3.control-label(for='confirmPassword')=t('user.confirmPassword')
+        .col-sm-4
+          input.form-control(type='password', name='confirmPassword', id='confirmPassword')
+      .form-group
+        .col-sm-offset-3.col-sm-4
+          button.btn.btn.btn-primary(type='submit')
+            i.fa.fa-keyboard-o
+            !=t('user.changePassword')
 
   .page-header
     h3=t('user.deleteAccount')
@@ -74,22 +75,26 @@ block content
   .page-header
     h3=t('user.linkedAccounts')
 
-  if user.google
-    p: a.text-danger(href='/account/unlink/google')=t('user.unlinkGoogleAccount')
-  else
-    p: a(href='/auth/google')=t('user.linkGoogleAccount')
+  if secrets.googleAuth
+    if user.google
+      p: a.text-danger(href='/account/unlink/google')=t('user.unlinkGoogleAccount')
+    else
+      p: a(href='/auth/google')=t('user.linkGoogleAccount')
 
-  if user.facebook
-    p: a.text-danger(href='/account/unlink/facebook')=t('user.unlinkFacebookAccount')
-  else
-    p: a(href='/auth/facebook')=t('user.linkFacebookAccount')
+  if secrets.facebookAuth
+    if user.facebook
+      p: a.text-danger(href='/account/unlink/facebook')=t('user.unlinkFacebookAccount')
+    else
+      p: a(href='/auth/facebook')=t('user.linkFacebookAccount')
 
-  if user.twitter
-    p: a.text-danger(href='/account/unlink/twitter')=t('user.unlinkTwitterAccount')
-  else
-    p: a(href='/auth/twitter')=t('user.linkTwitterAccount')
+  if secrets.twitterAuth
+    if user.twitter
+      p: a.text-danger(href='/account/unlink/twitter')=t('user.unlinkTwitterAccount')
+    else
+      p: a(href='/auth/twitter')=t('user.linkTwitterAccount')
 
-  if user.github
-    p: a.text-danger(href='/account/unlink/github')=t('user.unlinkGithubAccount')
-  else
-    p: a(href='/auth/github')=t('user.linkGithubAccount')
+  if secrets.githubAuth
+    if user.github
+      p: a.text-danger(href='/account/unlink/github')=t('user.unlinkGithubAccount')
+    else
+      p: a(href='/auth/github')=t('user.linkGithubAccount')

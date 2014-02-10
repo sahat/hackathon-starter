@@ -7,25 +7,30 @@ block content
       legend=t('user.signIn')
       .form-group
         .btn-group.btn-group-justified
-          a.btn.btn-facebook(href='/auth/facebook')
-            i.fa.fa-facebook
-            | Facebook
-          a.btn.btn-twitter(href='/auth/twitter')
-            i.fa.fa-twitter
-            | Twitter
-          a.btn.btn-github(href='/auth/github')
-            i.fa.fa-github
-            | GitHub
-          a.btn.btn-google-plus(href='/auth/google')
-            i.fa.fa-google-plus
-            | Google
-      .form-group
-        label.control-label(for='email')=('user.email')
-        input.form-control(type='text', name='email', id='email', placeholder!=t('user.email'), autofocus=true)
-      .form-group
-        label.control-label(for='password')=t('user.password')
-        input.form-control(type='password', name='password', id='password', placeholder!=t('user.password'))
-      .form-group
-        button.btn.btn-primary(type='submit')
-          i.fa.fa-unlock-alt
-          !=t('common.login')
+          if secrets.facebookAuth
+            a.btn.btn-facebook(href='/auth/facebook')
+              i.fa.fa-facebook
+              | Facebook
+          if secrets.twitterAuth
+            a.btn.btn-twitter(href='/auth/twitter')
+              i.fa.fa-twitter
+              | Twitter
+          if secrets.githubAuth
+            a.btn.btn-github(href='/auth/github')
+              i.fa.fa-github
+              | GitHub
+          if secrets.googleAuth
+            a.btn.btn-google-plus(href='/auth/google')
+              i.fa.fa-google-plus
+              | Google
+      if secrets.localAuth
+        .form-group
+          label.control-label(for='email')=('user.email')
+          input.form-control(type='text', name='email', id='email', placeholder!=t('user.email'), autofocus=true)
+        .form-group
+          label.control-label(for='password')=t('user.password')
+          input.form-control(type='password', name='password', id='password', placeholder!=t('user.password'))
+        .form-group
+          button.btn.btn-primary(type='submit')
+            i.fa.fa-unlock-alt
+            !=t('common.login')
