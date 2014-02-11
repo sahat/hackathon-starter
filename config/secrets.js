@@ -71,6 +71,12 @@ module.exports = {
     redirectUrl: 'http://localhost:3000/auth/foursquare/callback'
   },
 
+  venmo: {
+    clientId: 'Your Venmo Client ID',
+    clientSecret: 'Your Venmo Client Secret',
+    redirectUrl: 'http://localhost:3000/auth/venmo/callback'
+  },
+
   paypal: {
     host: 'api.sandbox.paypal.com', // or api.paypal.com
     client_id: 'Your Client ID',
