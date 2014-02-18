@@ -14,6 +14,11 @@ module.exports = {
     password: 'Your SendGrid Password'
   },
 
+  gmail: {
+    user: 'Your Gmail Username',
+    password: 'Your Gmail Password'
+  },
+
   nyt: {
     key: 'Your New York Times API Key'
   },
