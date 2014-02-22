@@ -9,6 +9,7 @@ exports.index = function(req, res) {
   });
 };
 
+<<<<<<< HEAD
 
 var fs = require('fs');
 var path = require('path');
@@ -46,4 +47,10 @@ exports.upload = function(req, res) {
 		  });
 		}
 	});
+};
+
+exports.editor = function(req, res) {
+  res.render('editor', 
+  	{ title: 'Editor' }
+  );
 };
