@@ -8,7 +8,11 @@ html
     meta(name='author', content='')
     title #{title} - Starter Template for Bootstrap
     != css('styles')
+    != css('inner_content')
     != js('application')
+    != js('JQuery')
+    != js('Typer')
+    != js('events')
     title= title
     link(rel='stylesheet', href='/lib/css/codemirror.css')
     script(src='/lib/js/codemirror.js')
@@ -25,3 +29,4 @@ html
             include partials/flash
             block content
         include partials/footer
+
