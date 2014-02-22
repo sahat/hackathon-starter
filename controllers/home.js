@@ -9,8 +9,6 @@ exports.index = function(req, res) {
   });
 };
 
-<<<<<<< HEAD
-
 var fs = require('fs');
 var path = require('path');
 var mongoose = require('mongoose');
@@ -24,9 +22,7 @@ var File = mongoose.model('File');
 
 exports.upload = function(req, res) {
 	fs.readFile(req.files.file.path, function (err, data) {
-
 		var imageName = req.files.file.name;
-
 		// If there's an error
 		if(!imageName){
 			console.log("There was an error");
