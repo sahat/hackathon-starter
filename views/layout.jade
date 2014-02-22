@@ -8,7 +8,10 @@ html
     meta(name='author', content='')
     title #{title} - Starter Template for Bootstrap
     != css('styles')
+    != css('inner_content')
     != js('application')
+    != js('JQuery')
+    != js('Typer')
   body
     #wrap
       include partials/navigation
@@ -16,3 +19,5 @@ html
         include partials/flash
         block content
     include partials/footer
+
+    != js('events')
