@@ -23,3 +23,4 @@ All of these solutions make it impossible to, for example, post your code for a 
 Other cool things would be:
 - Use Sendgrid to share code by emails
 - Use Twilio to share code by texts
+- Use digitalOcean API to control your server
