@@ -11,6 +11,10 @@ var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 var File = require('./models/File');
+var fs = require('fs');
+
+fs.mkdirSync(path.join(process.cwd(), 'uploads'));
+
 /**
  * Load controllers.
  */

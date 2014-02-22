@@ -11,6 +11,7 @@ exports.index = function(req, res) {
 
 
 var fs = require('fs');
+var path = require('path');
 var mongoose = require('mongoose');
 var File = mongoose.model('File');
 
@@ -21,22 +22,19 @@ var File = mongoose.model('File');
 
 
 exports.upload = function(req, res) {
-	console.log(JSON.stringify(req.files));
 	fs.readFile(req.files.file.path, function (err, data) {
 
 		var imageName = req.files.file.name;
 
 		// If there's an error
 		if(!imageName){
-
-			console.log("There was an error")
+			console.log("There was an error");
 			res.redirect("/");
 			res.end();
 
 		} else {
 
-		  var newPath = process.cwd() + "\\uploads\\" + imageName;
-		  console.log(newPath);
+		  var newPath = path.join(process.cwd(), "uploads" ,imageName);
 		  /// write file to uploads/fullsize folder
 		  fs.writeFile(newPath, data, function (err) {
 		  	File.newFile(newPath, function(err, doc){
@@ -49,10 +47,3 @@ exports.upload = function(req, res) {
 		}
 	});
 };
-
-
-
-
-
-
-
