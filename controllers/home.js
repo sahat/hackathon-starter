@@ -11,11 +11,14 @@ exports.index = function(req, res) {
 
 
 var fs = require('fs');
+var mongoose = require('mongoose');
+var File = mongoose.model('File');
 
 /**
  * POST /upload
  * Home page.
  */
+
 
 exports.upload = function(req, res) {
 	console.log(JSON.stringify(req.files));
@@ -36,15 +39,19 @@ exports.upload = function(req, res) {
 		  console.log(newPath);
 		  /// write file to uploads/fullsize folder
 		  fs.writeFile(newPath, data, function (err) {
-
-		  	// 1. Create ID. Node.js NPM UUID
-		  	// 2. Create object with (ID, PATH_TO_FILE)
+		  	File.newFile(newPath, function(err, doc){
+		  		if(err)
+		  			res.send(500, err);
+		  		else
+		  			res.redirect("/editor/"+doc._id);
+		  	});
 		  });
 		}
 	});
-
-
 };
+
+
+
 
 
 
