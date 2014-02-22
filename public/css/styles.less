@@ -125,3 +125,75 @@ body {
   padding: 3px;
   bottom: 25px;
 }
+
+#messages {
+    height: 65%;
+    border: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
+    background: white;
+    box-shadow: 0 2px 5px #ddd;
+    font-size: 1.1em;
+}
+
+#messages .table-wrapper {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+#messages .table {
+    margin-bottom: 0;
+}
+
+#messages .table tr:first-child td {
+    border-top: 0;
+}
+
+.message-username {
+    background: #f7f7f7;
+    border-right: 1px solid #eee;
+    color: #999;
+    font-weight: 500;
+    font-size: .9em;
+    word-break: break-word;
+}
+
+#messages .message-content {
+    /* Make room for timestamp */
+    padding-right: 15%;
+}
+
+#messages .message-content .settings {
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    font-size: .8em;
+    color: #bbb;
+}
+
+#messages .message-content .dropdown-toggle {
+    font-size: .85em;
+    color: #ccc;
+}
+
+#messages .message-content .dropdown-toggle:hover,
+#messages .message-content .open .dropdown-toggle {
+    color: #428BCA;
+}
+
+#messages .message-content textarea {
+    resize: vertical;
+}
+
+#messages .message-content .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+
+form.well {
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 1px 3px #ddd;
+    border-color: #ccc;
+    border-top: 0;
+    background: #E8E9EB;
+}
