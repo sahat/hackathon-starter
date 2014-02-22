@@ -166,7 +166,7 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
 /**
  * My own routes
  */
-app.get('/editor', )
+app.get('/editor', homeController.editor);
 
 /**
  * Start Express server.

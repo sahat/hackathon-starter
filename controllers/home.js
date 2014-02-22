@@ -8,3 +8,9 @@ exports.index = function(req, res) {
     title: 'Home'
   });
 };
+
+exports.editor = function(req, res) {
+  res.render('editor', 
+  	{ title: 'Editor' }
+  );
+};
