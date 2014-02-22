@@ -13,7 +13,8 @@ var connectAssets = require('connect-assets');
 var File = require('./models/File');
 var fs = require('fs');
 
-fs.mkdirSync(path.join(process.cwd(), 'uploads'));
+if(!fs.existsSync(path.join(process.cwd(), 'uploads')))
+    fs.mkdirSync(path.join(process.cwd(), 'uploads'));
 
 /**
  * Load controllers.
