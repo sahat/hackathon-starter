@@ -3,40 +3,6 @@ extends layout
 block content
     // [BEGIN]: INNER_CONTENT 
     #inner_container
-	#drop_area
-		#drop_area_title(data-typer-targets="JUST LIKE THAT") DRAG HERE
+        #drop_area
+            #drop_area_title(data-typer-targets="JUST LIKE THAT") DRAG HERE
     // [END]: INNER_CONTENT
-    .container(ng-controller='ChatCtrl')
-        h1 GoAngular Getting Started Example Chat
-        section#messages.clearfix
-          .table-wrapper
-            table.table
-              tr(ng-repeat='message in messages')
-                td.message-username.col-sm-2
-                  span {{ message.author }}
-                td.message-content.col-sm-10
-                  .settings
-                    .btn-group
-                      button.btn.btn-link.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
-                        span.glyphicon.glyphicon-chevron-down
-                      ul.dropdown-menu
-                        li
-                          a(href='#')
-                            span.glyphicon.glyphicon-edit
-                            | Edit
-                        li
-                          a(href='#')
-                            span.glyphicon.glyphicon-trash
-                            | Remove
-                  | {{ message.content }}
-        form.well.clearfix(role='form', ng-submit='sendMessage()')
-          .row
-            .col-xs-3
-              .input-group
-                span.input-group-addon
-                  span.glyphicon.glyphicon-user
-                input.input.input-lg.form-control(ng-model='author', placeholder='Your Name')
-            .col-xs-7
-              input.input.input-lg.form-control(ng-model='newMessage', ng-disabled='sendingMessage', placeholder='What\'s up?')
-            .col-xs-2
-              button.btn.btn-primary.btn-lg.btn-block(type='submit') Send

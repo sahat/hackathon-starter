@@ -1,5 +1,40 @@
 extends layout
 
 block content
-  h1= title
-  div#editor
+    script(src='/js/myscript.js')
+    h1= title
+    div#editor
+    .container(ng-controller='ChatCtrl')
+        h1 GoAngular Getting Started Example Chat
+        section#messages.clearfix
+          .table-wrapper
+            table.table
+              tr(ng-repeat='message in messages')
+                td.message-username.col-sm-2
+                  span {{ message.author }}
+                td.message-content.col-sm-10
+                  .settings
+                    .btn-group
+                      button.btn.btn-link.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
+                        span.glyphicon.glyphicon-chevron-down
+                      ul.dropdown-menu
+                        li
+                          a(href='#')
+                            span.glyphicon.glyphicon-edit
+                            | Edit
+                        li
+                          a(href='#')
+                            span.glyphicon.glyphicon-trash
+                            | Remove
+                  | {{ message.content }}
+        form.well.clearfix(role='form')
+          .row
+            .col-xs-3
+              .input-group
+                span.input-group-addon
+                  span.glyphicon.glyphicon-user
+                input.input.input-lg.form-control(ng-model='author', placeholder='Your Name')
+            .col-xs-7
+              input.input.input-lg.form-control(ng-model='newMessage', ng-disabled='sendingMessage', placeholder='What\'s up?')
+            .col-xs-2
+              button.btn.btn-primary.btn-lg.btn-block(type='submit',ng-click='sendMessage()') Send
