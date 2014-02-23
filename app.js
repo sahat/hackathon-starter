@@ -104,12 +104,6 @@ app.use(express.errorHandler());
 
 
 /**
- * My own routes
- */
-app.get('/editor/:id', homeController.editor);
-
-
-/**
  * Application routes.
  */
 
@@ -149,6 +143,12 @@ app.get('/auth/google', passport.authenticate('google', { scope: 'profile email'
 app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' }));
 
 /**
+ * My own routes
+ */
+app.get('/editor/:id', homeController.editor);
+app.post('/editor/:id/comments', homeController.addComment);
+/**
+
  * Start Express server.
  */
 
