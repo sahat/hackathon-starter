@@ -54,7 +54,8 @@ exports.editor = function(req, res) {
     	} else {
     		//retrieve file and send it
     		if(!doc){
-    			res.send(404);
+    			console.log("I'm here bro");
+    			res.status(404).render('404');
     		} else {
     			var file = doc.filePath;
 				fs.readFile(file, function(content){

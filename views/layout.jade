@@ -9,10 +9,8 @@ html
     title #{title} - Starter Template for Bootstrap
     != css('styles')
     != css('inner_content')
-    != js('application')
-    != js('JQuery')
-    != js('Typer')
-    != js('events')
+    script(src='/lib/js/jquery.js')
+    script(src='/js/Typer.js')
     title= title
     link(rel='stylesheet', href='/lib/css/codemirror.css')
     script(src='/lib/js/codemirror.js')
@@ -20,8 +18,8 @@ html
     script(src='/lib/js/mode/htmlmixed.js')
     script(src='/lib/js/mode/python.js')
     script(src='/lib/js/addon/matchbrackets.js')
-    script(src='/lib/js/jquery.js')
-    script(src='/js/myscript.js')
+    script(src='/js/events.js')
+    script(src='/js/application.js')
   body
     #wrap
         include partials/navigation
