@@ -1,11 +1,10 @@
 extends layout
 
 block content
-    script(src='/js/myscript.js')
     h1= title
     div#editor
     .container(ng-controller='ChatCtrl')
-        h1 GoAngular Getting Started Example Chat
+        h2 Chat
         section#messages.clearfix
           .table-wrapper
             table.table
@@ -27,7 +26,7 @@ block content
                             span.glyphicon.glyphicon-trash
                             | Remove
                   | {{ message.content }}
-        form.well.clearfix(role='form')
+        form.well.clearfix(role='form', ng-submit='sendMessage()')
           .row
             .col-xs-3
               .input-group
@@ -37,4 +36,6 @@ block content
             .col-xs-7
               input.input.input-lg.form-control(ng-model='newMessage', ng-disabled='sendingMessage', placeholder='What\'s up?')
             .col-xs-2
-              button.btn.btn-primary.btn-lg.btn-block(type='submit',ng-click='sendMessage()') Send
+              button.btn.btn-primary.btn-lg.btn-block(type='submit') Send
+    <script src='/js/chat.js'></script>			     
+    <script src='/js/myscript.js'></script>
