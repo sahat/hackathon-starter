@@ -102,6 +102,7 @@ app.use(function(req, res) {
 });
 app.use(express.errorHandler());
 
+
 /**
  * Application routes.
  */
@@ -147,6 +148,7 @@ app.get('/auth/google/callback', passport.authenticate('google', { successRedire
 app.get('/editor/:id', homeController.editor);
 app.post('/editor/:id/comments', homeController.addComment);
 /**
+
  * Start Express server.
  */
 

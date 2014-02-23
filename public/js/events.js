@@ -16,9 +16,6 @@ $(function(){
     dropArea  = $('#drop_area');
     dropTitle = $('#drop_area_title');
 
-    console.log(dropArea);
-    console.log(dropTitle);
-
     function dragenter(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -38,7 +35,6 @@ $(function(){
     function drop(event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log(event.originalEvent.dataTransfer.files);
         processFiles(event.originalEvent.dataTransfer.files);
     }
         
@@ -102,7 +98,7 @@ function uploadFile(file, status) {
         	if(typeof data.error === 'undefined')
         	{
         		// Success so call function to process the form
-        		submitForm(event, data);
+                window.location = window.location.href + "editor/" + data;
         	}
         	else
         	{
