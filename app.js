@@ -145,7 +145,7 @@ app.get('/auth/google/callback', passport.authenticate('google', { successRedire
  * My own routes
  */
 app.get('/editor/:id', homeController.editor);
-
+app.post('/editor/:id/comments', homeController.addComment);
 /**
  * Start Express server.
  */

@@ -18,8 +18,6 @@ var File = mongoose.model('File');
  * POST /upload
  * Home page.
  */
-
-
 exports.upload = function(req, res) {
 	fs.readFile(req.files.file.path, function (err, data) {
 		var imageName = req.files.file.name;
@@ -54,16 +52,34 @@ exports.editor = function(req, res) {
     	} else {
     		//retrieve file and send it
     		if(!doc){
-    			console.log("I'm here bro");
     			res.status(404).render('404');
     		} else {
     			var file = doc.filePath;
 				fs.readFile(file, function(content){
 					res.render('editor', 
-						{ title: 'Editor', content : content}
+						{ title: 'Editor', content : content, id: doc._id}
 					);  
 				});
     		}
     	}
 	});
 };
+
+/* POST /editor/:id/comments */
+exports.addComment = function(req, res) {
+    var id = req.params.id;
+    var lineNumber = req.body.lineNumber;
+    var content = req.body.content;
+    var author = req.body.author;
+    File.addComment(id, content, author, lineNumber, function(err, file){
+	if(err){
+	    res.send(500, err);
+	} else if (!file) {
+	    res.send(404);
+	} else {
+	    res.send(200);
+	}
+	
+    });
+};
+
