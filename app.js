@@ -42,12 +42,11 @@ var passportConf = require('./config/passport');
  */
 
 var app = express();
-var http = require('http'),
-    faye = require('faye');
+var http = require('http');
 var server = http.createServer(app);
-var bayeux = new faye.NodeAdapter({mount: '/faye'});
-bayeux.attach(server);
+var pubsub = require('./lib/pubsub')(server);
 app.locals.connectUrl = connectUrl;
+
 /**
  * Mongoose configuration.
  */
