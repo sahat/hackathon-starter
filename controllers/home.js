@@ -46,7 +46,23 @@ exports.upload = function(req, res) {
 };
 
 exports.editor = function(req, res) {
-  res.render('editor', 
-  	{ title: 'Editor' }
-  );
+    var id = req.param.id;
+    File.retrieveFile(id, function(err, doc){
+    	//if error
+    	if(err){
+    		res.send(500, err);
+    	} else {
+    		//retrieve file and send it
+    		if(!doc){
+    			res.send(404);
+    		} else {
+    			var file = doc.filePath;
+				fs.readFile(file, function(content){
+					res.render('editor', 
+						{ title: 'Editor', content : content}
+					);  
+				});
+    		}
+    	}
+	});
 };
