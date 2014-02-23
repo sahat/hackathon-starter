@@ -2,7 +2,7 @@ extends layout
 
 block content
     h1= title
-    div#editor
+    div#editor(ng-controller='UpdateCtrl')
     .container(ng-controller='ChatCtrl')
         h2 Chat
         section#messages.clearfix
@@ -38,13 +38,14 @@ block content
             .col-xs-2
               button.btn.btn-primary.btn-lg.btn-block(type='submit') Send
 
-    <script src='/js/myscript.js'></script>
     script(src='/js/lib/angular.js')
     != js('lib/bootstrap.min')
     != js('lib/platform')
     != js('lib/goangular')
-    <script src='/js/chat.js'></script>
     script(type='text/javascript').
         var id ='!{id}'
         var local_data ='!{content}'
+    <script src='/js/chat.js'></script>
+    <script src='/js/updates.js'></script>
+
 

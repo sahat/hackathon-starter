@@ -42,11 +42,6 @@ var passportConf = require('./config/passport');
  */
 
 var app = express();
-var http = require('http'),
-    faye = require('faye');
-var server = http.createServer(app);
-var bayeux = new faye.NodeAdapter({mount: '/faye'});
-bayeux.attach(server);
 app.locals.connectUrl = connectUrl;
 /**
  * Mongoose configuration.
@@ -160,6 +155,6 @@ app.post('/editor/:id/comments', homeController.addComment);
  * Start Express server.
  */
 
-server.listen(app.get('port'), function() {
+app.listen(app.get('port'), function() {
   console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
 });
