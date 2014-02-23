@@ -102,6 +102,13 @@ app.use(function(req, res) {
 });
 app.use(express.errorHandler());
 
+
+/**
+ * My own routes
+ */
+app.get('/editor/:id', homeController.editor);
+
+
 /**
  * Application routes.
  */
@@ -140,11 +147,6 @@ app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { successRedirect: '/', failureRedirect: '/login' }));
 app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
 app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' }));
-
-/**
- * My own routes
- */
-app.get('/editor/:id', homeController.editor);
 
 /**
  * Start Express server.
