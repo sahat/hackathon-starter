@@ -9,6 +9,19 @@ var Logger = {
   }
 };
 
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+             .toString(16)
+             .substring(1);
+};
+
+function guid() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+         s4() + '-' + s4() + s4() + s4();
+}
+
+var uuid = guid();
+
 var fayeClient = new Faye.Client('http://localhost:3000/faye',
 			      {
 				  timeout: 120,
@@ -37,30 +50,62 @@ chat.controller('UpdateCtrl', function($scope){
 	});
 
 	myCodeMirror.on("change", function(cm, change) {
-	    fayeClient.publish("/"+id+"/add", change, function(err){
-		console.log( "Error ",err );
-	    });
+
+		var toSend = {
+			source: uuid,
+			fileId: id,
+			from: change.from,
+			to: change.to
+    	};
 
 	    switch(change.origin){
-	    case "paste":
-		console.log("Pasted");
-		console.log(change.from);
-		console.log(change.from.line);
-		console.log(change.text[0]);
-		break;
-	    case "cut":
-		console.log("cut");
-		break;
-	    case "+input":
-		console.log("input");
-		console.log(change.from);
-		console.log(change.text[0]);
-		break;
-	    case "+delete":
-		console.log("delete");
-		break;
-	    default:
-		break;
+
+		    case "paste":
+				console.log("Pasted");
+				//create object to send
+				toSend["text"] = change.text[0];
+				//publish to others
+				fayeClient.publish("/"+id+"/add", toSend, function(err){
+					console.log( "Error ",err );
+			    });
+				console.log(toSend);
+				break;
+
+		    case "cut":
+				console.log("cut");
+				//create object to send
+				toSend["text"] = change.removed[0];
+				//publish to others
+				fayeClient.publish("/"+id+"/delete", toSend, function(err){
+					console.log( "Error ",err );
+			    });
+				console.log(change);
+				break;
+
+		    case "+input":
+				console.log("input");
+				//create object to send
+				toSend["text"] = change.text[0];
+				//publish to others
+				fayeClient.publish("/"+id+"/add", toSend, function(err){
+					console.log( "Error ",err );
+			    });
+				console.log(toSend);
+				break;
+
+		    case "+delete":
+				console.log("delete");
+				//create object to send
+                toSend["text"] = change.removed[0];
+				//publish to others
+				fayeClient.publish("/"+id+"/delete", toSend, function(err){
+					console.log( "Error ",err );
+			    });
+				console.log(change);
+				break;
+
+		    default:
+				break;
 	    }
 	});
 
@@ -71,8 +116,10 @@ chat.controller('UpdateCtrl', function($scope){
     };
     
     fayeClient.handleMessage  = function(message){
-	$scope.updates.append(message);
-	displayUpdates();
+    	if(id != message.clientId){
+    		$scope.updates.append(message);
+			displayUpdates();
+    	}
     };
 
 });
