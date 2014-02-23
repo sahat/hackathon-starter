@@ -1,5 +1,5 @@
 doctype html
-html
+html(ng-app="Chat", lang="en")
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -8,11 +8,24 @@ html
     meta(name='author', content='')
     title #{title} - Starter Template for Bootstrap
     != css('styles')
-    != js('application')
+    != css('inner_content')
+    != js('JQuery')
+    != js('Typer')
+    != js('events')
+
+    title= title
+    link(rel='stylesheet', href='/lib/css/codemirror.css')
+    script(src='/lib/js/codemirror.js')
+    script(src='/lib/js/mode/javascript.js')
+    script(src='/lib/js/mode/htmlmixed.js')
+    script(src='/lib/js/mode/python.js')
+    script(src='/lib/js/addon/matchbrackets.js')
+    script(src='/js/faye.js')
   body
     #wrap
-      include partials/navigation
-      .container
-        include partials/flash
-        block content
-    include partials/footer
+        include partials/navigation
+        .container
+            include partials/flash
+            block content
+        include partials/footer
+

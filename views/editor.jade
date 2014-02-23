@@ -1,0 +1,51 @@
+extends layout
+
+block content
+    h1= title
+    div#editor(ng-controller='UpdateCtrl')
+    .container(ng-controller='ChatCtrl')
+        h2 Chat
+        section#messages.clearfix
+          .table-wrapper
+            table.table
+              tr(ng-repeat='message in messages')
+                td.message-username.col-sm-2
+                  span {{ message.author }}
+                td.message-content.col-sm-10
+                  .settings
+                    .btn-group
+                      button.btn.btn-link.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
+                        span.glyphicon.glyphicon-chevron-down
+                      ul.dropdown-menu
+                        li
+                          a(href='#')
+                            span.glyphicon.glyphicon-edit
+                            | Edit
+                        li
+                          a(href='#')
+                            span.glyphicon.glyphicon-trash
+                            | Remove
+                  | {{ message.content }}
+        form.well.clearfix(role='form', ng-submit='sendMessage()')
+          .row
+            .col-xs-3
+              .input-group
+                span.input-group-addon
+                  span.glyphicon.glyphicon-user
+                input.input.input-lg.form-control(ng-model='author', placeholder='Your Name')
+            .col-xs-7
+              input.input.input-lg.form-control(ng-model='newMessage', ng-disabled='sendingMessage', placeholder='What\'s up?')
+            .col-xs-2
+              button.btn.btn-primary.btn-lg.btn-block(type='submit') Send
+
+    script(src='/js/lib/angular.js')
+    != js('lib/bootstrap.min')
+    != js('lib/platform')
+    != js('lib/goangular')
+    script(type='text/javascript').
+        var id ='!{id}'
+        var local_data ='!{content}'
+    <script src='/js/chat.js'></script>
+    <script src='/js/updates.js'></script>
+
+
