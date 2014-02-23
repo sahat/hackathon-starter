@@ -10,11 +10,14 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
+var connectUrl = process.env.GOINSTANT_CONNECT_URL || 'https://goinstant.net/e106cb106c84/mchacks';
+
 var File = require('./models/File');
 var fs = require('fs');
 
 if(!fs.existsSync(path.join(process.cwd(), 'uploads')))
     fs.mkdirSync(path.join(process.cwd(), 'uploads'));
+
 
 /**
  * Load controllers.
@@ -39,7 +42,7 @@ var passportConf = require('./config/passport');
  */
 
 var app = express();
-
+app.locals.connectUrl = connectUrl;
 /**
  * Mongoose configuration.
  */
