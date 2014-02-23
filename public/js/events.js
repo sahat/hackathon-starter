@@ -1,41 +1,41 @@
 
 
 // variables
-
 var xhr;
 var formData;
+var dropTitle;
 
 // Handle on drop area
-var dropArea  = $('#drop_area');
-var dropTitle = $('#drop_area_title');
+// var dropArea
 var list = [];
 var totalSize = 0;
 var fileN;
 
 
 $(function(){ 
+    dropArea  = $('#drop_area');
+    dropTitle = $('#drop_area_title');
+
     function dragenter(event) {
-        event.stopPropagation();
         event.preventDefault();
+        event.stopPropagation();
         dropTitle.typer();
     }
     function dragover(event) {
-        event.stopPropagation();
         event.preventDefault();
+        event.stopPropagation();
         dropArea.css('box-shadow','0 0 100px rgba(51,153,255,0.8)');
 
     } 
     function dragleave(event) {
-        event.stopPropagation();
         event.preventDefault();
+        event.stopPropagation();
         dropArea.css('box-shadow','0 0 0px rgba(51,153,255,0.8)');
     }    
     function drop(event) {
-        event.stopPropagation();
         event.preventDefault();
-        console.log(event.originalEvent.dataTransfer.files);
-        processFiles(event.originalEvent.dataTransfer.files);    
-            
+        event.stopPropagation();
+        processFiles(event.originalEvent.dataTransfer.files);
     }
         
     dropArea.bind('dragenter', dragenter);
@@ -98,7 +98,7 @@ function uploadFile(file, status) {
         	if(typeof data.error === 'undefined')
         	{
         		// Success so call function to process the form
-        		submitForm(event, data);
+                window.location = window.location.href + "editor/" + data;
         	}
         	else
         	{

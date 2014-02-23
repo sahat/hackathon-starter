@@ -18,8 +18,6 @@ var File = mongoose.model('File');
  * POST /upload
  * Home page.
  */
-
-
 exports.upload = function(req, res) {
 	fs.readFile(req.files.file.path, function (err, data) {
 		var imageName = req.files.file.name;
@@ -37,8 +35,12 @@ exports.upload = function(req, res) {
 		  	File.newFile(newPath, function(err, doc){
 		  		if(err)
 		  			res.send(500, err);
-		  		else
-		  			res.redirect("/editor/"+doc._id);
+		  		else {
+		  			res.contentType('application/json');
+					var data = JSON.stringify(doc._id);
+					res.header('Content-Length', data.length);
+					res.end(data);
+		  		}
 		  	});
 		  });
 		}
@@ -46,7 +48,42 @@ exports.upload = function(req, res) {
 };
 
 exports.editor = function(req, res) {
-  res.render('editor', 
-  	{ title: 'Editor' }
-  );
+    var id = req.params.id;
+    File.retrieveFile(id, function(err, doc){
+    	//if error
+    	if(err){
+    		res.send(500, err);
+    	} else {
+    		//retrieve file and send it
+    		if(!doc){
+    			res.status(404).render('404');
+    		} else {
+    			var file = doc.filePath;
+				fs.readFile(file, 'utf-8', function(err, content){
+					res.render('editor', 
+						{ title: 'Editor', content : JSON.stringify(content), id: doc._id}
+					);  
+				});
+    		}
+    	}
+	});
 };
+
+/* POST /editor/:id/comments */
+exports.addComment = function(req, res) {
+    var id = req.params.id;
+    var lineNumber = req.body.lineNumber;
+    var content = req.body.content;
+    var author = req.body.author;
+    File.addComment(id, content, author, lineNumber, function(err, file){
+	if(err){
+	    res.send(500, err);
+	} else if (!file) {
+	    res.send(404);
+	} else {
+	    res.send(200);
+	}
+	
+    });
+};
+
