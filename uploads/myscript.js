@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 	function generateCode(){
-		local_data = local_data.slice(1,local_data.length - 1);	
+		local_data = local_data.slice(1,local_data.length - 1);
 		return local_data;
 	}
 
