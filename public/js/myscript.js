@@ -1,14 +1,9 @@
 $(document).ready(function(){
     function generateCode(){
-	var val = "function myScript(){" +
-		"\n\treturn 100;" +
-		"\n}";				
-	return val;
+	local_data = local_data.slice(1,local_data.length - 1);
+	local_data = local_data.replace(/&quot;/g,"'");
+	return local_data;
     }
-
-    var data = new FormData();
-    data.append("thing", "thing");
-    console.log(data);
 
     var myCodeMirror = CodeMirror(document.getElementById("editor"), {
 	value: generateCode(),
@@ -17,5 +12,3 @@ $(document).ready(function(){
 	mode:  "javascript"
     });
 });
-
-
