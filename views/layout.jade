@@ -9,14 +9,9 @@ html(ng-app="Chat", lang="en")
     title #{title} - Starter Template for Bootstrap
     != css('styles')
     != css('inner_content')
-
-    != js('lib/bootstrap.min')
-    != js('lib/angular')
-    != js('lib/platform')
-    != js('lib/goangular')
-
-    script(src='/lib/js/jquery.js')
-    script(src='/js/Typer.js')
+    != js('JQuery')
+    != js('Typer')
+    != js('events')
 
     title= title
     link(rel='stylesheet', href='/lib/css/codemirror.css')
@@ -25,7 +20,6 @@ html(ng-app="Chat", lang="en")
     script(src='/lib/js/mode/htmlmixed.js')
     script(src='/lib/js/mode/python.js')
     script(src='/lib/js/addon/matchbrackets.js')
-    script(src='/js/events.js')
   body
     #wrap
         include partials/navigation

@@ -37,8 +37,13 @@ block content
               input.input.input-lg.form-control(ng-model='newMessage', ng-disabled='sendingMessage', placeholder='What\'s up?')
             .col-xs-2
               button.btn.btn-primary.btn-lg.btn-block(type='submit') Send
-    <script src='/js/chat.js'></script>			     
+
     <script src='/js/myscript.js'></script>
+    script(src='/js/lib/angular.js')
+    != js('lib/bootstrap.min')
+    != js('lib/platform')
+    != js('lib/goangular')
+    <script src='/js/chat.js'></script>
     script(type='text/javascript').
         var id ='!{id}'
         var local_data ='!{content}'
