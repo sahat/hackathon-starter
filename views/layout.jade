@@ -8,11 +8,25 @@ html
     meta(name='author', content='')
     title #{title} - Starter Template for Bootstrap
     != css('styles')
+    != css('inner_content')
     != js('application')
+    != js('JQuery')
+    != js('Typer')
+    != js('events')
+    title= title
+    link(rel='stylesheet', href='/lib/css/codemirror.css')
+    script(src='/lib/js/codemirror.js')
+    script(src='/lib/js/mode/javascript.js')
+    script(src='/lib/js/mode/htmlmixed.js')
+    script(src='/lib/js/mode/python.js')
+    script(src='/lib/js/addon/matchbrackets.js')
+    script(src='/lib/js/jquery.js')
+    script(src='/js/myscript.js')
   body
     #wrap
-      include partials/navigation
-      .container
-        include partials/flash
-        block content
-    include partials/footer
+        include partials/navigation
+        .container
+            include partials/flash
+            block content
+        include partials/footer
+

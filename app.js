@@ -12,6 +12,12 @@ var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 var connectUrl = process.env.GOINSTANT_CONNECT_URL || 'https://goinstant.net/e106cb106c84/mchacks';
 
+var File = require('./models/File');
+var fs = require('fs');
+
+if(!fs.existsSync(path.join(process.cwd(), 'uploads')))
+    fs.mkdirSync(path.join(process.cwd(), 'uploads'));
+
 
 /**
  * Load controllers.
@@ -65,30 +71,32 @@ app.use(connectAssets({
 app.use(express.compress());
 app.use(express.favicon());
 app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use(express.multipart());
 app.use(express.cookieParser());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(expressValidator());
 app.use(express.methodOverride());
 
-app.use(express.session({
-  secret: secrets.sessionSecret,
-  store: new MongoStore({
-    db: mongoose.connection.db,
-    auto_reconnect: true
-  })
-}));
+// app.use(express.session({
+//   secret: secrets.sessionSecret,
+//   store: new MongoStore({
+//     db: mongoose.connection.db,
+//     auto_reconnect: true
+//   })
+// }));
+//app.use(express.csrf());
+// app.use(passport.initialize());
+// app.use(passport.session());
+// app.use(function(req, res, next) {
+//   res.locals.user = req.user;
+//   res.locals.token = req.csrfToken();
+//   res.locals.secrets = secrets;
+//   next();
+// });
+// app.use(flash());
 
-app.use(express.csrf());
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(function(req, res, next) {
-  res.locals.user = req.user;
-  res.locals.token = req.csrfToken();
-  res.locals.secrets = secrets;
-  next();
-});
-app.use(flash());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 app.use(function(req, res) {
@@ -102,6 +110,7 @@ app.use(express.errorHandler());
  */
 
 app.get('/', homeController.index);
+app.post('/upload', homeController.upload);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -134,6 +143,11 @@ app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { successRedirect: '/', failureRedirect: '/login' }));
 app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
 app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' }));
+
+/**
+ * My own routes
+ */
+app.get('/editor', homeController.editor);
 
 /**
  * Start Express server.
