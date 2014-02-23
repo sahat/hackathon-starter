@@ -60,6 +60,7 @@ exports.editor = function(req, res) {
     		} else {
     			var file = doc.filePath;
 				fs.readFile(file, 'utf-8', function(err, content){
+					content = content.replace(/'/g,"&quot;");
 					res.render('editor', 
 						{ title: 'Editor', content : JSON.stringify(content), id: doc._id}
 					);  
