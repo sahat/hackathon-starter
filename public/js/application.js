@@ -11,4 +11,7 @@
 
 //= require lib/jquery-2.1.0.min
 //= require lib/bootstrap.min
+//= require lib/angular
+//= require lib/platform
+//= require lib/goangular
 //= require main
