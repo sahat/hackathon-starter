@@ -12,7 +12,8 @@ fileSchema.statics.newFile = function(filePath, cb){
 }
 
 fileSchema.statics.retrieveFile = function(id, cb){
-    fileSchema.find({_id: id},cb);
+	var File = mongoose.model('File');
+    File.findOne({_id:id},cb);
 }
 
 module.exports = mongoose.model('File', fileSchema);
