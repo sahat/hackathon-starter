@@ -977,8 +977,6 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 <img src="http://upload.wikimedia.org/wikipedia/en/f/ff/Windows_Azure_logo.png" width="200">
 
-TODO: Will be added soon.
-
 TODO
 ----
 - Pages that require login, should automatically redirect to last attempted URL on successful sign-in.
