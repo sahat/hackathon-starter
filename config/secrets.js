@@ -1,5 +1,5 @@
 module.exports = {
-  db: 'localhost',
+  url: 'mongodb://localhost:27017/hackathon_starter',
 
   localAuth: true,
   sessionSecret: "Your Session Secret goes here",
