@@ -1,5 +1,5 @@
 module.exports = {
-  db: 'localhost',
+  db: 'mongodb://localhost:27017/test',
 
   sessionSecret: "Your Session Secret goes here",
 
@@ -28,7 +28,6 @@ module.exports = {
     api_key: 'Your API Key',
     secret: 'Your API Secret'
   },
-
 
   facebookAuth: true,
   facebook: {
