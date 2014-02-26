@@ -1,8 +1,9 @@
 module.exports = {
-  url: 'mongodb://localhost:27017/hackathon_starter',
+  db: 'localhost',
+
+  sessionSecret: "Your Session Secret goes here",
 
   localAuth: true,
-  sessionSecret: "Your Session Secret goes here",
 
   mailgun: {
     login: 'Your Mailgun SMTP Username',
@@ -27,6 +28,7 @@ module.exports = {
     api_key: 'Your API Key',
     secret: 'Your API Secret'
   },
+
 
   facebookAuth: true,
   facebook: {
