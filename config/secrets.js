@@ -1,8 +1,9 @@
 module.exports = {
-  db: 'localhost',
+  db: 'mongodb://localhost:27017/test',
+
+  sessionSecret: "Your Session Secret goes here",
 
   localAuth: true,
-  sessionSecret: "Your Session Secret goes here",
 
   mailgun: {
     login: 'Your Mailgun SMTP Username',
@@ -12,6 +13,11 @@ module.exports = {
   sendgrid: {
     user: 'Your SendGrid Username',
     password: 'Your SendGrid Password'
+  },
+
+  gmail: {
+    user: 'Your Gmail Username',
+    password: 'Your Gmail Password'
   },
 
   nyt: {
