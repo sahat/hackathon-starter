@@ -66,7 +66,7 @@ module.exports = {
     clientID: 'Your Client ID',
     clientSecret: 'Your Client Secret',
     callbackURL: '/auth/linkedin/callback',
-    scope: ['r_basicprofile', 'r_emailaddress'],
+    scope: ['r_fullprofile', 'r_emailaddress', 'r_network'],
     passReqToCallback: true
   },
 
