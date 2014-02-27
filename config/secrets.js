@@ -61,6 +61,15 @@ module.exports = {
     passReqToCallback: true
   },
 
+  linkedinAuth: true,
+  linkedin: {
+    clientID: 'Your Client ID',
+    clientSecret: 'Your Client Secret',
+    callbackURL: '/auth/linkedin/callback',
+    scope: ['r_fullprofile', 'r_emailaddress', 'r_network'],
+    passReqToCallback: true
+  },
+
   steam: {
     apiKey: 'Your Steam API Key'
   },
