@@ -61,6 +61,14 @@ module.exports = {
     passReqToCallback: true
   },
 
+  linkedInAuth: true,
+  linkedIn: {
+    consumerKey: 'Your Consumer Key',
+    consumerSecret: 'Your Consumer Secret',
+    callbackURL: '/auth/linkedin/callback',
+    passReqToCallback: true
+  },
+
   steam: {
     apiKey: 'Your Steam API Key'
   },
