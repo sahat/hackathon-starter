@@ -61,11 +61,12 @@ module.exports = {
     passReqToCallback: true
   },
 
-  linkedInAuth: true,
-  linkedIn: {
-    consumerKey: 'Your Consumer Key',
-    consumerSecret: 'Your Consumer Secret',
+  linkedinAuth: true,
+  linkedin: {
+    clientID: 'Your Client ID',
+    clientSecret: 'Your Client Secret',
     callbackURL: '/auth/linkedin/callback',
+    scope: ['r_basicprofile', 'r_emailaddress'],
     passReqToCallback: true
   },
 
