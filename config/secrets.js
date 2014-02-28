@@ -75,12 +75,12 @@ module.exports = {
   },
 
   twilio: {
-    sid: 'Your twilio SID',
-    token: 'Your twilio token'
+    sid: 'Your Twilio SID',
+    token: 'Your Twilio token'
   },
 
   clockwork: {
-    apiKey: 'Your clockwork SMS API Key'
+    apiKey: 'Your Clockwork SMS API Key'
   },
 
   tumblr: {
