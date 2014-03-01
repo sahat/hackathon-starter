@@ -1,5 +1,29 @@
 module.exports = {
-  db: 'localhost',
+  db: {
+      url: 'mongodb://',
+      username: false,
+      password: false,
+      host: 'localhost',
+      port: false,
+      db: 'starter_db'
+  },
+
+  dbSession: {
+      db: {
+        db: 'starter_session_db'
+      },
+      secret: '78fg890sk3jrkjl890dfg890sdfwsgus'
+  },
+
+  dbUrl: function() {
+    var dbUrl = this.db.url;
+    if(this.db.username && this.db.password) {
+        dbUrl += this.db.username+':'+this.db.password+'@';
+    }
+    dbUrl += (this.db.host?this.db.host:'') + (this.db.port?(':' + this.db.port):'');
+    dbUrl += '/' + this.db.db;
+    return dbUrl;
+  },
 
   localAuth: true,
   sessionSecret: "Your Session Secret goes here",
