@@ -25,8 +25,9 @@ module.exports = {
     return dbUrl;
   },
 
-  localAuth: true,
   sessionSecret: "Your Session Secret goes here",
+
+  localAuth: true,
 
   mailgun: {
     login: 'Your Mailgun SMTP Username',
@@ -84,13 +85,26 @@ module.exports = {
     passReqToCallback: true
   },
 
+  linkedinAuth: true,
+  linkedin: {
+    clientID: 'Your Client ID',
+    clientSecret: 'Your Client Secret',
+    callbackURL: '/auth/linkedin/callback',
+    scope: ['r_fullprofile', 'r_emailaddress', 'r_network'],
+    passReqToCallback: true
+  },
+
   steam: {
     apiKey: 'Your Steam API Key'
   },
 
   twilio: {
-    sid: 'Your Account SID',
-    token: 'Your Auth Token'
+    sid: 'Your Twilio SID',
+    token: 'Your Twilio token'
+  },
+
+  clockwork: {
+    apiKey: 'Your Clockwork SMS API Key'
   },
 
   tumblr: {

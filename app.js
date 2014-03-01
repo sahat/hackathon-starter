@@ -11,6 +11,8 @@ var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 
+
+
 /**
  * Load controllers.
  */
@@ -71,7 +73,7 @@ app.use(express.methodOverride());
 app.use(express.session({
   secret: secrets.sessionSecret,
   store: new MongoStore({
-    db: mongoose.connection.db,
+    url: secrets.db,
     auto_reconnect: true
   })
 }));
@@ -125,6 +127,8 @@ app.get('/api/steam', apiController.getSteam);
 app.get('/api/scraping', apiController.getScraping);
 app.get('/api/twilio', apiController.getTwilio);
 app.post('/api/twilio', apiController.postTwilio);
+app.get('/api/clockwork', apiController.getClockwork);
+app.post('/api/clockwork', apiController.postClockwork);
 app.get('/api/foursquare', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getFoursquare);
 app.get('/api/tumblr', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTumblr);
 app.get('/api/facebook', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getFacebook);
@@ -132,6 +136,7 @@ app.get('/api/github', passportConf.isAuthenticated, passportConf.isAuthorized, 
 app.get('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTwitter);
 app.get('/api/venmo', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getVenmo);
 app.post('/api/venmo', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.postVenmo);
+app.get('/api/linkedin', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getLinkedin);
 
 /**
  * OAuth routes for sign-in.
@@ -145,6 +150,8 @@ app.get('/auth/google', passport.authenticate('google', { scope: 'profile email'
 app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' }));
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/', failureRedirect: '/login' }));
+app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE' }));
+app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { successRedirect: '/', failureRedirect: '/login' }));
 
 /**
  * OAuth routes for API examples that require authorization.
@@ -170,3 +177,5 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
 app.listen(app.get('port'), function() {
   console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
 });
+
+module.exports = app;

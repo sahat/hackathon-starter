@@ -1,5 +1,5 @@
 ![Alt](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg)
-Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter.png?theme=shields.io)](https://david-dm.org/sahat/hackathon-starter)
+Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter.png?theme=shields.io)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](https://travis-ci.org/sahat/hackathon-starter.png)](https://travis-ci.org/sahat/hackathon-starter)
 =================
 A boilerplate for **Node.js** web applications.
 
@@ -53,7 +53,7 @@ Features
 --------
 - **Local Authentication** using Email and Password
 - **OAuth 1.0a Authentication** via Twitter
-- **OAuth 2.0 Authentication** via Facebook, Google or GitHub
+- **OAuth 2.0 Authentication** via Facebook, Google, GitHub or LinkedIn
 - Awesome flash notifications with animations by [animate.css](http://daneden.github.io/animate.css/)
 - MVC Project Structure
 - Node.js clusters support
@@ -163,7 +163,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRe
 
 <hr>
 
-<img src="https://g.twimg.com/Twitter_logo_blue.png" width="100">
+<img src="https://g.twimg.com/Twitter_logo_blue.png" width="90">
 - Sign in at [https://dev.twitter.com](https://dev.twitter.com/)
 - From the profile picture dropdown menu select **My Applications**
 - Click **Create a new application**
@@ -174,6 +174,23 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRe
 - Check the box **Allow this application to be used to Sign in with Twitter**
 - Click **Update this Twitter's applications settings**
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `config/secrets.js`
+
+<hr>
+
+<img src="http://www.danpontefract.com/wp-content/uploads/2014/02/logo-linkedin.png" width="200">
+- Sign in at [LinkedIn Developer Network](http://developer.linkedin.com/)
+- From the account name dropdown menu select **API Keys**
+ - *It may ask you to sign in once again*
+- Click **+ Add New Application** button
+- Fill out all *required* fields
+- For **Default Scope** make sure *at least* the following is checked:
+ - `r_fullprofile`
+ - `r_emailaddress`
+ - `r_network`
+- Finish by clicking **Add Application** button
+- Copy and paste *API Key* and *Secret Key* keys into `config/secrets.js`
+ - *API Key* is your **clientID**
+ - *Secret Key* is your **clientSecret**
 
 <hr>
 
@@ -268,8 +285,10 @@ List of Packages
 | async         | Utility library that provides asynchronous control flow. |
 | bcrypt-nodejs | Library for hashing and salting user passwords. |
 | cheerio | Scrape web pages using jQuery-style syntax.  |
+| clockwork | Clockwork SMS API library. |
 | connect-mongo | MongoDB session store for Express. |
 | connect-assets | Compiles LESS stylesheets, concatenates/minifies JavaScript. |
+| csso | Dependency for connect-assets library. |
 | express | Web framework. |
 | express-flash | Provides flash messages for Express. Uses connect-flash internally. |
 | express-validator | Easy form validation for Express. Uses node-validator internally. |
@@ -280,6 +299,7 @@ List of Packages
 | less | LESS compiler. Used implicitly by connect-assets. |
 | mongoose | MongoDB object modeling tool |
 | node-foursquare | Foursquare API library |
+| node-linkedin | LinkedIn API library |
 | nodemailer | Node.js library for sending emails |
 | passport | Simple and elegant authentication library for node.js |
 | passport-facebook | Sign-in with Facebook plugin. |
@@ -287,14 +307,15 @@ List of Packages
 | passport-google-oauth | Sign-in with Google plugin. |
 | passport-twitter | Sign-in with Twitter plugin. |
 | passport-local | Sign-in with Username and Password plugin. |
+| passport-linkedin-oauth2 | Sign-in with LinkedIn plugin. |
 | passport-oauth | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies. |
 | request | Simplified HTTP request library. |
 | tumblr.js | Tumblr API library. |
 | underscore | Handy JavaScript utlities library. |
+| uglify-js | Dependency for connect-assets library. |
 | paypal-rest-sdk | PayPal API library. |
 | twilio | Twilio API library. |
 | validator | Used in conjunction with express-validator in **controllers/api.js**. |
-
 
 Useful Tools
 ------------
@@ -314,7 +335,6 @@ Recommended Design
 - [Creative Link Effects](http://tympanus.net/Development/CreativeLinkEffects/) - Beautiful link effects in CSS.
 - [Medium Scroll Effect](http://codepen.io/andreasstorm/pen/pyjEh) - Fade in/out header background image as you scroll.
 - [HTML5UP](http://html5up.net/) - Beautifully designed HTML templates.
-- [Progre(c)ss](https://github.com/jh3y/progre-c-ss) - Pure CSS progress bars.
 
 Recommended Node.js Libraries
 -----------------------------
@@ -327,20 +347,19 @@ Recommended Node.js Libraries
 
 Recommended Client-Side libraries
 ---------------------------------
-- [Hover](https://github.com/IanLunn/Hover) - Awesome css3 animations on mouse hover.
+- [Hover](https://github.com/IanLunn/Hover) - Awesome CSS3 animations on mouse hover.
 - [platform.js](https://github.com/bestiejs/platform.js) - Get client's operating system name, version, and other useful information.
 - [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/) - Responsive jQuery Lightbox Plugin.
 - [jQuery Raty](http://wbotelhos.com/raty/) - Star Rating Plugin.
 - [Headroom.js](http://wicky.nillia.ms/headroom.js/) - Hide your header until you need it.
-- [Fotorama](http://fotorama.io) - Very nice jQuery gallery.
 - [X-editable](http://vitalets.github.io/x-editable/) - Edit form elements inline.
 - [Offline.js](http://github.hubspot.com/offline/docs/welcome/) - Detect when user's internet connection goes offline.
-- [Color Thief](https://github.com/lokesh/color-thief) - Grabs the dominant color or a representative color palette from an image.
 - [Alertify.js](http://fabien-d.github.io/alertify.js/) - Sweet looking alerts and browser dialogs.
 - [select.js](http://github.hubspot.com/select/docs/welcome/) - Styleable select elements.
 - [drop.js](http://github.hubspot.com/drop/docs/welcome/) -  Powerful Javascript and CSS library for creating dropdowns and other floating displays.
 - [scrollReveal.js](https://github.com/julianlloyd/scrollReveal.js) - Declarative on-scroll reveal animations.
 - [InstantClick](http://instantclick.io) - Makes your pages load instantly by pre-loading them on mouse hover.
+- [NProgress.js](https://github.com/rstacruz/nprogress) - Slim progress bars like on YouTube and Medium.
 
 Pro Tips
 --------
@@ -399,11 +418,11 @@ Using **connect-assets** library, it is as as simple as declaring these two line
 != js('application')  // expects public/js/application.js
 ```
 
-:bulb: **Tip:** This works because in *connect-assets* middleware we have specified `helperContext: app.locals`.
+:bulb: **Tip:** This works, because in **connect-assets** middleware we specified `helperContext: app.locals`.
 
 The only thing you need to remember is to define your JavaScript files inside `public/js/application.js` using this
 strange syntax notation (Sprockets-style) borrowed from Rails. I know it's an extra thing to learn
-for someone who has never seen Rails asset pipeline before, but in this case, I think benefits outweigh the costs.
+for someone who has never seen Rails asset pipeline before, but in this case, benefits outweigh the cost.
 ```js
 //= require lib/jquery-2.1.0.min
 //= require lib/bootstrap.min
@@ -421,8 +440,7 @@ mongoose.connection.on('error', function() {
   console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
 });
 ```
-As the message says, you need to have a MongoDB server running before launching `app.js`. You can get MongoDB from
-[mongodb.org/downloads](mongodb.org/downloads), or install it via a package manager
+As the message says, you need to have a MongoDB server running before launching `app.js`. You can download MongoDB [here](mongodb.org/downloads), or install it via a package manager
 ([Homebrew](http://brew.sh/) on Mac, `apt-get` on Ubuntu, `yum` on Fedora, etc.)
 
 ### I get an error when I deploy my app, why?
@@ -479,9 +497,8 @@ how it works, or maybe you are lost and confused while reading the code,
 I hope it provides some guidance to you.
 
 ###:rose: Custom HTML and CSS Design 101
-[HTML5 UP](http://html5up.net/) has many beautiful templates that you can download for free, like the ones you see below:
+[HTML5 UP](http://html5up.net/) has many beautiful templates that you can download for free.
 ![Alt](http://html5up.net/uploads/previews/6742121165068310.jpg)
-![Alt](http://html5up.net/uploads/previews/9257227011867312.jpg)
 
 When you download the ZIP file, it will come with *index.html*, *images*, *css* and *js* folders. So, how do you
 integrate it with Hackathon Starter? Hackathon Starter uses Bootstrap CSS framework, but these templates do not.
@@ -968,7 +985,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
  - **Note**: The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. Please **do not** do `git pull` as it will create unnecessary merge conflicts.
 - And you are done! (Not quite as simple as Heroku, huh?)
 
-<img src="https://www.nodejitsu.com/img/media/nodejitsu-transparent.png" width="200">
+<img src="http://www.joyent.com/content/08-company/05-customers/13-nodejitsu/header.png" width="200">
 - To install **jitsu**, open a terminal and type: `sudo npm install -g jitsu`
 - Run `jitsu login` and enter your login credentials
 - From your app directory, run `jitsu deploy`
@@ -977,7 +994,20 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 <img src="http://upload.wikimedia.org/wikipedia/en/f/ff/Windows_Azure_logo.png" width="200">
 
-TODO: Will be added soon.
+- Login to [Windows Azure Management Portal](http://manage.windowsazure.com/)
+- Click the **+ NEW** button on the bottom left of the portal
+- Click **WEB SITE**, then **QUICK CREATE**
+- Enter a name for **URL** and select the datacenter **REGION** for your web site
+- Click on **CREATE WEB SITE** button
+- Once the web site status changes to *Running*, click on the name of the web site to access the Dashboard
+- At the bottom right of the Quickstart page, select **Set up a deployment from source control**
+- Select **Local Git repository** from the list, and then click the arrow
+- To enable Git publishing, Azure will ask you to create a user name and password
+- Once the Git repository is ready, you will be presented with a **GIT URL**
+- Inside your *Hackathon Starter* directory, run `git remote add azure [Azure Git URL]`
+- To push your changes simply run `git push azure master`
+ - **Note:** *You will be prompted for the password you created earlier*
+- On **Deployments** tab of your Windows Azure Web Site, you will see the deployment history
 
 TODO
 ----
