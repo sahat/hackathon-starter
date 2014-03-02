@@ -26,10 +26,16 @@ exports.postLogin = function(req, res, next) {
   req.assert('password', 'Password cannot be blank').notEmpty();
 
   var errors = req.validationErrors();
+  var redirect = '';
+
+  if(req.query.r){
+    redirect = '?r=' + encodeURIComponent(req.query.r);
+  }
+
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/login');
+    return res.redirect('/login'+redirect);
   }
 
   passport.authenticate('local', function(err, user, info) {
@@ -37,13 +43,13 @@ exports.postLogin = function(req, res, next) {
 
     if (!user) {
       req.flash('errors', { msg: info.message });
-      return res.redirect('/login');
+      return res.redirect('/login'+redirect);
     }
 
     req.logIn(user, function(err) {
       if (err) return next(err);
       req.flash('success', { msg: 'Success! You are logged in.' });
-      return res.redirect('/');
+      return res.redirect(req.query.r);
     });
   })(req, res, next);
 };
