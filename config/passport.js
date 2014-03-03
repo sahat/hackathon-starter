@@ -358,12 +358,15 @@ passport.use('venmo', new OAuth2Strategy({
  */
 
 exports.isAuthenticated = function(req, res, next) {
-  var redirect;
+  var redirectTo = '/login';
   if (req.isAuthenticated()) return next();
 
-  redirect = '?r=' + encodeURIComponent(req.path);
+  if (req.method=='GET' && req.path!='/'){
+    redirectTo += '?r=' + encodeURIComponent(req.path);
+  }
+
   req.flash('errors', { msg: 'Oops! You are not logged in'});
-  res.redirect('/login'+redirect);
+  res.redirect(redirectTo);
 };
 
 /**
