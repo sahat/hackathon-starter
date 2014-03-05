@@ -84,6 +84,7 @@ app.use(function(req, res, next) {
   res.locals.user = req.user;
   res.locals.token = req.csrfToken();
   res.locals.secrets = secrets;
+  res.locals.path = req.path;
   next();
 });
 app.use(flash());
