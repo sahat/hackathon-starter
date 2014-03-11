@@ -1,1471 +1,742 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Hackathon Starter by sahat</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Hackathon Starter</h1>
-        <p>A boilerplate for Node.js web applications</p>
-
-        <p class="view"><a href="https://github.com/sahat/hackathon-starter">View the Project on GitHub <small>sahat/hackathon-starter</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/sahat/hackathon-starter/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/sahat/hackathon-starter/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/sahat/hackathon-starter">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <p><img src="https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg" alt="Alt"></p>
-
-<h1>
-<a name="hackathon-starter--" class="anchor" href="#hackathon-starter--"><span class="octicon octicon-link"></span></a>Hackathon Starter <a href="https://david-dm.org/sahat/hackathon-starter"><img src="https://david-dm.org/sahat/hackathon-starter.png?theme=shields.io" alt="Dependency Status"></a> <a href="https://travis-ci.org/sahat/hackathon-starter"><img src="https://travis-ci.org/sahat/hackathon-starter.png" alt="Build Status"></a>
-</h1>
-
-<p>A boilerplate for <strong>Node.js</strong> web applications.</p>
-
-<p><strong>Live Demo</strong>: <a href="http://hackathonstarter.herokuapp.com">http://hackathonstarter.herokuapp.com</a> <img class="emoji" title=":octocat:" alt=":octocat:" src="https://github.global.ssl.fastly.net/images/icons/emoji/octocat.png" height="20" width="20" align="absmiddle"></p>
-
-<p>If you have attended any hackathons in the past then you know how much time it takes to
-get a project started. Decide on an idea, pick a programming language, pick a web framework,
-pick a CSS framework. A while later, you will have an initial project up on GitHub, and only then can other team members
-start contributing. Or what about doing something as simple as OAuth 2.0 Authentication? You can spend hours
-on it if you are not familiar with how OAuth 2.0 works. <em>(As a side-note, over a year ago
-I had no idea WTF REST or OAuth were, or how to do a simple "Sign in with Facebook".
-It was a frustrating experience to say the least.)</em></p>
-
-<p>When I started this project, my primary focus was on <strong>simplicity</strong> and <strong>ease of use</strong>.
-I also tried to make it as <strong>generic</strong> and <strong>reusable</strong> as possible to cover most use cases of hackathon web apps,
-without being too specific. In the worst case you can use this as a guide for your projects, if for example you are only
-interested in <strong>Sign in with Google</strong> authentication and nothing else.</p>
-
-<p>Chances are, you might not need all 4 types of OAuth 1.0a/OAuth2 authentication methods, or all 12+ API examples. So, use what you need and delete what you don't need. As of recently, it is possible to selectively <em>enable/disable</em> authentication methods in <code>config/secrets.js</code>.</p>
-
-<p></p><h4 align="center">
-<a name="flatly-bootstrap-theme" class="anchor" href="#flatly-bootstrap-theme"><span class="octicon octicon-link"></span></a>Flatly Bootstrap Theme
-
-</h4><p><img src="https://lh6.googleusercontent.com/-NikjFtdyOq8/UsCv7URplAI/AAAAAAAADrE/a417u0cZU7Y/w1278-h958-no/Screenshot+2013-12-29+18.27.10.png" alt="Alt"></p>
-
-<p></p><h4 align="center">
-<a name="default-theme" class="anchor" href="#default-theme"><span class="octicon octicon-link"></span></a>Default Theme
-
-</h4><p><img src="https://lh5.googleusercontent.com/-KmlaMLKGCqg/UuWt4MrXzeI/AAAAAAAAD6o/KUucObo33zU/w1170-h860-no/Screenshot+2014-01-26+19.52.03.png" alt="Alt"></p>
-
-<h2>
-<a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
-
-<ul>
-<li><a href="#features">Features</a></li>
-<li><a href="#prerequisites">Prerequisites</a></li>
-<li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#obtaining-api-keys">Obtaining API Keys</a></li>
-<li><a href="#project-structure">Project Structure</a></li>
-<li><a href="#list-of-packages">List of Packages</a></li>
-<li><a href="#useful-tools">Useful Tools</a></li>
-<li><a href="#recommended-design">Recommended Design</a></li>
-<li><a href="#recommended-nodejs-libraries">Recommended Node.js Libraries</a></li>
-<li><a href="#recommended-client-side-libraries">Recommended Client-Side Libraries</a></li>
-<li><a href="#pro-tips">Pro Tips</a></li>
-<li><a href="#faq">FAQ</a></li>
-<li><a href="#how-it-works-mini-guides">How It Works</a></li>
-<li><a href="#mongoose-cheatsheet">Mongoose Cheatsheet</a></li>
-<li><a href="#deployment">Deployment</a></li>
-<li><a href="#todo">TODO</a></li>
-<li><a href="#contributing">Contributing</a></li>
-<li><a href="#license">License</a></li>
-</ul><h2>
-<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
-
-<ul>
-<li>
-<strong>Local Authentication</strong> using Email and Password</li>
-<li>
-<strong>OAuth 1.0a Authentication</strong> via Twitter</li>
-<li>
-<strong>OAuth 2.0 Authentication</strong> via Facebook, Google, GitHub or LinkedIn</li>
-<li>Awesome flash notifications with animations by <a href="http://daneden.github.io/animate.css/">animate.css</a>
-</li>
-<li>MVC Project Structure</li>
-<li>Node.js clusters support</li>
-<li>Rails 3.1-style asset pipeline (See FAQ)</li>
-<li>LESS stylesheets (auto-compiled via Express middleware)</li>
-<li>Bootstrap 3 + Flat UI + iOS7 Theme</li>
-<li>Contact Form (powered by Mailgun or Sendgrid)</li>
-<li>
-<strong>Account Management</strong>
-
-<ul>
-<li>Gravatar</li>
-<li>Profile Details</li>
-<li>Change Password</li>
-<li>Link multiple OAuth strategies to one account</li>
-<li>Delete Account</li>
-<li>Forgot Password</li>
-</ul>
-</li>
-<li>
-<strong>API Examples</strong>: Facebook, Foursquare, Last.fm, Tumblr, Twitter, PayPal, and more.</li>
-</ul><h2>
-<a name="prerequisites" class="anchor" href="#prerequisites"><span class="octicon octicon-link"></span></a>Prerequisites</h2>
-
-<ul>
-<li><a href="http://www.mongodb.org/downloads">MongoDB</a></li>
-<li><a href="http://nodejs.org">Node.js</a></li>
-<li>Command Line Tools
-
-<ul>
-<li>
-<img src="http://deluge-torrent.org/images/apple-logo.gif" height="17"> <strong>Mac OS X</strong>: <a href="https://itunes.apple.com/us/app/xcode/id497799835?mt=12">Xcode</a> (or <strong>OS X 10.9 Mavericks</strong>: <code>xcode-select --install</code>)</li>
-<li>
-<img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17"> <strong>Windows</strong>: <a href="http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-8">Visual Studio</a>
-</li>
-<li>
-<img src="https://lh5.googleusercontent.com/-2YS1ceHWyys/AAAAAAAAAAI/AAAAAAAAAAc/0LCb_tsTvmU/s46-c-k/photo.jpg" height="17"> <strong>Ubuntu</strong>: <code>sudo apt-get install build-essential</code>
-</li>
-<li>
-<img src="http://i1-news.softpedia-static.com/images/extra/LINUX/small/slw218news1.png" height="17"> <strong>Fedora</strong>: <code>sudo yum groupinstall "Development Tools"</code>
-</li>
-<li>
-<img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17"> <strong>OpenSUSE</strong>: <code>sudo zypper install --type pattern devel_basis</code>
-</li>
-</ul>
-</li>
-</ul><p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://github.global.ssl.fastly.net/images/icons/emoji/exclamation.png" height="20" width="20" align="absmiddle"><strong>Note</strong>: If you are new to Node.js or Express framework,
-I highly recommend watching <a href="http://www.youtube.com/watch?v=BN0JlMZCtNU">Node.js and Express 101</a> screencast by Alex Ford that teaches Node and Express from scratch. Alternatively, here is another great tutorial for complete beginners - <a href="http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/">Getting Started With Node.js, Express, MongoDB</a>.</p>
-
-<h2>
-<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
-
-<p>The easiest way to get started is to clone the repository:</p>
-
-<div class="highlight highlight-bash"><pre><span class="c"># Fetch only the latest commits</span>
-git clone --depth<span class="o">=</span>1 git@github.com:sahat/hackathon-starter.git my-project
-
-<span class="nb">cd </span>my-project
-
-<span class="c"># Install NPM dependencies</span>
-npm install
-
-node app.js
-</pre></div>
-
-<p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://github.global.ssl.fastly.net/images/icons/emoji/exclamation.png" height="20" width="20" align="absmiddle"><strong>Note</strong>: I strongly recommend installing nodemon <code>sudo npm install -g nodemon</code>.
-It will monitor for any changes in your node.js
-application and automatically restart the server. Once installed, instead of <code>node app.js</code> use <code>nodemon app.js</code>.
-It will save you a lot of time in the long run, because you won't need to manually restart the server each time you make a change.</p>
-
-<p>Next, if you want to use any of the included APIs or OAuth authentication methods, you will need to obtain
-appropriate credentials: Client ID, Client Secret, API Key, or Username &amp; Password. You will
-need to go through each provider to generate new credentials.</p>
-
-<h2>
-<a name="obtaining-api-keys" class="anchor" href="#obtaining-api-keys"><span class="octicon octicon-link"></span></a>Obtaining API Keys</h2>
-
-<p><img class="emoji" title=":pushpin:" alt=":pushpin:" src="https://github.global.ssl.fastly.net/images/icons/emoji/pushpin.png" height="20" width="20" align="absmiddle"> You could support all 5 authentication methods by setting up OAuth keys, but you don't have to. If you would only like to have <strong>Facebook sign-in</strong> and <strong>Local sign-in</strong> with email and password, in <strong>secrets.js</strong> set <code>googleAuth: false</code>, <code>twitterOauth: false</code>, <code>githubAuth: false</code>. By doing so, <em>Google, Twitter and Github</em> buttons will not show up on the <em>Login</em> page. If you set <code>localAuth: false</code>, users will not be able to login/create an account with email and password or change password in the <em>Account Management</em> page.</p>
-
-<p><img class="emoji" title=":bulb:" alt=":bulb:" src="https://github.global.ssl.fastly.net/images/icons/emoji/bulb.png" height="20" width="20" align="absmiddle"> Alternatively, if you would like to completely remove authentication methods that you do not plan on using, you will need to manually delete the code yourself. Let's say you want to keep only <strong>Local authentication</strong>. Start by deleting <em>FacebookStrategy, TwitterStrategy, GitHubStrategy, GoogleStrategy</em> <code>require</code> lines and their corresponding defined strategies in <strong>passport.js</strong>. Then in <strong>login.jade</strong> template delete the entire <code>.btn-group</code>, leaving only the form with Email and Password.
-Update <strong>User.js</strong> model by deleting the following fields: <code>facebook</code>, <code>github</code>, <code>google</code>, <code>twitter</code>. In your <strong>profile.jade</strong> template delete the entire code starting with <strong>h3 Linked Accounts</strong>. And finally delete the corresponding routes that have <strong>/auth/provider</strong> and <strong>/auth/provider/callback</strong>, for example:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/auth/facebook'</span><span class="p">,</span> <span class="nx">passport</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">(</span><span class="s1">'facebook'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">scope</span><span class="o">:</span> <span class="p">[</span><span class="s1">'email'</span><span class="p">,</span> <span class="s1">'user_location'</span><span class="p">]</span> <span class="p">}));</span>
-<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/auth/facebook/callback'</span><span class="p">,</span> <span class="nx">passport</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">(</span><span class="s1">'facebook'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">successRedirect</span><span class="o">:</span> <span class="s1">'/'</span><span class="p">,</span> <span class="nx">failureRedirect</span><span class="o">:</span> <span class="s1">'/login'</span> <span class="p">}));</span>
-</pre></div>
-
-<p><img src="http://images.google.com/intl/en_ALL/images/srpr/logo6w.png" width="200"></p>
-
-<ul>
-<li>Visit <a href="https://cloud.google.com/console/project">Google Cloud Console</a>
-</li>
-<li>Click <strong>CREATE PROJECT</strong> button</li>
-<li>Enter <em>Project Name</em>, then click <strong>CREATE</strong>
-</li>
-<li>Then select <em>APIs &amp; auth</em> from the sidebar and click on <em>Credentials</em> tab</li>
-<li>Click <strong>CREATE NEW CLIENT ID</strong> button
-
-<ul>
-<li>
-<strong>Application Type</strong>: Web Application</li>
-<li>
-<strong>Authorized Javascript origins</strong>: http://localhost:3000</li>
-<li>
-<strong>Authorized redirect URI</strong>: http://localhost:3000/auth/google/callback</li>
-</ul>
-</li>
-<li>Copy and paste <em>Client ID</em> and <em>Client secret</em> keys into <code>config/secrets.js</code>
-</li>
-</ul><p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://github.global.ssl.fastly.net/images/icons/emoji/exclamation.png" height="20" width="20" align="absmiddle"><strong>Note</strong>: When you ready to deploy to production don't forget to add your new url to <em>Authorized Javascript origins</em> and <em>Authorized redirect URI</em>, e.g. <code>http://my-awesome-app.herokuapp.com</code> and <code>http://my-awesome-app.herokuapp.com/auth/google/callback</code> respectively. The same goes for other providers.</p>
-
-<hr><p><img src="http://www.doit.ba/img/facebook.jpg" width="200"></p>
-
-<ul>
-<li>Visit <a href="https://developers.facebook.com/">Facebook Developers</a>
-</li>
-<li>Click <strong>Apps &gt; Create a New App</strong> in the navigation bar</li>
-<li>Enter <em>Display Name</em>, then choose a category, then click <strong>Create app</strong>
-</li>
-<li>Copy and paste <em>App ID</em> and <em>App Secret</em> keys into <code>config/secrets.js</code>
-
-<ul>
-<li>
-<em>App ID</em> is <strong>clientID</strong>, <em>App Secret</em> is <strong>clientSecret</strong>
-</li>
-</ul>
-</li>
-<li>Click on <em>Settings</em> on the sidebar, then click <strong>+ Add Platform</strong>
-</li>
-<li>Select <strong>Website</strong>
-</li>
-<li>Enter <code>http://localhost:3000</code> for <em>Site URL</em>
-</li>
-</ul><p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://github.global.ssl.fastly.net/images/icons/emoji/exclamation.png" height="20" width="20" align="absmiddle"><strong>Note</strong>: After a successful sign in with Facebook, a user will be redirected back to home page with appended hash <code>#_=_</code> in the URL. It is <em>not</em> a bug. See this <a href="https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url">Stack Overflow</a> discussion for ways to handle it.</p>
-
-<hr><p><img src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Logo.png" width="200"></p>
-
-<ul>
-<li>Go to <a href="https://github.com/settings/profile">Account Settings</a>
-</li>
-<li>Select <strong>Applications</strong> from the sidebar</li>
-<li>Then inside <strong>Developer applications</strong> click on <strong>Register new application</strong>
-</li>
-<li>Enter <em>Application Name</em> and <em>Homepage URL</em>.</li>
-<li>For <em>Authorization Callback URL</em>: http://localhost:3000/auth/github/callback</li>
-<li>Click <strong>Register application</strong>
-</li>
-<li>Now copy and paste <em>Client ID</em> and <em>Client Secret</em> keys into <code>config/secrets.js</code>
-</li>
-</ul><hr><p><img src="https://g.twimg.com/Twitter_logo_blue.png" width="90"></p>
-
-<ul>
-<li>Sign in at <a href="https://dev.twitter.com/">https://dev.twitter.com</a>
-</li>
-<li>From the profile picture dropdown menu select <strong>My Applications</strong>
-</li>
-<li>Click <strong>Create a new application</strong>
-</li>
-<li>Enter your application name, website and description</li>
-<li>For <strong>Callback URL</strong>: <a href="http://127.0.0.1:3000/auth/twitter/callback">http://127.0.0.1:3000/auth/twitter/callback</a>
-</li>
-<li>Go to <strong>Settings</strong> tab</li>
-<li>Under <em>Application Type</em> select <strong>Read and Write</strong> access</li>
-<li>Check the box <strong>Allow this application to be used to Sign in with Twitter</strong>
-</li>
-<li>Click <strong>Update this Twitter's applications settings</strong>
-</li>
-<li>Copy and paste <em>Consumer Key</em> and <em>Consumer Secret</em> keys into <code>config/secrets.js</code>
-</li>
-</ul><hr><p><img src="http://www.danpontefract.com/wp-content/uploads/2014/02/logo-linkedin.png" width="200"></p>
-
-<ul>
-<li>Sign in at <a href="http://developer.linkedin.com/">LinkedIn Developer Network</a>
-</li>
-<li>From the account name dropdown menu select <strong>API Keys</strong>
-
-<ul>
-<li><em>It may ask you to sign in once again</em></li>
-</ul>
-</li>
-<li>Click <strong>+ Add New Application</strong> button</li>
-<li>Fill out all <em>required</em> fields</li>
-<li>For <strong>Default Scope</strong> make sure <em>at least</em> the following is checked:
-
-<ul>
-<li><code>r_fullprofile</code></li>
-<li><code>r_emailaddress</code></li>
-<li><code>r_network</code></li>
-</ul>
-</li>
-<li>Finish by clicking <strong>Add Application</strong> button</li>
-<li>Copy and paste <em>API Key</em> and <em>Secret Key</em> keys into <code>config/secrets.js</code>
-
-<ul>
-<li>
-<em>API Key</em> is your <strong>clientID</strong>
-</li>
-<li>
-<em>Secret Key</em> is your <strong>clientSecret</strong>
-</li>
-</ul>
-</li>
-</ul><hr><p><img src="https://s3.amazonaws.com/venmo/venmo_logo_blue.png" width="200"></p>
-
-<ul>
-<li>Visit the <strong>Account</strong> section of your Venmo profile after logging in</li>
-<li>Click on the <strong>Developers</strong> tab</li>
-<li>Then click on the <a href="https://venmo.com/account/app/new">new</a> link next to <strong>Your Applications (0)</strong>
-</li>
-<li>Fill in the required fields: <em>App Name</em> and <em>What Will The App Be Used For?</em>
-</li>
-<li>For <strong>Web Redirect URL</strong> enter: http://localhost:3000/auth/venmo/callback</li>
-<li>Hit <strong>Create</strong> button</li>
-<li>Back on the <strong>Developers</strong> tab click on <strong>view</strong> link next to <strong>Your Applications (1) new</strong>
-</li>
-<li>Copy and paste <strong>ID</strong> and <strong>Secret</strong> keys into <code>config/secrets.js</code>
-</li>
-</ul><hr><p><img src="https://www.paypalobjects.com/webstatic/developer/logo_paypal-developer_beta.png" width="200"></p>
-
-<ul>
-<li>Visit <a href="https://developer.paypal.com/">PayPal Developer</a>
-</li>
-<li>Log in to your PayPal account</li>
-<li>Click <strong>Applications &gt; Create App</strong> in the navigation bar</li>
-<li>Enter <em>Application Name</em>, then click <strong>Create app</strong>
-</li>
-<li>Copy and paste <em>Client ID</em> and <em>Secret</em> keys into <code>config/secrets.js</code>
-</li>
-<li>
-<em>App ID</em> is <strong>client_id</strong>, <em>App Secret</em> is <strong>client_secret</strong>
-</li>
-<li>Change <strong>host</strong> to api.paypal.com if you want to test against production and use the live credentials</li>
-</ul><hr><p><img src="https://www.dropboxatwork.com/wp-content/uploads/2013/02/foursquare-logo.png" width="200"></p>
-
-<ul>
-<li>Go to <a href="https://developer.foursquare.com/">foursquare for Developers</a>
-</li>
-<li>Click on <strong>My Apps</strong> in the top menu</li>
-<li>Click the <strong>Create A New App</strong> button</li>
-<li>Enter <em>App Name</em>, <em>Welcome page url</em>,</li>
-<li>For <strong>Redirect URI</strong>: http://localhost:3000/auth/foursquare/callback</li>
-<li>Click <strong>Save Changes</strong>
-</li>
-<li>Copy and paste <em>Client ID</em> and <em>Client Secret</em> keys into <code>config/secrets.js</code>
-</li>
-</ul><hr><p><img src="http://www.athgo.org/ablog/wp-content/uploads/2013/02/tumblr_logo.png" width="200"></p>
-
-<ul>
-<li>Go to <a href="http://www.tumblr.com/oauth/apps">http://www.tumblr.com/oauth/apps</a>
-</li>
-<li>Once signed in, click <strong>+Register application</strong>
-</li>
-<li>Fill in all the details</li>
-<li>For <strong>Default Callback URL</strong>: http://localhost:3000/auth/tumblr/callback</li>
-<li>Click <strong>✔Register</strong>
-</li>
-<li>Copy and paste <em>OAuth consumer key</em> and <em>OAuth consumer secret</em> keys into <code>config/secrets.js</code>
-</li>
-</ul><hr><p><img src="http://www.outofoursystem.com/wp-content/uploads/2012/06/steam-logo-white.jpg" width="200"></p>
-
-<ul>
-<li>Go to <a href="http://steamcommunity.com/dev/apikey">http://steamcommunity.com/dev/apikey</a>
-</li>
-<li>Sign in with your existing Steam account</li>
-<li>Enter your <em>Domain Name</em>, then and click <strong>Register</strong>
-</li>
-<li>Copy and paste <em>Key</em> into <code>config/secrets.js</code>
-</li>
-</ul><hr><p><img src="https://raw.github.com/mailgun/media/master/Mailgun_Primary.png" width="200"></p>
-
-<ul>
-<li>Go to <a href="http://www.mailgun.com">http://www.mailgun.com</a>
-</li>
-<li>Sign up and add your <em>Domain Name</em>
-</li>
-<li>From the domain overview, copy and paste the default SMTP <em>Login</em> and <em>Password</em> into <code>config/secrets.js</code>
-</li>
-</ul><h2>
-<a name="project-structure" class="anchor" href="#project-structure"><span class="octicon octicon-link"></span></a>Project Structure</h2>
-
-<table>
-<thead><tr>
-<th>Name</th>
-<th align="center">Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>
-<strong>config</strong>/passport.js</td>
-<td align="center">Passport Local and OAuth strategies + Passport middleware.</td>
-</tr>
-<tr>
-<td>
-<strong>config</strong>/secrets.js</td>
-<td align="center">Your API keys, tokens, passwords and database URL.</td>
-</tr>
-<tr>
-<td>
-<strong>controllers</strong>/api.js</td>
-<td align="center">Controller for /api route and all api examples.</td>
-</tr>
-<tr>
-<td>
-<strong>controllers</strong>/contact.js</td>
-<td align="center">Controller for contact form.</td>
-</tr>
-<tr>
-<td>
-<strong>controllers</strong>/home.js</td>
-<td align="center">Controller for home page (index).</td>
-</tr>
-<tr>
-<td>
-<strong>controllers</strong>/user.js</td>
-<td align="center">Controller for user account management.</td>
-</tr>
-<tr>
-<td>
-<strong>models</strong>/User.js</td>
-<td align="center">Mongoose schema and model for User.</td>
-</tr>
-<tr>
-<td>
-<strong>public/</strong>*</td>
-<td align="center">Static assets (fonts, css, js, img)</td>
-</tr>
-<tr>
-<td>
-<strong>public/js/</strong>application.js*</td>
-<td align="center">Declare which JavaScript files should be loaded, e.g. <em>jQuery</em>, <em>Bootstrap</em>, <em>main.js</em>.</td>
-</tr>
-<tr>
-<td>
-<strong>public/js/</strong>main.js*</td>
-<td align="center">Place your client-side JavaScript here.</td>
-</tr>
-<tr>
-<td>
-<strong>public/css</strong>/styles.less</td>
-<td align="center">Main stylesheet for your app.</td>
-</tr>
-<tr>
-<td>
-<strong>public/css/themes</strong>/default.less</td>
-<td align="center">Some Bootstrap overrides to make it look prettier.</td>
-</tr>
-<tr>
-<td>
-<strong>views/account/</strong>*</td>
-<td align="center">Templates for <em>login, password reset, signup, profile</em>.</td>
-</tr>
-<tr>
-<td>
-<strong>views/api/</strong>*</td>
-<td align="center">Templates for API Examples.</td>
-</tr>
-<tr>
-<td>
-<strong>views/partials</strong>/flash.jade</td>
-<td align="center">Error, info and success flash notifications.</td>
-</tr>
-<tr>
-<td>
-<strong>views/partials</strong>/navigation.jade</td>
-<td align="center">Navbar partial template.</td>
-</tr>
-<tr>
-<td>
-<strong>views/partials</strong>/footer.jade</td>
-<td align="center">Footer partial template.</td>
-</tr>
-<tr>
-<td>
-<strong>views</strong>/layout.jade</td>
-<td align="center">Base template.</td>
-</tr>
-<tr>
-<td>
-<strong>views</strong>/home.jade</td>
-<td align="center">Home page template.</td>
-</tr>
-<tr>
-<td>app.js</td>
-<td align="center">Main application file.</td>
-</tr>
-<tr>
-<td>cluster_app.js</td>
-<td align="center">Runs multiple instances of <code>app.js</code> using <a href="http://nodejs.org/api/cluster.html" target="_blank">Node.js clusters</a>.</td>
-</tr>
-</tbody>
-</table><p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://github.global.ssl.fastly.net/images/icons/emoji/exclamation.png" height="20" width="20" align="absmiddle"><strong>Note:</strong> There is no preference how you name or structure your views. You could place all your templates in a top-level <code>views</code> directory without having a nested folder structure, if that makes things easier for you. Just don't forget to update <code>extends ../layout</code>  and corresponding <code>res.render()</code> method in controllers.</p>
-
-<h2>
-<a name="list-of-packages" class="anchor" href="#list-of-packages"><span class="octicon octicon-link"></span></a>List of Packages</h2>
-
-<table>
-<thead><tr>
-<th>Package</th>
-<th align="center">Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>async</td>
-<td align="center">Utility library that provides asynchronous control flow.</td>
-</tr>
-<tr>
-<td>bcrypt-nodejs</td>
-<td align="center">Library for hashing and salting user passwords.</td>
-</tr>
-<tr>
-<td>cheerio</td>
-<td align="center">Scrape web pages using jQuery-style syntax.</td>
-</tr>
-<tr>
-<td>clockwork</td>
-<td align="center">Clockwork SMS API library.</td>
-</tr>
-<tr>
-<td>connect-mongo</td>
-<td align="center">MongoDB session store for Express.</td>
-</tr>
-<tr>
-<td>connect-assets</td>
-<td align="center">Compiles LESS stylesheets, concatenates/minifies JavaScript.</td>
-</tr>
-<tr>
-<td>csso</td>
-<td align="center">Dependency for connect-assets library.</td>
-</tr>
-<tr>
-<td>express</td>
-<td align="center">Web framework.</td>
-</tr>
-<tr>
-<td>express-flash</td>
-<td align="center">Provides flash messages for Express. Uses connect-flash internally.</td>
-</tr>
-<tr>
-<td>express-validator</td>
-<td align="center">Easy form validation for Express. Uses node-validator internally.</td>
-</tr>
-<tr>
-<td>fbgraph</td>
-<td align="center">Facebook Graph API library</td>
-</tr>
-<tr>
-<td>github-api</td>
-<td align="center">GitHub API library</td>
-</tr>
-<tr>
-<td>jade</td>
-<td align="center">Template engine for node.js</td>
-</tr>
-<tr>
-<td>lastfm</td>
-<td align="center">Last.fm API library</td>
-</tr>
-<tr>
-<td>less</td>
-<td align="center">LESS compiler. Used implicitly by connect-assets.</td>
-</tr>
-<tr>
-<td>mongoose</td>
-<td align="center">MongoDB object modeling tool</td>
-</tr>
-<tr>
-<td>node-foursquare</td>
-<td align="center">Foursquare API library</td>
-</tr>
-<tr>
-<td>node-linkedin</td>
-<td align="center">LinkedIn API library</td>
-</tr>
-<tr>
-<td>nodemailer</td>
-<td align="center">Node.js library for sending emails</td>
-</tr>
-<tr>
-<td>passport</td>
-<td align="center">Simple and elegant authentication library for node.js</td>
-</tr>
-<tr>
-<td>passport-facebook</td>
-<td align="center">Sign-in with Facebook plugin.</td>
-</tr>
-<tr>
-<td>passport-github</td>
-<td align="center">Sign-in with GitHub plugin.</td>
-</tr>
-<tr>
-<td>passport-google-oauth</td>
-<td align="center">Sign-in with Google plugin.</td>
-</tr>
-<tr>
-<td>passport-twitter</td>
-<td align="center">Sign-in with Twitter plugin.</td>
-</tr>
-<tr>
-<td>passport-local</td>
-<td align="center">Sign-in with Username and Password plugin.</td>
-</tr>
-<tr>
-<td>passport-linkedin-oauth2</td>
-<td align="center">Sign-in with LinkedIn plugin.</td>
-</tr>
-<tr>
-<td>passport-oauth</td>
-<td align="center">Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.</td>
-</tr>
-<tr>
-<td>request</td>
-<td align="center">Simplified HTTP request library.</td>
-</tr>
-<tr>
-<td>tumblr.js</td>
-<td align="center">Tumblr API library.</td>
-</tr>
-<tr>
-<td>underscore</td>
-<td align="center">Handy JavaScript utlities library.</td>
-</tr>
-<tr>
-<td>uglify-js</td>
-<td align="center">Dependency for connect-assets library.</td>
-</tr>
-<tr>
-<td>paypal-rest-sdk</td>
-<td align="center">PayPal API library.</td>
-</tr>
-<tr>
-<td>twilio</td>
-<td align="center">Twilio API library.</td>
-</tr>
-<tr>
-<td>validator</td>
-<td align="center">Used in conjunction with express-validator in <strong>controllers/api.js</strong>.</td>
-</tr>
-</tbody>
-</table><h2>
-<a name="useful-tools" class="anchor" href="#useful-tools"><span class="octicon octicon-link"></span></a>Useful Tools</h2>
-
-<ul>
-<li>
-<a href="http://naltatis.github.io/jade-syntax-docs/#attributes">Jade Syntax Documentation by Example</a> - Even better than official Jade docs.</li>
-<li>
-<a href="http://html2jade.aaron-powell.com">HTML to Jade converter</a> - Extremely valuable when you need to quickly copy and paste HTML snippets from the web.</li>
-<li>
-<a href="http://www.javascriptoo.com/">JavascriptOO</a> - A directory of JavaScript libraries with examples, CDN links, statistics, and videos.</li>
-</ul><h2>
-<a name="recommended-design" class="anchor" href="#recommended-design"><span class="octicon octicon-link"></span></a>Recommended Design</h2>
-
-<ul>
-<li>
-<a href="http://todc.github.io/todc-bootstrap/">Google Bootstrap</a> - Google-styled theme for Bootstrap.</li>
-<li>
-<a href="http://fortawesome.github.io/Font-Awesome/icons/">Font Awesome Icons</a> - It's already part of the Hackathon Starter, so use this page as a reference.</li>
-<li>
-<a href="http://clrs.cc">Colors</a> - a nicer color palette for the web.</li>
-<li>
-<a href="http://codepen.io/andymcfee/pen/ioskA">CSS Spinning Loaders</a> - spinning loader in CSS.</li>
-<li>
-<a href="http://tobiasahlin.com/spinkit/">SpinKit</a> - 8 awesome looking spinning loaders in CSS.</li>
-<li>
-<a href="http://tympanus.net/Development/CreativeButtons/">Creative Button Styles</a> - awesome button styles.</li>
-<li>
-<a href="http://soulwire.github.io/Makisu/">3D Dropdown Menu</a> - CSS3 3D Dropdown Menu that folds and unfolds.</li>
-<li>
-<a href="http://tympanus.net/Development/CreativeLinkEffects/">Creative Link Effects</a> - Beautiful link effects in CSS.</li>
-<li>
-<a href="http://codepen.io/andreasstorm/pen/pyjEh">Medium Scroll Effect</a> - Fade in/out header background image as you scroll.</li>
-<li>
-<a href="http://html5up.net/">HTML5UP</a> - Beautifully designed HTML templates.</li>
-</ul><h2>
-<a name="recommended-nodejs-libraries" class="anchor" href="#recommended-nodejs-libraries"><span class="octicon octicon-link"></span></a>Recommended Node.js Libraries</h2>
-
-<ul>
-<li>
-<a href="https://github.com/remy/nodemon">nodemon</a> - automatically restart node.js server on code change.</li>
-<li>
-<a href="https://github.com/bluesmoon/node-geoip">geoip-lite</a> - get geolocation coordinates from IP address.</li>
-<li>
-<a href="https://github.com/andris9/Nodemailer">Nodemailer</a> - send emails with node.js (without sendgrid or mailgun).</li>
-<li>
-<a href="http://filesizejs.com/">filesize.js</a> - make file size pretty, e.g. <code>filesize(265318); // "265.32 kB"</code>.</li>
-<li>
-<a href="http://numeraljs.com">Numeral.js</a> - a javascript library for formatting and manipulating numbers.</li>
-<li>
-<a href="https://github.com/node-inspector/node-inspector">Node Inspector</a> - Node.js debugger based on Chrome Developer Tools.</li>
-</ul><h2>
-<a name="recommended-client-side-libraries" class="anchor" href="#recommended-client-side-libraries"><span class="octicon octicon-link"></span></a>Recommended Client-Side libraries</h2>
-
-<ul>
-<li>
-<a href="https://github.com/IanLunn/Hover">Hover</a> - Awesome CSS3 animations on mouse hover.</li>
-<li>
-<a href="https://github.com/bestiejs/platform.js">platform.js</a> - Get client's operating system name, version, and other useful information.</li>
-<li>
-<a href="http://dimsemenov.com/plugins/magnific-popup/">Magnific Popup</a> - Responsive jQuery Lightbox Plugin.</li>
-<li>
-<a href="http://wbotelhos.com/raty/">jQuery Raty</a> - Star Rating Plugin.</li>
-<li>
-<a href="http://wicky.nillia.ms/headroom.js/">Headroom.js</a> - Hide your header until you need it.</li>
-<li>
-<a href="http://vitalets.github.io/x-editable/">X-editable</a> - Edit form elements inline.</li>
-<li>
-<a href="http://github.hubspot.com/offline/docs/welcome/">Offline.js</a> - Detect when user's internet connection goes offline.</li>
-<li>
-<a href="http://fabien-d.github.io/alertify.js/">Alertify.js</a> - Sweet looking alerts and browser dialogs.</li>
-<li>
-<a href="http://github.hubspot.com/select/docs/welcome/">select.js</a> - Styleable select elements.</li>
-<li>
-<a href="http://github.hubspot.com/drop/docs/welcome/">drop.js</a> -  Powerful Javascript and CSS library for creating dropdowns and other floating displays.</li>
-<li>
-<a href="https://github.com/julianlloyd/scrollReveal.js">scrollReveal.js</a> - Declarative on-scroll reveal animations.</li>
-<li>
-<a href="http://instantclick.io">InstantClick</a> - Makes your pages load instantly by pre-loading them on mouse hover.</li>
-<li>
-<a href="https://github.com/rstacruz/nprogress">NProgress.js</a> - Slim progress bars like on YouTube and Medium.</li>
-</ul><h2>
-<a name="pro-tips" class="anchor" href="#pro-tips"><span class="octicon octicon-link"></span></a>Pro Tips</h2>
-
-<ul>
-<li>When installing an NPM package, add a <em>--save</em> flag, and it will be automatially
-added to <code>package.json</code> as well. For example, <code>npm install --save moment</code>.</li>
-<li>Use <a href="https://github.com/caolan/async#parallel">async.parallel()</a> when you need to run multiple
-asynchronous tasks, and then render a page, but only when all tasks are completed. For example, you might
-want to scrape 3 different websites for some data (async operation) and render the results in a template  after all 3 websites have been scraped.</li>
-<li>Need to find a specific object inside an Array? Use <a href="http://underscorejs.org/#findWhere">_.findWhere</a> function from Underscore.js. For example, this is how you would retrieve a Twitter token from database: <code>var token = _.findWhere(req.user.tokens, { kind: 'twitter' });</code>, where <code>req.user.tokens</code> is an Array, and a second parameter is an object with a given key/value.</li>
-<li>If you right click and select <strong>View Page Source</strong>, notice how <em>Express</em>
-minified HTML for you. If you would like to see non-minified markup,
-add <code>app.locals.pretty = true;</code> to <strong>app.js</strong> with the rest of the Express configuration.</li>
-</ul><h2>
-<a name="faq" class="anchor" href="#faq"><span class="octicon octicon-link"></span></a>FAQ</h2>
-
-<h3>
-<a name="why-do-i-get-403-error-forbidden-when-submitting-a-post-form" class="anchor" href="#why-do-i-get-403-error-forbidden-when-submitting-a-post-form"><span class="octicon octicon-link"></span></a>Why do I get <code>403 Error: Forbidden</code> when submitting a POST form?</h3>
-
-<p>You need to add this hidden input element to your form. This has been added in the
-pull request <a href="https://github.com/sahat/hackathon-starter/pull/40">#40</a>.</p>
-
-<pre><code>input(type='hidden', name='_csrf', value=token)
-</code></pre>
-
-<p>You can read more about <a href="http://expressjs.com/api.html#csrf">CSRF protection middleware</a> at the Express API Reference.</p>
-
-<h3>
-<a name="what-is-cluster_appjs" class="anchor" href="#what-is-cluster_appjs"><span class="octicon octicon-link"></span></a>What is <code>cluster_app.js</code>?</h3>
-
-<p>From the <a href="http://nodejs.org/api/cluster.html#cluster_how_it_works">Node.js Documentation</a>:</p>
-
-<blockquote>
-<p>A single instance of Node runs in a single thread. To take advantage of multi-core systems
-the user will sometimes want to launch a cluster of Node processes to handle the load.
-The cluster module allows you to easily create child processes that all share server ports.</p>
-</blockquote>
-
-<p><code>cluster_app.js</code> allows you to take advantage of this feature by forking a process of <code>app.js</code>
-for each CPU detected. For the majority of applications serving HTTP requests,
-this is a resounding boon. However, the cluster module is still in experimental stage, therefore it should only be used after understanding its purpose and behavior. To use it, simply run <code>node cluster_app.js</code>. <strong>Its use is entirely optional and <code>app.js</code> is not tied in any way to it</strong>. As a reminder, if you plan to use <code>cluster_app.js</code> instead of <code>app.js</code>, be sure to indicate that in <code>package.json</code> when you are ready to deploy your app.</p>
-
-<h3>
-<a name="what-is-this-rails-31-style-asset-pipeline-that-you-mentioned-in-features" class="anchor" href="#what-is-this-rails-31-style-asset-pipeline-that-you-mentioned-in-features"><span class="octicon octicon-link"></span></a>What is this Rails 3.1-style asset pipeline that you mentioned in Features?</h3>
-
-<p>This is how you typically define static files inside HTML, Jade or any template for that matter:</p>
-
-<div class="highlight highlight-jade"><pre><span class="nt">link</span>(<span class="na">href=</span><span class="s">'/css/styles.css'</span><span class="err">,</span> <span class="na">rel=</span><span class="s">'stylesheet'</span>)
-<span class="nt">script</span>(<span class="na">src=</span><span class="s">'/js/lib/jquery-2.1.0.min.js'</span>)
-<span class="nt">script</span>(<span class="na">src=</span><span class="s">'/js/lib/bootstrap.min.js'</span>)
-<span class="nt">script</span>(<span class="na">src=</span><span class="s">'/js/main.js'</span>)
-</pre></div>
-
-<p>Simple enough right? But wouldn't it be nice to have it just like that in development mode, but when you deploy
-to production, have it minified and concatenated into a single file automatically without any extra effort on you part?</p>
-
-<div class="highlight highlight-jade"><pre><span class="nt">link</span>(<span class="na">href=</span><span class="s">'/css/styles.css'</span><span class="err">,</span> <span class="na">rel=</span><span class="s">'stylesheet'</span>)
-<span class="nt">script</span>(<span class="na">src=</span><span class="s">'/js/application.js'</span>)
-</pre></div>
-
-<p>As soon as you start bringing in more JavaScript libraries, the benefits of concatenating and minifying
-JavaScript files will be even greater.
-Using <strong>connect-assets</strong> library, it is as as simple as declaring these two lines:</p>
-
-<pre><code>!= css('styles')      // expects public/css/styles.less
-!= js('application')  // expects public/js/application.js
-</code></pre>
-
-<p><img class="emoji" title=":bulb:" alt=":bulb:" src="https://github.global.ssl.fastly.net/images/icons/emoji/bulb.png" height="20" width="20" align="absmiddle"><strong>Tip:</strong> This works, because in <strong>connect-assets</strong> middleware we specified <code>helperContext: app.locals</code>.</p>
-
-<p>The only thing you need to remember is to define your JavaScript files inside <code>public/js/application.js</code> using this
-strange syntax notation (Sprockets-style) borrowed from Rails. I know it's an extra thing to learn
-for someone who has never seen Rails asset pipeline before, but in this case, benefits outweigh the cost.</p>
-
-<div class="highlight highlight-js"><pre><span class="c1">//= require lib/jquery-2.1.0.min</span>
-<span class="c1">//= require lib/bootstrap.min</span>
-<span class="c1">//= require main</span>
-</pre></div>
-
-<p>Using this approach, when working in <code>development</code> mode, <strong>connect-assets</strong> will load each file individually,
-without minifying or concatenating anything. When you deploy your app, it will run in <code>production</code> mode, and so
-<strong>connect-assets</strong> will automatically serve a single concatenated + minified <code>application.js</code>. For more
-information see <a href="https://github.com/adunkman/connect-assets/#sprockets-style-concatenation">Sprockets-style concatenation</a></p>
-
-<h3>
-<a name="i-am-getting-mongodb-connection-error-how-do-i-fix-it" class="anchor" href="#i-am-getting-mongodb-connection-error-how-do-i-fix-it"><span class="octicon octicon-link"></span></a>I am getting MongoDB Connection Error, how do I fix it?</h3>
-
-<p>That's a custom error message defined in <code>app.js</code> to indicate that there was a connection problem to MongoDB:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">mongoose</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'✗ MongoDB Connection Error. Please make sure MongoDB is running.'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-<p>As the message says, you need to have a MongoDB server running before launching <code>app.js</code>. You can download MongoDB <a href="mongodb.org/downloads">here</a>, or install it via a package manager
-(<a href="http://brew.sh/">Homebrew</a> on Mac, <code>apt-get</code> on Ubuntu, <code>yum</code> on Fedora, etc.)</p>
-
-<h3>
-<a name="i-get-an-error-when-i-deploy-my-app-why" class="anchor" href="#i-get-an-error-when-i-deploy-my-app-why"><span class="octicon octicon-link"></span></a>I get an error when I deploy my app, why?</h3>
-
-<p>Chances are you haven't changed the <em>Dabatase URI</em> in <code>secrets.js</code>. If <code>db</code> is set to <code>localhost</code>, it will only work
-on your machine as long as MongoDB is running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
-running on <code>localhost</code>. You need to create an account with <a href="http://mongolab.com">MongoLab</a> or <a href="http://mongohq.com">MongoHQ</a>, then create a free tier database. See <a href="#deployment">Deployment</a> for more information on how to
-setup an account and a new database step-by-step with MongoLab.</p>
-
-<h3>
-<a name="why-jade-instead-of-handlebars" class="anchor" href="#why-jade-instead-of-handlebars"><span class="octicon octicon-link"></span></a>Why Jade instead of Handlebars?</h3>
-
-<p>When I first started this project I didn't have any experience with Handlebars. Since then I have worked on Ember.js apps and got myself familiar with the Handlebars syntax. While it is true Handlebars is easier, because it looks like good old HTML, I have no regrets picking Jade over Handlebars. First off, it's the default template engine in Express, so someone who has built Express apps in the past already knows it. Secondly, I find <code>extends</code> and <code>block</code> to be indispensable, which as far as I know, Handlebars does not have out of the box. And lastly, subjectively speaking, Jade looks much cleaner and shorter than Handlebars, or any non-HAML style for that matter.</p>
-
-<h3>
-<a name="why-do-you-have-all-routes-defined-in-appjs" class="anchor" href="#why-do-you-have-all-routes-defined-in-appjs"><span class="octicon octicon-link"></span></a>Why do you have all routes defined in app.js?</h3>
-
-<p>For the sake of simplicity. While there might be a better approach,
-such as passing <code>app</code> context to each controller as outlined in this
-<a href="http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/">blog</a>,
-I find such style to be confusing for beginners.
-It took me a long time to grasp the concept of <code>exports</code> and <code>module.exports</code>,
-let alone having a global <code>app</code> reference in other files.
-That to me is a backward thinking.
-The <code>app.js</code> is the "heart of the app", it should be the one referencing
-models, routes, controllers, etc.
-When working solo on small projects I actually prefer to have everything inside <code>app.js</code> as is the case with <a>this</a>
-REST API server.</p>
-
-<h3>
-<a name="i-dont-need-a-sticky-footer-can-i-delete-it" class="anchor" href="#i-dont-need-a-sticky-footer-can-i-delete-it"><span class="octicon octicon-link"></span></a>I don't need a sticky footer, can I delete it?</h3>
-
-<p>Absolutely. But unlike a regular footer there is a bit more work involved. First, delete <code>#wrap</code> and <code>#footer</code> ID selectors and <code>html, body { height: 100%; }</code> from <strong>styles.less</strong>. Next, delete <code>#wrap</code> and <code>#footer</code> lines from <strong>layout.jade</strong> (By the way, If no element is specified before the class or id, Jade assumes it's a <code>div</code> element). Don't forget to indent everything under <code>#wrap</code> to the left once, since this project uses two spaces per block indentation.</p>
-
-<h3>
-<a name="can-i-use-ember-angular-or-backbone-with-hackathon-starter" class="anchor" href="#can-i-use-ember-angular-or-backbone-with-hackathon-starter"><span class="octicon octicon-link"></span></a>Can I use Ember, Angular or Backbone with Hackathon Starter?</h3>
-
-<p>It might be possible, but why would you want to?
-I specifically avoided client-side MV* frameworks in this project to keep things simple.
-There is a big shift in the way you develop apps with Ember, Backbone, Angular
-as opposed to server-side frameworks like Express, Flask, Rails, Django. Not only
-would you need to know how to use Express in this case, but also the client-side framework of your choice,
-which in itself is not a trivial task. And then there is a whole different process
-for authentication with single page applications. If you insist on using
-a client-side framework, it's best if you use a boilerplate of choice for your particular
-client-side framework and just grab the pieces you need from the Hackathon Starter.</p>
-
-<h3>
-<a name="why-is-there-no-mozilla-persona-as-a-sign-in-option" class="anchor" href="#why-is-there-no-mozilla-persona-as-a-sign-in-option"><span class="octicon octicon-link"></span></a>Why is there no Mozilla Persona as a sign-in option?</h3>
-
-<p>If you would like to use <strong>Persona</strong> authentication strategy, use the <a href="https://github.com/sahat/hackathon-starter/pull/64">pull request #64</a> as
-a reference guide. I have explained my reasons why it could not be merged into the <em>Hackathon Starter</em> in
-<a href="https://github.com/sahat/hackathon-starter/issues/63#issuecomment-34898290">issue #63</a>.</p>
-
-<h3>
-<a name="how-do-i-switch-sendgrid-for-another-email-delivery-service" class="anchor" href="#how-do-i-switch-sendgrid-for-another-email-delivery-service"><span class="octicon octicon-link"></span></a>How do I switch SendGrid for another email delivery service?</h3>
-
-<p>If you would like to use <a href="http://mailgun.com">Mailgun</a> service instead of <a href="http://sendgrid.com">SendGrid</a> for sending emails, open <code>controllers/contact.js</code>, then inside <code>var smtpTransport = nodemailer.createTransport('SMTP', { });</code> comment out or delete <strong>SendGrid</strong> code block, and uncomment <strong>Mailgun</strong> code block. You are not limited to just SendGrid or Mailgun. <strong>Nodemailer</strong> library supports many other providers, including GMail, iCloud, Hotmail, Yahoo, Mail.ru. Just don't forget to add <em>username</em> and <em>password</em> for that service provider to <code>secrets.js</code>.</p>
-
-<h2>
-<a name="how-it-works-mini-guides" class="anchor" href="#how-it-works-mini-guides"><span class="octicon octicon-link"></span></a>How It Works (mini guides)</h2>
-
-<p>This section is intended for giving you a detailed explanation about
-how a particular functionality works. Maybe you are just curious about
-how it works, or maybe you are lost and confused while reading the code,
-I hope it provides some guidance to you.</p>
-
-<h3>
-<a name="rose-custom-html-and-css-design-101" class="anchor" href="#rose-custom-html-and-css-design-101"><span class="octicon octicon-link"></span></a><img class="emoji" title=":rose:" alt=":rose:" src="https://github.global.ssl.fastly.net/images/icons/emoji/rose.png" height="20" width="20" align="absmiddle"> Custom HTML and CSS Design 101</h3>
-
-<p><a href="http://html5up.net/">HTML5 UP</a> has many beautiful templates that you can download for free.
-<img src="http://html5up.net/uploads/previews/6742121165068310.jpg" alt="Alt"></p>
-
-<p>When you download the ZIP file, it will come with <em>index.html</em>, <em>images</em>, <em>css</em> and <em>js</em> folders. So, how do you
-integrate it with Hackathon Starter? Hackathon Starter uses Bootstrap CSS framework, but these templates do not.
-Trying to use both CSS files at the same time will likely result in undesired effects.</p>
-
-<p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://github.global.ssl.fastly.net/images/icons/emoji/exclamation.png" height="20" width="20" align="absmiddle"><strong>Note:</strong> Using the custom templates approach, you should understand that you cannot reuse any of the views I have created: layout, home page, api browser, login, signup, account management, contact. Those views were built using Bootstrap grid and styles. You will have to manually update the grid using a different syntax provided in the template. <strong>Having said that, you can mix and match if you want to do so: Use Bootstrap for main app interface, and a custom template for a landing page.</strong></p>
-
-<p>Let's start from the beginning. For this example I will use <a href="http://html5up.net/escape-velocity/">Escape Velocity</a> template:
-<img src="http://html5up.net/uploads/previews/6330653905846315.jpg" alt="Alt"></p>
-
-<p><strong>Note</strong>: For the sake of simplicity I will only consider <code>index.html</code>, and skip <code>left-sidebar.html</code>,
-<code>no-sidebar.html</code>, <code>right-sidebar.html</code>.</p>
-
-<p>Move all javascript files from <code>html5up-escape-velocity/js</code> to <code>public/js</code>. Then move all css files from <code>html5up-escape-velocity/css</code> to <code>public/css</code>. And finally, move all images from <code>html5up-escape-velocity/images</code> to <code>public/images</code> (You could move it to the existing <strong>img</strong> folder, but then you would have to manually change every <code>img</code> reference). Grab the contents of <code>index.html</code> and paste it into <a href="http://html2jade.aaron-powell.com/">HTML To Jade</a>.</p>
-
-<p>Create a new file <code>escape-velocity.jade</code> and paste the Jade markup there. Change <code>!!! 5</code> to <code>doctype html</code>. It's a fairly recent
-change in <strong>Jade</strong> language, but <a href="http://html2jade.aaron-powell.com">http://html2jade.aaron-powell.com</a> hasn't caught up to this change yet.</p>
-
-<p>Let's see how it looks. Create a new controller <strong>escapeVelocity</strong> inside <code>controllers/home.js</code>:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">escapeVelocity</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'escape-velocity'</span><span class="p">,</span> <span class="p">{</span>
-    <span class="nx">title</span><span class="o">:</span> <span class="s1">'Landing Page'</span>
-  <span class="p">});</span>
-<span class="p">};</span>
-</pre></div>
-
-<p>And then create a route in <code>app.js</code>. I placed it right after the index controller:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/escape-velocity'</span><span class="p">,</span> <span class="nx">homeController</span><span class="p">.</span><span class="nx">escapeVelocity</span><span class="p">);</span>
-</pre></div>
-
-<p>Restart the server (if you are not using <strong>nodemon</strong>), then you should see the new template at <a href="http://localhost:3000/escape-velocity">http://localhost:3000/escape-velocity</a>.</p>
-
-<p>I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Jade templates work: <code>layout.jade</code> - base template, <code>index.jade</code> - home page, <code>partials/navigation.jade</code> - Bootstrap navbar, <code>partials/footer.jade</code> - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new <code>layout.jade</code>.
-Then, each page that changes, be it <code>index.jade</code>, <code>about.jade</code>, <code>contact.jade</code>
-will be embedded in your new <code>layout.jade</code> via <code>block content</code>. Use existing templates as a reference.</p>
-
-<p>This is a rather lengthy process, and templates you get from elsewhere,
-might have yet another grid system. That's why I chose <em>Bootstrap</em> for the Hackathon Starter.
- Many people are already familiar with <em>Bootstrap</em>, plus it's easy to get started with it if you have never used <em>Bootstrap</em>.
- You can also buy many beautifully designed <em>Bootstrap</em> themes at <a href="http://themeforest.net/">Themeforest</a>, and use them as a drop-in replacement for Hackathon Starter. However, if you would like to go with a completely custom HTML/CSS design, this should help you to get started!</p>
-
-<hr><h3>
-<a name="bulb-how-do-flash-messages-work-in-this-project" class="anchor" href="#bulb-how-do-flash-messages-work-in-this-project"><span class="octicon octicon-link"></span></a><img class="emoji" title=":bulb:" alt=":bulb:" src="https://github.global.ssl.fastly.net/images/icons/emoji/bulb.png" height="20" width="20" align="absmiddle"> How do flash messages work in this project?</h3>
-
-<p>Flash messages allow you to display a message at the end of the request and access
-it on next request and only next request. For instance, on a failed login attempt, you would
-display an alert with some error message, but as soon as you refresh that page or visit a different
-page and come back to the login page, that error message will be gone. It is only displayed once.
-This project uses <em>express-flash</em> module for flash messages. And that
-module is built on top of <em>connect-flash</em>, which is what I used in
-this project initially. With <em>express-flash</em> you don't have to
-explicity send a flash message to every view inside <code>res.render()</code>.
-All flash messages are available in your views via <code>messages</code> object by default,
-thanks to <em>express-flash</em>.</p>
-
-<p>Flash messages have a two-step process. You use <code>req.flash('errors', { msg: 'Error messages goes here' }</code>
-to create a flash message in your controllers, and then display them in your views:</p>
-
-<div class="highlight highlight-jade"><pre><span class="nt">if</span> messages.errors
-  <span class="nc">.alert.alert-danger.animated.fadeIn</span>
-    <span class="nt">for</span> error in messages.errors
-      <span class="nt">div</span><span class="p">=</span> <span class="n">error</span><span class="o">.</span><span class="n">msg</span>
-</pre></div>
-
-<p>In the first step, <code>'errors'</code> is the name of a flash message, which should match the
-name of the property on <code>messages</code> object in your views. You place alert messages
-inside <code>if message.errors</code> because you don't want to show them flash messages are actually present.
-The reason why you pass an error like <code>{ msg: 'Error messages goes here' }</code> instead
-of just a string - <code>'Error messages goes here'</code>, is for the sake of consistency.
-To clarify that, <em>express-validator</em> module which is used for validating and sanitizing user's input,
-returns all errors as an array of objects, where each object has a <code>msg</code> property with a message
-why an error has occured. Here is a more general example of what express-validator returns when there are errors present:</p>
-
-<div class="highlight highlight-js"><pre><span class="p">[</span>
-  <span class="p">{</span> <span class="nx">param</span><span class="o">:</span> <span class="s2">"name"</span><span class="p">,</span> <span class="nx">msg</span><span class="o">:</span> <span class="s2">"Name is required"</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="s2">"&lt;received input&gt;"</span> <span class="p">},</span>
-  <span class="p">{</span> <span class="nx">param</span><span class="o">:</span> <span class="s2">"email"</span><span class="p">,</span> <span class="nx">msg</span><span class="o">:</span> <span class="s2">"A valid email is required"</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="s2">"&lt;received input&gt;"</span> <span class="p">}</span>
-<span class="p">]</span>
-</pre></div>
-
-<p>To keep consistent with that style, you should pass all flash messages
-as <code>{ msg: 'My flash message' }</code> instead of a string. Otherwise you will just see an alert box
-without an error message. That is because, in <strong>partials/flash.jade</strong> template it will try to output
-<code>error.msg</code> (i.e. <code>"My flash message".msg</code>), in other words it will try to call a <code>msg</code> method on a <em>String</em> object,
-which will return <em>undefined</em>. Everything I just mentioned about errors, also applies
-to "info" and "success" flash messages, and you could even create a new one yourself, such as:</p>
-
-<p><strong>Data Usage Controller (Example)</strong></p>
-
-<pre><code>req.flash('warning', { msg: 'You have exceeded 90% of your data usage' });
-</code></pre>
-
-<p><strong>User Account Page (Example)</strong></p>
-
-<div class="highlight highlight-jade"><pre><span class="nt">if</span> messages.warning
-  <span class="nc">.alert.alert-warning.animated.fadeIn</span>
-    <span class="nt">for</span> warning in messages.warning
-      <span class="nt">div</span><span class="p">=</span> <span class="n">warning</span><span class="o">.</span><span class="n">msg</span>
-</pre></div>
-
-<p><code>partials/flash.jade</code> is a partial template that contains how flash messages
-are formatted. If you don't like the <em>fadeIn</em> animation, try something like
-<em>flipInX</em> (refer to <a href="http://daneden.github.io/animate.css/">animate.css</a>), or just
-delete <code>.animated.fadeIn</code> from alerts if you don't want any animations. Or if you
-want to customize your flash messages by displaying ✔ on success flash and ✗ on error
-flash, this is the place where you would do all those customizations. Previously, flash
-messages were scattered throughout each view that used flash messages
-(contact, login, signup, profile), but now, thankfully it is uses a <em>DRY</em> approach.</p>
-
-<p>The flash messages partial template is <em>included</em> in the <code>layout.jade</code>, along with footer and navigation.</p>
-
-<div class="highlight highlight-jade"><pre><span class="nt">body</span>
-  <span class="nf">#wrap</span>
-    <span class="nt">include</span> partials/navigation
-    <span class="nc">.container</span>
-      <span class="nt">include</span> partials/flash
-      <span class="nt">block</span> content
-  <span class="nt">include</span> partials/footer
-</pre></div>
-
-<p>If you have any further questions about flash messages,
-please feel free to open an issue and I will update this mini-guide accordingly,
-or send a pull request if you  would like to include something that I missed.</p>
-
-<hr><h3>
-<a name="snowman-how-do-i-create-a-new-page" class="anchor" href="#snowman-how-do-i-create-a-new-page"><span class="octicon octicon-link"></span></a><img class="emoji" title=":snowman:" alt=":snowman:" src="https://github.global.ssl.fastly.net/images/icons/emoji/snowman.png" height="20" width="20" align="absmiddle"> How do I create a new page?</h3>
-
-<p>A more correct way to be to say "How do I create a new route". The main file <code>app.js</code> contains all the routes.
-Each route has a callback function associated with it. Sometimes you will see 3 or more arguments
-to routes. In cases like that, the first argument is still a URL string, while middle arguments
-are what's called middleware. Think of middleware as a door. If this door prevents you from
-continuing forward, you won't get to your callback function. One such example is a route that requires authentication.</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/account'</span><span class="p">,</span> <span class="nx">passportConf</span><span class="p">.</span><span class="nx">isAuthenticated</span><span class="p">,</span> <span class="nx">userController</span><span class="p">.</span><span class="nx">getAccount</span><span class="p">);</span>
-</pre></div>
-
-<p>It always goes from left to right. A user visits <code>/account</code> page. Then <code>isAuthenticated</code> middleware
-checks if you are authenticated:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">isAuthenticated</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">isAuthenticated</span><span class="p">())</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">next</span><span class="p">();</span>
-  <span class="p">}</span>
-  <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">'/login'</span><span class="p">);</span>
-<span class="p">};</span>
-</pre></div>
-
-<p>If you are authenticated, you let this visitor pass through your "door" by calling <code>return next();</code>. It then proceeds to the
-next middleware until it reaches the last argument, which is a callback function that typically renders a template on <code>GET</code> requests or redirects on <code>POST</code> requests. In this case, if you are authenticated, then you will see <em>Account Management</em> page, otherwise you will be redirected to <em>Login</em> page.</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">getAccount</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'account/profile'</span><span class="p">,</span> <span class="p">{</span>
-    <span class="nx">title</span><span class="o">:</span> <span class="s1">'Account Management'</span>
-  <span class="p">});</span>
-<span class="p">};</span>
-</pre></div>
-
-<p>Express.js has <code>app.get</code>, <code>app.post</code>, <code>app.put</code>, <code>app.del</code>, but for the most part you will only use the first two.
-If you just want to display a page, then use <code>GET</code>, if you are submitting a form, sending a file then use <code>POST</code>.</p>
-
-<p>Here is a typical workflow for adding new routes to your application. Let's say we are building
-a page that lists all books from database.</p>
-
-<p><strong>Step 1.</strong> Start by defining a route.</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/books'</span><span class="p">,</span> <span class="nx">bookController</span><span class="p">.</span><span class="nx">getBooks</span><span class="p">);</span>
-
-</pre></div>
-
-<p><strong>Step 2.</strong> Create a new controller file called <code>book.js</code>.</p>
-
-<div class="highlight highlight-js"><pre><span class="cm">/**</span>
-<span class="cm"> * GET /books</span>
-<span class="cm"> * List all books.</span>
-<span class="cm"> */</span>
-
-<span class="nx">exports</span><span class="p">.</span><span class="nx">getBooks</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">Book</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">docs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'books'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">books</span><span class="o">:</span> <span class="nx">docs</span> <span class="p">});</span>
-  <span class="p">});</span>
-<span class="p">};</span>
-</pre></div>
-
-<p><strong>Step 3.</strong> Import that controller in <code>app.js</code>.</p>
-
-<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">bookController</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./controllers/book'</span><span class="p">);</span>
-</pre></div>
-
-<p><strong>Step 4.</strong> Create <code>books.jade</code> template.</p>
-
-<div class="highlight highlight-jade"><pre><span class="nt">extends</span> layout
-
-<span class="nt">block</span> content
-  <span class="nc">.page-header</span>
-    <span class="nt">h3</span> All Books
-
-  <span class="nt">ul</span>
-    <span class="nt">for</span> book in books
-      <span class="nt">li</span><span class="p">=</span> <span class="n">book</span><span class="o">.</span><span class="n">name</span>
-</pre></div>
-
-<p>That's it! I will say that you could have combined Step 1, 2, 3 as following:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/books'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">Book</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">docs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'books'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">books</span><span class="o">:</span> <span class="nx">docs</span> <span class="p">});</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-</pre></div>
-
-<p>Sure, it's simpler, but as soon as you pass 1000 lines of code in <code>app.js</code> it becomes a little difficult to navigate the file.
-I mean, the whole point of this boilerplate project was to separate concerns, so you could
-work with your teammates without running into <em>MERGE CONFLICTS</em>. Imagine you have 4 developers
-working on a single <code>app.js</code>, I promise you it won't be fun resolving merge conflicts all the time.
-If you are the only developer then it's fine. But as I said, once it gets up to a certain LoC size, it becomes
-difficult to maintain everything in a single file.</p>
-
-<p>That's all there is to it. Express.js is super simple to use.
-Most of the time you will be dealing with other APIs to do the real work:
-<a href="http://mongoosejs.com/docs/guide.html">Mongoose</a> for querying database, socket.io for sending and receiving messages over websockets,
-sending emails via <a href="http://www.nodemailer.com/">Nodemailer</a>, form validation using <a href="https://github.com/ctavan/express-validator">express-validator</a> library,
-parsing websites using <a href="https://github.com/MatthewMueller/cheerio">Cheerio</a>, and etc.</p>
-
-<hr><h3>
-<a name="dizzy-how-do-i-use-socketio-with-hackathon-starter" class="anchor" href="#dizzy-how-do-i-use-socketio-with-hackathon-starter"><span class="octicon octicon-link"></span></a><img class="emoji" title=":dizzy:" alt=":dizzy:" src="https://github.global.ssl.fastly.net/images/icons/emoji/dizzy.png" height="20" width="20" align="absmiddle"> How do I use Socket.io with Hackathon Starter?</h3>
-
-<p><a href="https://github.com/dstroot">Dan Stroot</a> submitted an excellent <a href="https://github.com/dstroot/hackathon-starter/commit/0a632def1ce8da446709d92812423d337c977d75">pull request</a> that adds a real-time dashboard with socket.io.
-And as  much as I'd like to add it to the project, I think it violates one of the main
-principles of the Hackathon Starter:</p>
-
-<blockquote>
-<p>When I started this project, my primary focus was on simplicity and ease of use.
-I also tried to make it as generic and reusable as possible to cover most use cases of
-hackathon web apps, <strong>without being too specific</strong>.</p>
-</blockquote>
-
-<p>When I need to use socket.io, I <strong>really</strong> need it, but most of the time - I don't. But more
-importantly, websockets support is still experimental on most hosting providers. As of October 2013,
-Heroku supports websockets, but not until you opt-in by running this command:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">heroku</span> <span class="nx">labs</span><span class="o">:</span><span class="nx">enable</span> <span class="nx">websockets</span> <span class="o">-</span><span class="nx">a</span> <span class="nx">myapp</span>
-</pre></div>
-
-<p>And what if you are deploying to OpenShift? They do support websockets, but it is currently in a
-preview state. So, for OpenShift you would need to change the socket.io connect URI to the following:</p>
-
-<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">socket</span> <span class="o">=</span> <span class="nx">io</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="s1">'http://yoursite-namespace.rhcloud.com:8000'</span><span class="p">);</span>
-</pre></div>
-
-<p>Wait, why is it on port 8000? Who knows, and if I didn't run across this <a href="http://velin-georgiev-blog.appspot.com/blog/set-up-nodejs-express-socketio-application-using-websockets-on-openshift-by-red-hat/">blog post</a>
-I wouldn't even know I had to use port 8000.</p>
-
-<p>I am really glad that Heroku and OpenShift at least
-have a websockets support, because many other PaaS providers still do not support it.
-Due to the aforementioned issues with websockets, I cannot include socket.io as part of the Hackathon Starter. <em>For now...</em>
-If you need to use socket.io in your app, please continue reading.</p>
-
-<p>First you need to install socket.io:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">socket</span><span class="p">.</span><span class="nx">io</span> <span class="o">--</span><span class="nx">save</span>
-</pre></div>
-
-<p>Replace <code>var app = express();</code> with the following code:</p>
-
-<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
-<span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">io</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'socket.io'</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="nx">server</span><span class="p">);</span>
-</pre></div>
-
-<p>I like to have the following code organization in <code>app.js</code> (from top to bottom): module dependencies,
-import controllers, import configs, connect to database, express configuration, routes,
-start the server, socket.io stuff. That way I always know where to look for things.</p>
-
-<p>Add the following code at the end of <code>app.js</code>:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">io</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">io</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'transports'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'websocket'</span><span class="p">]);</span>
-<span class="p">});</span>
-
-<span class="nx">io</span><span class="p">.</span><span class="nx">sockets</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'connection'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'greet'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">hello</span><span class="o">:</span> <span class="s1">'Hey, Mr.Client!'</span> <span class="p">});</span>
-  <span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'respond'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-  <span class="p">});</span>
-  <span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'disconnect'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Socket disconnected'</span><span class="p">);</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-</pre></div>
-
-<p>One last thing left to change:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'port'</span><span class="p">),</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</pre></div>
-
-<p>to</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'port'</span><span class="p">),</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</pre></div>
-
-<p>At this point we are done with the back-end.</p>
-
-<p>You now have a choice - to include your JavaScript code in Jade templates or have all your client-side
-JavaScript in a separate file - in <code>main.js</code>. I will admit, when I first started out with Node.js and JavaScript in general,
-I placed all JavaScript code inside templates because I have access to template variables passed in from Express
-right then and there. It's the easiest thing you can do, but also the least efficient and harder to maintain. Since then I
-almost never include inline JavaScript inside templates anymore.</p>
-
-<p>But it's also understandable if you want take the easier road.
-Most of the time you don't even care about performance during hackathons, you just
-want to <a href="http://www.startupvitamins.com/media/products/13/aaron_levie_poster_black.jpg"><em>"get shit done"</em></a> before the time runs out.
-Well, either way, use whichever approach makes more sense to you. At the end of the day,
-it's <strong>what</strong> you build that matters, not <strong>how</strong> you build it.</p>
-
-<p>If you want to stick all your JavaScript inside templates, then in <code>layout.jade</code> -
-your main template file, add this to <code>head</code> block.</p>
-
-<div class="highlight highlight-jade"><pre><span class="nt">script</span>(<span class="na">src=</span><span class="s">'/socket.io/socket.io.js?v=#{cacheBuster}'</span>)
-<span class="nt">script</span>.
-    <span class="nt">var</span> socket = io.connect(window.location.href);
-    <span class="nt">socket</span><span class="nc">.on</span>(<span class="err">'</span><span class="na">greet</span><span class="err">',</span> <span class="na">function</span> <span class="err">(</span><span class="na">data</span>) {
-      <span class="nt">console</span><span class="nc">.log</span>(<span class="na">data</span>);
-      <span class="nt">socket</span><span class="nc">.emit</span>(<span class="err">'</span><span class="na">respond</span><span class="err">',</span> <span class="err">{</span> <span class="na">message:</span> <span class="err">'</span><span class="na">Hello</span> <span class="na">to</span> <span class="na">you</span> <span class="na">too</span><span class="err">,</span> <span class="na">Mr</span><span class="err">.</span><span class="na">Server</span><span class="err">!'</span> <span class="err">}</span>);
-    <span class="err">});</span>
-</pre></div>
-
-<p><strong>Note</strong>: Notice the path of the <code>socket.io.js</code>, you don't actually
-have to have <code>socket.io.js</code> file anywhere in your project; it will be generated automatically
-at runtime.</p>
-
-<p>If you want to have JavaScript code separate from templates, move that inline script code into <code>main.js</code>,
-inside the <code>$(document).ready()</code> function:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-
-  <span class="c1">// Place JavaScript code here...</span>
-  <span class="kd">var</span> <span class="nx">socket</span> <span class="o">=</span> <span class="nx">io</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
-  <span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'greet'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-    <span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'respond'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">message</span><span class="o">:</span> <span class="s1">'Hello to you too, Mr.Server!'</span> <span class="p">});</span>
-  <span class="p">});</span>
-
-<span class="p">});</span>
-</pre></div>
-
-<p>And that's it, we are done!</p>
-
-<p>If you want to see a really cool real-time dashboard check out this <a href="http://hackathonstarter.herokuapp.com/dashboard">live example</a>. Refer to the <a href="https://github.com/sahat/hackathon-starter/pull/23/files">pull request #23</a> to see how it is implemented.</p>
-
-<h3>
-<a name="how-does-forgot-your-password-feature-work" class="anchor" href="#how-does-forgot-your-password-feature-work"><span class="octicon octicon-link"></span></a>How does “Forgot your password” feature work?</h3>
-
-<p>There are <strong>4</strong> routes in total that handle forgot password and reset password:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/forgot'</span><span class="p">,</span> <span class="nx">forgotController</span><span class="p">.</span><span class="nx">getForgot</span><span class="p">);</span>
-<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/forgot'</span><span class="p">,</span> <span class="nx">forgotController</span><span class="p">.</span><span class="nx">postForgot</span><span class="p">);</span>
-<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/reset/:token'</span><span class="p">,</span> <span class="nx">resetController</span><span class="p">.</span><span class="nx">getReset</span><span class="p">);</span>
-<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/reset/:token'</span><span class="p">,</span> <span class="nx">resetController</span><span class="p">.</span><span class="nx">postReset</span><span class="p">);</span>
-</pre></div>
-
-<p>The first step begins at the get <code>GET /forgot</code> when user clicks on <strong>Forgot your password?</strong> link on the <em>Login</em> page. The <code>POST /forgot</code> handles the form submission. If email address is valid, it creates a random 20-bit hash, finds that user’s email in the database and sets <code>resetPasswordToken</code> field to the newly  generated random 20-bit hash, additionally <code>resetPasswordExpires</code> is set to 1 hour into the future. That means from the moment you receive an email, that reset link will be valid only for one hour (for security reasons it’s a good practice to expire reset password links). If 1 hour is too short for your needs, feel free to increase it. The final step is to actually send an email with a reset link. This is all elegantly done using <strong>async.waterfall</strong> control flow.</p>
-
-<p>Notice how it handles the case when no email address exists:</p>
-
-<div class="highlight highlight-js"><pre><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">'errors'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">msg</span><span class="o">:</span> <span class="s1">'No account with that email address exists.'</span> <span class="p">});</span>
-  <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">'/forgot'</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-
-<p>Some people might find this approach to be less secure. Maybe a better approach might have been to let the user know “If there is an account with provided e-mail address, we will send you a reset link”. Again, feel free to change it based on your application needs.</p>
-
-<p>The second step involves resetting a password. After clicking on a reset link, it redirects you to a page where you can set a new password. The token validity check is performed twice - on <code>GET</code> request when you click on a reset link and on <code>POST</code> request after you submit a new password. After selecting a new password, both <code>passwordResetToken</code> and <code>resetPasswordExpire</code> fields are deleted from the database. This is easily done by setting their value to <code>undefined</code>; <em>Mongoose</em> will run <code>$unset</code> internally. And finally, user is logged in with the new password and a confirmation email is sent notifying about the password change.</p>
-
-<h2>
-<a name="mongoose-cheatsheet" class="anchor" href="#mongoose-cheatsheet"><span class="octicon octicon-link"></span></a>Mongoose Cheatsheet</h2>
-
-<h4>
-<a name="find-all-users" class="anchor" href="#find-all-users"><span class="octicon octicon-link"></span></a>Find all users:</h4>
-
-<div class="highlight highlight-js"><pre><span class="nx">User</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">users</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">users</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-<h4>
-<a name="find-a-user-by-email" class="anchor" href="#find-a-user-by-email"><span class="octicon octicon-link"></span></a>Find a user by email:</h4>
-
-<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">userEmail</span> <span class="o">=</span> <span class="s1">'example@gmail.com'</span><span class="p">;</span>
-<span class="nx">User</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nx">email</span><span class="o">:</span> <span class="nx">userEmail</span> <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-<h4>
-<a name="find-5-most-recent-user-accounts" class="anchor" href="#find-5-most-recent-user-accounts"><span class="octicon octicon-link"></span></a>Find 5 most recent user accounts:</h4>
-
-<div class="highlight highlight-js"><pre><span class="nx">User</span>
-  <span class="p">.</span><span class="nx">find</span><span class="p">()</span>
-  <span class="p">.</span><span class="nx">sort</span><span class="p">({</span> <span class="nx">_id</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span> <span class="p">})</span>
-  <span class="p">.</span><span class="nx">limit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">users</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">users</span><span class="p">);</span>
-  <span class="p">});</span>
-</pre></div>
-
-<h4>
-<a name="get-total-count-of-a-field-from-all-documents" class="anchor" href="#get-total-count-of-a-field-from-all-documents"><span class="octicon octicon-link"></span></a>Get total count of a field from all documents:</h4>
-
-<p>Let's suppose that each user has a <code>votes</code> field and you would like to count the total number of votes in your database accross all users. One very inefficient way would be to loop through each document and manually accumulate the count. Or you could use <a href="http://docs.mongodb.org/manual/core/aggregation-introduction/">MongoDB Aggregation Framework</a> instead:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">User</span><span class="p">.</span><span class="nx">aggregate</span><span class="p">({</span> <span class="nx">$group</span><span class="o">:</span> <span class="p">{</span> <span class="nx">_id</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">total</span><span class="o">:</span> <span class="p">{</span> <span class="nx">$sum</span><span class="o">:</span> <span class="s1">'$votes'</span> <span class="p">}</span> <span class="p">}</span> <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">votesCount</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">votesCount</span><span class="p">.</span><span class="nx">total</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-<h2>
-<a name="deployment" class="anchor" href="#deployment"><span class="octicon octicon-link"></span></a>Deployment</h2>
-
-<p>Once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not
-the only choices, but they are my top picks. Create an account with <strong>MongoLab</strong> and then pick one of the 4 providers
-below. Once again, there are plenty of other choices and you are not limited to just the ones listed below. From my
-experience, <strong>Heroku</strong> is the easiest to get started with, it will automatically restart your node.js process when it crashes, custom domain support on free accounts and zero-downtime deployments.</p>
-
-<p><img src="http://i.imgur.com/7KnCa5a.png" width="200"></p>
-
-<ul>
-<li>Open <a href="https://mongolab.com">mongolab.com</a> website</li>
-<li>Click the yellow <strong>Sign up</strong> button</li>
-<li>Fill in your user information then hit <strong>Create account</strong>
-</li>
-<li>From the dashboard, click on <strong><img class="emoji" title=":zap:" alt=":zap:" src="https://github.global.ssl.fastly.net/images/icons/emoji/zap.png" height="20" width="20" align="absmiddle">Create new</strong> button</li>
-<li>Select <strong>any</strong> cloud provider (I usually go with AWS)</li>
-<li>Under <em>Plan</em> click on <strong>Single-node (development)</strong> tab and select <strong>Sandbox</strong> (it's free)
-
-<ul>
-<li><em>Leave MongoDB version as is - <code>2.4.x</code></em></li>
-</ul>
-</li>
-<li>Enter <em>Database name</em>* for your web app</li>
-<li>Then click on <strong><img class="emoji" title=":zap:" alt=":zap:" src="https://github.global.ssl.fastly.net/images/icons/emoji/zap.png" height="20" width="20" align="absmiddle">Create new MongoDB deployment</strong> button</li>
-<li>Now, to access your database you need to create a DB user</li>
-<li>You should see the following message:
-
-<ul>
-<li>
-<em>A database user is required to connect to this database.</em> <strong>Click here</strong> <em>to create a new one.</em>
-</li>
-</ul>
-</li>
-<li>Click the link and fill in <strong>DB Username</strong> and <strong>DB Password</strong> fields</li>
-<li>Finally, in <code>secrets.js</code> instead of <code>db: 'localhost'</code>, use the following URI with your credentials:
-
-<ul>
-<li><code>db: 'mongodb://&lt;dbuser&gt;:&lt;dbpassword&gt;@ds027479.mongolab.com:27479/&lt;dbname&gt;'</code></li>
-</ul>
-</li>
-</ul><blockquote>
-<p><strong><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://github.global.ssl.fastly.net/images/icons/emoji/exclamation.png" height="20" width="20" align="absmiddle">Note</strong>: As an alternative to MongoLab, there is also <a href="http://www.mongohq.com/home">MongoHQ</a>.</p>
-</blockquote>
-
-<p><img src="http://blog.exadel.com/wp-content/uploads/2013/10/heroku-Logo-1.jpg" width="200"></p>
-
-<ul>
-<li>Download and install <a href="https://toolbelt.heroku.com/osx">Heroku Toolbelt</a>
-</li>
-<li>In terminal, run <code>heroku login</code> and enter your Heroku credentials</li>
-<li>From <em>your app</em> directory run <code>heroku create</code>, followed by <code>git push heroku master</code>
-</li>
-<li>Done!</li>
-</ul><p><img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200"></p>
-
-<ul>
-<li>First, install this Ruby gem: <code>sudo gem install rhc</code> <img class="emoji" title=":gem:" alt=":gem:" src="https://github.global.ssl.fastly.net/images/icons/emoji/gem.png" height="20" width="20" align="absmiddle">
-</li>
-<li>Run <code>rhc login</code> and enter your OpenShift credentials</li>
-<li>From <em>your app</em> directory run <code>rhc app create MyApp nodejs-0.10</code>
-
-<ul>
-<li>
-<strong>Note</strong>: <em>MyApp</em> is what you want to name your app (no spaces)</li>
-</ul>
-</li>
-<li>Once that is done, you will be provided with <strong>URL</strong>, <strong>SSH</strong> and <strong>Git Remote</strong> links</li>
-<li>Visit that <strong>URL</strong> and you should see <em>Welcome to your Node.js application on OpenShift</em> page</li>
-<li>Copy <strong>Git Remote</strong> and paste it into <code>git remote add openshift your_git_remote</code>
-</li>
-<li>Before you push your app, you need to do a few modifications to your code</li>
-</ul><p>Add these two lines to <code>app.js</code>, just place them anywhere before <code>app.listen()</code>:</p>
-
-<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">IP_ADDRESS</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">OPENSHIFT_NODEJS_IP</span> <span class="o">||</span> <span class="s1">'127.0.0.1'</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">PORT</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">OPENSHIFT_NODEJS_PORT</span> <span class="o">||</span> <span class="mi">8080</span><span class="p">;</span>
-</pre></div>
-
-<p>Then change <code>app.listen()</code> to:</p>
-
-<div class="highlight highlight-js"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">PORT</span><span class="p">,</span> <span class="nx">IP_ADDRESS</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"✔ Express server listening on port %d in %s mode"</span><span class="p">,</span> <span class="nx">PORT</span><span class="p">,</span> <span class="nx">app</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">env</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-<p>Add this to <code>package.json</code>, after <em>name</em> and <em>version</em>. This is necessary because, by default, OpenShift looks for <code>server.js</code> file. And by specifying <code>supervisor app.js</code> it will automatically restart the server when node.js process crashes.</p>
-
-<div class="highlight highlight-js"><pre><span class="s2">"main"</span><span class="o">:</span> <span class="s2">"app.js"</span><span class="p">,</span>
-<span class="s2">"scripts"</span><span class="o">:</span> <span class="p">{</span>
-  <span class="s2">"start"</span><span class="o">:</span> <span class="s2">"supervisor app.js"</span>
-<span class="p">},</span>
-</pre></div>
-
-<ul>
-<li>Finally, now you can push your code to OpenShift by running <code>git push -f openshift master</code>
-
-<ul>
-<li>
-<strong>Note</strong>: The first time you run this command, you have to pass <code>-f</code> (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing <code>-f</code> flag will override everything with your <em>Hackathon Starter</em> project repository. Please <strong>do not</strong> do <code>git pull</code> as it will create unnecessary merge conflicts.</li>
-</ul>
-</li>
-<li>And you are done! (Not quite as simple as Heroku, huh?)</li>
-</ul><p><img src="http://www.joyent.com/content/08-company/05-customers/13-nodejitsu/header.png" width="200"></p>
-
-<ul>
-<li>To install <strong>jitsu</strong>, open a terminal and type: <code>sudo npm install -g jitsu</code>
-</li>
-<li>Run <code>jitsu login</code> and enter your login credentials</li>
-<li>From your app directory, run <code>jitsu deploy</code>
-
-<ul>
-<li>This will create a new application snapshot, generate and/or update project metadata</li>
-</ul>
-</li>
-<li>Done!</li>
-</ul><p><img src="http://upload.wikimedia.org/wikipedia/en/f/ff/Windows_Azure_logo.png" width="200"></p>
-
-<ul>
-<li>Login to <a href="http://manage.windowsazure.com/">Windows Azure Management Portal</a>
-</li>
-<li>Click the <strong>+ NEW</strong> button on the bottom left of the portal</li>
-<li>Click <strong>WEB SITE</strong>, then <strong>QUICK CREATE</strong>
-</li>
-<li>Enter a name for <strong>URL</strong> and select the datacenter <strong>REGION</strong> for your web site</li>
-<li>Click on <strong>CREATE WEB SITE</strong> button</li>
-<li>Once the web site status changes to <em>Running</em>, click on the name of the web site to access the Dashboard</li>
-<li>At the bottom right of the Quickstart page, select <strong>Set up a deployment from source control</strong>
-</li>
-<li>Select <strong>Local Git repository</strong> from the list, and then click the arrow</li>
-<li>To enable Git publishing, Azure will ask you to create a user name and password</li>
-<li>Once the Git repository is ready, you will be presented with a <strong>GIT URL</strong>
-</li>
-<li>Inside your <em>Hackathon Starter</em> directory, run <code>git remote add azure [Azure Git URL]</code>
-</li>
-<li>To push your changes simply run <code>git push azure master</code>
-
-<ul>
-<li>
-<strong>Note:</strong> <em>You will be prompted for the password you created earlier</em>
-</li>
-</ul>
-</li>
-<li>On <strong>Deployments</strong> tab of your Windows Azure Web Site, you will see the deployment history</li>
-</ul><h2>
-<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
-
-<p>If something is unclear, confusing, or needs to be refactored, please let me know. Pull requests are always welcome, but due to the opinionated nature of this project, I cannot accept every pull request. Please open an issue before submitting a pull request. This project uses <a href="https://github.com/airbnb/javascript">Airbnb JavaScript Style Guide</a> with a few minor exceptions. If you are submitting a pull request that involves Jade templates, please make sure you are using <em>spaces</em>, not tabs.</p>
-
-<h2>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
-
-<p>The MIT License (MIT)</p>
-
-<p>Copyright (c) 2014 Sahat Yalkabov</p>
-
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-
-<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/sahat">sahat</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <title>Hackathon Starter</title>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="stylesheets/animate.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+  <script src="javascripts/modernizr.custom.js"></script>
+</head>
+<body class="withAnimation">
+<div id="boxedWrapper">
+
+<!-- navbar -->
+<nav class="navbar navbar-default navbar-fixed-top navbar-transparent" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#start">Start</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- / navbar -->
+
+
+<div class="parallaxSection height100" data-bg="images/13.jpg" id="start">
+
+  <section class="flexslider std-slider center-controls" data-height="0" data-loop="true" data-smooth="false" data-slideshow="true" data-speed="15000" data-animspeed="550" data-controls="false" data-dircontrols="true">
+    <ul class="slides">
+      <li>
+        <div class="container">
+          <div class="inner">
+            <div class="text-center">
+              <h2 class="page-title animated" data-fx="fadeInDown">A boilerplate for Node.js web applications</h2>
+
+              <h2 class="animated" data-fx="bounceIn">HACKATHON STARTER</h2>
+              <a href="#" class="btn btn-default btn-lg animated" data-fx="fadeInUp">Download v1.1</a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <!-- / flexslider -->
+  <a href="#about" class="bigArrow local menuOffset"><i class="fa fa-angle-down"></i></a>
+
+</div>
+<!-- / parallaxSection -->
+
+
+<section class="content-area bg1" id="about">
+  <div class="container">
+
+    <header class="page-header text-center">
+      <h1 class="page-title">About us</h1>
+
+      <h2>We create elegant solutions for everyday problems</h2>
+    </header>
+
+    <div class="row">
+      <div class="col-md-4 col-md-push-2">
+        <p>
+          Curabitur lacinia mi sem, in iaculis ligula blandit. Aenean ornare erat eget accumsan interdum. Purus vulputate. Nunc at orci venenatis, odio vel, egestas eros. Nullam ac est a ante faucibus. Sed est neque,
+          laoreet at laoreet eget, iaculis vitae libero.
+
+        <p>
+
+        <p>
+          Donec faucibus ullamcorper pulvinar. Duis quis tempus varius, sapien urna pretium libero, nec mollis eros dolor eget velit. Nulla ornare ut nisi sodales consequat.
+        </p>
+
+        <p>
+          Duis ut posuere augue, a interdum nisi. Etiam libero sit amet tempus sodales, ante diam.
+        </p>
+      </div>
+      <div class="col-md-4 col-md-push-2">
+        <p>
+          Phasellus eu tellus eget massa ultrices rhoncus. Quam massa, tincidunt semper sapien.
+        </p>
+
+        <p>
+          Posuere eleifend dolor. Vivamus purus ligula, venenatis nec elit at, tempus bibendum ipsum. Proin sed vehicula lectus. Curabitur augue diam, tincidunt venenatis lacinia, vulputate at lectus.
+        </p>
+
+        <p>
+          Donec tempus velit vitae quam sodales, sit amet augue malesuada sem adipiscing. Aliquam dolor urna, rhoncus quis ullamcorper vel.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section class="content-area bg2">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Our services</h1>
+
+      <h2>What can we do for you?</h2>
+
+      <p class="larger">Mauris eget ligula vel nulla dignissim pharetra non sed orci. Praesent consequat egestas dapibus. Quisque faucibus erat at metus adipiscing lacinia.</p>
+    </header>
+
+    <div class="row">
+      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInUp">
+        <div class="iconBox type4">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-star"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Brand creation</a></h4>
+
+              <p>
+                Praesent dignissim dui eu urna feugiat lobortis. Morbi varius nibh sit amet adipiscing mollis. Aenean id neque ut augue gravida posuere.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- / iconBox -->
+      </div>
+      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInDown">
+        <div class="iconBox type4">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-trophy"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Graphic design</a></h4>
+
+              <p>
+                Nam pharetra justo turpis, quis rutrum lorem lobortis euismod. Praesent augue, consectetur ultricies eros non, lacinia scelerisque ante.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- / iconBox -->
+      </div>
+      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInUp">
+        <div class="iconBox type4">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-cog"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Web development</a></h4>
+
+              <p>
+                Aenean vitae neque mi. Phasellus tempor risus non risus tristique, quis egestas velit vulputate. Sed porttitor non nunc non pharetra risus.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- / iconBox -->
+      </div>
+      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInDown">
+        <div class="iconBox type4">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-thumbs-up"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Online marketing</a></h4>
+
+              <p>
+                Duis quis elit hendrerit, tempor magna ac, adipiscing ligula. Maecenas neque nibh, vehicula ut neque at, scelerisque mollis risus non enim.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- / iconBox -->
+      </div>
+
+
+    </div>
+    <!-- / row -->
+
+  </div>
+</section>
+
+
+<section class="content-area brightText" data-bg="images/demo-content/home-v1-clients-bg.jpg">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Our clients</h1>
+
+      <h2>Some of the fine people we've worked with</h2>
+    </header>
+
+    <div class="row">
+      <div class="col-md-8">
+        <blockquote class="clearfix animated" data-fx="fadeInLeft">
+          <div class="inner">
+            <p class="larger">
+              Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
+              pretium. Integer tincidunt. Donec euismod vulputate porta. Mauris ultrices velit quis quam scelerisque luctus laoreet ac dui. Cras dapibus.
+            </p>
+          </div>
+          <div class="media author">
+          <span class="pull-left">
+            <img class="media-object" src="images/demo-content/home-v1-clients-portrait.jpg" alt=" ">
+          </span>
+
+            <div class="media-body">
+              <h4 class="media-heading">Rebecca Bowens
+                <span>Manager @ Company Inc.</span>
+              </h4>
+            </div>
+          </div>
+
+        </blockquote>
+      </div>
+      <div class="col-md-4">
+        <ul class="row thumbnails list-unstyled">
+          <li class="col-xs-4 col-md-4">
+            <a href="#">
+              <img src="images/demo-content/home-v1-clients-logo1.png" alt=" " class="animated" data-fx="fadeInLeft">
+            </a>
+          </li>
+          <li class="col-xs-4 col-md-4">
+            <a href="#">
+              <img src="images/demo-content/home-v1-clients-logo2.png" alt=" " class="animated" data-fx="fadeInUp">
+            </a>
+          </li>
+          <li class="col-xs-4 col-md-4">
+            <a href="#">
+              <img src="images/demo-content/home-v1-clients-logo3.png" alt=" " class="animated" data-fx="fadeInRight">
+            </a>
+          </li>
+          <li class="col-xs-4 col-md-4">
+            <a href="#">
+              <img src="images/demo-content/home-v1-clients-logo4.png" alt=" " class="animated" data-fx="fadeInLeft">
+            </a>
+          </li>
+          <li class="col-xs-4 col-md-4">
+            <a href="#">
+              <img src="images/demo-content/home-v1-clients-logo5.png" alt=" " class="animated" data-fx="fadeInBottom">
+            </a>
+          </li>
+          <li class="col-xs-4 col-md-4">
+            <a href="#">
+              <img src="images/demo-content/home-v1-clients-logo6.png" alt=" " class="animated" data-fx="fadeInRight">
+            </a>
+          </li>
+        </ul>
+        <!-- / thumbnails -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- / section -->
+
+
+<section class="content-area bg1">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Our team</h1>
+
+      <h2>The right people</h2>
+    </header>
+
+    <div class="row">
+      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInLeft">
+        <div class="personBox">
+          <img src="images/demo-content/team-01.jpg" alt="">
+          <h4>Robert Judd
+            <span>CEO</span>
+          </h4>
+          <hr>
+          <ul class="socialNormal list-inline">
+            <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
+            <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInLeft">
+        <div class="personBox">
+          <img src="images/demo-content/team-02.jpg" alt="">
+          <h4>Eva Barnes
+            <span>Designer</span>
+          </h4>
+          <hr>
+          <ul class="list-inline socialNormal">
+            <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
+            <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInRight">
+        <div class="personBox">
+          <img src="images/demo-content/team-03.jpg" alt="">
+          <h4>Eugene Fletcher
+            <span>Developer</span>
+          </h4>
+          <hr>
+          <ul class="list-inline socialNormal">
+            <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
+            <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInRight">
+        <div class="personBox">
+          <img src="images/demo-content/team-04.jpg" alt="">
+          <h4>Janet McKenzie
+            <span>Support</span>
+          </h4>
+          <hr>
+          <ul class="list-inline socialNormal">
+            <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
+            <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="content-area bg2" data-btmspace="0" id="portfolio">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Our work</h1>
+
+      <h2>Take a look at our recent projects</h2>
+    </header>
+
+    <ul id="galleryFilters" class="option-set clearfix list-unstyled list-inline text-center">
+      <li><a href="#filter=*" class="btn btn-default btn-primary">View all works</a></li>
+      <li><a href="#filter=.web" class="btn btn-default">Web</a></li>
+      <li><a href="#filter=.identity" class="btn btn-default">Identity</a></li>
+      <li><a href="#filter=.print" class="btn btn-default">Print</a></li>
+    </ul>
+  </div>
+
+  <div id="galleryContainer" class="clearfix animated" data-fx="fadeInLeft">
+    <div class="galleryItem identity">
+      <a href="images/demo-content/home-v2-works-01.jpg" class="area-hover imgpopup">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project with Lightbox</h4>
+          </div>
+        </div>
+      </a>
+      <a href="images/demo-content/home-v2-works-01.jpg" class="imgpopup"><img src="images/demo-content/home-v2-works-01.jpg" alt=" "></a>
+    </div>
+    <div class="galleryItem web">
+      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project name goes here</h4>
+          </div>
+        </div>
+      </a>
+      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-02.jpg" alt=" "></a>
+    </div>
+    <div class="galleryItem print">
+      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project name goes here</h4>
+          </div>
+        </div>
+      </a>
+      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-03.jpg" alt=" "></a>
+    </div>
+    <div class="galleryItem identity web">
+      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project name goes here</h4>
+          </div>
+        </div>
+      </a>
+      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-04.jpg" alt=" "></a>
+    </div>
+    <div class="galleryItem print">
+      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project name goes here</h4>
+          </div>
+        </div>
+      </a>
+      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-05.jpg" alt=" "></a>
+    </div>
+    <div class="galleryItem web">
+      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project name goes here</h4>
+          </div>
+        </div>
+      </a>
+      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-06.jpg" alt=" "></a>
+    </div>
+    <div class="galleryItem identity">
+      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project name goes here</h4>
+          </div>
+        </div>
+      </a>
+      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-07.jpg" alt=" "></a>
+    </div>
+    <div class="galleryItem print">
+      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project name goes here</h4>
+          </div>
+        </div>
+      </a>
+      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-08.jpg" alt=" "></a>
+    </div>
+    <div class="galleryItem web print">
+      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project name goes here</h4>
+          </div>
+        </div>
+      </a>
+      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-09.jpg" alt=" "></a>
+    </div>
+    <div class="galleryItem identity print">
+      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
+        <div class="vertical-parent">
+          <div class="vertical-child">
+            <span class="cat-links">Identity, Web</span>
+            <h4 class="entry-title">Project name goes here</h4>
+          </div>
+        </div>
+      </a>
+      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-10.jpg" alt=" "></a>
+    </div>
+  </div>
+  <!-- / galleryContainer -->
+  <div id="galleryAjaxDetails" style="display:none;"></div>
+
+</section>
+<!-- / section -->
+
+
+<section class="content-area bg1" id="blog">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <header class="page-header text-left animated" data-fx="flipInY">
+          <h1 class="page-title">From Our Blog</h1>
+
+          <h2>Fresh news<br>and updates</h2>
+          <a href="05-pluto-blog.html" class="btn btn-default">View all posts</a>
+        </header>
+
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <article class="blog-item animated" data-fx="fadeInDown">
+          <div class="blog-thumbnail">
+            <a href="#"><img src="images/demo-content/home-v1-blog-01.jpg" alt=" "></a>
+          </div>
+          <div class="entry-meta">
+            <span class="entry-date">December 3, 2013</span>
+            <span class="entry-comments"><a href="#">1 comment</a></span>
+          </div>
+          <h4 class="entry-title"><a href="06-pluto-blog-single.html">This is a standard post format with preview picture</a></h4>
+
+          <p>
+            Asunt in anim uis aute irure dolor in reprehenderit in voluptate velit esse...
+          </p>
+        </article>
+        <!-- / blog-item -->
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <article class="blog-item animated" data-fx="fadeInUp">
+          <div class="blog-thumbnail">
+            <div class="flexslider std-slider center-controls" data-animation="fade" data-loop="true" data-animspeed="600" data-dircontrols="true">
+              <ul class="slides">
+                <li><a href="#"><img src="images/demo-content/home-v1-blog-02.jpg" alt=" "></a></li>
+                <li><a href="#"><img src="images/demo-content/home-v1-blog-02-2.jpg" alt=" "></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="entry-meta">
+            <span class="entry-date">December 1, 2013</span>
+            <span class="entry-comments"><a href="#">4 comment</a></span>
+          </div>
+          <h4 class="entry-title"><a href="#">Gallery post format: post with multiple images</a></h4>
+
+          <p>
+            Excepteur sint occaecat cupidatat non proident sunt in culpa qui deserunt...
+          </p>
+        </article>
+        <!-- / blog-item -->
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <article class="blog-item format-video animated" data-fx="fadeInDown">
+          <div class="blog-thumbnail">
+            <a href="http://www.youtube.com/watch?v=HJ2F7eptn_A" class="popup-iframe"><img src="images/demo-content/home-v1-blog-03.jpg" alt=" "></a>
+          </div>
+          <div class="entry-meta">
+            <span class="entry-date">November 30, 2013</span>
+            <span class="entry-comments"><a href="#">6 comment</a></span>
+          </div>
+          <h4 class="entry-title"><a href="#">This is a video post</a></h4>
+
+          <p>
+            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit quia...
+          </p>
+        </article>
+        <!-- / blog-item -->
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- / section -->
+
+<section class="content-layer brightText make-overflow" id="contact">
+  <div class="mapOuter">
+    <div class="googleMap" data-location="Junipers Blvd. 380 Queens, NY 11379, USA" data-height="695" data-offset="0"></div>
+  </div>
+
+  <a href="#" class="showMap btn btn-primary" data-text="Show Contact Form">Show Map</a>
+
+  <div class="bg-layer"></div>
+  <div class="placeOver animated" data-fx="fadeInDownBig">
+    <div class="container">
+      <header class="page-header text-center">
+        <h1 class="page-title">Get in touch</h1>
+
+        <h2>We'd love to hear from you</h2>
+      </header>
+
+      <div class="row">
+        <div class="col-md-8 col-md-push-2">
+          <div class="contactForm">
+            <div class="successMessage alert alert-success alert-dismissable" style="display: none">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              Thank You! E-mail was sent.
+            </div>
+            <div class="errorMessage alert alert-danger alert-dismissable" style="display: none">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              Ups! An error occured. Please try again later.
+            </div>
+
+            <form class="liveForm" role="form" action="http://pluto.html.themewoodmen.com/form/send.php" method="post" data-email-subject="Contact Form" data-show-errors="true" data-hide-form="false">
+              <fieldset>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label">Name <span>(Required)</span></label>
+                      <input type="text" required name="field[]" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label">Email <span>(Required)</span></label>
+                      <input type="email" required name="field[]" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="control-label">Subject</label>
+                      <input type="text" name="field[]" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="control-label">Message <span>(Required)</span></label>
+                      <textarea name="field[]" required class="form-control" rows="5"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Send Message">
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- / placeOver -->
+</section>
+<!-- / section -->
+
+
+<footer>
+  <div class="container mainfooter">
+    <div class="row">
+      <aside class="col-md-3 widget">
+        <h1 class="widget-title">Contact Us</h1>
+
+        <a href="mailto:hello@example.com" class="larger">hello@example.com</a>
+
+        <p>
+          121 King Street, Melbourne<br>
+          Victoria 3000 Australia
+        </p>
+
+        <p>
+          Phone: +61 3 8376 6284
+        </p>
+      </aside>
+      <aside class="col-md-3 widget">
+        <h1 class="widget-title">Recent Blog Post</h1>
+
+        <article class="blog-item">
+          <div class="entry-meta">
+            <span class="entry-date">December 3, 2013</span>
+            <span class="entry-comments"><a href="#">1 comment</a></span>
+          </div>
+          <h4 class="entry-title"><a href="06-pluto-blog-single.html">This is a standard post format with preview picture</a></h4>
+
+          <p>
+            Asunt in anim uis aute irure dolor in reprehenderit in voluptate velit esse...
+          </p>
+        </article>
+        <!-- / blog-item -->
+
+
+      </aside>
+      <aside class="col-md-3 widget">
+        <h1 class="widget-title">Recent Tweet</h1>
+
+        <div class="tweets_display" data-limit="1"></div>
+
+      </aside>
+      <aside class="col-md-3 widget">
+        <h1 class="widget-title">Newsletter</h1>
+
+        <p>
+          Subscribe to general news & updates.<br>
+          We never spam.
+        </p>
+        <div class="newsletterForm">
+          <div class="successMessage alert alert-success alert-dismissable" style="display: none">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            Thank You! E-mail was sent.
+          </div>
+          <div class="errorMessage alert alert-danger alert-dismissable" style="display: none">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            Ups! An error occured. Please try again later.
+          </div>
+          <form class="liveForm" role="form" action="http://pluto.html.themewoodmen.com/form/send.php" method="post" data-email-subject="Newsletter Form" data-show-errors="true" data-hide-form="true">
+            <fieldset>
+              <div class="form-group">
+                <input type="text" name="field[]" required class="form-control" placeholder="Your email address">
+              </div>
+              <input type="submit" class="btn btn-primary" value="Subscribe">
+            </fieldset>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <hr>
+  <div class="container postfooter">
+    <div class="row">
+      <aside class="col-md-6 widget">
+        <p>© 2014 Pluto template. Made with love by ThemeWoodmen</p>
+      </aside>
+      <aside class="col-md-6 widget">
+        <ul class="socialIcons pull-right">
+          <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
+          <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="#" data-toggle="tooltip" title="Google+"><i class="fa fa-google-plus-square"></i></a></li>
+          <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
+          <li><a href="#" data-toggle="tooltip" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
+        </ul>
+
+
+      </aside>
+    </div>
+  </div>
+</footer>
+
+
+</div>
+<!-- / boxedWrapper -->
+
+<a href="#" id="toTop"><i class="fa fa-angle-up"></i></a>
+
+
+<script src="javascripts/jquery.min.js"></script>
+<script src="javascripts/bootstrap.min.js"></script>
+
+<script src="javascripts/detectmobilebrowser.js"></script>
+<script src="javascripts/gmap3.min.js"></script>
+<script src="javascripts/jquery.appear.js"></script>
+<script src="javascripts/jquery.isotope.min.js"></script>
+<script src="javascripts/jquery.ba-bbq.min.js"></script>
+<script src="javascripts/jquery.fitvids.js"></script>
+<script src="javascripts/jquery.flexslider-min.js"></script>
+<script src="javascripts/jquery.magnific-popup.min.js"></script>
+<script src="javascripts/jquery.placeholder.min.js"></script>
+<script src="javascripts/retina-1.1.0.min.js"></script>
+<script src="javascripts/jquery.tweet.js"></script>
+
+<script src="javascripts/main.js"></script>
+
+</body>
 </html>
