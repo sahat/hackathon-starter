@@ -50,6 +50,13 @@ var hour = 3600000;
 var day = (hour * 24);
 var month = (day * 30);
 
+/**
+ * Import app settings from config file 
+ * storing settings in app.locals to be available globally
+ */
+
+app.locals.app_settings = require('./config/app_settings');
+
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
