@@ -3,7 +3,7 @@ mixin setup_link(name, link)
 
 #footer
   ul.list-inline.pull-left
-    li © #{new Date().getFullYear()} 
+    li © 2014 #{app_settings.company_name}
     each val, key in app_settings.footer_links
       +setup_link(val, key)
   ul.list-inline.pull-right
