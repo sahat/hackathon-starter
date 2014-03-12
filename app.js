@@ -76,6 +76,8 @@ app.use(express.csrf());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
+  res.header('X-XSS-Protection', '1; mode=block');
+  res.header('X-Frame-Options', 'SAMEORIGIN');
   res.locals.user = req.user;
   res.locals.token = req.csrfToken();
   res.locals.secrets = secrets;
