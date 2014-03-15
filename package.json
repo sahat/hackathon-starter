@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/phinity/hackathon-starter.git"
   },
   "scripts": {
     "start": "node app.js",
@@ -44,12 +44,14 @@
     "twit": "~1.1.12",
     "underscore": "~1.6.0",
     "uglify-js": "~2.4.12",
-    "validator": "~3.3.0"
+    "validator": "~3.3.0",
+    "socket.io": "~0.9.16"
   },
   "devDependencies": {
     "chai": "~1.9.0",
     "mocha": "~1.17.1",
     "supertest": "~0.9.0",
-    "zombie": "~2.0.0-alpha30"
+    "zombie": "~2.0.0-alpha30",
+    "grunt": "~0.4.2"
   }
 }

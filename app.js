@@ -3,6 +3,7 @@
  */
 
 var express = require('express');
+var fs = require('fs');
 var MongoStore = require('connect-mongo')(express);
 var flash = require('express-flash');
 var path = require('path');
@@ -11,18 +12,21 @@ var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 
-
+var util = require('./config/util');
 
 /**
  * Load controllers.
  */
 
 var homeController = require('./controllers/home');
-var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+
 var forgotController = require('./controllers/forgot');
 var resetController = require('./controllers/reset');
+
+var userController = require('./controllers/user');
+
 
 /**
  * API keys + Passport configuration.
@@ -38,10 +42,18 @@ var passportConf = require('./config/passport');
 var app = express();
 
 /**
+ * socket.io config
+ */
+
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
+
+
+/**
  * Mongoose configuration.
  */
 
-mongoose.connect(secrets.db);
+mongoose.connect(secrets.dbUrl());
 mongoose.connection.on('error', function() {
   console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
 });
@@ -70,10 +82,11 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(expressValidator());
 app.use(express.methodOverride());
+console.log(secrets.dbSession);
 app.use(express.session({
   secret: secrets.sessionSecret,
   store: new MongoStore({
-    url: secrets.db,
+    db: mongoose.connection.db,//secrets.dbSession.db
     auto_reconnect: true
   })
 }));
@@ -170,12 +183,78 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
   res.redirect('/api/venmo');
 });
 
+
+/**
+ * API routes.
+ */
+
+// new User
+app.post('/users?:format?/?$', function(req, res) {
+  userController.createUser(req, res, req.body);
+});
+app.post('/users?:format?/create/?$', function(req, res) {
+  userController.createUser(req, res, req.body);
+});
+app.get('/users?:format?/create/?$', function(req, res) {
+  userController.createUser(req, res, req.query);
+});
+// edit User
+app.put('/users?:format?/:id/?$', function(req,res) {
+  userController.editUser(req, res, req.body);
+});
+app.get('/users?:format?/:id/edit/?$', function(req,res) {
+  userController.editUser(req, res, req.query);
+});
+// delete User
+app.del('/users?:format?/:id/?$', function(req,res) {
+  userController.deleteUser(req, res, req.body);
+});
+app.get('/users?:format?/:id/delete/?$', function(req,res) {
+  userController.deleteUser(req, res, req.query);
+});
+// single User
+app.get('/users?:format?/:id/?$', function(req, res) {
+  userController.getUser(req, res, req.query);
+});
+// all Users
+app.get('/users?:format?/?$', function(req, res) {//util.requireRole('admin'),
+  userController.getUsers(req, res, req.query);
+});
+
+
+
 /**
  * Start Express server.
  */
 
-app.listen(app.get('port'), function() {
+server.listen(app.get('port'), function() {
   console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
 });
 
 module.exports = app;
+
+
+
+
+/*
+ * Socket Events
+ */
+
+io.sockets.on('connection', function (socket) {
+  
+  //TODO update verbs read=get, update=edit destroy=delete
+  socket.on('create:user', function (data) {
+    userController.createUserEvent(socket, data.signature, data.item);
+  });
+  socket.on('read:user', function (data) {
+    userController.readUserEvent(socket, data.signature, data);
+  });
+  socket.on('update:user', function (data) {
+    userController.updateUserEvent(socket, data.signature, data.item);
+  });
+  socket.on('delete:user', function (data) {
+    userController.destroyUserEvent(socket, data.signature, data.item);
+  });
+  
+  
+});

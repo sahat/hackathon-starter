@@ -2,6 +2,10 @@ var passport = require('passport');
 var _ = require('underscore');
 var User = require('../models/User');
 
+var userQ = require('../models/userQueries');
+var util = require('../config/util');
+
+
 /**
  * GET /login
  * Login page.
@@ -206,4 +210,113 @@ exports.getOauthUnlink = function(req, res, next) {
       res.redirect('/account');
     });
   });
+};
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * Requests
+ */
+
+exports.getUsers = function(req, res, myData) {
+  console.log(myData);
+  userQ.getUsers(myData, function(model) {
+    if( req.params.format == '.js' ) {
+      res.send(model);
+    } else {
+      model.title = 'Users';
+      res.render('users', model);
+    }
+  });
+};
+
+exports.getUser = function(req, res, myData) {
+  userQ.getUser(myData, function(model) {
+    if( req.params.format == '.js' ) {
+      res.send(model);
+    } else {
+      model.title = 'Users';
+      res.render('users', model);
+    }
+  });
+};
+
+exports.createUser = function(req, res, myData) {
+  myData = myData.user ? myData.user : myData;
+  userQ.createUser(myData, function(model) {
+    res.send(model);
+  });
+}
+
+exports.editUser = function(req, res, myData) {
+  myData._id = myData._id || req.params.id;
+  userQ.editUser(myData, function(model) {
+    res.send(model);
+  });
+}
+
+exports.deleteUser = function(req, res, myData) {
+  userQ.deleteUser({id: req.params.id}, function(model) {
+    res.send({'success':true});
+  });
+}
+
+
+
+
+/*
+ * Events
+ */
+
+exports.createUserEvent = function(socket, signature, myData) {
+  var e = util.event('create:user', signature);
+  myData._id = null; delete myData._id;
+  userQ.createUser(myData, function(resData) {
+    socket.emit(e, {id : resData._id});
+    socket.broadcast.emit('adduser', resData);
+  });
+};
+
+exports.readUserEvent = function(socket, signature, myData, sockets) {
+  var e = util.event('read:user', signature);
+  typeof myData==='undefined' ? myData={id:false}:'';
+  if(myData.id) {
+    userQ.getUser({id: myData.id}, function(resData) {
+      socket.emit(e, resData);
+    });
+  } else {
+    userQ.getUsers({}, function(resData) {
+      socket.emit(e, resData);
+    });
+  }
+};
+
+exports.updateUserEvent = function(socket, signature, myData) {
+  var e = util.event('update:user', signature);
+  typeof myData==='undefined' ? myData={_id:false}:'';
+  if(myData._id) {
+    userQ.editUser(myData, function(resData) {
+      socket.emit(e, {success: true});
+      socket.broadcast.emit(e, resData);
+    });
+  }
+};
+
+exports.destroyUserEvent = function(socket, signature, myData) {
+  var e = util.event('delete:user', signature);
+  typeof myData==='undefined' ? myData={_id:false}:''; 
+  if(myData._id) {
+    userQ.deleteUser(myData, function(resData) {
+      socket.emit(e, resData);
+      socket.broadcast.emit(e, resData);
+    });
+  }
 };
