@@ -294,7 +294,6 @@ jQuery(document).ready(function() {
       
       initialize: function(initData) {
         
-        console.log('add user init');
           if(initData.init) {
               this.__initialize();
           } else {
@@ -302,8 +301,7 @@ jQuery(document).ready(function() {
               this.form = $('#hs_el_'+ this.new_key);
               this.setInputs();
               this.render();
-          }
-          X 
+          } 
       },
       
       events: {

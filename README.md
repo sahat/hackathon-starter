@@ -261,12 +261,14 @@ Project Structure
 | **controllers**/api.js | Controller for /api route and all api examples.                         |
 | **controllers**/contact.js | Controller for contact form.                                        |
 | **controllers**/home.js | Controller for home page (index).                                      |
-| **controllers**/user.js | Controller for user account management page.                           |
+| **controllers**/user.js | Controller for user account management.                           |
 | **models**/User.js | Mongoose schema and model for User.                                         |
 | **public/***                       | Static assets (fonts, css, js, img)                         |
+| **public/js/**application.js*      | Declare which JavaScript files should be loaded, e.g. *jQuery*, *Bootstrap*, *main.js*.             |
+| **public/js/**main.js*             | Place your client-side JavaScript here.                     |
 | **public/css**/styles.less         | Main stylesheet for your app.                               |
 | **public/css/themes**/default.less | Some Bootstrap overrides to make it look prettier.          |
-| **views/account/***                | Templates for *login, signup, profile*.                     |
+| **views/account/***                | Templates for *login, password reset, signup, profile*.     |
 | **views/api/***                    | Templates for API Examples.                                 |
 | **views/partials**/flash.jade      | Error, info and success flash notifications.                |
 | **views/partials**/navigation.jade | Navbar partial template.                                    |
@@ -315,6 +317,7 @@ List of Packages
 | uglify-js | Dependency for connect-assets library. |
 | paypal-rest-sdk | PayPal API library. |
 | twilio | Twilio API library. |
+| twit   | Twitter API library. |
 | validator | Used in conjunction with express-validator in **controllers/api.js**. |
 
 Useful Tools
@@ -365,7 +368,7 @@ Pro Tips
 --------
 - When installing an NPM package, add a *--save* flag, and it will be automatially
 added to `package.json` as well. For example, `npm install --save moment`.
-- Use [async.parallel()](https://github.com/caolan/async#parallel) when you neeed to run multiple
+- Use [async.parallel()](https://github.com/caolan/async#parallel) when you need to run multiple
 asynchronous tasks, and then render a page, but only when all tasks are completed. For example, you might
 want to scrape 3 different websites for some data (async operation) and render the results in a template  after all 3 websites have been scraped.
 - Need to find a specific object inside an Array? Use [_.findWhere](http://underscorejs.org/#findWhere) function from Underscore.js. For example, this is how you would retrieve a Twitter token from database: `var token = _.findWhere(req.user.tokens, { kind: 'twitter' });`, where `req.user.tokens` is an Array, and a second parameter is an object with a given key/value.
@@ -936,6 +939,7 @@ experience, **Heroku** is the easiest to get started with, it will automatically
 - Enter *Database name** for your web app
 - Then click on **:zap:Create new MongoDB deployment** button
 - Now, to access your database you need to create a DB user
+- Click to the recently created database
 - You should see the following message:
  - *A database user is required to connect to this database.* **Click here** *to create a new one.*
 - Click the link and fill in **DB Username** and **DB Password** fields
@@ -1008,10 +1012,6 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 - To push your changes simply run `git push azure master`
  - **Note:** *You will be prompted for the password you created earlier*
 - On **Deployments** tab of your Windows Azure Web Site, you will see the deployment history
-
-TODO
-----
-- Pages that require login, should automatically redirect to last attempted URL on successful sign-in.
 
 Contributing
 ------------
