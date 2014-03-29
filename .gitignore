@@ -23,3 +23,5 @@ Thumbs.db
 public/css/styles.css
 
 builtAssets
+cookbooks
+.vagrant
