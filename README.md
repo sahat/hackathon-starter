@@ -94,6 +94,8 @@ vagrant plugin install vagrant-cachier
 vagrant up --provision
 ```
 
+Learn all about how to use (Vagrant)[https://docs.vagrantup.com/v2/getting-started/index.html]. It's a simple way to manage and provision virtual machines that keeps your workflow simple and your development environment defined by code so it's shareable, repeatable and sane.
+
 :exclamation: **Note**: I strongly recommend installing nodemon `sudo npm install -g nodemon`.
 It will monitor for any changes in your node.js
 application and automatically restart the server. Once installed, instead of `node app.js` use `nodemon app.js`.
