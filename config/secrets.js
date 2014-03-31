@@ -78,6 +78,10 @@ module.exports = {
     apiKey: process.env.CLOCKWORK_KEY || 'Your Clockwork SMS API Key'
   },
 
+  stripe: {
+    apiKey: process.env.STRIPE_KEY || 'dMcWz2G80Do0mc62KYzYVaQ9nEJKuobA'
+  },
+
   tumblr: {
     consumerKey: process.env.TUMBLR_KEY || 'Your Consumer Key',
     consumerSecret: process.env.TUMBLR_SECRET || 'Your Consumer Secret',
