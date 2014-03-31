@@ -79,7 +79,7 @@ module.exports = {
   },
 
   stripe: {
-    apiKey: process.env.STRIPE_KEY || 'dMcWz2G80Do0mc62KYzYVaQ9nEJKuobA'
+    apiKey: process.env.STRIPE_KEY || 'Your Stripe API Key'
   },
 
   tumblr: {
