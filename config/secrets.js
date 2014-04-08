@@ -101,6 +101,12 @@ module.exports = {
     redirectUrl: 'http://localhost:3000/auth/venmo/callback'
   },
 
+  instagram: {
+    clientId: '59be614d0c7c499aa303f62a56ebfd8b',
+    secret: '2e03a559864a4619aacd3b480b80ceeb',
+    redirectUrl: 'http://5050coin.com:3000/auth/instagram/callback'
+  },
+
   paypal: {
     host: 'api.sandbox.paypal.com', // or api.paypal.com
     client_id: 'Your Client ID',

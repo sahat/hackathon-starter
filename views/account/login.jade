@@ -6,6 +6,10 @@ block content
     input(type='hidden', name='_csrf', value=token)
     .row
       .col-sm-4
+        if secrets.instagram
+          a.btn.btn-block.btn-instagram.btn-social(href='/auth/instagram')
+            i.fa.fa-instagram
+            | Sign in with Instagram
         if secrets.facebookAuth
           a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
             i.fa.fa-facebook

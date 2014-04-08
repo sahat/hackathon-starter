@@ -8,6 +8,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy; // Tumblr
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy; // Venmo, Foursquare
+var InstagramStrategy = require('passport-instagram').Strategy;
 var User = require('../models/User');
 var secrets = require('./secrets');
 
@@ -52,6 +53,58 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  *       - If there is, return an error message.
  *       - Else create a new account.
  */
+
+/**
+ * Sign in with Instagram.
+ */
+
+passport.use(new InstagramStrategy({
+    clientID: secrets.instagram.clientId,
+    clientSecret: secrets.instagram.secret,
+    callbackURL: secrets.instagram.redirectUrl,
+    passReqToCallback: true
+    //callbackURL: "http://127.0.0.1:3000/auth/instagram/callback"
+  },
+  function(req, accessToken, refreshToken,user, profile, done) {
+     if (req.user) {
+    User.findOne({ $or: { instagram: profile.id } }, function(err, existingUser) {
+      if (existingUser) {
+        req.flash('errors', { msg: 'There is already an Instagram account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        done(err);
+      } else {
+        User.findById(req.user.id, function(err, user) {
+          user.instagram = profile.id;
+          user.tokens.push({ kind: 'instagram', accessToken: accessToken });
+          user.profile.name = user.profile.name || profile.displayName;
+          user.profile.picture = user.profile.picture || profile._json.data.profile_picture;
+          user.profile.website = user.profile.website ||  profile._json.data.website;
+          user.save(function(err) {
+            req.flash('info', { msg: 'Instagram account has been linked.' });
+            done(err, user);
+          });
+        });
+      }
+    });
+  } else {
+    User.findOne({ instagram: profile.id }, function(err, existingUser) {
+      if (existingUser) return done(null, existingUser);
+
+        var user = new User();
+        user.instagram = profile.id;
+        user.tokens.push({ kind: 'instagram', accessToken: accessToken });
+        user.profile.name = profile.displayName;
+        user.email = "";
+        user.profile.website = profile._json.data.website;
+        user.profile.picture = profile._json.data.profile_picture;
+        user.save(function(err) {
+          done(err, user);
+        });
+
+    });
+  }
+
+  }
+));
 
 /**
  * Sign in with Facebook.
@@ -265,7 +318,7 @@ passport.use(new LinkedInStrategy(secrets.linkedin, function(req, accessToken, r
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.location = user.profile.location || profile._json.location.name;
           user.profile.picture = user.profile.picture || profile._json.pictureUrl;
-          user.profile.website = user.profile.website || profile._json.publicProfileUrl;
+          user.profile.website = user.profile.website ||  profile._json.website;
           user.save(function(err) {
             req.flash('info', { msg: 'LinkedIn account has been linked.' });
             done(err, user);
