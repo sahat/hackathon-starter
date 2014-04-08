@@ -318,7 +318,7 @@ passport.use(new LinkedInStrategy(secrets.linkedin, function(req, accessToken, r
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.location = user.profile.location || profile._json.location.name;
           user.profile.picture = user.profile.picture || profile._json.pictureUrl;
-          user.profile.website = user.profile.website ||  profile._json.website;
+          user.profile.website = user.profile.website ||  profile._json.website; 
           user.save(function(err) {
             req.flash('info', { msg: 'LinkedIn account has been linked.' });
             done(err, user);
