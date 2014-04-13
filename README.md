@@ -3,12 +3,12 @@ Hackathon Starter
 =================
 A boilerplate for **Node.js** web applications.
 
-This is a Fork of [Sahat Yalkabov hackathon-starter project](https://github.com/sahat/hackathon-starter). please see his README.
+This is a Fork of [Sahat Yalkabov hackathon-starter project](https://github.com/sahat/hackathon-starter). please see his README for a full description.
 
-Sahat has done a nice job of fleshing out basic features of a node app, making many of the same choices i have in my own projects. My goal was to add additional core aproaches i've developed that he has intentionally left out. This includes socket.io intergration with backbone.js.
+Sahat has done a nice job of fleshing out basic features of a node app, making many of the same choices I have previously in my own projects. My goal was to add additional core features that he has intentionally left out because of an agnostic aproach. This includes a realtime api layer with socket.io and backbone.js.
 
 
-socket.io and backbone specific documentation forthcoming.
+specific documentation forthcoming.
 
 
 License

@@ -72,7 +72,6 @@ app.use(connectAssets({
   helperContext: app.locals
 }));
 app.use(express.compress());
-app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.cookieParser());
 app.use(express.json());
@@ -92,7 +91,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
   res.locals.user = req.user;
-  res.locals.token = req.csrfToken();
+  res.locals._csrf = req.csrfToken();
   res.locals.secrets = secrets;
   next();
 });
@@ -102,7 +101,7 @@ app.use(function(req, res, next) {
   // Keep track of previous URL
   if (req.method !== 'GET') return next();
   var path = req.path.split('/')[1];
-  if (/(auth|login|logout|signup)$/.test(path)) return next();
+  if (/(auth|login|logout|signup)$/i.test(path)) return next();
   req.session.returnTo = req.path;
   next();
 });
@@ -276,7 +275,7 @@ app.get('/posts?:format?/?$', function(req, res) {//util.requireRole('admin'),
  */
 
 server.listen(app.get('port'), function() {
-  console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
+  console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.get('env'));
 });
 
 module.exports = app;
