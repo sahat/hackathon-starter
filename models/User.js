@@ -26,6 +26,32 @@ var userSchema = new mongoose.Schema({
 });
 
 /**
+ * Handle duplicate error for email
+ */
+/*userSchema.save(function(err) {
+  console.log('user.save');
+  if ( err && err.code !== 11000 ) {
+    console.log(err);
+    console.log(err.code);
+    res.send('Another error showed up');
+    return;
+  }
+
+  //duplicate key
+  if ( err && err.code === 11000 ) {
+    req.flash('error', 'User already exists');
+    res.redirect('/signup');
+    return;
+  }
+
+  res.locals.user = user;
+  req.session.user = user;
+  //res.locals.session = req.session;
+  res.redirect('/');
+});*/
+
+
+/**
  * Hash the password for security.
  * "Pre" is a Mongoose middleware that executes before each user.save() call.
  */

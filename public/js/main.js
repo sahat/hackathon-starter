@@ -1,3 +1,4 @@
+
 jQuery(document).ready(function() {
 (function($, Backbone) {
   
@@ -38,20 +39,6 @@ jQuery(document).ready(function() {
     }
     
   };
-  
-  
-  hs.keyGenerate = function(len, charSet) {
-    charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    len = len || '24';
-    var randomString = '';
-    for (var i = 0; i < len; i++) {
-      var randomPoz = Math.floor(Math.random() * charSet.length);
-      randomString += charSet.substring(randomPoz,randomPoz+1);
-    }
-    return randomString;
-  }
-  
-  
   
   
   // custom sync // Backbone 
@@ -185,16 +172,6 @@ jQuery(document).ready(function() {
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   // Backbone Views //////////////////////////////////////////////////////////////////
   
   hs.views.App = Backbone.View.extend({
@@ -243,6 +220,39 @@ jQuery(document).ready(function() {
           e += sig.endPoint;
           if (sig.ctx) e += (':' + sig.ctx);
           return e;
+      },
+      
+      searlizeInputs: function(myNoun, myInputs) {
+          
+          this.setInputs();
+          
+          var outgoing = {};
+          for(var i=0; i<this.inputs.length; i++) {
+            
+            var myVal = $(this.inputs[i]).val();
+            var myName = $(this.inputs[i]).attr('name');
+            var myParts = myName.split(/\[/);
+            
+            for(var ii=0; ii<myParts.length; ii++) {
+              if(myParts[ii] != myNoun) {
+                myParts[ii] = myParts[ii].replace(/]/, '');
+              }
+            }
+            
+            if(myParts.length == 1) {
+              //outgoing[myPart] = myVal;
+            } else if(myParts.length == 2) {
+              outgoing[myParts[1]] = myVal;
+            } else if(myParts.length == 3) {
+              typeof outgoing[myParts[1]] === 'undefined' ? outgoing[myParts[1]]={}:'';
+              outgoing[myParts[1]][myParts[2]] = myVal;
+            } else {
+              // deeper?
+            }
+            
+          }
+          
+          return outgoing;
       }
   
   });
@@ -273,14 +283,9 @@ jQuery(document).ready(function() {
       addUser: function(e) {
           e.preventDefault();
           
-          if($('.new_user_form').length) {
-            $('.new_user_form').modal('show');
-          } else {
-            var myTmpId = hs.keyGenerate();
-            var myEl = $('<div/>', {id: 'hs_el_'+myTmpId}).prependTo('body');
-            var addUserView = new hs.views.AddUser({el: myEl, collection: hs.users, new_key: myTmpId });
+          if( !$('.new_user_form').length ) {
+            new hs.views.AddUser({collection: hs.users });
           }
-          
       }
   });
   
@@ -288,20 +293,18 @@ jQuery(document).ready(function() {
   // Add User View
   //--------------------------------------------------------------------------
   hs.views.AddUser = hs.views.userApp.extend({
-      template: _.template( $('#addUserTemplate').html() ),
       
       inputs: {},
       
       initialize: function(initData) {
-        
+          
+          this.template = _.template( $('#addUserTemplate').html() );
+          
           if(initData.init) {
               this.__initialize();
           } else {
-              this.new_key = initData.new_key;
-              this.form = $('#hs_el_'+ this.new_key);
-              this.setInputs();
               this.render();
-          } 
+          }
       },
       
       events: {
@@ -314,8 +317,7 @@ jQuery(document).ready(function() {
       },
       
       setInputs: function() {
-          this.inputs.email = this.form.find('#user_email_'+this.new_key);
-          this.inputs.profile_name = this.form.find('#user_profile_name_'+this.new_key);
+          this.inputs = this.$el.find('input[name^=user]');//+this.model.noun+
       },
       
       addUserSocket: function(e) {
@@ -324,24 +326,13 @@ jQuery(document).ready(function() {
       },
       
       addUser: function(e) {
-          e.preventDefault();
-          
-          this.setInputs();
-          
-          var outgoing = {profile:{}};
-          for(var thisInput in this.inputs) {
-              //some conditions for nexted profile data.
-              if(thisInput == 'profile_name') {
-                  outgoing['profile']['name'] = this.inputs[thisInput].val();
-              } else {
-                outgoing[thisInput] = this.inputs[thisInput].val();
-              }
-              
-          }
-          
-          this.collection.create(outgoing, { wait: true });
-          
-          this.cancel();
+        e.preventDefault();
+        
+        var outgoing = this.searlizeInputs("user");
+        
+        this.collection.create(outgoing, { wait: true });
+        
+        this.cancel();
           
       },
       
@@ -349,15 +340,14 @@ jQuery(document).ready(function() {
         var self=this;
         this.$el.find('.new_user_form').modal('hide').on('hidden.bs.modal', function() {
           this.remove();
-          self.form.remove();
         });
       },
       
       render: function() {
           
-          var userViewHtml = this.template( {new_key: this.new_key} );
+          var userViewHtml = this.template( {} );
           
-          this.$el.html(userViewHtml);
+          this.$el.html(userViewHtml).prependTo('body');
           
           return this;
       }
@@ -367,18 +357,16 @@ jQuery(document).ready(function() {
   // Edit User View
   //--------------------------------------------------------------------------
   hs.views.EditUser = hs.views.userApp.extend({
-      template: _.template( $('#editUserTemplate').html() ),
+      
       inputs: {},
       
       initialize: function(initData) {
           
-          this.render();
+          this.template = _.template( $('#editUserTemplate').html() );
           
-          this.new_key = initData.new_key;// || hs.keyGenerate();
-          this.form = $('#hs_el_'+ this.new_key);
-          
+          this.uiid = initData.uiid;
           this.setInputs();
-          
+          this.render();
       },
       
       events: {
@@ -387,27 +375,14 @@ jQuery(document).ready(function() {
       },
       
       setInputs: function() {
-          this.inputs.email = this.form.find('#edit_user_email_'+this.new_key);
-          this.inputs.profile_name = this.form.find('#edit_user_profile_name_'+this.new_key);
+          this.inputs = this.$el.find('input[name^='+this.model.noun+']'); //, select[name^=user], textarea[name^=user]
       },
       
       editUser: function(e) {
           
           e.preventDefault();
           
-          this.setInputs();//TODO remove
-          
-          var outgoing = {profile:{}};
-          for(var thisInput in this.inputs) {
-            
-            //some conditions for nexted profile data.
-            if(thisInput == 'profile_name') {
-                outgoing['profile']['name'] = this.inputs[thisInput].val();
-            } else {
-              outgoing[thisInput] = this.inputs[thisInput].val();
-            }
-            
-          }
+          var outgoing = this.searlizeInputs(this.model.noun);
           
           this.model.save(outgoing);
           
@@ -416,28 +391,20 @@ jQuery(document).ready(function() {
       },
       
       cancel: function() {
-        
         var self=this;
-        this.$el.find('.edit_user_form').modal('hide').on('hidden.bs.modal', function() {
+        this.$el.find('.edit_user_form_'+this.uiid).modal('hide').on('hidden.bs.modal', function() {
           this.remove();
-          self.form.remove();
         });
-        
       },
       
       render: function() {
           var myData = this.model.toJSON();
           
-          /*for(var thisInput in this.inputs) {
-              myData[thisInput] = myData[thisInput] || '';
-          }*/
-          myData.email = myData.email || '';
-          myData.profile_name = myData.profile.name || '';
-          
-          myData.new_key = this.new_key;
+          myData.uiid = this.uiid;
           
           var html = this.template( myData );
-          this.$el.html(html);
+          this.$el.html(html).prependTo('body');
+          
           return this;
       }
   });
@@ -475,8 +442,10 @@ jQuery(document).ready(function() {
   //--------------------------------------------------------------------------
   hs.views.User = hs.views.userApp.extend({
       tagName: 'tr',
-      template: _.template( $('#allUsersTemplate').html() ),
+      
       initialize: function() {
+          
+          this.template = _.template( $('#allUsersTemplate').html() );
           
           this.model.on('destroy', this.unrender, this);
           this.model.on('remove', this.unrender, this);
@@ -484,6 +453,8 @@ jQuery(document).ready(function() {
           
           var sig = this.signature(this.model);
           var sig2 = this.signature2(this.model);
+          
+          this.uiid = this.model.id;
           
           var editAction = 'update:'+this.model.noun;
           var editSig = this.event(editAction, sig);
@@ -493,34 +464,22 @@ jQuery(document).ready(function() {
           var deleteSig = this.event(deleteAction, sig);
           this.addSocketEvent(deleteSig, 'deleteUserSocket');
           
-          //TODO update content with leave action +sig2? site too?
-          var leaveAction = 'leave:'+this.model.noun;
-          var leaveSig = this.event(leaveAction, sig2);
-          this.addSocketEvent(leaveSig, 'leaveUserSocket');
       },
+      
       events: {
           'click a.hs-delete': 'deleteUser',
           'click a.hs-edit'  : 'editUser'
       },
       
-      currentEditId: false,
-      editUser: function() {
+      editUser: function(e) {
           
-          var editForm = false;
-          if(this.currentEditId) {
-              var editForm = $('#hs_el_'+this.currentEditId).find('.edit_user_form');
-              editForm.length == 0 ? this.currentEditId = false : '';
+          var editForm = [];
+          if(this.uiid) {
+              var editForm = $('.edit_user_form_'+this.uiid);
           }
           
-          if(this.currentEditId) {
-            //var editForm = this.$el.find('#hs_el_'+this.currentEditId);
-            $('#hs_el_'+this.currentEditId).find('.edit_user_form').modal('show');
-            console.log($('#hs_el_'+this.currentEditId));
-            console.log($('#hs_el_'+this.currentEditId).find('.edit_user_form'));
-          } else {
-              this.currentEditId = hs.keyGenerate();
-              var myEl = $('<div/>', {id: 'hs_el_'+this.currentEditId}).prependTo('body');//.appendTo( this.$el );
-              var editUserView = new hs.views.EditUser({ model: this.model, el: myEl, new_key: this.currentEditId });
+          if(!editForm.length) {
+            new hs.views.EditUser({ model: this.model, uiid: this.uiid });
           }
           
       },
@@ -536,28 +495,23 @@ jQuery(document).ready(function() {
           }
           
       },
+      
       deleteUserSocket: function(myData) {//myData?
           this.model.destroy();
       },
+      
       deleteUser: function() {
           this.model.destroy();
       },
-      leaveUserSocket: function(myData) {//myData?
-
-          hs.users.remove( [{ id: this.model.id }] );
-      },
+      
       render: function() {
           
           var myData = this.model.toJSON();
           
-          // TODO make sure required fields are set
-          // TODO use the input keys to loop through the data keys.
-          //for(var thisInput in this.inputs) {
-          //    myData[thisInput] = myData[thisInput] || '';
-          //}
-          myData.profile_name = myData.profile.name || '';
+          myData.uiid = this.uiid;
           
           this.$el.html( this.template( myData ) );
+          
           return this;
       },
       unrender: function() {
@@ -565,16 +519,6 @@ jQuery(document).ready(function() {
           this.remove();
       }
   });
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   

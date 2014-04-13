@@ -14,8 +14,8 @@ block content
         th(colspan=2) Config
   script#allUsersTemplate(type='text/template')
     <td><%= email %></td>
-    <td><%= profile_name %></td>
-    <td><a href="#users/<%= _id %>/edit" class="hs-edit btn btn-default" data-toggle="modal", data-target=".edit_user_form">Edit</a></td>
+    <td><%= profile.name %></td>
+    <td><a href="#users/<%= _id %>/edit" class="hs-edit btn btn-default" data-toggle="modal", data-target=".edit_user_form_<%= uiid %>">Edit</a></td>
     <td><a href="#users/<%= _id %>" class="hs-delete btn btn-default">Delete</a></td>
   
   |<script id="addUserTemplate" type="text/template">
@@ -29,12 +29,12 @@ block content
   |       <form id="addUser" action="/users/create" method="post" role="form">
   |         <div class="modal-body">
   |           <div class="form-group">
-  |             <label for="user_email_<%= new_key %>">email</label>
-  |             <input type="email" id="user_email_<%= new_key %>" name="user[email]">
+  |             <label for="user_email">email</label>
+  |             <input type="email" id="user_email" name="user[email]">
   |           </div>
   |           <div class="form-group">
-  |             <label for="user_profile_name_<%= new_key %>">name</label>
-  |             <input type="text" id="user_profile_name_<%= new_key %>" name="user[profile_name]">
+  |             <label for="user_profile_name">name</label>
+  |             <input type="text" id="user_profile_name" name="user[profile][name]">
   |           </div>
   |         </div>
   |         <div class="modal-footer">
@@ -47,7 +47,7 @@ block content
   |</div>
   |</script>
   |<script id="editUserTemplate" type="text/template">
-  | <div class="modal fade edit_user_form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-backdrop="1">
+  | <div class="modal fade edit_user_form_<%= uiid %>" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-backdrop="1">
   |   <div class="modal-dialog">
   |     <div class="modal-content">
   |       <div class="modal-header">
@@ -57,12 +57,12 @@ block content
   |       <form id="addUser" action="/users/create" method="post" role="form">
   |         <div class="modal-body">
   |           <div class="form-group">
-  |             <label for="edit_user_email_<%= new_key %>">email</label>
-  |             <input type="email" id="edit_user_email_<%= new_key %>" name="user[email]" value="<%= email %>">
+  |             <label for="edit_user_email_<%= uiid %>">email</label>
+  |             <input type="email" id="edit_user_email_<%= uiid %>" name="user[email]" value="<%= email %>">
   |           </div>
   |           <div class="form-group">
-  |             <label for="edit_user_profile_name_<%= new_key %>">name</label>
-  |             <input type="text" id="edit_user_profile_name_<%= new_key %>" name="user[profile_name]" value="<%= profile_name %>">
+  |             <label for="edit_user_profile_name_<%= uiid %>">name</label>
+  |             <input type="text" id="edit_user_profile_name_<%= uiid %>" name="user[profile][name]" value="<%= profile.name %>">
   |           </div>
   |         </div>
   |         <div class="modal-footer">

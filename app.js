@@ -23,6 +23,7 @@ var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 
 var userController = require('./controllers/user');
+var postController = require('./controllers/post');
 
 
 /**
@@ -236,6 +237,39 @@ app.get('/users?:format?/?$', function(req, res) {//util.requireRole('admin'),
 });
 
 
+// new Post
+app.post('/posts?:format?/?$', function(req, res) {
+  postController.createPost(req, res, req.body);
+});
+app.post('/posts?:format?/create/?$', function(req, res) {
+  postController.createPost(req, res, req.body);
+});
+app.get('/posts?:format?/create/?$', function(req, res) {
+  postController.createPost(req, res, req.query);
+});
+// edit Post
+app.put('/posts?:format?/:id/?$', function(req,res) {
+  postController.editPost(req, res, req.body);
+});
+app.get('/posts?:format?/:id/edit/?$', function(req,res) {
+  postController.editPost(req, res, req.query);
+});
+// delete Post
+app.del('/posts?:format?/:id/?$', function(req,res) {
+  postController.deletePost(req, res, req.body);
+});
+app.get('/posts?:format?/:id/delete/?$', function(req,res) {
+  postController.deletePost(req, res, req.query);
+});
+// single Post
+app.get('/posts?:format?/:id/?$', function(req, res) {
+  postController.getPost(req, res, req.query);
+});
+// all Posts
+app.get('/posts?:format?/?$', function(req, res) {//util.requireRole('admin'),
+  postController.getPosts(req, res, req.query);
+});
+
 
 /**
  * Start Express server.
@@ -256,7 +290,6 @@ module.exports = app;
 
 io.sockets.on('connection', function (socket) {
   
-  //TODO update verbs read=get, update=edit destroy=delete
   socket.on('create:user', function (data) {
     userController.createUserEvent(socket, data.signature, data.item);
   });
@@ -270,5 +303,16 @@ io.sockets.on('connection', function (socket) {
     userController.destroyUserEvent(socket, data.signature, data.item);
   });
   
-  
+  socket.on('create:post', function (data) {
+    postController.createPostEvent(socket, data.signature, data.item);
+  });
+  socket.on('read:post', function (data) {
+    postController.readPostEvent(socket, data.signature, data);
+  });
+  socket.on('update:post', function (data) {
+    postController.updatePostEvent(socket, data.signature, data.item);
+  });
+  socket.on('delete:post', function (data) {
+    postController.destroyPostEvent(socket, data.signature, data.item);
+  });
 });

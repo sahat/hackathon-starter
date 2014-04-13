@@ -384,8 +384,6 @@ exports.postForgot = function(req, res, next) {
 };
 
 
-
-
 /*
  * API Requests
  */
