@@ -3,8 +3,6 @@ module.exports = {
 
   sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
 
-  localAuth: true,
-
   mailgun: {
     login: process.env.MAILGUN_LOGIN || 'Your Mailgun SMTP Username',
     password: process.env.MAILGUN_PASSWORD || 'Your Mailgun SMTP Password'
@@ -24,7 +22,6 @@ module.exports = {
     secret: process.env.LASTFM_SECRET || 'Your API Secret'
   },
 
-  facebookAuth: true,
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'Your App ID',
     clientSecret: process.env.FACEBOOK_SECRET || 'Your App Secret',
@@ -32,7 +29,6 @@ module.exports = {
     passReqToCallback: true
   },
 
-  githubAuth: true,
   github: {
     clientID: process.env.GITHUB_ID || 'Your Client ID',
     clientSecret: process.env.GITHUB_SECRET || 'Your Client Secret',
@@ -40,7 +36,6 @@ module.exports = {
     passReqToCallback: true
   },
 
-  twitterAuth: true,
   twitter: {
     consumerKey: process.env.TWITTER_KEY || 'Your Consumer Key',
     consumerSecret: process.env.TWITTER_SECRET  || 'Your Consumer Secret',
@@ -48,7 +43,6 @@ module.exports = {
     passReqToCallback: true
   },
 
-  googleAuth: true,
   google: {
     clientID: process.env.GOOGLE_ID || 'Your Client ID',
     clientSecret: process.env.GOOGLE_SECRET || 'Your Client Secret',
@@ -56,7 +50,6 @@ module.exports = {
     passReqToCallback: true
   },
 
-  linkedinAuth: true,
   linkedin: {
     clientID: process.env.LINKEDIN_ID || 'Your Client ID',
     clientSecret: process.env.LINKEDIN_SECRET || 'Your Client Secret',
