@@ -91,13 +91,5 @@ module.exports = {
     clientId: process.env.VENMO_ID || 'Your Venmo Client ID',
     clientSecret: process.env.VENMO_SECRET || 'Your Venmo Client Secret',
     redirectUrl: process.env.VENMO_REDIRECT_URL || 'http://localhost:3000/auth/venmo/callback'
-  },
-
-  paypal: {
-    host: process.env.PAYPAL_HOST || 'api.sandbox.paypal.com',
-    client_id: process.env.PAYPAL_ID || 'Your Client ID',
-    client_secret: process.env.PAYPAL_SECRET || 'Your Client Secret',
-    returnUrl: process.env.PAYPAL_RETURN_URL || 'http://localhost:3000/api/paypal/success',
-    cancelUrl: process.env.PAYPAL_CANCEL_URL || 'http://localhost:3000/api/paypal/cancel'
   }
 };
