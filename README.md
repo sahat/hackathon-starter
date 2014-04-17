@@ -4,7 +4,7 @@ Hackathon Starter 2.0 [![Dependency Status](https://david-dm.org/sahat/hackathon
 
 <a href="https://github.com/sahat/hackathon-starter/zipball/master">
   <img src="https://lh5.googleusercontent.com/-QYRVFFig8fI/U0xzuHnAWbI/AAAAAAAAEBM/qU5rHrPvpOI/w840-h272-no/Screenshot+2014-04-14+19.46.12.png" height="68">
-</a> <a href="http://hackathonstarter.herokuapp.com" target="_blank">
+</a> <a href="http://hackathonstarter.jit.su" target="_blank">
   <img src="https://lh4.googleusercontent.com/-NXCLKSnPU60/U0xzuGt37_I/AAAAAAAAEBY/QjWLUHowgzY/w792-h272-no/Screenshot+2014-04-14+19.47.22.png" height="68">
 </a>
 
@@ -959,7 +959,7 @@ $(document).ready(function() {
 
 And that's it, we are done!
 
-If you want to see a really cool real-time dashboard check out this [live example](http://hackathonstarter.herokuapp.com/dashboard). Refer to the [pull request #23](https://github.com/sahat/hackathon-starter/pull/23/files) to see how it is implemented.
+If you want to see a really cool real-time dashboard check out this [live example](http://hackathonstarter.jit.su/dashboard). Refer to the [pull request #23](https://github.com/sahat/hackathon-starter/pull/23/files) to see how it is implemented.
 
 ### How does “Forgot your password” feature work?
 
