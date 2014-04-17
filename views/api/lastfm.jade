@@ -1,0 +1,57 @@
+extends ../layout
+
+block content
+  .page-header
+    h2
+      i.fa.fa-music
+      | Last.fm API
+
+  .btn-group.btn-group-justified
+    a.btn.btn-primary(href='https://github.com/jammus/lastfm-node#lastfm-node', target='_blank')
+      i.fa.fa-check-square-o
+      | Last.fm Node Docs
+    a.btn.btn-primary(href='http://www.last.fm/api/account/create', target='_blank')
+      i.fa.fa-laptop
+      | Create API Account
+    a.btn.btn-primary(href='http://www.last.fm/api', target='_blank')
+      i.fa.fa-code-fork
+      | API Endpoints
+
+  h3.text-primary Artist Information
+
+  h4= artist.name
+  ul.list-inline
+    li
+      small.text-primary
+        i.fa.fa-users
+        | Listeners: #{artist.stats.listeners}
+    li
+      small.text-primary
+        i.fa.fa-headphones
+        | Scrobbles: #{artist.stats.playcount}
+
+  p
+    img(src='#{artist.image}')
+
+  p
+    for tag in artist.tags
+      span.label.label-primary
+        i.fa.fa-tag
+        | #{tag.name}
+      |&nbsp;
+
+  .panel.panel-primary
+    .panel-heading Biography
+    .panel-body
+      != artist.bio
+
+  h4 Top Albums
+  for album in artist.topAlbums
+    img(src='#{album}', width=150, height=150)
+    |&nbsp;
+
+  h4 Similar Artists
+  ul.list-unstyled
+    for similarArtist in artist.similar
+      li
+        a.lead(href='#{similarArtist.url}') #{similarArtist.name}

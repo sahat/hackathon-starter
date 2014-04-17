@@ -1,0 +1,80 @@
+extends layout
+
+block content
+  div.page-header
+    h1 Users
+      span.pull-right
+        a(class='adduser btn btn-primary', href='#', data-toggle="modal", data-target=".new_user_form") new user
+  
+  table#allUsers.table.table-hover
+    thead
+      tr
+        th Email
+        th Name
+        th(colspan=2) Config
+  script#allUsersTemplate(type='text/template')
+    <td><%= email %></td>
+    <td><%= profile.name %></td>
+    <td><a href="#users/<%= _id %>/edit" class="hs-edit btn btn-default" data-toggle="modal", data-target=".edit_user_form_<%= uiid %>">Edit</a></td>
+    <td><a href="#users/<%= _id %>" class="hs-delete btn btn-default">Delete</a></td>
+  
+  |<script id="addUserTemplate" type="text/template">
+  | <div class="modal fade new_user_form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-backdrop="1">
+  |   <div class="modal-dialog">
+  |     <div class="modal-content">
+  |       <div class="modal-header">
+  |         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  |         <h4 class="modal-title">Add User</h4>
+  |       </div>
+  |       <form id="addUser" action="/users/create" method="post" role="form">
+  |         <div class="modal-body">
+  |           <div class="form-group">
+  |             <label for="user_email">email</label>
+  |             <input type="email" id="user_email" name="user[email]">
+  |           </div>
+  |           <div class="form-group">
+  |             <label for="user_profile_name">name</label>
+  |             <input type="text" id="user_profile_name" name="user[profile][name]">
+  |           </div>
+  |         </div>
+  |         <div class="modal-footer">
+  |           <button type="button" class="hs-cancel btn btn-default">Cancel</button>
+  |           <input type="submit" value="Create" class="btn btn-success">
+  |         </div>
+  |      </form>
+  |    </div>
+  |  </div>
+  |</div>
+  |</script>
+  |<script id="editUserTemplate" type="text/template">
+  | <div class="modal fade edit_user_form_<%= uiid %>" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-backdrop="1">
+  |   <div class="modal-dialog">
+  |     <div class="modal-content">
+  |       <div class="modal-header">
+  |         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  |         <h4 class="modal-title">Edit User</h4>
+  |       </div>
+  |       <form id="addUser" action="/users/create" method="post" role="form">
+  |         <div class="modal-body">
+  |           <div class="form-group">
+  |             <label for="edit_user_email_<%= uiid %>">email</label>
+  |             <input type="email" id="edit_user_email_<%= uiid %>" name="user[email]" value="<%= email %>">
+  |           </div>
+  |           <div class="form-group">
+  |             <label for="edit_user_profile_name_<%= uiid %>">name</label>
+  |             <input type="text" id="edit_user_profile_name_<%= uiid %>" name="user[profile][name]" value="<%= profile.name %>">
+  |           </div>
+  |         </div>
+  |         <div class="modal-footer">
+  |           <button type="button" class="hs-cancel btn btn-default">Cancel</button>
+  |           <input type="submit" value="Edit" class="btn btn-success">
+  |         </div>
+  |      </form>
+  |    </div>
+  |  </div>
+  |</div>
+  |</script>
+
+
+
+

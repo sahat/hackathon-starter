@@ -28,10 +28,10 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="#start">Start</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#blog">Blog</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#pros-cons">Usage</a></li>
+        <li><a href="#frameworks">Frameworks</a></li>
+        <li><a href="#bespoke">Bespoke</a></li>
       </ul>
     </div>
   </div>
@@ -47,10 +47,11 @@
         <div class="container">
           <div class="inner">
             <div class="text-center">
-              <h2 class="page-title animated" data-fx="fadeInDown">A boilerplate for Node.js web applications</h2>
+              <h2 class="page-title animated" data-fx="fadeInDown">OFA Web Team Tech Talk 4/17/14</h2>
 
               <h2 class="animated" data-fx="bounceIn">HACKATHON STARTER</h2>
-              <a href="#" class="btn btn-default btn-lg animated" data-fx="fadeInUp">Download v1.1</a>
+              <p class="animated" data-fx="bounceIn">An Introduction to Node.js and practical solution</p>
+              <a href="https://github.com/phinity/hackathon-starter" class="btn btn-default btn-lg animated" data-fx="fadeInUp">Fork me on github</a>
             </div>
           </div>
         </div>
@@ -58,49 +59,41 @@
     </ul>
   </section>
   <!-- / flexslider -->
-  <a href="#about" class="bigArrow local menuOffset"><i class="fa fa-angle-down"></i></a>
+  <!--a href="#about" class="bigArrow local menuOffset"><i class="fa fa-angle-down"></i></a-->
 
 </div>
 <!-- / parallaxSection -->
 
 
-<section class="content-area bg1" id="about">
+<section class="content-area bg1" id="overview">
   <div class="container">
 
-    <header class="page-header text-center">
-      <h1 class="page-title">About us</h1>
+    <header class=" col-md-8 col-md-offset-2">
+      <h1 class="page-title text-center">Node Overview</h1>
 
-      <h2>We create elegant solutions for everyday problems</h2>
+      <p class="larger animated" data-fx="fadeInLeft">Node.js is a server side platform built on Chrome's V8 javascript engine for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.</p>
     </header>
 
     <div class="row">
-      <div class="col-md-4 col-md-push-2">
-        <p>
-          Curabitur lacinia mi sem, in iaculis ligula blandit. Aenean ornare erat eget accumsan interdum. Purus vulputate. Nunc at orci venenatis, odio vel, egestas eros. Nullam ac est a ante faucibus. Sed est neque,
-          laoreet at laoreet eget, iaculis vitae libero.
-
-        <p>
-
-        <p>
-          Donec faucibus ullamcorper pulvinar. Duis quis tempus varius, sapien urna pretium libero, nec mollis eros dolor eget velit. Nulla ornare ut nisi sodales consequat.
-        </p>
-
-        <p>
-          Duis ut posuere augue, a interdum nisi. Etiam libero sit amet tempus sodales, ante diam.
-        </p>
-      </div>
-      <div class="col-md-4 col-md-push-2">
-        <p>
-          Phasellus eu tellus eget massa ultrices rhoncus. Quam massa, tincidunt semper sapien.
-        </p>
-
-        <p>
-          Posuere eleifend dolor. Vivamus purus ligula, venenatis nec elit at, tempus bibendum ipsum. Proin sed vehicula lectus. Curabitur augue diam, tincidunt venenatis lacinia, vulputate at lectus.
-        </p>
-
-        <p>
-          Donec tempus velit vitae quam sodales, sit amet augue malesuada sem adipiscing. Aliquam dolor urna, rhoncus quis ullamcorper vel.
-        </p>
+      <div class="col-md-6 col-md-offset-3">
+        
+        <ul class="animated" data-fx="slideInLeft">
+          <li>Node was Created by Ryan Dahl in 2009</li>
+          <li>Node is server side javascript and a command line tool</li>
+          <li>V8 is an open source js engine developed by google</li>
+          <li>Everything in node runs in a single-thread</li>
+          <li>Node itself isn’t just JavaScript - 40% js 60% C++</li>
+          <li>Though programs for node.js are written in js there is no DOM</li>
+          <li>The non-blocking I/O is implemented with Event-loops via JS's callback functionality.</li>
+        </ul>
+        
+        <div class="text-center">
+          <p>&nbsp;</p>
+          <p class="text-center animated" data-fx="flipInY"><img src="images/event-loop.png" ></p>
+          <p class="text-center animated" data-fx="flipInY"><img src="images/non-blocking.png" ></p>
+        </div>
+        
+        
       </div>
 
     </div>
@@ -108,519 +101,152 @@
   </div>
 </section>
 
-<section class="content-area bg2">
+<section class="content-area bg2" id="Usage">
   <div class="container">
     <header class="page-header text-center">
-      <h1 class="page-title">Our services</h1>
-
-      <h2>What can we do for you?</h2>
-
-      <p class="larger">Mauris eget ligula vel nulla dignissim pharetra non sed orci. Praesent consequat egestas dapibus. Quisque faucibus erat at metus adipiscing lacinia.</p>
+      <h1 class="page-title">Usage</h1>
+      <h2 class="text-center animated" data-fx="fadeInLeft">Where and When to Use Node?</h2>
     </header>
-
+    
     <div class="row">
-      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInUp">
-        <div class="iconBox type4">
-          <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-star"></i>
-            </a>
+      <div class="col-md-6 col-md-offset-3">
+        
+        
+        <p class="larger animated" data-fx="fadeInLeftBig"><strong>"But I can do everything I need in: ruby, python, php, java, ... !".</strong></p>
 
-            <div class="media-body">
-              <h4 class="media-heading"><a href="#">Brand creation</a></h4>
+        <p class="animated" data-fx="fadeInLeftBig">I hear you. And you are right! Node is no freaking unicorn that will come and do your work for you, sorry. It's just a tool, and it probably won't replace your regular tools completely, at least not for now. :: <a href="http://debuggable.com/posts/understanding-node-js:4bd98440-45e4-4a9a-8ef7-0f7ecbdd56cb" target="_blank">Understanding node.js</a></p>
+        
+        
+        <p class="larger animated" data-fx="fadeInLeftBig"><strong>"Node.js is only suitable for writing small APIs, not for serious web sites or web applications".</strong></p>
 
-              <p>
-                Praesent dignissim dui eu urna feugiat lobortis. Morbi varius nibh sit amet adipiscing mollis. Aenean id neque ut augue gravida posuere.
-              </p>
-            </div>
-          </div>
-        </div>
-        <!-- / iconBox -->
-      </div>
-      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInDown">
-        <div class="iconBox type4">
-          <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-trophy"></i>
-            </a>
-
-            <div class="media-body">
-              <h4 class="media-heading"><a href="#">Graphic design</a></h4>
-
-              <p>
-                Nam pharetra justo turpis, quis rutrum lorem lobortis euismod. Praesent augue, consectetur ultricies eros non, lacinia scelerisque ante.
-              </p>
-            </div>
-          </div>
-        </div>
-        <!-- / iconBox -->
-      </div>
-      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInUp">
-        <div class="iconBox type4">
-          <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-cog"></i>
-            </a>
-
-            <div class="media-body">
-              <h4 class="media-heading"><a href="#">Web development</a></h4>
-
-              <p>
-                Aenean vitae neque mi. Phasellus tempor risus non risus tristique, quis egestas velit vulputate. Sed porttitor non nunc non pharetra risus.
-              </p>
-            </div>
-          </div>
-        </div>
-        <!-- / iconBox -->
-      </div>
-      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInDown">
-        <div class="iconBox type4">
-          <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-thumbs-up"></i>
-            </a>
-
-            <div class="media-body">
-              <h4 class="media-heading"><a href="#">Online marketing</a></h4>
-
-              <p>
-                Duis quis elit hendrerit, tempor magna ac, adipiscing ligula. Maecenas neque nibh, vehicula ut neque at, scelerisque mollis risus non enim.
-              </p>
-            </div>
-          </div>
-        </div>
-        <!-- / iconBox -->
-      </div>
-
-
-    </div>
-    <!-- / row -->
-
-  </div>
-</section>
-
-
-<section class="content-area brightText" data-bg="images/demo-content/home-v1-clients-bg.jpg">
-  <div class="container">
-    <header class="page-header text-center">
-      <h1 class="page-title">Our clients</h1>
-
-      <h2>Some of the fine people we've worked with</h2>
-    </header>
-
-    <div class="row">
-      <div class="col-md-8">
-        <blockquote class="clearfix animated" data-fx="fadeInLeft">
-          <div class="inner">
-            <p class="larger">
-              Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
-              pretium. Integer tincidunt. Donec euismod vulputate porta. Mauris ultrices velit quis quam scelerisque luctus laoreet ac dui. Cras dapibus.
-            </p>
-          </div>
-          <div class="media author">
-          <span class="pull-left">
-            <img class="media-object" src="images/demo-content/home-v1-clients-portrait.jpg" alt=" ">
-          </span>
-
-            <div class="media-body">
-              <h4 class="media-heading">Rebecca Bowens
-                <span>Manager @ Company Inc.</span>
-              </h4>
-            </div>
-          </div>
-
-        </blockquote>
-      </div>
-      <div class="col-md-4">
-        <ul class="row thumbnails list-unstyled">
-          <li class="col-xs-4 col-md-4">
-            <a href="#">
-              <img src="images/demo-content/home-v1-clients-logo1.png" alt=" " class="animated" data-fx="fadeInLeft">
-            </a>
-          </li>
-          <li class="col-xs-4 col-md-4">
-            <a href="#">
-              <img src="images/demo-content/home-v1-clients-logo2.png" alt=" " class="animated" data-fx="fadeInUp">
-            </a>
-          </li>
-          <li class="col-xs-4 col-md-4">
-            <a href="#">
-              <img src="images/demo-content/home-v1-clients-logo3.png" alt=" " class="animated" data-fx="fadeInRight">
-            </a>
-          </li>
-          <li class="col-xs-4 col-md-4">
-            <a href="#">
-              <img src="images/demo-content/home-v1-clients-logo4.png" alt=" " class="animated" data-fx="fadeInLeft">
-            </a>
-          </li>
-          <li class="col-xs-4 col-md-4">
-            <a href="#">
-              <img src="images/demo-content/home-v1-clients-logo5.png" alt=" " class="animated" data-fx="fadeInBottom">
-            </a>
-          </li>
-          <li class="col-xs-4 col-md-4">
-            <a href="#">
-              <img src="images/demo-content/home-v1-clients-logo6.png" alt=" " class="animated" data-fx="fadeInRight">
-            </a>
+        <p class="animated" data-fx="fadeInLeftBig">This is bull*hit. I have to say it. :: <a target="_blank" href="https://coderwall.com/p/diokxg">Part I</a>, <a target="_blank" href="https://coderwall.com/p/diokxg">Part II</a>, <a target="_blank" href="https://coderwall.com/p/diokxg">Part III</a>, <a target="_blank" href="https://coderwall.com/p/diokxg">Part IV</a>, <a target="_blank" href="https://coderwall.com/p/diokxg">Part V</a></p>
+        <p>&nbsp;</p>
+        <h3 class="animated" data-fx="fadeInRightBig">Node as a UI layer</h3>
+        <ul class="animated" data-fx="fadeInRightBig">
+          <li><a href="http://www.nczonline.net/blog/2013/10/07/node-js-and-the-new-web-front-end/" target="_blank">Node.js and the new web front-end</a></li>
+          <li><a href="http://maxburstein.com/blog/realtime-django-using-nodejs-and-socketio/" target="_blank">Realtime Django Using Node.js and Socket.IO</a></li>
+          <li><a href="http://nodeguide.com/convincing_the_boss.html" target="_blank">Felix's Node.js Convincing the boss guide</a></li>
+        </ul>
+        <p  class="animated" data-fx="fadeInRightBig">The Downside of this approach is the use of two separate servers, adds more complexity. Using node.js with django is all about choosing an IPC method to communicate between two separate process, results in unnecisary compexity? 
+I think the best way is simply for each layer to talk to the data base seperatly.</p>
+        
+        <p>&nbsp;</p>
+        <h3 class="animated" data-fx="fadeInLeftBig">Node's Nitchs &mdash; Today</h3> 
+        <ul class="animated" data-fx="fadeInLeftBig">
+          <li>Small Website Projects</li>
+          <li>Very large progects as a UI layer</li>
+          <li>http, tcp, dns, static file servers</li>
+          <li>Real time apps like chating or games</li>
+          <li>A service or tool for a realtime feature</li>
+          <li>Comand line tool</li>
+        </ul>
+        <p>&nbsp;</p>
+        <h3 class="animated" data-fx="fadeInRightBig">Pros</h3>
+        <ul class="animated" data-fx="fadeInRightBig">
+          <li>Use the same language for client and server. This allows fo</li>
+          <li>Use overlapping code on the frontend and the backend. 
+            <br> 
+            <a href="https://github.com/joefiorini/grunt-es6-module-transpiler">Grunt ES6 Module Transpiler</a>
           </li>
         </ul>
-        <!-- / thumbnails -->
+        
+         
       </div>
+
     </div>
+
   </div>
 </section>
-<!-- / section -->
 
 
-<section class="content-area bg1">
+
+
+
+
+
+<section class="content-area bg1" id="frameworks">
   <div class="container">
-    <header class="page-header text-center">
-      <h1 class="page-title">Our team</h1>
 
-      <h2>The right people</h2>
+    <header class=" col-md-8 col-md-offset-2">
+      <h1 class="page-title text-center">Node Frameworks</h1>
     </header>
 
     <div class="row">
-      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInLeft">
-        <div class="personBox">
-          <img src="images/demo-content/team-01.jpg" alt="">
-          <h4>Robert Judd
-            <span>CEO</span>
-          </h4>
-          <hr>
-          <ul class="socialNormal list-inline">
-            <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
-            <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
-          </ul>
-        </div>
+      <div class="col-md-6 col-md-offset-3 text-center">
+          
+          <p class="larger text-center animated" data-fx="fadeInLeft">These Frameworks are to Node as Rails is to Ruby</p>
+          
+            <p class="animated" data-fx="fadeInLeftBig"><a href="https://www.meteor.com/" target="_blank" ><img src="images/framework-meteor.png" width="200"></a></p>
+            <p>&nbsp;</p>
+            <p class="animated" data-fx="fadeInRightBig"><a href="http://sailsjs.org/" target="_blank"><img src="images/framework-sails.png" width="200"></a></p>
+          
+          <p>&nbsp;</p> 
       </div>
-      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInLeft">
-        <div class="personBox">
-          <img src="images/demo-content/team-02.jpg" alt="">
-          <h4>Eva Barnes
-            <span>Designer</span>
-          </h4>
-          <hr>
-          <ul class="list-inline socialNormal">
-            <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
-            <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInRight">
-        <div class="personBox">
-          <img src="images/demo-content/team-03.jpg" alt="">
-          <h4>Eugene Fletcher
-            <span>Developer</span>
-          </h4>
-          <hr>
-          <ul class="list-inline socialNormal">
-            <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
-            <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6 animated" data-fx="fadeInRight">
-        <div class="personBox">
-          <img src="images/demo-content/team-04.jpg" alt="">
-          <h4>Janet McKenzie
-            <span>Support</span>
-          </h4>
-          <hr>
-          <ul class="list-inline socialNormal">
-            <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
-            <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
-          </ul>
-        </div>
-      </div>
+
     </div>
+
   </div>
 </section>
 
-
-<section class="content-area bg2" data-btmspace="0" id="portfolio">
+<section class="content-area bg2" id="bespoke">
   <div class="container">
     <header class="page-header text-center">
-      <h1 class="page-title">Our work</h1>
-
-      <h2>Take a look at our recent projects</h2>
+      <h1 class="page-title">A Bespoke Solution</h1>
+      
+      <h2>Hackathon Starter Overview</h2>
+      
+      <p class="larger animated" data-fx="fadeInLeft">Node itself is just a low-level framework providing functions for sending and receiving HTTP requests and performing other I/O. So when we talk about Node we are generally talking about the ecosystem of technologies built around it.</p>
+      
     </header>
-
-    <ul id="galleryFilters" class="option-set clearfix list-unstyled list-inline text-center">
-      <li><a href="#filter=*" class="btn btn-default btn-primary">View all works</a></li>
-      <li><a href="#filter=.web" class="btn btn-default">Web</a></li>
-      <li><a href="#filter=.identity" class="btn btn-default">Identity</a></li>
-      <li><a href="#filter=.print" class="btn btn-default">Print</a></li>
-    </ul>
-  </div>
-
-  <div id="galleryContainer" class="clearfix animated" data-fx="fadeInLeft">
-    <div class="galleryItem identity">
-      <a href="images/demo-content/home-v2-works-01.jpg" class="area-hover imgpopup">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project with Lightbox</h4>
-          </div>
-        </div>
-      </a>
-      <a href="images/demo-content/home-v2-works-01.jpg" class="imgpopup"><img src="images/demo-content/home-v2-works-01.jpg" alt=" "></a>
-    </div>
-    <div class="galleryItem web">
-      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project name goes here</h4>
-          </div>
-        </div>
-      </a>
-      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-02.jpg" alt=" "></a>
-    </div>
-    <div class="galleryItem print">
-      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project name goes here</h4>
-          </div>
-        </div>
-      </a>
-      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-03.jpg" alt=" "></a>
-    </div>
-    <div class="galleryItem identity web">
-      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project name goes here</h4>
-          </div>
-        </div>
-      </a>
-      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-04.jpg" alt=" "></a>
-    </div>
-    <div class="galleryItem print">
-      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project name goes here</h4>
-          </div>
-        </div>
-      </a>
-      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-05.jpg" alt=" "></a>
-    </div>
-    <div class="galleryItem web">
-      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project name goes here</h4>
-          </div>
-        </div>
-      </a>
-      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-06.jpg" alt=" "></a>
-    </div>
-    <div class="galleryItem identity">
-      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project name goes here</h4>
-          </div>
-        </div>
-      </a>
-      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-07.jpg" alt=" "></a>
-    </div>
-    <div class="galleryItem print">
-      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project name goes here</h4>
-          </div>
-        </div>
-      </a>
-      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-08.jpg" alt=" "></a>
-    </div>
-    <div class="galleryItem web print">
-      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project name goes here</h4>
-          </div>
-        </div>
-      </a>
-      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-09.jpg" alt=" "></a>
-    </div>
-    <div class="galleryItem identity print">
-      <a href="00-b-work-ajax.html" class="area-hover getAjaxItem">
-        <div class="vertical-parent">
-          <div class="vertical-child">
-            <span class="cat-links">Identity, Web</span>
-            <h4 class="entry-title">Project name goes here</h4>
-          </div>
-        </div>
-      </a>
-      <a href="00-b-work-ajax.html" class="getAjaxItem"><img src="images/demo-content/home-v2-works-10.jpg" alt=" "></a>
-    </div>
-  </div>
-  <!-- / galleryContainer -->
-  <div id="galleryAjaxDetails" style="display:none;"></div>
-
-</section>
-<!-- / section -->
-
-
-<section class="content-area bg1" id="blog">
-  <div class="container">
+    
     <div class="row">
-      <div class="col-md-3 col-sm-6">
-        <header class="page-header text-left animated" data-fx="flipInY">
-          <h1 class="page-title">From Our Blog</h1>
-
-          <h2>Fresh news<br>and updates</h2>
-          <a href="05-pluto-blog.html" class="btn btn-default">View all posts</a>
-        </header>
-
+      <div class="col-md-8 col-md-offset-2">
+        
+        <h3 class="animated" data-fx="fadeInLeftBig">Enviorment</h3>
+        <ul class="animated" data-fx="fadeInLeftBig">
+          <li><a target="_blank" href="http://nodejs.org/api/">Node.js</a></li>
+          <li><a target="_blank" href="https://www.npmjs.org/">NPM</a> - Node Package Manager. (NPM comes bundled with node.js)</li>
+          <li><a target="_blank" href="http://docs.mongodb.org/">MongoDB</a> - an open-source document database, and the leading NoSQL database. </li>
+          <li><a target="_blank" href="http://mongoosejs.com/">Mongoose</a> - elegant mongodb object modeling for node.js</li>
+          <li><a target="_blank" href="http://expressjs.com/">Express JS</a> - web application framework for node</li>
+          <li><a target="_blank" href="http://www.senchalabs.org/connect/">Connect</a> - a middleware framework for node, bundled with express</li>
+          <li><a target="_blank" href="http://socket.io/">Socket.io</a> - makes realtime apps possible in every browser and mobile device, blurring the differences between the different transport mechanisms. It's care-free realtime 100% in JavaScript.</li>
+          <li><a target="_blank" href="http://jade-lang.com/">Jade</a> - Node template Engine</li>
+          <li><a target="_blank" href="http://embeddedjs.com/">EJS</a> - EJS cleans the HTML out of your JavaScript with client side templates.</li>
+          <li><a target="_blank" href="http://nodemon.io/">nodemon</a> -  a utility that will monitor for any changes in your source and automatically restart your server. Perfect for development.</li>
+          <li><a href="_blank" href="http://backbonejs.org/">Backbone.js</a>, Naturally</li>
+        </ul>
+        
+        <p>&nbsp;</p>
+        <h3 class="animated" data-fx="fadeInRightBig">Enter Hackathon starter</h3>
+        
+        <ul class="animated" data-fx="fadeInRightBig">
+          <li><a href="https://github.com/sahat/hackathon-starter" target="_blank">Hackathon Starter &raquo;</a></li>
+          <li>If you're going the bespoke route, its very helpfull to have a base template to start from. </li>
+          <li>A starter app that puts the enviorment together to make a real time api.</li>
+        </ul>
+        
+        <p>&nbsp;</p>
+        <h3 class="animated" data-fx="fadeInLeftBig">Making a real time API</h3>
+        <ul class="animated" data-fx="fadeInLeftBig">
+          <li><a href="https://github.com/phinity/hackathon-starter" target="_blank">Hackathon Starter with realtime api &raquo;</a></li>
+        <li><a href="http://developer.teradata.com/blog/jasonstrimpel/2011/11/backbone-js-and-socket-io">Backbone.js and socket.io</a></li>  
+        <li><a href="http://swizec.com/blog/elegantly-using-socket-io-in-backbone-apps/swizec/5712">Elegantly using socket.io in backbone apps</a></li>  
+        <li><a href="http://danialk.github.io/blog/2013/02/10/building-a-contacts-manager-app-using-backbonejs-and-nodejs-and-mongodb/">Building a Contacts Manager App Using Backbonejs and Nodejs and MongoDB</a></li>
+        </ul>
+        
       </div>
-      <div class="col-md-3 col-sm-6">
-        <article class="blog-item animated" data-fx="fadeInDown">
-          <div class="blog-thumbnail">
-            <a href="#"><img src="images/demo-content/home-v1-blog-01.jpg" alt=" "></a>
-          </div>
-          <div class="entry-meta">
-            <span class="entry-date">December 3, 2013</span>
-            <span class="entry-comments"><a href="#">1 comment</a></span>
-          </div>
-          <h4 class="entry-title"><a href="06-pluto-blog-single.html">This is a standard post format with preview picture</a></h4>
 
-          <p>
-            Asunt in anim uis aute irure dolor in reprehenderit in voluptate velit esse...
-          </p>
-        </article>
-        <!-- / blog-item -->
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <article class="blog-item animated" data-fx="fadeInUp">
-          <div class="blog-thumbnail">
-            <div class="flexslider std-slider center-controls" data-animation="fade" data-loop="true" data-animspeed="600" data-dircontrols="true">
-              <ul class="slides">
-                <li><a href="#"><img src="images/demo-content/home-v1-blog-02.jpg" alt=" "></a></li>
-                <li><a href="#"><img src="images/demo-content/home-v1-blog-02-2.jpg" alt=" "></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="entry-meta">
-            <span class="entry-date">December 1, 2013</span>
-            <span class="entry-comments"><a href="#">4 comment</a></span>
-          </div>
-          <h4 class="entry-title"><a href="#">Gallery post format: post with multiple images</a></h4>
-
-          <p>
-            Excepteur sint occaecat cupidatat non proident sunt in culpa qui deserunt...
-          </p>
-        </article>
-        <!-- / blog-item -->
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <article class="blog-item format-video animated" data-fx="fadeInDown">
-          <div class="blog-thumbnail">
-            <a href="http://www.youtube.com/watch?v=HJ2F7eptn_A" class="popup-iframe"><img src="images/demo-content/home-v1-blog-03.jpg" alt=" "></a>
-          </div>
-          <div class="entry-meta">
-            <span class="entry-date">November 30, 2013</span>
-            <span class="entry-comments"><a href="#">6 comment</a></span>
-          </div>
-          <h4 class="entry-title"><a href="#">This is a video post</a></h4>
-
-          <p>
-            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit quia...
-          </p>
-        </article>
-        <!-- / blog-item -->
-      </div>
     </div>
 
   </div>
 </section>
-<!-- / section -->
 
-<section class="content-layer brightText make-overflow" id="contact">
-  <div class="mapOuter">
-    <div class="googleMap" data-location="Junipers Blvd. 380 Queens, NY 11379, USA" data-height="695" data-offset="0"></div>
-  </div>
 
-  <a href="#" class="showMap btn btn-primary" data-text="Show Contact Form">Show Map</a>
 
-  <div class="bg-layer"></div>
-  <div class="placeOver animated" data-fx="fadeInDownBig">
-    <div class="container">
-      <header class="page-header text-center">
-        <h1 class="page-title">Get in touch</h1>
 
-        <h2>We'd love to hear from you</h2>
-      </header>
 
-      <div class="row">
-        <div class="col-md-8 col-md-push-2">
-          <div class="contactForm">
-            <div class="successMessage alert alert-success alert-dismissable" style="display: none">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              Thank You! E-mail was sent.
-            </div>
-            <div class="errorMessage alert alert-danger alert-dismissable" style="display: none">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              Ups! An error occured. Please try again later.
-            </div>
 
-            <form class="liveForm" role="form" action="http://pluto.html.themewoodmen.com/form/send.php" method="post" data-email-subject="Contact Form" data-show-errors="true" data-hide-form="false">
-              <fieldset>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="control-label">Name <span>(Required)</span></label>
-                      <input type="text" required name="field[]" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="control-label">Email <span>(Required)</span></label>
-                      <input type="email" required name="field[]" class="form-control">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label class="control-label">Subject</label>
-                      <input type="text" name="field[]" class="form-control">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label class="control-label">Message <span>(Required)</span></label>
-                      <textarea name="field[]" required class="form-control" rows="5"></textarea>
-                    </div>
-                  </div>
-                </div>
-                <input type="submit" class="btn btn-primary" value="Send Message">
-              </fieldset>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- / placeOver -->
-</section>
 <!-- / section -->
 
 
@@ -628,68 +254,15 @@
   <div class="container mainfooter">
     <div class="row">
       <aside class="col-md-3 widget">
-        <h1 class="widget-title">Contact Us</h1>
-
-        <a href="mailto:hello@example.com" class="larger">hello@example.com</a>
-
-        <p>
-          121 King Street, Melbourne<br>
-          Victoria 3000 Australia
-        </p>
-
-        <p>
-          Phone: +61 3 8376 6284
-        </p>
-      </aside>
-      <aside class="col-md-3 widget">
-        <h1 class="widget-title">Recent Blog Post</h1>
-
-        <article class="blog-item">
-          <div class="entry-meta">
-            <span class="entry-date">December 3, 2013</span>
-            <span class="entry-comments"><a href="#">1 comment</a></span>
-          </div>
-          <h4 class="entry-title"><a href="06-pluto-blog-single.html">This is a standard post format with preview picture</a></h4>
-
-          <p>
-            Asunt in anim uis aute irure dolor in reprehenderit in voluptate velit esse...
-          </p>
-        </article>
-        <!-- / blog-item -->
-
 
       </aside>
       <aside class="col-md-3 widget">
-        <h1 class="widget-title">Recent Tweet</h1>
-
-        <div class="tweets_display" data-limit="1"></div>
 
       </aside>
       <aside class="col-md-3 widget">
-        <h1 class="widget-title">Newsletter</h1>
+      </aside>
+      <aside class="col-md-3 widget">
 
-        <p>
-          Subscribe to general news & updates.<br>
-          We never spam.
-        </p>
-        <div class="newsletterForm">
-          <div class="successMessage alert alert-success alert-dismissable" style="display: none">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            Thank You! E-mail was sent.
-          </div>
-          <div class="errorMessage alert alert-danger alert-dismissable" style="display: none">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            Ups! An error occured. Please try again later.
-          </div>
-          <form class="liveForm" role="form" action="http://pluto.html.themewoodmen.com/form/send.php" method="post" data-email-subject="Newsletter Form" data-show-errors="true" data-hide-form="true">
-            <fieldset>
-              <div class="form-group">
-                <input type="text" name="field[]" required class="form-control" placeholder="Your email address">
-              </div>
-              <input type="submit" class="btn btn-primary" value="Subscribe">
-            </fieldset>
-          </form>
-        </div>
       </aside>
     </div>
   </div>
@@ -700,13 +273,13 @@
         <p>© 2014 Pluto template. Made with love by ThemeWoodmen</p>
       </aside>
       <aside class="col-md-6 widget">
-        <ul class="socialIcons pull-right">
+        <!--ul class="socialIcons pull-right">
           <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook-square"></i></a></li>
           <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
           <li><a href="#" data-toggle="tooltip" title="Google+"><i class="fa fa-google-plus-square"></i></a></li>
           <li><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin-square"></i></a></li>
           <li><a href="#" data-toggle="tooltip" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
-        </ul>
+        </ul-->
 
 
       </aside>
@@ -718,7 +291,7 @@
 </div>
 <!-- / boxedWrapper -->
 
-<a href="#" id="toTop"><i class="fa fa-angle-up"></i></a>
+<!--a href="#" id="toTop"><i class="fa fa-angle-up"></i></a-->
 
 
 <script src="javascripts/jquery.min.js"></script>
