@@ -1,4 +1,5 @@
 module.exports = {
+
   db: process.env.MONGODB|| 'mongodb://localhost:27017/test',
 
   sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
@@ -26,6 +27,13 @@ module.exports = {
     clientID: process.env.FACEBOOK_ID || '754220301289665',
     clientSecret: process.env.FACEBOOK_SECRET || '41860e58c256a3d7ad8267d3c1939a4a',
     callbackURL: '/auth/facebook/callback',
+    passReqToCallback: true
+  },
+
+  instagram: {
+    clientID: process.env.INSTAGRAM_ID || '9f5c39ab236a48e0aec354acb77eee9b',
+    clientSecret: process.env.INSTAGRAM_SECRET || '5920619aafe842128673e793a1c40028',
+    callbackURL: '/auth/instagram/callback',
     passReqToCallback: true
   },
 
