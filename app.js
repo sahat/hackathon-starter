@@ -21,6 +21,10 @@ var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 
+// Load dotenv.
+var dotenv = require('dotenv');
+dotenv.load();
+
 /**
  * Load controllers.
  */
