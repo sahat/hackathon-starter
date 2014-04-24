@@ -1,13 +1,24 @@
 #flash
   if messages.errors
     .alert.alert-danger.animated.fadeIn
+      i.fa.fa-times.pull-right
+        fa-times
       for error in messages.errors
         div= error.msg
   if messages.info
     .alert.alert-info.animated.fadeIn
+      i.fa.fa-times.pull-right
+        fa-times
       for info in messages.info
         div= info.msg
   if messages.success
     .alert.alert-success.animated.fadeIn
+      i.fa.fa-times.pull-right
+        fa-times
       for success in messages.success
         div= success.msg
+    
+  script.
+    $('.fa-times').click(function (e){
+      $('#flash').remove()
+    });
