@@ -8,6 +8,11 @@ module.exports = {
     login: process.env.MAILGUN_LOGIN || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
     password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'
   },
+  
+  mandrill: {
+    login: process.env.MANDRILL_LOGIN || 'someEmail@fake.com',
+    password: process.env.MANDRILL_PASSWORD || 'generatedApiKey'
+  },
 
   sendgrid: {
     user: process.env.SENDGRID_USER || 'hslogin',
