@@ -10,8 +10,8 @@ module.exports = {
   },
   
   mandrill: {
-    login: process.env.MANDRILL_LOGIN || 'someEmail@fake.com',
-    password: process.env.MANDRILL_PASSWORD || 'generatedApiKey'
+    login: process.env.MANDRILL_LOGIN || 'hackathonstarterdemo',
+    password: process.env.MANDRILL_PASSWORD || 'E1K950_ydLR4mHw12a0ldA'
   },
 
   sendgrid: {
