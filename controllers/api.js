@@ -510,8 +510,11 @@ exports.getLinkedin = function(req, res, next) {
 exports.getInstagram = function(req, res, next) {
   var token = _.findWhere(req.user.tokens, { kind: 'instagram' });
 
-  ig.use({ access_token: token });
-  ig.use({ client_id: secrets.instagram.clientID, client_secret: secrets.instagram.clientSecret });
+  if(token) {
+    ig.use({ access_token: token.accessToken, client_id: secrets.instagram.clientID, client_secret: secrets.instagram.clientSecret });
+  } else {
+    ig.use({ client_id: secrets.instagram.clientID, client_secret: secrets.instagram.clientSecret });
+  }
 
   async.parallel({
     searchByUsername: function(done) {
