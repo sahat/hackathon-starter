@@ -1,5 +1,24 @@
 var mongoose = require('mongoose');
 
+var timeRangeSchema = new mongoose.Schema({
+  start: Date,
+  end: Date,
+  day: {type: String, default: ''}
+});
+
+timeRangeSchema.methods.conflictsWith = function (other) {
+  if (this.day != other.day) {
+    return false;
+  } else {
+    return ((this.start < other.start) && (this.end > other.start)) ||
+           ((this.start > other.start) && (this.start < other.end));
+  }
+};
+
+timeRangeSchema.methods.duration = function () {
+  return this.end - this.start;
+};
+
 var courseSchema = new mongoose.Schema({
 /*
   '$course_id': {
@@ -23,7 +42,7 @@ var courseSchema = new mongoose.Schema({
   class_name: {type: String, index: true, required: true},
   classification: {type: String, index: true, required: true},
   college: {type: String, index: true, required: true},
-  component: type: String,
+  component: String,
   course_name: {type: String, index: true, required: true},
   description: {type: String, default: '', index: true},
   grading: String,
@@ -31,12 +50,12 @@ var courseSchema = new mongoose.Schema({
   is_open: {type: Boolean, required: true},
   level: String,
   loc_code: {type: String, required: true},
-  meet_data: [timeRangeSchema]
+  meet_data: [timeRangeSchema],
   notes: String,
   number: String,
   section: String,
-  session: timeRangeSchema,
-  units = Number
+  session: {type: mongoose.Schema.ObjectId, ref: 'timeRangeSchema'},
+  units: Number
 });
 
 courseSchema.methods.conflictsWith = function (other) {

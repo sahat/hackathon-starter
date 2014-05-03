@@ -21,7 +21,7 @@ exports.create = function(req, res) {
       course_name: req.body.course_name,
       description: req.body.description,
       grading: req.body.grading,
-      instructor: req.body.instructor
+      instructor: req.body.instructor,
       is_open: req.body.is_open,
       level: req.body.level,
       loc_code: req.body.loc_code,
