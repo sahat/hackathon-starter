@@ -26,16 +26,17 @@ var courseSchema = new mongoose.Schema({
   component: type: String,
   course_name: {type: String, index: true, required: true},
   description: {type: String, default: '', index: true},
-  grading: {type: String, default: ''},
+  grading: String,
+  instructor: {type: String, default: '', index: true},
   is_open: {type: Boolean, required: true},
-  level: {type; String, default: ''},
+  level: String,
   loc_code: {type: String, required: true},
-  notes: {type: String, default: ''},
+  meet_data: [timeRangeSchema]
+  notes: String,
   number: String,
   section: String,
-  session: timeRangeSchema
-  meet_data: [timeRangeSchema]
-
+  session: timeRangeSchema,
+  units = Number
 });
 
 courseSchema.methods.conflictsWith = function (other) {
