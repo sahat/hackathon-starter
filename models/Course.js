@@ -1,29 +1,47 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
-var crypto = require('crypto');
 
-var userSchema = new mongoose.Schema({
-  email: { type: String, unique: true, lowercase: true },
-  password: String,
+var timeRangeSchema = new mongoose.Schema({
+  start: Date,
+  end: Date,
+  level: {type: String, enum: ["day", "hour"]}
+});
 
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  tokens: Array,
+var courseSchema = new mongoose.Schema({
+/*
+  '$course_id': {
+    'class_name': 'Animal Minds',
+    'classification': 'ANST-UA',
+    'college': 'College of Arts and Science',
+    'component': 'Lecture',
+    'course_name': 'Topics is AS',
+    'description': 'This course analyzes the ways that...',
+    'grading': 'CAS Graded',
+    'is_open': 'Open',
+    'level': 'Undergraduate',
+    'loc_code': 'WS',
+    'meet_data': '09/06/2011 - 12/23/2011 Mon,Wed 11.00 AM - 12.15 PM with Sebo, Jeffrey',
+    'notes': 'Open only to ANST minors during the first...',
+    'number': '600',
+    'section': '001',
+    'session': '09/06/2011 - 12/16/2011',
+  }
+*/
+  class_name: {type: String, unique: true, index: true, required: true},
+  classification: {type: String, index: true, required: true},
+  college: {type: String, index: true, required: true},
+  component: type: String,
+  course_name: {type: String, index: true, required: true},
+  description: {type: String, default: '', index: true},
+  grading: {type: String, default: ''},
+  is_open: {type: Boolean, required: true},
+  level: {type; String, default: ''},
+  loc_code: {type: String, required: true},
+  notes: {type: String, default: ''},
+  number: Number,
+  section: Number,
+  session: timeRangeSchema,
+  meet_data: [timeRangeSchema]
 
-  profile: {
-    name: { type: String, default: '' },
-    gender: { type: String, default: '' },
-    location: { type: String, default: '' },
-    website: { type: String, default: '' },
-    picture: { type: String, default: '' }
-  },
-
-  resetPasswordToken: String,
-  resetPasswordExpires: Date
 });
 
 /**
