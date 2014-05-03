@@ -20,7 +20,7 @@ var courseSchema = new mongoose.Schema({
     'session': '09/06/2011 - 12/16/2011',
   }
 */
-  class_name: {type: String, unique: true, index: true, required: true},
+  class_name: {type: String, index: true, required: true},
   classification: {type: String, index: true, required: true},
   college: {type: String, index: true, required: true},
   component: type: String,
@@ -31,8 +31,8 @@ var courseSchema = new mongoose.Schema({
   level: {type; String, default: ''},
   loc_code: {type: String, required: true},
   notes: {type: String, default: ''},
-  number: Number,
-  section: Number,
+  number: String,
+  section: String,
   session: timeRangeSchema
   meet_data: [timeRangeSchema]
 
