@@ -99,7 +99,7 @@ module.exports = {
   },
 
   clockwork: {
-    apiKey: process.env.CLOCKWORK_KEY || 'Your Clockwork SMS API Key'
+    apiKey: process.env.CLOCKWORK_KEY || '9ffb267f88df55762f74ba2f517a66dc8bedac5a'
   },
 
   stripe: {
