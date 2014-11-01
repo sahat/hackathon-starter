@@ -1,5 +1,9 @@
 extends layout
 
+script(src='../bower_components/jquery/dist/jquery.min.js')
+script(src='../bower_components/bootstrapvalidator/dist/bootstrapValidator.min.js')
+script(src='js/formValidator.js')
+
 block content
   .page-header
     h3 Create a New Event
@@ -31,6 +35,6 @@ block content
         input.form-control(placeholder='Preferred Date')
     .form-group
       .col-sm-offset-3.col-sm-7
-        button.btn.btn-success(type='submit')
+        button.btn(type='submit')
           span.ion-person-add
           | Create Event

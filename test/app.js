@@ -12,7 +12,7 @@ describe('GET /', function() {
 describe('GET /login', function() {
   it('should return 200 OK', function(done) {
     request(app)
-      .get('/logmein')
+      .get('/login')
       .expect(200, done);
   });
 });

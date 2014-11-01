@@ -1,11 +1,25 @@
 var chai = require('chai');
 var should = chai.should();
-var Event = require('../models/Event');
+var User = require('../models/User');
 var EventController = require('../controllers/event.js');
 
 describe('Event Controller', function() {
-    // it('should be able to reference event controller', function(done) {
-    //     (EventController).should.not.equal(null);
-    // });
-    it('should split user string into an array')
+    describe('Handles missing fields', function() {
+        it('should detect missing date field', function() {
+
+        });
+        it('should detect missing users field', function() {
+            
+        });
+        it('should detect missing title field', function() {
+            
+        });
+        it('should detect missing length field', function() {
+            
+        });
+    })
+    it('should be able to invite people');
+    it('should be able to set event date');
+    it('should be able to get user\'s events for the day');
+    it('should split user string into an array');
 });

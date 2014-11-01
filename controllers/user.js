@@ -13,8 +13,7 @@ var secrets = require('../config/secrets');
 
 exports.getLogin = function(req, res) {
   if (req.user) return res.redirect('/');
-  // res.render('account/login', {
-  res.render('account/logmein', {
+  res.render('account/login', {
     title: 'Login'
   });
 };
@@ -34,7 +33,7 @@ exports.postLogin = function(req, res, next) {
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/logmein');
+    return res.redirect('/login');
     // return res.redirect('/login');
   }
 
@@ -42,7 +41,7 @@ exports.postLogin = function(req, res, next) {
     if (err) return next(err);
     if (!user) {
       req.flash('errors', { msg: info.message });
-      return res.redirect('/logmein');
+      return res.redirect('/login');
       // return res.redirect('/login');
     }
     req.logIn(user, function(err) {

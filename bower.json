@@ -15,6 +15,7 @@
     "tests"
   ],
   "devDependencies": {
-    "bootstrap": "~3.3.0"
+    "bootstrap": "~3.3.0",
+    "bootstrapvalidator": "~0.5.2"
   }
 }
