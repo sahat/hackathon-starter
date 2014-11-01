@@ -1,0 +1,126 @@
+doctype html
+html
+  head
+    title Astral by HTML5 UP
+    meta(http-equiv='content-type', content='text/html; charset=utf-8')
+    meta(name='description', content='')
+    meta(name='keywords', content='')
+    //if lte IE 8
+      script(src='css/ie/html5shiv.js')
+    script(src='js/jquery.min.js')
+    script(src='js/skel.min.js')
+    script(src='js/init.js')
+    noscript
+      link(rel='stylesheet', href='css/skel.css')
+      link(rel='stylesheet', href='css/style.css')
+      link(rel='stylesheet', href='css/style-desktop.css')
+      link(rel='stylesheet', href='css/style-noscript.css')
+    //if lte IE 8
+      link(rel='stylesheet', href='css/ie/v8.css')
+  body
+    //
+       Wrapper
+    #wrapper
+      //
+         Nav 
+      nav#nav
+        a.icon.fa-home.active(href='#me')
+          span Home
+        a.icon.fa-folder(href='#work')
+          span Work
+        a.icon.fa-envelope(href='#contact')
+          span Contact
+        a.icon.fa-twitter(href='#')
+          span Twitter
+      //
+         Main 
+      #main
+        //
+           Me 
+        article#me.panel
+          header
+            h1 Event Builder
+            p Scheduling events the easy way
+          a.jumplink.pic(href='#work')
+            span.arrow.icon.fa-chevron-right
+              span See my work
+            img(src='images/me.jpg', alt='')
+        //
+           Work 
+        article#work.panel
+          header
+            h2 Work
+          p
+            | Phasellus enim sapien, blandit ullamcorper elementum eu, condimentum eu elit.
+            | Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
+            | luctus elit eget interdum.
+          section
+            .row
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic01.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic02.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic03.jpg', alt='')
+            .row
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic04.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic05.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic06.jpg', alt='')
+            .row
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic07.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic08.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic09.jpg', alt='')
+            .row
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic10.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic11.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic12.jpg', alt='')
+        //
+           Contact 
+        article#contact.panel
+          header
+            h2 Contact Me
+          form(action='#', method='post')
+            div
+              .row
+                .6u
+                  input(type='text', name='name', placeholder='Name')
+                .6u
+                  input(type='text', name='email', placeholder='Email')
+              .row
+                .12u
+                  input(type='text', name='subject', placeholder='Subject')
+              .row
+                .12u
+                  textarea(name='message', placeholder='Message', rows='8')
+              .row
+                .12u
+                  input(type='submit', value='Send Message')
+      //
+         Footer 
+      #footer
+        ul.copyright
+          li © Untitled.
+          li
+            | Design:
+            a(href='http://html5up.net') HTML5 UP
