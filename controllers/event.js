@@ -48,6 +48,7 @@ exports.postNewEvent = function(req, res) {
    	 	 length: req.body.length,
    	 	 users: parseUsers(req, res),
    	 	 organizer: req.user
+<<<<<<< HEAD
    	 	});
 
 
@@ -62,6 +63,10 @@ exports.postNewEvent = function(req, res) {
       });
    	 
 }
+=======
+      });
+};
+>>>>>>> 5a5615816ff9b058fcbd464b322070994a71d491
 
 exports.postDeleteEvent = function(req, res, next) {
   Event.remove({ _id: req.event.id }, function(err) {
