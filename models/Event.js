@@ -4,12 +4,12 @@ var crypto = require('crypto');
 
 var eventSchema = new mongoose.Schema({
   title: { type: String, default: ''},
-  organizer: mongoose.Schema.Types.ObjectId,
+  organizer: String,
   description: { type: String, default: ''},
   location: { type: String, default: ''},
-  day: { type: Date },
+  day: { type: String },
   length: Number, 
-  users: [mongoose.Schema.Types.ObjectId]
+  users: [String]
 });
 
 /**
@@ -17,21 +17,7 @@ var eventSchema = new mongoose.Schema({
  * "Pre" is a Mongoose middleware that executes before each user.save() call.
  */
 
-eventSchema.pre('save', function(next) {
-  var user = this;
 
-  if (!user.isModified('password')) return next();
-
-  bcrypt.genSalt(5, function(err, salt) {
-    if (err) return next(err);
-
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
-      if (err) return next(err);
-      user.password = hash;
-      next();
-    });
-  });
-});
 
 
 

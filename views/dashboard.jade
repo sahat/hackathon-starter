@@ -54,27 +54,28 @@ html
         article#event.panel
           header
             h2 Create a New Event
-          form(action='/new_event', method='POST')
-            div
-              .row
-                .12u
-                  input(type='text', name='title', placeholder='Name')
-              .row
-                .4u
-                  input(type='text', name='length', placeholder='Length of Event')
-                .4u
-                  input(type='text', name='location', placeholder='Location')
-                .4u
-                  input(type='text', name='day', placeholder='Preferred Date (YYYY-MM-DD)')
-              .row
-                .12u
-                  textarea(name='description', placeholder='Describe your Event', rows='8')
-              .row
-                .12u
-                  input(type='text', name='users', placeholder='Invite users via e-mail (separated by commas)')
-              .row
-                .12u
-                  input(type='submit', value='Create Event!')
+              form(action='/new_event', method='POST')
+                input(type='hidden', name='_csrf', value=_csrf)
+                div
+                  .row
+                    .12u
+                      input(type='text', name='title', placeholder='Name')
+                  .row
+                    .4u
+                      input(type='text', name='length', placeholder='Length of Event')
+                    .4u
+                      input(type='text', name='location', placeholder='Location')
+                    .4u
+                      input(type='text', name='day', placeholder='Preferred Date (YYYY-MM-DD)')
+                  .row
+                    .12u
+                      textarea(name='description', placeholder='Describe your Event', rows='8')
+                  .row
+                    .12u
+                      input(type='text', name='users', placeholder='Invite users via e-mail (separated by commas)')
+                  .row
+                    .12u
+                      input(type='submit', value='Create Event!')
         //
            Contact 
         article#contact.panel
