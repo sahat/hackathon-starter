@@ -117,7 +117,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
  * Main routes.
  */
 
-app.get('/', homeController.index);
+app.get('/', passportConf.isAuthenticated, homeController.dashboard);
 app.get('/dashboard', homeController.dashboard);
 app.get('/new_event', homeController.newEvent);
 app.get('/login', userController.getLogin);
