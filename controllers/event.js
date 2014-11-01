@@ -8,7 +8,7 @@ var User = require('../models/User');
 var secrets = require('../config/secrets');
 
 exports.getNewEvent = function(req, res) {
-	if (req.user) return res.redirect('/');
+	
 	res.render('new_event', {
 		title: 'New Event'
 	});
@@ -16,17 +16,17 @@ exports.getNewEvent = function(req, res) {
 
 // remove day assertion when smart date suggestion functionality added
 exports.postNewEvent = function(req, res) {
-	req.assert('title', 'Please add an event title. Thanks yo.').notEmpty();
-	req.assert('length', 'Yo, how long your pow wow gon\' be?').notEmpty();
-	req.assert('day', 'Yo, when you wanna plan dis shiz').notEmpty();
-	req.assert('users', 'Yo, why you using this app tho').notEmpty();
+	// req.assert('title', 'Please add an event title. Thanks yo.').notEmpty();
+	// req.assert('length', 'Yo, how long your pow wow gon\' be?').notEmpty();
+	// req.assert('day', 'Yo, when you wanna plan dis shiz').notEmpty();
+	// req.assert('users', 'Yo, why you using this app tho').notEmpty();
 
-	var errors = req.validationErrors();
+	// var errors = req.validationErrors();
 
-	if (errors) {
-		req.flash('errors', errors);
-		return res.redirect('/new_event');
-	}
+	// if (errors) {
+	// 	req.flash('errors', errors);
+	// 	return res.redirect('/new_event');
+	// }
 
 	var parseUsers = function(req, res) {
 		var user_emails = req.body.users
