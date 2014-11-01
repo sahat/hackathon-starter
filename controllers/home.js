@@ -9,18 +9,10 @@ exports.index = function(req, res) {
 		title: 'Home'
 	});
 };
-	
 
-exports.dashboard = function(req,res) {
-	res.render('dashboard', {
-		title: 'Dashboard'
-	});
-};
-	
-
-exports.astral = function(req, res) {
-  res.render('astral', {
-    title: 'Astral'
+exports.dashboard = function(req, res) {
+  res.render('dashboard', {
+    title: 'Dashboard Page'
   });
 };
 

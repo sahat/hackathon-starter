@@ -119,7 +119,6 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
 app.get('/', homeController.index);
 app.get('/dashboard', homeController.dashboard);
-app.get('/astral', homeController.astral);
 app.get('/new_event', homeController.newEvent);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
