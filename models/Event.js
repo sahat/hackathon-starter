@@ -4,12 +4,12 @@ var crypto = require('crypto');
 
 var eventSchema = new mongoose.Schema({
   title: { type: String, default: ''},
-  organizer: ObjectId,
+  organizer: Schema.Types.ObjectId,
   description: { type: String, default: ''},
   location: { type: String, default: ''},
   day: { type: Date },
-  time: Number, 
-  users: Array
+  length: Number, 
+  users: [Schema.Types.ObjectId]
 
 
 /*name: { type: String, default: '' },
