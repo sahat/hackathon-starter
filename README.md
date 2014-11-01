@@ -163,8 +163,8 @@ them with *your credentials* when you are ready to deploy an app.
 - Then select *APIs & auth* from the sidebar and click on *Credentials* tab
 - Click **CREATE NEW CLIENT ID** button
  - **Application Type**: Web Application
- - **Authorized Javascript origins**: http://localhost:3000
- - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
+ - **Authorized Javascript origins**: http://localhost:3000, https://wicked-pirate-8712.herokuapp.com/
+ - **Authorized redirect URI**: http://localhost:3000/auth/google/callback, https://wicked-pirate-8712.herokuapp.com/auth/google/callback
 - Copy and paste *Client ID* and *Client secret* keys into `config/secrets.js`
 
 :exclamation: **Note:** When you ready to deploy to production don't forget to

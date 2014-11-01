@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  .page-header
+    h3 Create a New Project
+  form.form-horizontal(id='project-form', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label.col-sm-3.control-label(for='title') Event Title
+      .col-sm-7
+        input.form-control(placeholder='Event Title', autofocus)
+    .form-group
+      label.col-sm-3.control-label(for='description') Description
+      .col-sm-7
+        input.form-control(placeholder='Description')
+    .form-group
+      label.col-sm-3.control-label(for='length') Length of Event
+      .col-sm-7
+        input.form-control(placeholder='Length of Event')
+    .form-group
+      .col-sm-offset-3.col-sm-7
+        button.btn.btn-success(type='submit')
+          span.ion-person-add
+          | Create Event
