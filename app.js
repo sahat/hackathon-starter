@@ -118,13 +118,9 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
  */
 
 app.get('/', homeController.index);
-<<<<<<< Updated upstream
-app.get('/astral', homeController.astral);
-=======
 app.get('/escape-velocity', homeController.escapeVelocity);
 app.get('/dashboard', homeController.dashboard);
 app.get('/new_event', homeController.newEvent);
->>>>>>> Stashed changes
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
