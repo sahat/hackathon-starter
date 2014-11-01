@@ -275,10 +275,10 @@ exports.postReset = function(req, res, next) {
     },
     function(user, done) {
       var transporter = nodemailer.createTransport({
-        service: 'SendGrid',
+        service: 'Mailgun',
         auth: {
-          user: secrets.sendgrid.user,
-          pass: secrets.sendgrid.password
+          user: secrets.mailgun.user,
+          pass: secrets.mailgun.password
         }
       });
       var mailOptions = {
@@ -353,10 +353,10 @@ exports.postForgot = function(req, res, next) {
     },
     function(token, user, done) {
       var transporter = nodemailer.createTransport({
-        service: 'SendGrid',
+        service: 'Mailgun',
         auth: {
-          user: secrets.sendgrid.user,
-          pass: secrets.sendgrid.password
+          user: secrets.mailgun.user,
+          pass: secrets.mailgun.password
         }
       });
       var mailOptions = {
