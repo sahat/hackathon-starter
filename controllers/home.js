@@ -9,8 +9,8 @@ exports.index = function(req, res) {
   });
 };
 
-exports.escapeVelocity = function(req, res) {
-  res.render('escape-velocity', {
-    title: 'Landing Page'
+exports.astral = function(req, res) {
+  res.render('astral', {
+    title: 'Astral'
   });
 };
