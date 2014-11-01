@@ -4,7 +4,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var Event = require('../models/Event');
-var User = require('../models/Users');
+var User = require('../models/User');
 var secrets = require('../config/secrets');
 
 exports.getNewEvent = function(req, res) {
@@ -33,7 +33,7 @@ exports.postNewEvent = function(req, res) {
 		user_emails = user_emails.replace(/\s/g, ''); // remove whitespace
 		var user_array = user_emails.split(',');
 		var user_objects = [];
-		for (int x = 0; x < user_array.length; x++) {
+		for (var x = 0; x < user_array.length; x++) {
 			user_array[x] = user_array[x].toLowerCase();
 			user_objects[x] = _.find(User, { 'email' : user_array[x]});;
 		}
@@ -50,13 +50,9 @@ exports.postNewEvent = function(req, res) {
 		organizer: req.user
 	});
 
-	for each (var user in users) {
-		user.events[user.events.length] = newEvent;
-	}
-
 	newEvent.save(function(err) {
 		if (err) return next(err);
-		res.redirect('/');
+		res.redirect('/dashboard');
 	});
 
 };
