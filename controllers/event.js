@@ -6,9 +6,9 @@ var passport = require('passport');
 var Event = require('../models/Event');
 var User = require('../models/User');
 var secrets = require('../config/secrets');
+var bodyparser = require('body-parser');
 
 exports.getNewEvent = function(req, res) {
-	
 	res.render('new_event', {
 		title: 'New Event'
 	});
