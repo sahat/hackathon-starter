@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+  var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 
@@ -18,7 +18,7 @@ var eventSchema = new mongoose.Schema({
  */
 
 eventSchema.pre('save', function(next) {
-  var  = this;
+  var user = this;
 
   if (!user.isModified('password')) return next();
 

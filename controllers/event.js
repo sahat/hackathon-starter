@@ -18,7 +18,7 @@ exports.postNewEvent = function(req, res) {
     req.assert('title', 'Please add an event title. Thanks yo.').notEmpty();
     req.assert('length', 'Yo, how long your pow wow gon\' be?').notEmpty();
     req.assert('day', 'Yo, when you wanna plan dis shiz').notEmpty();
-    req.assert('users', 'Yo, why the fuck you using this app tho').notEmpty();
+    req.assert('users', 'Yo, why you using this app tho').notEmpty();
 
     var errors = req.validationErrors();
 
@@ -35,7 +35,8 @@ exports.postNewEvent = function(req, res) {
    	 	 length: req.body.length,
    	 	 users: req.body.users,
    	 	 organizer: req.user
-}
+      });
+};
 
 exports.postDeleteEvent = function(req, res, next) {
   Event.remove({ _id: req.event.id }, function(err) {

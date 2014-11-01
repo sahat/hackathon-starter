@@ -26,6 +26,7 @@ var connectAssets = require('connect-assets');
  */
 
 var homeController = require('./controllers/home');
+var eventController = require('./controllers/event');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
@@ -121,6 +122,7 @@ app.get('/', passportConf.isAuthenticated, homeController.dashboard);
 app.get('/new_event', homeController.newEvent);
 app.get('/logmein', userController.getLogin);
 app.post('/logmein', userController.postLogin);
+app.post('/newevent', eventController.postNewEvent);
 // app.get('/login', userController.getLogin);
 // app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
