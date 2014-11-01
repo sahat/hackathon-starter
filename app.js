@@ -105,7 +105,7 @@ app.use(function(req, res, next) {
 app.use(function(req, res, next) {
   // Remember original destination before login.
   var path = req.path.split('/')[1];
-  if (/auth|login|logout|signup|fonts|favicon/i.test(path)) {
+  if (/auth|logmein|logout|signup|fonts|favicon/i.test(path)) {
     return next();
   }
   req.session.returnTo = req.path;
@@ -119,8 +119,10 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
 app.get('/', passportConf.isAuthenticated, homeController.dashboard);
 app.get('/new_event', homeController.newEvent);
-app.get('/login', userController.getLogin);
-app.post('/login', userController.postLogin);
+app.get('/logmein', userController.getLogin);
+app.post('/logmein', userController.postLogin);
+// app.get('/login', userController.getLogin);
+// app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
 app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
