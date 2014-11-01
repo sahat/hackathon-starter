@@ -1,0 +1,74 @@
+/*
+	Escape Velocity by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
+
+/*********************************************************************************/
+/* Basic                                                                         */
+/*********************************************************************************/
+
+	form input[type="text"],
+	form input[type="email"],
+	form input[type="password"],
+	form select,
+	form textarea,
+	input[type="button"],
+	input[type="submit"],
+	input[type="reset"],
+	.button,
+	#intro > .style2,
+	#copyright ul,
+	#nav > ul,
+	.dropotron
+	{
+		position: relative;
+		-ms-behavior: url('css/ie/PIE.htc');
+	}
+
+	/* Section/Article */
+
+		section,
+		article
+		{
+		}
+		
+			section > .last-child,
+			article > .last-child
+			{
+				margin-bottom: 0;
+			}
+
+			section.last-child,
+			article.last-child
+			{
+				margin-bottom: 0;
+			}
+		
+/*********************************************************************************/
+/* Wrappers                                                                      */
+/*********************************************************************************/
+
+	.wrapper
+	{
+	}
+
+		.wrapper .title:before,
+		.wrapper .title:after
+		{
+			display: none;
+    	}
+ 
+ 	#header-wrapper
+	{
+		-ms-behavior: url('css/ie/backgroundsize.min.htc');
+	}
+	
+/*********************************************************************************/
+/* Copyright                                                                     */
+/*********************************************************************************/
+
+	#copyright
+	{
+		margin: 0;
+	}

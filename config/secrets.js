@@ -75,8 +75,8 @@ module.exports = {
   },
 
   google: {
-    clientID: process.env.GOOGLE_ID || '828110519058.apps.googleusercontent.com',
-    clientSecret: process.env.GOOGLE_SECRET || 'JdZsIaWhUFIchmC1a_IZzOHb',
+    clientID: process.env.GOOGLE_ID || '189322403028-ctije7v6014gur2gddh6cpkbvvmpp98f.apps.googleusercontent.com',
+    clientSecret: process.env.GOOGLE_SECRET || 'vYOoDM2atdwqXLMpfmuVh93g',
     callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
