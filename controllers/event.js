@@ -14,5 +14,6 @@ exports.getNewEvent = function(req, res) {
 };
 
 exports.postNewEvent = function(req, res) {
-    req.assert('title', 'Title required').notEmpty();
+    req.assert('title', 'Please add an event title. Thanks yo.').notEmpty();
+    req.assert('length', 'Yo, how long your pow wow gon\' be?').notEmpty();
 }
