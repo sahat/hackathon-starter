@@ -1,6 +1,7 @@
 var chai = require('chai');
 var should = chai.should();
 var User = require('../models/User');
+var Event = require('../models/Event');
 
 describe('User Model', function() {
   it('should create a new user', function(done) {

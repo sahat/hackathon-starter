@@ -29,6 +29,7 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var eventController = require('./controllers/event');
 
 /**
  * API keys and Passport configuration.
@@ -118,7 +119,8 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
  */
 
 app.get('/', passportConf.isAuthenticated, homeController.dashboard);
-app.get('/new_event', homeController.newEvent);
+app.get('/new_event', eventController.getNewEvent);
+app.post('/new_event', eventController.postNewEvent);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);

@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var Event = require('../models/Event');
+var User = require('../models/Users');
 var secrets = require('../config/secrets');
 
 exports.getNewEvent = function(req, res) {
@@ -18,7 +19,7 @@ exports.postNewEvent = function(req, res) {
     req.assert('title', 'Please add an event title. Thanks yo.').notEmpty();
     req.assert('length', 'Yo, how long your pow wow gon\' be?').notEmpty();
     req.assert('day', 'Yo, when you wanna plan dis shiz').notEmpty();
-    req.assert('users', 'Yo, why the fuck you using this app tho').notEmpty();
+    req.assert('users', 'Yo, why you using this app tho').notEmpty();
 
     var errors = req.validationErrors();
 
@@ -27,14 +28,39 @@ exports.postNewEvent = function(req, res) {
     	return res.redirect('/new_event');
   	}
 
+  	function parseUsers(req, res) {
+  		var user_emails = req.body.users
+  		user_emails = user_emails.replace(/\s/g, '');
+  		var user_array = user_emails.split(',');
+  		var user_objects = [];
+  		for each(int x = 0; x < user_array.length; x++) {
+  			user_array[x] = user_array[x].toLowerCase();
+  			user_objects[x] = _.find(User, { 'email' : user_array[x]});;
+  		}
+  		return user_objects;
+  	}
+
   	var event = new Event({
    		 title: req.body.title,
    	 	 description: req.body.description,
    	 	 location: req.body.location,
    	 	 day: req.body.day,
    	 	 length: req.body.length,
-   	 	 users: req.body.users,
+   	 	 users: parseUsers(req, res),
    	 	 organizer: req.user
+   	 	});
+
+
+
+   	 for each (var user in users) {
+   	 	user.events[user.events.length] = event;
+   	 }
+
+   	 event.save(function(err) {
+      if (err) return next(err);
+      res.redirect('/');
+      });
+   	 
 }
 
 exports.postDeleteEvent = function(req, res, next) {

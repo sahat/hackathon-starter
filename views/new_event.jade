@@ -2,8 +2,8 @@ extends layout
 
 block content
   .page-header
-    h3 Create a New Project
-  form.form-horizontal(id='project-form', method='POST')
+    h3 Create a New Event
+  form.form-horizontal(action='/new_event', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
       label.col-sm-3.control-label(for='title') Event Title
@@ -17,6 +17,18 @@ block content
       label.col-sm-3.control-label(for='length') Length of Event
       .col-sm-7
         input.form-control(placeholder='Length of Event')
+    .form-group
+      label.col-sm-3.control-label(for='users') Invite Users 
+      .col-sm-7
+        input.form-control(placeholder='Invite Users (separated by commas)')
+    .form-group
+      label.col-sm-3.control-label(for='location') Location 
+      .col-sm-7
+        input.form-control(placeholder='Location')
+    .form-group
+      label.col-sm-3.control-label(for='day') Preferred Date
+      .col-sm-7
+        input.form-control(placeholder='Preferred Date')
     .form-group
       .col-sm-offset-3.col-sm-7
         button.btn.btn-success(type='submit')
