@@ -28,8 +28,8 @@ module.exports = {
   },
   
   mandrill: {
-    user: process.env.MANDRILL_USER || 'hackathonstarterdemo',
-    password: process.env.MANDRILL_PASSWORD || 'E1K950_ydLR4mHw12a0ldA'
+    user: process.env.MANDRILL_USER || 'krishnan.srinivasan@yale.edu',
+    password: process.env.MANDRILL_PASSWORD || 'FZy)ArtMXK.CJ7'
   },
 
   sendgrid: {
