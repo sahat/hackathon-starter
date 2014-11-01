@@ -321,9 +321,10 @@
 			
 				#me header > p 
 				{
+					padding: 30px;
 					position: absolute;
 					left: 0;
-					top: 52.5%;
+					/*top: 52.5%;*/
 					font-size: 1.5em;
 					letter-spacing: -0.015em;
 					margin-top: 0;
