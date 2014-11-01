@@ -1,10 +1,10 @@
 var secrets = require('../config/secrets');
 var nodemailer = require("nodemailer");
 var transporter = nodemailer.createTransport({
-  service: 'Mailgun',
+  service: 'Mandrill',
   auth: {
-    user: secrets.mailgun.user,
-    pass: secrets.mailgun.password
+    user: secrets.mandrill.user,
+    pass: secrets.mandrill.password
   }
 });
 
