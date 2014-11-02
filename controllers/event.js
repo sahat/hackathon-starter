@@ -41,21 +41,6 @@ exports.postNewEvent = function(req, res) {
 	// 	return res.redirect('/new_event');
 	// }
 
-	var options = {
-		host: 'https://www.googleapis.com/calendar/v3/freeBusy',
-		path: '/new_event',
-		port: '80',
-		method: 'POST',
-		body: {
-			items: [{id: userCalID}],
-			timeMax: req.body.day + "T23:59:00-04:00", // hardcode range to 7am to 11:59pm
-			timeMin: req.body.day + "T06:59:00-04:00",
-			timeZone: "-04:00"
-		}
-	};
-
-	http
-
 	var postFreeBusy = function() {
 		var userCalID = req.user.email
 		var check = {
