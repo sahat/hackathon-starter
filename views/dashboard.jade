@@ -26,7 +26,7 @@ html
       nav#nav
         a.icon.fa-home.active(href='#me')
           span Home
-        a.icon.fa-plus-circle(href='#event')
+        a.icon.fa-plus-circle(href='/new_event')
           span Plan
         a.icon.fa-envelope(href='#contact')
           span Contact
@@ -39,13 +39,8 @@ html
            Me 
         article#me.panel
           header
-            p.
-              el secretariat simply compares your google calendar with your event guests' and 
-              announces the optimal time blocks for your event to take place
-            a.btn.btn-block.btn-google-plus.btn-social(href='/auth/google')
-              i.fa.fa-google-plus
-              span(style="margin-left: 15px; font-weight: 400")
-                | Empower Google Calendar
+            h1 Event Builder
+            p Scheduling events the easy way
           a.jumplink.pic(href='#event')
             span.arrow.icon.fa-chevron-right
               span Make an Event
@@ -53,28 +48,52 @@ html
         // Event
         article#event.panel
           header
-            h2 Create a New Event
-          form(action='/new_event', method='POST')
-            div
-              .row
-                .12u
-                  input(type='text', name='title', placeholder='Name')
-              .row
-                .4u
-                  input(type='text', name='length', placeholder='Length of Event')
-                .4u
-                  input(type='text', name='location', placeholder='Location')
-                .4u
-                  input(type='text', name='day', placeholder='Preferred Date (YYYY-MM-DD)')
-              .row
-                .12u
-                  textarea(name='description', placeholder='Describe your Event', rows='8')
-              .row
-                .12u
-                  input(type='text', name='users', placeholder='Invite users via e-mail (separated by commas)')
-              .row
-                .12u
-                  input(type='submit', value='Create Event!')
+            h2 Add Event
+          p
+            | PBRRE keffiyeh American Apparel, you probably haven't heard of them retro 
+            | Fingerstache cold-pressed sartorial, meh plaid cray Helvetica roof party 
+            | cardigan. Taxidermy chambray photo booth.
+          section
+            .row
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic01.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic02.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic03.jpg', alt='')
+            .row
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic04.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic05.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic06.jpg', alt='')
+            .row
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic07.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic08.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic09.jpg', alt='')
+            .row
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic10.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic11.jpg', alt='')
+              .4u
+                a.image.fit(href='#')
+                  img(src='images/pic12.jpg', alt='')
         //
            Contact 
         article#contact.panel

@@ -153,7 +153,7 @@
 				border: 0;
 				background: #f4f4f4;
 				padding: 0.75em;
-				width: 50%;
+				width: 100%;
 				-moz-transition: background-color .25s ease-in-out;
 				-webkit-transition: background-color .25s ease-in-out;
 				-o-transition: background-color .25s ease-in-out;
@@ -224,7 +224,6 @@
 		
 			header > p
 			{
-				width: 50%;
 				color: #aaa;
 			}
 	
@@ -503,15 +502,3 @@
 				{
 					display: none;
 				}
-/*BUTTONS by daniel */
-.btn-google-plus {
-	border: 1px solid #3079ed;
-	background-color: #4d90fe;
-	border-radius: 5px;
-	color: #fff;
-	padding: 6px 12px;
-	bottom: 10px;
-	position: absolute;	
-	text-decoration: none;
-	text-align: center;
-}	
