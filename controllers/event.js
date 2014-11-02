@@ -7,12 +7,25 @@ var Event = require('../models/Event');
 var User = require('../models/User');
 var secrets = require('../config/secrets');
 var bodyparser = require('body-parser');
+var http = require('http');
 
 exports.getNewEvent = function(req, res) {
 	res.render('new_event', {
 		title: 'New Event'
 	});
 };
+
+// exports.postFreeBusy = function(req, res) {
+// 	var userCalID = req.user.email
+// 	var check = {
+// 		items: [{id: userCalID}],
+// 		timeMax: req.body.day + "T23:59:00-04:00", // hardcode range to 7am to 11:59pm
+// 		timeMin: req.body.day + "T06:59:00-04:00",
+// 		timeZone: "-04:00"
+// 	};
+// 	var response = Calendar.Freebusy.query(check);
+// 	console.log(response);
+// };
 
 // remove day assertion when smart date suggestion functionality added
 exports.postNewEvent = function(req, res) {
@@ -27,6 +40,36 @@ exports.postNewEvent = function(req, res) {
 	// 	req.flash('errors', errors);
 	// 	return res.redirect('/new_event');
 	// }
+
+	var options = {
+		host: 'https://www.googleapis.com/calendar/v3/freeBusy',
+		path: '/new_event',
+		port: '80',
+		method: 'POST',
+		body: {
+			items: [{id: userCalID}],
+			timeMax: req.body.day + "T23:59:00-04:00", // hardcode range to 7am to 11:59pm
+			timeMin: req.body.day + "T06:59:00-04:00",
+			timeZone: "-04:00"
+		}
+	};
+
+	http
+
+	var postFreeBusy = function() {
+		var userCalID = req.user.email
+		var check = {
+			items: [{id: userCalID}],
+			timeMax: req.body.day + "T23:59:00-04:00", // hardcode range to 7am to 11:59pm
+			timeMin: req.body.day + "T06:59:00-04:00",
+			timeZone: "-04:00"
+		};
+		var apicall = Calendar.Freebusy.query(check, function(response) {
+			console.log(response);
+		});
+	};
+
+	postFreeBusy(); 
 
 	var parseUsers = function(req, res) {
 		var user_emails = req.body.users;
