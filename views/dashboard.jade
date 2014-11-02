@@ -6,24 +6,20 @@ html
     meta(http-equiv='content-type', content='text/html; charset=utf-8')
     meta(name='description', content='')
     meta(name='keywords', content='')
-    //if lte IE 8
-      script(src='css/ie/html5shiv.js')
     script(src='js/jquery.min.js')
     script(src='js/skel.min.js')
     script(src='js/init.js')
+    script(src="https://apis.google.com/js/client.js?onload=OnLoadCallback")
+    script(src='js/main.js')
     noscript
       link(rel='stylesheet', href='css/skel.css')
       link(rel='stylesheet', href='css/style.css')
       link(rel='stylesheet', href='css/style-desktop.css')
       link(rel='stylesheet', href='css/style-noscript.css')
-    //if lte IE 8
-      link(rel='stylesheet', href='css/ie/v8.css')
   body
-    //
-       Wrapper
+    // Wrapper
     #wrapper
-      //
-         Nav 
+      // Nav 
       nav#nav
         a.icon.fa-home.active(href='#me')
           span Home
@@ -33,11 +29,9 @@ html
           span Contact
         a.icon.fa-power-off(href='/logout')
           span Logout
-      //
-         Main 
+      // Main 
       #main
-        //
-           Me 
+        // Home 
         article#me.panel
           header
             h1 Event Builder
@@ -46,7 +40,7 @@ html
             span.arrow.icon.fa-chevron-right
               span Make an Event
             img(src='images/me.jpg', alt='')
-        // Event
+        // New Event
         article#event.panel
           #eventRight
             header
@@ -88,11 +82,8 @@ html
             #grid
               script(src="js/jquery.color-2.1.2.js")
               script(src='js/danielColorGrid.js')
-
-
-
-        //
-           Contact 
+        
+        // Contact 
         article#contact.panel
           //- header
           //-   h2 Contact Me
@@ -117,8 +108,6 @@ html
           #eventRight
             h4.
               'third board meeting' should be scheduled in one of these possible time slots
-      //
-         Footer 
       #footer
         ul.copyright
           li © Untitled.
