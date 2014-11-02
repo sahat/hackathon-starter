@@ -224,6 +224,7 @@
 		
 			header > p
 			{
+				width: 50%;
 				color: #aaa;
 			}
 	
