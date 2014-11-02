@@ -122,6 +122,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 app.get('/', passportConf.isAuthenticated, homeController.dashboard);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
+app.post('/new_event', eventController.postNewEvent);
 app.get('/logout', userController.logout);
 app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
