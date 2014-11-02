@@ -41,7 +41,7 @@ html
         article#event.panel
           header
             h2 Create a New Event
-              form(action='/new_event', method='POST')
+              form#event_form(action='/new_event', method='POST')
                 input(type='hidden', name='_csrf', value=_csrf)
                 div
                   .row
@@ -53,7 +53,7 @@ html
                     .4u
                       input(type='text', name='location', placeholder='Location')
                     .4u
-                      input(type='text', name='day', placeholder='Preferred Date (YYYY-MM-DD)')
+                      input(type='text', name='day', value='2014-11-03', placeholder='Preferred Date (YYYY-MM-DD)')
                   .row
                     .12u
                       textarea(name='description', placeholder='Describe your Event', rows='8')
@@ -67,6 +67,9 @@ html
             var apiKey = 'AIzaSyAdjHPT5Pb7Nu56WJ_nlrMGOAgUAtKjiPM';
 
             var scopes = 'https://www.googleapis.com/auth/plus.me';
+
+            day = $(#event_form).find('input[name=day]').val();
+            console.log(day);
 
             function handleClientLoad() {
                 gapi.client.setApiKey(apiKey);
@@ -94,20 +97,28 @@ html
             }
 
             function makeApiCall() {
-            gapi.client.load('calendar', 'v3').then(function() {
-                var request = gapi.client.calendar.Freebusy.query(check, function(response){
-                    'userId': 'me'
+                gapi.client.load('calendar', 'v3').then(function() {
+                    day = $(#event_form).find('input[name=day"]').val();
+                    console.log(day);
+                    var check = {
+                        items: [{id: userCalID}],
+                        timeMax: req.body.day + "T23:59:00-04:00", // hardcode range to 7am to 11:59pm
+                        timeMin: req.body.day + "T06:59:00-04:00",
+                        timeZone: "-04:00"
+                    };
+                    var request = gapi.client.calendar.Freebusy.query(check, function(response){
+                        console.log(response)
                     });
-                request.then(function(resp) {
-                    var heading = document.createElement('h4');
-                    var image = document.createElement('img');
-                    image.src = resp.result.image.url;
-                    heading.appendChild(image);
-                    heading.appendChild(document.createTextNode(resp.result.displayName));
+                    request.then(function(resp) {
+                        var heading = document.createElement('h4');
+                        var image = document.createElement('img');
+                        image.src = resp.result.image.url;
+                        heading.appendChild(image);
+                        heading.appendChild(document.createTextNode(resp.result.displayName));
 
-                    document.getElementById('content').appendChild(heading);
+                        document.getElementById('content').appendChild(heading);
                     }, function(reason) {
-                    console.log('Error: ' + reason.result.error.message);
+                        console.log('Error: ' + reason.result.error.message);
                     });
                 });
             }
