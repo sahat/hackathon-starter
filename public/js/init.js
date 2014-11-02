@@ -8,6 +8,7 @@ function showValue(newValue){
           document.getElementById("range").innerHTML=newValue + ' minutes';
         }
 
+
 /* end Daniel added */
 
 (function($) {
