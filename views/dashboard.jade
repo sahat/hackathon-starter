@@ -41,51 +41,67 @@ html
             img(src='images/me.jpg', alt='')
         // New Event
         article#event.panel
-          header
-            h2 Create a New Event
-              form#eventform(action='/new_event', method='POST')
-                input(type='hidden', name='_csrf', value=_csrf)
-                div
-                  .row
-                    .12u
-                      input(type='text', name='title', placeholder='Name')
-                  .row
-                    .4u
-                      input(type='text', name='length', placeholder='Length of Event')
-                    .4u
-                      input(type='text', name='location', placeholder='Location')
-                    .4u
-                      input(type='text', name='day', value='2014-11-03', placeholder='Preferred Date (YYYY-MM-DD)')
-                  .row
-                    .12u
-                      textarea(name='description', placeholder='Describe your Event', rows='8')
-                  .row
-                    .12u
-                      input(type='text', name='users', placeholder='Invite users via e-mail (separated by commas)')
-                  .row
-                    .12u
-                      input(type='submit', value='Create Event!')
+          #eventRight
+            header
+              h2 Create a New Event
+                form(action='/new_event', method='POST')
+                  input(type='hidden', name='_csrf', value=_csrf)
+                  div
+                    .row
+                      .12u
+                        input(type='text', name='title', placeholder='Name')
+                    .row
+                      .4u
+                        input(type='text',name="lengthHours",placeholder='0 hours')
+                      .8u
+                        input(type='range', name='length', min='0',max='55',step='5', value='0',placeholder='Duration (mins)',
+                          onchange="showValue(this.value)")
+                        span(id="range", style='font-size: 15px') 0 minutes
+                        
+                    .row
+                      .12u
+                        input(type='text', name='day', placeholder='Day? (YYYY-MM-DD)')
+                    .row
+                      .12u
+                        textarea(name='description', placeholder='Describe your Event (optional)', rows='3')
+                    .row
+                      .12u
+                        input(type='text', name='users', placeholder='Invite users via e-mail (separated by commas)')
+                    //- .row
+                    //-   .12u
+                    //-     input(type='submit', value='Create Event!')
+                    .row
+                      .12u
+                        a.jumplink.pic(href='#contact')
+                          span.arrow.icon.fa-chevron-right
+                            span Make an Event
+          //- #eventLeft
+            //- img(src='http://s29.postimg.org/5bloio61z/Daniel_Pic.png')
         // Contact 
         article#contact.panel
-          header
-            h2 Contact Me
-          form(action='#event', method='post')
-            div
-              .row
-                .6u
-                  input(type='text', name='name', placeholder='Name')
-                .6u
-                  input(type='text', name='email', placeholder='Email')
-              .row
-                .12u
-                  input(type='text', name='subject', placeholder='Subject')
-              .row
-                .12u
-                  textarea(name='message', placeholder='Message', rows='8')
-              .row
-                .12u
-                  input(type='submit', value='Send Message')
-      // Footer 
+          //- header
+          //-   h2 Contact Me
+          //- form(action='#event', method='post')
+          //-   div
+          //-     .row
+          //-       .6u
+          //-         input(type='text', name='name', placeholder='Name')
+          //-       .6u
+          //-         input(type='text', name='email', placeholder='Email')
+          //-     .row
+          //-       .12u
+          //-         input(type='text', name='subject', placeholder='Subject')
+          //-     .row
+          //-       .12u
+          //-         textarea(name='message', placeholder='Message', rows='8')
+          //-     .row
+          //-       .12u
+          //-         input(type='submit', value='Send Message')
+          #eventLeft
+            img(src='http://s29.postimg.org/5bloio61z/Daniel_Pic.png')
+          #eventRight
+            h4.
+              'third board meeting' should be scheduled in one of these possible time slots
       #footer
         ul.copyright
           li © Untitled.

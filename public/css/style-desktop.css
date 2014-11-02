@@ -339,3 +339,10 @@
 		padding: 2em 0 0 0;
 		font-size: 0.75em;
 	}
+
+/* eventRight, Left by daniel */
+
+	#eventRight {
+		width: 40%;
+		float: right;
+	}
