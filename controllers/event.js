@@ -29,10 +29,15 @@ exports.postNewEvent = function(req, res) {
 	// }
 
 	var parseUsers = function(req, res) {
-		var user_emails = req.body.users;
-		user_emails = user_emails.replace(" ", ''); // remove whitespace
+		var user_emails = req.body.users
+		user_emails = user_emails.replace(/\s/g, ''); // remove whitespace
 		var user_array = user_emails.split(',');
-		return user_array
+		var user_objects = [];
+		for (var x = 0; x < user_array.length; x++) {
+			user_array[x] = user_array[x].toLowerCase();
+			user_objects[x] = _.find(User, { 'email' : user_array[x]});;
+		}
+		return user_objects;
 	};
 
 	var newEvent = new Event({
@@ -42,12 +47,12 @@ exports.postNewEvent = function(req, res) {
 		day: req.body.day,
 		length: req.body.length,
 		users: parseUsers(req, res),
-		organizer: req.user.email
+		organizer: req.user
 	});
 
 	newEvent.save(function(err) {
 		if (err) return next(err);
-		res.redirect('/');
+		res.redirect('/dashboard');
 	});
 
 };
