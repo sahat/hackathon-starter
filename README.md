@@ -218,7 +218,9 @@ The same goes for other providers.
 - From the account name dropdown menu select **API Keys**
  - *It may ask you to sign in once again*
 - Click **+ Add New Application** button
-- Fill out all *required* fields
+- Fill out all the *required* fields
+ - **OAuth 2.0 Redirect URLs**: http://localhost:3000/auth/linkedin/callback
+ - **JavaScript API Domains**: http://localhost:3000
 - For **Default Scope** make sure *at least* the following is checked:
  - `r_fullprofile`
  - `r_emailaddress`
