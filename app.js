@@ -20,6 +20,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
+var helmet = require('helmet');
 
 /**
  * Controllers (route handlers).
@@ -57,6 +58,19 @@ mongoose.connection.on('error', function() {
  */
 
 var csrfExclude = ['/url1', '/url2'];
+
+/**
+ * Helmet configuration
+ */
+
+app.use(helmet.xssFilter());
+app.use(helmet.frameguard('deny'));
+// Uncomment if you've SSL
+/*app.use(helmet.hsts({
+  maxAge: 10886400000
+}));*/
+app.use(helmet.hidePoweredBy());
+app.use(helmet.ieNoOpen());
 
 /**
  * Express configuration.
