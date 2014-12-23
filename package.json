@@ -34,7 +34,7 @@
     "lodash": "^2.4.1",
     "lusca": "^1.0.2",
     "method-override": "^2.3.0",
-    "mongoose": "^3.8.20",
+    "mongoose": "^3.8.21",
     "morgan": "^1.5.0",
     "node-foursquare": "^0.2.1",
     "node-linkedin": "^0.3.4",
@@ -54,7 +54,7 @@
     "twilio": "^1.10.0",
     "twit": "^1.1.18",
     "uglify-js": "^2.4.16",
-    "validator": "^3.24.0",
+    "validator": "^3.26.0",
     "yui": "^3.18.1"
   },
   "devDependencies": {
