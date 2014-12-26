@@ -1,0 +1,19 @@
+{% extends '../layout.html' %}
+
+{% block content %}
+<div class="page-header">
+  <h2><i class="fa fa-picture-o"></i>Aviary API</h2>
+</div>
+<div class="btn-group btn-group-justified">
+      <a href="http://developers.aviary.com/docs/web/setup-guide#constructor" target="_blank" class="btn btn-primary"><i class="fa fa-check-square-o"></i>API Overview</a>
+      <a href="http://developers.aviary.com/docs/web/setup-guide#saving" target="_blank" class="btn btn-primary"><i class="fa fa-save"></i>Saving Images</a>
+      <a href="http://developers.aviary.com/docs/web/setup-guide#styling" target="_blank" class="btn btn-primary"><i class="fa fa-flask"></i>CSS Styling</a>
+</div>
+
+  <br/>
+<p>
+  <button onclick="return launchEditor('myimage', 'https://31.media.tumblr.com/d4411b4c0b41d9c7a73fbcdb1054cb5c/tumblr_n3fyfbZVud1tsaz7eo1_500.jpg')" class="btn btn-success">
+  <i class="fa fa-magic"></i>Edit Photo</button>
+</p><img id="myimage" src="https://31.media.tumblr.com/d4411b4c0b41d9c7a73fbcdb1054cb5c/tumblr_n3fyfbZVud1tsaz7eo1_500.jpg" width="250"/>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends '../layout.html' %}
+{% block content %}
+
+<div class="page-header">
+<h3>Profile Information</h3>
+</div>
+<form action="/account/profile" method="POST" class="form-horizontal">
+<input type="hidden" name="_csrf" value={{ _csrf }}>
+<div class="form-group"><label for="email" class="col-sm-2 control-label">Email</label><div class="col-sm-4">
+<input type="email" name="email" id="email"  class="form-control" value='{{user.email}}'></div></div>
+
+<div class="form-group"><label for="name" class="col-sm-2 control-label">Name</label>
+  <div class="col-sm-4">
+    <input type="text"  class="form-control" name="name" id="name" value='{{user.profile.name}}'>
+  </div>
+</div>
+<div class="form-group">
+  <label for="gender" class="col-sm-2 control-label">Gender</label>
+  <div class="col-sm-4">
+      <label class="radio">
+      <input type="radio" name="gender" value="male" data-toggle="radio" checked="{{user.profile.gender=='male'}}"/><span>Male</span></label>
+    <label class="radio">
+    <input type="radio" name="gender" value="female" data-toggle="radio" checked="{{user.profile.gender=='female'}}"/><span>Female</span>
+  </label>
+  </div>
+</div>
+<div class="form-group">
+    <label for="location" class="col-sm-2 control-label">Location</label>
+    <div class="col-sm-4">
+      <input type="text" name="location" id="location" value="{{user.profile.location}}" class="form-control">
+    </div>
+</div>
+
+<div class="form-group"><label for="website" class="col-sm-2 control-label">Website</label>
+    <div class="col-sm-4">
+        <input type="text" name="website" id="website" value="{{user.profile.website}}" class="form-control">
+    </div>
+</div>
+<div class="form-group"><label for="gravatar" class="col-sm-2 control-label">Gravatar</label><div class="col-sm-4"><img src="{{user.gravatar()}}" width="100" height="100" class="profile"></div></div>
+  <div class="form-group">
+  <div class="col-sm-offset-2 col-sm-4">
+    <button type="submit" class="btn btn btn-primary">
+  <span class="ion-edit"></span>Update Profile</button>
+</div>
+</div>
+
+</form>
+
+<div class="page-header"><h3>Change Password</h3></div>
+<form action="/account/password" method="POST" class="form-horizontal">
+    <input type="hidden" name="_csrf" value='{{_csrf}}'>
+  <div class="form-group">
+    <label for="password" class="col-sm-3 control-label">New Password</label>
+    <div class="col-sm-4"><input type="password" name="password" id="password" class="form-control"></div>
+  </div>
+  <div class="form-group">
+      <label for="confirmPassword" class="col-sm-3 control-label">Confirm Password</label>
+      <div class="col-sm-4"><input type="password" name="confirmPassword" id="confirmPassword" class="form-control"></div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-4"><button type="submit" class="btn btn btn-primary">
+      <span class="ion-locked"></span>Change Password</button>
+    </div>
+  </div>
+</form>
+<div class="page-header"><h3>Delete Account</h3></div><p>You can delete your account, but keep in mind this action is irreversible.</p>
+  <form action="/account/delete" method="POST">
+  <input type="hidden" name="_csrf" value='{{_csrf}}'>
+  <button type="submit" class="btn btn-danger"><span class="ion-trash-b"></span>Delete my account</button>
+  </form>
+<div class="page-header"><h3>Linked Accounts</h3></div>
+
+<p><a href="/auth/instagram">Link your Instagram account</a></p>
+<p><a href="/auth/google">Link your Google account</a></p>
+<p><a href="/auth/facebook">Link your Facebook account</a></p><p>
+<a href="/auth/twitter">Link your Twitter account</a></p><p>
+<a href="/auth/github">Link your GitHub account</a></p><p>
+<a href="/auth/linkedin">Link your LinkedIn account</a></p></div>
+
+{% endblock %}

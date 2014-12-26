@@ -1,0 +1,31 @@
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand"><span class="ion-cube"></span>Project name</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/api">API Examples</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      {% if !user %}
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/login">Login</a></li>
+        <li><a href="/signup">Create Account</a></li>
+      </ul>
+      {% else %}
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                <img src="{{user.profile.picture}}">{{user.profile.name}}<i class="caret"></i></a>
+                  <ul class="dropdown-menu"><li><a href="/account">
+                    <span class="ion-person"></span>My Account</a></li><li class="divider"></li><li><a href="/logout">
+                    <span class="ion-log-out"></span> Logout</a></li>
+                  </ul>
+                </li>
+            </ul>
+
+      {% endif %}
+    </div>
+  </div>
+</div>

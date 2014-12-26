@@ -1,0 +1,37 @@
+{% if messages.errors %}
+<div class="alert alert-danger fade in">
+    <button type="button" data-dismiss="alert" class="close">x</button>
+    <i class="fa fa-frown-o"></i><strong>Oh snap!</strong>
+    {% for error in messages.errors %}
+       * {{error.msg}}
+    {% endfor %}
+  </div>
+{% endif %}     
+
+
+{% if messages.info %}
+<div class="alert alert-info fade in">
+    <button type="button" data-dismiss="alert" class="close">x</button>
+    <i class="fa fa-info-circle"></i><strong>Warning!</strong>
+    {% for info in messages.info %}
+       * {{info.msg}}
+    {% endfor %}
+  </div>
+{% endif %}     
+
+
+
+{% if messages.success %}
+<div class="alert alert-success fade in">
+    <button type="button" data-dismiss="alert" class="close">x</button>
+    <i class="fa fa-check-circle"></i><strong>Well done!</strong>
+    {% for success in messages.success %}
+       * {{success.msg}}
+    {% endfor %}
+  </div>
+{% endif %}     
+
+
+
+
+          

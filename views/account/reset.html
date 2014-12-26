@@ -1,0 +1,22 @@
+{% extends '../layout.html' %}
+{% block content %}
+
+
+<div class="col-sm-8 col-sm-offset-2">
+  <form method="POST">
+    <legend>Reset Password</legend>
+    <input type="hidden" name="_csrf" value='{{ _csrf }}'/>
+    <div class="form-group">
+      <label for="password">New Password</label>
+      <input type="password" name="password" value="" placeholder="New password" autofocus="autofocus" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label for="confirm">Confirm Password</label>
+      <input type="password" name="confirm" value="" placeholder="Confirm password" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-reset"><i class="fa fa-keyboard-o"></i>Change Password</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

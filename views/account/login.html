@@ -1,0 +1,34 @@
+{% extends '../layout.html' %}
+
+{% block content %}
+  <div class='page-header'>
+    <h3> Sign in </h3>
+  <form method='POST'>
+    <input type="hidden" name="_csrf" value='{{_csrf}}' />
+    <div class='col-sm-8 col-sm-offset-2'>
+             
+      <div class="form-group">
+        <label for="email" class="control-label">Email</label>
+        <input type="email" name="email" id="email" placeholder="Email" autofocus="autofocus" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label for="password" class="control-label">Password</label>
+        <input type="password" name="password" id="password" placeholder="Password" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary"><span class="ion-android-hand">
+            <Login></Login></span></button><a href="/forgot" class="btn btn-link">Forgot your password?
+            </a>
+            <hr/>
+      </div>
+      
+    <a href="/auth/facebook" class="btn btn-block btn-facebook btn-social"><i class="fa fa-facebook"></i>Sign in with Facebook</a>
+<a href="/auth/twitter" class="btn btn-block btn-twitter btn-social"><i class="fa fa-twitter"></i>Sign in with Twitter</a>
+      </div>
+    </form>
+    </div>
+
+    {% endblock %}
+
+
+

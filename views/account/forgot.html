@@ -1,0 +1,18 @@
+{% extends '../layout.html' %}
+{% block content %}
+
+<div class="col-sm-8">
+    <form method="POST"> 
+      <legend> Forgot Password</legend>
+      <input type='hidden' name='_csrf' value=_csrf/>
+      <div class="form-group">
+        <p>Enter your email address below and we will send you password reset instructions.</p>       
+          <label for="email" class="col-sm-2 control-label">Email</label>
+      <input class='form-control' type='email' name='email' id='email' placeholder='Email' autofocus='true'/>
+      </div>
+      <div class='form-group'>
+        <button class='btn btn-primary' type='submit'/><i class='fa fa-key'> Reset Password</i>
+      </div>
+      </form>
+  </div>
+{% endblock %}

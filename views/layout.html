@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token">
+    <link rel="stylesheet/less" type="text/css" href="/css/main.less"  />
+    <!--<link rel='stylesheet' type="text/css" href='css/styles.css' />-->
+
+    <title> - Hackathon Starter</title>
+  </head>
+  <body>
+  {% include 'partials/navbar.html' %}
+    <div class="container">
+      {% include 'partials/flash.html' %}
+      {% block content %}{% endblock %}
+    </div>
+
+
+
+    {% include 'partials/footer.html' %}
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.1.1/less.min.js"></script>
+        <script src="/js/lib/jquery-2.1.1.min.js"></script>
+        <script src="/js/lib/bootstrap.min.js"></script>
+
+ 
+      <script src="/js/application.js"></script>
+
+
+
+  </body>
+</html>
