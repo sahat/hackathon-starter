@@ -63,8 +63,21 @@ var csrfExclude = ['/url1', '/url2'];
  */
 
 app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+/////////////////////////////Swig Setup
+swig = require('swig'); 
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
+app.set('views', __dirname + '/views');
+
+// Swig will cache templates for you, but you can disable
+// that and use Express's caching instead, if you like:
+app.set('view cache', false);
+// To disable Swig's cache, do the following:
+swig.setDefaults({ cache: false });
+//////////////////////
+
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'jade');
 app.use(compress());
 app.use(connectAssets({
   paths: [path.join(__dirname, 'public/css'), path.join(__dirname, 'public/js')]

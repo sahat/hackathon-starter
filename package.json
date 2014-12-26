@@ -50,6 +50,7 @@
     "passport-twitter": "^1.0.2",
     "request": "^2.47.0",
     "stripe": "^2.8.0",
+    "swig": "^1.4.2",
     "tumblr.js": "^0.0.4",
     "twilio": "^1.7.0",
     "twit": "^1.1.18",

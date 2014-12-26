@@ -1,6 +1,8 @@
-extends ../layout
+{% extends '../layout.html' %}
+{% block content %}
 
-block content
+
+
   .col-sm-8.col-sm-offset-2
     form(method='POST')
       legend Reset Password
@@ -15,3 +17,4 @@ block content
         button.btn.btn-primary.btn-reset(type='submit')
           i.fa.fa-keyboard-o
           | Change Password
+{% endblock %}
