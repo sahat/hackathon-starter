@@ -15,11 +15,11 @@ $headings-font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", "Arial N
 // Buttons
 // -------------------------
 
-$btn-primary-border: darken($btn-primary-bg, 3.2%);
-$btn-success-border: darken($btn-success-bg, 3.2%);
-$btn-warning-border: darken($btn-warning-bg, 3.2%);
-$btn-danger-border: darken($btn-danger-bg, 3.2%);
-$btn-info-border: darken($btn-info-bg, 3.2%);
+$btn-primary-border: darken($brand-primary, 3.2%);
+$btn-success-border: darken($brand-success, 3.2%);
+$btn-warning-border: darken($brand-warning, 3.2%);
+$btn-danger-border: darken($brand-danger, 3.2%);
+$btn-info-border: darken($brand-info, 3.2%);
 
 // Forms
 // -------------------------
