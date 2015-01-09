@@ -2,10 +2,12 @@
 // http://sass-guidelin.es
 
 @import "themes/default/variables";
+
 @import "vendors/bootstrap";
 @import "vendors/bootstrap-social";
 @import "vendors/font-awesome";
-@import "themes/default/default";
+
+@import "themes/default/styles";
 
 // Scaffolding
 // -------------------------
