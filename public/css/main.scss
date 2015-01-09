@@ -1,8 +1,11 @@
-@import "lib/bootstrap/bootstrap";
-@import "lib/bootstrap-social/bootstrap-social";
-@import "lib/font-awesome/font-awesome";
-@import "lib/ionicons/ionicons";
-@import "themes/default";
+// An opinionated styleguide for writing sane, maintainable and scalable Sass.
+// http://sass-guidelin.es
+
+@import "themes/default/variables";
+@import "vendors/bootstrap";
+@import "vendors/bootstrap-social";
+@import "vendors/font-awesome";
+@import "themes/default/default";
 
 // Scaffolding
 // -------------------------
