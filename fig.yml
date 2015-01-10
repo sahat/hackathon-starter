@@ -5,7 +5,7 @@ app:
   working_dir: /app/
   command: npm start
   ports:
-    - "8080:8080"
+    - "3000:3000"
   links:
     - mongodb
 mongodb:
