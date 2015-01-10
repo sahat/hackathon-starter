@@ -64,5 +64,8 @@
     "mocha": "^2.0.1",
     "multiline": "^1.0.1",
     "supertest": "^0.15.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
   }
 }
