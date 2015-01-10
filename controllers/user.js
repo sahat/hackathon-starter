@@ -10,7 +10,6 @@ var secrets = require('../config/secrets');
  * GET /login
  * Login page.
  */
-
 exports.getLogin = function(req, res) {
   if (req.user) return res.redirect('/');
   res.render('account/login', {
@@ -21,10 +20,7 @@ exports.getLogin = function(req, res) {
 /**
  * POST /login
  * Sign in using email and password.
- * @param email
- * @param password
  */
-
 exports.postLogin = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
@@ -54,7 +50,6 @@ exports.postLogin = function(req, res, next) {
  * GET /logout
  * Log out.
  */
-
 exports.logout = function(req, res) {
   req.logout();
   res.redirect('/');
@@ -64,7 +59,6 @@ exports.logout = function(req, res) {
  * GET /signup
  * Signup page.
  */
-
 exports.getSignup = function(req, res) {
   if (req.user) return res.redirect('/');
   res.render('account/signup', {
@@ -75,10 +69,7 @@ exports.getSignup = function(req, res) {
 /**
  * POST /signup
  * Create a new local account.
- * @param email
- * @param password
  */
-
 exports.postSignup = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
@@ -115,7 +106,6 @@ exports.postSignup = function(req, res, next) {
  * GET /account
  * Profile page.
  */
-
 exports.getAccount = function(req, res) {
   res.render('account/profile', {
     title: 'Account Management'
@@ -126,7 +116,6 @@ exports.getAccount = function(req, res) {
  * POST /account/profile
  * Update profile information.
  */
-
 exports.postUpdateProfile = function(req, res, next) {
   User.findById(req.user.id, function(err, user) {
     if (err) return next(err);
@@ -147,9 +136,7 @@ exports.postUpdateProfile = function(req, res, next) {
 /**
  * POST /account/password
  * Update current password.
- * @param password
  */
-
 exports.postUpdatePassword = function(req, res, next) {
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
@@ -178,7 +165,6 @@ exports.postUpdatePassword = function(req, res, next) {
  * POST /account/delete
  * Delete user account.
  */
-
 exports.postDeleteAccount = function(req, res, next) {
   User.remove({ _id: req.user.id }, function(err) {
     if (err) return next(err);
@@ -191,9 +177,7 @@ exports.postDeleteAccount = function(req, res, next) {
 /**
  * GET /account/unlink/:provider
  * Unlink OAuth provider.
- * @param provider
  */
-
 exports.getOauthUnlink = function(req, res, next) {
   var provider = req.params.provider;
   User.findById(req.user.id, function(err, user) {
@@ -214,7 +198,6 @@ exports.getOauthUnlink = function(req, res, next) {
  * GET /reset/:token
  * Reset Password page.
  */
-
 exports.getReset = function(req, res) {
   if (req.isAuthenticated()) {
     return res.redirect('/');
@@ -236,9 +219,7 @@ exports.getReset = function(req, res) {
 /**
  * POST /reset/:token
  * Process the reset password request.
- * @param token
  */
-
 exports.postReset = function(req, res, next) {
   req.assert('password', 'Password must be at least 4 characters long.').len(4);
   req.assert('confirm', 'Passwords must match.').equals(req.body.password);
@@ -303,7 +284,6 @@ exports.postReset = function(req, res, next) {
  * GET /forgot
  * Forgot Password page.
  */
-
 exports.getForgot = function(req, res) {
   if (req.isAuthenticated()) {
     return res.redirect('/');
@@ -316,9 +296,7 @@ exports.getForgot = function(req, res) {
 /**
  * POST /forgot
  * Create a random token, then the send user an email with a reset link.
- * @param email
  */
-
 exports.postForgot = function(req, res, next) {
   req.assert('email', 'Please enter a valid email address.').isEmail();
 

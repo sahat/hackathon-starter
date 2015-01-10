@@ -7,10 +7,11 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var GitHubStrategy = require('passport-github').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
-var OAuthStrategy = require('passport-oauth').OAuthStrategy; // Tumblr
-var OAuth2Strategy = require('passport-oauth').OAuth2Strategy; // Venmo, Foursquare
-var User = require('../models/User');
+var OAuthStrategy = require('passport-oauth').OAuthStrategy;
+var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+
 var secrets = require('./secrets');
+var User = require('../models/User');
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -22,8 +23,9 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-// Sign in with Instagram.
-
+/**
+ * Sign in with Instagram.
+ */
 passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ instagram: profile.id }, function(err, existingUser) {
@@ -65,8 +67,9 @@ passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, 
   }
 }));
 
-// Sign in using Email and Password.
-
+/**
+ * Sign in using Email and Password.
+ */
 passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
   User.findOne({ email: email }, function(err, user) {
     if (!user) return done(null, false, { message: 'Email ' + email + ' not found'});
@@ -84,7 +87,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  * OAuth Strategy Overview
  *
  * - User is already logged in.
- *   - Check if there is an existing account with a <provider> id.
+ *   - Check if there is an existing account with a provider id.
  *     - If there is, return an error message. (Account merging not supported)
  *     - Else link new OAuth account with currently logged-in user.
  * - User is not logged in.
@@ -95,8 +98,9 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  *       - Else create a new account.
  */
 
-// Sign in with Facebook.
-
+/**
+ * Sign in with Facebook.
+ */
 passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ facebook: profile.id }, function(err, existingUser) {
@@ -142,8 +146,9 @@ passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, r
   }
 }));
 
-// Sign in with GitHub.
-
+/**
+ * Sign in with GitHub.
+ */
 passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ github: profile.id }, function(err, existingUser) {
@@ -233,8 +238,9 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
   }
 }));
 
-// Sign in with Google.
-
+/**
+ * Sign in with Google.
+ */
 passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ google: profile.id }, function(err, existingUser) {
@@ -279,8 +285,9 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
   }
 }));
 
-// Sign in with LinkedIn.
-
+/**
+ * Sign in with LinkedIn.
+ */
 passport.use(new LinkedInStrategy(secrets.linkedin, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ linkedin: profile.id }, function(err, existingUser) {
@@ -327,8 +334,9 @@ passport.use(new LinkedInStrategy(secrets.linkedin, function(req, accessToken, r
   }
 }));
 
-// Tumblr API setup.
-
+/**
+ * Tumblr API OAuth.
+ */
 passport.use('tumblr', new OAuthStrategy({
     requestTokenURL: 'http://www.tumblr.com/oauth/request_token',
     accessTokenURL: 'http://www.tumblr.com/oauth/access_token',
@@ -348,8 +356,9 @@ passport.use('tumblr', new OAuthStrategy({
   }
 ));
 
-// Foursquare API setup.
-
+/**
+ * Foursquare API OAuth.
+ */
 passport.use('foursquare', new OAuth2Strategy({
     authorizationURL: 'https://foursquare.com/oauth2/authorize',
     tokenURL: 'https://foursquare.com/oauth2/access_token',
@@ -368,8 +377,9 @@ passport.use('foursquare', new OAuth2Strategy({
   }
 ));
 
-// Venmo API setup.
-
+/**
+ * Venmo API OAuth.
+ */
 passport.use('venmo', new OAuth2Strategy({
     authorizationURL: 'https://api.venmo.com/v1/oauth/authorize',
     tokenURL: 'https://api.venmo.com/v1/oauth/access_token',
@@ -388,15 +398,17 @@ passport.use('venmo', new OAuth2Strategy({
   }
 ));
 
-// Login Required middleware.
-
+/**
+ * Login Required middleware.
+ */
 exports.isAuthenticated = function(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect('/login');
 };
 
-// Authorization Required middleware.
-
+/**
+ * Authorization Required middleware.
+ */
 exports.isAuthorized = function(req, res, next) {
   var provider = req.path.split('/').slice(-1)[0];
 

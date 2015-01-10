@@ -23,7 +23,6 @@ var _ = require('lodash');
  * GET /api
  * List of API examples.
  */
-
 exports.getApi = function(req, res) {
   res.render('api/index', {
     title: 'API Examples'
@@ -34,7 +33,6 @@ exports.getApi = function(req, res) {
  * GET /api/foursquare
  * Foursquare API example.
  */
-
 exports.getFoursquare = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'foursquare' });
   async.parallel({
@@ -69,7 +67,6 @@ exports.getFoursquare = function(req, res, next) {
  * GET /api/tumblr
  * Tumblr API example.
  */
-
 exports.getTumblr = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'tumblr' });
   var client = tumblr.createClient({
@@ -92,7 +89,6 @@ exports.getTumblr = function(req, res, next) {
  * GET /api/facebook
  * Facebook API example.
  */
-
 exports.getFacebook = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'facebook' });
   graph.setAccessToken(token.accessToken);
@@ -122,7 +118,6 @@ exports.getFacebook = function(req, res, next) {
  * GET /api/scraping
  * Web scraping example using Cheerio library.
  */
-
 exports.getScraping = function(req, res, next) {
   request.get('https://news.ycombinator.com/', function(err, request, body) {
     if (err) return next(err);
@@ -142,7 +137,6 @@ exports.getScraping = function(req, res, next) {
  * GET /api/github
  * GitHub API Example.
  */
-
 exports.getGithub = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'github' });
   var github = new Github({ token: token.accessToken });
@@ -161,7 +155,6 @@ exports.getGithub = function(req, res, next) {
  * GET /api/aviary
  * Aviary image processing example.
  */
-
 exports.getAviary = function(req, res) {
   res.render('api/aviary', {
     title: 'Aviary API'
@@ -172,7 +165,6 @@ exports.getAviary = function(req, res) {
  * GET /api/nyt
  * New York Times API example.
  */
-
 exports.getNewYorkTimes = function(req, res, next) {
   var query = querystring.stringify({ 'api-key': secrets.nyt.key, 'list-name': 'young-adult' });
   var url = 'http://api.nytimes.com/svc/books/v2/lists?' + query;
@@ -191,7 +183,6 @@ exports.getNewYorkTimes = function(req, res, next) {
  * GET /api/lastfm
  * Last.fm API example.
  */
-
 exports.getLastfm = function(req, res, next) {
   var lastfm = new LastFmNode(secrets.lastfm);
   async.parallel({
@@ -266,7 +257,6 @@ exports.getLastfm = function(req, res, next) {
  * GET /api/twitter
  * Twiter API example.
  */
-
 exports.getTwitter = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'twitter' });
   var T = new Twit({
@@ -288,7 +278,6 @@ exports.getTwitter = function(req, res, next) {
  * POST /api/twitter
  * Post a tweet.
  */
-
 exports.postTwitter = function(req, res, next) {
   req.assert('tweet', 'Tweet cannot be empty.').notEmpty();
   var errors = req.validationErrors();
@@ -314,7 +303,6 @@ exports.postTwitter = function(req, res, next) {
  * GET /api/steam
  * Steam API example.
  */
-
 exports.getSteam = function(req, res, next) {
   var steamId = '76561197982488301';
   var query = { l: 'english', steamid: steamId, key: secrets.steam.apiKey };
@@ -360,7 +348,6 @@ exports.getSteam = function(req, res, next) {
  * GET /api/stripe
  * Stripe API example.
  */
-
 exports.getStripe = function(req, res) {
   res.render('api/stripe', {
     title: 'Stripe API',
@@ -372,7 +359,6 @@ exports.getStripe = function(req, res) {
  * POST /api/stripe
  * Make a payment.
  */
-
 exports.postStripe = function(req, res, next) {
   var stripeToken = req.body.stripeToken;
   var stripeEmail = req.body.stripeEmail;
@@ -395,7 +381,6 @@ exports.postStripe = function(req, res, next) {
  * GET /api/twilio
  * Twilio API example.
  */
-
 exports.getTwilio = function(req, res) {
   res.render('api/twilio', {
     title: 'Twilio API'
@@ -406,7 +391,6 @@ exports.getTwilio = function(req, res) {
  * POST /api/twilio
  * Send a text message using Twilio.
  */
-
 exports.postTwilio = function(req, res, next) {
   req.assert('number', 'Phone number is required.').notEmpty();
   req.assert('message', 'Message cannot be blank.').notEmpty();
@@ -431,7 +415,6 @@ exports.postTwilio = function(req, res, next) {
  * GET /api/clockwork
  * Clockwork SMS API example.
  */
-
 exports.getClockwork = function(req, res) {
   res.render('api/clockwork', {
     title: 'Clockwork SMS API'
@@ -442,7 +425,6 @@ exports.getClockwork = function(req, res) {
  * POST /api/clockwork
  * Send a text message using Clockwork SMS
  */
-
 exports.postClockwork = function(req, res, next) {
   var message = {
     To: req.body.telephone,
@@ -460,7 +442,6 @@ exports.postClockwork = function(req, res, next) {
  * GET /api/venmo
  * Venmo API example.
  */
-
 exports.getVenmo = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'venmo' });
   var query = querystring.stringify({ access_token: token.accessToken });
@@ -490,7 +471,6 @@ exports.getVenmo = function(req, res, next) {
  * POST /api/venmo
  * Send money.
  */
-
 exports.postVenmo = function(req, res, next) {
   req.assert('user', 'Phone, Email or Venmo User ID cannot be blank').notEmpty();
   req.assert('note', 'Please enter a message to accompany the payment').notEmpty();
@@ -529,7 +509,6 @@ exports.postVenmo = function(req, res, next) {
  * GET /api/linkedin
  * LinkedIn API example.
  */
-
 exports.getLinkedin = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'linkedin' });
   var linkedin = Linkedin.init(token.accessToken);
@@ -546,7 +525,6 @@ exports.getLinkedin = function(req, res, next) {
  * GET /api/instagram
  * Instagram API example.
  */
-
 exports.getInstagram = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'instagram' });
   ig.use({ client_id: secrets.instagram.clientID, client_secret: secrets.instagram.clientSecret });
@@ -588,7 +566,6 @@ exports.getInstagram = function(req, res, next) {
  * GET /api/yahoo
  * Yahoo API example.
  */
-
 exports.getYahoo = function(req, res) {
   Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', function(response) {
     var location = response.query.results.channel.location;
