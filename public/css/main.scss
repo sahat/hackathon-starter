@@ -1,13 +1,13 @@
 // An opinionated styleguide for writing sane, maintainable and scalable Sass.
 // http://sass-guidelin.es
 
-@import "themes/default/variables";
+@import "themes/modern/variables";
 
 @import "vendors/bootstrap";
 @import "vendors/bootstrap-social";
 @import "vendors/font-awesome";
 
-@import "themes/default/styles";
+@import "themes/modern/styles";
 
 // Scaffolding
 // -------------------------
