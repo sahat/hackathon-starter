@@ -1,0 +1,13 @@
+app:
+  image: dockerfile/nodejs
+  volumes:
+    - ./:/app/
+  working_dir: /app/
+  command: npm start
+  ports:
+    - "8080:8080"
+  links:
+    - mongodb
+mongodb:
+  image: mongo
+  command: mongod --smallfiles
