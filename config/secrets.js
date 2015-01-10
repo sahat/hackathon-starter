@@ -1,20 +1,23 @@
 /**
- * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT *
+ * IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT
  *
  * You should never commit this file to a public repository on GitHub!
  * All public code on GitHub can be searched, that means anyone can see your
  * uploaded secrets.js file.
  *
- * I did it for your convenience using "throw away" credentials so that
- * all features could work out of the box.
+ * I did it for your convenience using "throw away" API keys and passwords so
+ * that all features could work out of the box.
  *
- * Untrack secrets.js before pushing your code to public GitHub repository:
+ * Use config vars (environment variables) below for production API keys
+ * and passwords. Each PaaS (e.g. Heroku, Nodejitsu, OpenShift, Azure) has a way
+ * for you to set it up from the dashboard.
  *
- * git rm --cached config/secrets.js
- *
- * If you have already commited this file to GitHub with your keys, then
- * refer to https://help.github.com/articles/remove-sensitive-data
-*/
+ * Another added benefit of this approach is that you can use two different
+ * sets of keys for local development and production mode without making any
+ * changes to the code.
+
+ * IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT
+ */
 
 module.exports = {
 
