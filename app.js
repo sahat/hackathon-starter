@@ -1,7 +1,6 @@
 /**
  * Module dependencies.
  */
-
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var compress = require('compression');
@@ -24,7 +23,6 @@ var connectAssets = require('connect-assets');
 /**
  * Controllers (route handlers).
  */
-
 var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
@@ -33,20 +31,17 @@ var contactController = require('./controllers/contact');
 /**
  * API keys and Passport configuration.
  */
-
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
 
 /**
  * Create Express server.
  */
-
 var app = express();
 
 /**
  * Connect to MongoDB.
  */
-
 mongoose.connect(secrets.db);
 mongoose.connection.on('error', function() {
   console.error('MongoDB Connection Error. Please make sure that MongoDB is running.');
@@ -55,13 +50,11 @@ mongoose.connection.on('error', function() {
 /**
  * CSRF whitelist.
  */
-
 var csrfExclude = ['/url1', '/url2'];
 
 /**
  * Express configuration.
  */
-
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -106,9 +99,8 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 /**
- * Main routes.
+ * Primary app routes.
  */
-
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
@@ -130,7 +122,6 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 /**
  * API examples routes.
  */
-
 app.get('/api', apiController.getApi);
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
@@ -156,9 +147,8 @@ app.get('/api/instagram', passportConf.isAuthenticated, passportConf.isAuthorize
 app.get('/api/yahoo', apiController.getYahoo);
 
 /**
- * OAuth sign-in routes.
+ * OAuth authentication routes. (Sign in)
  */
-
 app.get('/auth/instagram', passport.authenticate('instagram'));
 app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
@@ -185,9 +175,8 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 });
 
 /**
- * OAuth authorization routes for API examples.
+ * OAuth authorization routes. (API examples)
  */
-
 app.get('/auth/foursquare', passport.authorize('foursquare'));
 app.get('/auth/foursquare/callback', passport.authorize('foursquare', { failureRedirect: '/api' }), function(req, res) {
   res.redirect('/api/foursquare');
@@ -202,15 +191,13 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
 });
 
 /**
- * 500 Error Handler.
+ * Error Handler.
  */
-
 app.use(errorHandler());
 
 /**
  * Start Express server.
  */
-
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
