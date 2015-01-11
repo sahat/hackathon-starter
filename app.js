@@ -137,6 +137,9 @@ app.get('/api/linkedin', passportConf.isAuthenticated, passportConf.isAuthorized
 app.get('/api/instagram', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getInstagram);
 app.get('/api/yahoo', apiController.getYahoo);
 app.get('/api/ordrin', apiController.getOrdrin);
+app.get('/api/paypal', apiController.getPayPal);
+app.get('/api/paypal/success', apiController.getPayPalSuccess);
+app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 
 /**
  * OAuth authentication routes. (Sign in)
