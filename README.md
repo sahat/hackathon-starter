@@ -728,7 +728,7 @@ The reason why you pass an error like `{ msg: 'Error messages goes here' }` inst
 of just a string - `'Error messages goes here'`, is for the sake of consistency.
 To clarify that, *express-validator* module which is used for validating and sanitizing user's input,
 returns all errors as an array of objects, where each object has a `msg` property with a message
-why an error has occured. Here is a more general example of what express-validator returns when there are errors present:
+why an error has occurred. Here is a more general example of what express-validator returns when there are errors present:
 
 ```js
 [
@@ -1065,7 +1065,7 @@ User
 
 #### Get total count of a field from all documents:
 Let's suppose that each user has a `votes` field and you would like to count
-the total number of votes in your database accross all users. One very
+the total number of votes in your database across all users. One very
 inefficient way would be to loop through each document and manually accumulate
 the count. Or you could use [MongoDB Aggregation Framework](http://docs.mongodb.org/manual/core/aggregation-introduction/) instead:
 
@@ -1240,7 +1240,7 @@ Changelog
 
 ### 2.2 (June 6, 2014)
 - Use Lodash instead of Underscore.js
-- Replaced all occurences of `_.findWhere` with `_.find`
+- Replaced all occurrences of `_.findWhere` with `_.find`
 - Added a flash message when user deletes an account
 - Updated and clarified some comments
 - Updated the Remove Auth message in `setup.js`
