@@ -129,16 +129,18 @@ restart the server each time you make a small change in code. To install, run
 Generator
 ---------
 
-Hackathon Starter Generator is currently in the experimental stage. It is tighly
-tied to the project code. As soon as you start changing and moving things around,
-it will probably no longer work as expected. That is why it's best to use when
-you first download the project.
+Hackathon Starter Generator is tighly coupled to the project code. As soon as you
+start changing and moving things around, it will probably no longer work as
+expected. That is why it's best to use when you first download the project.
 
-Currently it supports removing authentication providers, switching
-between SendGrid, Mailgun and Mandrill email services and adding a Node.js
-cluster support.
+Currently it supports switching between SendGrid, Mailgun and Mandrill email
+services and adding a Node.js cluster support.
 
 To get started, run: `node setup.js`.
+
+**Note:** Generator has a "destructive" behavior, it will physically
+modify your code. *There is no undo action.* To be on a safe side, always commit
+your code to Git, so you could go back and revert the changes.
 
 :exclamation: **Note:** Generator has a "destructive" behavior, it will physically
 modify your code. *There is no undo action.* To be on a safe side, always commit
