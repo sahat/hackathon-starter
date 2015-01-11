@@ -2,7 +2,7 @@
 Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](http://img.shields.io/travis/sahat/hackathon-starter.svg?style=flat)](https://travis-ci.org/sahat/hackathon-starter) [![Analytics](https://ga-beacon.appspot.com/UA-47447818-2/hackathon-starter?pixel)](https://github.com/igrigorik/ga-beacon)
 =======================
 
-:octocat: &nbsp;**Live Demo**: http://hackathonstarter.herokuapp.com 
+**Live Demo**: http://hackathonstarter.herokuapp.com
 
 Jump to [What's new in 2.4.0?](#changelog)
 
@@ -97,7 +97,7 @@ Prerequisites
  - <img src="http://i1-news.softpedia-static.com/images/extra/LINUX/small/slw218news1.png" height="17">&nbsp;**Fedora**: `sudo yum groupinstall "Development Tools"`
  - <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE**: `sudo zypper install --type pattern devel_basis`
 
-:exclamation: **Note:** If you are new to Node or Express, I recommend to watch
+**Note:** If you are new to Node or Express, I recommend to watch
 [Node.js and Express 101](http://www.youtube.com/watch?v=BN0JlMZCtNU)
 screencast by Alex Ford that teaches Node and Express from scratch. Alternatively,
 here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
@@ -120,7 +120,7 @@ $ npm install
 $ node app.js
 ```
 
-:exclamation: **Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon).
+**Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon).
 It watches for any changes in your  node.js app and automatically restarts the
 server. Once installed, instead of `node app.js` use `nodemon app.js`. It will
 save you a lot of time in the long run, because you won't need to manually
@@ -143,7 +143,7 @@ To get started, run: `node setup.js`.
 modify your code. *There is no undo action.* To be on a safe side, always commit
 your code to Git, so you could go back and revert the changes.
 
-:exclamation: **Note:** Generator has a "destructive" behavior, it will physically
+**Note:** Generator has a "destructive" behavior, it will physically
 modify your code. *There is no undo action.* To be on a safe side, always commit
 your code to Git, so you could go back and revert the changes.
 
@@ -170,7 +170,7 @@ them with *your credentials* when you are ready to deploy an app.
  - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
 - Copy and paste *Client ID* and *Client secret* keys into `config/secrets.js`
 
-:exclamation: **Note:** When you ready to deploy to production don't forget to
+**Note:** When you ready to deploy to production don't forget to
 add your new url to *Authorized Javascript origins* and *Authorized redirect URI*,
 e.g. `http://my-awesome-app.herokuapp.com` and
 `http://my-awesome-app.herokuapp.com/auth/google/callback` respectively.
@@ -188,7 +188,7 @@ The same goes for other providers.
 - Select **Website**
 - Enter `http://localhost:3000` for *Site URL*
 
-:exclamation: **Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
+**Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
 <hr>
 
@@ -342,7 +342,7 @@ Project Structure
 | app.js                             | Main application file.                                      |
 | setup.js                       | Tool for removing authentication providers and other things.|
 
-:exclamation: **Note:** There is no preference how you name or structure your views.
+**Note:** There is no preference how you name or structure your views.
 You could place all your templates in a top-level `views` directory without
 having a nested folder structure, if that makes things easier for you.
 Just don't forget to update `extends ../layout`  and corresponding
@@ -538,7 +538,7 @@ concatenating and minifying JavaScript files will be even greater. Using
 != js('application')  // expects public/js/application.js
 ```
 
-:bulb: **Tip:** We can use `css` and `js` functions in Jade templates because in
+**Tip:** We can use `css` and `js` functions in Jade templates because in
 **connect-assets** middleware options we have added this line: `helperContext: app.locals`.
 
 The only thing you need to remember is to define your JavaScript files inside
@@ -574,7 +574,7 @@ download MongoDB [here](mongodb.org/downloads), or install it via a package mana
 <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">
 Windows users, read [Install MongoDB on Windows](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
-:bulb: **Tip:** If you are always connected to the internet, you could just use
+**Tip:** If you are always connected to the internet, you could just use
 [MongoLab](https://mongolab.com/) or [MongoHQ](https://www.mongohq.com/) instead
 of downloading and installing MongoDB locally. You will only need to update the
 `db` property in `config/secrets.js`.
@@ -652,14 +652,15 @@ how a particular functionality works. Maybe you are just curious about
 how it works, or maybe you are lost and confused while reading the code,
 I hope it provides some guidance to you.
 
-###:rose: Custom HTML and CSS Design 101
+###Custom HTML and CSS Design 101
+
 [HTML5 UP](http://html5up.net/) has many beautiful templates that you can download for free.
 
 When you download the ZIP file, it will come with *index.html*, *images*, *css* and *js* folders. So, how do you
 integrate it with Hackathon Starter? Hackathon Starter uses Bootstrap CSS framework, but these templates do not.
 Trying to use both CSS files at the same time will likely result in undesired effects.
 
-:exclamation: **Note:** Using the custom templates approach, you should understand that you cannot reuse any of the views I have created: layout, home page, api browser, login, signup, account management, contact. Those views were built using Bootstrap grid and styles. You will have to manually update the grid using a different syntax provided in the template. **Having said that, you can mix and match if you want to do so: Use Bootstrap for main app interface, and a custom template for a landing page.**
+**Note:** Using the custom templates approach, you should understand that you cannot reuse any of the views I have created: layout, home page, api browser, login, signup, account management, contact. Those views were built using Bootstrap grid and styles. You will have to manually update the grid using a different syntax provided in the template. **Having said that, you can mix and match if you want to do so: Use Bootstrap for main app interface, and a custom template for a landing page.**
 
 Let's start from the beginning. For this example I will use [Escape Velocity](http://html5up.net/escape-velocity/) template:
 ![Alt](http://html5up.net/uploads/images/escape-velocity.jpg)
@@ -700,7 +701,7 @@ might have yet another grid system. That's why I chose *Bootstrap* for the Hacka
 
 <hr>
 
-###:bulb: How do flash messages work in this project?
+### How do flash messages work in this project?
 Flash messages allow you to display a message at the end of the request and access
 it on next request and only next request. For instance, on a failed login attempt, you would
 display an alert with some error message, but as soon as you refresh that page or visit a different
@@ -778,7 +779,7 @@ or send a pull request if you  would like to include something that I missed.
 
 <hr>
 
-###:snowman: How do I create a new page?
+### How do I create a new page?
 A more correct way to be to say "How do I create a new route". The main file `app.js` contains all the routes.
 Each route has a callback function associated with it. Sometimes you will see 3 or more arguments
 to routes. In cases like that, the first argument is still a URL string, while middle arguments
@@ -908,7 +909,7 @@ parsing websites using [Cheerio](https://github.com/MatthewMueller/cheerio), and
 
 <hr>
 
-###:dizzy: How do I use Socket.io with Hackathon Starter?
+### How do I use Socket.io with Hackathon Starter?
 [Dan Stroot](https://github.com/dstroot) submitted an excellent [pull request](https://github.com/dstroot/hackathon-starter/commit/0a632def1ce8da446709d92812423d337c977d75) that adds a real-time dashboard with socket.io.
 And as  much as I'd like to add it to the project, I think it violates one of the main
 principles of the Hackathon Starter:
@@ -1095,7 +1096,7 @@ listed below.
 - Run `heroku addons:add mongolab` to set up Mongo and configure your environment variables
 - Lastly, do `git push heroku master`.  Done!
 
-**:exclamation:Note:** To install Heroku add-ons your account must be verified.
+**Note:** To install Heroku add-ons your account must be verified.
 
 ---
 
@@ -1117,7 +1118,7 @@ listed below.
 - Finally, in `secrets.js` instead of `db: 'localhost'`, use the following URI with your credentials:
  - `db: 'mongodb://USERNAME:PASSWORD@ds027479.mongolab.com:27479/DATABASE_NAME'`
 
-**:exclamation:Note:** As an alternative to MongoLab, there is also [MongoHQ](http://www.mongohq.com/home).
+**Note:** As an alternative to MongoLab, there is also [MongoHQ](http://www.mongohq.com/home).
 
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
