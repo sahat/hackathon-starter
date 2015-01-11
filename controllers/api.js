@@ -11,6 +11,7 @@ var tumblr = require('tumblr.js');
 var foursquare = require('node-foursquare')({ secrets: secrets.foursquare });
 var Github = require('github-api');
 var Twit = require('twit');
+var ordrin = require('ordrin-api');
 var stripe =  require('stripe')(secrets.stripe.secretKey);
 var twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
 var Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL);
@@ -576,4 +577,26 @@ exports.getYahoo = function(req, res) {
       condition: condition
     });
   });
+};
+
+/**
+ * GET /api/ordrin
+ * Ordr.in API example.
+ */
+exports.getOrdrin = function(req, res, next) {
+  var ordrin_api = new ordrin.APIs(secrets.ordrin.secretKey);
+  ordrin_api.delivery_list({
+    datetime: 'ASAP',
+    addr: '199 Chambers St',
+    city: 'New York, NY',
+    zip: '10007'
+  }, function(err, deliveries) {
+    if (err) return next(err);
+    res.render('api/ordrin', {
+      title: 'Ordr.in API',
+      deliveries: deliveries
+    });
+  });
+
+
 };
