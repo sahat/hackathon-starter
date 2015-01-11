@@ -126,5 +126,10 @@ module.exports = {
     clientId: process.env.VENMO_ID || '1688',
     clientSecret: process.env.VENMO_SECRET || 'uQXtNBa6KVphDLAEx8suEush3scX8grs',
     redirectUrl: process.env.VENMO_REDIRECT_URL || 'http://localhost:3000/auth/venmo/callback'
+  },
+
+  ordrin: {
+    publicKey: process.env.ORDRIN_PUBLIC || 'G35-rSt76CXpUEOlqXYNMC84ZbdFUKN_plHVHVYhdeU',
+    secretKey: process.env.ORDRIN_SECRET || 'bcoOR_2z6gQDZuEOcw1yTt6THFPK9KmvywG7UJD7pqQ'
   }
 };
