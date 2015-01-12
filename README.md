@@ -1210,8 +1210,8 @@ Changelog
 - Simplified "remember original destination" middleware.
  - Instead of excluding certain routes, you now have to "opt-in" for the routes you wish to remember for a redirect after successful authentication.
 - Converted LESS to Sass.
-- Updated Bootstrap to 3.3.0 and Font Awesome to 4.2.0.
-- Updated jQuery to 2.1.3 and Bootstrap to 3.3.0 JS files.
+- Updated Bootstrap to 3.3.1 and Font Awesome to 4.2.0.
+- Updated jQuery to 2.1.3 and Bootstrap to 3.3.1 JS files.
 - Updated Ionicons to 2.0.
 - Faster travis-ci builds using `sudo: false`.
 - Fixed YUI url on Yahoo API example.
