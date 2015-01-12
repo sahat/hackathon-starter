@@ -1,10 +1,10 @@
 ![Alt](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg)
-Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](http://img.shields.io/travis/sahat/hackathon-starter.svg?style=flat)](https://travis-ci.org/sahat/hackathon-starter) [![Analytics](https://ga-beacon.appspot.com/UA-47447818-2/hackathon-starter?pixel)](https://github.com/igrigorik/ga-beacon)
+Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](http://img.shields.io/travis/sahat/hackathon-starter.svg?style=flat)](https://travis-ci.org/sahat/hackathon-starter) [![Analytics](https://ga-beacon.appspot.com/UA-47447818-2/hackathon-starter?pixel)](https://github.com/igrigorik/ga-beacon) ![Version](https://img.shields.io/badge/hackathon--starter-3.0-ac96f1.svg?style=flat)
 =======================
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 2.4.0?](#changelog)
+Jump to [What's new in 3.0.0?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1201,6 +1201,25 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.0.0 (January 11, 2015)
+- New Ordr.in API example.
+- Brought back PayPal API example.
+- Added `xframe` and xssProtection` protection via **lusca** module.
+- No more CSRF route whitelisting, either enable or dsiable it globally.
+- Simplified "remember original destination" middleware.
+ - Instead of excluding certain routes, you now have to "opt-in" for the routes you wish to remember for a redirect after successful authentication.
+- Converted LESS to Sass.
+- Updated Bootstrap to 3.3.0 and Font Awesome to 4.2.0.
+- Updated jQuery to 2.1.3 and Bootstrap to 3.3.0 JS files.
+- Updated Ionicons to 2.0.
+- Faster travis-ci builds using `sudo: false`.
+- Fixed YUI url on Yahoo API example.
+- Fixed `mongo-connect` deprecation warning.
+- Code cleanup throughout the project.
+- Updated `secrets.js` notice.
+- Simplified the generator (`setup.js`), no longer removes auth providers.
+- Added `git remote rm origin` to Getting Started instructions in README.
 
 ### 2.4.0 (November 8, 2014)
 - Bootstrap 3.3.0.
