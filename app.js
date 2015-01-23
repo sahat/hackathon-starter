@@ -140,6 +140,7 @@ app.get('/api/ordrin', apiController.getOrdrin);
 app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
 app.get('/api/paypal/cancel', apiController.getPayPalCancel);
+app.get('/api/lob', apiController.getLob);
 
 /**
  * OAuth authentication routes. (Sign in)
