@@ -687,11 +687,9 @@ exports.getLob = function(req, res, next) {
     zip_codes: ['10007'] 
   }, function(err, routes) {
     if(err) return next(err); 
-    console.log(routes.data);
     res.render('api/lob', {
       title: 'Lob API',
       routes: routes.data[0].routes
     });
   });
 };
-
