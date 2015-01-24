@@ -17,6 +17,7 @@ var twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
 var Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL);
 var clockwork = require('clockwork')({ key: secrets.clockwork.apiKey });
 var paypal = require('paypal-rest-sdk');
+var lob = require('lob')(secrets.lob.apiKey);
 var ig = require('instagram-node').instagram();
 var Y = require('yui/yql');
 var _ = require('lodash');
@@ -674,5 +675,21 @@ exports.getPayPalCancel = function(req, res) {
   res.render('api/paypal', {
     result: true,
     canceled: true
+  });
+};
+
+/**
+ * GET /api/lob
+ * Lob API example.
+ */
+exports.getLob = function(req, res, next) {
+  lob.routes.list({
+    zip_codes: ['10007'] 
+  }, function(err, routes) {
+    if(err) return next(err); 
+    res.render('api/lob', {
+      title: 'Lob API',
+      routes: routes.data[0].routes
+    });
   });
 };
