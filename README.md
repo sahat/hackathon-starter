@@ -267,7 +267,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://www.dropboxatwork.com/wp-content/uploads/2013/02/foursquare-logo.png" width="200">
+<img src="https://playfoursquare.s3.amazonaws.com/press/2014/foursquare-logomark.png" width="200">
 - Go to [foursquare for Developers](https://developer.foursquare.com/)
 - Click on **My Apps** in the top menu
 - Click the **Create A New App** button
