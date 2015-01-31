@@ -10,7 +10,7 @@ var logger = require('morgan');
 var errorHandler = require('errorhandler');
 var lusca = require('lusca');
 var methodOverride = require('method-override');
-var multer  = require('multer')
+var multer  = require('multer');
 
 var _ = require('lodash');
 var MongoStore = require('connect-mongo')(session);
