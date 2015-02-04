@@ -145,10 +145,6 @@ To get started, run: `node setup.js`.
 modify your code. *There is no undo action.* To be on a safe side, always commit
 your code to Git, so you could go back and revert the changes.
 
-**Note:** Generator has a "destructive" behavior, it will physically
-modify your code. *There is no undo action.* To be on a safe side, always commit
-your code to Git, so you could go back and revert the changes.
-
 Obtaining API Keys
 ------------------
 
