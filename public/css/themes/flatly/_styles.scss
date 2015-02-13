@@ -1,4 +1,4 @@
-// Flatly 3.3.0
+// Flatly 3.3.2
 // Bootswatch
 // -----------------------------------------------------
 
@@ -26,18 +26,18 @@
   }
 
   &-brand {
-    padding: 18.5px 15px 20.5px;
+    line-height: 1;
   }
 }
 
 // Buttons ====================================================================
 
 .btn:active {
-  .box-shadow(none);
+  @include box-shadow(none);
 }
 
 .btn-group.open .dropdown-toggle {
-  .box-shadow(none);
+  @include box-shadow(none);
 }
 
 // Typography =================================================================
@@ -86,7 +86,9 @@ table,
   .info {
     color: #fff;
 
-    a {
+    > th > a,
+    > td > a,
+    > a {
       color: #fff;
     }
   }
@@ -115,10 +117,10 @@ table,
 .form-control,
 input, {
   border-width: 2px;
-  .box-shadow(none);
+  @include box-shadow(none);
 
   &:focus {
-    .box-shadow(none);
+    @include box-shadow(none);
   }
 }
 
@@ -237,7 +239,7 @@ input, {
 
 .progress {
   height: 10px;
-  .box-shadow(none);
+  @include box-shadow(none);
   .progress-bar {
     font-size: 10px;
     line-height: 10px;
@@ -247,7 +249,7 @@ input, {
 // Containers =================================================================
 
 .well {
-  .box-shadow(none);
+  @include box-shadow(none);
 }
 
 a.list-group-item {
@@ -273,7 +275,7 @@ a.list-group-item {
     &.active {
       background-color: $state-warning-bg;
     }
-
+    
     &.active:hover,
     &.active:focus {
       background-color: darken($state-warning-bg, 5%);
@@ -284,7 +286,7 @@ a.list-group-item {
     &.active {
       background-color: $state-danger-bg;
     }
-
+    
     &.active:hover,
     &.active:focus {
       background-color: darken($state-danger-bg, 5%);
