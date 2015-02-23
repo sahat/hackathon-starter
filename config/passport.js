@@ -71,6 +71,7 @@ passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, 
  * Sign in using Email and Password.
  */
 passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
+  email = email.toLowerCase();
   User.findOne({ email: email }, function(err, user) {
     if (!user) return done(null, false, { message: 'Email ' + email + ' not found'});
     user.comparePassword(password, function(err, isMatch) {
