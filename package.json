@@ -51,20 +51,20 @@
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
     "passport-twitter": "^1.0.3",
-    "paypal-rest-sdk": "^1.5.0",
+    "paypal-rest-sdk": "^1.5.1",
     "request": "^2.53.0",
     "stripe": "^3.3.2",
     "tumblr.js": "^0.0.4",
     "twilio": "^1.11.1",
     "twit": "^1.1.20",
-    "uglify-js": "^2.4.16",
+    "uglify-js": "^2.4.17",
     "validator": "^3.33.0",
     "yui": "^3.18.1"
   },
   "devDependencies": {
     "blessed": "^0.0.49",
-    "chai": "^2.1.0",
-    "mocha": "^2.1.0",
+    "chai": "^2.1.1",
+    "mocha": "^2.2.1",
     "multiline": "^1.0.2",
     "supertest": "^0.15.0"
   }
