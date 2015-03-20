@@ -330,7 +330,7 @@ Project Structure
 | **views/account**/                 | Templates for *login, password reset, signup, profile*.     |
 | **views/api**/                     | Templates for API Examples.                                 |
 | **views/partials**/flash.jade      | Error, info and success flash notifications.                |
-| **views/partials**/navigation.jade | Navbar partial template.                                    |
+| **views/partials**/header.jade     | Navbar partial template.                                    |
 | **views/partials**/footer.jade     | Footer partial template.                                    |
 | **views**/layout.jade              | Base template.                                              |
 | **views**/home.jade                | Home page template.                                         |
