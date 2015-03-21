@@ -845,7 +845,7 @@ Use whichever style that makes sense to you. Either one is acceptable. I really 
 `app.route` is very clean and elegant approach, but on the other hand I can no longer see all my routes at a glance
 when you have one route per line.
 
-**Step 2. Create a `Book` schema and model.
+**Step 2.** Create a new schema and a model `Book.js`.
 ```js
 var bookSchema = new mongoose.Schema({
   name: String
