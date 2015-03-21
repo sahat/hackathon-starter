@@ -666,7 +666,8 @@ Let's start from the beginning. For this example I will use [Escape Velocity](ht
 
 Move all javascript files from `html5up-escape-velocity/js` to `public/js`. Then move all css files from `html5up-escape-velocity/css` to `public/css`. And finally, move all images from `html5up-escape-velocity/images` to `public/images` (You could move it to the existing **img** folder, but then you would have to manually change every `img` reference). Grab the contents of `index.html` and paste it into [HTML To Jade](http://html2jade.aaron-powell.com/).
 
-Create a new file `escape-velocity.jade` and paste the Jade markup there.
+Create a new file `escape-velocity.jade` and paste the Jade markup in `views` folder.
+Whenever you see the code `res.render('account/login')` - that means it will search for `views/account/login.jade` file.
 
 Let's see how it looks. Create a new controller **escapeVelocity** inside `controllers/home.js`:
 
