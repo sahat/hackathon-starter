@@ -1149,14 +1149,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 - Finally, now you can push your code to OpenShift by running `git push -f openshift master`
  - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. Please **do not** do `git pull` as it will create unnecessary merge conflicts.
-- And you are done! (Not quite as simple as Heroku, huh?)
-
-<img src="http://upload.wikimedia.org/wikipedia/en/f/fb/Nodejitsu_logo.png" width="200">
-- To install **jitsu**, open a terminal and type: `sudo npm install -g jitsu`
-- Run `jitsu login` and enter your login credentials
-- From your app directory, run `jitsu deploy`
- - This will create a new application snapshot, generate and/or update project metadata
-- Done!
+- And you are done!
 
 <img src="http://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
 
