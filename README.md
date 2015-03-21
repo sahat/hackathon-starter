@@ -845,9 +845,16 @@ Use whichever style that makes sense to you. Either one is acceptable. I really 
 `app.route` is very clean and elegant approach, but on the other hand I can no longer see all my routes at a glance
 when you have one route per line.
 
----
+**Step 2. Create a `Book` schema and model.
+```js
+var bookSchema = new mongoose.Schema({
+  name: String
+});
 
-**Step 2.** Create a new controller file called `book.js`.
+var Book = mongoose.model('Book', bookSchema);
+```
+
+**Step 3.** Create a new controller file called `book.js`.
 ```js
 /**
  * GET /books
@@ -861,12 +868,12 @@ exports.getBooks = function(req, res) {
 };
 ```
 
-**Step 3.** Import that controller in `app.js`.
+**Step 4.** Import that controller in `app.js`.
 ```js
 var bookController = require('./controllers/book');
 ```
 
-**Step 4.** Create `books.jade` template.
+**Step 5.** Create `books.jade` template.
 ```jade
 extends layout
 
