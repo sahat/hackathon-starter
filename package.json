@@ -13,7 +13,7 @@
     "async": "^0.9.0",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.12.0",
-    "cheerio": "^0.18.0",
+    "cheerio": "^0.19.0",
     "clockwork": "^0.1.1",
     "compression": "^1.4.2",
     "connect-assets": "^4.6.0",
@@ -62,7 +62,7 @@
     "yui": "^3.18.1"
   },
   "devDependencies": {
-    "blessed": "^0.0.49",
+    "blessed": "^0.0.51",
     "chai": "^2.1.1",
     "mocha": "^2.2.1",
     "multiline": "^1.0.2",
