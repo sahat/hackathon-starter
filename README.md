@@ -325,7 +325,7 @@ Project Structure
 | **public**/                        | Static assets (fonts, css, js, img).                        |
 | **public**/**js**/application.js   | Specify client-side JavaScript dependencies.                |
 | **public**/**js**/main.js          | Place your client-side JavaScript here.                     |
-| **public**/**css**/styles.less     | Main stylesheet for your app.                               |
+| **public**/**css**/main.less       | Main stylesheet for your app.                               |
 | **public/css/themes**/default.less | Some Bootstrap overrides to make it look prettier.          |
 | **views/account**/                 | Templates for *login, password reset, signup, profile*.     |
 | **views/api**/                     | Templates for API Examples.                                 |
