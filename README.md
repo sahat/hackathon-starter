@@ -457,7 +457,7 @@ Recommended Client-side Libraries
 Pro Tips
 --------
 
-- When installing an NPM package, add a *--save* flag, and it will be automatially
+- When installing an NPM package, add a *--save* flag, and it will be automatically
 added to `package.json` as well. For example, `npm install --save moment`.
 - Use [async.parallel()](https://github.com/caolan/async#parallel) when you need to run multiple
 asynchronous tasks, and then render a page, but only when all tasks are completed. For example, you might
@@ -576,7 +576,7 @@ of downloading and installing MongoDB locally. You will only need to update the
 `db` property in `config/secrets.js`.
 
 ### I get an error when I deploy my app, why?
-Chances are you haven't changed the *Dabatase URI* in `secrets.js`. If `db` is
+Chances are you haven't changed the *Database URI* in `secrets.js`. If `db` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
 running on `localhost`. You need to create an account with [MongoLab](http://mongolab.com)
@@ -1327,7 +1327,7 @@ Changelog
 There are have been over **500+** commits since the initial announcement in
 January 2014 and over a **120** issues and pull requests from **28** contributors.
 
-- Documention grew **8x** in size since the announcement on Hacker News
+- Documentation grew **8x** in size since the announcement on Hacker News
 - Upgraded to Express 4.0
 - Generator for adding/removing authentication providers
 - New Instagram authentication that can be added via generator
