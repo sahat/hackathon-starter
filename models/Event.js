@@ -5,12 +5,12 @@ var eventSchema = new Schema({
 	_id: Schema.Types.ObjectId,
 	title: String,
 	description: String,
-	createdDate: { type: Date, default: Date.now },
 	createdBy: Schema.Types.ObjectId,
-	eventDate: Date,
+	createdDate: { type: Date, default: Date.now },
+	modifiedDate: { type: Date, default: Date.now },
+	eventDate: Number,
 	type: String,
-	participants: [Schema.Types.ObjectId],
-	isActive: Boolean,
+	participants: [Schema.Types.ObjectId]
   
 });
 

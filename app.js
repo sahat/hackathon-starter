@@ -75,11 +75,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(lusca({
-  csrf: true,
-  xframe: 'SAMEORIGIN',
-  xssProtection: true
-}));
+// app.use(lusca({
+//   csrf: true,
+//   xframe: 'SAMEORIGIN',
+//   xssProtection: true
+// }));
 app.use(function(req, res, next) {
   res.locals.user = req.user;
   next();
@@ -117,11 +117,11 @@ app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
 app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 
-// app.get('/api/event', eventsController.getEvent); 
-// app.get('/api/events', eventsController.getEvents);
+app.get('/api/event', eventsController.getEvents);
+app.get('/api/event/:id', eventsController.getEvent); 
 app.post('/api/event', eventsController.createEvent);
-// app.post('/api/event/:id', eventsController.updateEvent);
-// app.delete('/api/event/:id', eventsController.deleteEvent);
+app.post('/api/event/:id', eventsController.updateEvent);
+app.delete('/api/event/:id', eventsController.deleteEvent);
 
 /**
  * Error Handler.
