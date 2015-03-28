@@ -5,9 +5,15 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Create Events</a></li>
-                <li><a href="#">My Events</a></li>
-                <li><a href="#">My Participation</a></li>
+                <li>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" data-toggle="modal" data-target="#myEventCreation">Create Events</button>
+                    &nbsp;</li>
+                <li>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn">My Events</button>
+                    &nbsp;</li>
+                <li>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn">My Participation</button>
+                </li>
             </ul>
         </div>
     </div>
@@ -18,14 +24,16 @@
         <div class="col-sm-12 col-md-12 main">
             <div class="row marketing">
                 <div class="col-sm-3" ng-repeat="item in eventData">
-                    <div id="eventWell" class="jumbotron" style="padding-top: 1px !important;padding-bottom: 10px !important;">
+                    <div id="eventWell" class="jumbotron"
+                         style="padding-top: 1px !important;padding-bottom: 10px !important;">
                         <h3><b>{{item.title}}</b></h3>
 
                         <div class="panel panel-default">
                             <div class="panel-body" style="word-wrap: break-word;">
-                        <span class="label label-warning" style="margin-right: 4px;">Event Description</span>{{item.description}}<br>
-                        <span class="label label-warning" style="margin-right: 4px;">Event Date</span>{{item.eventDate | date : medium}}<br>
-                        <span class="label label-warning" style="margin-right: 4px;">Event Type</span>{{item.type}}<br>
+                                <span class="label label-warning" style="margin-right: 4px;">Event Description</span>{{item.description}}<br>
+                                <span class="label label-warning" style="margin-right: 4px;">Event Date</span>{{item.eventDate
+                                | date : medium}}<br>
+                                <span class="label label-warning" style="margin-right: 4px;">Event Type</span>{{item.type}}<br>
 
                             </div>
                         </div>
@@ -35,5 +43,42 @@
             </div>
         </div>
     </div>
+</div>
 
+<!-- Modal -->
+<div class="modal fade" id="myEventCreation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" id="myEventDialog">
+        <div class="modal-content">
+            <div class="modal-header"  style="background-color: cornsilk;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create Event</h4>
+            </div>
+            <div class="modal-body">
+                <form name="eventForm" novalidate ng-submit="createEvent(newEvent)">
+                    <div class="form-group">
+                        <label for="eventTitle">Event Title</label>
+                        <input type="text" class="form-control" id="eventTitle" placeholder="Event title goes here" ng-model="newEvent.myEventTitle" required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDescription">Event Description</label>
+                        <textarea class="form-control" id="eventDescription" placeholder="Briefly describe what you intend to do" ng-model="newEvent.myEventDescription" required="true"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDescription">Event Date</label>
+                        <input type="datetime-local" class="form-control" id="eventDate" ng-model="newEvent.myEventDate" required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventType">Event Date</label>
+                        <select ng-model="newEvent.myEventType" ng-options="type as type for type in eventType" id="eventType" required="true">
+                            <option value="">--Choose Event Type--</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-default" ng-disabled="eventForm.$invalid">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
