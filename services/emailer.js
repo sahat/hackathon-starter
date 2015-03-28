@@ -17,8 +17,14 @@ var emailTemplates = require('email-templates');
  * Notify users of new event created based on user's preferences
  */
 exports.notifyNewEvent = function(event) {
-	Users.find({prefs: [event.type]}, function(err, users) {
-		sendEmailNotification(event, users);
+	Users.find({'preferences': {$in: [event.type]}}, function(err, users) {
+		sendEmailNotification('notify-new-event', event, users);
+	});
+}
+
+exports.notifyUpdateEvent = function(event) {
+	Users.find({'_id': {$in: event.participants}}, function(err, users) {
+			sendEmailNotification('notify-update-event', event, users);
 	});
 }
 
@@ -26,7 +32,7 @@ generateJoinLink = function(user) {
 	return 'http://join';
 }
 
-exports.sendEmailNotification = function(event, recipients) {
+exports.sendEmailNotification = function(templateName, event, recipients) {
 	async.waterfall([
 		function(done) {
 			crypto.randomBytes(16, function(err, buf) {
@@ -79,7 +85,7 @@ exports.sendEmailNotification = function(event, recipients) {
 					};
 				};
 
-				template('notify-new-event', true, function(err, batch) {
+				template(templateName, true, function(err, batch) {
     				for(var user in recipients) {
         				var render = new Render({event: event, user: recipients[user], join: generateJoinLink(user)});
         				render.batch(batch);
