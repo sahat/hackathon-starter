@@ -6,12 +6,12 @@ exports.addEvent = function(eventId, userId, callback) {
   User.findById(userId, function(err) {
     if (err) return callback(err);
 
-    Event.update({_id : eventId}, {$push: {participants: userId}}, function(err) {
+    Event.update({_id : eventId}, {$addToSet: {participants: userId}}, function(err) {
       if (err) return callback(err);
 
-      User.update({_id : userId}, {$push: {events: eventId}}, function(err) {
+      User.update({_id : userId}, {$addToSet: {events: eventId}}, function(err) {
         if (err) return callback(err);
-        callback({ message: 'Event Successfully Added' });
+        callback(null, { message: 'Event Successfully Added' });
       });
     });
       
@@ -24,18 +24,18 @@ exports.removeEvent = function(eventId, userId, callback) {
 
     User.update({_id : userId}, {$pull: {events: eventId}}, function(err) {
       if (err) return callback(err);
-      callback({ message: 'Event Successfully Removed' });
+      callback(null, { message: 'Event Successfully Removed' });
     });
   });
 };
 
 exports.getEventsForUser = function(userId, callback) {
   User.findById(userId, function(err, user) {
-      if (err) callback(err);
-      var from = new Date().getTime();
-      if (user.events || user.events.length == 0) {
+      if (err) callback(err);     
+      if (user.events == undefined || user.events.length == 0) {
         callback(null, []);
       } else {
+        var from = new Date().getTime();
         eventService.findEventsById(user.events, from, callback);
       }
       

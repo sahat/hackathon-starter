@@ -7,6 +7,7 @@ var fs = require('fs');
 var secrets = require('../config/secrets');
 var path = require('path');
 var qrDir = path.resolve(__dirname, '..', 'qrcodes');
+var reserve = require('../services/reserve');
 
 /**
  * POST /event
@@ -20,16 +21,18 @@ exports.createEvent = function(req, res, next) {
 		createdBy: req.user.id,
 		eventDate: req.body.eventDate,
 		type: req.body.type,
-		participants: req.user.id,
+		//participants: req.user.id,
 		isRemind: false
   	});
 
     eventService.saveEvent(event, function(err, event) {
     	if (err) return next(err);
-
-        emailer.notifyNewEvent(event);
-        res.json(event);
-    });	
+        reserve.addEvent(event._id, req.user.id, function(err, result) {
+        	if (err) return next(err);
+        	res.json(event);
+        }); 
+        emailer.notifyNewEvent(event);       
+    });		
 
 };
 
