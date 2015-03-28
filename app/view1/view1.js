@@ -10,6 +10,32 @@ angular.module('myApp.view1', ['ngRoute'])
 }])
 
 .controller('eventCtrl',["$scope","$http","$filter","$q",function($scope,$http,$filter,$q) {
+
+        $scope.fetchDataOnLoad =  function() {
+        var promiseArr = [];
+        promiseArr.push($http({
+            method:"GET",
+            url:"/api/event",
+            headers:{"Accept": "application/json"}
+        }));
+
+        $q.all(promiseArr).then(function(results){
+            console.log(results);
+            if (results) {
+                for (var x in results) {
+                    if (Object.prototype.hasOwnProperty.call(results,x)) {
+                        for (var i = 0; i < results[x].data.length; i++) {
+                            $scope.eventData.push(results[x].data[i]);
+                        }
+                    }
+                }
+            }
+        },function(error){
+        });
+    };
+
+    $scope.fetchDataOnLoad();
+
     $scope.eventData = [
         //{"title":"Event Title1","description":"Event Descriptssssssss","eventDate": "1234","type":"To be chosen"},
         //{"title":"Event Title2","description":"Event Description2","eventDate": "1234","type":"To be chosen"},
