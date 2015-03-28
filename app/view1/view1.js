@@ -9,13 +9,55 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('eventCtrl',["$scope",function($scope) {
+.controller('eventCtrl',["$scope","$http","$filter","$q",function($scope,$http,$filter,$q) {
     $scope.eventData = [
-        {"title":"Event Title1","description":"Event Descriptssssssssssssssssssssssssssssssssssssssss","eventDate": "1234","type":"To be chosen"},
-        {"title":"Event Title2","description":"Event Description2","eventDate": "1234","type":"To be chosen"},
-        {"title":"Event Title3","description":"Event Description3","eventDate": "1234","type":"To be chosen"},
-        {"title":"Event Title4","description":"Event Description4","eventDate": "12111134","type":"To be chosen"},
-        {"title":"Event Title5","description":"Event Description5","eventDate": "1234","type":"To be chosen"},
-        {"title":"Event Title6","description":"Event Description6","eventDate": "1234","type":"To be chosen"}
+        //{"title":"Event Title1","description":"Event Descriptssssssss","eventDate": "1234","type":"To be chosen"},
+        //{"title":"Event Title2","description":"Event Description2","eventDate": "1234","type":"To be chosen"},
+        //{"title":"Event Title3","description":"Event Description3","eventDate": "1234","type":"To be chosen"},
+        //{"title":"Event Title4","description":"Event Description4","eventDate": "12111134","type":"To be chosen"},
+        //{"title":"Event Title5","description":"Event Description5","eventDate": "1234","type":"To be chosen"},
+        //{"title":"Event Title6","description":"Event Description6","eventDate": "1234","type":"To be chosen"}
     ];
+
+    $scope.eventType = [
+        "Children",
+        "Animal",
+        "Environment",
+        "Elderly",
+        "Physically",
+        "Disabled",
+        "Financial",
+        "Difficulty",
+        "Hidden",
+        "Disabled (Blind and/or Deaf)",
+        "Illness (Cancer Patients)",
+        "Mentally Disabled Ex-Offenders"];
+
+    $scope.createEvent = function(newEvent){
+        var eventDataX={};
+        var convertedDate = new Date($filter('date')(newEvent.myEventDate)).getTime();
+        eventDataX.eventDate = convertedDate;
+        eventDataX.type = newEvent.myEventType;
+        eventDataX.description= newEvent.myEventDescription;
+        eventDataX.title = newEvent.myEventTitle;
+        var promiseArr = [];
+        promiseArr.push($http({
+            method:"POST",
+            url:"/api/event",
+            data:eventDataX,
+            headers:{"Accept": "application/json"}
+        }));
+
+        $q.all(promiseArr).then(function(results){
+            console.log(results);
+            for (var x in results) {
+                if (Object.prototype.hasOwnProperty.call(results,x)) {
+                    $scope.eventData.push(results[x].data);
+                }
+            }
+        },function(error){
+        });
+    };
+
+
 }]);

@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+  body
+    h1 Howdy #{user.profile.name},
+    p We thought you would like to volunteer for an upcoming event. Below are the event details:
+    | #{event.title}
+    | #{event.description}
+    | #{event.type}
+    | #{event.eventDate}
+    br
+    | Click here #{join} to volunteer for this event now!
