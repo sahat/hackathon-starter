@@ -117,11 +117,11 @@ app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
 app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 
-app.get('/api/event', eventsController.getEvent); 
-app.get('/api/events', eventsController.getEvents);
+// app.get('/api/event', eventsController.getEvent); 
+// app.get('/api/events', eventsController.getEvents);
 app.post('/api/event', eventsController.createEvent);
-app.post('/api/event/:id', eventsController.updateEvent);
-app.delete('/api/event/:id', eventsController.deleteEvent);
+// app.post('/api/event/:id', eventsController.updateEvent);
+// app.delete('/api/event/:id', eventsController.deleteEvent);
 
 /**
  * Error Handler.
