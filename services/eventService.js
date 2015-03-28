@@ -1,5 +1,4 @@
 var Event = require('../models/Event');
-var mongoose = require('mongoose');
 
 exports.saveEvent = function(event, callback) {
 	event.save(callback);	

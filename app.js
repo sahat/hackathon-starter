@@ -29,6 +29,7 @@ var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 var eventsController = require('./controllers/event');
+var rsvpController = require('./controllers/rsvp');
 
 /**
  * API keys and Passport configuration.
@@ -122,6 +123,9 @@ app.get('/api/event/:id', eventsController.getEvent);
 app.post('/api/event', eventsController.createEvent);
 app.post('/api/event/:id', eventsController.updateEvent);
 app.delete('/api/event/:id', eventsController.deleteEvent);
+
+app.post('/api/rsvp/:id', rsvpController.addEventForCurrentUser);
+app.delete('/api/rsvp/:id', rsvpController.removeEventFromCurrentUser);
 
 /**
  * Error Handler.
