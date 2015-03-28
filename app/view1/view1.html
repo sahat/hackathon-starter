@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-danger" ng-show="enableDelete()" ng-click="deleteSelectedEvent(item)"><span class="glyphicon glyphicon-trash"></span></button>
-                        <button type="button" class="btn btn-default" ng-hide="enableDelete()" ng-click="joinSelectedEvent(item)"><span class="glyphicon glyphicon-plus"></span></button>
+                        <button type="button" class="btn btn-default" ng-hide="enableDelete() || isVisitor" ng-click="joinSelectedEvent(item)"><span class="glyphicon glyphicon-plus"></span></button>
                     </div>
                 </div>
             </div>
