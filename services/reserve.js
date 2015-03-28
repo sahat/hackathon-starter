@@ -33,8 +33,11 @@ exports.getEventsForUser = function(userId, callback) {
   User.findById(userId, function(err, user) {
       if (err) callback(err);
       var from = new Date().getTime();
-      if (user.events || user.events.length == 0) callback(null, []);
-
-      eventService.findEventsById(user.events, from, callback);
+      if (user.events || user.events.length == 0) {
+        callback(null, []);
+      } else {
+        eventService.findEventsById(user.events, from, callback);
+      }
+      
   });
 };
