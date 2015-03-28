@@ -56,7 +56,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(compress());
 app.use(connectAssets({
-  paths: [path.join(__dirname, 'public/css'), path.join(__dirname, 'public/js')]
+  paths: [path.join(__dirname, 'public/css'), path.join(__dirname, 'public/js'),
+      path.join(__dirname, 'bower_components/angular'),
+      path.join(__dirname, 'bower_components/angular_route'),
+      path.join(__dirname, 'bower_components/jquery'),
+      path.join(__dirname, 'bower_components/bootstrap'),
+      path.join(__dirname, 'bower_components/angular_mocks'),
+      path.join(__dirname, 'bower_components/html5-boilerplate')]
 }));
 app.use(logger('dev'));
 app.use(bodyParser.json());
