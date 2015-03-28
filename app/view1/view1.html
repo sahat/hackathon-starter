@@ -1,7 +1,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: lightpink !important;">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a id="navbarBrand" class="navbar-brand" href="#/view1"><b style="font-size: x-large">VoLAHnteer</b></a>
+            <a id="navbarBrand" class="navbar-brand" href="#"><b style="font-size: x-large">VoLAHnteer</b></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -9,10 +9,10 @@
                     <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" data-toggle="modal" data-target="#myEventCreation" ng-hide="isVisitor">Create Events</button>
                     &nbsp;</li>
                 <li>
-                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-hide="isVisitor">My Events</button>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-class="myEventsSelClass" ng-hide="isVisitor" ng-click="loadMyEvents()">My Events</button>
                     &nbsp;</li>
                 <li>
-                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-hide="isVisitor">My Participation</button>&nbsp;
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-hide="isVisitor" ng-click="loadMyParticipation()" ng-class="myParticipationSelClass">My Participation</button>&nbsp;
                 </li>
                 <li>
                     <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-click="logoutUser()" ng-hide="isVisitor">Logout</button>

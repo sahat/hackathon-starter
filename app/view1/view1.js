@@ -13,6 +13,65 @@ angular.module('myApp.view1', ['ngRoute'])
 
         $scope.isVisitor = true;
 
+        $scope.myEventsSelClass="";
+        $scope.myParticipationSelClass="";
+
+        $scope.loadMyEvents = function() {
+            var promiseArr = [];
+            promiseArr.push($http({
+                method:"GET",
+                url:"/api/event",
+                headers:{"Accept": "application/json"}
+            }));
+
+            $q.all(promiseArr).then(function(results){
+                console.log(results);
+                if (results) {
+                    $scope.myEventsSelClass="btn-primary";
+                    $scope.myParticipationSelClass="";
+                    $scope.eventData.length = 0;
+                    for (var x in results) {
+                        if (Object.prototype.hasOwnProperty.call(results,x)) {
+                            for (var i = 0; i < results[x].data.length; i++) {
+                                $scope.eventData.push(results[x].data[i]);
+                            }
+                        }
+                    }
+                }
+            },function(error){
+                $scope.myEventsSelClass="";
+                $scope.myParticipationSelClass="";
+            });
+        };
+
+        $scope.loadMyParticipation = function() {
+            var promiseArr = [];
+            promiseArr.push($http({
+                method:"GET",
+                url:"/api/rsvp",
+                headers:{"Accept": "application/json"}
+            }));
+
+            $q.all(promiseArr).then(function(results){
+                console.log(results);
+                if (results) {
+                    $scope.myParticipationSelClass="btn-primary";
+                    $scope.myEventsSelClass="";
+                    $scope.eventData.length = 0;
+                    for (var x in results) {
+                        if (Object.prototype.hasOwnProperty.call(results,x)) {
+                            for (var i = 0; i < results[x].data.length; i++) {
+                                $scope.eventData.push(results[x].data[i]);
+                            }
+                        }
+                    }
+                }
+            },function(error){
+                $scope.myParticipationSelClass="";
+                $scope.myEventsSelClass="";
+            });
+        };
+
         $scope.isUserLoggedIn = function() {
             var promiseArr = [];
             promiseArr.push($http({
@@ -49,26 +108,28 @@ angular.module('myApp.view1', ['ngRoute'])
             },function(error){
             });
         };
-        $scope.fetchDataOnLoad =  function() {
-        var promiseArr = [];
-        promiseArr.push($http({
-            method:"GET",
-            url:"/api/event",
-            headers:{"Accept": "application/json"}
-        }));
 
-        $q.all(promiseArr).then(function(results){
-            console.log(results);
-            if (results) {
-                for (var x in results) {
-                    if (Object.prototype.hasOwnProperty.call(results,x)) {
-                        for (var i = 0; i < results[x].data.length; i++) {
-                            $scope.eventData.push(results[x].data[i]);
+        $scope.fetchDataOnLoad =  function() {
+            var promiseArr = [];
+            promiseArr.push($http({
+                method:"GET",
+                url:"/api/events",
+                headers:{"Accept": "application/json"}
+            }));
+
+            $q.all(promiseArr).then(function(results){
+                console.log(results);
+                if (results) {
+                    $scope.myParticipationSelClass="";
+                    for (var x in results) {
+                        if (Object.prototype.hasOwnProperty.call(results,x)) {
+                            for (var i = 0; i < results[x].data.length; i++) {
+                                $scope.eventData.push(results[x].data[i]);
+                            }
                         }
                     }
                 }
-            }
-        },function(error){
+            },function(error){
         });
     };
 
@@ -119,6 +180,7 @@ angular.module('myApp.view1', ['ngRoute'])
                     $scope.eventData.push(results[x].data);
                 }
             }
+            angular.element('#myEventCreation').modal('hide');
         },function(error){
         });
     };
