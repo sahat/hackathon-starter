@@ -2,6 +2,11 @@ var Event = require('../models/Event');
 var mongoose = require('mongoose');
 var eventService = require('../services/eventService');
 var emailer = require('../services/emailer');
+var qr = require('qr-image');  
+var fs = require('fs');
+var secrets = require('../config/secrets');
+var path = require('path');
+var qrDir = path.resolve(__dirname, '..', 'qrcodes');
 
 /**
  * POST /event
@@ -75,4 +80,18 @@ exports.findAllEventsCreatedByUser = function(req, res, next) {
     	res.json(events); 
   	});
 };
+
+exports.generateQrCode = function(req, res, next) {
+	var eventId = req.params.eventId;
+	var url = secrets.serverUrl + '/event/' + eventId;
+	var absoluteQrPath = qrDir + '/' + eventId + '.png';
+	fs.open(absoluteQrPath, 'r', function(err, fd) {
+		if (err) {
+			var code = qr.image(url, { type: 'png' });  
+			var output = fs.createWriteStream(qrDir + '/' + eventId + '.png');
+			code.pipe(output);
+		}
+	});
+	res.sendFile(absoluteQrPath);
+}
 
