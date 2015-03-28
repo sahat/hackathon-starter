@@ -349,3 +349,4 @@ for (var i = 0; i < os.cpus().length; i++) {
 
   fs.writeFileSync('cluster_app.js', fileContents);
 }
+
