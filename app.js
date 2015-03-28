@@ -29,7 +29,6 @@ var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 var eventsController = require('./controllers/event');
-var testController = require('./controllers/test');
 
 /**
  * API keys and Passport configuration.
@@ -118,14 +117,11 @@ app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
 app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 
-<<<<<<< Updated upstream
 app.get('/api/event', eventsController.getEvents);
 app.get('/api/event/:id', eventsController.getEvent); 
 app.post('/api/event', eventsController.createEvent);
 app.post('/api/event/:id', eventsController.updateEvent);
 app.delete('/api/event/:id', eventsController.deleteEvent);
-
-app.get('/testEmail', testController.testEmail);
 
 /**
  * Error Handler.
