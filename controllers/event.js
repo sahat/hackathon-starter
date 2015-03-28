@@ -25,11 +25,13 @@ exports.createEvent = function(req, res, next) {
 };
 
 exports.getEvents = function(req, res, next) {
-	Event.find(function (err, events) {
+	Event
+	.find()
+	.where('eventDate').gt(new Date().getTime())
+	.exec(function (err, events) {
 		if (err) return next(err);
-		res.json(events); //todo load new events and pagination
+		res.json(events); //todo pagination
 	});
-
 };
 
 exports.getEvent = function(req, res, next) {
