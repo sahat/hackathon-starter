@@ -121,6 +121,7 @@ angular.module('myApp.view1', ['ngRoute'])
                 console.log(results);
                 if (results) {
                     $scope.myParticipationSelClass="";
+                    $scope.myEventsSelClass=""
                     for (var x in results) {
                         if (Object.prototype.hasOwnProperty.call(results,x)) {
                             for (var i = 0; i < results[x].data.length; i++) {
@@ -185,5 +186,57 @@ angular.module('myApp.view1', ['ngRoute'])
         });
     };
 
+    $scope.enableDelete = function() {
+        if ($scope.myParticipationSelClass || $scope.myEventsSelClass) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    $scope.deleteSelectedEvent = function(item) {
+        var promiseArr = [];
+        if ($scope.myParticipationSelClass) {
+            promiseArr.push($http({
+                method:"DELETE",
+                url:"/api/rsvp/" + item._id,
+                data:item,
+                headers:{"Accept": "application/json"}
+            }));
+
+            $q.all(promiseArr).then(function(results){
+                $scope.loadMyParticipation();
+            },function(error){
+            });
+        } else if ($scope.myEventsSelClass) {
+            promiseArr.push($http({
+                method:"DELETE",
+                url:"/api/event/" + item._id,
+                data:item,
+                headers:{"Accept": "application/json"}
+            }));
+
+            $q.all(promiseArr).then(function(results){
+                $scope.loadMyEvents();
+            },function(error){
+            });
+        }
+    };
+
+    $scope.joinSelectedEvent = function(item) {
+        var promiseArr = [];
+        promiseArr.push($http({
+            method:"POST",
+            url:"/api/rsvp/" + item._id,
+            data:item,
+            headers:{"Accept": "application/json"}
+        }));
+
+        $q.all(promiseArr).then(function(results){
+            $scope.eventData.length = 0;
+            $scope.fetchDataOnLoad();
+        },function(error){
+        });
+    };
 
 }]);
