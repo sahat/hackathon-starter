@@ -4,13 +4,14 @@ exports.saveEvent = function(event, callback) {
 	event.save(callback);	
 };
 
-exports.getEventsByCriteria = function(keyword, from, to, types, isRemind, limit, skip, callback) {
+exports.getEventsByCriteria = function(keyword, createdBy, from, to, types, isRemind, limit, skip, callback) {
 	var query;
 	if (keyword) {
 		query = Event.find({ "title": { "$regex": keyword, "$options": "i" } });
 	} else {
 		query = Event.find();
 	}
+	if (createdBy) query.where('createdBy').equals(createdBy);
 	if (from) query.where('eventDate').gt(from);
 	if (to) query.where('eventDate').lt(to);
 	if (types) query.where('type').in(types);

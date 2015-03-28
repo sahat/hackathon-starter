@@ -131,7 +131,8 @@ app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
 app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 
-app.get('/api/event', eventsController.getEvents);
+app.get('/api/events', eventsController.getEvents);
+app.get('/api/event', eventsController.findAllEventsCreatedByUser);
 app.get('/api/event/:id', eventsController.getEvent); 
 app.post('/api/event', eventsController.createEvent);
 app.post('/api/event/:id', eventsController.updateEvent);

@@ -15,7 +15,7 @@ exports.addEvent = function(eventId, userId, callback) {
     });
       
   }); 
-}
+};
 
 exports.removeEvent = function(eventId, userId, callback) {
   Event.update({_id : eventId}, {$pull: {participants: userId}}, function(err) {
@@ -26,5 +26,4 @@ exports.removeEvent = function(eventId, userId, callback) {
       callback({ message: 'Event Successfully Removed' });
     });
   });
-}
-
+};

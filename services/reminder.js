@@ -18,7 +18,7 @@ exports.remind = function(){
 
 
 	console.log("startDate " + startTime + "  endDate : " + endTime);
-	eventService.getEventsByCriteria(null, startTime.getTime(), endTime.getTime(), null, false, null, null, function(err, events){
+	eventService.getEventsByCriteria(null, null, startTime.getTime(), endTime.getTime(), null, false, null, null, function(err, events){
 		console.log("event search result found" + err + events);
 		if(events){
 			console.log("event list size : " + events.length);
