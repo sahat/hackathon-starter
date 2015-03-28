@@ -140,8 +140,10 @@ app.post('/api/event', eventsController.createEvent);
 app.post('/api/event/:id', eventsController.updateEvent);
 app.delete('/api/event/:id', eventsController.deleteEvent);
 
-app.post('/api/rsvp/:id', rsvpController.addEventForCurrentUser);
-app.delete('/api/rsvp/:id', rsvpController.removeEventFromCurrentUser);
+app.post('/api/rsvp/:eventId', rsvpController.addEventForCurrentUser);
+app.delete('/api/rsvp/:eventId', rsvpController.removeEventFromCurrentUser);
+
+app.get('/join/:eventId/:userId', rsvpController.addEventFromEmail);
 
 /**
  * Error Handler.

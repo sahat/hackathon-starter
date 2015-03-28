@@ -22,9 +22,13 @@
 module.exports = {
 
   db: process.env.MONGODB || 'mongodb://localhost:27017/test',
+  serverUrl: process.env.SERVER_URL || 'http://localhost:3000',
 
   sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
   
+  cryptAlgorithm: process.env.CRYPT_ALGORITHM || 'aes-256-ctr',
+  cryptPassword: process.env.CRYPT_PASSWORD || 'some-password',
+
   mandrill: {
     user: process.env.MANDRILL_USER || 'volahnteer@gmail.com',
     password: process.env.MANDRILL_PASSWORD || 'LDZo3hEJFGLZzqJIV-9zlg'

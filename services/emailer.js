@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var async = require('async');
-var crypto = require('crypto');
+var crypt = require('./crypt');
 
 var passport = require('passport');
 var User = require('../models/User');
@@ -28,15 +28,16 @@ exports.notifyUpdateEvent = function(event) {
 	});
 }
 
-generateJoinLink = function(user) {
-	return 'http://join';
+generateJoinLink = function(eventId, userId) {
+	var encEventId = crypt.encrypt(eventId.toString());
+	var encUserId = crypt.encrypt(userId.toString());
+	return secrets.serverUrl + '/join/' + encEventId + '/' + encUserId;
 }
 
 exports.sendEmailNotification = function(templateName, event, recipients) {
 	async.waterfall([
 		function(done) {
-			crypto.randomBytes(16, function(err, buf) {
-				var token = buf.toString('hex');
+			crypt.generateToken(function(err, token) {
 				done(err, token);
 			});
 		},
@@ -87,7 +88,7 @@ exports.sendEmailNotification = function(templateName, event, recipients) {
 
 				template(templateName, true, function(err, batch) {
     				for(var user in recipients) {
-        				var render = new Render({event: event, user: recipients[user], join: generateJoinLink(user)});
+        				var render = new Render({event: event, user: recipients[user], join: generateJoinLink(event._id, recipients[user]._id)});
         				render.batch(batch);
     				}
 				});
