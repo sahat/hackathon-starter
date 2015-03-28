@@ -19,3 +19,5 @@ node_modules
 *.iml
 .DS_Store
 Thumbs.db
+
+app/bower_components
