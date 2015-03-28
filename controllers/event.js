@@ -1,5 +1,6 @@
 var Event = require('../models/Event');
 var mongoose = require('mongoose');
+var eventService = require('../services/eventService');
 
 /**
  * POST /event
@@ -13,11 +14,12 @@ exports.createEvent = function(req, res, next) {
 		createdBy: req.user.id,
 		eventDate: req.body.eventDate,
 		type: req.body.type,
-		participants: req.user.id
+		participants: req.user.id,
+		isRemind: false
   	});
 
 
-    event.save(function(err, event) {
+    eventService.saveEvent(event, function(err, event) {
     	if (err) return next(err);
     	res.json(event);
     });	
@@ -25,25 +27,22 @@ exports.createEvent = function(req, res, next) {
 };
 
 exports.getEvents = function(req, res, next) {
-	Event
-	.find()
-	.where('eventDate').gt(new Date().getTime())
-	.exec(function (err, events) {
+	var from = new Date().getTime();
+	eventService.getEventsByCriteria(null, from, null, null, null, null, null, function (err, events) {
 		if (err) return next(err);
-		res.json(events); //todo pagination
+		res.json(events); 
 	});
 };
 
 exports.getEvent = function(req, res, next) {
-	Event.findById(req.params.id, function(err, event) {
+	eventService.findById(req.params.id, function(err, event) {
 		if (err) return next(err);
-		console.log(event);
 		res.json(event);
 	});
 };
 
 exports.updateEvent = function(req, res, next) {
-	Event.findById(req.params.id, function(err, event) {
+	eventService.findById(req.params.id, function(err, event) {
 		if (err) return next(err);
 		event.title = req.body.title || '';
 		event.description = req.body.description || '';
@@ -51,7 +50,7 @@ exports.updateEvent = function(req, res, next) {
 		event.eventDate = req.body.eventDate;
 		event.type = req.body.type;
 
-		event.save(function(err, event) {
+		eventService.saveEvent(event, function(err, event) {
 			if (err) return next(err);
 			res.json(event);
 		});
@@ -59,8 +58,9 @@ exports.updateEvent = function(req, res, next) {
 };
 
 exports.deleteEvent = function(req, res, next) {
-	Event.remove({_id : req.params.id}, function(err) {
+	eventService.removeById(req.params.id, function(err) {
 		if (err) return next(err);
 		res.json({ message: 'Successfully deleted' });
 	});
 };
+

@@ -23,7 +23,9 @@ var userSchema = new mongoose.Schema({
   },
 
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
+  preferences: { type: [String], index: true },
+  events: [mongoose.Schema.Types.ObjectId]
 });
 
 /**

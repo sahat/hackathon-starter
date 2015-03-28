@@ -10,8 +10,8 @@ var eventSchema = new Schema({
 	modifiedDate: { type: Date, default: Date.now },
 	eventDate: { type: Number, index: true },
 	type: { type: String, index: true },
-	participants: [Schema.Types.ObjectId]
-  
+	participants: [Schema.Types.ObjectId],
+	isRemind: { type: Boolean, index: true }
 });
 
 module.exports = mongoose.model('Event', eventSchema);
