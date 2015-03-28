@@ -20,6 +20,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
+var Agenda = require('agenda');
 
 /**
  * Controllers (route handlers).
@@ -31,11 +32,14 @@ var contactController = require('./controllers/contact');
 var eventsController = require('./controllers/event');
 var rsvpController = require('./controllers/rsvp');
 
+var reminder = require('./services/reminder');
+
 /**
  * API keys and Passport configuration.
  */
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
+var agenda = new Agenda({db: { address: secrets.db, collection: 'agendaJobs' }});
 
 /**
  * Create Express server.
@@ -50,6 +54,18 @@ mongoose.connection.on('error', function() {
   console.error('MongoDB Connection Error. Please make sure that MongoDB is running.');
 });
 
+
+/**
+*using agenda to schedule
+*/
+agenda.define("send_sms_notification", function(job, done){
+  console.log("hello world schedule" + new Date());
+  reminder.remind();
+  done();
+});
+
+agenda.every('60 minutes', 'send_sms_notification');
+agenda.start();
 /**
  * Express configuration.
  */
