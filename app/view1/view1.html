@@ -1,1 +1,39 @@
-<p>This is the partial for view 1.</p>
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: lightpink !important;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a id="navbarBrand" class="navbar-brand" href="#/view1"><b style="font-size: x-large">VoLAHnteer</b></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Create Events</a></li>
+                <li><a href="#">My Events</a></li>
+                <li><a href="#">My Participation</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid" style="margin-top: 20px;">
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-sm-12 col-md-12 main">
+            <div class="row marketing">
+                <div class="col-sm-3" ng-repeat="item in eventData">
+                    <div id="eventWell" class="jumbotron" style="padding-top: 1px !important;padding-bottom: 10px !important;">
+                        <h3><b>{{item.title}}</b></h3>
+
+                        <div class="panel panel-default">
+                            <div class="panel-body" style="word-wrap: break-word;">
+                        <span class="label label-warning" style="margin-right: 4px;">Event Description</span>{{item.description}}<br>
+                        <span class="label label-warning" style="margin-right: 4px;">Event Date</span>{{item.eventDate | date : medium}}<br>
+                        <span class="label label-warning" style="margin-right: 4px;">Event Type</span>{{item.type}}<br>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

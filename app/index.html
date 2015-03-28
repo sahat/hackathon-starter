@@ -14,18 +14,12 @@
   <link rel="stylesheet" href="app.css">
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
-<body>
+<body ng-cloak>
 
-<div class="jumbotron">
-    <div class="container">
-        BattleHack Begins
-    </div>
-</div>
-
-  <ul class="menu">
-    <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
-  </ul>
+ <!-- <ul class="menu">
+    &lt;!&ndash;<li><a href="#/view1">view1</a></li>&ndash;&gt;
+    &lt;!&ndash;<li><a href="#/view2">view2</a></li>&ndash;&gt;
+  </ul>-->
 
   <div ng-view></div>
 
@@ -36,6 +30,7 @@
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
   <link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet"/>
+
 
   <script src="app.js"></script>
   <script src="view1/view1.js"></script>

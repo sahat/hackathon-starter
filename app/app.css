@@ -28,3 +28,11 @@
   content: "";
   padding: 0;
 }
+
+#eventWell {
+    background-color: #0f7864;
+}
+
+body {
+    background-color: #FFE0E0 !important;
+}
