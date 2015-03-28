@@ -6,13 +6,23 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" data-toggle="modal" data-target="#myEventCreation">Create Events</button>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" data-toggle="modal" data-target="#myEventCreation" ng-hide="isVisitor">Create Events</button>
                     &nbsp;</li>
                 <li>
-                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn">My Events</button>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-hide="isVisitor">My Events</button>
                     &nbsp;</li>
                 <li>
-                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn">My Participation</button>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-hide="isVisitor">My Participation</button>&nbsp;
+                </li>
+                <li>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-click="logoutUser()" ng-hide="isVisitor">Logout</button>
+                </li>
+                <!-- -->
+                <li>
+                    <a href="/login" ng-show="isVisitor">Login</a>
+                </li>
+                <li>
+                    <a href="/signup" ng-show="isVisitor">Create Account</a>
                 </li>
             </ul>
         </div>

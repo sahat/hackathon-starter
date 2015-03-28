@@ -110,7 +110,8 @@ app.post('/account/profile', passportConf.isAuthenticated, userController.postUp
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
-
+app.get('/isUserloggedIn', function(req, res) {
+    res.send(req.isAuthenticated() ? req.user : '0'); });
 /**
  * API examples routes.
  */

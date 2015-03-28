@@ -9,8 +9,46 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('eventCtrl',["$scope","$http","$filter","$q",function($scope,$http,$filter,$q) {
+.controller('eventCtrl',["$scope","$http","$filter","$q","$location",function($scope,$http,$filter,$q,$location) {
 
+        $scope.isVisitor = true;
+
+        $scope.isUserLoggedIn = function() {
+            var promiseArr = [];
+            promiseArr.push($http({
+                method:"GET",
+                url:"/isUserloggedIn",
+                headers:{"Accept": "application/json"}
+            }));
+            $q.all(promiseArr).then(function(results){
+                console.log(results);
+                for (var x in results) {
+                    if (Object.prototype.hasOwnProperty.call(results,x)) {
+                        if (results[x].data == 0) {
+                            $scope.isVisitor = true;
+                        } else {
+                            $scope.isVisitor = false;
+                        }
+                    }
+                }
+            },function(error){
+            });
+        };
+        $scope.isUserLoggedIn();
+
+
+        $scope.logoutUser = function() {
+            var promiseArr = [];
+            promiseArr.push($http({
+                method:"GET",
+                url:"/logout",
+                headers:{"Accept": "application/json"}
+            }));
+            $q.all(promiseArr).then(function(results){
+                $location.path("/");
+            },function(error){
+            });
+        };
         $scope.fetchDataOnLoad =  function() {
         var promiseArr = [];
         promiseArr.push($http({
