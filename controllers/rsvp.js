@@ -21,4 +21,10 @@ exports.addEventFromEmail = function(req, res, next) {
 	reserve.addEvent(eventId, userId, function() { res.status(200).end(); });
 };
 
-
+exports.getEventsForCurrentUser = function(req, res, next) {
+	var userId = req.user.id;
+	reserve.getEventsForUser(userId, function(err, events) {
+		if (err) return next(err);
+    	res.json(events); 
+	});
+};

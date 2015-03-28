@@ -139,6 +139,7 @@ app.post('/api/event', eventsController.createEvent);
 app.post('/api/event/:id', eventsController.updateEvent);
 app.delete('/api/event/:id', eventsController.deleteEvent);
 
+app.get('/api/rsvp', rsvpController.getEventsForCurrentUser);
 app.post('/api/rsvp/:eventId', rsvpController.addEventForCurrentUser);
 app.delete('/api/rsvp/:eventId', rsvpController.removeEventFromCurrentUser);
 

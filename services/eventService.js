@@ -28,3 +28,10 @@ exports.findById = function(id, callback) {
 exports.removeById = function(id, callback) {
 	Event.remove({_id : id}, callback);
 };
+
+exports.findEventsById = function(eventIds, from, callback) {
+	Event
+	.find({'_id': { $in: eventIds}})
+	.where('eventDate').gt(from)
+	.exec(callback);
+};
