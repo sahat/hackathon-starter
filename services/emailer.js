@@ -22,6 +22,10 @@ exports.notifyNewEvent = function(event) {
 	});
 }
 
+generateJoinLink = function(user) {
+	return 'http://join';
+}
+
 exports.sendEmailNotification = function(event, recipients) {
 	async.waterfall([
 		function(done) {
@@ -55,7 +59,7 @@ exports.sendEmailNotification = function(event, recipients) {
         				if (err) {
           					console.log(err);
         				} else {
-          					/*transportBatch.sendMail({
+          					transportBatch.sendMail({
 								from: 'VoLAHnteer <volahnteer@gmail.com>',
 								subject: locals.event.title,
 								to: locals.user.email,
@@ -67,8 +71,7 @@ exports.sendEmailNotification = function(event, recipients) {
 								} else {
 									console.log(responseStatus.message);
 								}
-							});*/
-							console.log(html);
+							});
 						}
 					};
 					this.batch = function(batch) {
@@ -78,7 +81,7 @@ exports.sendEmailNotification = function(event, recipients) {
 
 				template('notify-new-event', true, function(err, batch) {
     				for(var user in recipients) {
-        				var render = new Render({event: event, user: recipients[user]});
+        				var render = new Render({event: event, user: recipients[user], join: generateJoinLink(user)});
         				render.batch(batch);
     				}
 				});
