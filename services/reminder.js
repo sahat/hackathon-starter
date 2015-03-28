@@ -2,6 +2,9 @@ var eventService = require('./eventService');
 var smsSender = require('./smssender');
 var userService = require('./userService');
 
+/**
+*Send sms reminders to ther subscribed users about the event.
+*/
 exports.remind = function(){
 	var currentDate = new Date();
 	currentDate.setDate(currentDate.getDate() + 1);
@@ -40,7 +43,7 @@ function sendMessageForEvent(event){
 		}
 
 		event.isRemind = true;
-		eventService.saveEvent(event, function(){});
+		eventService.saveEvent(event, function(err){});
 
 	});
 		
