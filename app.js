@@ -20,6 +20,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
+var Agenda = require('agenda');
 
 /**
  * Controllers (route handlers).
@@ -27,15 +28,17 @@ var connectAssets = require('connect-assets');
 var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
-var contactController = require('./controllers/contact');
 var eventsController = require('./controllers/event');
 var rsvpController = require('./controllers/rsvp');
+
+var reminder = require('./services/reminder');
 
 /**
  * API keys and Passport configuration.
  */
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
+var agenda = new Agenda({db: { address: secrets.db, collection: 'agendaJobs' }});
 
 /**
  * Create Express server.
@@ -50,6 +53,18 @@ mongoose.connection.on('error', function() {
   console.error('MongoDB Connection Error. Please make sure that MongoDB is running.');
 });
 
+
+/**
+*using agenda to schedule
+*/
+agenda.define("send_sms_notification", function(job, done){
+  console.log("hello world schedule" + new Date());
+  reminder.remind();
+  done();
+});
+
+agenda.every('60 minutes', 'send_sms_notification');
+agenda.start();
 /**
  * Express configuration.
  */
@@ -103,8 +118,6 @@ app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
-app.get('/contact', contactController.getContact);
-app.post('/contact', contactController.postContact);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConf.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
@@ -119,14 +132,17 @@ app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
 app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 
-app.get('/api/event', eventsController.getEvents);
+app.get('/api/events', eventsController.getEvents);
+app.get('/api/event', eventsController.findAllEventsCreatedByUser);
 app.get('/api/event/:id', eventsController.getEvent); 
 app.post('/api/event', eventsController.createEvent);
 app.post('/api/event/:id', eventsController.updateEvent);
 app.delete('/api/event/:id', eventsController.deleteEvent);
 
-app.post('/api/rsvp/:id', rsvpController.addEventForCurrentUser);
-app.delete('/api/rsvp/:id', rsvpController.removeEventFromCurrentUser);
+app.post('/api/rsvp/:eventId', rsvpController.addEventForCurrentUser);
+app.delete('/api/rsvp/:eventId', rsvpController.removeEventFromCurrentUser);
+
+app.get('/join/:eventId/:userId', rsvpController.addEventFromEmail);
 
 /**
  * Error Handler.

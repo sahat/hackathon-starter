@@ -30,7 +30,7 @@ exports.createEvent = function(req, res, next) {
 
 exports.getEvents = function(req, res, next) {
 	var from = new Date().getTime();
-	eventService.getEventsByCriteria(null, from, null, null, null, null, null, function (err, events) {
+	eventService.getEventsByCriteria(null, null, from, null, null, null, null, null, function (err, events) {
 		if (err) return next(err);
 		res.json(events); 
 	});
@@ -66,5 +66,13 @@ exports.deleteEvent = function(req, res, next) {
 		if (err) return next(err);
 		res.json({ message: 'Successfully deleted' });
 	});
+};
+
+exports.findAllEventsCreatedByUser = function(req, res, next) {
+	var from = new Date().getTime();
+	eventService.getEventsByCriteria(null, req.user.id, from, null, null, null, null, null, function (err, events) {
+    	if (err) return next(err);
+    	res.json(events); 
+  	});
 };
 

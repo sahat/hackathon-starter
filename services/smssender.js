@@ -18,7 +18,7 @@ exports.sendSms = function(number, message){
 
 	//var uri = sms_send_url + '?' + 'dest=' + number + '&msg=' + message + '&access_token=' + auth_token + '&app_id=' + app_id
 	client.get(sms_send_url, args,  function(data, response){           
-           console.log('sems sent for ' + number);
+           console.log('sms sent for ' + number);
 	});
 };
 
