@@ -56,18 +56,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(compress());
 app.use(connectAssets({
-  paths: [path.join(__dirname, 'public/css'), path.join(__dirname, 'public/js'),
-      path.join(__dirname, 'bower_components/angular'),
-      path.join(__dirname, 'bower_components/angular_route'),
-      path.join(__dirname, 'bower_components/jquery'),
-      path.join(__dirname, 'bower_components/bootstrap'),
-      path.join(__dirname, 'bower_components/angular_mocks'),
-      path.join(__dirname, 'bower_components/html5-boilerplate')]
+  paths: [path.join(__dirname, 'public/css'), path.join(__dirname, 'public/js')]
 }));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer({ dest: path.join(__dirname, 'uploads') }));
+app.use(multer({dest: path.join(__dirname, 'uploads') }));
 app.use(expressValidator());
 app.use(methodOverride());
 app.use(cookieParser());
@@ -93,8 +87,7 @@ app.use(function(req, res, next) {
   if (/api/i.test(req.path)) req.session.returnTo = req.path;
   next();
 });
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
-
+//app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 /**
  * Primary app routes.
  */
@@ -197,6 +190,7 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
  */
 app.use(errorHandler());
 
+app.use(express.static('app'));
 /**
  * Start Express server.
  */
