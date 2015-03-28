@@ -1,6 +1,7 @@
 var Event = require('../models/Event');
 var mongoose = require('mongoose');
 var eventService = require('../services/eventService');
+var emailer = require('../services/emailer');
 
 /**
  * POST /event
@@ -18,10 +19,11 @@ exports.createEvent = function(req, res, next) {
 		isRemind: false
   	});
 
-
     eventService.saveEvent(event, function(err, event) {
     	if (err) return next(err);
-    	res.json(event);
+
+        emailer.notifyNewEvent(event);
+        res.json(event);
     });	
 
 };
@@ -52,6 +54,8 @@ exports.updateEvent = function(req, res, next) {
 
 		eventService.saveEvent(event, function(err, event) {
 			if (err) return next(err);
+
+			emailer.notifyUpdateEvent(event);
 			res.json(event);
 		});
 	});
