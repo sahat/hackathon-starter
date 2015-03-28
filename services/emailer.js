@@ -17,13 +17,13 @@ var emailTemplates = require('email-templates');
  * Notify users of new event created based on user's preferences
  */
 exports.notifyNewEvent = function(event) {
-	Users.find({'preferences': {$in: [event.type]}}, function(err, users) {
+	User.find({'preferences': {$in: [event.type]}}, function(err, users) {
 		sendEmailNotification('notify-new-event', event, users);
 	});
 }
 
 exports.notifyUpdateEvent = function(event) {
-	Users.find({'_id': {$in: event.participants}}, function(err, users) {
+	User.find({'_id': {$in: event.participants}}, function(err, users) {
 			sendEmailNotification('notify-update-event', event, users);
 	});
 }
@@ -34,7 +34,7 @@ generateJoinLink = function(eventId, userId) {
 	return secrets.serverUrl + '/join/' + encEventId + '/' + encUserId;
 }
 
-exports.sendEmailNotification = function(templateName, event, recipients) {
+function sendEmailNotification(templateName, event, recipients) {
 	async.waterfall([
 		function(done) {
 			crypt.generateToken(function(err, token) {
