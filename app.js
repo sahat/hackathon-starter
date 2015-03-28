@@ -125,6 +125,8 @@ app.post('/account/delete', passportConf.isAuthenticated, userController.postDel
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 app.get('/isUserloggedIn', function(req, res) {
     res.send(req.isAuthenticated() ? req.user : '0'); });
+app.get('/event/qr/:eventId', eventsController.generateQrCode);
+
 /**
  * API examples routes.
  */

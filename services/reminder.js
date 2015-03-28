@@ -46,4 +46,4 @@ function sendMessageForEvent(event){
 		eventService.saveEvent(event, function(err){});
 
 	});
-}
+}	
