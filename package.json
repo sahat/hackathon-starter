@@ -36,7 +36,7 @@
     "lusca": "^1.0.2",
     "method-override": "^2.3.1",
 	"meetup-api": "^0.1.21",
-    "mongoose": "^3.8.25",
+    "mongoose": "3.8.23",
     "morgan": "^1.5.1",
     "multer": "^0.1.8",
     "node-foursquare": "^0.3.0",
