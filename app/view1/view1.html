@@ -3,23 +3,38 @@
         <div class="navbar-header">
             <span>
             <a id="navbarBrand" class="navbar-brand" href="#"><b style="font-size: x-large">VoLAHnteer</b></a>
-            <!--<a><button id="justgiving"></button></a>-->
-            <!--<a><button id="paypal_donate" ng-click="donatePaypal()"></button></a>-->
+            <a>
+                <button id="justgiving" class="btn btn-primary btn-sm" data-toggle="modal"
+                        data-target="#jgModal"></button>
+            </a>
+            <a>
+                <button id="paypal_donate" ng-click="donatePaypal()"></button>
+            </a>
             </span>
         </div>
+
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" data-toggle="modal" data-target="#myEventCreation" ng-hide="isVisitor">Create Events</button>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" data-toggle="modal"
+                            data-target="#myEventCreation" ng-hide="isVisitor">Create Events
+                    </button>
                     &nbsp;</li>
                 <li>
-                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-class="myEventsSelClass" ng-hide="isVisitor" ng-click="loadMyEvents()">My Events</button>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-class="myEventsSelClass"
+                            ng-hide="isVisitor" ng-click="loadMyEvents()">My Events
+                    </button>
                     &nbsp;</li>
                 <li>
-                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-hide="isVisitor" ng-click="loadMyParticipation()" ng-class="myParticipationSelClass">My Participation</button>&nbsp;
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-hide="isVisitor"
+                            ng-click="loadMyParticipation()" ng-class="myParticipationSelClass">My Participation
+                    </button>
+                    &nbsp;
                 </li>
                 <li>
-                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-click="logoutUser()" ng-hide="isVisitor">Logout</button>
+                    <button type="button" class="btn btn-bitbucket btn-sm navbar-btn" ng-click="logoutUser()"
+                            ng-hide="isVisitor">Logout
+                    </button>
                 </li>
                 <!-- -->
                 <li>
@@ -50,8 +65,12 @@
                                 <span class="label label-warning" style="margin-right: 4px;">Event Type</span>{{item.type}}<br>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-danger" ng-show="enableDelete()" ng-click="deleteSelectedEvent(item)"><span class="glyphicon glyphicon-trash"></span></button>
-                        <button type="button" class="btn btn-default" ng-hide="enableDelete() || isVisitor" ng-click="joinSelectedEvent(item)"><span class="glyphicon glyphicon-plus"></span></button>
+                        <button type="button" class="btn btn-danger" ng-show="enableDelete()"
+                                ng-click="deleteSelectedEvent(item)"><span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <button type="button" class="btn btn-default" ng-hide="enableDelete() || isVisitor"
+                                ng-click="joinSelectedEvent(item)"><span class="glyphicon glyphicon-plus"></span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -60,35 +79,82 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="myEventCreation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myEventCreation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" id="myEventDialog">
         <div class="modal-content">
-            <div class="modal-header"  style="background-color: cornsilk;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-header" style="background-color: cornsilk;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Create Event</h4>
             </div>
             <div class="modal-body">
                 <form name="eventForm" novalidate ng-submit="createEvent(newEvent)">
                     <div class="form-group">
                         <label for="eventTitle">Event Title</label>
-                        <input type="text" class="form-control" id="eventTitle" placeholder="Event title goes here" ng-model="newEvent.myEventTitle" required="true">
+                        <input type="text" class="form-control" id="eventTitle" placeholder="Event title goes here"
+                               ng-model="newEvent.myEventTitle" required="true">
                     </div>
                     <div class="form-group">
                         <label for="eventDescription">Event Description</label>
-                        <textarea class="form-control" id="eventDescription" placeholder="Briefly describe what you intend to do" ng-model="newEvent.myEventDescription" required="true"></textarea>
+                        <textarea class="form-control" id="eventDescription"
+                                  placeholder="Briefly describe what you intend to do"
+                                  ng-model="newEvent.myEventDescription" required="true"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="eventDescription">Event Date</label>
-                        <input type="datetime-local" class="form-control" id="eventDate" ng-model="newEvent.myEventDate" required="true">
+                        <input type="datetime-local" class="form-control" id="eventDate" ng-model="newEvent.myEventDate"
+                               required="true">
                     </div>
                     <div class="form-group">
                         <label for="eventType">Event Type</label>
-                        <select ng-model="newEvent.myEventType" ng-options="type as type for type in eventType" id="eventType" required="true">
+                        <select ng-model="newEvent.myEventType" ng-options="type as type for type in eventType"
+                                id="eventType" required="true">
                             <option value="">--Choose Event Type--</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-default" ng-disabled="eventForm.$invalid">Submit</button>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Just Giving Modal-->
+<div class="modal fade" id="jgModal" tabindex="-1" role="dialog" aria-labelledby="jgModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="jgModalTitle"><img src="image/JUSTGIVING_1.jpg" class="img-responsive"
+                                                               alt="Responsive image"></h4>
+            </div>
+            <div class="modal-body">
+                Please also check the available categories on "Just Giving" where your contribution might make
+                difference.
+                <div class="panel panel-default">
+                    <div class="panel-body" style="max-height: 150px;overflow-y: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Category ID#</th>
+                                <th>Category Name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in jgCategoryData">
+                                <td>{{item.id}}</td>
+                                <td>{{item.category}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

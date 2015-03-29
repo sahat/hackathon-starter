@@ -39,9 +39,9 @@ body {
 
 #justgiving {
     background-image: url('image/JUSTGIVING_1.jpg');
-    background-size: 18px;
+    background-size: 21px;
     padding: 10px;
-    margin-top: 1em;
+    margin-top: 0.75em;
 }
 
 #paypal_donate {
