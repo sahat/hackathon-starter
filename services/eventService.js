@@ -12,8 +12,8 @@ exports.getEventsByCriteria = function(keyword, createdBy, from, to, types, isRe
 		query = Event.find();
 	}
 	if (createdBy) query.where('createdBy').equals(createdBy);
-	if (from) query.where('eventDate').gt(from);
-	if (to) query.where('eventDate').lt(to);
+	if (from) query.where('eventDate').gte(from);
+	if (to) query.where('eventDate').lte(to);
 	if (types) query.where('type').in(types);
 	if (isRemind != undefined) query.where('isRemind').equals(isRemind);
 	if (limit) query.limit(limit);
