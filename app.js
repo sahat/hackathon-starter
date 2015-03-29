@@ -57,13 +57,12 @@ mongoose.connection.on('error', function() {
 /**
 *using agenda to schedule
 */
-agenda.define("send_sms_notification", function(job, done){
-  console.log("hello world schedule" + new Date());
+agenda.define("send_sms_notification", function(job, done){ 
   reminder.remind();
   done();
 });
 
-agenda.every('60 minutes', 'send_sms_notification');
+agenda.every('5 minutes', 'send_sms_notification');
 agenda.start();
 /**
  * Express configuration.
