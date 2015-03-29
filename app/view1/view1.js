@@ -15,6 +15,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
         $scope.myEventsSelClass="";
         $scope.myParticipationSelClass="";
+        $scope.jgCategoryData = "";
 
         $scope.loadMyEvents = function() {
             var promiseArr = [];
@@ -251,5 +252,21 @@ angular.module('myApp.view1', ['ngRoute'])
             },function(error){
             });
         };
+
+        $scope.getJGCategories = function() {
+            var promiseArr = [];
+            promiseArr.push($http({
+                method:"GET",
+                url:"https://api.justgiving.com/785dfefd/v1/charity/categories",
+                headers:{"Accept": "application/json",'Authorization': 'Basic dmFsaWRAanVzdGdpdmluZy5jb206cGFzc3dvcmQ='}
+            }));
+            $q.all(promiseArr).then(function(results){
+                $scope.jgCategoryData = results[0].data;
+                //console.log($scope.jgCategoryData);
+            },function(error){
+            });
+        };
+
+        $scope.getJGCategories();
 
 }]);
