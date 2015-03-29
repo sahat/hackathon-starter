@@ -239,4 +239,17 @@ angular.module('myApp.view1', ['ngRoute'])
         });
     };
 
+        $scope.donatePaypal = function() {
+            var promiseArr = [];
+            promiseArr.push($http({
+                method:"GET",
+                url:"/api/paypal",
+                headers:{"Accept": "application/json"}
+            }));
+            $q.all(promiseArr).then(function(results){
+                console.log(results);
+            },function(error){
+            });
+        };
+
 }]);

@@ -36,3 +36,20 @@
 body {
     background-color: #FFE0E0 !important;
 }
+
+#justgiving {
+    background-image: url('image/JUSTGIVING_1.jpg');
+    background-size: 18px;
+    padding: 10px;
+    margin-top: 1em;
+}
+
+#paypal_donate {
+    margin-top: 1em;
+    width: 10em;
+    height: 2em;
+    background-image: url('image/btn_donate_pp_142x27.png');
+    /* background-size: 18px; */
+    padding: 10px;
+}
+
