@@ -150,15 +150,8 @@ angular.module('myApp.view1', ['ngRoute'])
         "Children",
         "Animal",
         "Environment",
-        "Elderly",
-        "Physically",
-        "Disabled",
-        "Financial",
-        "Difficulty",
-        "Hidden",
-        "Disabled (Blind and/or Deaf)",
-        "Illness (Cancer Patients)",
-        "Mentally Disabled Ex-Offenders"];
+        "Elderly"
+      ];
 
     $scope.createEvent = function(newEvent){
         var eventDataX={};
