@@ -36,8 +36,10 @@ module.exports = {
 
   paypal: {
     host: 'api.sandbox.paypal.com',
-    client_id: process.env.PAYPAL_ID || 'AdGE8hDyixVoHmbhASqAThfbBcrbcgiJPBwlAM7u7Kfq3YU-iPGc6BXaTppt',
-    client_secret: process.env.PAYPAL_SECRET || 'EPN0WxB5PaRaumTB1ZpCuuTqLqIlF6_EWUcAbZV99Eu86YeNBVm9KVsw_Ez5',
+    // client_id: process.env.PAYPAL_ID || 'AdGE8hDyixVoHmbhASqAThfbBcrbcgiJPBwlAM7u7Kfq3YU-iPGc6BXaTppt',
+    // client_secret: process.env.PAYPAL_SECRET || 'EPN0WxB5PaRaumTB1ZpCuuTqLqIlF6_EWUcAbZV99Eu86YeNBVm9KVsw_Ez5',
+    client_id: process.env.PAYPAL_ID || 'AUwpVAZyvPlrlocY50yrHt3Wj9lxKFbzrmxt_X6rXpnWL3jGvr5C0i_qJu7j4pddTDUXgyyxX2336g5w',
+    client_secret: process.env.PAYPAL_SECRET || 'EC3Hoov1Fn6FQ_3YHe4oRRlAk0xgep7i1dWpqH-Lh97JipKGQYHcz_l32nc1IbBDVMLnF7kZRv-X8zyt',
     returnUrl: process.env.PAYPAL_RETURN_URL || 'http://localhost:3000/api/paypal/success',
     cancelUrl: process.env.PAYPAL_CANCEL_URL || 'http://localhost:3000/api/paypal/cancel'
   },
