@@ -30,7 +30,8 @@ exports.createEvent = function(req, res, next) {
         reserve.addEvent(event._id, req.user.id, function(err, result) {
         	if (err) return next(err);
         	res.json(event);
-        }); 
+        });
+		console.log('about to notify users about the new event just created!');
         emailer.notifyNewEvent(event);       
     });		
 

@@ -17,6 +17,7 @@ var emailTemplates = require('email-templates');
  * Notify users of new event created based on user's preferences
  */
 exports.notifyNewEvent = function(event) {
+	console.log('new event notification - event type - ' + event.type);
 	User.find({'preferences': {$in: [event.type]}}, function(err, users) {
 		sendEmailNotification('notify-new-event', event, users);
 	});
