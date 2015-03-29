@@ -95,7 +95,8 @@ exports.generateQrCode = function(req, res, next) {
 			var output = fs.createWriteStream(qrDir + '/' + eventId + '.png');
 			code.pipe(output);
 		}
+
+		res.sendFile(absoluteQrPath);
 	});
-	res.sendFile(absoluteQrPath);
 }
 
