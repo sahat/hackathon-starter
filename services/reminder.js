@@ -36,14 +36,15 @@ function sendMessageForEvent(event){
 	var eventDate = new Date(event.eventDate);
 	//get phone numbers for user
 	userService.getMobileNumberForUsers(participantList, function(err, phoneNumberList){
-		var smsContent = "You have " + eventName + " tomorrow at " +  eventDate.getHours(); + ":" + eventDate.getMinutes();
+		var smsContent = "You have " + eventName + " tomorrow.";
+		if(phoneNumberList.length > 0){
+			for(var i = 0; i < phoneNumberList.length; i++){
+				smsSender.sendSms(phoneNumberList[i].profile.mobileNumber, smsContent);
+			}
 
-		for(var i = 0; i < phoneNumberList.length; i++){
-			smsSender.sendSms(phoneNumberList[i].profile.mobileNumber, smsContent);
-		}
-
-		event.isRemind = true;
-		eventService.saveEvent(event, function(err){});
+			event.isRemind = true;
+			eventService.saveEvent(event, function(err){});
+		}		
 
 	});
 }	
