@@ -85,7 +85,12 @@ exports.postSignup = function(req, res, next) {
 
   var user = new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+	preferences: req.body.preferences,
+	profile: {
+		name: req.body.name,
+		mobileNumber: req.body.phone
+	}
   });
 
   User.findOne({ email: req.body.email }, function(err, existingUser) {
