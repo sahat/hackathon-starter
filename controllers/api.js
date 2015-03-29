@@ -38,10 +38,10 @@ exports.getPayPal = function(req, res, next) {
       cancel_url: secrets.paypal.cancelUrl
     },
     transactions: [{
-      description: 'Hackathon Starter',
+      description: 'VoLAHnteer',
       amount: {
-        currency: 'USD',
-        total: '1.99'
+        currency: 'SGD',
+        total: '5.00'
       }
     }]
   };
@@ -52,6 +52,8 @@ exports.getPayPal = function(req, res, next) {
     var links = payment.links;
     for (var i = 0; i < links.length; i++) {
       if (links[i].rel === 'approval_url') {
+       // res.redirect(301, links[i].href);
+
         res.render('api/paypal', {
           approvalUrl: links[i].href
         });
