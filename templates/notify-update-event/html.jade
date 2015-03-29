@@ -5,9 +5,17 @@ html
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
   body
-    h1 Howdy #{user.profile.name},
-    p An event you volunteered to has been updated. Below are the event details:
-    | #{event.title}
-    | #{event.description}
-    | #{event.type}
-    | #{event.eventDate}
+    p Hello #{user.profile.name}!
+    p We thought you might like to volunteer for an upcoming event. Below are the event details:
+    | Title: #{event.title}
+    br
+    | Description: #{event.description}
+    br
+    | Category: #{event.type}
+    br
+    | Schedule: #{new Date(event.eventDate)}
+    br
+    Thanks for making the world a better place!
+    | Cheers,
+    br
+    | The VoLAHnteer Team

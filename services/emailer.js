@@ -34,7 +34,7 @@ generateJoinLink = function(eventId, userId) {
 	return secrets.serverUrl + '/join/' + encEventId + '/' + encUserId;
 }
 
-function sendEmailNotification(templateName, event, recipients) {
+sendEmailNotification = function(templateName, event, recipients) {
 	async.waterfall([
 		function(done) {
 			crypt.generateToken(function(err, token) {
@@ -68,7 +68,7 @@ function sendEmailNotification(templateName, event, recipients) {
         				} else {
           					transportBatch.sendMail({
 								from: 'VoLAHnteer <volahnteer@gmail.com>',
-								subject: locals.event.title,
+								subject: 'VoLAHnteer for ' + locals.event.title,
 								to: locals.user.email,
 								html: html,
 								text: text
@@ -96,5 +96,6 @@ function sendEmailNotification(templateName, event, recipients) {
 		}
 	], function(err) {
 	});
-};
+}
 
+exports.sendEmailNotification = sendEmailNotification;
