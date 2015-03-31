@@ -4,7 +4,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.0.1?](#changelog)
+Jump to [What's new in 3.0.2?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1199,6 +1199,18 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.0.2 (March 31, 2015)
+- Renamed `navbar.jade` to `header.jade`.
+- Fixed typos in README. Thanks @josephahn and @rstormsf. 
+- Fix radio button alignment on small screens in Profile page.
+- Increased `bcrypt.genSalt()` from **5** to **10**.
+- Updated package dependencies.
+- Updated Font Awesome `4.3.0`.
+- Updated Bootstrap `3.3.4`.
+- Removed Ionicons.
+- Removed unused `User` variable in *controllers/api.js*.
+- Removed Nodejitsu instructions from README.
 
 ### 3.0.1 (February 23, 2015)
 - Reverted Sass to LESS stylesheets. See <a href="https://github.com/sahat/hackathon-starter/issues/233">#233</a>.
