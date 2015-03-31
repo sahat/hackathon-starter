@@ -325,7 +325,7 @@ Project Structure
 | **public**/                        | Static assets (fonts, css, js, img).                        |
 | **public**/**js**/application.js   | Specify client-side JavaScript dependencies.                |
 | **public**/**js**/main.js          | Place your client-side JavaScript here.                     |
-| **public**/**css**/styles.less     | Main stylesheet for your app.                               |
+| **public**/**css**/main.less       | Main stylesheet for your app.                               |
 | **public/css/themes**/default.less | Some Bootstrap overrides to make it look prettier.          |
 | **views/account**/                 | Templates for *login, password reset, signup, profile*.     |
 | **views/api**/                     | Templates for API Examples.                                 |
@@ -457,7 +457,7 @@ Recommended Client-side Libraries
 Pro Tips
 --------
 
-- When installing an NPM package, add a *--save* flag, and it will be automatially
+- When installing an NPM package, add a *--save* flag, and it will be automatically
 added to `package.json` as well. For example, `npm install --save moment`.
 - Use [async.parallel()](https://github.com/caolan/async#parallel) when you need to run multiple
 asynchronous tasks, and then render a page, but only when all tasks are completed. For example, you might
@@ -576,7 +576,7 @@ of downloading and installing MongoDB locally. You will only need to update the
 `db` property in `config/secrets.js`.
 
 ### I get an error when I deploy my app, why?
-Chances are you haven't changed the *Dabatase URI* in `secrets.js`. If `db` is
+Chances are you haven't changed the *Database URI* in `secrets.js`. If `db` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
 running on `localhost`. You need to create an account with [MongoLab](http://mongolab.com)
@@ -686,7 +686,7 @@ app.get('/escape-velocity', homeController.escapeVelocity);
 
 Restart the server (if you are not using **nodemon**), then you should see the new template at [http://localhost:3000/escape-velocity](http://localhost:3000/escape-velocity).
 
-I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Jade templates work: `layout.jade` - base template, `index.jade` - home page, `partials/navigation.jade` - Bootstrap navbar, `partials/footer.jade` - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new `layout.jade`.
+I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Jade templates work: `layout.jade` - base template, `index.jade` - home page, `partials/header.jade` - Bootstrap navbar, `partials/footer.jade` - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new `layout.jade`.
 Then, each page that changes, be it `index.jade`, `about.jade`, `contact.jade`
 will be embedded in your new `layout.jade` via `block content`. Use existing templates as a reference.
 
@@ -846,21 +846,23 @@ Use whichever style that makes sense to you. Either one is acceptable. I really 
 `app.route` is very clean and elegant approach, but on the other hand I can no longer see all my routes at a glance
 when you have one route per line.
 
-**Step 2.** Create a new schema and a model `Book.js`.
+**Step 2.** Create a new schema and a model `Book.js` inside the *models* directory.
 ```js
 var bookSchema = new mongoose.Schema({
   name: String
 });
 
 var Book = mongoose.model('Book', bookSchema);
+module.exports = Book;
 ```
 
-**Step 3.** Create a new controller file called `book.js`.
+**Step 3.** Create a new controller file called `book.js` inside the *controllers* directory.
 ```js
 /**
  * GET /books
  * List all books.
  */
+var Book = require('../models/Book.js');
 
 exports.getBooks = function(req, res) {
   Book.find(function(err, docs) {
@@ -1327,7 +1329,7 @@ Changelog
 There are have been over **500+** commits since the initial announcement in
 January 2014 and over a **120** issues and pull requests from **28** contributors.
 
-- Documention grew **8x** in size since the announcement on Hacker News
+- Documentation grew **8x** in size since the announcement on Hacker News
 - Upgraded to Express 4.0
 - Generator for adding/removing authentication providers
 - New Instagram authentication that can be added via generator
