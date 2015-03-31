@@ -7,12 +7,12 @@ if messages.errors
 if messages.info
   .alert.alert-info.fade.in
     button.close(type='button', data-dismiss='alert')
-      span.ion-close-circled
+      i.fa.fa-times-circle-o
     for info in messages.info
       div= info.msg
 if messages.success
   .alert.alert-success.fade.in
     button.close(type='button', data-dismiss='alert')
-      span.ion-close-circled
+      i.fa.fa-times-circle-o
     for success in messages.success
       div= success.msg
