@@ -571,7 +571,7 @@ download MongoDB [here](mongodb.org/downloads), or install it via a package mana
 Windows users, read [Install MongoDB on Windows](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
 **Tip:** If you are always connected to the internet, you could just use
-[MongoLab](https://mongolab.com/) or [MongoHQ](https://www.mongohq.com/) instead
+[MongoLab](https://mongolab.com/) or [Compose](https://www.compose.io/) instead
 of downloading and installing MongoDB locally. You will only need to update the
 `db` property in `config/secrets.js`.
 
@@ -580,7 +580,7 @@ Chances are you haven't changed the *Database URI* in `secrets.js`. If `db` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
 running on `localhost`. You need to create an account with [MongoLab](http://mongolab.com)
-or [MongoHQ](http://mongohq.com), then create a free tier database.
+or [Compose](https://www.compose.io/), then create a free tier database.
 See [Deployment](#deployment) for more information on how to setup an account
 and a new database step-by-step with MongoLab.
 
@@ -1123,7 +1123,7 @@ listed below.
 - Finally, in `secrets.js` instead of `db: 'localhost'`, use the following URI with your credentials:
  - `db: 'mongodb://USERNAME:PASSWORD@ds027479.mongolab.com:27479/DATABASE_NAME'`
 
-**Note:** As an alternative to MongoLab, there is also [MongoHQ](http://www.mongohq.com/home).
+**Note:** As an alternative to MongoLab, there is also [Compose](https://www.compose.io/).
 
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
