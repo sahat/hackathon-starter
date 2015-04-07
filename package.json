@@ -1,6 +1,6 @@
 {
   "name": "hackathon-starter",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/sahat/hackathon-starter.git"
@@ -52,7 +52,7 @@
     "passport-oauth": "^1.0.0",
     "passport-twitter": "^1.0.3",
     "paypal-rest-sdk": "^1.5.2",
-    "request": "^2.54.0",
+    "request": "^2.55.0",
     "stripe": "^3.3.4",
     "tumblr.js": "^0.0.4",
     "twilio": "^1.11.1",
