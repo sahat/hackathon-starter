@@ -12,6 +12,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "bcrypt-nodejs": "^0.0.3",
+    "bitgo": "0.10.0",
     "body-parser": "^1.12.2",
     "cheerio": "^0.19.0",
     "clockwork": "^0.1.1",
