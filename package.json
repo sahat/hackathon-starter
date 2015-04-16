@@ -55,7 +55,7 @@
     "request": "^2.55.0",
     "stripe": "^3.3.4",
     "tumblr.js": "^0.0.4",
-    "twilio": "^1.11.1",
+    "twilio": "^2.0.0",
     "twit": "^1.1.20",
     "uglify-js": "^2.4.20",
     "validator": "^3.37.0",
