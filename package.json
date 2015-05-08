@@ -53,6 +53,7 @@
     "passport-twitter": "^1.0.3",
     "paypal-rest-sdk": "^1.5.2",
     "request": "^2.55.0",
+    "serve-favicon": "^2.2.0",
     "stripe": "^3.3.4",
     "tumblr.js": "^0.0.5",
     "twilio": "^2.1.0",

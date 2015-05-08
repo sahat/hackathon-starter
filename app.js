@@ -4,6 +4,7 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var compress = require('compression');
+var favicon = require('serve-favicon');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
@@ -59,6 +60,7 @@ app.use(connectAssets({
   paths: [path.join(__dirname, 'public/css'), path.join(__dirname, 'public/js')]
 }));
 app.use(logger('dev'));
+app.use(favicon(path.join(__dirname, 'public/favicon.png')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({ dest: path.join(__dirname, 'uploads') }));
