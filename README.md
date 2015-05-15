@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.0.2?](#changelog)
+Jump to [What's new in 3.0.3?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1201,6 +1201,10 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.0.3 (May 14, 2015)
+- Added favicon.
+- Fixed an email issue with Google login.
 
 ### 3.0.2 (March 31, 2015)
 - Renamed `navbar.jade` to `header.jade`.
