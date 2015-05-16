@@ -348,8 +348,8 @@ Just don't forget to update `extends ../layout`  and corresponding
 List of Packages
 ----------------
 
-| Package                         | Description   |
-| ------------------------------- |:-------------:|
+| Package                         | Description |
+| ------------------------------- |-------------|
 | async                           | Utility library that provides asynchronous control flow. |
 | bcrypt-nodejs                   | Library for hashing and salting user passwords. |
 | cheerio                         | Scrape web pages using jQuery-style syntax.  |
@@ -362,9 +362,11 @@ List of Packages
 | cookie-parser                   | Express 4.0 middleware. |
 | express-session                 | Express 4.0 middleware. |
 | morgan                          | Express 4.0 middleware. |
+| multer                          | Express 4.0 middleware. |
 | compression                     | Express 4.0 middleware. |
 | errorhandler                    | Express 4.0 middleware. |
 | method-override                 | Express 4.0 middleware. |
+| serve-favicon                   | Express 4.0 middleware offering favicon serving and caching. |
 | express-flash                   | Provides flash messages for Express. |
 | express-validator               | Easy form validation for Express. |
 | fbgraph                         | Facebook Graph API library. |
@@ -379,6 +381,7 @@ List of Packages
 | node-foursquare                 | Foursquare API library. |
 | node-linkedin                   | LinkedIn API library. |
 | nodemailer                      | Node.js library for sending emails. |
+| ordrin-api                      | ordr.in API library. |
 | passport                        | Simple and elegant authentication library for node.js |
 | passport-facebook               | Sign-in with Facebook plugin. |
 | passport-github                 | Sign-in with GitHub plugin. |
@@ -388,6 +391,7 @@ List of Packages
 | passport-local                  | Sign-in with Username and Password plugin. |
 | passport-linkedin-oauth2        | Sign-in with LinkedIn plugin. |
 | passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies. |
+| paypal-rest-sdk                 | PayPal APIs library. |
 | request                         | Simplified HTTP request library. |
 | stripe                          | Offical Stripe API library. |
 | tumblr.js                       | Tumblr API library. |
