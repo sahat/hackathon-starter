@@ -20,7 +20,7 @@
     "connect-mongo": "^0.8.1",
     "cookie-parser": "^1.3.4",
     "csso": "^1.3.11",
-    "errorhandler": "^1.3.5",
+    "errorhandler": "^1.3.6",
     "express": "^4.12.3",
     "express-flash": "^0.0.2",
     "express-session": "^1.11.2",
@@ -51,7 +51,7 @@
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
     "passport-twitter": "^1.0.3",
-    "paypal-rest-sdk": "^1.5.2",
+    "paypal-rest-sdk": "^1.5.3",
     "request": "^2.55.0",
     "serve-favicon": "^2.2.1",
     "stripe": "^3.3.4",
@@ -65,8 +65,8 @@
   "devDependencies": {
     "blessed": "^0.1.56",
     "chai": "^2.3.0",
-    "mocha": "^2.2.4",
+    "mocha": "^2.2.5",
     "multiline": "^1.0.2",
-    "supertest": "^0.15.0"
+    "supertest": "^1.0.1"
   }
 }
