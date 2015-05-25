@@ -381,7 +381,6 @@ List of Packages
 | node-foursquare                 | Foursquare API library.                                               |
 | node-linkedin                   | LinkedIn API library.                                                 |
 | nodemailer                      | Node.js library for sending emails.                                   |
-| ordrin-api                      | ordr.in API library.                                                  |
 | passport                        | Simple and elegant authentication library for node.js                 |
 | passport-facebook               | Sign-in with Facebook plugin.                                         |
 | passport-github                 | Sign-in with GitHub plugin.                                           |
