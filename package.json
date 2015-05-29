@@ -35,7 +35,7 @@
     "lodash": "^3.9.3",
     "lusca": "^1.1.0",
     "method-override": "^2.3.3",
-    "mongoose": "^4.0.3",
+    "mongoose": "^4.0.4",
     "morgan": "^1.5.3",
     "multer": "^0.1.8",
     "node-foursquare": "^0.3.0",
