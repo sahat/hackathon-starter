@@ -10,11 +10,11 @@
     "test": "mocha"
   },
   "dependencies": {
-    "async": "^1.0.0",
+    "async": "^1.2.1",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.12.4",
     "cheerio": "^0.19.0",
-    "clockwork": "^0.1.1",
+    "clockwork": "^0.1.0",
     "compression": "^1.4.4",
     "connect-assets": "^4.7.1",
     "connect-mongo": "^0.8.1",
@@ -24,7 +24,7 @@
     "express": "^4.12.4",
     "express-flash": "^0.0.2",
     "express-session": "^1.11.2",
-    "express-validator": "^2.10.0",
+    "express-validator": "^2.11.0",
     "fbgraph": "^1.0.0",
     "github-api": "^0.10.6",
     "instagram-node": "^0.5.7",
@@ -33,9 +33,9 @@
     "less": "^2.5.1",
     "lob": "^3.3.1",
     "lodash": "^3.9.3",
-    "lusca": "^1.1.0",
+    "lusca": "^1.1.1",
     "method-override": "^2.3.3",
-    "mongoose": "^4.0.4",
+    "mongoose": "^4.0.5",
     "morgan": "^1.5.3",
     "multer": "^0.1.8",
     "node-foursquare": "^0.3.0",
@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "blessed": "^0.1.60",
-    "chai": "^2.3.0",
+    "chai": "^3.0.0",
     "mocha": "^2.2.5",
     "multiline": "^1.0.2",
     "supertest": "^1.0.1"
