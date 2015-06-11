@@ -67,5 +67,6 @@
     "mocha": "^2.2.5",
     "multiline": "^1.0.2",
     "supertest": "^1.0.1"
-  }
+  },
+  "license": "MIT"
 }
