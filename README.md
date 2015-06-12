@@ -2,9 +2,11 @@
 Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](http://img.shields.io/travis/sahat/hackathon-starter.svg?style=flat)](https://travis-ci.org/sahat/hackathon-starter) [![Analytics](https://ga-beacon.appspot.com/UA-47447818-2/hackathon-starter?pixel)](https://github.com/igrigorik/ga-beacon)
 =======================
 
+[![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.0.2?](#changelog)
+Jump to [What's new in 3.0.3?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -321,29 +323,29 @@ The same goes for other providers.
 Project Structure
 -----------------
 
-| Name                               | Description                                                 |
-| ---------------------------------- |:-----------------------------------------------------------:|
-| **config**/passport.js             | Passport Local and OAuth strategies, plus login middleware. |
-| **config**/secrets.js              | Your API keys, tokens, passwords and database URL.          |
-| **controllers**/api.js             | Controller for /api route and all api examples.             |
-| **controllers**/contact.js         | Controller for contact form.                                |
-| **controllers**/home.js            | Controller for home page (index).                           |
-| **controllers**/user.js            | Controller for user account management.                     |
-| **models**/User.js                 | Mongoose schema and model for User.                         |
-| **public**/                        | Static assets (fonts, css, js, img).                        |
-| **public**/**js**/application.js   | Specify client-side JavaScript dependencies.                |
-| **public**/**js**/main.js          | Place your client-side JavaScript here.                     |
-| **public**/**css**/main.less       | Main stylesheet for your app.                               |
-| **public/css/themes**/default.less | Some Bootstrap overrides to make it look prettier.          |
-| **views/account**/                 | Templates for *login, password reset, signup, profile*.     |
-| **views/api**/                     | Templates for API Examples.                                 |
-| **views/partials**/flash.jade      | Error, info and success flash notifications.                |
-| **views/partials**/header.jade     | Navbar partial template.                                    |
-| **views/partials**/footer.jade     | Footer partial template.                                    |
-| **views**/layout.jade              | Base template.                                              |
-| **views**/home.jade                | Home page template.                                         |
-| app.js                             | Main application file.                                      |
-| setup.js                       | Tool for removing authentication providers and other things.|
+| Name                               | Description                                                  |
+| ---------------------------------- | ------------------------------------------------------------ |
+| **config**/passport.js             | Passport Local and OAuth strategies, plus login middleware.  |
+| **config**/secrets.js              | Your API keys, tokens, passwords and database URL.           |
+| **controllers**/api.js             | Controller for /api route and all api examples.              |
+| **controllers**/contact.js         | Controller for contact form.                                 |
+| **controllers**/home.js            | Controller for home page (index).                            |
+| **controllers**/user.js            | Controller for user account management.                      |
+| **models**/User.js                 | Mongoose schema and model for User.                          |
+| **public**/                        | Static assets (fonts, css, js, img).                         |
+| **public**/**js**/application.js   | Specify client-side JavaScript dependencies.                 |
+| **public**/**js**/main.js          | Place your client-side JavaScript here.                      |
+| **public**/**css**/main.less       | Main stylesheet for your app.                                |
+| **public/css/themes**/default.less | Some Bootstrap overrides to make it look prettier.           |
+| **views/account**/                 | Templates for *login, password reset, signup, profile*.      |
+| **views/api**/                     | Templates for API Examples.                                  |
+| **views/partials**/flash.jade      | Error, info and success flash notifications.                 |
+| **views/partials**/header.jade     | Navbar partial template.                                     |
+| **views/partials**/footer.jade     | Footer partial template.                                     |
+| **views**/layout.jade              | Base template.                                               |
+| **views**/home.jade                | Home page template.                                          |
+| app.js                             | Main application file.                                       |
+| setup.js                           | Tool for removing authentication providers and other things. |
 
 **Note:** There is no preference how you name or structure your views.
 You could place all your templates in a top-level `views` directory without
@@ -354,61 +356,64 @@ Just don't forget to update `extends ../layout`  and corresponding
 List of Packages
 ----------------
 
-| Package                         | Description   |
-| ------------------------------- |:-------------:|
-| async                           | Utility library that provides asynchronous control flow. |
-| bcrypt-nodejs                   | Library for hashing and salting user passwords. |
+| Package                         | Description                                                           |
+| ------------------------------- | --------------------------------------------------------------------- |
+| async                           | Utility library that provides asynchronous control flow.              |
+| bcrypt-nodejs                   | Library for hashing and salting user passwords.                       |
 | bitgo                           | Multi-sig Bitcoin wallet API.  |
-| cheerio                         | Scrape web pages using jQuery-style syntax.  |
-| clockwork                       | Clockwork SMS API library. |
-| connect-assets                  | Compiles LESS stylesheets, concatenates & minifies JavaScript. |
-| connect-mongo                   | MongoDB session store for Express. |
-| csso                            | Dependency for connect-assets library to minify CSS. |
-| express                         | Node.js web framework. |
-| body-parser                     | Express 4.0 middleware. |
-| cookie-parser                   | Express 4.0 middleware. |
-| express-session                 | Express 4.0 middleware. |
-| morgan                          | Express 4.0 middleware. |
-| compression                     | Express 4.0 middleware. |
-| errorhandler                    | Express 4.0 middleware. |
-| method-override                 | Express 4.0 middleware. |
-| express-flash                   | Provides flash messages for Express. |
-| express-validator               | Easy form validation for Express. |
-| fbgraph                         | Facebook Graph API library. |
-| github-api                      | GitHub API library. |
-| jade                            | Template engine for Express. |
-| lastfm                          | Last.fm API library. |
-| instagram-node                  | Instagram API library. |
-| less                            | LESS compiler. Used implicitly by connect-assets. |
-| lob                             | Lob API library |
-| lusca                           | CSRF middleware.        |
-| mongoose                        | MongoDB ODM. |
-| node-foursquare                 | Foursquare API library. |
-| node-linkedin                   | LinkedIn API library. |
-| nodemailer                      | Node.js library for sending emails. |
-| passport                        | Simple and elegant authentication library for node.js |
-| passport-facebook               | Sign-in with Facebook plugin. |
-| passport-github                 | Sign-in with GitHub plugin. |
-| passport-google-oauth           | Sign-in with Google plugin. |
-| passport-twitter                | Sign-in with Twitter plugin. |
-| passport-instagram              | Sign-in with Instagram plugin. |
-| passport-local                  | Sign-in with Username and Password plugin. |
-| passport-linkedin-oauth2        | Sign-in with LinkedIn plugin. |
-| passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies. |
-| request                         | Simplified HTTP request library. |
-| stripe                          | Offical Stripe API library. |
-| tumblr.js                       | Tumblr API library. |
-| twilio                          | Twilio API library. |
-| twit                            | Twitter API library. |
-| lodash                          | Handy JavaScript utlities library. |
-| uglify-js                       | Dependency for connect-assets library to minify JS. |
+| cheerio                         | Scrape web pages using jQuery-style syntax.                           |
+| clockwork                       | Clockwork SMS API library.                                            |
+| connect-assets                  | Compiles LESS stylesheets, concatenates & minifies JavaScript.        |
+| connect-mongo                   | MongoDB session store for Express.                                    |
+| csso                            | Dependency for connect-assets library to minify CSS.                  |
+| express                         | Node.js web framework.                                                |
+| body-parser                     | Express 4.0 middleware.                                               |
+| cookie-parser                   | Express 4.0 middleware.                                               |
+| express-session                 | Express 4.0 middleware.                                               |
+| morgan                          | Express 4.0 middleware.                                               |
+| multer                          | Express 4.0 middleware.                                               |
+| compression                     | Express 4.0 middleware.                                               |
+| errorhandler                    | Express 4.0 middleware.                                               |
+| method-override                 | Express 4.0 middleware.                                               |
+| serve-favicon                   | Express 4.0 middleware offering favicon serving and caching.          |
+| express-flash                   | Provides flash messages for Express.                                  |
+| express-validator               | Easy form validation for Express.                                     |
+| fbgraph                         | Facebook Graph API library.                                           |
+| github-api                      | GitHub API library.                                                   |
+| jade                            | Template engine for Express.                                          |
+| lastfm                          | Last.fm API library.                                                  |
+| instagram-node                  | Instagram API library.                                                |
+| less                            | LESS compiler. Used implicitly by connect-assets.                     |
+| lob                             | Lob API library                                                       |
+| lusca                           | CSRF middleware.                                                      |
+| mongoose                        | MongoDB ODM.                                                          |
+| node-foursquare                 | Foursquare API library.                                               |
+| node-linkedin                   | LinkedIn API library.                                                 |
+| nodemailer                      | Node.js library for sending emails.                                   |
+| passport                        | Simple and elegant authentication library for node.js                 |
+| passport-facebook               | Sign-in with Facebook plugin.                                         |
+| passport-github                 | Sign-in with GitHub plugin.                                           |
+| passport-google-oauth           | Sign-in with Google plugin.                                           |
+| passport-twitter                | Sign-in with Twitter plugin.                                          |
+| passport-instagram              | Sign-in with Instagram plugin.                                        |
+| passport-local                  | Sign-in with Username and Password plugin.                            |
+| passport-linkedin-oauth2        | Sign-in with LinkedIn plugin.                                         |
+| passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.    |
+| paypal-rest-sdk                 | PayPal APIs library.                                                  |
+| request                         | Simplified HTTP request library.                                      |
+| stripe                          | Offical Stripe API library.                                           |
+| tumblr.js                       | Tumblr API library.                                                   |
+| twilio                          | Twilio API library.                                                   |
+| twit                            | Twitter API library.                                                  |
+| lodash                          | Handy JavaScript utlities library.                                    |
+| uglify-js                       | Dependency for connect-assets library to minify JS.                   |
 | validator                       | Used in conjunction with express-validator in **controllers/api.js**. |
-| mocha                           | Test framework. |
-| chai                            | BDD/TDD assertion library. |
-| supertest                       | HTTP assertion library. |
-| multiline                       | Multi-line strings for the generator. |
-| blessed                         | Interactive command line interface for the generator. |
-| yui                             | Used by the Yahoo API example. |
+| mocha                           | Test framework.                                                       |
+| chai                            | BDD/TDD assertion library.                                            |
+| supertest                       | HTTP assertion library.                                               |
+| multiline                       | Multi-line strings for the generator.                                 |
+| blessed                         | Interactive command line interface for the generator.                 |
+| yui                             | Used by the Yahoo API example.                                        |
 
 Useful Tools and Resources
 --------------------------
@@ -1209,9 +1214,13 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 Changelog
 ---------
 
+### 3.0.3 (May 14, 2015)
+- Added favicon.
+- Fixed an email issue with Google login.
+
 ### 3.0.2 (March 31, 2015)
 - Renamed `navbar.jade` to `header.jade`.
-- Fixed typos in README. Thanks @josephahn and @rstormsf. 
+- Fixed typos in README. Thanks @josephahn and @rstormsf.
 - Fix radio button alignment on small screens in Profile page.
 - Increased `bcrypt.genSalt()` from **5** to **10**.
 - Updated package dependencies.
