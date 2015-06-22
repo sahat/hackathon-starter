@@ -22,7 +22,7 @@
     "cookie-parser": "^1.3.5",
     "csso": "^1.3.11",
     "errorhandler": "^1.4.0",
-    "express": "^4.12.4",
+    "express": "^4.13.0",
     "express-flash": "^0.0.2",
     "express-session": "^1.11.3",
     "express-validator": "^2.12.1",
@@ -36,7 +36,7 @@
     "lodash": "^3.9.3",
     "lusca": "^1.1.1",
     "method-override": "^2.3.3",
-    "mongoose": "^4.0.5",
+    "mongoose": "^4.0.6",
     "morgan": "^1.6.0",
     "multer": "^0.1.8",
     "node-foursquare": "^0.3.0",
@@ -63,7 +63,7 @@
     "yui": "^3.18.1"
   },
   "devDependencies": {
-    "blessed": "^0.1.60",
+    "blessed": "^0.1.61",
     "chai": "^3.0.0",
     "mocha": "^2.2.5",
     "multiline": "^1.0.2",
