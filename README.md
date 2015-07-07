@@ -2,7 +2,7 @@
 Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](http://img.shields.io/travis/sahat/hackathon-starter.svg?style=flat)](https://travis-ci.org/sahat/hackathon-starter) [![Analytics](https://ga-beacon.appspot.com/UA-47447818-2/hackathon-starter?pixel)](https://github.com/igrigorik/ga-beacon)
 =======================
 
-[![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Thinkful Pair on Node](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/node/)
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
@@ -1179,9 +1179,9 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 - Login to [Windows Azure Management Portal](http://manage.windowsazure.com/)
 - Click the **+ NEW** button on the bottom left of the portal
-- Click **WEB SITE**, then **QUICK CREATE**
+- Click **COMPUTE**, then **WEB APP**, then **QUICK CREATE**
 - Enter a name for **URL** and select the datacenter **REGION** for your web site
-- Click on **CREATE WEB SITE** button
+- Click on **CREATE WEB APP** button
 - Once the web site status changes to *Running*, click on the name of the web site to access the Dashboard
 - At the bottom right of the Quickstart page, select **Set up a deployment from source control**
 - Select **Local Git repository** from the list, and then click the arrow
@@ -1190,7 +1190,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 - Inside your *Hackathon Starter* directory, run `git remote add azure [Azure Git URL]`
 - To push your changes simply run `git push azure master`
  - **Note:** *You will be prompted for the password you created earlier*
-- On **Deployments** tab of your Windows Azure Web Site, you will see the deployment history
+- On **Deployments** tab of your Windows Azure Web App, you will see the deployment history
 
 <img src="http://www.comparethecloud.net/wp-content/uploads/2014/06/ibm-bluemix_pr-030514.jpg" width="200">
 
