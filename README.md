@@ -1179,7 +1179,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 - Login to [Windows Azure Management Portal](http://manage.windowsazure.com/)
 - Click the **+ NEW** button on the bottom left of the portal
-- Click **COMPUTE**, then, **WEB APP**, then **QUICK CREATE**
+- Click **COMPUTE**, then **WEB APP**, then **QUICK CREATE**
 - Enter a name for **URL** and select the datacenter **REGION** for your web site
 - Click on **CREATE WEB APP** button
 - Once the web site status changes to *Running*, click on the name of the web site to access the Dashboard
