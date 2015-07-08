@@ -158,13 +158,19 @@ them with *your credentials* when you are ready to deploy an app.
 
 <img src="http://images.google.com/intl/en_ALL/images/srpr/logo6w.png" width="200">
 - Visit [Google Cloud Console](https://cloud.google.com/console/project)
-- Click **CREATE PROJECT** button
-- Enter *Project Name*, then click **CREATE**
-- Then select *APIs & auth* from the sidebar and click on *Credentials* tab
-- Click **CREATE NEW CLIENT ID** button
+- Click on the **Create Project** button
+- Enter *Project Name*, then click on **Create** button
+- Then click on *APIs & auth* in the sidebar and select *API* tab
+- Click on **Google+ API** under *Social APIs*, then click **Enable API**
+- Next, under *APIs & auth* in the sidebar click on *Credentials* tab
+- Click on **Create new Client ID** button
+- Select *Web Application* and click on **Configure Consent Screen**
+- Fill out the required fields then click on **Save**
+- In the *Create Client ID* modal dialog:
  - **Application Type**: Web Application
  - **Authorized Javascript origins**: http://localhost:3000
  - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
+- Click on **Create Client ID** button
 - Copy and paste *Client ID* and *Client secret* keys into `config/secrets.js`
 
 **Note:** When you ready to deploy to production don't forget to
@@ -193,7 +199,7 @@ The same goes for other providers.
 - Go to [Account Settings](https://github.com/settings/profile)
 - Select **Applications** from the sidebar
 - Then inside **Developer applications** click on **Register new application**
-- Enter *Application Name* and *Homepage URL*.
+- Enter *Application Name* and *Homepage URL*
 - For *Authorization Callback URL*: http://localhost:3000/auth/github/callback
 - Click **Register application**
 - Now copy and paste *Client ID* and *Client Secret* keys into `config/secrets.js`
