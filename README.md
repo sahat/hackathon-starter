@@ -2,7 +2,7 @@
 Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](http://img.shields.io/travis/sahat/hackathon-starter.svg?style=flat)](https://travis-ci.org/sahat/hackathon-starter) [![Analytics](https://ga-beacon.appspot.com/UA-47447818-2/hackathon-starter?pixel)](https://github.com/igrigorik/ga-beacon)
 =======================
 
-[![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Thinkful Pair on Node](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/node/)
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
@@ -158,13 +158,19 @@ them with *your credentials* when you are ready to deploy an app.
 
 <img src="http://images.google.com/intl/en_ALL/images/srpr/logo6w.png" width="200">
 - Visit [Google Cloud Console](https://cloud.google.com/console/project)
-- Click **CREATE PROJECT** button
-- Enter *Project Name*, then click **CREATE**
-- Then select *APIs & auth* from the sidebar and click on *Credentials* tab
-- Click **CREATE NEW CLIENT ID** button
+- Click on the **Create Project** button
+- Enter *Project Name*, then click on **Create** button
+- Then click on *APIs & auth* in the sidebar and select *API* tab
+- Click on **Google+ API** under *Social APIs*, then click **Enable API**
+- Next, under *APIs & auth* in the sidebar click on *Credentials* tab
+- Click on **Create new Client ID** button
+- Select *Web Application* and click on **Configure Consent Screen**
+- Fill out the required fields then click on **Save**
+- In the *Create Client ID* modal dialog:
  - **Application Type**: Web Application
  - **Authorized Javascript origins**: http://localhost:3000
  - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
+- Click on **Create Client ID** button
 - Copy and paste *Client ID* and *Client secret* keys into `config/secrets.js`
 
 **Note:** When you ready to deploy to production don't forget to
@@ -193,7 +199,7 @@ The same goes for other providers.
 - Go to [Account Settings](https://github.com/settings/profile)
 - Select **Applications** from the sidebar
 - Then inside **Developer applications** click on **Register new application**
-- Enter *Application Name* and *Homepage URL*.
+- Enter *Application Name* and *Homepage URL*
 - For *Authorization Callback URL*: http://localhost:3000/auth/github/callback
 - Click **Register application**
 - Now copy and paste *Client ID* and *Client Secret* keys into `config/secrets.js`
@@ -1179,9 +1185,9 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 - Login to [Windows Azure Management Portal](http://manage.windowsazure.com/)
 - Click the **+ NEW** button on the bottom left of the portal
-- Click **WEB SITE**, then **QUICK CREATE**
+- Click **COMPUTE**, then **WEB APP**, then **QUICK CREATE**
 - Enter a name for **URL** and select the datacenter **REGION** for your web site
-- Click on **CREATE WEB SITE** button
+- Click on **CREATE WEB APP** button
 - Once the web site status changes to *Running*, click on the name of the web site to access the Dashboard
 - At the bottom right of the Quickstart page, select **Set up a deployment from source control**
 - Select **Local Git repository** from the list, and then click the arrow
@@ -1190,7 +1196,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 - Inside your *Hackathon Starter* directory, run `git remote add azure [Azure Git URL]`
 - To push your changes simply run `git push azure master`
  - **Note:** *You will be prompted for the password you created earlier*
-- On **Deployments** tab of your Windows Azure Web Site, you will see the deployment history
+- On **Deployments** tab of your Windows Azure Web App, you will see the deployment history
 
 <img src="http://www.comparethecloud.net/wp-content/uploads/2014/06/ibm-bluemix_pr-030514.jpg" width="200">
 
