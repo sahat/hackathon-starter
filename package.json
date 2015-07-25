@@ -38,7 +38,6 @@
     "method-override": "^2.3.4",
     "mongoose": "^4.1.0",
     "morgan": "^1.6.1",
-    "multer": "^1.0.1",
     "node-foursquare": "^0.3.0",
     "node-linkedin": "^0.3.9",
     "nodemailer": "^1.4.0",
