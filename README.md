@@ -227,10 +227,8 @@ The same goes for other providers.
 - Fill out all the *required* fields
  - **OAuth 2.0 Redirect URLs**: http://localhost:3000/auth/linkedin/callback
  - **JavaScript API Domains**: http://localhost:3000
-- For **Default Scope** make sure *at least* the following is checked:
- - `r_fullprofile`
- - `r_emailaddress`
- - `r_network`
+- For **Default Application Permissions** make sure at least the following is checked:
+ - `r_basicprofile`
 - Finish by clicking **Add Application** button
 - Copy and paste *API Key* and *Secret Key* keys into `config/secrets.js`
  - *API Key* is your **clientID**
