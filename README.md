@@ -371,15 +371,15 @@ List of Packages
 | connect-mongo                   | MongoDB session store for Express.                                    |
 | csso                            | Dependency for connect-assets library to minify CSS.                  |
 | express                         | Node.js web framework.                                                |
-| body-parser                     | Express 4.0 middleware.                                               |
-| cookie-parser                   | Express 4.0 middleware.                                               |
-| express-session                 | Express 4.0 middleware.                                               |
-| morgan                          | Express 4.0 middleware.                                               |
-| multer                          | Express 4.0 middleware.                                               |
-| compression                     | Express 4.0 middleware.                                               |
-| errorhandler                    | Express 4.0 middleware.                                               |
-| method-override                 | Express 4.0 middleware.                                               |
-| serve-favicon                   | Express 4.0 middleware offering favicon serving and caching.          |
+| body-parser                     | Express 4 middleware.                                               |
+| cookie-parser                   | Express 4 middleware.                                               |
+| express-session                 | Express 4 middleware.                                               |
+| morgan                          | Express 4 middleware.                                               |
+| multer                          | Express 4 middleware.                                               |
+| compression                     | Express 4 middleware.                                               |
+| errorhandler                    | Express 4 middleware.                                               |
+| method-override                 | Express 4 middleware.                                               |
+| serve-favicon                   | Express 4 middleware offering favicon serving and caching.          |
 | express-flash                   | Provides flash messages for Express.                                  |
 | express-validator               | Easy form validation for Express.                                     |
 | fbgraph                         | Facebook Graph API library.                                           |
@@ -840,7 +840,7 @@ app.get('/books', bookController.getBooks);
 
 ---
 
-**Note:** As of Express 4.0 you can define you routes like so:
+**Note:** As of Express 4.x you can define you routes like so:
 
 ```js
 app.route('/books')
