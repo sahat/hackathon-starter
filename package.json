@@ -58,11 +58,11 @@
     "twilio": "^2.2.1",
     "twit": "^2.1.0",
     "uglify-js": "^2.4.24",
-    "validator": "^3.41.3",
+    "validator": "^3.43.0",
     "yui": "^3.18.1"
   },
   "devDependencies": {
-    "blessed": "^0.1.15",
+    "blessed": "^0.1.17",
     "chai": "^3.2.0",
     "mocha": "^2.2.5",
     "multiline": "^1.0.2",
