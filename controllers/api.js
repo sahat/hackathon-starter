@@ -663,9 +663,9 @@ exports.getPayPalCancel = function(req, res) {
  */
 exports.getLob = function(req, res, next) {
   lob.routes.list({
-    zip_codes: ['10007'] 
+    zip_codes: ['10007']
   }, function(err, routes) {
-    if(err) return next(err); 
+    if(err) return next(err);
     res.render('api/lob', {
       title: 'Lob API',
       routes: routes.data[0].routes
@@ -679,17 +679,17 @@ exports.getLob = function(req, res, next) {
  */
 exports.getBitGo = function(req, res, next) {
   var bitgo = new BitGo.BitGo({ env: 'test', accessToken: secrets.bitgo.accessToken });
-  var walletId = req.session.walletId; // we use the session to store the walletid, but you should store it elsewhere
+  var walletId = req.session.walletId;
 
   var renderWalletInfo = function(walletId) {
-    bitgo.wallets().get({id: walletId}, function(err, walletRes) {
-      walletRes.createAddress({}, function(err, addressRes) {
-        walletRes.transactions({}, function(err, transactionsRes) {
+    bitgo.wallets().get({ id: walletId }, function(err, walletResponse) {
+      walletResponse.createAddress({}, function(err, addressResponse) {
+        walletResponse.transactions({}, function(err, transactionsResponse) {
           res.render('api/bitgo', {
             title: 'BitGo API',
-            wallet: walletRes.wallet,
-            address: addressRes.address,
-            transactions: transactionsRes.transactions
+            wallet: walletResponse.wallet,
+            address: addressResponse.address,
+            transactions: transactionsResponse.transactions
           });
         });
       });
@@ -697,16 +697,13 @@ exports.getBitGo = function(req, res, next) {
   };
 
   if (walletId) {
-    // wallet was created in the session already, just load it up
     renderWalletInfo(walletId);
   } else {
-    bitgo.wallets().createWalletWithKeychains(
-      {
+    bitgo.wallets().createWalletWithKeychains({
         passphrase: req.sessionID, // change this!
         label: 'wallet for session ' + req.sessionID,
         backupXpub: 'xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU'
-      },
-      function(err, res) {
+      }, function(err, res) {
         req.session.walletId = res.wallet.wallet.id;
         renderWalletInfo(req.session.walletId);
       }
@@ -720,24 +717,24 @@ exports.getBitGo = function(req, res, next) {
  */
 exports.postBitGo = function(req, res, next) {
   var bitgo = new BitGo.BitGo({ env: 'test', accessToken: secrets.bitgo.accessToken });
-  var walletId = req.session.walletId; // we use the session to store the walletid, but you should store it elsewhere
-  var amount = parseInt(req.body.amount);
+  var walletId = req.session.walletId;
 
   try {
-    bitgo.wallets().get({id: walletId}, function (err, wallet) {
-      wallet.sendCoins(
-      { address: req.body.address, amount: parseInt(req.body.amount), walletPassphrase: req.sessionID },
-      function (e, result) {
-        if (e) {
-          console.dir(e);
-          req.flash('errors', { msg: e.message });
+    bitgo.wallets().get({ id: walletId }, function(err, wallet) {
+      wallet.sendCoins({
+        address: req.body.address,
+        amount: parseInt(req.body.amount),
+        walletPassphrase: req.sessionID
+      }, function(err, result) {
+        if (err) {
+          req.flash('errors', { msg: err.message });
           return res.redirect('/api/bitgo');
         }
         req.flash('info', { msg: 'txid: ' + result.hash + ', hex: ' + result.tx });
         return res.redirect('/api/bitgo');
       });
     });
-  } catch(e) {
+  } catch (e) {
     req.flash('errors', { msg: e.message });
     return res.redirect('/api/bitgo');
   }
