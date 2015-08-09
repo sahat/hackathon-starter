@@ -10,7 +10,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "async": "^1.4.0",
+    "async": "^1.4.2",
     "bcrypt-nodejs": "^0.0.3",
     "bitgo": "0.11.27",
     "body-parser": "^1.13.3",
@@ -62,7 +62,7 @@
     "yui": "^3.18.1"
   },
   "devDependencies": {
-    "blessed": "^0.1.20",
+    "blessed": "^0.1.61",
     "chai": "^3.2.0",
     "mocha": "^2.2.5",
     "multiline": "^1.0.2",
