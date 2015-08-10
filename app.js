@@ -1,3 +1,4 @@
+/*jshint node:true*/
 /**
  * Module dependencies.
  */
@@ -12,6 +13,9 @@ var errorHandler = require('errorhandler');
 var lusca = require('lusca');
 var methodOverride = require('method-override');
 
+//------------------------------------------------------------------------------
+// node.js starter application for Bluemix
+//------------------------------------------------------------------------------
 var _ = require('lodash');
 var MongoStore = require('connect-mongo')(session);
 var flash = require('express-flash');
@@ -29,6 +33,9 @@ var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 
+// cfenv provides access to your Cloud Foundry environment
+// for more info, see: https://www.npmjs.com/package/cfenv
+var cfenv = require('cfenv');
 /**
  * API keys and Passport configuration.
  */
@@ -51,7 +58,7 @@ mongoose.connection.on('error', function() {
 /**
  * Express configuration.
  */
-app.set('port', process.env.PORT || 3000);
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(compress());
@@ -88,6 +95,7 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+
 
 /**
  * Primary app routes.
@@ -142,6 +150,8 @@ app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 app.get('/api/lob', apiController.getLob);
 app.get('/api/bitgo', apiController.getBitGo);
 app.post('/api/bitgo', apiController.postBitGo);
+app.get('/api/bitcore', apiController.getBitcore);
+app.post('/api/bitcore', apiController.postBitcore);
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -187,16 +197,20 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
   res.redirect('/api/venmo');
 });
 
+
 /**
  * Error Handler.
  */
 app.use(errorHandler());
 
+// get the app environment from Cloud Foundry
+var appEnv = cfenv.getAppEnv();
+
 /**
  * Start Express server.
  */
-app.listen(app.get('port'), function() {
-  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
+app.listen(appEnv.port, appEnv.bind, function() {
+  console.log("server starting on " + appEnv.url);
 });
 
 module.exports = app;

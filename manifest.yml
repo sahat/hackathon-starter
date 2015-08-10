@@ -1,0 +1,10 @@
+applications:
+- services: 
+  - YOURMONGOSERVICENAME 
+- disk_quota: 1024M
+  host: YOURBLUEMIXSUBDOMAIN
+  name: YOURBLUEMIXPROJECTNAME
+  path: .
+  domain: mybluemix.net
+  instances: 1
+  memory: 512M
