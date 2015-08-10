@@ -19,9 +19,22 @@
  * IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT
  */
 
+var getBluemixDbUri = function() { 
+ var dbUri = ""; 
+ if (process.env.VCAP_SERVICES) { 
+   var env = JSON.parse(process.env.VCAP_SERVICES); 
+   var mongoVersion = 'mongolab'; 
+   if (env[mongoVersion]) { 
+     dbUri = env[mongoVersion][0].credentials.uri;  
+   } 
+ } 
+ if (dbUri === "") return null; 
+ else return dbUri; 
+};
+
 module.exports = {
 
-  db: process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/test',
+  db: getBluemixDbUri() || process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/test',
 
   sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
 
@@ -142,5 +155,10 @@ module.exports = {
 
   bitgo: {
     accessToken: process.env.BITGO_ACCESS_TOKEN || '4fca3ed3c2839be45b03bbd330e5ab1f9b3989ddd949bf6b8765518bc6a0e709'
+  },
+
+  bitcore: {
+    bitcoinNetwork: process.env.BITCORE_BITCOIN_NETWORK || 'testnet'
   }
+
 };
