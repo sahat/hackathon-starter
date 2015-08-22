@@ -41,7 +41,7 @@
     "node-foursquare": "^0.3.0",
     "node-linkedin": "^0.5.0",
     "nodemailer": "^1.4.0",
-    "passport": "^0.3.0",
+    "passport": "0.2.2",
     "passport-facebook": "^2.0.0",
     "passport-github": "^0.1.5",
     "passport-google-oauth": "^0.2.0",
