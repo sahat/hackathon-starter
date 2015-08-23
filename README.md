@@ -1147,11 +1147,11 @@ listed below.
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
 - First, install this Ruby gem: `sudo gem install rhc` :gem:
 - Run `rhc login` and enter your OpenShift credentials
-- From *your app* directory run `rhc app create MyApp nodejs-0.10`
- - **Note:** *MyApp* is what you want to name your app (no spaces)
+- From your app directory run `rhc app create MyApp nodejs-0.10`
+ - **Note:** *MyApp* is the name your app (no spaces)
 - Once that is done, you will be provided with **URL**, **SSH** and **Git Remote** links
-- Visit that **URL** and you should see *Welcome to your Node.js application on OpenShift* page
-- Copy **Git Remote** and paste it into `git remote add openshift your_git_remote`
+- Visit provided **URL** and you should see the *Welcome to your Node.js application on OpenShift* page
+- Copy and and paste **Git Remote** into `git remote add openshift YOUR_GIT_REMOTE`
 - Before you push your app, you need to do a few modifications to your code
 
 Add these two lines to `app.js`, just place them anywhere before `app.listen()`:
@@ -1175,8 +1175,8 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 },
 ```
 
-- Finally, now you can push your code to OpenShift by running `git push -f openshift master`
- - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. Please **do not** do `git pull` as it will create unnecessary merge conflicts.
+- Finally, you can now push your code to OpenShift by running `git push -f openshift master`
+ - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. **Do not** run `git pull` as it will create unnecessary merge conflicts.
 - And you are done!
 
 <img src="http://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
