@@ -801,7 +801,7 @@ exports.postBitcore = function(req, res, next) {
         req.flash('errors', { msg: e.message });
         return next(e);
       } else {
-        req.flash('info', { msg: 'UTXO information obtained from the Bitcoin network via Bitpay Insight. You can use your own server running Bitcoin Core and Bitcore Insight also.' });
+        req.flash('info', { msg: 'UTXO information obtained from the Bitcoin network via Bitpay Insight. You can use your own full Bitcoin node.' });
         // Results are in the form of an array of items which need to be turned into js objects
         for (var i = 0; i < utxos.length; ++i) {
           utxos[i] = utxos[i].toObject();
