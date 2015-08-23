@@ -1,4 +1,3 @@
-/*jshint node:true*/
 /**
  * Module dependencies.
  */
@@ -13,9 +12,6 @@ var errorHandler = require('errorhandler');
 var lusca = require('lusca');
 var methodOverride = require('method-override');
 
-//------------------------------------------------------------------------------
-// node.js starter application for Bluemix
-//------------------------------------------------------------------------------
 var _ = require('lodash');
 var MongoStore = require('connect-mongo')(session);
 var flash = require('express-flash');
@@ -23,7 +19,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
-var connectAssets = require('connect-assets');
+var assets = require('connect-assets');
 
 /**
  * Controllers (route handlers).
@@ -33,9 +29,6 @@ var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 
-// cfenv provides access to your Cloud Foundry environment
-// for more info, see: https://www.npmjs.com/package/cfenv
-var cfenv = require('cfenv');
 /**
  * API keys and Passport configuration.
  */
@@ -58,12 +51,12 @@ mongoose.connection.on('error', function() {
 /**
  * Express configuration.
  */
-
+app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(compress());
-app.use(connectAssets({
-  paths: [path.join(__dirname, 'public/css'), path.join(__dirname, 'public/js')]
+app.use(assets({
+  paths: ['public/css', 'public/js']
 }));
 app.use(logger('dev'));
 app.use(favicon(path.join(__dirname, 'public/favicon.png')));
@@ -203,14 +196,9 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
  */
 app.use(errorHandler());
 
-// get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
-
 /**
  * Start Express server.
  */
-app.listen(appEnv.port, appEnv.bind, function() {
-  console.log("server starting on " + appEnv.url);
-});
-
+app.listen(app.get('port'), function() {
+  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 module.exports = app;

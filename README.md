@@ -4,9 +4,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Thinkful Pair on Node](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/node/)
 
-**HACKED!**: Note, this version of Hackathon Starter has been hacked to support Bitcore and IBM Bluemix. The original is available at https://github.com/sahat/hackathon-starter/
-
-**Live Demo**: http://hackattack.mybluemix.net
+**Live Demo**: http://hackathonstarter.herokuapp.com
 
 Jump to [What's new in 3.0.3?](#changelog)
 
