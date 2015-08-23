@@ -22,6 +22,7 @@ block content
   .row
     .col-sm-6
       form(role='form', method='POST')
+        h1= _csrf
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group
           label.control-label Number to text
