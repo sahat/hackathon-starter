@@ -323,6 +323,14 @@ The same goes for other providers.
 - Once logged into the dashboard, go to the top right selector and click 'account settings'
 - Under the developers tab, create your access token and copy and paste it into `config/secrets.js`
 
+<hr>
+
+<img src="http://i.imgur.com/dFEcoEE.png" width="200">
+- No account is necessary; by default the Bitcoin Testnet is accessible via the free Bitpay Insight API.
+- You can use real bitcoins (be careful!) by setting BITCORE_BITCOIN_NETWORK environment variable to 'livenet', or edit `config/secrets.js`
+- You can use bitcore client-side-only by first building js files for the browser, see http://bitcore.io/guide/browser.html
+- You can build some altcoin projects by editing the Network and using your own full node http://bitcore.io/guide/networks.html
+- You can optionally use your own Bitcoin (or altcoin) full node running the Insight API, see https://github.com/bitpay/insight-api
 
 Project Structure
 -----------------
@@ -364,6 +372,8 @@ List of Packages
 | ------------------------------- | --------------------------------------------------------------------- |
 | async                           | Utility library that provides asynchronous control flow.              |
 | bcrypt-nodejs                   | Library for hashing and salting user passwords.                       |
+| bitcore                         | An open-source platform to build bitcoin and blockchain-based applications. |
+| bitcore-explorers               | Connect to the Bitcoin network to get and broadcast transactions and more. |
 | bitgo                           | Multi-sig Bitcoin wallet API.  |
 | cheerio                         | Scrape web pages using jQuery-style syntax.                           |
 | clockwork                       | Clockwork SMS API library.                                            |
