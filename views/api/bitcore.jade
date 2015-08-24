@@ -1,0 +1,77 @@
+extends ../layout
+
+block content
+  .page-header
+    h2
+      i.fa.fa-bitcoin
+      | Bitcore API
+    h3
+      i.fa.fa-bitcoin
+      | Network: #{network}
+    p
+      | You can run Bitcore code both in-browser only, and by using the bitcore (and optionally bitcore-explorers node module).
+      | This page uses the node modules.
+      | You can do many operations using only bitcore, but to connect to the network, you need bitcore-explorers and either your own server or one of the default ones provided by Bitpay.
+  .btn-group.btn-group-justified
+    a.btn.btn-primary(href='http://bitcore.io/api/', target='_blank')
+      i.fa.fa-check-square-o
+      | Bitcore Docs
+    a.btn.btn-primary(href='http://bitcore.io/guide/module/explorers/', target='_blank')
+      i.fa.fa-code
+      | Bitcore Explorer Docs
+    a.btn.btn-primary(href='https://test-insight.bitpay.com', target='_blank')
+      i.fa.fa-gear
+      | Testnet Insight Explorer
+    a.btn.btn-primary(href='https://insight.bitpay.com', target='_blank')
+      i.fa.fa-gear
+      | Livenet Insight Explorer
+  br
+
+  if address
+    h3 Example Public Address (private key in session)
+    p
+      = address
+
+  br
+  h3 View Unspent Transaction Outputs (UTXOs) for any #{network} Address
+  p
+    | Suggested testnet example: n2eMqTT929pb1RDNuqEnxdaLau1rxy3efi, Suggested livenet example: 19tuxqhzgwC6B9hhLHDLJkocx8LaaCS56s
+  .btn-group.btn-group-justified
+    a.btn.btn-primary(href='https://github.com/aantonop/bitcoinbook/blob/develop/ch05.asciidoc#transaction-outputs-and-inputs', target='_blank')
+      i.fa.fa-check-square-o
+      | About UTXOs
+    a.btn.btn-primary(href='http://bitcoinrichlist.com/top100', target='_blank')
+      i.fa.fa-code
+      | Find Livenet Addresses
+    a.btn.btn-primary(href='https://test-insight.bitpay.com/', target='_blank')
+      i.fa.fa-code
+      | Find Testnet Addresses
+  p
+    form(role='form', method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label.control-label Bitcoin Address
+        - var tmpaddr = getUTXOAddress ? getUTXOAddress : '';
+        input.form-control(type='text', name='address', value='#{tmpaddr}', autofocus)
+      button.btn.btn-default(type='submit')
+        i.fa.fa-location-arrow
+        | View UTXOs
+
+  h3 UTXOs for #{getUTXOAddress}
+  table.table.table-striped.table-bordered
+    thead
+      tr
+        th address
+        th txid
+        th vout
+        th amount
+        th scriptPubKey
+    tbody
+      if utxos
+        for utxo in utxos
+          tr
+            td #{utxo.address}
+            td #{utxo.txid}
+            td #{utxo.vout}
+            td #{utxo.amount}
+            td #{utxo.scriptPubKey}

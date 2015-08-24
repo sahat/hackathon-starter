@@ -14,6 +14,9 @@ var stripe = require('stripe')(secrets.stripe.secretKey);
 var twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
 var Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL);
 var BitGo = require('bitgo');
+var Bitcore = require('bitcore'); 
+Bitcore.Networks.defaultNetwork = secrets.bitcore.bitcoinNetwork == 'testnet' ? Bitcore.Networks.testnet : Bitcore.Networks.mainnet;
+var BitcoreInsight = require('bitcore-explorers').Insight; 
 var clockwork = require('clockwork')({ key: secrets.clockwork.apiKey });
 var paypal = require('paypal-rest-sdk');
 var lob = require('lob')(secrets.lob.apiKey);
@@ -711,6 +714,7 @@ exports.getBitGo = function(req, res, next) {
   }
 };
 
+
 /**
  * POST /api/bitgo
  * BitGo send coins example
@@ -737,5 +741,82 @@ exports.postBitGo = function(req, res, next) {
   } catch (e) {
     req.flash('errors', { msg: e.message });
     return res.redirect('/api/bitgo');
+  }
+};
+
+
+/**
+ * GET /api/bicore
+ * Bitcore Example
+ */
+exports.getBitcore = function(req, res, next) {
+  try {
+    var privateKey;
+    if ("bitcorePrivateKeyWIF" in req.session) {
+      privateKey = Bitcore.PrivateKey.fromWIF(req.session.bitcorePrivateKeyWIF);
+    }
+    else {
+      privateKey = new Bitcore.PrivateKey();
+      req.session.bitcorePrivateKeyWIF = privateKey.toWIF();
+      req.flash('info', { msg: 'A new '+secrets.bitcore.bitcoinNetwork+' private key has been created for you and is stored in req.session.bitcorePrivateKeyWIF. Unless you changed the Bitcoin network near the require bitcore line, this is a testnet address.' });
+    }
+    var myAddress = privateKey.toAddress();
+    var bitcoreUTXOAddress = '';
+    if ("bitcoreUTXOAddress" in req.session)
+      bitcoreUTXOAddress = req.session.bitcoreUTXOAddress;
+    res.render('api/bitcore', {
+      title: 'Bitcore API',
+      network: secrets.bitcore.bitcoinNetwork,
+      address: myAddress,
+      getUTXOAddress: bitcoreUTXOAddress,
+    });
+  } catch(e) {
+    req.flash('errors', { msg: e.message });
+    return next(e); 
+  }
+};
+
+/**
+ * POST /api/bitcore
+ * Bitcore send coins example
+ */
+exports.postBitcore = function(req, res, next) {
+  try {
+    var getUTXOAddress = '';
+    if ("address" in req.body) {
+      getUTXOAddress = req.body.address;
+      req.session.bitcoreUTXOAddress = getUTXOAddress;
+    }
+    else if ("bitcoreUTXOAddress" in req.session) {
+      getUTXOAddress = req.session.bitcoreUTXOAddress;
+    }
+    var myAddress = '';
+    if ("bitcorePrivateKeyWIF" in req.session) {
+      myAddress = Bitcore.PrivateKey.fromWIF(req.session.bitcorePrivateKeyWIF).toAddress();
+    }
+    var insight = new BitcoreInsight();
+    insight.getUnspentUtxos(getUTXOAddress, function(e, utxos) {
+      if (e) {
+        console.dir(e);
+        req.flash('errors', { msg: e.message });
+        return next(e);
+      } else {
+        req.flash('info', { msg: 'UTXO information obtained from the Bitcoin network via Bitpay Insight. You can use your own full Bitcoin node.' });
+        // Results are in the form of an array of items which need to be turned into js objects
+        for (var i = 0; i < utxos.length; ++i) {
+          utxos[i] = utxos[i].toObject();
+        }
+        res.render('api/bitcore', {
+          title: 'Bitcore API',
+          myAddress: myAddress,
+          getUTXOAddress: getUTXOAddress,
+          utxos: utxos,
+          network: secrets.bitcore.bitcoinNetwork,
+        });
+      }
+    }); 
+  } catch(e) {
+    req.flash('errors', { msg: e.message });
+    return next(e);
   }
 };
