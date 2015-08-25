@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.0.3?](#changelog)
+Jump to [What's new in 3.1.0?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1227,6 +1227,16 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.1.0 (August 25, 2015)
+- Added Bitcore example.
+- Added Bitgo example.
+- Lots of README fixes.
+- Fixed Google OAuth profile image url.
+- Fixed a bug where `connect-assets` served all JS assets twice.
+- Fixed missing `csrf` token in the Twilio API example form.
+- Removed `multer` middleware.
+- Removed Ordrx API. (Shutdown)
 
 ### 3.0.3 (May 14, 2015)
 - Added favicon.
