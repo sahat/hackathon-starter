@@ -89,6 +89,7 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
+
 /**
  * Primary app routes.
  */
@@ -142,6 +143,8 @@ app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 app.get('/api/lob', apiController.getLob);
 app.get('/api/bitgo', apiController.getBitGo);
 app.post('/api/bitgo', apiController.postBitGo);
+app.get('/api/bitcore', apiController.getBitcore);
+app.post('/api/bitcore', apiController.postBitcore);
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -187,6 +190,7 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
   res.redirect('/api/venmo');
 });
 
+
 /**
  * Error Handler.
  */
@@ -198,5 +202,4 @@ app.use(errorHandler());
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
-
 module.exports = app;
