@@ -12,8 +12,8 @@
   "dependencies": {
     "async": "^1.4.2",
     "bcrypt-nodejs": "^0.0.3",
-    "bitcore": "^0.12.15",
-    "bitcore-explorers": "^0.11.0",
+    "bitcore": "^0.13.0",
+    "bitcore-explorers": "^0.12.0",
     "bitgo": "0.11.32",
     "body-parser": "^1.13.3",
     "cfenv": "1.0.x",
