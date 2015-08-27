@@ -558,7 +558,7 @@ concatenating and minifying JavaScript files will be even greater. Using
 **connect-assets** library, it is  as as simple as declaring these two lines:
 
 ```
-!= css('styles')      // expects public/css/styles.less
+!= css('main')      // expects public/css/main.less
 != js('application')  // expects public/js/application.js
 ```
 
@@ -631,7 +631,7 @@ REST API server.
 ### I don't need a sticky footer, can I delete it?
 Absolutely. But unlike a regular footer there is a bit more work involved.
 First, delete `#wrap` and `#footer` ID selectors and `html, body { height: 100%; }`
-from **styles.less**. Next, delete `#wrap` and `#footer` lines from **layout.jade**
+from **main.less**. Next, delete `#wrap` and `#footer` lines from **layout.jade**
 (By the way, if no element is specified before class or id, Jade assumes it is
 a `div` element). Don't forget to indent everything under `#wrap` to the left
 once, since this project uses two spaces per block indentation.
@@ -650,13 +650,13 @@ your code. Currently there are three options: SendGrid, Mandrill, and Mailgun.
 ### Can I use Sass instead of LESS stylesheets?
 Yes you can! Although you will have to manually convert all existing stylesheets
 to Sass, which shouldn't be too hard considering how similar Sass and LESS are.
-Simply rename `styles.less` to `styles.scss` and **connect-assets** will
+Simply rename `main.less` to `main.scss` and **connect-assets** will
 automatically use Sass preprocessor.
 
 Your are not limited to just Sass *or* LESS, you could use both if you want to.
 In **layout.jade** simply specify LESS and Sass stylesheets separately:
 ```jade
-!= css('styles') # public/css/styles.less
+!= css('main') # public/css/main.less
 != css('my_sass_styles') # public/css/my_sass_styles.scss
 ```
 
