@@ -1,6 +1,6 @@
 {
   "name": "hackathon-starter",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/sahat/hackathon-starter.git"
@@ -12,8 +12,8 @@
   "dependencies": {
     "async": "^1.4.2",
     "bcrypt-nodejs": "^0.0.3",
-    "bitcore": "^0.12.15",
-    "bitcore-explorers": "^0.11.0",
+    "bitcore": "^0.13.1",
+    "bitcore-explorers": "^0.12.0",
     "bitgo": "0.11.32",
     "body-parser": "^1.13.3",
     "cfenv": "1.0.x",
@@ -28,7 +28,7 @@
     "express": "^4.13.3",
     "express-flash": "^0.0.2",
     "express-session": "^1.11.3",
-    "express-validator": "^2.15.1",
+    "express-validator": "^2.16.0",
     "fbgraph": "^1.0.0",
     "github-api": "^0.10.6",
     "instagram-node": "^0.5.7",
@@ -44,11 +44,11 @@
     "node-foursquare": "^0.3.0",
     "node-linkedin": "^0.5.0",
     "nodemailer": "^1.4.0",
-    "passport": "0.2.2",
+    "passport": "0.3.0",
     "passport-facebook": "^2.0.0",
-    "passport-github": "^0.1.5",
+    "passport-github": "^1.0.0",
     "passport-google-oauth": "^0.2.0",
-    "passport-instagram": "^0.1.2",
+    "passport-instagram": "^1.0.0",
     "passport-linkedin-oauth2": "^1.2.1",
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
@@ -69,7 +69,7 @@
     "chai": "^3.2.0",
     "mocha": "^2.2.5",
     "multiline": "^1.0.2",
-    "supertest": "^1.0.1"
+    "supertest": "^1.1.0"
   },
   "license": "MIT"
 }

@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.0.3?](#changelog)
+Jump to [What's new in 3.1.0?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -372,24 +372,24 @@ List of Packages
 | ------------------------------- | --------------------------------------------------------------------- |
 | async                           | Utility library that provides asynchronous control flow.              |
 | bcrypt-nodejs                   | Library for hashing and salting user passwords.                       |
-| bitcore                         | An open-source platform to build bitcoin and blockchain-based applications. |
-| bitcore-explorers               | Connect to the Bitcoin network to get and broadcast transactions and more. |
-| bitgo                           | Multi-sig Bitcoin wallet API.  |
+| bitcore                         | Bitcoin library.                                                      |
+| bitcore-explorers               | Blockchain APIs for bitcore.                                          |
+| bitgo                           | Multi-sig Bitcoin wallet API.                                         |
 | cheerio                         | Scrape web pages using jQuery-style syntax.                           |
 | clockwork                       | Clockwork SMS API library.                                            |
 | connect-assets                  | Compiles LESS stylesheets, concatenates & minifies JavaScript.        |
 | connect-mongo                   | MongoDB session store for Express.                                    |
 | csso                            | Dependency for connect-assets library to minify CSS.                  |
 | express                         | Node.js web framework.                                                |
-| body-parser                     | Express 4 middleware.                                               |
-| cookie-parser                   | Express 4 middleware.                                               |
-| express-session                 | Express 4 middleware.                                               |
-| morgan                          | Express 4 middleware.                                               |
-| multer                          | Express 4 middleware.                                               |
-| compression                     | Express 4 middleware.                                               |
-| errorhandler                    | Express 4 middleware.                                               |
-| method-override                 | Express 4 middleware.                                               |
-| serve-favicon                   | Express 4 middleware offering favicon serving and caching.          |
+| body-parser                     | Express 4 middleware.                                                 |
+| cookie-parser                   | Express 4 middleware.                                                 |
+| express-session                 | Express 4 middleware.                                                 |
+| morgan                          | Express 4 middleware.                                                 |
+| multer                          | Express 4 middleware.                                                 |
+| compression                     | Express 4 middleware.                                                 |
+| errorhandler                    | Express 4 middleware.                                                 |
+| method-override                 | Express 4 middleware.                                                 |
+| serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
 | express-flash                   | Provides flash messages for Express.                                  |
 | express-validator               | Easy form validation for Express.                                     |
 | fbgraph                         | Facebook Graph API library.                                           |
@@ -590,7 +590,7 @@ problem connecting to MongoDB:
 
 ```js
 mongoose.connection.on('error', function() {
-  console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
+  console.error('�? MongoDB Connection Error. Please make sure MongoDB is running.');
 });
 ```
 You need to have a MongoDB server running before launching `app.js`. You can
@@ -1173,7 +1173,7 @@ var PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 Then change `app.listen()` to:
 ```js
 app.listen(PORT, IP_ADDRESS, function() {
-  console.log("✔ Express server listening on port %d in %s mode", PORT, app.settings.env);
+  console.log("�? Express server listening on port %d in %s mode", PORT, app.settings.env);
 });
 ```
 Add this to `package.json`, after *name* and *version*. This is necessary because, by default, OpenShift looks for `server.js` file. And by specifying `supervisor app.js` it will automatically restart the server when node.js process crashes.
@@ -1227,6 +1227,16 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.1.0 (August 25, 2015)
+- Added Bitcore example.
+- Added Bitgo example.
+- Lots of README fixes.
+- Fixed Google OAuth profile image url.
+- Fixed a bug where `connect-assets` served all JS assets twice.
+- Fixed missing `csrf` token in the Twilio API example form.
+- Removed `multer` middleware.
+- Removed Ordrx API. (Shutdown)
 
 ### 3.0.3 (May 14, 2015)
 - Added favicon.
@@ -1356,7 +1366,7 @@ Changelog
 - Check if email address is already taken when creating a new local account
  - Previously relied on Validation Error 11000, which doesn't always work
 - When creating a local account, checks if e-mail address is already taken
-- Flash notifications can now be dismissed by clicking on ×
+- Flash notifications can now be dismissed by clicking on �?
 
 ### 2.0.2 (April 22, 2014)
 - Added Instagram Authentication
