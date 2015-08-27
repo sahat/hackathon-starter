@@ -183,13 +183,17 @@ The same goes for other providers.
 
 <img src="http://www.doit.ba/img/facebook.jpg" width="200">
 - Visit [Facebook Developers](https://developers.facebook.com/)
-- Click **Apps > Create a New App** in the navigation bar
-- Enter *Display Name*, then choose a category, then click **Create app**
+- Click **My Apps**, then select **Add a New App* from the dropdown menu
+- Select **Website** platform and enter a new name for your app
+- Click on the **Create New Facebook App ID** button
+- Choose a **Category** that best describes your app
+- Click on **Create App ID** button
+- In the upper right corner click on **Skip Quick Star**
 - Copy and paste *App ID* and *App Secret* keys into `config/secrets.js`
- - *App ID* is **clientID**, *App Secret* is **clientSecret**
-- Click on *Settings* on the sidebar, then click **+ Add Platform**
+ - **Note:** *App ID* is **clientID**, *App Secret* is **clientSecret**
+- Click on the *Settings* tab in the left nav, then click on **+ Add Platform**
 - Select **Website**
-- Enter `http://localhost:3000` for *Site URL*
+- Enter `http://localhost:3000` under *Site URL*
 
 **Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
