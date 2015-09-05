@@ -12,9 +12,9 @@
   "dependencies": {
     "async": "^1.4.2",
     "bcrypt-nodejs": "^0.0.3",
-    "bitcore": "^0.13.1",
+    "bitcore": "^0.13.2",
     "bitcore-explorers": "^0.12.0",
-    "bitgo": "0.11.33",
+    "bitgo": "0.11.34",
     "body-parser": "^1.13.3",
     "cfenv": "1.0.x",
     "cheerio": "^0.19.0",
@@ -29,7 +29,7 @@
     "express-flash": "^0.0.2",
     "express-session": "^1.11.3",
     "express-validator": "^2.17.1",
-    "fbgraph": "^1.0.0",
+    "fbgraph": "^1.1.0",
     "github-api": "^0.10.6",
     "instagram-node": "^0.5.8",
     "jade": "^1.11.0",
@@ -65,7 +65,7 @@
     "yui": "^3.18.1"
   },
   "devDependencies": {
-    "blessed": "^0.1.80",
+    "blessed": "^0.1.81",
     "chai": "^3.2.0",
     "mocha": "^2.3.0",
     "multiline": "^1.0.2",
