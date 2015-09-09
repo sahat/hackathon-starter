@@ -696,7 +696,9 @@ Let's start from the beginning. For this example I will use [Escape Velocity](ht
 **Note:** For the sake of simplicity I will only consider `index.html`, and skip `left-sidebar.html`,
 `no-sidebar.html`, `right-sidebar.html`.
 
-Move all javascript files from `html5up-escape-velocity/js` to `public/js`. Then move all css files from `html5up-escape-velocity/css` to `public/css`. And finally, move all images from `html5up-escape-velocity/images` to `public/images` (You could move it to the existing **img** folder, but then you would have to manually change every `img` reference). Grab the contents(Remember to update all the css and js paths accordingly) of `index.html` and paste it into [HTML To Jade](http://html2jade.aaron-powell.com/).
+Move all JavaScript files from `html5up-escape-velocity/js` to `public/js`. Then move all CSS files from `html5up-escape-velocity/css` to `public/css`. And finally, move all images from `html5up-escape-velocity/images` to `public/images`. You could move it to the existing **img** folder, but that would require manually changing every `img` reference. Grab the contents of `index.html` and paste it into [HTML To Jade](http://html2jade.aaron-powell.com/).
+
+**Note:** Do not forget to update all the CSS and JS paths accordingly.
 
 Create a new file `escape-velocity.jade` and paste the Jade markup in `views` folder.
 Whenever you see the code `res.render('account/login')` - that means it will search for `views/account/login.jade` file.
