@@ -156,7 +156,7 @@ credentials.
 all API examples to get you up and running even faster. But don't forget to update
 them with *your credentials* when you are ready to deploy an app.
 
-<img src="http://images.google.com/intl/en_ALL/images/srpr/logo6w.png" width="200">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" width="200">
 - Visit [Google Cloud Console](https://cloud.google.com/console/project)
 - Click on the **Create Project** button
 - Enter *Project Name*, then click on **Create** button
