@@ -370,7 +370,7 @@ exports.postStripe = function(req, res, next) {
   stripe.charges.create({
     amount: 395,
     currency: 'usd',
-    card: stripeToken,
+    source: stripeToken,
     description: stripeEmail
   }, function(err, charge) {
     if (err && err.type === 'StripeCardError') {
