@@ -6,7 +6,7 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='csrf-token', content=_csrf)
     title #{title} - Hackathon Starter
-    != css('main')
+    link(rel='stylesheet', href='/css/main.css')
   body
     include partials/header
 
@@ -16,4 +16,6 @@ html
 
     include partials/footer
 
-    != js('application')
+    script(src='/js/lib/jquery.min.js')
+    script(src='/js/lib/bootstrap.min.js')
+    script(src='/js/main.js')
