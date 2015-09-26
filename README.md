@@ -210,7 +210,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://g.twimg.com/Twitter_logo_blue.png" width="90">
+<img src="https://cdn3.iconfinder.com/data/icons/social-icons-5/607/Twitterbird.png" width="90">
 - Sign in at [https://apps.twitter.com/](https://apps.twitter.com/)
 - Click **Create a new application**
 - Enter your application name, website and description
