@@ -360,6 +360,7 @@ Project Structure
 | **views/partials**/footer.jade     | Footer partial template.                                     |
 | **views**/layout.jade              | Base template.                                               |
 | **views**/home.jade                | Home page template.                                          |
+| .travis.yml                        | [Travis CI](https://travis-ci.org/) integration.                                       |
 | app.js                             | Main application file.                                       |
 | setup.js                           | Tool for removing authentication providers and other things. |
 
