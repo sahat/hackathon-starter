@@ -270,7 +270,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://playfoursquare.s3.amazonaws.com/press/2014/foursquare-logomark.png" width="200">
+<img src="http://33.media.tumblr.com/ffaf0075be879b3ab0b87f0b8bcc6814/tumblr_inline_n965bkOymr1qzxhga.png" width="200">
 - Go to [foursquare for Developers](https://developer.foursquare.com/)
 - Click on **My Apps** in the top menu
 - Click the **Create A New App** button
