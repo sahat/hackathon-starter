@@ -1,3 +1,12 @@
+var debug = require('debug')('test');
+var req = require;
+require = function(file) {
+  debug("");
+  var val = req(file);
+  debug(file);
+  return val;
+};
+
 var secrets = require('../config/secrets');
 var querystring = require('querystring');
 var validator = require('validator');
