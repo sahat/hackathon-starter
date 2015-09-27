@@ -3,7 +3,6 @@
 @import "vendors/bootstrap/bootstrap";
 @import "vendors/bootstrap-social";
 @import "vendors/font-awesome/font-awesome";
-@import "vendors/ionicons/ionicons";
 
 @import "themes/default/styles";
 
@@ -60,6 +59,6 @@ footer {
 // Font Icons
 // -------------------------
 
-[class^='fa'], [class^='ion-'] {
+.fa {
   margin-right: 6px;
 }
