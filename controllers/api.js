@@ -1,28 +1,36 @@
-var secrets = require('../config/secrets');
-var querystring = require('querystring');
-var validator = require('validator');
-var async = require('async');
-var cheerio = require('cheerio');
-var request = require('request');
-var graph = require('fbgraph');
-var LastFmNode = require('lastfm').LastFmNode;
-var tumblr = require('tumblr.js');
-var foursquare = require('node-foursquare')({ secrets: secrets.foursquare });
-var Github = require('github-api');
-var Twit = require('twit');
-var stripe = require('stripe')(secrets.stripe.secretKey);
-var twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
-var Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL);
-var BitGo = require('bitgo');
-var clockwork = require('clockwork')({ key: secrets.clockwork.apiKey });
-var paypal = require('paypal-rest-sdk');
-var lob = require('lob')(secrets.lob.apiKey);
-var ig = require('instagram-node').instagram();
-var Y = require('yui/yql');
+/**
+ * Split into declaration and initialization for better performance.
+ */
+var validator;
+var cheerio;
+var graph;
+var LastFmNode;
+var tumblr;
+var foursquare;
+var Github;
+var Twit;
+var stripe;
+var twilio;
+var Linkedin;
+var BitGo;
+var clockwork;
+var paypal;
+var lob;
+var ig;
+var Y;
+var Bitcore;
+var BitcoreInsight;
+var request;
+
+
 var _ = require('lodash');
-var Bitcore = require('bitcore');
-var BitcoreInsight = require('bitcore-explorers').Insight;
-Bitcore.Networks.defaultNetwork = secrets.bitcore.bitcoinNetwork == 'testnet' ? Bitcore.Networks.testnet : Bitcore.Networks.mainnet;
+var async = require('async');
+var querystring = require('querystring');
+
+
+var secrets = require('../config/secrets');
+
+
 
 /**
  * GET /api
@@ -39,6 +47,8 @@ exports.getApi = function(req, res) {
  * Foursquare API example.
  */
 exports.getFoursquare = function(req, res, next) {
+  foursquare = require('node-foursquare')({ secrets: secrets.foursquare });
+
   var token = _.find(req.user.tokens, { kind: 'foursquare' });
   async.parallel({
     trendingVenues: function(callback) {
@@ -73,6 +83,8 @@ exports.getFoursquare = function(req, res, next) {
  * Tumblr API example.
  */
 exports.getTumblr = function(req, res, next) {
+  tumblr = require('tumblr.js');
+
   var token = _.find(req.user.tokens, { kind: 'tumblr' });
   var client = tumblr.createClient({
     consumer_key: secrets.tumblr.consumerKey,
@@ -95,6 +107,8 @@ exports.getTumblr = function(req, res, next) {
  * Facebook API example.
  */
 exports.getFacebook = function(req, res, next) {
+  graph = require('fbgraph');
+
   var token = _.find(req.user.tokens, { kind: 'facebook' });
   graph.setAccessToken(token.accessToken);
   async.parallel({
@@ -124,6 +138,9 @@ exports.getFacebook = function(req, res, next) {
  * Web scraping example using Cheerio library.
  */
 exports.getScraping = function(req, res, next) {
+  cheerio = require('cheerio');
+  request = require('request');
+
   request.get('https://news.ycombinator.com/', function(err, request, body) {
     if (err) return next(err);
     var $ = cheerio.load(body);
@@ -143,6 +160,8 @@ exports.getScraping = function(req, res, next) {
  * GitHub API Example.
  */
 exports.getGithub = function(req, res, next) {
+  Github = require('github-api');
+
   var token = _.find(req.user.tokens, { kind: 'github' });
   var github = new Github({ token: token.accessToken });
   var repo = github.getRepo('sahat', 'requirejs-library');
@@ -171,6 +190,8 @@ exports.getAviary = function(req, res) {
  * New York Times API example.
  */
 exports.getNewYorkTimes = function(req, res, next) {
+  request = require('request');
+
   var query = querystring.stringify({ 'api-key': secrets.nyt.key, 'list-name': 'young-adult' });
   var url = 'http://api.nytimes.com/svc/books/v2/lists?' + query;
   request.get(url, function(err, request, body) {
@@ -189,6 +210,9 @@ exports.getNewYorkTimes = function(req, res, next) {
  * Last.fm API example.
  */
 exports.getLastfm = function(req, res, next) {
+  request = require('request');
+  LastFmNode = require('lastfm').LastFmNode;
+
   var lastfm = new LastFmNode(secrets.lastfm);
   async.parallel({
     artistInfo: function(done) {
@@ -263,6 +287,8 @@ exports.getLastfm = function(req, res, next) {
  * Twiter API example.
  */
 exports.getTwitter = function(req, res, next) {
+  Twit = require('twit');
+
   var token = _.find(req.user.tokens, { kind: 'twitter' });
   var T = new Twit({
     consumer_key: secrets.twitter.consumerKey,
@@ -309,6 +335,8 @@ exports.postTwitter = function(req, res, next) {
  * Steam API example.
  */
 exports.getSteam = function(req, res, next) {
+  request = require('request');
+
   var steamId = '76561197982488301';
   var query = { l: 'english', steamid: steamId, key: secrets.steam.apiKey };
   async.parallel({
@@ -354,6 +382,8 @@ exports.getSteam = function(req, res, next) {
  * Stripe API example.
  */
 exports.getStripe = function(req, res) {
+  stripe = require('stripe')(secrets.stripe.secretKey);
+
   res.render('api/stripe', {
     title: 'Stripe API',
     publishableKey: secrets.stripe.publishableKey
@@ -387,6 +417,8 @@ exports.postStripe = function(req, res, next) {
  * Twilio API example.
  */
 exports.getTwilio = function(req, res) {
+  twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
+
   res.render('api/twilio', {
     title: 'Twilio API'
   });
@@ -421,6 +453,8 @@ exports.postTwilio = function(req, res, next) {
  * Clockwork SMS API example.
  */
 exports.getClockwork = function(req, res) {
+  clockwork = require('clockwork')({ key: secrets.clockwork.apiKey });
+
   res.render('api/clockwork', {
     title: 'Clockwork SMS API'
   });
@@ -448,6 +482,8 @@ exports.postClockwork = function(req, res, next) {
  * Venmo API example.
  */
 exports.getVenmo = function(req, res, next) {
+  request = require('request');
+
   var token = _.find(req.user.tokens, { kind: 'venmo' });
   var query = querystring.stringify({ access_token: token.accessToken });
   async.parallel({
@@ -477,6 +513,8 @@ exports.getVenmo = function(req, res, next) {
  * Send money.
  */
 exports.postVenmo = function(req, res, next) {
+  validator = require('validator');
+
   req.assert('user', 'Phone, Email or Venmo User ID cannot be blank').notEmpty();
   req.assert('note', 'Please enter a message to accompany the payment').notEmpty();
   req.assert('amount', 'The amount you want to pay cannot be blank').notEmpty();
@@ -515,6 +553,8 @@ exports.postVenmo = function(req, res, next) {
  * LinkedIn API example.
  */
 exports.getLinkedin = function(req, res, next) {
+  Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL);
+
   var token = _.find(req.user.tokens, { kind: 'linkedin' });
   var linkedin = Linkedin.init(token.accessToken);
   linkedin.people.me(function(err, $in) {
@@ -531,6 +571,8 @@ exports.getLinkedin = function(req, res, next) {
  * Instagram API example.
  */
 exports.getInstagram = function(req, res, next) {
+  ig = require('instagram-node').instagram();
+
   var token = _.find(req.user.tokens, { kind: 'instagram' });
   ig.use({ client_id: secrets.instagram.clientID, client_secret: secrets.instagram.clientSecret });
   ig.use({ access_token: token.accessToken });
@@ -572,6 +614,8 @@ exports.getInstagram = function(req, res, next) {
  * Yahoo API example.
  */
 exports.getYahoo = function(req, res) {
+  Y = require('yui/yql');
+
   Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', function(response) {
     var location = response.query.results.channel.location;
     var condition = response.query.results.channel.item.condition;
@@ -588,6 +632,8 @@ exports.getYahoo = function(req, res) {
  * PayPal SDK example.
  */
 exports.getPayPal = function(req, res, next) {
+  paypal = require('paypal-rest-sdk');
+
   paypal.configure({
     mode: 'sandbox',
     client_id: secrets.paypal.client_id,
@@ -665,6 +711,8 @@ exports.getPayPalCancel = function(req, res) {
  * Lob API example.
  */
 exports.getLob = function(req, res, next) {
+  lob = require('lob')(secrets.lob.apiKey);
+
   lob.routes.list({
     zip_codes: ['10007']
   }, function(err, routes) {
@@ -681,6 +729,8 @@ exports.getLob = function(req, res, next) {
  * BitGo wallet example
  */
 exports.getBitGo = function(req, res, next) {
+  BitGo = require('bitgo');
+
   var bitgo = new BitGo.BitGo({ env: 'test', accessToken: secrets.bitgo.accessToken });
   var walletId = req.session.walletId;
 
@@ -750,6 +800,9 @@ exports.postBitGo = function(req, res, next) {
  * Bitcore example
  */
 exports.getBitcore = function(req, res, next) {
+  Bitcore = require('bitcore');
+  Bitcore.Networks.defaultNetwork = secrets.bitcore.bitcoinNetwork == 'testnet' ? Bitcore.Networks.testnet : Bitcore.Networks.mainnet;
+
   try {
     var privateKey;
 
@@ -787,6 +840,8 @@ exports.getBitcore = function(req, res, next) {
  * Bitcore send coins example
  */
 exports.postBitcore = function(req, res, next) {
+  BitcoreInsight = require('bitcore-explorers').Insight;
+
   try {
     var getUTXOAddress;
 
