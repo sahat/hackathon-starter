@@ -402,12 +402,12 @@ List of Packages
 | jade                            | Template engine for Express.                                          |
 | lastfm                          | Last.fm API library.                                                  |
 | instagram-node                  | Instagram API library.                                                |
-| less                            | LESS compiler. Used implicitly by connect-assets.                     |
 | lob                             | Lob API library                                                       |
 | lusca                           | CSRF middleware.                                                      |
 | mongoose                        | MongoDB ODM.                                                          |
 | node-foursquare                 | Foursquare API library.                                               |
 | node-linkedin                   | LinkedIn API library.                                                 |
+| node-sass-middleware            | Sass middleware compiler.                                                 |
 | nodemailer                      | Node.js library for sending emails.                                   |
 | passport                        | Simple and elegant authentication library for node.js                 |
 | passport-facebook               | Sign-in with Facebook plugin.                                         |
