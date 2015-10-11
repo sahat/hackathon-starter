@@ -1,7 +1,7 @@
 if messages.errors
   .alert.alert-danger.fade.in
     button.close(type='button', data-dismiss='alert')
-      span.ion-close-circled
+      i.fa.fa-times-circle-o
     for error in messages.errors
       div= error.msg
 if messages.info
