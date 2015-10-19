@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.1.0?](#changelog)
+Jump to [What's new in 3.2.0?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1234,6 +1234,19 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.2.0 (October 19, 2015)
+- Added Google Analytics script.
+- Split *api.js* `require` intro declaration and initialization for better performance. (See <a href="https://github.com/sahat/hackathon-starter/issues/247">#247</a>)
+- Removed [ionicons](http://ionicons.com).
+- Removed [connect-assets](https://github.com/adunkman/connect-assets). (Replaced by [node-sass-middleware](https://github.com/sass/node-sass-middleware))
+- Fixed alignment styling on /login, /profile and /account
+- Fixed Stripe API `POST` request.
+- Converted LESS to Sass stylesheets.
+- Set `node_js` version to "stable" in *.travis.yml*.
+- Removed `mocha.opts` file, pass options directly to package.json
+- README cleanup and fixes.
+- Updated Font Awesome to 4.4.0
 
 ### 3.1.0 (August 25, 2015)
 - Added Bitcore example.
