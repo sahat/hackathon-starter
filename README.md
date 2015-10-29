@@ -131,7 +131,7 @@ restart the server each time you make a small change in code. To install, run
 Generator
 ---------
 
-Hackathon Starter Generator is tighly coupled to the project code. As soon as you
+Hackathon Starter Generator is tightly coupled to the project code. As soon as you
 start changing and moving things around, it will probably no longer work as
 expected. That is why it's best to use when you first download the project.
 
