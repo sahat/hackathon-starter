@@ -72,9 +72,8 @@ Features
 - Flash notifications
 - MVC Project Structure
 - Node.js clusters support
-- Rails 3.1-style asset pipeline by connect-assets (See FAQ)
-- LESS stylesheets (auto-compiled without any Gulp/Grunt hassle)
-- Bootstrap 3 + Flat UI + iOS7
+- Sass stylesheets (auto-compiled via middleware)
+- Bootstrap 3 + Extra Themes
 - Contact Form (powered by Mailgun, Sendgrid or Mandrill)
 - **Account Management**
  - Gravatar
@@ -382,9 +381,7 @@ List of Packages
 | bitgo                           | Multi-sig Bitcoin wallet API.                                         |
 | cheerio                         | Scrape web pages using jQuery-style syntax.                           |
 | clockwork                       | Clockwork SMS API library.                                            |
-| connect-assets                  | Compiles LESS stylesheets, concatenates & minifies JavaScript.        |
 | connect-mongo                   | MongoDB session store for Express.                                    |
-| csso                            | Dependency for connect-assets library to minify CSS.                  |
 | express                         | Node.js web framework.                                                |
 | body-parser                     | Express 4 middleware.                                                 |
 | cookie-parser                   | Express 4 middleware.                                                 |
@@ -425,7 +422,6 @@ List of Packages
 | twilio                          | Twilio API library.                                                   |
 | twit                            | Twitter API library.                                                  |
 | lodash                          | Handy JavaScript utlities library.                                    |
-| uglify-js                       | Dependency for connect-assets library to minify JS.                   |
 | validator                       | Used in conjunction with express-validator in **controllers/api.js**. |
 | mocha                           | Test framework.                                                       |
 | chai                            | BDD/TDD assertion library.                                            |
@@ -537,58 +533,6 @@ its purpose and behavior. To use it, simply run `node cluster_app.js`.
 As a reminder, if you plan to use `cluster_app.js` instead of `app.js`,
 be sure to indicate that in `package.json` when you are ready to deploy your app.
 
-### What is this Rails 3.1-style asset pipeline that you mentioned under Features?
-This is how you typically define static files inside HTML, Jade or any template
-for that matter:
-
-```jade
-link(href='/css/styles.css', rel='stylesheet')
-script(src='/js/lib/jquery-2.1.0.min.js')
-script(src='/js/lib/bootstrap.min.js')
-script(src='/js/main.js')
-```
-
-Simple enough right? But wouldn't it be nice to have it just like that in
-development mode, but when you deploy your app to production, have it minified
-and concatenated into a single file automatically without any extra effort on
-your part?
-
-```jade
-link(href='/css/styles.css', rel='stylesheet')
-script(src='/js/application.js')
-```
-
-As soon as you start bringing in more JavaScript libraries, the benefits of
-concatenating and minifying JavaScript files will be even greater. Using
-**connect-assets** library, it is  as as simple as declaring these two lines:
-
-```
-!= css('main')      // expects public/css/main.less
-!= js('application')  // expects public/js/application.js
-```
-
-**Tip:** We can use `css` and `js` functions in Jade templates because in
-**connect-assets** middleware options we have added this line: `helperContext: app.locals`.
-
-The only thing you need to remember is to define your JavaScript files inside
-`public/js/application.js` using this strange syntax notation (Sprockets-style)
-borrowed from Rails. I know it's an extra thing to learn for someone who has
-never seen Rails asset pipeline before, but in this case, I think benefits
-outweigh the cost.
-
-```js
-//= require lib/jquery-2.1.0.min
-//= require lib/bootstrap.min
-//= require main
-```
-
-Using this approach, when working in development mode, **connect-assets** will
-load each file individually, without minifying or concatenating anything.
-When you deploy your app, it will run in production mode, and so **connect-assets**
-will automatically serve a single concatenated & minified `application.js`.
-For more information see [Sprockets-style concatenation](https://github.com/adunkman/connect-assets/#sprockets-style-concatenation)
-section.
-
 ### I am getting MongoDB Connection Error, how do I fix it?
 That's a custom error message defined in `app.js` to indicate that there was a
 problem connecting to MongoDB:
@@ -651,27 +595,6 @@ reference guide. I have explained my reasons why it could not be merged in
 Run `node setup.js` bundled with Hackathon Starter, then select
 **Email Service** option. It will automatically replace appropriate strings in
 your code. Currently there are three options: SendGrid, Mandrill, and Mailgun.
-
-### Can I use Sass instead of LESS stylesheets?
-Yes you can! Although you will have to manually convert all existing stylesheets
-to Sass, which shouldn't be too hard considering how similar Sass and LESS are.
-Simply rename `main.less` to `main.scss` and **connect-assets** will
-automatically use Sass preprocessor.
-
-Your are not limited to just Sass *or* LESS, you could use both if you want to.
-In **layout.jade** simply specify LESS and Sass stylesheets separately:
-```jade
-!= css('main') # public/css/main.less
-!= css('my_sass_styles') # public/css/my_sass_styles.scss
-```
-
-And as I already mentioned you do not need to specify the file extension,
-**connect-assets** will automatically figure out which CSS preprocessor to use
-based on the filetype.
-
-**Note:** I did not include `node-sass` module in *package.json*, so you will
-have to install it yourself by running `npm install --save node-sass`.
-
 
 How It Works (mini guides)
 --------------------------
