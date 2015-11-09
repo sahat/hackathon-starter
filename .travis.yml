@@ -5,4 +5,4 @@ services:
   - mongodb
 
 node_js:
-  - "stable"
+  - "4.2"
