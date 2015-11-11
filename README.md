@@ -1,5 +1,5 @@
 ![Alt](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg)
-Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](http://img.shields.io/travis/sahat/hackathon-starter.svg?style=flat)](https://travis-ci.org/sahat/hackathon-starter) [![Analytics](https://ga-beacon.appspot.com/UA-47447818-2/hackathon-starter?pixel)](https://github.com/igrigorik/ga-beacon)
+Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](https://img.shields.io/travis/sahat/hackathon-starter.svg?style=flat)](https://travis-ci.org/sahat/hackathon-starter) [![Analytics](https://ga-beacon.appspot.com/UA-47447818-2/hackathon-starter?pixel)](https://github.com/igrigorik/ga-beacon)
 =======================
 
 [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Thinkful Pair on Node](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/node/)
@@ -89,7 +89,7 @@ Features
 Prerequisites
 -------------
 
-- [MongoDB](http://www.mongodb.org/downloads)
+- [MongoDB](https://www.mongodb.org/downloads)
 - [Node.js](http://nodejs.org)
 - Command Line Tools
  - <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X**: [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9 Mavericks**: `xcode-select --install`)
@@ -99,7 +99,7 @@ Prerequisites
  - <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE**: `sudo zypper install --type pattern devel_basis`
 
 **Note:** If you are new to Node or Express, I recommend to watch
-[Node.js and Express 101](http://www.youtube.com/watch?v=BN0JlMZCtNU)
+[Node.js and Express 101](https://www.youtube.com/watch?v=BN0JlMZCtNU)
 screencast by Alex Ford that teaches Node and Express from scratch. Alternatively,
 here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
 
@@ -223,7 +223,7 @@ The same goes for other providers.
 <hr>
 
 <img src="http://www.danpontefract.com/wp-content/uploads/2014/02/logo-linkedin.png" width="200">
-- Sign in at [LinkedIn Developer Network](http://developer.linkedin.com/)
+- Sign in at [LinkedIn Developer Network](https://developer.linkedin.com/)
 - From the account name dropdown menu select **API Keys**
  - *It may ask you to sign in once again*
 - Click **+ Add New Application** button
@@ -252,7 +252,7 @@ The same goes for other providers.
 <hr>
 
 <img src="https://stripe.com/img/about/logos/logos/black@2x.png" width="200">
-- [Sign up](http://stripe.com) or log into your [dashboard](https://manage.stripe.com)
+- [Sign up](https://stripe.com/) or log into your [dashboard](https://manage.stripe.com)
 - Click on your profile and click on Account Settings
 - Then click on [API Keys](https://manage.stripe.com/account/apikeys)
 - Copy the **Secret Key**. and add this into `config/secrets.js`
@@ -331,8 +331,8 @@ The same goes for other providers.
 <img src="http://i.imgur.com/dFEcoEE.png" width="200">
 - No account is necessary; by default the Bitcoin Testnet is accessible via the free Bitpay Insight API.
 - You can use real bitcoins (be careful!) by setting BITCORE_BITCOIN_NETWORK environment variable to 'livenet', or edit `config/secrets.js`
-- You can use bitcore client-side-only by first building js files for the browser, see http://bitcore.io/guide/browser.html
-- You can build some altcoin projects by editing the Network and using your own full node http://bitcore.io/guide/networks.html
+- You can use bitcore client-side-only by first building js files for the browser, see https://bitcore.io/guides/browser
+- You can build some altcoin projects by editing the Network and using your own full node https://bitcore.io/api/lib/networks
 - You can optionally use your own Bitcoin (or altcoin) full node running the Insight API, see https://github.com/bitpay/insight-api
 
 Project Structure
@@ -432,8 +432,8 @@ List of Packages
 
 Useful Tools and Resources
 --------------------------
-- [JSDB.io](http://www.jsdb.io) - The Database of JavaScript Libraries
-- [JS Recipes](http://sahatyalkabov.com/jsrecipes) - JavaScript tutorials for backend and frontend development.
+- [JavaScripting](http://www.javascripting.com/) - The Database of JavaScript Libraries
+- [JS Recipes](http://sahatyalkabov.com/jsrecipes/) - JavaScript tutorials for backend and frontend development.
 - [Jade Syntax Documentation by Example](http://naltatis.github.io/jade-syntax-docs/#attributes) - Even better than official Jade docs.
 - [HTML to Jade converter](http://html2jade.aaron-powell.com) - Extremely valuable when you need to quickly copy and paste HTML snippets from the web.
 - [JavascriptOO](http://www.javascriptoo.com/) - A directory of JavaScript libraries with examples, CDN links, statistics, and videos.
@@ -444,7 +444,7 @@ Recommended Design Resources
 - [Code Guide](http://codeguide.co/) - Standards for developing flexible, durable, and sustainable HTML and CSS.
 - [Bootsnipp](http://bootsnipp.com/) - Code snippets for Bootstrap.
 - [UIBox](http://www.uibox.in) - Curated HTML, CSS, JS, UI components.
-- [Bootstrap Zero](http://bootstrapzero.com/) - Free Bootstrap templates themes.
+- [Bootstrap Zero](https://www.bootstrapzero.com) - Free Bootstrap templates themes.
 - [Google Bootstrap](http://todc.github.io/todc-bootstrap/) - Google-styled theme for Bootstrap.
 - [Font Awesome Icons](http://fortawesome.github.io/Font-Awesome/icons/) - It's already part of the Hackathon Starter, so use this page as a reference.
 - [Colors](http://clrs.cc) - A nicer color palette for the web.
@@ -469,7 +469,7 @@ Recommended Node.js Libraries
 Recommended Client-side Libraries
 ---------------------------------
 
-- [Framework7](http://www.idangero.us/framework7) - Full Featured HTML Framework For Building iOS7 Apps.
+- [Framework7](http://www.idangero.us/framework7/) - Full Featured HTML Framework For Building iOS7 Apps.
 - [InstantClick](http://instantclick.io) - Makes your pages load instantly by pre-loading them on mouse hover.
 - [NProgress.js](https://github.com/rstacruz/nprogress) - Slim progress bars like on YouTube and Medium.
 - [Hover](https://github.com/IanLunn/Hover) - Awesome CSS3 animations on mouse hover.
@@ -481,7 +481,7 @@ Recommended Client-side Libraries
 - [Alertify.js](http://fabien-d.github.io/alertify.js/) - Sweet looking alerts and browser dialogs.
 - [selectize.js](http://brianreavis.github.io/selectize.js/) - Styleable select elements and input tags.
 - [drop.js](http://github.hubspot.com/drop/docs/welcome/) -  Powerful Javascript and CSS library for creating dropdowns and other floating displays.
-- [scrollReveal.js](https://github.com/julianlloyd/scrollReveal.js) - Declarative on-scroll reveal animations.
+- [scrollReveal.js](https://github.com/jlmakes/scrollReveal.js) - Declarative on-scroll reveal animations.
 
 Pro Tips
 --------
@@ -545,7 +545,7 @@ mongoose.connection.on('error', function() {
 You need to have a MongoDB server running before launching `app.js`. You can
 download MongoDB [here](mongodb.org/downloads), or install it via a package manager.
 <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">
-Windows users, read [Install MongoDB on Windows](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
+Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
 **Tip:** If you are always connected to the internet, you could just use
 [MongoLab](https://mongolab.com/) or [Compose](https://www.compose.io/) instead
@@ -556,7 +556,7 @@ of downloading and installing MongoDB locally. You will only need to update the
 Chances are you haven't changed the *Database URI* in `secrets.js`. If `db` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
-running on `localhost`. You need to create an account with [MongoLab](http://mongolab.com)
+running on `localhost`. You need to create an account with [MongoLab](https://mongolab.com/)
 or [Compose](https://www.compose.io/), then create a free tier database.
 See [Deployment](#deployment) for more information on how to setup an account
 and a new database step-by-step with MongoLab.
@@ -867,8 +867,8 @@ difficult to maintain everything in a single file.
 That's all there is to it. Express.js is super simple to use.
 Most of the time you will be dealing with other APIs to do the real work:
 [Mongoose](http://mongoosejs.com/docs/guide.html) for querying database, socket.io for sending and receiving messages over websockets,
-sending emails via [Nodemailer](http://www.nodemailer.com/), form validation using [express-validator](https://github.com/ctavan/express-validator) library,
-parsing websites using [Cheerio](https://github.com/MatthewMueller/cheerio), and etc.
+sending emails via [Nodemailer](http://nodemailer.com/), form validation using [express-validator](https://github.com/ctavan/express-validator) library,
+parsing websites using [Cheerio](https://github.com/cheeriojs/cheerio), and etc.
 
 <hr>
 
@@ -953,7 +953,7 @@ almost never include inline JavaScript inside templates anymore.
 
 But it's also understandable if you want take the easier road.
 Most of the time you don't even care about performance during hackathons, you just
-want to [*"get shit done"*](http://www.startupvitamins.com/media/products/13/aaron_levie_poster_black.jpg) before the time runs out.
+want to [*"get shit done"*](https://www.startupvitamins.com/media/products/13/aaron_levie_poster_black.jpg) before the time runs out.
 Well, either way, use whichever approach makes more sense to you. At the end of the day,
 it's **what** you build that matters, not **how** you build it.
 
@@ -1030,7 +1030,7 @@ User
 Let's suppose that each user has a `votes` field and you would like to count
 the total number of votes in your database across all users. One very
 inefficient way would be to loop through each document and manually accumulate
-the count. Or you could use [MongoDB Aggregation Framework](http://docs.mongodb.org/manual/core/aggregation-introduction/) instead:
+the count. Or you could use [MongoDB Aggregation Framework](https://docs.mongodb.org/manual/core/aggregation-introduction/) instead:
 
 ```js
 User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, function(err, votesCount) {
@@ -1119,9 +1119,9 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
  - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. **Do not** run `git pull` as it will create unnecessary merge conflicts.
 - And you are done!
 
-<img src="http://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
 
-- Login to [Windows Azure Management Portal](http://manage.windowsazure.com/)
+- Login to [Windows Azure Management Portal](https://manage.windowsazure.com/)
 - Click the **+ NEW** button on the bottom left of the portal
 - Click **COMPUTE**, then **WEB APP**, then **QUICK CREATE**
 - Enter a name for **URL** and select the datacenter **REGION** for your web site
