@@ -1,8 +1,10 @@
-// Flatly 3.3.2
+// Flatly 3.3.5
 // Bootswatch
 // -----------------------------------------------------
 
-@import url("//fonts.googleapis.com/css?family=Lato:400,700,400italic");
+$web-font-path: "https://fonts.googleapis.com/css?family=Lato:400,700,400italic" !default;
+
+@import url($web-font-path);
 
 // Navbar =====================================================================
 
@@ -31,6 +33,10 @@
 }
 
 // Buttons ====================================================================
+
+.btn {
+  border-width: 2px;
+}
 
 .btn:active {
   @include box-shadow(none);
@@ -131,6 +137,10 @@ input, {
   .checkbox,
   .radio-inline,
   .checkbox-inline,
+  &.radio label,
+  &.checkbox label,
+  &.radio-inline label,
+  &.checkbox-inline label,
   .form-control-feedback {
     color: $brand-warning;
   }
@@ -152,6 +162,10 @@ input, {
   .checkbox,
   .radio-inline,
   .checkbox-inline,
+  &.radio label,
+  &.checkbox label,
+  &.radio-inline label,
+  &.checkbox-inline label,
   .form-control-feedback {
     color: $brand-danger;
   }
@@ -173,6 +187,10 @@ input, {
   .checkbox,
   .radio-inline,
   .checkbox-inline,
+  &.radio label,
+  &.checkbox label,
+  &.radio-inline label,
+  &.checkbox-inline label,
   .form-control-feedback {
     color: $brand-success;
   }
