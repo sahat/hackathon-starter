@@ -18,8 +18,6 @@ var paypal;
 var lob;
 var ig;
 var Y;
-var Bitcore;
-var BitcoreInsight;
 var request;
 
 
@@ -764,7 +762,6 @@ exports.getBitGo = function(req, res, next) {
   }
 };
 
-
 /**
  * POST /api/bitgo
  * BitGo send coins example
@@ -791,102 +788,5 @@ exports.postBitGo = function(req, res, next) {
   } catch (e) {
     req.flash('errors', { msg: e.message });
     return res.redirect('/api/bitgo');
-  }
-};
-
-
-/**
- * GET /api/bicore
- * Bitcore example
- */
-exports.getBitcore = function(req, res, next) {
-  Bitcore = require('bitcore');
-  Bitcore.Networks.defaultNetwork = secrets.bitcore.bitcoinNetwork == 'testnet' ? Bitcore.Networks.testnet : Bitcore.Networks.mainnet;
-
-  try {
-    var privateKey;
-
-    if (req.session.bitcorePrivateKeyWIF) {
-      privateKey = Bitcore.PrivateKey.fromWIF(req.session.bitcorePrivateKeyWIF);
-    } else {
-      privateKey = new Bitcore.PrivateKey();
-      req.session.bitcorePrivateKeyWIF = privateKey.toWIF();
-      req.flash('info', {
-        msg: 'A new ' + secrets.bitcore.bitcoinNetwork + ' private key has been created for you and is stored in ' +
-        'req.session.bitcorePrivateKeyWIF. Unless you changed the Bitcoin network near the require bitcore line, ' +
-        'this is a testnet address.'
-      });
-    }
-
-    var myAddress = privateKey.toAddress();
-    var bitcoreUTXOAddress = '';
-
-    if (req.session.bitcoreUTXOAddress)
-      bitcoreUTXOAddress = req.session.bitcoreUTXOAddress;
-    res.render('api/bitcore', {
-      title: 'Bitcore API',
-      network: secrets.bitcore.bitcoinNetwork,
-      address: myAddress,
-      getUTXOAddress: bitcoreUTXOAddress
-    });
-  } catch (e) {
-    req.flash('errors', { msg: e.message });
-    return next(e);
-  }
-};
-
-/**
- * POST /api/bitcore
- * Bitcore send coins example
- */
-exports.postBitcore = function(req, res, next) {
-  BitcoreInsight = require('bitcore-explorers').Insight;
-
-  try {
-    var getUTXOAddress;
-
-    if (req.body.address) {
-      getUTXOAddress = req.body.address;
-      req.session.bitcoreUTXOAddress = getUTXOAddress;
-    } else if (req.session.bitcoreUTXOAddress) {
-      getUTXOAddress = req.session.bitcoreUTXOAddress;
-    } else {
-      getUTXOAddress = '';
-    }
-
-    var myAddress;
-
-    if (req.session.bitcorePrivateKeyWIF) {
-      myAddress = Bitcore.PrivateKey.fromWIF(req.session.bitcorePrivateKeyWIF).toAddress();
-    } else {
-      myAddress = '';
-    }
-
-    var insight = new BitcoreInsight();
-
-    insight.getUnspentUtxos(getUTXOAddress, function(err, utxos) {
-      if (err) {
-        req.flash('errors', { msg: err.message });
-        return next(err);
-      } else {
-        req.flash('info', { msg: 'UTXO information obtained from the Bitcoin network via Bitpay Insight. You can use your own full Bitcoin node.' });
-
-        // Results are in the form of an array of items which need to be turned into JS objects.
-        for (var i = 0; i < utxos.length; ++i) {
-          utxos[i] = utxos[i].toObject();
-        }
-
-        res.render('api/bitcore', {
-          title: 'Bitcore API',
-          myAddress: myAddress,
-          getUTXOAddress: getUTXOAddress,
-          utxos: utxos,
-          network: secrets.bitcore.bitcoinNetwork
-        });
-      }
-    });
-  } catch (e) {
-    req.flash('errors', { msg: e.message });
-    return next(e);
   }
 };

@@ -148,8 +148,6 @@ app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 app.get('/api/lob', apiController.getLob);
 app.get('/api/bitgo', apiController.getBitGo);
 app.post('/api/bitgo', apiController.postBitGo);
-app.get('/api/bitcore', apiController.getBitcore);
-app.post('/api/bitcore', apiController.postBitcore);
 
 /**
  * OAuth authentication routes. (Sign in)
