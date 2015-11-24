@@ -39,34 +39,9 @@ block content
                 strong= company.title
                 |  at
                 strong  #{company.company.name}
-          dt.text-muted Previous
-            for company in profile.positions.values
-              if !company.isCurrent
-                dd
-                  | #{company.title}
-                  |  at
-                  | #{company.company.name}
-          if profile.educations
-            dt.text-muted Education
-              for education in profile.educations.values
-                dd= education.schoolName
-          dt.text-muted Recommendations
-          dd
-            strong #{profile.numRecommenders}
-            |  recommendation(s) received
           dt.text-muted Connections
           dd
             strong #{profile.numConnections}
             |  connections
         .text-center
           small.text-muted= profile.publicProfileUrl
-
-  h3.text-primary LinkedIn Connections
-  table.table.table-hover.table-striped.table-bordered
-    tbody
-    for connection in profile.connections.values
-      if connection.id != 'private'
-        tr
-          td
-            strong #{connection.firstName} #{connection.lastName}
-            .text-muted #{connection.headline}
