@@ -48,8 +48,9 @@ passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, 
     });
   } else {
     User.findOne({ instagram: profile.id }, function(err, existingUser) {
-      if (existingUser) return done(null, existingUser);
-
+      if (existingUser) {
+        return done(null, existingUser);
+      }
       var user = new User();
       user.instagram = profile.id;
       user.tokens.push({ kind: 'instagram', accessToken: accessToken });
@@ -73,7 +74,9 @@ passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, 
 passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
   email = email.toLowerCase();
   User.findOne({ email: email }, function(err, user) {
-    if (!user) return done(null, false, { message: 'Email ' + email + ' not found'});
+    if (!user) {
+      return done(null, false, { message: 'Email ' + email + ' not found'});
+    }
     user.comparePassword(password, function(err, isMatch) {
       if (isMatch) {
         return done(null, user);
@@ -124,7 +127,9 @@ passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, r
     });
   } else {
     User.findOne({ facebook: profile.id }, function(err, existingUser) {
-      if (existingUser) return done(null, existingUser);
+      if (existingUser) {
+        return done(null, existingUser);
+      }
       User.findOne({ email: profile._json.email }, function(err, existingEmailUser) {
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.' });
@@ -173,7 +178,9 @@ passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refre
     });
   } else {
     User.findOne({ github: profile.id }, function(err, existingUser) {
-      if (existingUser) return done(null, existingUser);
+      if (existingUser) {
+        return done(null, existingUser);
+      }
       User.findOne({ email: profile._json.email }, function(err, existingEmailUser) {
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with GitHub manually from Account Settings.' });
@@ -221,7 +228,9 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
 
   } else {
     User.findOne({ twitter: profile.id }, function(err, existingUser) {
-      if (existingUser) return done(null, existingUser);
+      if (existingUser) {
+        return done(null, existingUser);
+      }
       var user = new User();
       // Twitter will not provide an email address.  Period.
       // But a person’s twitter username is guaranteed to be unique
@@ -264,7 +273,9 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
     });
   } else {
     User.findOne({ google: profile.id }, function(err, existingUser) {
-      if (existingUser) return done(null, existingUser);
+      if (existingUser) {
+        return done(null, existingUser);
+      }
       User.findOne({ email: profile.emails[0].value }, function(err, existingEmailUser) {
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' });
@@ -312,7 +323,9 @@ passport.use(new LinkedInStrategy(secrets.linkedin, function(req, accessToken, r
     });
   } else {
     User.findOne({ linkedin: profile.id }, function(err, existingUser) {
-      if (existingUser) return done(null, existingUser);
+      if (existingUser) {
+        return done(null, existingUser);
+      }
       User.findOne({ email: profile._json.emailAddress }, function(err, existingEmailUser) {
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
@@ -403,7 +416,9 @@ passport.use('venmo', new OAuth2Strategy({
  * Login Required middleware.
  */
 exports.isAuthenticated = function(req, res, next) {
-  if (req.isAuthenticated()) return next();
+  if (req.isAuthenticated()) {
+    return next();
+  }
   res.redirect('/login');
 };
 

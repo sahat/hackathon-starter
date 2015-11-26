@@ -89,7 +89,9 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(function(req, res, next) {
-  if (/api/i.test(req.path)) req.session.returnTo = req.path;
+  if (/api/i.test(req.path)) {
+    req.session.returnTo = req.path;
+  }
   next();
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
