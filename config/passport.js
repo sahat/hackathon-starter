@@ -9,6 +9,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy;
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+var BasicStrategy = require('passport-http').BasicStrategy;
 
 var secrets = require('./secrets');
 var User = require('../models/User');
