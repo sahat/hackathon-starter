@@ -110,14 +110,15 @@ The easiest way to get started is to clone the repository:
 
 ```bash
 # Get the latest snapshot
-$ git clone https://github.com/sahat/hackathon-starter.git myproject
-$ cd myproject
-$ git remote rm origin
+git clone --depth=1 https://github.com/sahat/hackathon-starter.git myproject
+
+# Change directory
+cd myproject
 
 # Install NPM dependencies
-$ npm install
+npm install
 
-$ node app.js
+node app.js
 ```
 
 **Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon).
