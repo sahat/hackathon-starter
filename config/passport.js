@@ -9,6 +9,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy;
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+var BasicStrategy = require('passport-http').BasicStrategy;
 
 var secrets = require('./secrets');
 var User = require('../models/User');
@@ -411,6 +412,35 @@ passport.use('venmo', new OAuth2Strategy({
     });
   }
 ));
+
+
+/**
+ * BasicStratgey(Basic Auth).
+ */
+
+passport.use(new BasicStrategy(
+  function(email, password, done) {
+    User.findOne({ email: email }, function (err, user) {
+      if (err) { return done(err); }
+
+      // No user found with that username
+      if (!user) { return done(null, false); }
+
+      // Make sure the password is correct
+      user.comparePassword(password, function(err, isMatch) {
+        if (err) { return done(err); }
+
+        // Password did not match
+        if (!isMatch) { return done(null, false); }
+
+        // Success
+        return done(null, user);
+      });
+    });
+  }
+));
+
+
 
 /**
  * Login Required middleware.
