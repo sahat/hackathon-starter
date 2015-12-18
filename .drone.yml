@@ -1,0 +1,12 @@
+build:
+  image: ubuntu:latest
+  environment:
+    - "NODE_ENV=development"
+    - "MONGODB=mongodb://127.0.0.1:27017/dev"
+  commands:
+    - "ls -alF"
+    - "npm test"
+
+compose:
+  mongodb:
+    image: mongo

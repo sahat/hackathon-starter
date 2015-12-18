@@ -1,0 +1,16 @@
+app:
+    build: ./
+    links:
+        - "mongo:mongo"
+    ports:
+        - "3000:3000"
+    dockerfile: Dockerfile
+    environment:
+        - "MONGODB=mongodb://mongo:27017/dev"
+    restart: always
+    
+mongo:
+    image: mongo
+    ports:
+        - "27001:27017"
+    restart: always
