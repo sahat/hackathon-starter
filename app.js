@@ -125,7 +125,7 @@ app.get('/api', apiController.getApi);
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
 app.get('/api/aviary', apiController.getAviary);
-app.get('/api/steam', apiController.getSteam);
+app.get('/api/steam', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getSteam);
 app.get('/api/stripe', apiController.getStripe);
 app.post('/api/stripe', apiController.postStripe);
 app.get('/api/scraping', apiController.getScraping);
@@ -178,10 +178,6 @@ app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE
 app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
 });
-app.get('/auth/steam', passport.authenticate('openid', { state: 'SOME STATE' }));
-app.get('/auth/steam/callback', passport.authenticate('openid', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
-});
 
 /**
  * OAuth authorization routes. (API examples)
@@ -198,7 +194,10 @@ app.get('/auth/venmo', passport.authorize('venmo', { scope: 'make_payments acces
 app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '/api' }), function(req, res) {
   res.redirect('/api/venmo');
 });
-
+app.get('/auth/steam', passport.authorize('openid', { state: 'SOME STATE' }));
+app.get('/auth/steam/callback', passport.authorize('openid', { failureRedirect: '/login' }), function(req, res) {
+  res.redirect(req.session.returnTo || '/');
+});
 
 /**
  * Error Handler.
