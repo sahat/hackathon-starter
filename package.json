@@ -48,6 +48,7 @@
     "passport-linkedin-oauth2": "^1.4.0",
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
+    "passport-openid": "^0.4.0",
     "passport-twitter": "^1.0.3",
     "paypal-rest-sdk": "^1.6.7",
     "request": "^2.67.0",

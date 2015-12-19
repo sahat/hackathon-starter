@@ -29,7 +29,7 @@ module.exports = {
     user: process.env.MAILGUN_USER || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
     password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'
   },
-  
+
   mandrill: {
     user: process.env.MANDRILL_USER || 'hackathonstarterdemo',
     password: process.env.MANDRILL_PASSWORD || 'E1K950_ydLR4mHw12a0ldA'
@@ -93,7 +93,11 @@ module.exports = {
   },
 
   steam: {
-    apiKey: process.env.STEAM_KEY || 'D1240DEF4D41D416FD291D0075B6ED3F'
+    apiKey: process.env.STEAM_KEY || 'D1240DEF4D41D416FD291D0075B6ED3F',
+    providerURL: 'http://steamcommunity.com/openid',
+    returnURL: 'http://localhost:3000/auth/steam/callback',
+    realm: 'http://localhost:3000/',
+    stateless: true
   },
 
   twilio: {

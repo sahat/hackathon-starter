@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var passport = require('passport');
+var request = require('request');
 var InstagramStrategy = require('passport-instagram').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -7,6 +8,7 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var GitHubStrategy = require('passport-github').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+var OpenIDStrategy = require('passport-openid').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy;
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
@@ -346,6 +348,36 @@ passport.use(new LinkedInStrategy(secrets.linkedin, function(req, accessToken, r
       });
     });
   }
+}));
+
+/**
+ * Sign in with Steam.
+ */
+passport.use(new OpenIDStrategy(secrets.steam, function(identifier, done) {
+  var steamId = identifier.match(/\d+$/)[0];
+  var profileURL = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='+secrets.steam.apiKey+'&steamids='+steamId;
+
+  User.findOne({ steam: steamId }, function(err, existingUser) {
+    if (existingUser) return done(err, existingUser);
+    request(profileURL, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var data = JSON.parse(body);
+        var profile = data.response.players[0];
+
+        var user = new User();
+        user.steam = steamId;
+        user.email = steamId + '@steam.com'; // steam does not disclose emails, prevent duplicate keys
+        user.tokens.push({ kind: 'steam', accessToken: steamId });
+        user.profile.name = profile.personaname;
+        user.profile.picture = profile.avatarmedium;
+        user.save(function(err) {
+          done(err, user);
+        });
+      } else {
+        done(error, null);
+      }
+    });
+  });
 }));
 
 /**
