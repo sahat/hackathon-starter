@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.2.0?](#changelog)
+Jump to [What's new in 3.3.0?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1140,6 +1140,14 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.3.0 (December 19, 2015)
+- Steam authorization via OpenID.
+- Code style update. (No longer use "one-liners" without braces)
+- Updated LinkedIn scope from `r_fullprofile` to `r_basicprofile` due to API changes.
+- Added LICENSE file.
+- Removed [Bitcore](https://bitcore.io/) example due to installation issues on Windows 10.
+
 
 ### 3.2.0 (October 19, 2015)
 - Added Google Analytics script.
