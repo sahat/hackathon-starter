@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.3.0?](#changelog)
+Jump to [What's new in 3.3.1?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1140,6 +1140,9 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.3.1 (December 25, 2015)
+- Use `connect-mongo` ES5 fallback for backward-compatibility with Node.js version `< 4.0`.
 
 ### 3.3.0 (December 19, 2015)
 - Steam authorization via OpenID.
