@@ -13,7 +13,7 @@ var lusca = require('lusca');
 var methodOverride = require('method-override');
 
 var _ = require('lodash');
-var MongoStore = require('connect-mongo')(session);
+var MongoStore = require('connect-mongo/es5')(session);
 var flash = require('express-flash');
 var path = require('path');
 var mongoose = require('mongoose');
