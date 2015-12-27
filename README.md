@@ -370,7 +370,6 @@ List of Packages
 | cookie-parser                   | Express 4 middleware.                                                 |
 | express-session                 | Express 4 middleware.                                                 |
 | morgan                          | Express 4 middleware.                                                 |
-| multer                          | Express 4 middleware.                                                 |
 | compression                     | Express 4 middleware.                                                 |
 | errorhandler                    | Express 4 middleware.                                                 |
 | method-override                 | Express 4 middleware.                                                 |
