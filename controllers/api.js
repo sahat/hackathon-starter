@@ -134,6 +134,51 @@ exports.getFacebook = function(req, res, next) {
 };
 
 /**
+ * POST /api/facebook/feed
+ * post something to wall.
+ */
+exports.postFeedFacebook = function(req, res, next) {
+  graph = require('fbgraph');
+   
+  var token = _.find(req.user.tokens, { kind: 'facebook' });
+  graph.setAccessToken(token.accessToken);
+  
+  // pass it in as part of the url
+  var message = req.body.message;
+  console.log("message: " + message);
+  
+  async.parallel({
+      getMe: function(done) {
+        graph.get(req.user.facebook, function(err, me) {
+          done(err, me);
+        });
+      },
+      getMyFriends: function(done) {
+        graph.get(req.user.facebook + '/friends', function(err, friends) {
+          done(err, friends.data);
+        });
+      },
+      postWall: function(done) {
+        graph.post(req.body.fb_id + "/feed?message=" + message, message, function(err, data) {
+          // returns the post id
+          done(err, data);
+        });
+      }
+  },
+  function(err, results) {
+    if (err) {
+      return next(err);
+    }
+    res.render('api/facebook', {
+      title: 'Facebook API',
+      me: results.getMe,
+      friends: results.getMyFriends
+    });
+  });
+};
+
+
+/**
  * GET /api/scraping
  * Web scraping example using Cheerio library.
  */

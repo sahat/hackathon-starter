@@ -38,3 +38,14 @@ block content
       .col-xs-3.col-md-2
         a.thumbnail(href='http://facebook.com/#{friend.id}')
           img(src='https://graph.facebook.com/#{friend.id}/picture?width=150&height=150')
+          
+  h3
+    i.fa.fa-user
+    |  Schedule a update status
+    h6 What's on your mind?
+      form(name="update_status", action="/api/facebook/feed", method="post")
+        input(type='hidden', name='_csrf', value=_csrf)
+        input(type='hidden', name='fb_id', value='#{me.id}')
+        input(type='text', name='message')
+        input(type='submit', value='send')
+  
