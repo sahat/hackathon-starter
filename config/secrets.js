@@ -49,9 +49,9 @@ module.exports = {
     secret: process.env.LASTFM_SECRET || 'is cb7857b8fba83f819ea46ca13681fe71'
   },
 
-  facebook: {
-    clientID: process.env.FACEBOOK_ID || '754220301289665',
-    clientSecret: process.env.FACEBOOK_SECRET || '41860e58c256a3d7ad8267d3c1939a4a',
+  facebook: { 
+    clientID: process.env.FACEBOOK_ID || '169497543408638',
+    clientSecret: process.env.FACEBOOK_SECRET || '14bdcb16abd2f877dbd98294f06a7c9e',
     callbackURL: '/auth/facebook/callback',
     profileFields: ['name', 'email', 'link', 'locale', 'timezone'],
     passReqToCallback: true
