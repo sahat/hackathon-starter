@@ -1,0 +1,12 @@
+.campaign-page .media{
+	height: 80px;
+}
+.campaign-page .media .profile-pic{
+	height: 70px;
+    max-width: none;
+
+}
+.campaign-page .campaign-item .list-group .list-group-item{
+	text-align: left;
+}
+

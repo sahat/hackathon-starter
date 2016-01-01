@@ -1,0 +1,71 @@
+<html ng-app="app">
+	<head>
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="stylesheet" href="/css/app.css">
+
+	</head>
+	<body>
+		<script async="" src="//www.google-analytics.com/analytics.js"></script>
+		<script src="/js/lib/jquery.min.js"></script>
+		<script src="/js/lib/bootstrap.min.js"></script>
+		<script src="/js/lib/angular.js"></script>	
+		<script src="/js/lib/angular-route.min.js"></script>	
+
+		<script src="/js/lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
+		<script src="/js/main.js"></script>
+		<script src="/app.js"></script>
+		<script src="/campaign.js"></script>
+		<script src="/appStatus.js"></script>
+		<script src="/performance.js"></script>
+
+
+
+
+
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">La8bel Prototype</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#/campaign">Campaign</a>
+                    </li>
+                    <li>
+                        <a href="#/appStatus">App Status</a>
+                    </li>
+                    <li>
+                        <a href="#/performance">Performance</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container" ng-view>
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; La8bel 2015</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+	</body>
+</html>
