@@ -10,7 +10,7 @@
     "test": "mocha --reporter spec --timeout 5000"
   },
   "dependencies": {
-    "async": "^1.5.0",
+    "async": "^1.5.1",
     "bcrypt-nodejs": "^0.0.3",
     "bitgo": "0.11.62",
     "body-parser": "^1.14.2",
@@ -39,7 +39,7 @@
     "node-foursquare": "^0.3.0",
     "node-linkedin": "^0.5.3",
     "node-sass-middleware": "^0.9.7",
-    "nodemailer": "^1.10.0",
+    "nodemailer": "^1.11.0",
     "passport": "0.3.2",
     "passport-facebook": "^2.0.0",
     "passport-github": "^1.0.0",
