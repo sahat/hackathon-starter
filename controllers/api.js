@@ -111,7 +111,7 @@ exports.getFacebook = function(req, res, next) {
   graph.setAccessToken(token.accessToken);
   async.parallel({
     getMe: function(done) {
-      graph.get(req.user.facebook, function(err, me) {
+      graph.get(req.user.facebook + "?fields=id,name,email,first_name,last_name,gender,link,locale,timezone", function(err, me) {
         done(err, me);
       });
     },
