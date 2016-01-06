@@ -1,4 +1,4 @@
-app.controller('campaignCtrl', function ($scope, $uibModal) {
+app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope) {
     $scope.campaigns = [];
     $scope.test = "abc";
     $scope.apiClient = apigClientFactory.newClient({
@@ -19,7 +19,7 @@ app.controller('campaignCtrl', function ($scope, $uibModal) {
             $scope.showSearchCriteria = !$scope.showSearchCriteria;
         };
 
-    $scope.getCampaigns = function(){
+    $rootScope.getCampaigns = $scope.getCampaigns = function(){
     $scope.apiClient.campaignGet(angular.extend($scope.defaultSearch, $scope.search), {}, {
         headers:{"Content-type": "application/json"}
     }
@@ -38,13 +38,14 @@ app.controller('campaignCtrl', function ($scope, $uibModal) {
 		var uibModalInstance = $uibModal.open({
 			animation: $scope.animationsEnabled,
 			templateUrl: '/app/createCampaignModal.html',
-			controller: function($uibModalInstance ,$scope){
+			controller: function($uibModalInstance ,$scope, $rootScope){
 			    $scope.campaign = {
 			        minAge:"",
 			        maxAge:"",
 			        topic:"",
 			        details: "",
-			        numberOfFollowers: ""
+			        numberOfFollowers: "",
+			        thumbnail: ""
 			    };
 				$scope.close = function () {
 					$uibModalInstance.close();
@@ -56,14 +57,18 @@ app.controller('campaignCtrl', function ($scope, $uibModal) {
                     var campaign = $scope.campaign;
                     campaign.campaignId = generateUUID();
                     campaign.userId = "user1";
-                    campaign.thumbnail = "http://www.localmediamethods.com/wp-content/uploads/2013/03/How-Nielsen%E2%80%99s-Definition-of-a-TV-Household-Impacts-Your-Local-Media-Campaign.jpeg"
+                    if(campaign.thumbnail==""){
+                        campaign.thumbnail = "http://www.localmediamethods.com/wp-content/uploads/2013/03/How-Nielsen%E2%80%99s-Definition-of-a-TV-Household-Impacts-Your-Local-Media-Campaign.jpeg";
+                    }
                     campaign.numberOfViews = 0;
                     campaign.status = "pending";
-                    $scope.apiClient.campaignPost({}, campaign, {    headers:{"Content-type": "application/json"}}).then(function(data){
-                    }).catch(function(e){
-                        console.log(e);
-                    });
-					$uibModalInstance.close();
+                    $scope.apiClient.campaignPost({}, campaign, {    headers:{"Content-type": "application/json"}}).then(
+                        function(data){
+                            $rootScope.getCampaigns();
+                        }).catch(function(e){
+                            console.log(e);
+                        });
+                        $uibModalInstance.close();
 				}
 			}
 		});

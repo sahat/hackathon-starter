@@ -6,7 +6,9 @@
 .campaign-item .thumbnail .caption{
     text-align: center;
 }
-
+.campaign-item .thumbnail a > img{
+    height: 140px;
+}
 .heading-row{
     padding:  20px 0;
 }
