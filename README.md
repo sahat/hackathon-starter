@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.3.1?](#changelog)
+Jump to [What's new in 3.4.0?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -164,7 +164,7 @@ them with *your credentials* when you are ready to deploy an app.
  - **Authorized Javascript origins**: http://localhost:3000
  - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
 - Click on **Create Client ID** button
-- Copy and paste *Client ID* and *Client secret* keys into `config/secrets.js`
+- Copy and paste *Client ID* and *Client secret* keys into `.env`
 
 **Note:** When you ready to deploy to production don't forget to
 add your new url to *Authorized Javascript origins* and *Authorized redirect URI*,
@@ -182,7 +182,7 @@ The same goes for other providers.
 - Choose a **Category** that best describes your app
 - Click on **Create App ID** button
 - In the upper right corner click on **Skip Quick Star**
-- Copy and paste *App ID* and *App Secret* keys into `config/secrets.js`
+- Copy and paste *App ID* and *App Secret* keys into `.env`
  - **Note:** *App ID* is **clientID**, *App Secret* is **clientSecret**
 - Click on the *Settings* tab in the left nav, then click on **+ Add Platform**
 - Select **Website**
@@ -199,7 +199,7 @@ The same goes for other providers.
 - Enter *Application Name* and *Homepage URL*
 - For *Authorization Callback URL*: http://localhost:3000/auth/github/callback
 - Click **Register application**
-- Now copy and paste *Client ID* and *Client Secret* keys into `config/secrets.js`
+- Now copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
 <hr>
 
@@ -212,7 +212,7 @@ The same goes for other providers.
 - Under *Application Type* select **Read and Write** access
 - Check the box **Allow this application to be used to Sign in with Twitter**
 - Click **Update this Twitter's applications settings**
-- Copy and paste *Consumer Key* and *Consumer Secret* keys into `config/secrets.js`
+- Copy and paste *Consumer Key* and *Consumer Secret* keys into `.env` file
 
 <hr>
 
@@ -227,7 +227,7 @@ The same goes for other providers.
 - For **Default Application Permissions** make sure at least the following is checked:
  - `r_basicprofile`
 - Finish by clicking **Add Application** button
-- Copy and paste *API Key* and *Secret Key* keys into `config/secrets.js`
+- Copy and paste *API Key* and *Secret Key* keys into `.env` file
  - *API Key* is your **clientID**
  - *Secret Key* is your **clientSecret**
 
@@ -241,7 +241,7 @@ The same goes for other providers.
 - For **Web Redirect URL** enter: http://localhost:3000/auth/venmo/callback
 - Hit **Create** button
 - Back on the **Developers** tab click on **view** link next to **Your Applications (1) new**
-- Copy and paste **ID** and **Secret** keys into `config/secrets.js`
+- Copy and paste **ID** and **Secret** keys into `.env` file
 
 <hr>
 
@@ -249,7 +249,7 @@ The same goes for other providers.
 - [Sign up](https://stripe.com/) or log into your [dashboard](https://manage.stripe.com)
 - Click on your profile and click on Account Settings
 - Then click on [API Keys](https://manage.stripe.com/account/apikeys)
-- Copy the **Secret Key**. and add this into `config/secrets.js`
+- Copy the **Secret Key**. and add this into `.env` file
 <hr>
 
 <img src="https://yenniferallulli.com/wp-content/uploads/2015/01/Paypal-Logo-Transparent-png-format-large-size.png" width="200">
@@ -257,7 +257,7 @@ The same goes for other providers.
 - Log in to your PayPal account
 - Click **Applications > Create App** in the navigation bar
 - Enter *Application Name*, then click **Create app**
-- Copy and paste *Client ID* and *Secret* keys into `config/secrets.js`
+- Copy and paste *Client ID* and *Secret* keys into `.env` file
 - *App ID* is **client_id**, *App Secret* is **client_secret**
 - Change **host** to api.paypal.com if you want to test against production and use the live credentials
 
@@ -270,7 +270,7 @@ The same goes for other providers.
 - Enter *App Name*, *Welcome page url*,
 - For **Redirect URI**: http://localhost:3000/auth/foursquare/callback
 - Click **Save Changes**
-- Copy and paste *Client ID* and *Client Secret* keys into `config/secrets.js`
+- Copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
 <hr>
 
@@ -280,7 +280,7 @@ The same goes for other providers.
 - Fill in all the details
 - For **Default Callback URL**: http://localhost:3000/auth/tumblr/callback
 - Click **✔Register**
-- Copy and paste *OAuth consumer key* and *OAuth consumer secret* keys into `config/secrets.js`
+- Copy and paste *OAuth consumer key* and *OAuth consumer secret* keys into `.env` file
 
 <hr>
 
@@ -288,21 +288,21 @@ The same goes for other providers.
 - Go to http://steamcommunity.com/dev/apikey
 - Sign in with your existing Steam account
 - Enter your *Domain Name*, then and click **Register**
-- Copy and paste *Key* into `config/secrets.js`
+- Copy and paste *Key* into `.env` file
 
 <hr>
 
 <img src="http://iandouglas.com/presentations/pyconca2012/logos/sendgrid_logo.png" width="200">
 - Go to https://sendgrid.com/user/signup
 - Sign up and **confirm** your account via the *activation email*
-- Then enter your SendGrid *Username* and *Password* into `config/secrets.js`
+- Then enter your SendGrid *Username* and *Password* into `.env` file
 
 <hr>
 
 <img src="https://raw.github.com/mailgun/media/master/Mailgun_Primary.png" width="200">
 - Go to http://www.mailgun.com
 - Sign up and add your *Domain Name*
-- From the domain overview, copy and paste the default SMTP *Login* and *Password* into `config/secrets.js`
+- From the domain overview, copy and paste the default SMTP *Login* and *Password* into `.env` file
 
 <hr>
 
@@ -310,7 +310,7 @@ The same goes for other providers.
 - Go to http://mandrill.com
 - Sign up and add your *Domain Name*
 - From the dashboard, click on *Get SMTP credentials*
-- Copy and paste the default SMTP *Login* and *Password* into `config/secrets.js`
+- Copy and paste the default SMTP *Login* and *Password* into `.env` file
 
 <hr>
 
@@ -318,7 +318,7 @@ The same goes for other providers.
 - Go to https://test.bitgo.com/
 - Sign up for an account.
 - Once logged into the dashboard, go to the top right selector and click 'account settings'
-- Under the developers tab, create your access token and copy and paste it into `config/secrets.js`
+- Under the developers tab, create your access token and copy and paste it into `.env` file
 
 Project Structure
 -----------------
@@ -326,7 +326,6 @@ Project Structure
 | Name                               | Description                                                  |
 | ---------------------------------- | ------------------------------------------------------------ |
 | **config**/passport.js             | Passport Local and OAuth strategies, plus login middleware.  |
-| **config**/secrets.js              | Your API keys, tokens, passwords and database URL.           |
 | **controllers**/api.js             | Controller for /api route and all api examples.              |
 | **controllers**/contact.js         | Controller for contact form.                                 |
 | **controllers**/home.js            | Controller for home page (index).                            |
@@ -344,7 +343,8 @@ Project Structure
 | **views/partials**/footer.jade     | Footer partial template.                                     |
 | **views**/layout.jade              | Base template.                                               |
 | **views**/home.jade                | Home page template.                                          |
-| .travis.yml                        | [Travis CI](https://travis-ci.org/) integration.                                       |
+| .travis.yml                        | [Travis CI](https://travis-ci.org/) integration.             |
+| .env.example                       | Your API keys, tokens, passwords and database URI.           |
 | app.js                             | Main application file.                                       |
 | setup.js                           | Tool for removing authentication providers and other things. |
 
@@ -365,6 +365,7 @@ List of Packages
 | cheerio                         | Scrape web pages using jQuery-style syntax.                           |
 | clockwork                       | Clockwork SMS API library.                                            |
 | connect-mongo                   | MongoDB session store for Express.                                    |
+| dotenv                          | Loads environment variables from .env file.                                                |
 | express                         | Node.js web framework.                                                |
 | body-parser                     | Express 4 middleware.                                                 |
 | cookie-parser                   | Express 4 middleware.                                                 |
@@ -521,7 +522,7 @@ problem connecting to MongoDB:
 
 ```js
 mongoose.connection.on('error', function() {
-  console.error('�? MongoDB Connection Error. Please make sure MongoDB is running.');
+  console.error('MongoDB Connection Error. Please make sure MongoDB is running.');
 });
 ```
 You need to have a MongoDB server running before launching `app.js`. You can
@@ -531,11 +532,11 @@ Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual
 
 **Tip:** If you are always connected to the internet, you could just use
 [MongoLab](https://mongolab.com/) or [Compose](https://www.compose.io/) instead
-of downloading and installing MongoDB locally. You will only need to update the
-`db` property in `config/secrets.js`.
+of downloading and installing MongoDB locally. You will only need to update database credentials
+in `.env` file.
 
 ### I get an error when I deploy my app, why?
-Chances are you haven't changed the *Database URI* in `secrets.js`. If `db` is
+Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB`/`MONGOLAB_URI` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
 running on `localhost`. You need to create an account with [MongoLab](https://mongolab.com/)
@@ -1055,7 +1056,7 @@ listed below.
 - You should see the following message:
  - *A database user is required to connect to this database.* **Click here** *to create a new one.*
 - Click the link and fill in **DB Username** and **DB Password** fields
-- Finally, in `secrets.js` instead of `db: 'localhost'`, use the following URI with your credentials:
+- Finally, in `.env` instead of `mongodb://localhost:27017/test`, use the following URI with your credentials:
  - `db: 'mongodb://USERNAME:PASSWORD@ds027479.mongolab.com:27479/DATABASE_NAME'`
 
 **Note:** As an alternative to MongoLab, there is also [Compose](https://www.compose.io/).
@@ -1080,7 +1081,7 @@ var PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 Then change `app.listen()` to:
 ```js
 app.listen(PORT, IP_ADDRESS, function() {
-  console.log("�? Express server listening on port %d in %s mode", PORT, app.settings.env);
+  console.log("Express server listening on port %d in %s mode", PORT, app.settings.env);
 });
 ```
 Add this to `package.json`, after *name* and *version*. This is necessary because, by default, OpenShift looks for `server.js` file. And by specifying `supervisor app.js` it will automatically restart the server when node.js process crashes.
@@ -1134,6 +1135,12 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.4.0 (January 5, 2016)
+- Use `dontenv` package for managing API keys and secrets.
+- Removed *secrets.js* (replaced by *.env.example*).
+- Added .env to .gitignore.
+- Fixed broken Aviary API image.
 
 ### 3.3.1 (December 25, 2015)
 - Use `connect-mongo` ES5 fallback for backward-compatibility with Node.js version `< 4.0`.
