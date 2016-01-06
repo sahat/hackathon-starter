@@ -1,0 +1,56 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Post a Campaign Request</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <form role="form">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="titleInput">Title</label>
+                            <div class="input-group col-lg-10">
+                                <input type="text" ng-model="campaign.topic" class="form-control input" name="titleInput" id="titleInput" placeholder="Enter a title for your campaign" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="followersNumInput">Number of followers required</label>
+                            <div class="input-group col-lg-6">
+                                <input type="number" ng-model="campaign.numberOfFollowers" class="form-control" id="followersNumInput" name="followersNumInput" placeholder="Enter a number" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ageRangeInput">Age Range</label>
+                            <div id="ageRangeInput" class="row">
+                                <div class="col-lg-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">From</span>
+                                        <input type="number" ng-model="campaign.minAge" class="form-control" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">To</span>
+                                        <input type="number" class="form-control" ng-model="campaign.maxAge">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="descInput">Campaign Description</label>
+                            <div class="input-group col-lg-10">
+                                <textarea name="descInput" id="descInput" class="form-control" rows="5" ng-model="campaign.details"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">Submit</button>
+        <button class="btn btn-warning" type="button" ng-click="close()">Cancel</button>
+    </div>
+
+</div>

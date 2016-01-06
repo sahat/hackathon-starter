@@ -1,0 +1,69 @@
+<div class="campaign-page" ng-controller="campaignCtrl">
+    <div class="well">
+        <div class="row">
+            <div class="col-lg-6" ng-class="{'top-18': showSearchCriteria}">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for campaigns...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="getCampaigns()">Search</button>
+              </span>
+                </div>
+            </div>
+            <div ng-show="showSearchCriteria">
+                <div class="col-lg-2">
+                    <div class="input-group">
+                        <span>Age Range</span><input type="text" ng-model="search.ageRange" class="form-control" placeholder="Enter age range (e.g. 20-40)">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="input-group">
+                        <span>Number of Followers</span><input type="text" ng-model="search.numberOfFollowers" class="form-control" placeholder="Enter age range (e.g. 20-40)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-1" ng-class="{'top-18': showSearchCriteria}">
+                <a class="btn btn-primary" ng-click="toggleSearch()">Filters</a>
+            </div>
+
+        </div>
+    </div>
+
+
+ <div class="row heading-row">
+    <div class="col-lg-4">
+        <h3>Campaign Requests</h3>
+    </div>
+     <div class="col-lg-2 pull-right">
+         <a href="#" class="btn btn-success" ng-click="openCreateModal()">Post your Campaign</a>
+
+     </div>
+</div>
+
+    <div class="row">
+        <div ng-repeat="campaign in campaigns" class="campaign-item col-md-3 col-sm-6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h4 class="media-heading">{{campaign.topic}}</h4>
+
+                    <a href="#">
+                        <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
+                    </a>
+                    <p>{{campaign.details}}</p>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span class="badge">{{campaign.numberOfFollowers}}</span>
+                            <span>Minimum Followers</span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">{{campaign.minAge}}-{{campaign.maxAge}}</span>
+                            Ages
+                        </li>
+                    </ul>
+                    <p>
+                        <a href="#" class="btn btn-primary">Apply Now!</a> <a href="#" class="btn btn-default">More Info</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>

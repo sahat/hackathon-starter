@@ -1,12 +1,20 @@
-.campaign-page .media{
-	height: 80px;
-}
-.campaign-page .media .profile-pic{
-	height: 70px;
-    max-width: none;
 
-}
 .campaign-page .campaign-item .list-group .list-group-item{
 	text-align: left;
 }
 
+.campaign-item .thumbnail .caption{
+    text-align: center;
+}
+
+.heading-row{
+    padding:  20px 0;
+}
+.top-18{
+    top:18px;
+}
+.heading-row{
+    h3{
+        margin: 0;
+    }
+}
