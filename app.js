@@ -11,8 +11,7 @@ var logger = require('morgan');
 var errorHandler = require('errorhandler');
 var lusca = require('lusca');
 var methodOverride = require('method-override');
-
-var _ = require('lodash');
+var dotenv = require('dotenv');
 var MongoStore = require('connect-mongo/es5')(session);
 var flash = require('express-flash');
 var path = require('path');
@@ -20,7 +19,14 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var sass = require('node-sass-middleware');
+var _ = require('lodash');
 
+/**
+ * Load environment variables from .env file, where API keys and passwords are configured.
+ *
+ * Default path: .env
+ */
+dotenv.load({ path: '.env.example' });
 
 /**
  * Controllers (route handlers).
@@ -33,7 +39,6 @@ var contactController = require('./controllers/contact');
 /**
  * API keys and Passport configuration.
  */
-var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
 
 /**
@@ -44,7 +49,7 @@ var app = express();
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(secrets.db);
+mongoose.connect(process.env.MONGODB || process.env.MONGOLAB_URI);
 mongoose.connection.on('error', function() {
   console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
   process.exit(1);
@@ -74,8 +79,11 @@ app.use(cookieParser());
 app.use(session({
   resave: true,
   saveUninitialized: true,
-  secret: secrets.sessionSecret,
-  store: new MongoStore({ url: secrets.db, autoReconnect: true })
+  secret: process.env.SESSION_SECRET,
+  store: new MongoStore({
+    url: process.env.MONGODB || process.env.MONGOLAB_URI,
+    autoReconnect: true
+  })
 }));
 app.use(passport.initialize());
 app.use(passport.session());

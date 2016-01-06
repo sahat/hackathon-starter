@@ -4,7 +4,6 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
-var secrets = require('../config/secrets');
 
 /**
  * GET /login
@@ -283,8 +282,8 @@ exports.postReset = function(req, res, next) {
       var transporter = nodemailer.createTransport({
         service: 'SendGrid',
         auth: {
-          user: secrets.sendgrid.user,
-          pass: secrets.sendgrid.password
+          user: process.env.SENDGRID_USER,
+          pass: process.env.SENDGRID_PASSWORD
         }
       });
       var mailOptions = {
@@ -358,8 +357,8 @@ exports.postForgot = function(req, res, next) {
       var transporter = nodemailer.createTransport({
         service: 'SendGrid',
         auth: {
-          user: secrets.sendgrid.user,
-          pass: secrets.sendgrid.password
+          user: process.env.SENDGRID_USER,
+          pass: process.env.SENDGRID_PASSWORD
         }
       });
       var mailOptions = {

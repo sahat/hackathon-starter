@@ -12,7 +12,6 @@ var OpenIDStrategy = require('passport-openid').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy;
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
-var secrets = require('./secrets');
 var User = require('../models/User');
 
 passport.serializeUser(function(user, done) {
@@ -28,7 +27,12 @@ passport.deserializeUser(function(id, done) {
 /**
  * Sign in with Instagram.
  */
-passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, refreshToken, profile, done) {
+passport.use(new InstagramStrategy({
+  clientID: process.env.INSTAGRAM_ID,
+  clientSecret: process.env.INSTAGRAM_SECRET,
+  callbackURL: '/auth/instagram/callback',
+  passReqToCallback: true
+},function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ instagram: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -107,7 +111,13 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
 /**
  * Sign in with Facebook.
  */
-passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, refreshToken, profile, done) {
+passport.use(new FacebookStrategy({
+  clientID: process.env.FACEBOOK_ID,
+  clientSecret: process.env.FACEBOOK_SECRET,
+  callbackURL: '/auth/facebook/callback',
+  profileFields: ['name', 'email', 'link', 'locale', 'timezone'],
+  passReqToCallback: true
+}, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ facebook: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -157,7 +167,12 @@ passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, r
 /**
  * Sign in with GitHub.
  */
-passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refreshToken, profile, done) {
+passport.use(new GitHubStrategy({
+  clientID: process.env.GITHUB_ID,
+  clientSecret: process.env.GITHUB_SECRET,
+  callbackURL: '/auth/github/callback',
+  passReqToCallback: true
+}, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ github: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -207,7 +222,12 @@ passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refre
 
 // Sign in with Twitter.
 
-passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tokenSecret, profile, done) {
+passport.use(new TwitterStrategy({
+  consumerKey: process.env.TWITTER_KEY,
+  consumerSecret: process.env.TWITTER_SECRET,
+  callbackURL: '/auth/twitter/callback',
+  passReqToCallback: true
+}, function(req, accessToken, tokenSecret, profile, done) {
   if (req.user) {
     User.findOne({ twitter: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -253,7 +273,12 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
 /**
  * Sign in with Google.
  */
-passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refreshToken, profile, done) {
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_ID,
+  clientSecret: process.env.GOOGLE_SECRET,
+  callbackURL: '/auth/google/callback',
+  passReqToCallback: true
+}, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ google: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -302,7 +327,13 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
 /**
  * Sign in with LinkedIn.
  */
-passport.use(new LinkedInStrategy(secrets.linkedin, function(req, accessToken, refreshToken, profile, done) {
+passport.use(new LinkedInStrategy({
+  clientID: process.env.LINKEDIN_ID,
+  clientSecret: process.env.LINKEDIN_SECRET,
+  callbackURL: process.env.LINKEDIN_CALLBACK_URL,
+  scope: ['r_basicprofile', 'r_emailaddress'],
+  passReqToCallback: true
+}, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ linkedin: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -357,9 +388,9 @@ passport.use('tumblr', new OAuthStrategy({
     requestTokenURL: 'http://www.tumblr.com/oauth/request_token',
     accessTokenURL: 'http://www.tumblr.com/oauth/access_token',
     userAuthorizationURL: 'http://www.tumblr.com/oauth/authorize',
-    consumerKey: secrets.tumblr.consumerKey,
-    consumerSecret: secrets.tumblr.consumerSecret,
-    callbackURL: secrets.tumblr.callbackURL,
+    consumerKey: process.env.TUMBLR_KEY,
+    consumerSecret: process.env.TUMBLR_SECRET,
+    callbackURL: '/auth/tumblr/callback',
     passReqToCallback: true
   },
   function(req, token, tokenSecret, profile, done) {
@@ -378,9 +409,9 @@ passport.use('tumblr', new OAuthStrategy({
 passport.use('foursquare', new OAuth2Strategy({
     authorizationURL: 'https://foursquare.com/oauth2/authorize',
     tokenURL: 'https://foursquare.com/oauth2/access_token',
-    clientID: secrets.foursquare.clientId,
-    clientSecret: secrets.foursquare.clientSecret,
-    callbackURL: secrets.foursquare.redirectUrl,
+    clientID: process.env.FOURSQUARE_ID,
+    clientSecret: process.env.FOURSQUARE_SECRET,
+    callbackURL: process.env.FOURSQUARE_REDIRECT_URL,
     passReqToCallback: true
   },
   function(req, accessToken, refreshToken, profile, done) {
@@ -399,9 +430,9 @@ passport.use('foursquare', new OAuth2Strategy({
 passport.use('venmo', new OAuth2Strategy({
     authorizationURL: 'https://api.venmo.com/v1/oauth/authorize',
     tokenURL: 'https://api.venmo.com/v1/oauth/access_token',
-    clientID: secrets.venmo.clientId,
-    clientSecret: secrets.venmo.clientSecret,
-    callbackURL: secrets.venmo.redirectUrl,
+    clientID: process.env.VENMO_ID,
+    clientSecret: process.env.VENMO_SECRET,
+    callbackURL: process.env.VENMO_REDIRECT_URL,
     passReqToCallback: true
   },
   function(req, accessToken, refreshToken, profile, done) {
@@ -417,9 +448,15 @@ passport.use('venmo', new OAuth2Strategy({
 /**
  * Steam API OpenID.
  */
-passport.use(new OpenIDStrategy(secrets.steam, function(identifier, done) {
+passport.use(new OpenIDStrategy({
+  apiKey: process.env.STEAM_KEY,
+  providerURL: 'http://steamcommunity.com/openid',
+  returnURL: 'http://localhost:3000/auth/steam/callback',
+  realm: 'http://localhost:3000/',
+  stateless: true
+}, function(identifier, done) {
   var steamId = identifier.match(/\d+$/)[0];
-  var profileURL = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='+secrets.steam.apiKey+'&steamids='+steamId;
+  var profileURL = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + process.env.STEAM_KEY + '&steamids=' + steamId;
 
   User.findOne({ steam: steamId }, function(err, existingUser) {
     if (existingUser) return done(err, existingUser);
