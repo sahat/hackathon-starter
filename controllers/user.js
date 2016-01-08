@@ -11,12 +11,13 @@ var secrets = require('../config/secrets');
  * Login page.
  */
 exports.getLogin = function(req, res) {
+   res.setHeader('Content-Type', 'application/json');
   if (req.user) {
-    return res.redirect('/');
-  }
-  res.render('account/login', {
-    title: 'Login'
-  });
+      res.send(JSON.stringify(req.user));//
+   } else {
+        res.redirect('/app.html#/login');
+   }
+
 };
 
 /**
@@ -31,7 +32,7 @@ exports.postLogin = function(req, res, next) {
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/login');
+    return res.redirect('/app.html#/login');
   }
 
   passport.authenticate('local', function(err, user, info) {
@@ -40,14 +41,15 @@ exports.postLogin = function(req, res, next) {
     }
     if (!user) {
       req.flash('errors', { msg: info.message });
-      return res.redirect('/login');
+      return res.redirect('/app.html#/login');
     }
     req.logIn(user, function(err) {
       if (err) {
         return next(err);
       }
       req.flash('success', { msg: 'Success! You are logged in.' });
-      res.redirect(req.session.returnTo || '/');
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(user));
     });
   })(req, res, next);
 };
@@ -58,7 +60,7 @@ exports.postLogin = function(req, res, next) {
  */
 exports.logout = function(req, res) {
   req.logout();
-  res.redirect('/');
+  res.redirect('/app.html');
 };
 
 /**
@@ -67,7 +69,7 @@ exports.logout = function(req, res) {
  */
 exports.getSignup = function(req, res) {
   if (req.user) {
-    return res.redirect('/');
+    return res.redirect('/app.html');
   }
   res.render('account/signup', {
     title: 'Create Account'
@@ -84,10 +86,9 @@ exports.postSignup = function(req, res, next) {
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
   var errors = req.validationErrors();
-
+  res.setHeader('Content-Type', 'application/json');
   if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('/signup');
+    res.status(400).send(JSON.stringify({errors:errors}));
   }
 
   var user = new User({
@@ -97,18 +98,18 @@ exports.postSignup = function(req, res, next) {
 
   User.findOne({ email: req.body.email }, function(err, existingUser) {
     if (existingUser) {
-      req.flash('errors', { msg: 'Account with that email address already exists.' });
-      return res.redirect('/signup');
+    errors = [{ msg: 'Account with that email address already exists.' }];
+      res.status(400).send(JSON.stringify({errors:errors}));
     }
     user.save(function(err) {
       if (err) {
-        return next(err);
+        res.status(500).send(JSON.stringify({errors:err}));
       }
       req.logIn(user, function(err) {
         if (err) {
-          return next(err);
+             res.status(500).send(JSON.stringify({errors:err}));
         }
-        res.redirect('/');
+        res.send(JSON.stringify(user));
       });
     });
   });
@@ -189,7 +190,7 @@ exports.postDeleteAccount = function(req, res, next) {
     }
     req.logout();
     req.flash('info', { msg: 'Your account has been deleted.' });
-    res.redirect('/');
+    res.redirect('/app.html');
   });
 };
 
@@ -219,7 +220,7 @@ exports.getOauthUnlink = function(req, res, next) {
  */
 exports.getReset = function(req, res) {
   if (req.isAuthenticated()) {
-    return res.redirect('/');
+    return res.redirect('/app.html');
   }
   User
     .findOne({ resetPasswordToken: req.params.token })
@@ -303,7 +304,7 @@ exports.postReset = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.redirect('/');
+    res.redirect('/app.html');
   });
 };
 
@@ -313,7 +314,7 @@ exports.postReset = function(req, res, next) {
  */
 exports.getForgot = function(req, res) {
   if (req.isAuthenticated()) {
-    return res.redirect('/');
+    return res.redirect('/app.html');
   }
   res.render('account/forgot', {
     title: 'Forgot Password'

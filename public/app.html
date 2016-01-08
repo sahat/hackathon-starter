@@ -4,7 +4,7 @@
 		<link rel="stylesheet" href="/css/app.css">
 
 	</head>
-	<body>
+	<body ng-controller="rootCtrl">
 		<script async="" src="//www.google-analytics.com/analytics.js"></script>
 		<script src="/js/lib/jquery.min.js"></script>
 		<script src="/js/lib/bootstrap.min.js"></script>
@@ -29,6 +29,7 @@
 		<script src="/app/campaign.js"></script>
 		<script src="/app/appStatus.js"></script>
 		<script src="/app/performance.js"></script>
+		<script src="/app/login.js"></script>
 		<script src="/app/apiClients/apigClient.js"></script>
 
 
@@ -36,9 +37,24 @@
 
 
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
+
+            <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="!$root.user"><a href="#/login">Login</a></li>
+                    <li ng-show="!$root.user"><a ng-click="openSignUpModal()">Create Account</a></li>
+                    <li class="dropdown" ng-show="$root.user">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="/login">{{$root.user.email}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">My Account</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="navbar-header">
+
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>

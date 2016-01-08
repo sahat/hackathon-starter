@@ -56,7 +56,7 @@ app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope) {
 				$scope.ok = function(){
                     var campaign = $scope.campaign;
                     campaign.campaignId = generateUUID();
-                    campaign.userId = "user1";
+                    campaign.userId = $rootScope.user.email;
                     if(campaign.thumbnail==""){
                         campaign.thumbnail = "http://www.localmediamethods.com/wp-content/uploads/2013/03/How-Nielsen%E2%80%99s-Definition-of-a-TV-Household-Impacts-Your-Local-Media-Campaign.jpeg";
                     }

@@ -25,17 +25,54 @@ app.config(['$routeProvider',
         templateUrl: '/app/performance.html',
         controller: 'performanceCtrl'
       }).
+      when('/login', {
+        templateUrl: '/app/login.html',
+        controller: 'loginCtrl'
+      }).
       otherwise({
-        redirectTo: '/campaign'
+        redirectTo: '/login'
       });
   }]);
-app.controller('rootCtrl', function ($scope) {
-  $scope.phones = [
-    {'name': 'Nexus S',
-     'snippet': 'Fast just got faster with Nexus S.'},
-    {'name': 'Motorola XOOM™ with Wi-Fi',
-     'snippet': 'The Next, Next Generation tablet.'},
-    {'name': 'MOTOROLA XOOM™',
-     'snippet': 'The Next, Next Generation tablet.'}
-  ];
+app.controller('rootCtrl', function ($scope, $rootScope, $http, $location, $uibModal) {
+    $scope.$on('$routeChangeStart', function(){
+      if(!$rootScope.user){
+        $location.path('/login');
+      }
+    });
+    $scope.openSignUpModal = function(){
+    		var uibModalInstance = $uibModal.open({
+    			animation: $scope.animationsEnabled,
+    			templateUrl: '/app/signup.html',
+    			controller: function($uibModalInstance ,$scope, $rootScope){
+    			    $scope.account = {
+    			    };
+    				$scope.close = function () {
+    					$uibModalInstance.close();
+    				};
+    				$scope.submit = function(){
+    				var ac = $scope.account;
+    				if(ac.password === ac.confirmPassword){
+    				    $http.post('/signup', ac, {header: {"Content-type": "application/json"}}).then(function(data){
+                            //success
+                            $rootScope.user = data.data;
+                            $uibModalInstance.close();
+                            $location.path('/campaign');
+    				    }, function(){
+    				        //failed
+    				    });
+    				} else {
+                    //    				    show error
+    				}
+
+    				}
+    			}
+    		});
+    	};
+    $http.get('/login').then(function(res){
+        if(res.data._id){
+            $rootScope.user = res.data;
+        } else {
+            $location.path('/login');
+        }
+    }, function(){});
 });
