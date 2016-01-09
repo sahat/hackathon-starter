@@ -16,7 +16,7 @@ app.controller('loginCtrl', function ($scope, $rootScope, $http, $location) {
             $rootScope.user = response.data;
             $location.path('/campaign');
           }, function(response) {
-
+            $scope.alertError("Invalid credentials.");
           });
           }
 });

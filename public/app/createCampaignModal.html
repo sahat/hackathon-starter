@@ -5,6 +5,7 @@
     <div class="modal-body">
         <div class="container">
             <div class="row">
+                <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
                 <form role="form">
                     <div class="col-lg-6">
                         <div class="form-group">

@@ -1,100 +1,102 @@
 <html ng-app="app">
-	<head>
-		<link rel="stylesheet" href="/css/main.css">
-		<link rel="stylesheet" href="/css/app.css">
+<head>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/app.css">
 
-	</head>
-	<body ng-controller="rootCtrl">
-		<script async="" src="//www.google-analytics.com/analytics.js"></script>
-		<script src="/js/lib/jquery.min.js"></script>
-		<script src="/js/lib/bootstrap.min.js"></script>
-		<script src="/js/lib/angular.js"></script>	
-		<script src="/js/lib/angular-route.min.js"></script>
+</head>
+<body ng-controller="rootCtrl">
+<script async="" src="//www.google-analytics.com/analytics.js"></script>
+<script src="/js/lib/jquery.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
+<script src="/js/lib/angular.js"></script>
+<script src="/js/lib/angular-route.min.js"></script>
 
-        <script type="text/javascript" src="/js/lib/axios/dist/axios.standalone.js"></script>
-        <script type="text/javascript" src="/js/lib/CryptoJS/rollups/hmac-sha256.js"></script>
-        <script type="text/javascript" src="/js/lib/CryptoJS/rollups/sha256.js"></script>
-        <script type="text/javascript" src="/js/lib/CryptoJS/components/hmac.js"></script>
-        <script type="text/javascript" src="/js/lib/CryptoJS/components/enc-base64.js"></script>
-        <script type="text/javascript" src="/js/lib/url-template/url-template.js"></script>
-        <script type="text/javascript" src="/js/lib/apiGatewayCore/sigV4Client.js"></script>
-        <script type="text/javascript" src="/js/lib/apiGatewayCore/apiGatewayClient.js"></script>
-        <script type="text/javascript" src="/js/lib/apiGatewayCore/simpleHttpClient.js"></script>
-        <script type="text/javascript" src="/js/lib/apiGatewayCore/utils.js"></script>
-        <script type="text/javascript" src="/js/lib/moment/moment.js"></script>
+<script type="text/javascript" src="/js/lib/axios/dist/axios.standalone.js"></script>
+<script type="text/javascript" src="/js/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+<script type="text/javascript" src="/js/lib/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="/js/lib/CryptoJS/components/hmac.js"></script>
+<script type="text/javascript" src="/js/lib/CryptoJS/components/enc-base64.js"></script>
+<script type="text/javascript" src="/js/lib/url-template/url-template.js"></script>
+<script type="text/javascript" src="/js/lib/apiGatewayCore/sigV4Client.js"></script>
+<script type="text/javascript" src="/js/lib/apiGatewayCore/apiGatewayClient.js"></script>
+<script type="text/javascript" src="/js/lib/apiGatewayCore/simpleHttpClient.js"></script>
+<script type="text/javascript" src="/js/lib/apiGatewayCore/utils.js"></script>
+<script type="text/javascript" src="/js/lib/moment/moment.js"></script>
 
-		<script src="/js/lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
-		<script src="/js/main.js"></script>
-		<script src="/app/app.js"></script>
-		<script src="/app/campaign.js"></script>
-		<script src="/app/appStatus.js"></script>
-		<script src="/app/performance.js"></script>
-		<script src="/app/login.js"></script>
-		<script src="/app/apiClients/apigClient.js"></script>
-
-
+<script src="/js/lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/app/app.js"></script>
+<script src="/app/campaign.js"></script>
+<script src="/app/appStatus.js"></script>
+<script src="/app/performance.js"></script>
+<script src="/app/login.js"></script>
+<script src="/app/apiClients/apigClient.js"></script>
 
 
 
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 
-            <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-                <ul class="nav navbar-nav navbar-right">
-                    <li ng-show="!$root.user"><a href="#/login">Login</a></li>
-                    <li ng-show="!$root.user"><a ng-click="openSignUpModal()">Create Account</a></li>
-                    <li class="dropdown" ng-show="$root.user">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="/login">{{$root.user.email}}</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">My Account</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/logout">Logout</a></li>
-                        </ul>
-                    </li>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <ul class="nav navbar-nav navbar-right">
+            <li ng-show="!$root.user"><a href="#/login">Login</a></li>
+            <li ng-show="!$root.user"><a ng-click="openSignUpModal()">Create Account</a></li>
+            <li class="dropdown" ng-show="$root.user">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="/login"><span ng-if="$root.user.profile.name">{{$root.user.profile.name}}</span><span ng-if="!$root.user.profile.name">{{$root.user.email}}</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">My Account</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/logout">Logout</a></li>
                 </ul>
+            </li>
+        </ul>
 
-                <div class="navbar-header">
+        <div class="navbar-header">
 
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">La8bel Prototype</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#/campaign">Campaign</a>
-                    </li>
-                    <li>
-                        <a href="#/appStatus">App Status</a>
-                    </li>
-                    <li>
-                        <a href="#/performance">Performance</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">La8bel Prototype</a>
         </div>
-        <!-- /.container -->
-    </nav>
-
-    <div class="container" ng-view>
-
-        <hr>
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; La8bel 2015</p>
-                </div>
-            </div>
-        </footer>
-
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#/campaign">Campaign</a>
+                </li>
+                <li>
+                    <a href="#/appStatus">App Status</a>
+                </li>
+                <li>
+                    <a href="#/performance">Performance</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
     </div>
-	</body>
+    <!-- /.container -->
+</nav>
+<uib-alert ng-repeat="alert in $root.alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+
+
+<div class="container" ng-view>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; La8bel 2015</p>
+            </div>
+        </div>
+    </footer>
+
+</div>
+</body>
 </html>

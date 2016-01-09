@@ -32,7 +32,7 @@ exports.postLogin = function(req, res, next) {
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/app.html#/login');
+    return res.status(400).send(JSON.stringify({errors:errors}));
   }
 
   passport.authenticate('local', function(err, user, info) {
@@ -41,7 +41,7 @@ exports.postLogin = function(req, res, next) {
     }
     if (!user) {
       req.flash('errors', { msg: info.message });
-      return res.redirect('/app.html#/login');
+      return  res.status(400).send(JSON.stringify({errors:errors}));
     }
     req.logIn(user, function(err) {
       if (err) {
@@ -99,17 +99,17 @@ exports.postSignup = function(req, res, next) {
   User.findOne({ email: req.body.email }, function(err, existingUser) {
     if (existingUser) {
     errors = [{ msg: 'Account with that email address already exists.' }];
-      res.status(400).send(JSON.stringify({errors:errors}));
+      return res.status(400).send(JSON.stringify({errors:errors}));
     }
     user.save(function(err) {
       if (err) {
-        res.status(500).send(JSON.stringify({errors:err}));
+        return res.status(500).send(JSON.stringify({errors:err}));
       }
       req.logIn(user, function(err) {
         if (err) {
-             res.status(500).send(JSON.stringify({errors:err}));
+             return res.status(500).send(JSON.stringify({errors:err}));
         }
-        res.send(JSON.stringify(user));
+        return res.send(JSON.stringify(user));
       });
     });
   });
