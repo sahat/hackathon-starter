@@ -211,6 +211,8 @@ app.post('/api/facebook/feed', apiController.postFeedFacebook);
  */
 app.use(errorHandler());
 
+console.log("Facebook callback url: " + (process.env.FACEBOOK_CALLBACK_URL || '/auth/facebook/callback'));
+
 /**
  * Start Express server.
  */
