@@ -29,20 +29,23 @@ app.config(['$routeProvider',
                 templateUrl: '/app/login.html',
                 controller: 'loginCtrl'
             }).
+            when('/profile', {
+                templateUrl: '/app/account.html',
+                controller: 'profileCtrl'
+            }).
             otherwise({
                 redirectTo: '/login'
             });
     }]);
 app.controller('rootCtrl', function ($scope, $rootScope, $http, $location, $uibModal) {
-    $scope.$on('$routeChangeStart', function(){
-        if(!$rootScope.user){
-            $location.path('/login');
-        }
-    });
     $scope.alertError = function(msg){
         $rootScope.alerts.push({type: "danger", msg: msg});
     }
+
     $rootScope.alerts = [];
+    $scope.closeAlert = function(index) {
+        $rootScope.alerts.splice(index, 1);
+    };
     $scope.openSignUpModal = function(){
         var uibModalInstance = $uibModal.open({
             animation: $scope.animationsEnabled,
@@ -61,7 +64,7 @@ app.controller('rootCtrl', function ($scope, $rootScope, $http, $location, $uibM
                             //success
                             $rootScope.user = data.data;
                             $uibModalInstance.close();
-                            $location.path('/campaign');
+                            $location.path('/profile');
                         }, function(response){
                             angular.forEach(response.data.errors, function(error){
                                 $scope.alerts.push({type: "danger", msg:error.msg});
@@ -81,8 +84,14 @@ app.controller('rootCtrl', function ($scope, $rootScope, $http, $location, $uibM
     $http.get('/login').then(function(res){
         if(res.data._id){
             $rootScope.user = res.data;
+
         } else {
             $location.path('/login');
+            $scope.$on('$routeChangeStart', function(){
+                if(!$rootScope.user){
+                    $location.path('/login');
+                }
+            });
         }
     }, function(){});
 });

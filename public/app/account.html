@@ -1,0 +1,59 @@
+<div class="profile-container container">
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+
+            <div class="card hovercard">
+                <div class="cardheader">
+
+                </div>
+                <div class="avatar">
+                    <img alt="" ng-src="{{user.profile.picture}}">
+                </div>
+                <div class="info">
+                    <div class="title">
+                            <span ng-if="user.profile.name">{{user.profile.name}}</span>
+                            <span ng-if="!user.profile.name">{{user.email}}</span>
+                    </div>
+                    <div class="desc">United State</div>
+                </div>
+                <div class="bottom">
+                    <a ng-if="user.twitter" class="btn btn-primary btn-twitter btn-sm">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a ng-if="user.google" class="btn btn-danger btn-sm" rel="publisher">
+                        <i class="fa fa-google-plus"></i>
+                    </a>
+                    <a ng-if="user.facebook" class="btn btn-primary btn-sm" rel="publisher">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a ng-if="user.instagram" class="btn btn-warning btn-sm" rel="publisher" >
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                    <hr/>
+                    <ul class="list-group text-left">
+                        <li class="list-group-item">
+                            <span class="badge">1500</span>
+                            <span>Facebook Followers</span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">19-50</span>
+                            Follower Age Range
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group col-lg-9 col-sm-6">
+            <div class="login-btn-group">
+                <h3>Link to more platforms</h3>
+                <a ng-if="!user.facebook" href="/auth/facebook" class="btn btn-block btn-facebook btn-social"><i class="fa fa-facebook"></i>Sign in with Facebook</a>
+                <a ng-if="!user.twitter" href="/auth/twitter" class="btn btn-block btn-twitter btn-social"><i class="fa fa-twitter"></i>Sign in with Twitter</a>
+                <a ng-if="!user.google" href="/auth/google" class="btn btn-block btn-google btn-social"><i class="fa fa-google-plus"></i>Sign in with Google</a>
+                <a ng-if="!user.linkedin" href="/auth/linkedin" class="btn btn-block btn-linkedin btn-social"><i class="fa fa-linkedin"></i>Sign in with LinkedIn</a>
+                <a ng-if="!user.instagram" href="/auth/instagram" class="btn btn-block btn-instagram btn-social"><i class="fa fa-instagram"></i>Sign in with Instagram</a>
+            </div>
+        </div>
+
+    </div>
+</div>

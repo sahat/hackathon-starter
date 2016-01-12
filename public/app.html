@@ -30,6 +30,7 @@
 <script src="/app/appStatus.js"></script>
 <script src="/app/performance.js"></script>
 <script src="/app/login.js"></script>
+<script src="/app/profile.js"></script>
 <script src="/app/apiClients/apigClient.js"></script>
 
 
@@ -46,7 +47,7 @@
             <li class="dropdown" ng-show="$root.user">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="/login"><span ng-if="$root.user.profile.name">{{$root.user.profile.name}}</span><span ng-if="!$root.user.profile.name">{{$root.user.email}}</span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">My Account</a></li>
+                    <li><a href="#/profile">My Account</a></li>
                     <li class="divider"></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
