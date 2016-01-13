@@ -126,6 +126,22 @@ exports.getAccount = function(req, res) {
 };
 
 /**
+ * PATCH /account/campaigns
+ * Update campaigns information.
+ */
+exports.patchUpdateCampaigns = function(req, res) {
+    User.update({"_id" : req.body.user.id}, 
+        { $push: { 'campaignIds' : req.body.campaignId } }, 
+        { }, 
+        function(err, data){
+            if (err) {
+              res.status(400).send(JSON.stringify({errors:err}));
+            }
+            res.send({"message" : "campaign Ids updated"});
+    });   
+};
+
+/**
  * POST /account/profile
  * Update profile information.
  */
