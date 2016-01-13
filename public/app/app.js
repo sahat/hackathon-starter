@@ -33,6 +33,14 @@ app.config(['$routeProvider',
                 templateUrl: '/app/account.html',
                 controller: 'profileCtrl'
             }).
+            when('/createCampaign', {
+                templateUrl: '/app/createCampaign.html',
+                controller: 'createCampaignCtrl'
+            }).
+            when('/campaignDetails', {
+                templateUrl: '/app/campaignDetails.html',
+                controller: 'campaignDetailsCtrl'
+            }).
             otherwise({
                 redirectTo: '/login'
             });
@@ -94,4 +102,9 @@ app.controller('rootCtrl', function ($scope, $rootScope, $http, $location, $uibM
             });
         }
     }, function(){});
+
+    $scope.apiClient = apigClientFactory.newClient({
+        "apiKey": 'G84MftERYj7VP0ACf3uQh3w9ewFbgdi06C1GtA1B'
+    });
+
 });

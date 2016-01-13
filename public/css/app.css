@@ -3,8 +3,19 @@
 	text-align: left;
 }
 
+.campaign-item .thumbnail{
+    height: 390px;
+}
 .campaign-item .thumbnail .caption{
     text-align: center;
+}
+.campaign-item .thumbnail .desc-text{
+    width: 240px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px;
+
 }
 .campaign-item .thumbnail a > img{
     height: 140px;
@@ -280,3 +291,13 @@
     top: 200px;
 }
 
+.avatar-img{
+    width: 80px;
+    height: 80px;
+    max-width: 200px;
+    max-height: 200px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255,255,255,0.5);
+}

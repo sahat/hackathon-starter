@@ -1,0 +1,89 @@
+<div class="container">
+
+    <!-- Portfolio Item Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{campaign.topic}}
+            </h1>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+        <div class="col-md-6">
+            <img class="img-responsive" ng-src="{{campaign.thumbnail}}" alt="">
+        </div>
+
+        <div class="col-md-4">
+            <img class="avatar-img" ng-src="{{ownerPic}}"/><span>&nbsp;&nbsp;&nbsp;&nbsp;{{ownerName}}</span>
+            <h3>Campaign Description</h3>
+            <p>{{campaign.details}}</p>
+            <h3>Requirement Details</h3>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span class="badge">{{campaign.numberOfFollowers}}</span>
+                    <span>Minimum Followers</span>
+                </li>
+                <li class="list-group-item">
+                    <span class="badge">{{campaign.minAge}}-{{campaign.maxAge}}</span>
+                    Ages
+                </li>
+            </ul>
+            <hr/>
+            <a class="btn btn-primary" href="#">Apply Now !</a>
+            <a class="btn btn-warning" href="#/campaign">Go Back</a>
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+    <!-- Related Projects Row -->
+    <div class="row">
+
+        <div class="col-lg-12">
+            <h3 class="page-header">Similar Campaigns</h3>
+        </div>
+
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
+            </a>
+        </div>
+
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
+            </a>
+        </div>
+
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
+            </a>
+        </div>
+
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
+            </a>
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; Your Website 2014</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+
+</div>

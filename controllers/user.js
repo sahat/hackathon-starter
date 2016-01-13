@@ -13,7 +13,7 @@ var secrets = require('../config/secrets');
 exports.getLogin = function(req, res) {
    res.setHeader('Content-Type', 'application/json');
   if (req.user) {
-      res.send(JSON.stringify(req.user));//
+      res.send(JSON.stringify(req.user));
    } else {
         res.redirect('/app.html#/login');
    }
@@ -54,6 +54,18 @@ exports.postLogin = function(req, res, next) {
   })(req, res, next);
 };
 
+exports.getUserDetails = function(req, res, next){
+    res.setHeader('Content-Type', 'application/json');
+
+    User.findById(req.params.id, function(err, user) {
+        if(user){
+            return res.send(JSON.stringify(user));
+        } else {
+            res.status(500).send(JSON.stringify(err));
+        }
+    });
+
+}
 /**
  * GET /logout
  * Log out.
