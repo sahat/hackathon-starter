@@ -147,10 +147,11 @@ exports.patchUpdateCampaigns = function(req, res) {
         { }, 
         function(err, data){
             if (err) {
-              res.status(400).send(JSON.stringify({errors:err}));
+                console.error(err);
+                return res.status(400).send(JSON.stringify({errors:err}));
             }
-            res.send({"message" : "campaign Ids updated"});
-    });   
+            return res.send({"message" : "campaign Ids updated"});
+        });   
 };
 
 /**
