@@ -35,8 +35,7 @@
         <h3>Campaign Requests</h3>
     </div>
      <div class="col-lg-2 pull-right">
-         <a href="#" class="btn btn-success" ng-click="openCreateModal()">Post your Campaign</a>
-
+         <a href="#/createCampaign" class="btn btn-success" >Post your Campaign</a>
      </div>
 </div>
 
@@ -46,10 +45,10 @@
                 <div class="caption">
                     <h4 class="media-heading">{{campaign.topic}}</h4>
 
-                    <a href="#">
+                    <a ng-href="#/campaignDetails?id={{campaign.campaignId}}">
                         <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
                     </a>
-                    <p>{{campaign.details}}</p>
+                    <p class="desc-text">{{campaign.details}}</p>
                     <ul class="list-group">
                         <li class="list-group-item">
                             <span class="badge">{{campaign.numberOfFollowers}}</span>
@@ -61,7 +60,8 @@
                         </li>
                     </ul>
                     <p>
-                        <a href="#" class="btn btn-primary">Apply Now!</a> <a href="#" class="btn btn-default">More Info</a>
+                        <a href="#" class="btn btn-primary">Apply Now!</a>
+                        <a ng-href="#/campaignDetails?id={{campaign.campaignId}}" class="btn btn-default">More Info</a>
                     </p>
                 </div>
             </div>

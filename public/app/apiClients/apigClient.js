@@ -100,7 +100,7 @@ apigClientFactory.newClient = function (config) {
             verb: 'get'.toUpperCase(),
             path: pathComponent + uritemplate('/campaign').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'count', 'ageRange']),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'count', 'ageRange', 'campaignIds']),
             body: body
         };
         

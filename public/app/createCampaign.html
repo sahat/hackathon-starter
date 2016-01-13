@@ -1,8 +1,8 @@
-<div>
-    <div class="modal-header">
+<div ng-controller="createCampaignCtrl">
+    <div>
         <h3 class="modal-title">Post a Campaign Request</h3>
     </div>
-    <div class="modal-body">
+    <div >
         <div class="container">
             <div class="row">
                 <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
@@ -55,9 +55,9 @@
         </div>
 
     </div>
-    <div class="modal-footer">
+    <div class="">
         <button class="btn btn-primary" type="button" ng-click="ok()">Submit</button>
-        <button class="btn btn-warning" type="button" ng-click="close()">Cancel</button>
+        <a href="#/campaign" class="btn btn-warning" >Cancel</a>
     </div>
 
 </div>
