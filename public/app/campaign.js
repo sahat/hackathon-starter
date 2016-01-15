@@ -10,7 +10,7 @@ app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope) {
     };
     $scope.defaultSearch = {
                               "ageRange": "0-100",
-                              "count": "20",
+                              "count": "50",
                               "numberOfFollowers": 10,
                                 "campaignIds": ""
 

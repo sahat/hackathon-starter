@@ -100,7 +100,7 @@ apigClientFactory.newClient = function (config) {
             verb: 'get'.toUpperCase(),
             path: pathComponent + uritemplate('/campaign').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'count', 'ageRange', 'campaignIds']),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange']),
             body: body
         };
         
@@ -142,6 +142,24 @@ apigClientFactory.newClient = function (config) {
         
         
         return apiGatewayClient.makeRequest(campaignOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.insightsFacebookGet = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['accessToken', 'pageId'], ['body']);
+        
+        var insightsFacebookGetRequest = {
+            verb: 'get'.toUpperCase(),
+            path: pathComponent + uritemplate('/insights/facebook').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['accessToken', 'pageId']),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(insightsFacebookGetRequest, authType, additionalParams, config.apiKey);
     };
     
 

@@ -1,15 +1,12 @@
 <div class="container">
 
-    <!-- Portfolio Item Heading -->
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">{{campaign.topic}}
             </h1>
         </div>
     </div>
-    <!-- /.row -->
 
-    <!-- Portfolio Item Row -->
     <div class="row">
 
         <div class="col-md-6">
@@ -32,15 +29,65 @@
                 </li>
             </ul>
             <hr/>
-            <a class="btn btn-primary" href="#">Apply Now !</a>
-            <a class="btn btn-warning" href="#/campaign">Go Back</a>
+            <a ng-show="!showAppForm" class="btn btn-primary" ng-click="showAppForm = true;">Apply Now !</a>
+            <a ng-show="!showAppForm" class="btn btn-warning" href="#/campaign">Go Back</a>
 
         </div>
 
     </div>
-    <!-- /.row -->
-
-    <!-- Related Projects Row -->
+    <div ng-show="showAppForm">
+    <div class="row">
+        <h3 class="page-header">Apply for this Campaign</h3>
+    </div>
+        <div class="row" >
+            <form role="form">
+                <div class="col-lg-9">
+                    <div class="form-group">
+                        <label for="reasonsInput">Your qualifications</label>
+                        <div class="input-group col-lg-10">
+                            <textarea type="text" ng-model="appForm.reasons" class="form-control input" name="reasonsInput" id="reasonsInput" placeholder="Enter reasons for the campaign owner to choose you." required/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-lg-6">Pick a campaign to trade</label>
+                    </div>
+                    <div>
+                        <div ng-repeat="campaign in myCampaigns" class="campaign-item col-md-4 col-sm-6">
+                            <div class="thumbnail">
+                                <div class="caption">
+                                    <h4 class="media-heading">{{campaign.topic}}</h4>
+                                    <a>
+                                        <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
+                                    </a>
+                                    <p class="desc-text">{{campaign.details}}</p>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <span class="badge">{{campaign.numberOfFollowers}}</span>
+                                            <span>Minimum Followers</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="badge">{{campaign.minAge}}-{{campaign.maxAge}}</span>
+                                            Ages
+                                        </li>
+                                    </ul>
+                                    <p>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="radio" ng-model="appForm.tradeCampaign" value="{{campaign.campaignId}}">&nbsp;Select
+                                            </label>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="myCampaigns.length < 1"><p class="alert alert-info">You do not have any campaigns to trade.</p></div>
+                    </div>
+                </div>
+                <a class="btn btn-primary" ng-click="submitAppForm()" ng-disabled="appForm.tradeCampaign == ''">Apply</a>
+                <a class="btn btn-warning" href="#/campaign">Go Back</a>
+            </form>
+        </div>
+    </div>
     <div class="row">
 
         <div class="col-lg-12">
