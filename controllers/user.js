@@ -154,6 +154,50 @@ exports.patchUpdateCampaigns = function(req, res) {
         });   
 };
 
+exports.patchUpdateProfile = function(req, res) {
+    
+    var context = {};
+    var body = req.body;
+    
+    var alloweUpdateFields = {
+        "name": true,
+        "gender": true,
+        "location": true,
+        "website": true,
+        "picture": true,
+        "facebookDefaultPageId": true
+    };
+    
+    var passed = true;
+    var userId = body.user.id;
+    
+    delete body.user;
+    
+    for (var property in body) {
+        if (body.hasOwnProperty(property) && alloweUpdateFields[property] === undefined) {
+            passed = false;
+            return res.status(409).send(JSON.stringify({errors:"only name, gender, location, website, picture, facebookDefaultPageId are accepted."}));
+        }
+        
+        context["profile." + property] = body[property];
+    }
+    
+    console.log(context);
+    
+    if (passed) {
+        User.update({"_id" : userId}, 
+            { $set : context }, 
+            {}, 
+            function(err, data){
+                if (err) {
+                    console.error(err);
+                    return res.status(400).send(JSON.stringify({errors:err}));
+                }
+                return res.send({"message" : "user profile updated"});
+            });   
+    }
+};
+
 /**
  * POST /account/profile
  * Update profile information.

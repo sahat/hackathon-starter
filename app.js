@@ -120,6 +120,7 @@ app.post('/account/password', passportConf.isAuthenticated, userController.postU
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 app.patch('/account/campaigns', userController.patchUpdateCampaigns);
+app.patch('/account/profile', userController.patchUpdateProfile);
 
 /**
  * API examples routes.
