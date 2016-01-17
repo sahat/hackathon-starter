@@ -1,1 +1,91 @@
 <h3>App Status</h3>
+
+<div class="form-group col-lg-12 col-sm-6">
+    <uib-tabset>
+        <uib-tab heading="Your Campaigns">
+            <div ng-show="user.campaignIds.length < 1">
+                <p class="alert alert-info">Getting started by creating your first campaign.&nbsp;&nbsp;<a href="#/createCampaign" class="btn btn-success" >Post your Campaign</a>
+                </p>
+            </div>
+            <div ng-show="user.campaignIds.length > 0">
+                <div class="row">
+                    <h3 class="page-header">Your Campaigns</h3><p >Click to see applications</p>
+                    <div ng-repeat="campaign in campaigns" class="campaign-item col-md-3 col-sm-6">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h4 class="media-heading">{{campaign.topic}}</h4>
+
+                                <a href ng-click="showCampaignStatus(campaign.campaignId)">
+                                    <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
+                                </a>
+                                <p class="desc-text">{{campaign.details}}</p>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span class="badge">{{campaign.numberOfFollowers}}</span>
+                                        <span>Minimum Followers</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span class="badge">{{campaign.minAge}}-{{campaign.maxAge}}</span>
+                                        Ages
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 ng-show="selectedCampaign.applications.length > 0" class="page-header">Applications</h3>
+                <div class="well clearfix" ng-repeat="apply in selectedCampaign.applications">
+                    <div >From User Id:&nbsp;{{apply.userId}}</div>
+                    <div >Reasons:&nbsp;{{apply.reason}}</div>
+                    <a class="btn btn-primary pull-right" ng-click="acceptApply" >Accept</a>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab heading="Your Applications">
+            <div ng-show="myApplications.length < 1">
+                <p class="alert alert-info">You haven't applied to any campaign yet.&nbsp;&nbsp;<a href="#/campaign" class="btn btn-success" >See Campaigns</a></p>
+            </div>
+            <div ng-show="myApplications.length > 0">
+                <div class="row">
+                    <h3 class="page-header">Your Campaigns</h3><p >Click to see applications</p>
+                    <div ng-repeat="campaign in appliedCampaigns" class="campaign-item col-md-3 col-sm-6">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h4 class="media-heading">{{campaign.topic}}</h4>
+
+                                <a href ng-click="showCampaignStatus(campaign.campaignId)">
+                                    <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
+                                </a>
+                                <p class="desc-text">{{campaign.details}}</p>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span class="badge">{{campaign.numberOfFollowers}}</span>
+                                        <span>Minimum Followers</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span class="badge">{{campaign.minAge}}-{{campaign.maxAge}}</span>
+                                        Ages
+                                    </li>
+                                </ul>
+                                <button class="btn btn-primary" type="button">
+                                    Status&nbsp;<span class="badge">{{campaign.status}}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 ng-show="selectedCampaign.applications.length > 0" class="page-header">Applications</h3>
+                <div class="well clearfix" ng-repeat="apply in selectedCampaign.applications">
+                    <div >From User Id:&nbsp;{{apply.userId}}</div>
+                    <div >Reasons:&nbsp;{{apply.reason}}</div>
+                    <a class="btn btn-primary pull-right" ng-click="acceptApply" >Accept</a>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+
+</div>

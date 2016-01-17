@@ -32,13 +32,29 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
             });
     }
     $scope.appForm = {
-        campaignId: id,
-        tradeCampaign: "",
-        reasons: ""
-
+        reason: "",
+        "userId": $rootScope.user._id,
+        "campaignId": id,
+        "applicationId": generateUUID()
     }
-    $scope.submitAppForm = function(){
 
+    $scope.submitAppForm = function(){
+        if ($scope.appForm.reason !=''){
+            var results = {
+                "campaignId": id,
+                "application": $scope.appForm
+            };
+            $scope.apiClient.campaignCampaignIdApplicationPost({campaignId: id}, results, {
+                    headers:{"Content-type": "application/json"}
+                }
+            ).then(function(res){
+                 $rootScope.alerts.push({type:"success", msg:"Successfully applied to campaign."});
+                    $scope.$apply();
+                }).catch(function(res){
+                    $rootScope.alerts.push({type:"danger", msg:"Successfully applied to campaign."});
+                    $scope.$apply();
+                });
+        }
     }
 
 });

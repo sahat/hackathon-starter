@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label for="reasonsInput">Your qualifications</label>
                         <div class="input-group col-lg-10">
-                            <textarea type="text" ng-model="appForm.reasons" class="form-control input" name="reasonsInput" id="reasonsInput" placeholder="Enter reasons for the campaign owner to choose you." required/>
+                            <textarea type="text" ng-model="appForm.reason" class="form-control input" name="reasonsInput" id="reasonsInput" placeholder="Enter reasons for the campaign owner to choose you." required/>
                         </div>
                     </div>
                     <div class="row">
@@ -83,7 +83,7 @@
                         <div ng-show="myCampaigns.length < 1"><p class="alert alert-info">You do not have any campaigns to trade.</p></div>
                     </div>
                 </div>
-                <a class="btn btn-primary" ng-click="submitAppForm()" ng-disabled="appForm.tradeCampaign == ''">Apply</a>
+                <a class="btn btn-primary" ng-click="submitAppForm()" >Apply</a>
                 <a class="btn btn-warning" href="#/campaign">Go Back</a>
             </form>
         </div>

@@ -1,15 +1,20 @@
-app.controller('profileCtrl', function ($rootScope, $scope) {
+app.controller('profileCtrl', function ($rootScope, $scope, $http) {
     $scope.user = $rootScope.user;
 
-    if($scope.user.campaignIds.length > 0){
-        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0}, {}, {
+
+    if($scope.user.profile.facebookDefaultPageId != '' ){
+        var fbToken = '';
+        for(var i=0; i<$scope.user.tokens.length; i++){
+            if($scope.user.tokens[i].kind == 'facebook'){
+                fbToken = $scope.user.tokens[i].accessToken;
+            }
+        }
+        $scope.apiClient.insightsFacebookGet({accessToken: fbToken, pageId: $scope.user.profile.facebookDefaultPageId}, {}, {
                 headers:{"Content-type": "application/json"}
             }
-        ).then(function(campaigns){
-                $scope.campaigns = campaigns.data;
-                $scope.$apply   ();
-            }).catch(function(){
-                console.log("error");
-            });
+        ).then(function(res){
+            $scope.fbStats = res.data;
+            $scope.$apply();
+        });
     }
 });

@@ -162,7 +162,7 @@ app.get('/auth/instagram', passport.authenticate('instagram'));
 app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), function(req, res) {
   res.redirect("/app.html");
 });
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location', 'publish_actions'] }));
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location', 'publish_actions', 'read_insights', 'pages_show_list', 'public_profile'] }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res) {
   res.redirect("/app.html#/campaign");
 });

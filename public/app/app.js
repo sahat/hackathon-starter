@@ -92,6 +92,14 @@ app.controller('rootCtrl', function ($scope, $rootScope, $http, $location, $uibM
     $http.get('/login').then(function(res){
         if(res.data._id){
             $rootScope.user = res.data;
+            if($rootScope.user.profile.facebookDefaultPageId == ''){
+                $http.patch("/account/profile", {
+                    "facebookDefaultPageId":"132139833633587",
+                    "user" : {
+                        "id" : $rootScope.user._id
+                    }
+                })
+            }
 
         } else {
             $location.path('/login');
