@@ -43,6 +43,10 @@
                 </div>
             </div>
         </uib-tab>
+
+
+
+    <!--Applications Tab-->
         <uib-tab heading="Your Applications">
             <div ng-show="myApplications.length < 1">
                 <p class="alert alert-info">You haven't applied to any campaign yet.&nbsp;&nbsp;<a href="#/campaign" class="btn btn-success" >See Campaigns</a></p>
@@ -55,7 +59,7 @@
                             <div class="caption">
                                 <h4 class="media-heading">{{campaign.topic}}</h4>
 
-                                <a href ng-click="showCampaignStatus(campaign.campaignId)">
+                                <a href>
                                     <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
                                 </a>
                                 <p class="desc-text">{{campaign.details}}</p>
@@ -75,14 +79,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div>
-                <h3 ng-show="selectedCampaign.applications.length > 0" class="page-header">Applications</h3>
-                <div class="well clearfix" ng-repeat="apply in selectedCampaign.applications">
-                    <div >From User Id:&nbsp;{{apply.userId}}</div>
-                    <div >Reasons:&nbsp;{{apply.reason}}</div>
-                    <a class="btn btn-primary pull-right" ng-click="acceptApply" >Accept</a>
                 </div>
             </div>
         </uib-tab>
