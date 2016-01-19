@@ -233,6 +233,8 @@
     background-color: rgba(214, 224, 226, 0.2);
     height: 100%;
     margin: 0;
+    padding-bottom: 100%;
+    margin-bottom: -100%;
 }
 
 .card.hovercard .cardheader {

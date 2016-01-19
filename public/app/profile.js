@@ -1,6 +1,7 @@
 app.controller('profileCtrl', function ($rootScope, $scope, $http) {
     $scope.user = $rootScope.user;
     $scope.fbStats = {age: {}, gender:{male:1, female:1}};
+    $scope.loadedFbData = false;
     $scope.chartOption = {
         chart: {
             type: 'pieChart',
@@ -73,11 +74,12 @@ app.controller('profileCtrl', function ($rootScope, $scope, $http) {
                         $scope.totalFollowerNum += value;
                     });
                 }
+                $scope.loadedFbData = true;
                 $scope.fbStats = res.data;
                 $scope.$apply();
             } else {
                 $http.get('/extendFbToken/' + fbToken, {}).then(function(res){
-                    if(!res.message){
+                    if(!res.data.message){
                         $scope.user.tokens[index].accessToken = res.data.newToken;
 //                    $http.post("/account/profile", $scope.user, {headers:{"Content-type": "application/json"}
 //                    });
@@ -86,6 +88,7 @@ app.controller('profileCtrl', function ($rootScope, $scope, $http) {
                             }
                         ).then(function(res){
                                 $scope.fbStats = res.data;
+                                $scope.loadedFbData = true;
                                 $scope.$apply();
 
                             });

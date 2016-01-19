@@ -36,7 +36,7 @@
                             <span>Facebook Followers</span>
                         </li>
                     </ul>
-                    <div class="progress">
+                    <div ng-show="loadedFbData" class="progress">
                         <div class="progress-bar " ng-style="{'width': (fbStats.gender.male/(fbStats.gender.male+fbStats.gender.female))*100 + '%'}">
                             {{Math.round((fbStats.gender.male/(fbStats.gender.male+fbStats.gender.female))*100)}}% Male
                         </div>
@@ -44,14 +44,16 @@
                             {{Math.round((fbStats.gender.female/(fbStats.gender.male+fbStats.gender.female))*100)}}% Female
                         </div>
                     </div>
-                    <hr/>
-                    Age Groups
-                    <ul class="list-group text-left">
-                        <li class="list-group-item" ng-repeat="(key, value) in fbStats.age">
-                            <span class="badge">{{Math.round((value/totalFollowerNum)*100)}}%</span>
-                            <span>{{key}}</span>
-                        </li>
-                    </ul>
+                    <div ng-show="loadedFbData">
+                        <hr/>
+                        <h6>Age Groups</h6>
+                        <ul class="list-group text-left">
+                            <li class="list-group-item" ng-repeat="(key, value) in fbStats.age">
+                                <span class="badge">{{Math.round((value/totalFollowerNum)*100)}}%</span>
+                                <span>{{key}}</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
