@@ -46,6 +46,8 @@ app.config(['$routeProvider',
             });
     }]);
 app.controller('rootCtrl', function ($scope, $rootScope, $http, $location, $uibModal) {
+    $scope.Math = window.Math;
+
     $scope.alertError = function(msg){
         $rootScope.alerts.push({type: "danger", msg: msg});
     }

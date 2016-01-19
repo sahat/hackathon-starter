@@ -53,13 +53,13 @@
             </div>
             <div ng-show="myApplications.length > 0">
                 <div class="row">
-                    <h3 class="page-header">Your Campaigns</h3><p >Click to see applications</p>
+                    <h3 class="page-header">Your Applications</h3><p >Click to see applications</p>
                     <div ng-repeat="campaign in appliedCampaigns" class="campaign-item col-md-3 col-sm-6">
                         <div class="thumbnail">
                             <div class="caption">
                                 <h4 class="media-heading">{{campaign.topic}}</h4>
 
-                                <a href>
+                                <a ng-href="#/campaignDetails?id={{campaign.campaignId}}">
                                     <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
                                 </a>
                                 <p class="desc-text">{{campaign.details}}</p>

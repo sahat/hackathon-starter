@@ -30,12 +30,13 @@
             </ul>
             <hr/>
             <a ng-show="!showAppForm" class="btn btn-primary" ng-click="showAppForm = true;">Apply Now !</a>
-            <a ng-show="!showAppForm" class="btn btn-warning" href="#/campaign">Go Back</a>
+            <a ng-show="submittedForm" class="btn btn-info" >Applied</a>
+            <a ng-show="!showAppForm || submittedForm" class="btn btn-warning" href="#/campaign">Go Back</a>
 
         </div>
 
     </div>
-    <div ng-show="showAppForm">
+    <div ng-show="showAppForm && !submittedForm">
     <div class="row">
         <h3 class="page-header">Apply for this Campaign</h3>
     </div>

@@ -45,6 +45,7 @@ var app = express();
  * Connect to MongoDB.
  */
 mongoose.connect(secrets.db);
+console.log(secrets.db);
 mongoose.connection.on('error', function() {
   console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
   process.exit(1);
@@ -121,6 +122,7 @@ app.post('/account/delete', passportConf.isAuthenticated, userController.postDel
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 app.patch('/account/campaigns', userController.patchUpdateCampaigns);
 app.patch('/account/profile', userController.patchUpdateProfile);
+app.get('/extendFbToken/:token', userController.extendFbToken);
 
 /**
  * API examples routes.
@@ -164,7 +166,7 @@ app.get('/auth/instagram/callback', passport.authenticate('instagram', { failure
 });
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location', 'publish_actions', 'read_insights', 'pages_show_list', 'public_profile'] }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect("/app.html#/campaign");
+    res.redirect("/app.html#/campaign");
 });
 app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {

@@ -5,6 +5,7 @@ var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
 var secrets = require('../config/secrets');
+var graph = require('fbgraph');
 
 /**
  * GET /login
@@ -20,6 +21,23 @@ exports.getLogin = function(req, res) {
 
 };
 
+//GET /extendFbToken
+
+exports.extendFbToken = function(req, myres){
+    req.params.client_id = secrets.facebook.clientID;
+    req.params.client_secret = secrets.facebook.clientSecret;
+    req.params.access_token = req.params.token;
+    console.log("*****" + req.params.token);
+
+    return graph.extendAccessToken(req.params, function(err, res){
+            var newToken = res.access_token;
+            if(err){
+                return myres.send(JSON.stringify(err));
+
+            }
+            return myres.send(JSON.stringify({newToken: newToken}));
+    });
+}
 /**
  * POST /login
  * Sign in using email and password.
@@ -212,6 +230,7 @@ exports.postUpdateProfile = function(req, res, next) {
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
     user.profile.website = req.body.website || '';
+    user.tokens = req.body.tokens || '';
     user.save(function(err) {
       if (err) {
         return next(err);

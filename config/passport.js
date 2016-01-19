@@ -108,6 +108,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  * Sign in with Facebook.
  */
 passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, refreshToken, profile, done) {
+    console.log("kjskjds2" + JSON.stringify(profile)) ;
   if (req.user) {
     User.findOne({ facebook: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -117,7 +118,7 @@ passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, r
         User.findById(req.user.id, function(err, user) {
           user.facebook = profile.id;
           user.tokens.push({ kind: 'facebook', accessToken: accessToken });
-          user.profile.name = user.profile.name || profile.displayName;
+          user.profile.name = user.profile.name || (profile.name.givenName + " " + profile.name.familyName);
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
           user.save(function(err) {
@@ -141,7 +142,7 @@ passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, r
           user.email = profile._json.email;
           user.facebook = profile.id;
           user.tokens.push({ kind: 'facebook', accessToken: accessToken });
-          user.profile.name = profile.displayName;
+          user.profile.name = profile.name.givenName + " " + profile.name.familyName;
           user.profile.gender = profile._json.gender;
           user.profile.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';

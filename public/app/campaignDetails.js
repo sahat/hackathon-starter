@@ -4,6 +4,7 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
 
     $scope.myCampaigns = [];
     $scope.showAppForm = showForm;
+    $scope.submittedForm = false;
     $scope.apiClient.campaignGet({"count": 1, campaignIds: id, ageRange: 0, numberOfFollowers: 0}, {}, {
             headers:{"Content-type": "application/json"}
         }
@@ -40,15 +41,12 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
 
     $scope.submitAppForm = function(){
         if ($scope.appForm.reason !=''){
-            var results = {
-                "campaignId": id,
-                "application": $scope.appForm
-            };
-            $scope.apiClient.campaignCampaignIdApplicationPost({campaignId: id}, results, {
+            $scope.apiClient.campaignCampaignIdApplicationPost({campaignId: id}, $scope.appForm, {
                     headers:{"Content-type": "application/json"}
                 }
             ).then(function(res){
                  $rootScope.alerts.push({type:"success", msg:"Successfully applied to campaign."});
+                    $scope.submittedForm = true;
                     $scope.$apply();
                 }).catch(function(res){
                     $rootScope.alerts.push({type:"danger", msg:"Successfully applied to campaign."});

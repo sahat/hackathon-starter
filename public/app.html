@@ -22,6 +22,7 @@
 <script type="text/javascript" src="/js/lib/apiGatewayCore/simpleHttpClient.js"></script>
 <script type="text/javascript" src="/js/lib/apiGatewayCore/utils.js"></script>
 <script type="text/javascript" src="/js/lib/moment/moment.js"></script>
+<script type="text/javascript" src="/js/lib/angular-nvd3.js"></script>
 
 <script src="/js/lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
 <script src="/js/main.js"></script>
@@ -83,7 +84,7 @@
     </div>
     <!-- /.container -->
 </nav>
-<uib-alert ng-repeat="alert in $root.alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+<uib-alert ng-repeat="alert in $root.alerts" class="main-alert" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
 
 
 <div class="container" ng-view>

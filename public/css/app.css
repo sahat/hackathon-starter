@@ -301,3 +301,10 @@
     border-radius: 50%;
     border: 5px solid rgba(255,255,255,0.5);
 }
+
+.alert.main-alert{
+    position: fixed;
+    z-index: 2;
+    width: 80%;
+    left: 10%;
+}
