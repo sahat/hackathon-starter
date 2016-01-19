@@ -1,6 +1,6 @@
 app.controller('profileCtrl', function ($rootScope, $scope, $http) {
     $scope.user = $rootScope.user;
-    $scope.fbStats = {age: {}};
+    $scope.fbStats = {age: {}, gender:{male:1, female:1}};
     $scope.chartOption = {
         chart: {
             type: 'pieChart',
@@ -77,17 +77,19 @@ app.controller('profileCtrl', function ($rootScope, $scope, $http) {
                 $scope.$apply();
             } else {
                 $http.get('/extendFbToken/' + fbToken, {}).then(function(res){
-                    $scope.user.tokens[index].accessToken = res.data.newToken;
+                    if(!res.message){
+                        $scope.user.tokens[index].accessToken = res.data.newToken;
 //                    $http.post("/account/profile", $scope.user, {headers:{"Content-type": "application/json"}
 //                    });
-                    $scope.apiClient.insightsFacebookGet({accessToken: $scope.user.tokens[index].accessToken, pageId: $scope.user.profile.facebookDefaultPageId}, {}, {
-                            headers:{"Content-type": "application/json"}
-                        }
-                    ).then(function(res){
-                            $scope.fbStats = res.data;
-                            $scope.$apply();
+                        $scope.apiClient.insightsFacebookGet({accessToken: $scope.user.tokens[index].accessToken, pageId: $scope.user.profile.facebookDefaultPageId}, {}, {
+                                headers:{"Content-type": "application/json"}
+                            }
+                        ).then(function(res){
+                                $scope.fbStats = res.data;
+                                $scope.$apply();
 
-                        });
+                            });
+                    }
                 });
             }
         });

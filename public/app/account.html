@@ -14,7 +14,7 @@
                             <span ng-if="user.profile.name">{{user.profile.name}}</span>
                             <span ng-if="!user.profile.name">{{user.email}}</span>
                     </div>
-                    <div class="desc">United State</div>
+                    <div class="desc">United States</div>
                 </div>
                 <div class="bottom">
                     <a ng-if="user.twitter" class="btn btn-primary btn-twitter btn-sm">
@@ -32,19 +32,23 @@
                     <hr/>
                     <ul class="list-group text-left">
                         <li class="list-group-item">
-                            <span class="badge">1500</span>
+                            <span class="badge">{{fbStats.likes}}</span>
                             <span>Facebook Followers</span>
                         </li>
-                        <li class="list-group-item">
-                            <span class="badge">19-50</span>
-                            Follower Age Range
-                        </li>
                     </ul>
+                    <div class="progress">
+                        <div class="progress-bar " ng-style="{'width': (fbStats.gender.male/(fbStats.gender.male+fbStats.gender.female))*100 + '%'}">
+                            {{Math.round((fbStats.gender.male/(fbStats.gender.male+fbStats.gender.female))*100)}}% Male
+                        </div>
+                        <div class="progress-bar progress-bar-danger" ng-style="{'width': (fbStats.gender.female/(fbStats.gender.male+fbStats.gender.female))*100 + '%'}">
+                            {{Math.round((fbStats.gender.female/(fbStats.gender.male+fbStats.gender.female))*100)}}% Female
+                        </div>
+                    </div>
                     <hr/>
                     Age Groups
                     <ul class="list-group text-left">
                         <li class="list-group-item" ng-repeat="(key, value) in fbStats.age">
-                            <span class="badge">{{Math.round((value/totalFollowerNum)*100)}}</span>
+                            <span class="badge">{{Math.round((value/totalFollowerNum)*100)}}%</span>
                             <span>{{key}}</span>
                         </li>
                     </ul>

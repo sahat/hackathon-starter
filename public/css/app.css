@@ -32,10 +32,10 @@
 
 
 .profile-container{
-    position: fixed;
+    position: absolute;
     top: 50px;
     left: 0;
-    height: 100%;
+    min-height: 100%;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -232,6 +232,7 @@
     text-align: center;
     background-color: rgba(214, 224, 226, 0.2);
     height: 100%;
+    margin: 0;
 }
 
 .card.hovercard .cardheader {
