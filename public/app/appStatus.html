@@ -39,7 +39,8 @@
                 <div class="well clearfix" ng-repeat="apply in selectedCampaign.applications">
                     <div >From User Id:&nbsp;{{apply.userId}}</div>
                     <div >Reasons:&nbsp;{{apply.reason}}</div>
-                    <a class="btn btn-primary pull-right" ng-click="acceptApply" >Accept</a>
+                    <a ng-show="apply.status=='pending'" class="btn btn-primary pull-right" ng-click="acceptApply(apply)" >Accept</a>
+                    <a ng-show="apply.status=='accepted'" class="btn btn-success pull-right" disabled>Accepted</a>
                 </div>
             </div>
         </uib-tab>
@@ -73,9 +74,9 @@
                                         Ages
                                     </li>
                                 </ul>
-                                <button class="btn btn-primary" type="button">
-                                    Status&nbsp;<span class="badge">{{campaign.status}}</span>
-                                </button>
+                                <ul class="list-group">
+                                    <li class="list-group-item" ng-class="{'list-group-item-warning': campaign.status=='pending', 'list-group-item-success': campaign.status=='accepted', 'list-group-item-danger': campaign.status=='rejected'}">{{campaign.status}}</li>
+                                </ul>
                             </div>
                         </div>
                     </div>

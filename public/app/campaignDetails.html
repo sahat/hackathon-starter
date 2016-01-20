@@ -29,8 +29,8 @@
                 </li>
             </ul>
             <hr/>
-            <a ng-show="!showAppForm" class="btn btn-primary" ng-click="showAppForm = true;">Apply Now !</a>
-            <a ng-show="submittedForm" class="btn btn-info" >Applied</a>
+            <a ng-show="!showAppForm && campaign.status == 'pending'" class="btn btn-primary" ng-click="showAppForm = true;">Apply Now !</a>
+            <a ng-show="submittedForm" class="btn btn-info" disabled>Applied</a>
             <a ng-show="!showAppForm || submittedForm" class="btn btn-warning" href="#/campaign">Go Back</a>
 
         </div>
@@ -89,37 +89,37 @@
             </form>
         </div>
     </div>
-    <div class="row">
+    <!--<div class="row">-->
 
-        <div class="col-lg-12">
-            <h3 class="page-header">Similar Campaigns</h3>
-        </div>
+        <!--<div class="col-lg-12">-->
+            <!--<h3 class="page-header">Similar Campaigns</h3>-->
+        <!--</div>-->
 
-        <div class="col-sm-3 col-xs-6">
-            <a href="#">
-                <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
+        <!--<div class="col-sm-3 col-xs-6">-->
+            <!--<a href="#">-->
+                <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
+            <!--</a>-->
+        <!--</div>-->
 
-        <div class="col-sm-3 col-xs-6">
-            <a href="#">
-                <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
+        <!--<div class="col-sm-3 col-xs-6">-->
+            <!--<a href="#">-->
+                <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
+            <!--</a>-->
+        <!--</div>-->
 
-        <div class="col-sm-3 col-xs-6">
-            <a href="#">
-                <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
+        <!--<div class="col-sm-3 col-xs-6">-->
+            <!--<a href="#">-->
+                <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
+            <!--</a>-->
+        <!--</div>-->
 
-        <div class="col-sm-3 col-xs-6">
-            <a href="#">
-                <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
+        <!--<div class="col-sm-3 col-xs-6">-->
+            <!--<a href="#">-->
+                <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
+            <!--</a>-->
+        <!--</div>-->
 
-    </div>
+    <!--</div>-->
     <!-- /.row -->
 
     <hr>

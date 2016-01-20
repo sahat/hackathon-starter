@@ -109,6 +109,24 @@ apigClientFactory.newClient = function (config) {
     };
     
     
+    apigClient.applicationApplicationIdPatch = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['applicationId', 'body'], ['body']);
+        
+        var applicationApplicationIdPatchRequest = {
+            verb: 'patch'.toUpperCase(),
+            path: pathComponent + uritemplate('/application/{applicationId}').expand(apiGateway.core.utils.parseParametersToObject(params, ['applicationId', ])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(applicationApplicationIdPatchRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
     apigClient.applicationApplicationIdOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
@@ -184,7 +202,7 @@ apigClientFactory.newClient = function (config) {
     apigClient.campaignCampaignIdApplicationGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-//        apiGateway.core.utils.assertParametersDefined(params, ['campaignId'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['campaignId'], ['body']);
         
         var campaignCampaignIdApplicationGetRequest = {
             verb: 'get'.toUpperCase(),

@@ -108,7 +108,6 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  * Sign in with Facebook.
  */
 passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, refreshToken, profile, done) {
-    console.log("kjskjds2" + JSON.stringify(profile)) ;
   if (req.user) {
     User.findOne({ facebook: profile.id }, function(err, existingUser) {
       if (existingUser) {

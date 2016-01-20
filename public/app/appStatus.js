@@ -1,11 +1,9 @@
 app.controller('appStatusCtrl', function ($scope, $rootScope) {
     $scope.user = $rootScope.user;
-    $scope.user.campaignIds = [];
     $scope.appliedCampaigns = [];
     $scope.myApplications = [];
 
-    $scope.selectedCampaign = {applications:[]};
-    if($scope.user.campaignIds.length > 0){
+    $scope.getMyCampaigns = function(){
         $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0}, {}, {
                 headers:{"Content-type": "application/json"}
             }
@@ -15,6 +13,11 @@ app.controller('appStatusCtrl', function ($scope, $rootScope) {
             }).catch(function(){
                 console.log("error");
             });
+    };
+
+    $scope.selectedCampaign = {applications:[]};
+    if($scope.user.campaignIds.length > 0){
+        $scope.getMyCampaigns();
     }
 
     $scope.showCampaignStatus = function(id){
@@ -45,4 +48,21 @@ app.controller('appStatusCtrl', function ($scope, $rootScope) {
                 });
         }
     });
+
+    $scope.acceptApply = function(application){
+        application.status = 'accepted';
+        var newApply = {
+            campaignId:application.campaignId,
+            applicationId: application.applicationId,
+            status: 'accepted',
+            reason: application.reason,
+            userId: application.userId
+        }
+       $scope.apiClient.campaignCampaignIdApplicationPatch({campaignId: application.campaignId}, newApply).then(function(res){
+           $rootScope.alerts.push({type:"success", msg:"Successfully accepted application"});
+           $scope.$apply();
+           $scope.selectedCampaign.applications = [];
+           $scope.getMyCampaigns();
+       });
+    }
 });
