@@ -22,6 +22,7 @@ var request;
 
 var _ = require('lodash');
 var async = require('async');
+var request = require('request');
 var querystring = require('querystring');
 
 var secrets = require('../config/secrets');
