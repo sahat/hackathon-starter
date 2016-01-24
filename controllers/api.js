@@ -27,7 +27,7 @@ var querystring = require('querystring');
 
 var secrets = require('../config/secrets');
 
-var SCHEDULER_SERVER = "http://la8bel-agent-dev.elasticbeanstalk.com/schedule";
+var SCHEDULER_SERVER = "http://la8bel-agent-dev.elasticbeanstalk.com";
 
 /**
  * GET /api
@@ -210,11 +210,13 @@ exports.scheduleFacebookPost = function(req, res, next) {
           if (error) {
               console.error("Unable to update the post ID to application collection using lambda service.");
               console.error(error);
+              return res.send(JSON.stringify(error));
           } else {
               console.log(finalBody);
+              console.log("success");
+              return res.send(response);
           }
-          
-          next(error, finalBody);
+
     });
 };
 

@@ -37,7 +37,7 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
         "userId": $rootScope.user._id,
         "campaignId": id,
         "applicationId": generateUUID(),
-        "postContent": "",
+        "message": "",
         "pageId": ""
     }
 

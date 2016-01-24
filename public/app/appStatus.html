@@ -39,6 +39,7 @@
                 <div class="well clearfix" ng-repeat="apply in selectedCampaign.applications">
                     <div><label>From User Id:&nbsp;</label>{{apply.userId}}</div>
                     <div><label>Reasons:&nbsp;</label>{{apply.reason}}</div>
+                    <div><label>Proposed Post Content:&nbsp;</label>{{apply.message}}</div>
                     <div ng-show="apply.status=='pending'">
                         <label>Pick a Date and Time to post:&nbsp;</label>
                         <p class="input-group col-md-3">
@@ -49,7 +50,7 @@
                         </p>
                         <uib-timepicker ng-model="apply.time" ng-init="apply.time = ''"></uib-timepicker>
                     </div>
-                    <div ng-show="apply.status=='accepted' || apply.status=='completed'">Scheduled post time: {{apply.actionTime}}</div>
+                    <div ng-show="apply.status=='accepted' || apply.status=='completed'"><label>Scheduled post time:</label>&nbsp;{{apply.actionTime}}</div>
                     <a ng-show="apply.status=='pending'" class="btn btn-primary pull-right" ng-click="acceptApply(apply)" >Accept</a>
                     <a ng-show="apply.status=='accepted'" class="btn btn-success pull-right" disabled>Accepted</a>
                 </div>
@@ -75,7 +76,7 @@
                                     <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
                                 </a>
                                 <p class="desc-text">{{campaign.details}}</p>
-                                <ul class="list-group">
+                                <ul ng-show="campaign.status != 'accepted'" class="list-group">
                                     <li class="list-group-item">
                                         <span class="badge">{{campaign.numberOfFollowers}}</span>
                                         <span>Minimum Followers</span>
@@ -89,7 +90,7 @@
                                     <li class="list-group-item" ng-class="{'list-group-item-warning': campaign.status=='pending', 'list-group-item-success': campaign.status=='accepted', 'list-group-item-danger': campaign.status=='rejected'}">{{campaign.status}}</li>
                                 </ul>
                                 <div ng-show="campaign.status == 'accepted'">
-                                <label>Time to post:&nbsp;{{campaign.application.postTime}}</label><button class="btn btn-primary" ng-click="confirmPostTime(campaign)">Confirm</button>
+                                <label>Time to post:&nbsp;{{campaign.application.actionTime | date:'medium'}}</label><button class="btn btn-primary" ng-click="confirmPostTime(campaign)">Confirm</button>
                                 </div>
                             </div>
                         </div>

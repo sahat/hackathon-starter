@@ -69,7 +69,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
         actionTime.setHours(application.time.getHours());
         actionTime.setMinutes(application.time.getMinutes());
         var newApply = {
-            actionTime: actionTime,
+            actionTime: actionTime.getTime(),
             campaignId:application.campaignId,
             applicationId: application.applicationId,
             status: 'accepted',
@@ -88,18 +88,36 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
 
     $scope.confirmPostTime = function(campaign){
         //TODO: set application status to close
-        $http.post('/api/scheduleFBPost', {
-            applicationId: campaign.application.applicationId,
-            pageId: campaign.application.pageId,
-            actionTime: campaign.application.postTime,
-            pageAccessToken: "",
-            message: campaign.application.message
-        }, {header: {"Content-type": "application/json"}}).then(function(res){
-                $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
-                campaign.application.status = "completed";
-                $scope.apiClient.campaignCampaignIdApplicationPatch({campaignId: application.campaignId}, campaign.application).then(function(res){
-                    $scope.$apply();
-                });
+        var fbPageAccessToken = "";
+        $scope.apiClient.insightsFacebookPagesGet({"accessToken": $rootScope.fbToken}, {}, {
+                headers:{"Content-type": "application/json"}
+            }
+        ).then(function(res){
+                var pageList = res.data.data;
+                for (var i=0; i<pageList.length; i++){
+                    if(pageList[i].id == campaign.application.pageId ){
+                        fbPageAccessToken = pageList[i].access_token;
+                        break;
+                    }
+                }
+                if(fbPageAccessToken != ''){
+                    $http.post('/api/schedulepost', {
+                        applicationId: campaign.application.applicationId,
+                        pageId: campaign.application.pageId,
+                        actionTime: campaign.application.actionTime,
+                        pageAccessToken: fbPageAccessToken,
+                        message: campaign.application.message
+                    }, {header: {"Content-type": "application/json"}}).then(function(res){
+                            $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
+                            campaign.application.status = "completed";
+                            $scope.apiClient.applicationApplicationIdPatch({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
+                                $scope.$apply();
+                            });
+                        })
+                }
+            }).catch(function(){
+                console.log("Cannot get pages ");
             });
+;
     };
 });
