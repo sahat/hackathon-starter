@@ -107,7 +107,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                         applicationId: campaign.application.applicationId,
                         pageId: campaign.application.pageId,
                         actionTime: campaign.application.actionTime,
-                        accessToken: fbPageAccessToken,
+                        accessToken: $rootScope.fbToken,
                         message: campaign.application.message
                     }, {header: {"Content-type": "application/json"}}).then(function(res){
                             $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
