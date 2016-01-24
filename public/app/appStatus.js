@@ -40,7 +40,9 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
         var cIds = [];
         if($scope.myApplications.length > 0){
             for (var i=0; i<$scope.myApplications.length; i++){
-                cIds.push($scope.myApplications[i].campaignId);
+                if(!cIds.indexOf($scope.myApplications[i].campaignId) > -1){
+                    cIds.push($scope.myApplications[i].campaignId);
+                }
             }
             $scope.apiClient.campaignGet({"count": 100, campaignIds: cIds.join(), ageRange: 0, numberOfFollowers: 0, startKey:"", tags: ""}, {}, {
                     headers:{"Content-type": "application/json"}
