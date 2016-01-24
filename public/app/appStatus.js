@@ -40,7 +40,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
         var cIds = [];
         if($scope.myApplications.length > 0){
             for (var i=0; i<$scope.myApplications.length; i++){
-                if(!cIds.indexOf($scope.myApplications[i].campaignId) > -1){
+                if(cIds.indexOf($scope.myApplications[i].campaignId) === -1){
                     cIds.push($scope.myApplications[i].campaignId);
                 }
             }
