@@ -12,8 +12,9 @@ app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope) {
                               "ageRange": "0-100",
                               "count": "50",
                               "numberOfFollowers": 10,
-                                "campaignIds": ""
-
+                                "campaignIds": "",
+                               "startKey": "",
+                               "tags": ""
                            };
      $scope.toggleSearch = function(){
             $scope.showSearchCriteria = !$scope.showSearchCriteria;

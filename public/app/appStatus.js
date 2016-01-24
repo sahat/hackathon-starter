@@ -1,10 +1,13 @@
-app.controller('appStatusCtrl', function ($scope, $rootScope) {
+app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
     $scope.user = $rootScope.user;
+    $scope.user.campaignIds =  ["c356d31e-b36e-4b63-b5df-ef87771d800b"];
     $scope.appliedCampaigns = [];
     $scope.myApplications = [];
+    $scope.maxDate = new Date(2016, 2, 23);
+    $scope.minDate = new Date();
 
     $scope.getMyCampaigns = function(){
-        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0}, {}, {
+        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
                 headers:{"Content-type": "application/json"}
             }
         ).then(function(campaigns){
@@ -24,7 +27,10 @@ app.controller('appStatusCtrl', function ($scope, $rootScope) {
         $scope.apiClient.campaignCampaignIdApplicationGet({campaignId: id}, {}, {
             headers:{"Content-type": "application/json"}
         }).then(function(res){
-            $scope.selectedCampaign.applications = res.data;
+//                angular.forEach(res.data, function(application){
+//                    application.actionTime = new Date();
+//                });
+                $scope.selectedCampaign.applications = res.data;
             $scope.$apply();
         });
     }
@@ -37,11 +43,19 @@ app.controller('appStatusCtrl', function ($scope, $rootScope) {
             for (var i=0; i<$scope.myApplications.length; i++){
                 cIds.push($scope.myApplications[i].campaignId);
             }
-            $scope.apiClient.campaignGet({"count": 100, campaignIds: cIds.join(), ageRange: 0, numberOfFollowers: 0}, {}, {
+            $scope.apiClient.campaignGet({"count": 100, campaignIds: cIds.join(), ageRange: 0, numberOfFollowers: 0, startKey:"", tags: ""}, {}, {
                     headers:{"Content-type": "application/json"}
                 }
             ).then(function(campaigns){
                     $scope.appliedCampaigns = campaigns.data;
+                    angular.forEach($scope.appliedCampaigns, function(campaign){
+                        for(var i=0; i<$scope.myApplications.length; i++){
+                            if(campaign.campaignId == $scope.myApplications[i].campaignId){
+                                campaign.application =  $scope.myApplications[i];
+                                break;
+                            }
+                        }
+                    });
                     $scope.$apply   ();
                 }).catch(function(){
                     console.log("error");
@@ -51,7 +65,12 @@ app.controller('appStatusCtrl', function ($scope, $rootScope) {
 
     $scope.acceptApply = function(application){
         application.status = 'accepted';
+        var actionTime = new Date();
+        actionTime.setDate(application.date.getDate());
+        actionTime.setHours(application.time.getHours());
+        actionTime.setMinutes(application.time.getMinutes());
         var newApply = {
+            actionTime: actionTime,
             campaignId:application.campaignId,
             applicationId: application.applicationId,
             status: 'accepted',
@@ -65,4 +84,21 @@ app.controller('appStatusCtrl', function ($scope, $rootScope) {
            $scope.getMyCampaigns();
        });
     }
+
+    $scope.confirmPostTime = function(campaign){
+        //TODO: set application status to close
+        $http.post('/api/scheduleFBPost', {
+            applicationId: campaign.application.applicationId,
+            pageId: campaign.application.pageId,
+            actionTime: campaign.application.postTime,
+            pageAccessToken: "",
+            message: campaign.application.message
+        }, {header: {"Content-type": "application/json"}}).then(function(res){
+                $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
+                campaign.application.status = "completed";
+                $scope.apiClient.campaignCampaignIdApplicationPatch({campaignId: application.campaignId}, campaign.application).then(function(res){
+                    $scope.$apply();
+                });
+            });
+    };
 });

@@ -5,7 +5,7 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
     $scope.myCampaigns = [];
     $scope.showAppForm = showForm;
     $scope.submittedForm = false;
-    $scope.apiClient.campaignGet({"count": 1, campaignIds: id, ageRange: 0, numberOfFollowers: 0}, {}, {
+    $scope.apiClient.campaignGet({"count": 1, campaignIds: id, ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
             headers:{"Content-type": "application/json"}
         }
     ).then(function(campaigns){
@@ -36,11 +36,26 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
         reason: "",
         "userId": $rootScope.user._id,
         "campaignId": id,
-        "applicationId": generateUUID()
+        "applicationId": generateUUID(),
+        "postContent": "",
+        "pageId": ""
     }
 
+    $scope.pageList = [];
+    if($rootScope.fbToken){
+        $scope.apiClient.insightsFacebookPagesGet({"accessToken": $rootScope.fbToken}, {}, {
+                headers:{"Content-type": "application/json"}
+            }
+        ).then(function(res){
+                $scope.pageList = res.data.data;
+                $scope.appForm.pageId = $scope.pageList[0].id;
+                $scope.$apply();
+            }).catch(function(){
+                console.log("Cannot get pages ");
+            });
+    }
     $scope.submitAppForm = function(){
-        if ($scope.appForm.reason !=''){
+        if ($scope.appForm.reason !='' && $scope.appForm.postContent !=''){
             $scope.apiClient.campaignCampaignIdApplicationPost({campaignId: id}, $scope.appForm, {
                     headers:{"Content-type": "application/json"}
                 }

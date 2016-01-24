@@ -27,7 +27,7 @@ var querystring = require('querystring');
 
 var secrets = require('../config/secrets');
 
-var SCHEDULER_SERVER = "http://default-environment-wrvkfm7bup.elasticbeanstalk.com";
+var SCHEDULER_SERVER = "http://la8bel-agent-dev.elasticbeanstalk.com/schedule";
 
 /**
  * GET /api
@@ -191,22 +191,21 @@ exports.postFeedFacebook = function(req, res, next) {
  *  callback, response callback function
  *  Note that: the page access token could be expired when the action time is set after the expired token time. 
  **/
-exports.scheduleFacebookPost = function(actionTime, pageAccessToken, message, pageId, applicationId, callback) {
+exports.scheduleFacebookPost = function(req, res, next) {
     var options = {
         method: 'POST',
         url: SCHEDULER_SERVER + '/schedule', 
         body:  JSON.stringify({
-            applicationId : applicationId,
-            pageId: pageId,
-            actionTime: actionTime,
-            pageAccessToken: pageAccessToken,
-            message: message
+            applicationId : req.body.applicationId,
+            pageId: req.body.pageId,
+            actionTime: req.body.actionTime,
+            pageAccessToken: req.body.pageAccessToken,
+            message: req.body.message
         }),
         headers: {
           'Content-Type': 'application/json'
         }
     };
-                      
     request(options, function(error, response, finalBody) {
           if (error) {
               console.error("Unable to update the post ID to application collection using lambda service.");
@@ -215,7 +214,7 @@ exports.scheduleFacebookPost = function(actionTime, pageAccessToken, message, pa
               console.log(finalBody);
           }
           
-          callback(error, finalBody);
+          next(error, finalBody);
     });
 };
 

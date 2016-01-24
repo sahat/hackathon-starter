@@ -48,6 +48,16 @@
                         <div class="input-group col-lg-10">
                             <textarea type="text" ng-model="appForm.reason" class="form-control input" name="reasonsInput" id="reasonsInput" placeholder="Enter reasons for the campaign owner to choose you." required/>
                         </div>
+                        <label for="contentInput">Proposed post content</label>
+                        <div class="input-group col-lg-10">
+                            <textarea type="text" ng-model="appForm.postContent" class="form-control input" name="contentInput" id="contentInput" placeholder="Propose the content of the post" required/>
+                        </div>
+                        <label ng-show="pageList.length > 0" for="pageSelect">Page to post {{appForm.pageId}}</label>
+                        <div ng-show="pageList.length > 0" class="input-group col-lg-10">
+                            <select id="pageSelect" ng-model="appForm.pageId" ng-options="page.id as page.name for page in pageList">
+                                <!--<option ng-repeat="page in pageList"  ng-selected="appForm.pageId == page.id" ng-value="page.id">{{page.name}}</option>-->
+                            </select>
+                        </div>
                     </div>
                     <div class="row">
                         <label class="col-lg-6">Pick a campaign to trade</label>
