@@ -69,7 +69,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
         actionTime.setHours(application.time.getHours());
         actionTime.setMinutes(application.time.getMinutes());
         var newApply = {
-            actionTime: actionTime.getTime(),
+            actionTime: actionTime.getTime()+"",
             campaignId:application.campaignId,
             applicationId: application.applicationId,
             status: 'accepted',
