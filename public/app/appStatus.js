@@ -1,6 +1,5 @@
 app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
     $scope.user = $rootScope.user;
-    $scope.user.campaignIds =  ["c356d31e-b36e-4b63-b5df-ef87771d800b"];
     $scope.appliedCampaigns = [];
     $scope.myApplications = [];
     $scope.maxDate = new Date(2016, 2, 23);
@@ -75,9 +74,11 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
             applicationId: application.applicationId,
             status: 'accepted',
             reason: application.reason,
-            userId: application.userId
+            userId: application.userId,
+            message: application.message,
+            pageId: application.pageId
         }
-       $scope.apiClient.campaignCampaignIdApplicationPatch({campaignId: application.campaignId}, newApply).then(function(res){
+       $scope.apiClient.applicationApplicationIdPatch({applicationId: application.applicationId}, newApply).then(function(res){
            $rootScope.alerts.push({type:"success", msg:"Successfully accepted application"});
            $scope.$apply();
            $scope.selectedCampaign.applications = [];

@@ -49,7 +49,7 @@
                         </p>
                         <uib-timepicker ng-model="apply.time" ng-init="apply.time = ''"></uib-timepicker>
                     </div>
-                    <div>actionTime: {{apply.actionTime}}</div>
+                    <div ng-show="apply.status=='accepted' || apply.status=='completed'">Scheduled post time: {{apply.actionTime}}</div>
                     <a ng-show="apply.status=='pending'" class="btn btn-primary pull-right" ng-click="acceptApply(apply)" >Accept</a>
                     <a ng-show="apply.status=='accepted'" class="btn btn-success pull-right" disabled>Accepted</a>
                 </div>

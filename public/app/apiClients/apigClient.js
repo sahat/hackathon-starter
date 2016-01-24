@@ -148,13 +148,13 @@ apigClientFactory.newClient = function (config) {
     apigClient.campaignGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-//        apiGateway.core.utils.assertParametersDefined(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange', 'startKey', 'tags'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange', 'startKey', 'tags'], ['body']);
         
         var campaignGetRequest = {
             verb: 'get'.toUpperCase(),
             path: pathComponent + uritemplate('/campaign').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange']),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange', 'startKey', 'tags']),
             body: body
         };
         
@@ -274,13 +274,13 @@ apigClientFactory.newClient = function (config) {
     apigClient.insightsFacebookGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, ['accessToken', 'pageId'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['postId', 'accessToken', 'pageId'], ['body']);
         
         var insightsFacebookGetRequest = {
             verb: 'get'.toUpperCase(),
             path: pathComponent + uritemplate('/insights/facebook').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['accessToken', 'pageId']),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['postId', 'accessToken', 'pageId']),
             body: body
         };
         
