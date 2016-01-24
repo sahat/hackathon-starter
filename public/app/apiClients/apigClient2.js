@@ -274,7 +274,7 @@ apigClientFactory.newClient = function (config) {
     apigClient.insightsFacebookGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-//        apiGateway.core.utils.assertParametersDefined(params, ['postId', 'accessToken', 'pageId'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['postId', 'accessToken', 'pageId'], ['body']);
         
         var insightsFacebookGetRequest = {
             verb: 'get'.toUpperCase(),
@@ -340,6 +340,42 @@ apigClientFactory.newClient = function (config) {
         
         
         return apiGatewayClient.makeRequest(insightsFacebookPagesOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.insightsFacebookSchedulepostPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['body'], ['body']);
+        
+        var insightsFacebookSchedulepostPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/insights/facebook/schedulepost').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(insightsFacebookSchedulepostPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.insightsFacebookSchedulepostOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var insightsFacebookSchedulepostOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/insights/facebook/schedulepost').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(insightsFacebookSchedulepostOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     

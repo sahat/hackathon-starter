@@ -101,11 +101,11 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                     }
                 }
                 if(fbPageAccessToken != ''){
-                    $http.post('/api/schedulepost', {
+                    $scope.apiClient.insightsFacebookSchedulepostPost({}, {
                         applicationId: campaign.application.applicationId,
                         pageId: campaign.application.pageId,
                         actionTime: campaign.application.actionTime,
-                        pageAccessToken: fbPageAccessToken,
+                        accessToken: fbPageAccessToken,
                         message: campaign.application.message
                     }, {header: {"Content-type": "application/json"}}).then(function(res){
                             $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
@@ -113,6 +113,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                             $scope.apiClient.applicationApplicationIdPatch({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
                                 $scope.$apply();
                             });
+                            $scope.$apply();
                         })
                 }
             }).catch(function(){
