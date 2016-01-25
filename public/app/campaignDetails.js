@@ -60,11 +60,17 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
                     headers:{"Content-type": "application/json"}
                 }
             ).then(function(res){
-                 $rootScope.alerts.push({type:"success", msg:"Successfully applied to campaign."});
-                    $scope.submittedForm = true;
+                 if(!res.data.errorMessage){
+                     $rootScope.alerts.push({type:"success", msg:"Successfully applied to campaign."});
+                     $scope.submittedForm = true;
+                 } else {
+                     $rootScope.alerts.push({type:"danger", msg:"Failed to apply to campaign."});
+                 }
                     $scope.$apply();
+
+
                 }).catch(function(res){
-                    $rootScope.alerts.push({type:"danger", msg:"Successfully applied to campaign."});
+                    $rootScope.alerts.push({type:"danger", msg:"Failed to apply to campaign."});
                     $scope.$apply();
                 });
         }

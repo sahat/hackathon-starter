@@ -27,6 +27,8 @@ var querystring = require('querystring');
 
 var secrets = require('../config/secrets');
 
+var SCHEDULER_SERVER = "http://la8bel-agent-dev.elasticbeanstalk.com";
+
 /**
  * GET /api
  * List of API examples.
@@ -178,6 +180,44 @@ exports.postFeedFacebook = function(req, res, next) {
       friends: results.getMyFriends
     });
   });
+};
+
+/**
+ *  schedule a facebook post using our manual server
+ *  actionTime, is the time when the post should be sent out to a Facebook Page, e.g. 5 minutes, 5 secs, 2 days, or timestamp
+ *  pageAccessToken, facebook page access token.
+ *  message, message to be sent out
+ *  applicationId, application id of a campaign
+ *  callback, response callback function
+ *  Note that: the page access token could be expired when the action time is set after the expired token time. 
+ **/
+exports.scheduleFacebookPost = function(req, res, next) {
+    var options = {
+        method: 'POST',
+        url: SCHEDULER_SERVER + '/schedule', 
+        body:  JSON.stringify({
+            applicationId : req.body.applicationId,
+            pageId: req.body.pageId,
+            actionTime: req.body.actionTime,
+            pageAccessToken: req.body.pageAccessToken,
+            message: req.body.message
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    };
+    request(options, function(error, response, finalBody) {
+          if (error) {
+              console.error("Unable to update the post ID to application collection using lambda service.");
+              console.error(error);
+              return res.send(JSON.stringify(error));
+          } else {
+              console.log(finalBody);
+              console.log("success");
+              return res.send(response);
+          }
+
+    });
 };
 
 

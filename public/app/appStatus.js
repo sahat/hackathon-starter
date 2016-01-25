@@ -40,7 +40,9 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
         var cIds = [];
         if($scope.myApplications.length > 0){
             for (var i=0; i<$scope.myApplications.length; i++){
-                cIds.push($scope.myApplications[i].campaignId);
+                if(cIds.indexOf($scope.myApplications[i].campaignId) === -1){
+                    cIds.push($scope.myApplications[i].campaignId);
+                }
             }
             $scope.apiClient.campaignGet({"count": 100, campaignIds: cIds.join(), ageRange: 0, numberOfFollowers: 0, startKey:"", tags: ""}, {}, {
                     headers:{"Content-type": "application/json"}
@@ -69,7 +71,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
         actionTime.setHours(application.time.getHours());
         actionTime.setMinutes(application.time.getMinutes());
         var newApply = {
-            actionTime: actionTime.getTime(),
+            actionTime: actionTime.getTime()+"",
             campaignId:application.campaignId,
             applicationId: application.applicationId,
             status: 'accepted',
@@ -101,11 +103,11 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                     }
                 }
                 if(fbPageAccessToken != ''){
-                    $http.post('/api/schedulepost', {
+                    $scope.apiClient.insightsFacebookSchedulepostPost({}, {
                         applicationId: campaign.application.applicationId,
                         pageId: campaign.application.pageId,
                         actionTime: campaign.application.actionTime,
-                        pageAccessToken: fbPageAccessToken,
+                        accessToken: $rootScope.fbToken,
                         message: campaign.application.message
                     }, {header: {"Content-type": "application/json"}}).then(function(res){
                             $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
@@ -113,6 +115,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                             $scope.apiClient.applicationApplicationIdPatch({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
                                 $scope.$apply();
                             });
+                            $scope.$apply();
                         })
                 }
             }).catch(function(){
