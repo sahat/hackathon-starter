@@ -91,6 +91,28 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
     $scope.confirmPostTime = function(campaign){
         //TODO: set application status to close
         var fbPageAccessToken = "";
+        $http.get('/extendFbToken/' + $rootScope.fbToken, {}).then(function(res){
+            if(!res.data.message){
+                $rootScope.fbToken = res.data.newToken;
+//                $http.post("/account/profile", $scope.user, {headers:{"Content-type": "application/json"}
+//                });
+                $scope.apiClient.insightsFacebookSchedulepostPost({}, {
+                    applicationId: campaign.application.applicationId,
+                    pageId: campaign.application.pageId,
+                    actionTime: campaign.application.actionTime,
+                    accessToken: $rootScope.fbToken,
+                    message: campaign.application.message
+                }, {header: {"Content-type": "application/json"}}).then(function(res){
+                        $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
+                        campaign.application.status = "completed";
+                        $scope.apiClient.applicationApplicationIdPatch({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
+                            $scope.$apply();
+                        });
+                        $scope.$apply();
+                    })
+;
+            }
+        })
         $scope.apiClient.insightsFacebookPagesGet({"accessToken": $rootScope.fbToken}, {}, {
                 headers:{"Content-type": "application/json"}
             }
@@ -103,20 +125,6 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                     }
                 }
                 if(fbPageAccessToken != ''){
-                    $scope.apiClient.insightsFacebookSchedulepostPost({}, {
-                        applicationId: campaign.application.applicationId,
-                        pageId: campaign.application.pageId,
-                        actionTime: campaign.application.actionTime,
-                        accessToken: $rootScope.fbToken,
-                        message: campaign.application.message
-                    }, {header: {"Content-type": "application/json"}}).then(function(res){
-                            $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
-                            campaign.application.status = "completed";
-                            $scope.apiClient.applicationApplicationIdPatch({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
-                                $scope.$apply();
-                            });
-                            $scope.$apply();
-                        })
                 }
             }).catch(function(){
                 console.log("Cannot get pages ");
