@@ -20,7 +20,20 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
         }).catch(function(){
             console.log("error");
         });
-//    $scope.user.campaignIds = ["ebada479-9945-46c4-89bb-02a0fa81729f", "ce0d570a-92db-4f76-b21a-326404c5fd76"]
+
+    $scope.getMyCampaigns = function(){
+        if($scope.user.campaignIds.length > 0 && $scope.myCampaigns < 1){
+            $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
+                    headers:{"Content-type": "application/json"}
+                }
+            ).then(function(campaigns){
+                    $scope.myCampaigns = campaigns.data;
+                    $scope.$apply   ();
+                }).catch(function(){
+                    console.log("error");
+                });
+        }
+    };
     if($scope.user.campaignIds.length > 0){
         $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
                 headers:{"Content-type": "application/json"}
@@ -32,13 +45,31 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
                 console.log("error");
             });
     }
+//    $scope.appForm = {
+//        applicationId: generateUUID(),
+//        applicant: {
+//            userId: $rootScope.user._id,
+//            postContent: "",
+//            requirements: "",
+//            campaignId: "",
+//            pageId: "",
+//            reasons:""
+//        },
+//        owner: {
+//            campaignId: id,
+//            userId: ""
+//        }
+//    }
     $scope.appForm = {
-        reason: "",
-        "userId": $rootScope.user._id,
-        "campaignId": id,
-        "applicationId": generateUUID(),
-        "message": "",
-        "pageId": ""
+        applicationId: generateUUID(),
+        userId: $rootScope.user._id,
+        postContent: "",
+        requirements: "",
+        applicantCampaignId: "",
+        facebookPageId: "",
+        reasons: "",
+        campaignId: id,
+        ownerUserId: ""
     }
 
     $scope.pageList = [];
@@ -48,14 +79,15 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
             }
         ).then(function(res){
                 $scope.pageList = res.data.data;
-                $scope.appForm.pageId = $scope.pageList[0].id;
+                $scope.appForm.facebookPageId = $scope.pageList[0].id;
                 $scope.$apply();
             }).catch(function(){
                 console.log("Cannot get pages ");
             });
     }
     $scope.submitAppForm = function(){
-        if ($scope.appForm.reason !='' && $scope.appForm.message !=''){
+        $scope.appForm.ownerUserId = $scope.campaign.userId;
+        if ($scope.appForm.reasons !='' && $scope.appForm.postContent !=''){
             $scope.apiClient.campaignCampaignIdApplicationPost({campaignId: id}, $scope.appForm, {
                     headers:{"Content-type": "application/json"}
                 }

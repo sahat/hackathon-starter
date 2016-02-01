@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -340,6 +340,96 @@ apigClientFactory.newClient = function (config) {
         
         
         return apiGatewayClient.makeRequest(insightsFacebookPagesOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.insightsFacebookSchedulepostPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['body'], ['body']);
+        
+        var insightsFacebookSchedulepostPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/insights/facebook/schedulepost').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(insightsFacebookSchedulepostPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.insightsFacebookSchedulepostOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var insightsFacebookSchedulepostOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/insights/facebook/schedulepost').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(insightsFacebookSchedulepostOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.insightsTwitterGet = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['userId'], ['body']);
+        
+        var insightsTwitterGetRequest = {
+            verb: 'get'.toUpperCase(),
+            path: pathComponent + uritemplate('/insights/twitter').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['userId']),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(insightsTwitterGetRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.insightsTwitterOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var insightsTwitterOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/insights/twitter').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(insightsTwitterOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.userPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['body'], ['body']);
+        
+        var userPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/user').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(userPostRequest, authType, additionalParams, config.apiKey);
     };
     
     

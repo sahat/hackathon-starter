@@ -94,6 +94,7 @@ app.controller('rootCtrl', function ($scope, $rootScope, $http, $location, $uibM
     $http.get('/login').then(function(res){
         if(res.data._id){
             $rootScope.user = res.data;
+//            $rootScope.user.campaignIds = ["ebada479-9945-46c4-89bb-02a0fa81729f", "ce0d570a-92db-4f76-b21a-326404c5fd76"]
             for(var i=0; i<$rootScope.user.tokens.length; i++){
                 if($rootScope.user.tokens[i].kind == 'facebook'){
                     $rootScope.fbToken = $scope.user.tokens[i].accessToken;

@@ -24,7 +24,7 @@ var _ = require('lodash');
 var async = require('async');
 var request = require('request');
 var querystring = require('querystring');
-
+var User = require('../models/User');
 var secrets = require('../config/secrets');
 
 var SCHEDULER_SERVER = "http://la8bel-agent-dev.elasticbeanstalk.com";
@@ -182,6 +182,70 @@ exports.postFeedFacebook = function(req, res, next) {
   });
 };
 
+exports.schedulePostsForApplication = function(req, res, nect){
+    graph = require('fbgraph');
+    var trade = req.body.application;
+    var schedulePost = function(pageId, actionTime, accessToken, postContent, userId, callback){
+        var scheduleOptions = {
+            method: 'POST',
+            url: secrets.lambda.endPoint + '/insights/facebook/schedulepost',
+            body:  JSON.stringify({
+                applicationId : trade.applicationId,
+                pageId: pageId,
+                actionTime: actionTime,
+                accessToken: accessToken,
+                message: postContent
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': secrets.lambda.apiKey
+            }
+        };
+        if(!accessToken){
+            User.findById(userId, function(err, user) {
+                if(user){
+                    for (var i=0; i< user.tokens.length; i++){
+                        if(user.tokens[i].kind == 'facebook'){
+                            person.accessToken = user.tokens[i].accessToken;
+                            break;
+                        }
+                    }
+                }
+            });
+        }
+        if(accessToken){
+            // TODO: extend token if needed
+            request(scheduleOptions, function(error, response, finalBody) {
+                if (error) {
+                    console.error("Unable to update the post ID to application collection using lambda service.");
+                    console.error(error);
+                    return res.send(JSON.stringify(error));
+                } else {
+                    console.log(finalBody);
+                    console.log("success");
+                    if(callback){
+                        return callback();
+                    }
+                }
+
+            });
+        } else {
+            console.error("Cannot get access token for " + userId);
+            return false;
+        }
+
+    }
+    if(trade.ownerActionTime){
+        schedulePost(trade.facebookPageId, trade.actionTime, null, trade.postContent, trade.userId, function(response){
+            schedulePost(trade.ownerFacebookPageId, trade.ownerActionTime, trade.ownerAccessToken, trade.ownerPostContent, trade.ownerUserId, function(response){return res.send(response)});
+        });
+    } else {
+        return res.status(500).send("Missing owner's post time.");
+
+    }
+
+
+}
 /**
  *  schedule a facebook post using our manual server
  *  actionTime, is the time when the post should be sent out to a Facebook Page, e.g. 5 minutes, 5 secs, 2 days, or timestamp

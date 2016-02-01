@@ -38,64 +38,77 @@
     </div>
     <div ng-show="showAppForm && !submittedForm">
     <div class="row">
-        <h3 class="page-header">Apply for this Campaign</h3>
+        <h3 class="page-header">Propose A Trade</h3>
     </div>
         <div class="row" >
-            <form role="form">
-                <div class="col-lg-9">
-                    <div class="form-group">
-                        <label for="reasonsInput">Your qualifications</label>
-                        <div class="input-group col-lg-10">
-                            <textarea type="text" ng-model="appForm.reason" class="form-control input" name="reasonsInput" id="reasonsInput" placeholder="Enter reasons for the campaign owner to choose you." required/>
+            <form class="appForm" role="form">
+                <div class="col-lg-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Apply for this Campaign</h3>
                         </div>
-                        <label for="contentInput">Proposed post content</label>
-                        <div class="input-group col-lg-10">
-                            <textarea type="text" ng-model="appForm.message" ng-init="appForm.message=''" class="form-control input" name="contentInput" id="contentInput" placeholder="Propose the content of the post" required/>
-                        </div>
-                        <label ng-show="pageList.length > 0" for="pageSelect">Page to post</label>
-                        <div ng-show="pageList.length > 0" class="input-group col-lg-10">
-                            <select id="pageSelect" ng-model="appForm.pageId" ng-options="page.id as page.name for page in pageList">
-                                <!--<option ng-repeat="page in pageList"  ng-selected="appForm.pageId == page.id" ng-value="page.id">{{page.name}}</option>-->
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-lg-6">Pick a campaign to trade</label>
-                    </div>
-                    <div>
-                        <div ng-repeat="campaign in myCampaigns" class="campaign-item col-md-4 col-sm-6">
-                            <div class="thumbnail">
-                                <div class="caption">
-                                    <h4 class="media-heading">{{campaign.topic}}</h4>
-                                    <a>
-                                        <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
-                                    </a>
-                                    <p class="desc-text">{{campaign.details}}</p>
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <span class="badge">{{campaign.numberOfFollowers}}</span>
-                                            <span>Minimum Followers</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span class="badge">{{campaign.minAge}}-{{campaign.maxAge}}</span>
-                                            Ages
-                                        </li>
-                                    </ul>
-                                    <p>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="radio" ng-model="appForm.tradeCampaign" value="{{campaign.campaignId}}">&nbsp;Select
-                                            </label>
-                                        </div>
-                                    </p>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Your qualifications</label>
+                                <div class="input-group col-lg-10">
+                                    <textarea type="text" ng-model="appForm.reasons" class="form-control input" name="reasonsInput" id="reasonsInput" placeholder="Enter reasons for the campaign owner to choose you." required/>
                                 </div>
+                                <label>Content you will post</label>
+                                <div class="input-group col-lg-10">
+                                    <textarea type="text" ng-model="appForm.postContent" class="form-control input" name="contentInput" id="contentInput" placeholder="Propose a post for the campaign" required/>
+                                </div>
+                                <label ng-show="pageList.length > 0" for="pageSelect">Page to post</label>
+                                <div ng-show="pageList.length > 0" class="input-group col-lg-10">
+                                    <select id="pageSelect" ng-model="appForm.facebookPageId" ng-options="page.id as page.name for page in pageList">
+                                    </select>
+                                </div>
+                                <div ng-show="pageList.length < 1"><p class="alert alert-info">You need to have a Facebook Page to apply.</p></div>
+
                             </div>
                         </div>
-                        <div ng-show="myCampaigns.length < 1"><p class="alert alert-info">You do not have any campaigns to trade.</p></div>
                     </div>
                 </div>
-                <a class="btn btn-primary" ng-click="submitAppForm()" >Apply</a>
-                <a class="btn btn-warning" href="#/campaign">Go Back</a>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Do my campaign</h3>
+                            </div>
+                            <div class="panel-body">
+                                <uib-tabset>
+                                    <uib-tab heading="Enter my requirements">
+                                        <br/>
+                                        <label>Requirements</label>
+                                        <textarea type="text" ng-model="appForm.requirements" class="form-control input" placeholder="Enter requirements for the user to fulfill." required/>
+                                    </uib-tab>
+                                    <uib-tab select="getMyCampaigns()" heading="Select a campaign">
+                                        <br/>
+                                        <div ng-repeat="campaign in myCampaigns" class="campaign-item col-md-4 col-sm-6">
+                                            <div class="thumbnail">
+                                                <div class="caption">
+                                                    <h4 class="media-heading">{{campaign.topic}}</h4>
+                                                    <a>
+                                                        <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.topic}}"/>
+                                                    </a>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="radio" ng-model="appForm.applicantCampaignId" value="{{campaign.campaignId}}">&nbsp;Select
+                                                        </label>
+                                                    </div>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-show="myCampaigns.length < 1"><p class="alert alert-info">You do not have any campaigns to trade.</p></div>
+                                    </uib-tab>
+                                </uib-tabset>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary" ng-click="submitAppForm()" >Apply</a>
+                    <a class="btn btn-warning" href="#/campaign">Go Back</a>
+                </div>
+
             </form>
         </div>
     </div>

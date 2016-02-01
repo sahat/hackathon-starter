@@ -1,21 +1,23 @@
-<h3>App Status</h3>
+<h3>Campaings and Applications Status</h3>
 
 <div class="form-group col-lg-12 col-sm-6">
     <uib-tabset>
+        <!--Your Campaigns Tab-->
         <uib-tab heading="Your Campaigns">
             <div ng-show="user.campaignIds.length < 1">
-                <p class="alert alert-info">Getting started by creating your first campaign.&nbsp;&nbsp;<a href="#/createCampaign" class="btn btn-success" >Post your Campaign</a>
+                <p class="alert alert-info">
+                    Getting started by creating your first campaign.&nbsp;&nbsp;<a href="#/createCampaign" class="btn btn-success" >Post your Campaign</a>
                 </p>
             </div>
             <div ng-show="user.campaignIds.length > 0">
                 <div class="row">
                     <h3 class="page-header">Your Campaigns</h3><p >Click to see applications</p>
-                    <div ng-repeat="campaign in campaigns" class="campaign-item col-md-3 col-sm-6">
+                    <div ng-click="showCampaignStatus(campaign.campaignId)" ng-repeat="campaign in campaigns" class="campaign-item col-md-3 col-sm-6">
                         <div class="thumbnail">
                             <div class="caption">
                                 <h4 class="media-heading">{{campaign.topic}}</h4>
 
-                                <a href ng-click="showCampaignStatus(campaign.campaignId)">
+                                <a href >
                                     <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
                                 </a>
                                 <p class="desc-text">{{campaign.details}}</p>
@@ -34,33 +36,146 @@
                     </div>
                 </div>
             </div>
+            <!--Campaign Applications-->
             <div>
-                <h3 ng-show="selectedCampaign.applications.length > 0" class="page-header">Applications</h3>
-                <div class="well clearfix" ng-repeat="apply in selectedCampaign.applications">
-                    <div><label>From User Id:&nbsp;</label>{{apply.userId}}</div>
-                    <div><label>Reasons:&nbsp;</label>{{apply.reason}}</div>
-                    <div><label>Proposed Post Content:&nbsp;</label>{{apply.message}}</div>
-                    <div ng-show="apply.status=='pending'">
-                        <label>Pick a Date and Time to post:&nbsp;</label>
-                        <p class="input-group col-md-3">
-                            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-init="apply.isCalendarOpened=false" ng-model="apply.date" ng-init="apply.date=''" is-open="apply.isCalendarOpened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" ng-required="true"  alt-input-formats="altInputFormats" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="apply.isCalendarOpened = !apply.isCalendarOpened"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                        <uib-timepicker ng-model="apply.time" ng-init="apply.time = ''"></uib-timepicker>
-                    </div>
-                    <div ng-show="apply.status=='accepted' || apply.status=='completed'"><label>Scheduled post time:</label>&nbsp;{{apply.actionTime}}</div>
-                    <a ng-show="apply.status=='pending'" class="btn btn-primary pull-right" ng-click="acceptApply(apply)" >Accept</a>
-                    <a ng-show="apply.status=='accepted'" class="btn btn-success pull-right" disabled>Accepted</a>
-                </div>
+                <h3 class="page-header">Applications</h3>
+                <uib-accordion ng-show="selectedCampaign.applications.length > 0" close-others="true">
+                    <uib-accordion-group ng-repeat="apply in selectedCampaign.applications" ng-click="getApplicationInfo()" >
+                        <uib-accordion-heading>
+                            <div class="media">
+                                <div class="media-left">
+                                    <a>
+                                        <img class="media-object avatar-img" ng-src="{{apply.applicantProfile.photo}}" alt="applicant">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">{{apply.applicantProfile.name}}</h4>
+                                    {{apply.reasons}}
+                                    <i class="glyphicon" ng-class="{'glyphicon-ok':apply.status == 'scheduled'||apply.status == 'completed', 'glyphicon-exclamation-sign': apply.status == 'confirmed'}"/>
+
+                                </div>
+                            </div>
+                        </uib-accordion-heading>
+                        <form class="appForm" role="form">
+                            <div class="col-lg-6">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">My Campaign</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <dl class="dl-horizontal">
+                                                <dt >Applicant's qualifications</dt>
+                                                <dd >{{apply.reasons}}</dd>
+
+                                                <dt >Proposed content</dt>
+                                                <dd >{{apply.postContent}}</dd>
+
+                                                <dt  ng-if="apply.status!='pending'">Time to Post</dt>
+                                                <dt  ng-if="apply.status=='pending'">Enter Time to Post</dt>
+                                                <dd  ng-if="apply.status=='pending'">
+                                                    <p class="input-group col-md-8">
+                                                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-init="apply.isCalendarOpened=false" ng-model="apply.date" ng-init="apply.date=''" is-open="apply.isCalendarOpened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" ng-required="true"  alt-input-formats="altInputFormats" />
+                                                         <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default" ng-click="apply.isCalendarOpened = !apply.isCalendarOpened"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        </span>
+                                                    </p>
+                                                    <uib-timepicker ng-model="apply.time" ng-init="apply.time = ''"></uib-timepicker>
+                                                </dd>
+                                                <dd class="col-sm-9" ng-if="apply.status != 'pending'">{{apply.actionTime | date:'medium'}}</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Applicant's request</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <br>
+                                            <dl ng-if="!apply.applicantCampaignId || apply.applicantCampaignId == ''" class="dl-horizontal">
+                                                <p ng-show="apply.status == 'pending'">Propose a post per the applicant's requirements.</p>
+                                                <dt >Applicant's requirements</dt>
+                                                <dd >{{apply.requirements}}</dd>
+                                            </dl>
+                                            <div class="appForm" ng-if="apply.applicantCampaignId && apply.applicantCampaignId != ''">
+                                                <p ng-show="apply.status == 'pending'">Propose a post per the requirements in the campaign below.</p>
+                                                <div class="campaign-item col-md-4 col-sm-6">
+                                                    <div class="thumbnail">
+                                                        <div class="caption">
+                                                            <h4 class="media-heading">{{apply.applicantCampaign.topic}}</h4>
+                                                            <a>
+                                                                <img class="media-object profile-pic" ng-src="{{apply.applicantCampaign.thumbnail}}"/>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div ng-if="apply.status == 'pending'">
+                                                <label>Content you will post:</label>
+                                                <div class="input-group col-lg-8">
+                                                    <textarea ng-if="!apply.applicantCampaignId || apply.applicantCampaignId == ''" type="text" ng-model="apply.ownerPostContent" class="form-control input"  placeholder="Propose a post per user's requirements" required/>
+                                                    <textarea ng-if="apply.applicantCampaignId && apply.applicantCampaignId != ''" type="text" ng-model="apply.ownerPostContent" class="form-control input"  placeholder="Propose a post for the user's campaign" required/>
+                                                </div>
+                                                <label ng-show="pageList.length > 0" for="pageSelect">Page to post</label>
+                                                <div ng-show="pageList.length > 0" class="input-group col-lg-10">
+                                                    <select id="pageSelect" ng-model="apply.ownerFacebookPageId" ng-options="page.id as page.name for page in pageList">
+                                                    </select>
+                                                </div>
+                                                <div ng-show="pageList.length < 1"><p class="alert alert-info">You need to have a Facebook Page to apply.</p></div>
+                                            </div>
+                                            <dl ng-if="apply.status !== 'pending'" class="dl-horizontal">
+                                                <dt >Content you will post</dt>
+                                                <dd >{{apply.ownerPostContent}}</dd>
+                                                <dt >Time for you to post</dt>
+                                                <dd >{{apply.ownerActionTime|date:'medium'}}</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div ng-show="apply.status=='accepted' || apply.status=='completed'"><label>Scheduled post time:</label>&nbsp;{{apply.actionTime}}</div>
+                                    <a ng-show="apply.status=='pending'" class="btn btn-primary pull-right" ng-click="acceptApply(apply)" >Accept</a>
+                                    <a ng-show="apply.status=='accepted'" class="btn btn-success pull-right" disabled>Accepted</a>
+                                    <div ng-show="apply.status=='confirmed'">
+                                        <label>Click this button to schedule proposed posts and close the trade.</label>
+                                        <a class="btn btn-success pull-right" ng-click="ownerSchedulePosts()">Agree to post</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </uib-accordion-group>
+                </uib-accordion>
+                <p class="alert alert-info" ng-show="selectedCampaign.applications.length < 1">No applications available for the selected campaign.</p>
+
+                <!--<div class="well clearfix" ng-repeat="apply in selectedCampaign.applications">-->
+                    <!--<div><label>From User Id:&nbsp;</label>{{apply.userId}}</div>-->
+                    <!--<div><label>Reasons:&nbsp;</label>{{apply.reason}}</div>-->
+                    <!--<div><label>Proposed Post Content:&nbsp;</label>{{apply.message}}</div>-->
+                    <!--<div ng-show="apply.status=='pending'">-->
+                        <!--<label>Pick a Date and Time to post:&nbsp;</label>-->
+                        <!--<p class="input-group col-md-3">-->
+                            <!--<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-init="apply.isCalendarOpened=false" ng-model="apply.date" ng-init="apply.date=''" is-open="apply.isCalendarOpened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" ng-required="true"  alt-input-formats="altInputFormats" />-->
+                            <!--<span class="input-group-btn">-->
+                                <!--<button type="button" class="btn btn-default" ng-click="apply.isCalendarOpened = !apply.isCalendarOpened"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                            <!--</span>-->
+                        <!--</p>-->
+                        <!--<uib-timepicker ng-model="apply.time" ng-init="apply.time = ''"></uib-timepicker>-->
+                    <!--</div>-->
+                    <!--<div ng-show="apply.status=='accepted' || apply.status=='completed'"><label>Scheduled post time:</label>&nbsp;{{apply.actionTime}}</div>-->
+                    <!--<a ng-show="apply.status=='pending'" class="btn btn-primary pull-right" ng-click="acceptApply(apply)" >Accept</a>-->
+                    <!--<a ng-show="apply.status=='accepted'" class="btn btn-success pull-right" disabled>Accepted</a>-->
+                <!--</div>-->
             </div>
         </uib-tab>
 
 
 
     <!--Applications Tab-->
-        <uib-tab heading="Your Applications">
+        <uib-tab select="showMyApplications()" heading="Your Applications">
             <div ng-show="myApplications.length < 1">
                 <p class="alert alert-info">You haven't applied to any campaign yet.&nbsp;&nbsp;<a href="#/campaign" class="btn btn-success" >See Campaigns</a></p>
             </div>
@@ -72,11 +187,10 @@
                             <div class="caption">
                                 <h4 class="media-heading">{{campaign.topic}}</h4>
 
-                                <a ng-href="#/campaignDetails?id={{campaign.campaignId}}">
+                                <a ng-click="showApplicationStatus(campaign)">
                                     <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
                                 </a>
-                                <p class="desc-text">{{campaign.details}}</p>
-                                <ul ng-show="campaign.status != 'accepted'" class="list-group">
+                                <ul class="list-group">
                                     <li class="list-group-item">
                                         <span class="badge">{{campaign.numberOfFollowers}}</span>
                                         <span>Minimum Followers</span>
@@ -90,11 +204,88 @@
                                     <li class="list-group-item" ng-class="{'list-group-item-warning': campaign.status=='pending', 'list-group-item-success': campaign.status=='accepted', 'list-group-item-danger': campaign.status=='rejected'}">{{campaign.status}}</li>
                                 </ul>
                                 <div ng-show="campaign.status == 'accepted'">
-                                <label>Time to post:&nbsp;{{campaign.application.actionTime | date:'medium'}}</label><button class="btn btn-primary" ng-click="confirmPostTime(campaign)">Confirm</button>
+                                <label>Time to post:&nbsp;{{campaign.application.actionTime | date:'medium'}}</label>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div ng-show="selectedApply.applicationId" class="row">
+                    <h3 class="page-header">Application Status</h3>
+                    <form class="appForm" role="form">
+                        <div class="col-lg-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Application</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <dl class="dl-horizontal">
+                                            <dt >Your reasons</dt>
+                                            <dd >{{selectedApply.reasons}}</dd>
+
+                                            <dt >Proposed content</dt>
+                                            <dd >{{selectedApply.postContent}}</dd>
+
+                                            <dt >Time for you to post</dt>
+                                            <dd >{{selectedApply.actionTime | date:'medium'}}</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="panel panel-warning">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">My Request</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <br>
+                                        <dl ng-if="!apply.applicantCampaignId || apply.applicantCampaignId == ''" class="dl-horizontal">
+                                            <dt >My requirements</dt>
+                                            <dd >{{selectedApply.requirements}}</dd>
+                                        </dl>
+                                        <div class="appForm" ng-if="apply.applicantCampaignId && apply.applicantCampaignId != ''">
+                                            <label>You selected the below campaign to trade.</label>
+                                            <div class="campaign-item col-md-4 col-sm-6">
+                                                <div class="thumbnail">
+                                                    <div class="caption">
+                                                        <h4 class="media-heading">{{selectedApply.applicantCampaign.topic}}</h4>
+                                                        <a>
+                                                            <img class="media-object profile-pic" ng-src="{{selectedApply.applicantCampaign.thumbnail}}"/>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <dl class="dl-horizontal col-lg-8">
+                                            <dt >Proposed content</dt>
+                                            <dd >{{selectedApply.ownerPostContent}}</dd>
+
+
+                                            <dt  ng-if="selectedApply.status!='accepted'">Time to Post</dt>
+                                            <dt  ng-if="selectedApply.status=='accepted'">Enter a time for the user to Post</dt>
+                                            <dd  ng-if="selectedApply.status=='accepted'">
+                                                <p class="input-group col-md-8">
+                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-init="selectedApply.isCalendarOpened=false" ng-model="selectedApply.date" ng-init="selectedApply.date=''" is-open="selectedApply.isCalendarOpened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" ng-required="true"  alt-input-formats="altInputFormats" />
+                                                         <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default" ng-click="selectedApply.isCalendarOpened = !selectedApply.isCalendarOpened"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        </span>
+                                                </p>
+                                                <uib-timepicker ng-model="selectedApply.time" ng-init="selectedApply.time = ''"></uib-timepicker>
+                                            </dd>
+                                            <dd  ng-if="selectedApply.status != 'accepted'">{{selectedApply.actionTime | date:'medium'}}</dd>
+                                        </dl>
+
+                                    </div>
+                                </div>
+                                <br/>
+                            </div>
+                            <a ng-show="selectedApply.status=='accepted'" ng-click="applicantConfirmPostTime(selectedApply)" class="btn btn-success pull-right">Confirm</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </uib-tab>

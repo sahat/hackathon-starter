@@ -311,3 +311,9 @@
     width: 80%;
     left: 10%;
 }
+
+
+/*Campaign Details Page*/
+.appForm .campaign-item .thumbnail{
+    height: auto;
+}
