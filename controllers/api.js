@@ -206,7 +206,7 @@ exports.schedulePostsForApplication = function(req, res, nect){
                 if(user){
                     for (var i=0; i< user.tokens.length; i++){
                         if(user.tokens[i].kind == 'facebook'){
-                            person.accessToken = user.tokens[i].accessToken;
+                            accessToken = user.tokens[i].accessToken;
                             break;
                         }
                     }
