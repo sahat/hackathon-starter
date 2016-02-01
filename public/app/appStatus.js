@@ -102,7 +102,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                 $rootScope.fbToken = res.data.newToken;
                 application.ownerAccessToken = $rootScope.fbToken;
                 //schedule posts
-                $http.post("/application/schedulePosts", {"application": application}, {headers:{"Content-type": "application/json"}}).then(function(res){
+                $http.post("/api/scheduleFacebookPosts", {"application": application}, {headers:{"Content-type": "application/json"}}).then(function(res){
                     $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
                     application.status = "scheduled";
                     delete application.updateTime;
