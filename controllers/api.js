@@ -201,6 +201,28 @@ exports.schedulePostsForApplication = function(req, res, nect){
                 'x-api-key': secrets.lambda.apiKey
             }
         };
+        var sendPost = function(accessToken){
+            if(accessToken){
+                // TODO: extend token if needed
+                request(scheduleOptions, function(error, response, finalBody) {
+                    if (error) {
+                        console.error("Unable to update the post ID to application collection using lambda service.");
+                        console.error(error);
+                        return res.send(JSON.stringify(error));
+                    } else {
+                        console.log(finalBody);
+                        console.log("success");
+                        if(callback){
+                            return callback();
+                        }
+                    }
+
+                });
+            } else {
+                console.error("Cannot get access token for " + userId);
+                return false;
+            }
+        }
         if(!accessToken){
             User.findById(userId, function(err, user) {
                 if(user){
@@ -210,28 +232,13 @@ exports.schedulePostsForApplication = function(req, res, nect){
                             break;
                         }
                     }
-                }
-            });
-        }
-        if(accessToken){
-            // TODO: extend token if needed
-            request(scheduleOptions, function(error, response, finalBody) {
-                if (error) {
-                    console.error("Unable to update the post ID to application collection using lambda service.");
-                    console.error(error);
-                    return res.send(JSON.stringify(error));
-                } else {
-                    console.log(finalBody);
-                    console.log("success");
-                    if(callback){
-                        return callback();
-                    }
+                    sendPost(accessToken);
                 }
 
+
             });
-        } else {
-            console.error("Cannot get access token for " + userId);
-            return false;
+        }else{
+            sendPost(accessToken);
         }
 
     }
