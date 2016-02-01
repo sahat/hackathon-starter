@@ -136,7 +136,7 @@ app.get('/api/stripe', apiController.getStripe);
 app.post('/api/stripe', apiController.postStripe);
 app.get('/api/scraping', apiController.getScraping);
 app.post('/api/schedulepost', apiController.scheduleFacebookPost);
-app.post('/api/application/schedulePosts', apiController.schedulePostsForApplication);
+app.post('/application/schedulePosts', apiController.schedulePostsForApplication);
 app.get('/api/twilio', apiController.getTwilio);
 app.post('/api/twilio', apiController.postTwilio);
 app.get('/api/clockwork', apiController.getClockwork);
