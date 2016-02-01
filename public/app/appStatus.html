@@ -142,7 +142,7 @@
                                     <a ng-show="apply.status=='accepted'" class="btn btn-success pull-right" disabled>Accepted</a>
                                     <div ng-show="apply.status=='confirmed'">
                                         <label>Click this button to schedule proposed posts and close the trade.</label>
-                                        <a class="btn btn-success pull-right" ng-click="ownerSchedulePosts()">Agree to post</a>
+                                        <a class="btn btn-success pull-right" ng-click="ownerSchedulePosts(apply)">Agree to post</a>
                                     </div>
                                 </div>
                             </div>
