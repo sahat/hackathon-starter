@@ -42,7 +42,7 @@ app.config(['$routeProvider',
                 controller: 'campaignDetailsCtrl'
             }).
             otherwise({
-                redirectTo: '/login'
+                redirectTo: '/campaign'
             });
     }]);
 app.controller('rootCtrl', function ($scope, $rootScope, $http, $location, $uibModal) {
