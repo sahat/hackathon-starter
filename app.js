@@ -163,27 +163,27 @@ app.post('/api/bitgo', apiController.postBitGo);
  * OAuth authentication routes. (Sign in)
  */
 app.get('/auth/instagram', passport.authenticate('instagram'));
-app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), function(req, res) {
+app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/app.html' }), function(req, res) {
   res.redirect("/app.html");
 });
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location', 'publish_pages', 'publish_actions', 'read_insights', 'pages_show_list', 'public_profile', 'manage_pages'] }));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res) {
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/app.html' }), function(req, res) {
     res.redirect("/app.html#/campaign");
 });
 app.get('/auth/github', passport.authenticate('github'));
-app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
+app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/app.html' }), function(req, res) {
   res.redirect("/app.html");
 });
 app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res) {
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/app.html' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), function(req, res) {
+app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/app.html' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE' }));
-app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), function(req, res) {
+app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/app.html' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
 });
 
