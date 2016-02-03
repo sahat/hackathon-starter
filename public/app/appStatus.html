@@ -37,7 +37,7 @@
                 </div>
             </div>
             <!--Campaign Applications-->
-            <div>
+            <div ng-show="selectedCampaign.id   ">
                 <h3 class="page-header">Applications</h3>
                 <uib-accordion ng-show="selectedCampaign.applications.length > 0" close-others="true">
                     <uib-accordion-group ng-repeat="apply in selectedCampaign.applications" ng-click="getApplicationInfo()" >

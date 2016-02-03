@@ -87,19 +87,19 @@
 <uib-alert ng-repeat="alert in $root.alerts" class="main-alert" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
 
 
-<div class="container" ng-view>
-
-    <hr>
-
+<div class="container page-content">
+    <div ng-view></div>
     <!-- Footer -->
     <footer>
         <div class="row">
             <div class="col-lg-12">
-                <p>Copyright &copy; FamePick 2015</p>
+                <p>Copyright &copy; FamePick 2016</p>
             </div>
         </div>
     </footer>
-
 </div>
+<hr>
+
+
 </body>
 </html>

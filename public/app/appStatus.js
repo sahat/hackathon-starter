@@ -39,6 +39,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
     }
 
     $scope.showCampaignStatus = function(id){
+        $scope.selectedCampaign.id = id;
         $scope.apiClient.campaignCampaignIdApplicationGet({campaignId: id}, {}, {
             headers:{"Content-type": "application/json"}
         }).then(function(res){

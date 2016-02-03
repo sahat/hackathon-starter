@@ -1,4 +1,13 @@
+.panel-title{
+    font-size: 18px;
+}
 
+.page-content{
+    min-height: 100%;
+}
+.input-group{
+    margin-bottom: 15px;
+}
 .campaign-page .campaign-item .list-group .list-group-item{
 	text-align: left;
 }
