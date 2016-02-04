@@ -14,7 +14,7 @@
         </div>
 
         <div class="col-md-4">
-            <img class="avatar-img" ng-src="{{ownerPic}}"/><span>&nbsp;&nbsp;&nbsp;&nbsp;{{ownerName}}</span>
+            <a ng-href="#/userDetails?userId={{campaign.userId}}"><img class="avatar-img" ng-src="{{ownerPic}}"/><span>&nbsp;&nbsp;&nbsp;&nbsp;{{ownerName}}</span></a>
             <h3>Campaign Description</h3>
             <p>{{campaign.details}}</p>
             <h3>Requirement Details</h3>

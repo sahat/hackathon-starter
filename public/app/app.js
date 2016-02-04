@@ -41,6 +41,10 @@ app.config(['$routeProvider',
                 templateUrl: '/app/campaignDetails.html',
                 controller: 'campaignDetailsCtrl'
             }).
+            when('/userDetails', {
+                templateUrl: '/app/userDetails.html',
+                controller: 'userDetailsCtrl'
+            }).
             otherwise({
                 redirectTo: '/campaign'
             });

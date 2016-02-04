@@ -250,8 +250,6 @@ exports.schedulePostsForApplication = function(req, res, nect){
         return res.status(500).send("Missing owner's post time.");
 
     }
-
-
 }
 /**
  *  schedule a facebook post using our manual server

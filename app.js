@@ -123,6 +123,7 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 app.patch('/account/campaigns', userController.patchUpdateCampaigns);
 app.patch('/account/profile', userController.patchUpdateProfile);
 app.get('/extendFbToken/:token', userController.extendFbToken);
+app.get('/userFacebookInsight/:userId', userController.getUserFacebookInsight);
 
 /**
  * API examples routes.

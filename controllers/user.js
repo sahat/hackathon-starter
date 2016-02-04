@@ -6,6 +6,8 @@ var passport = require('passport');
 var User = require('../models/User');
 var secrets = require('../config/secrets');
 var graph = require('fbgraph');
+var request = require('request');
+
 
 /**
  * GET /login
@@ -77,12 +79,51 @@ exports.getUserDetails = function(req, res, next){
 
     User.findById(req.params.id, function(err, user) {
         if(user){
+            delete user.tokens;
             return res.send(JSON.stringify(user));
         } else {
             res.status(500).send(JSON.stringify(err));
         }
     });
+}
 
+exports.getUserFacebookInsight = function(req, res, next){
+    graph = require('fbgraph');
+    var userId = req.params.userId;
+
+    User.findById(userId, function(err, user) {
+        if(user){
+            var accessToken = "";
+            for (var i=0; i< user.tokens.length; i++){
+                if(user.tokens[i].kind == 'facebook'){
+                    accessToken = user.tokens[i].accessToken;
+                    break;
+                }
+            }
+            console.log(user.profile.facebookDefaultPageId);
+            var scheduleOptions = {
+                method: 'GET',
+                url: secrets.lambda.endPoint + '/insights/facebook?accessToken=' + accessToken + "&pageId=" + user.profile.facebookDefaultPageId ,
+//                params: {accessToken: accessToken, pageId: user.profile.facebookDefaultPageId},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': secrets.lambda.apiKey
+                }
+            };
+            request(scheduleOptions, function(error, response, finalBody) {
+                if (error) {
+                    console.error("Unable to update the post ID to application collection using lambda service.");
+                    console.error(error);
+                    return res.send(JSON.stringify(error));
+                } else {
+                    console.log(finalBody);
+                    console.log("success");
+                    return res.send(response);
+                }
+
+            });
+        }
+    });
 }
 /**
  * GET /logout

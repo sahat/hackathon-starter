@@ -1,0 +1,78 @@
+<div class="profile-container container">
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+
+            <div class="card hovercard">
+                <div class="cardheader">
+
+                </div>
+                <div class="avatar">
+                    <img alt="" ng-src="{{userDetails.profile.picture}}">
+                </div>
+                <div class="info">
+                    <div class="title">
+                        <span ng-if="userDetails.profile.name">{{userDetails.profile.name}}</span>
+                    </div>
+                    <div class="desc">United States</div>
+                </div>
+                <div class="bottom">
+                    <a ng-if="user.twitter" class="btn btn-primary btn-twitter btn-sm">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a ng-if="user.google" class="btn btn-danger btn-sm" rel="publisher">
+                        <i class="fa fa-google-plus"></i>
+                    </a>
+                    <a ng-if="user.facebook" class="btn btn-primary btn-sm" rel="publisher">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a ng-if="user.instagram" class="btn btn-warning btn-sm" rel="publisher" >
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                    <hr/>
+                    <ul class="list-group text-left">
+                        <li class="list-group-item">
+                            <span class="badge">{{fbStats.likes}}</span>
+                            <span>Facebook Followers</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="form-group col-lg-9 col-sm-6">
+            <h3 class="page-header">User's Facebook Statistics</h3>
+            <div ng-show="loadedFbData">
+                <h6>Gender Ratio</h6>
+                <div  class="progress">
+                    <div class="progress-bar " ng-style="{'width': (fbStats.gender.male/(fbStats.gender.male+fbStats.gender.female))*100 + '%'}">
+                        {{Math.round((fbStats.gender.male/(fbStats.gender.male+fbStats.gender.female))*100)}}% Male
+                    </div>
+                    <div class="progress-bar progress-bar-danger" ng-style="{'width': (fbStats.gender.female/(fbStats.gender.male+fbStats.gender.female))*100 + '%'}">
+                        {{Math.round((fbStats.gender.female/(fbStats.gender.male+fbStats.gender.female))*100)}}% Female
+                    </div>
+                </div>
+            </div>
+            <div ng-show="loadedFbData">
+                <hr/>
+                <h6>Age Groups</h6>
+                <ul class="list-group text-left">
+                    <li class="list-group-item" ng-repeat="(key, value) in fbStats.age">
+                        <span class="badge">{{Math.round((value/totalFollowerNum)*100)}}%</span>
+                        <span>{{key}}</span>
+                    </li>
+                </ul>
+                <hr/>
+                <h6>Audience Locations</h6>
+                <ul class="list-group text-left">
+                    <li ng-show="Math.round((value/totalLocationNum)*100) > 0" class="list-group-item" ng-repeat="(key, value) in fbStats.location">
+                        <span class="badge">{{Math.round((value/totalLocationNum)*100)}}%</span>
+                        <span>{{key}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
