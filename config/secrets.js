@@ -22,7 +22,7 @@
 module.exports = {
   lambda: {
       apiKey: process.env.LAMBDA_KEY || 'G84MftERYj7VP0ACf3uQh3w9ewFbgdi06C1GtA1B',
-      endPoint: process.env.LAMBDA_KEY || 'https://ho3j8bqvgf.execute-api.us-east-1.amazonaws.com/dev'
+      endPoint: process.env.LAMBDA_ENDPOINT || 'https://api.famepick.com/dev'
   },
   db: process.env.MONGODB || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/test',
 
