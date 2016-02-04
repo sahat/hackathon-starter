@@ -320,6 +320,14 @@ The same goes for other providers.
 - Once logged into the dashboard, go to the top right selector and click 'account settings'
 - Under the developers tab, create your access token and copy and paste it into `.env` file
 
+<hr>
+
+<img src="https://s3.amazonaws.com/ahoy-assets.twilio.com/global/images/wordmark.svg" width="200">
+- Go to https://www.twilio.com/try-twilio
+- Sign up for an account.
+- Once logged into the dashboard, expand the link 'show api credentials'
+- Copy your Account Sid and Auth Token
+
 Project Structure
 -----------------
 
