@@ -267,7 +267,7 @@ exports.scheduleFacebookPost = function(req, res, next) {
         body:  JSON.stringify({
             applicationId : req.body.applicationId,
             pageId: req.body.pageId,
-            actionTime: req.body.actionTime,
+            actionTime: isNaN(req.body.actionTime) ? parseInt(req.body.actionTime) : req.body.actionTime,
             pageAccessToken: req.body.pageAccessToken,
             message: req.body.message
         }),
