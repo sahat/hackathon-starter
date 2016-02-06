@@ -24,7 +24,7 @@ var _ = require('lodash');
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  *
- * Default path: .env
+ * Default path: .env (You can remove the path argument entirely, after renaming `.env.example` to `.env`)
  */
 dotenv.load({ path: '.env.example' });
 
