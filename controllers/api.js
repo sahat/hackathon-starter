@@ -205,6 +205,7 @@ exports.schedulePostsForApplication = function(req, res, nect){
             scheduleOptions.accessToken = accessToken;
             if(accessToken){
                 // TODO: extend token if needed
+                console.log("accessToken:" + scheduleOptions.accessToken);
                 request(scheduleOptions, function(error, response, finalBody) {
                     if (error) {
                         console.error("Unable to update the post ID to application collection using lambda service.");
