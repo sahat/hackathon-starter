@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.4.0?](#changelog)
+Jump to [What's new in 3.4.1?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1143,6 +1143,16 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 3.4.1 (February 6, 2016)
+- Added "Obtaining Twilio API Keys" instructions.
+- Updated Bootstrap v3.3.6.
+- Updated jQuery v2.2.0.
+- Updated Font Awesome v4.5.0.
+- Removed `debug` and `outputStyle` from the Sass middleware options.
+- Removed `connect-assets` (no longer used) from *package.json*`.
+- Fixed Font Awesome icon syntax error in *profile.jade*.
+- Fixed Cheerio broken link.
 
 ### 3.4.0 (January 5, 2016)
 - Use `dontenv` package for managing API keys and secrets.
