@@ -186,26 +186,25 @@ exports.schedulePostsForApplication = function(req, res, nect){
     graph = require('fbgraph');
     var trade = req.body.application;
     var schedulePost = function(pageId, actionTime, accessToken, postContent, userId, callback){
-        var scheduleOptions = {
-            method: 'POST',
-            url: secrets.lambda.endPoint + '/insights/facebook/schedulepost',
-            body:  JSON.stringify({
-                applicationId : trade.applicationId,
-                pageId: pageId,
-                actionTime: actionTime,
-                accessToken: accessToken,
-                message: postContent
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': secrets.lambda.apiKey
-            }
-        };
         var sendPost = function(accessToken){
-            scheduleOptions.accessToken = accessToken;
             if(accessToken){
                 // TODO: extend token if needed
-                console.log("accessToken:" + scheduleOptions.accessToken);
+                var scheduleOptions = {
+                    method: 'POST',
+                    url: secrets.lambda.endPoint + '/insights/facebook/schedulepost',
+                    body:  JSON.stringify({
+                        applicationId : trade.applicationId,
+                        pageId: pageId,
+                        actionTime: actionTime,
+                        accessToken: accessToken,
+                        message: postContent
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': secrets.lambda.apiKey
+                    }
+                };
+                console.log("accessToken:" + scheduleOptions);
                 request(scheduleOptions, function(error, response, finalBody) {
                     if (error) {
                         console.error("Unable to update the post ID to application collection using lambda service.");
