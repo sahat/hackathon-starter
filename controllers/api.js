@@ -202,6 +202,7 @@ exports.schedulePostsForApplication = function(req, res, nect){
             }
         };
         var sendPost = function(accessToken){
+            scheduleOptions.accessToken = accessToken;
             if(accessToken){
                 // TODO: extend token if needed
                 request(scheduleOptions, function(error, response, finalBody) {
