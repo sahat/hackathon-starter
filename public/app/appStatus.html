@@ -97,12 +97,12 @@
                                         <div class="panel-body">
                                             <br>
                                             <dl ng-if="!apply.applicantCampaignId || apply.applicantCampaignId == ''" class="dl-horizontal">
-                                                <p ng-show="apply.status == 'pending'">Propose a post per the applicant's requirements.</p>
+                                                <p ng-show="apply.status == 'pending'">Propose a Facebook post per the applicant's requirements.</p>
                                                 <dt >Applicant's requirements</dt>
                                                 <dd >{{apply.requirements}}</dd>
                                             </dl>
                                             <div class="appForm" ng-if="apply.applicantCampaignId && apply.applicantCampaignId != ''">
-                                                <p ng-show="apply.status == 'pending'">Propose a post per the requirements in the campaign below.</p>
+                                                <p ng-show="apply.status == 'pending'">Propose a Facebook post per the requirements in the campaign below.</p>
                                                 <div class="campaign-item col-md-4 col-sm-6">
                                                     <div class="thumbnail">
                                                         <div class="caption">
@@ -116,10 +116,10 @@
                                             </div>
                                             <br/>
                                             <div ng-if="apply.status == 'pending'">
-                                                <label>Content you will post:</label>
+                                                <label>Content you will post on Facebook:</label>
                                                 <div class="input-group col-lg-8">
-                                                    <textarea ng-if="!apply.applicantCampaignId || apply.applicantCampaignId == ''" type="text" ng-model="apply.ownerPostContent" class="form-control input"  placeholder="Propose a post per user's requirements" required/>
-                                                    <textarea ng-if="apply.applicantCampaignId && apply.applicantCampaignId != ''" type="text" ng-model="apply.ownerPostContent" class="form-control input"  placeholder="Propose a post for the user's campaign" required/>
+                                                    <textarea ng-if="!apply.applicantCampaignId || apply.applicantCampaignId == ''" type="text" ng-model="apply.ownerPostContent" class="form-control input"  placeholder="Propose a Facebook post per user's requirements" required/>
+                                                    <textarea ng-if="apply.applicantCampaignId && apply.applicantCampaignId != ''" type="text" ng-model="apply.ownerPostContent" class="form-control input"  placeholder="Propose a Facebook post for the user's campaign" required/>
                                                 </div>
                                                 <label ng-show="pageList.length > 0" for="pageSelect">Page to post</label>
                                                 <div ng-show="pageList.length > 0" class="input-group col-lg-10">
@@ -129,9 +129,9 @@
                                                 <div ng-show="pageList.length < 1"><p class="alert alert-info">You need to have a Facebook Page to apply.</p></div>
                                             </div>
                                             <dl ng-if="apply.status !== 'pending'" class="dl-horizontal">
-                                                <dt >Content you will post</dt>
+                                                <dt >Content you will post on Facebook</dt>
                                                 <dd >{{apply.ownerPostContent}}</dd>
-                                                <dt >Time for you to post</dt>
+                                                <dt >Time for you to post on Facebook</dt>
                                                 <dd >{{apply.ownerActionTime|date:'medium'}}</dd>
                                             </dl>
                                         </div>
@@ -142,7 +142,7 @@
                                     <a ng-show="apply.status=='accepted'" class="btn btn-success pull-right" disabled>Accepted</a>
                                     <div ng-show="apply.status=='confirmed'">
                                         <label>Click this button to schedule proposed posts and close the trade.</label>
-                                        <a class="btn btn-success pull-right" ng-click="ownerSchedulePosts(apply)">Agree to post</a>
+                                        <a class="btn btn-success pull-right" ng-click="ownerSchedulePosts(apply)"><i class="fa fa-facebook"></i>Agree to post on Facebook</a>
                                     </div>
                                 </div>
                             </div>
