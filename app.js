@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+var _ = require('lodash');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var compress = require('compression');
@@ -19,7 +20,8 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var sass = require('node-sass-middleware');
-var _ = require('lodash');
+var multer = require('multer');
+var upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -86,11 +88,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(lusca({
-  csrf: true,
-  xframe: 'SAMEORIGIN',
-  xssProtection: true
-}));
+app.use(function(req, res, next) {
+  if (req.path === '/api/upload') {
+    next();
+  } else {
+    lusca.csrf()(req, res, next);
+  }
+});
+app.use(lusca.xframe('SAMEORIGIN'));
+app.use(lusca.xssProtection(true));
 app.use(function(req, res, next) {
   res.locals.user = req.user;
   next();
@@ -102,7 +108,6 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
-
 
 /**
  * Primary app routes.
@@ -157,6 +162,8 @@ app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 app.get('/api/lob', apiController.getLob);
 app.get('/api/bitgo', apiController.getBitGo);
 app.post('/api/bitgo', apiController.postBitGo);
+app.get('/api/upload', apiController.getFileUpload);
+app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
 
 /**
  * OAuth authentication routes. (Sign in)

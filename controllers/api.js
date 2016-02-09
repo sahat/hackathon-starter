@@ -851,3 +851,14 @@ exports.postBitGo = function(req, res, next) {
     return res.redirect('/api/bitgo');
   }
 };
+
+exports.getFileUpload = function(req, res, next) {
+  res.render('api/upload', {
+    title: 'File Upload'
+  });
+};
+
+exports.postFileUpload = function(req, res, next) {
+  req.flash('success', { msg: 'File was uploaded successfully.'});
+  res.redirect('/api/upload');
+};
