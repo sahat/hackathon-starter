@@ -90,6 +90,7 @@ exports.getUserDetails = function(req, res, next){
 exports.getUserFacebookInsight = function(req, res, next){
     graph = require('fbgraph');
     var userId = req.params.userId;
+    var postId = req.params.postId;
 
     User.findById(userId, function(err, user) {
         if(user){
@@ -100,11 +101,12 @@ exports.getUserFacebookInsight = function(req, res, next){
                     break;
                 }
             }
-            console.log(user.profile.facebookDefaultPageId);
+            var url = secrets.lambda.endPoint + '/insights/facebook?accessToken=' + accessToken;
+            url += (postId && postId !== '')?("&postId=" + postId):( "&pageId = " + user.profile.facebookDefaultPageId);
+            console.log("Request Url:" + url);
             var scheduleOptions = {
                 method: 'GET',
-                url: secrets.lambda.endPoint + '/insights/facebook?accessToken=' + accessToken + "&pageId=" + user.profile.facebookDefaultPageId ,
-//                params: {accessToken: accessToken, pageId: user.profile.facebookDefaultPageId},
+                url: url,
                 headers: {
                     'Content-Type': 'application/json',
                     'x-api-key': secrets.lambda.apiKey
@@ -122,6 +124,8 @@ exports.getUserFacebookInsight = function(req, res, next){
                 }
 
             });
+        } else {
+            res.send({errorMessage:"User is not found."});
         }
     });
 }

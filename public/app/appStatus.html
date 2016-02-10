@@ -9,10 +9,35 @@
                     Getting started by creating your first campaign.&nbsp;&nbsp;<a href="#/createCampaign" class="btn btn-success" >Post your Campaign</a>
                 </p>
             </div>
-            <div ng-show="user.campaignIds.length > 0">
+            <div ng-show="inProcessCampaigns.length > 0">
                 <div class="row">
                     <h3 class="page-header">Your Campaigns</h3><p >Click to see applications</p>
-                    <div ng-click="showCampaignStatus(campaign.campaignId)" ng-repeat="campaign in campaigns" class="campaign-item col-md-3 col-sm-6">
+                    <div ng-click="showCampaignStatus(campaign.campaignId)" ng-repeat="campaign in inProcessCampaigns" class="campaign-item col-md-3 col-sm-6">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h4 class="media-heading">{{campaign.topic}}</h4>
+
+                                <a href >
+                                    <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
+                                </a>
+                                <p class="desc-text">{{campaign.details}}</p>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span class="badge">{{campaign.numberOfFollowers}}</span>
+                                        <span>Minimum Followers</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span class="badge">{{campaign.minAge}}-{{campaign.maxAge}}</span>
+                                        Ages
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="completedCampaigns.length > 0" class="row">
+                    <h3 class="page-header">Completed Campaigns</h3>
+                    <div ng-click="showCampaignStatus(campaign.campaignId)" ng-repeat="campaign in completedCampaigns" class="campaign-item col-md-3 col-sm-6">
                         <div class="thumbnail">
                             <div class="caption">
                                 <h4 class="media-heading">{{campaign.topic}}</h4>

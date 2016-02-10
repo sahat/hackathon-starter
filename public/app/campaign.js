@@ -1,6 +1,5 @@
 app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope) {
     $scope.campaigns = [];
-    $scope.test = "abc";
 
     $scope.showSearchCriteria = false;
 

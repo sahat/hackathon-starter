@@ -1,1 +1,53 @@
-<h3>Performance</h3>
+<div class="performancePage">
+    <h3>Performance</h3>
+    <div class="col-sm-6 pre-scrollable">
+        <h4 class="page-header">Facebook Posts for your campaigns</h4>
+        <p ng-show="completedCampaigns.length < 1"class="alert alert-info">
+            You don't have any tracked Facebook Posts.
+        </p>
+        <div ng-click="getPostStats(campaign)" ng-repeat="campaign in completedCampaigns" class="campaign-item col-sm-6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h4 class="media-heading">{{campaign.topic}}</h4>
+                    <a href >
+                        <img class="media-object profile-pic" ng-src="{{campaign.thumbnail}}" alt="{{campaign.user.userId}}"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 pre-scrollable">
+        <div class="panel panel-info" ng-repeat="apply in selectedCampaign.completedApplications">
+            <div class="panel-heading"><a ng-href="http://facebook.com/{{apply.facebookPostId}}" target="_blank" class="pull-right">View post</a>
+                <h4><i class="fa fa-facebook"></i>&nbsp;Post Content for <i>{{selectedCampaign.topic}}</i></h4>
+            </div>
+            <div class="panel-body">
+                <p>{{apply.postContent}}</p>
+                <hr>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="badge">{{apply.fbStats.likes}}</span>
+                        <span>Likes</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">{{apply.fbStats.comments}}</span>
+                        Comments
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">{{apply.fbStats.sharedposts.data.length}}</span>
+                        Shares
+                    </li>
+                </ul>
+                <div ng-show="apply.loadedFbData && !(apply.fbStats.gender.male == 0 && apply.fbStats.gender.female == 0) " class="progress">
+                    <div class="progress-bar " ng-style="{'width': (apply.fbStats.gender.male/(apply.fbStats.gender.male+apply.fbStats.gender.female))*100 + '%'}">
+                        {{Math.round((apply.fbStats.gender.male/(apply.fbStats.gender.male+apply.fbStats.gender.female))*100)}}% Male
+                    </div>
+                    <div class="progress-bar progress-bar-danger" ng-style="{'width': (apply.fbStats.gender.female/(fbStats.gender.male+apply.fbStats.gender.female))*100 + '%'}">
+                        {{Math.round((apply.fbStats.gender.female/(apply.fbStats.gender.male+apply.fbStats.gender.female))*100)}}% Female
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

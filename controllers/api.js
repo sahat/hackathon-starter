@@ -185,7 +185,7 @@ exports.postFeedFacebook = function(req, res, next) {
 exports.schedulePostsForApplication = function(req, res, nect){
     graph = require('fbgraph');
     var trade = req.body.application;
-    var schedulePost = function(pageId, actionTime, accessToken, postContent, userId, callback){
+    var schedulePost = function(pageId, actionTime, accessToken, postContent, userId, type, callback){
         var sendPost = function(accessToken){
             if(accessToken){
                 // TODO: extend token if needed
@@ -197,7 +197,8 @@ exports.schedulePostsForApplication = function(req, res, nect){
                         pageId: pageId,
                         actionTime: actionTime,
                         accessToken: accessToken,
-                        message: postContent
+                        message: postContent,
+                        type: type
                     }),
                     headers: {
                         'Content-Type': 'application/json',
@@ -244,8 +245,8 @@ exports.schedulePostsForApplication = function(req, res, nect){
 
     }
     if(trade.ownerActionTime){
-        schedulePost(trade.facebookPageId, trade.actionTime, null, trade.postContent, trade.userId, function(response){
-            schedulePost(trade.ownerFacebookPageId, trade.ownerActionTime, trade.ownerAccessToken, trade.ownerPostContent, trade.ownerUserId, function(response){return res.send(response)});
+        schedulePost(trade.facebookPageId, trade.actionTime, null, trade.postContent, trade.userId, "applicant", function(response){
+            schedulePost(trade.ownerFacebookPageId, trade.ownerActionTime, trade.ownerAccessToken, trade.ownerPostContent, trade.ownerUserId, "owner", function(response){return res.send(response)});
         });
     } else {
         return res.status(500).send("Missing owner's post time.");

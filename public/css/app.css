@@ -326,3 +326,8 @@
 .appForm .campaign-item .thumbnail{
     height: auto;
 }
+
+/*Performance Page*/
+.performancePage .campaign-item .thumbnail{
+    height: auto;
+}

@@ -14,8 +14,16 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                 headers:{"Content-type": "application/json"}
             }
         ).then(function(campaigns){
-                $scope.campaigns = campaigns.data;
-                $scope.$apply   ();
+                $scope.inProcessCampaigns = [];
+                $scope.completedCampaigns = [];
+                angular.forEach(campaigns.data, function(campaign){
+                    if(campaign.status === "completed"){
+                        $scope.completedCampaigns.push(campaign);
+                    }else {
+                        $scope.inProcessCampaigns.push(campaign);
+                    }
+                });
+                $scope.$apply();
             }).catch(function(){
                 console.log("error");
             });
@@ -106,10 +114,15 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                 $http.post("/api/scheduleFacebookPosts", {"application": application}, {headers:{"Content-type": "application/json"}}).then(function(res){
                     $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
                     application.status = "scheduled";
-                    delete application.updateTime;
-                    delete application.ownerAccessToken;
+                    var updatedApplication;
+                    angular.copy(application, updatedApplication);
+                    delete updatedApplication.updateTime;
+                    delete updatedApplication.ownerAccessToken;
+                    delete updatedApplication.createTime;
+                    delete updatedApplication.$$hashKey;
+                    delete updatedApplication.applicantProfile;
                     //Update application status
-                    $scope.apiClient.applicationApplicationIdPatch({applicationId: application.applicationId}, application).then(function(res){
+                    $scope.apiClient.applicationApplicationIdPatch({applicationId: updatedApplication.applicationId}, updatedApplication).then(function(res){
                         $scope.$apply();
                     });
                 });

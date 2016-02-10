@@ -14,7 +14,7 @@ app.controller('userDetailsCtrl', function ($scope, $uibModal, $rootScope, $rout
 
     });
 
-    $http.get('/userFacebookInsight/' + userId).then(function(res){
+    $http.get('/userFacebookInsight/' + userId + "/").then(function(res){
         $scope.fbStats = JSON.parse(res.data.body) || {};
         if(!$scope.fbStats.errorMessage){
             angular.forEach($scope.fbStats.age, function(value, key){

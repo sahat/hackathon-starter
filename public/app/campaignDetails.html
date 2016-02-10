@@ -31,6 +31,9 @@
             <hr/>
             <a ng-show="!showAppForm && campaign.status == 'pending'" class="btn btn-primary" ng-click="showAppForm = true;">Apply Now !</a>
             <a ng-show="submittedForm" class="btn btn-info" disabled>Applied</a>
+            <p ng-show="campaign.status !== 'pending'" class="alert alert-info">
+                This campaign is not opened for applications.
+            </p>
             <a ng-show="!showAppForm || submittedForm" class="btn btn-warning" href="#/campaign">Go Back</a>
 
         </div>
