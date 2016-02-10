@@ -30,7 +30,7 @@ app.controller('performanceCtrl', function ($scope, $http, $rootScope) {
                     if(apply.status === 'completed'){
                         $http.get('/userFacebookInsight/' + apply.userId + "/" + apply.facebookPostId).then(function(res){
                             if(!res.data.errorMessage){
-                                var fbStats = res.data.body || {};
+                                var fbStats = JSON.parse(res.data.body);
                                 apply.fbStats = fbStats;
                                 angular.forEach(fbStats.age, function(value, key){
                                     apply.fbStats.totalFollowerNum += value;
