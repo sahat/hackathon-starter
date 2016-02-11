@@ -2,7 +2,7 @@ app.controller('performanceCtrl', function ($scope, $http, $rootScope) {
     $scope.selectedCampaign = {};
     $scope.completedCampaigns = [];
     $scope.getMyCampaigns = function(){
-        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
+        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: "", status: ""}, {}, {
                 headers:{"Content-type": "application/json"}
             }
         ).then(function(campaigns){

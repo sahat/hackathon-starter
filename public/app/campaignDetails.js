@@ -5,7 +5,7 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
     $scope.myCampaigns = [];
     $scope.showAppForm = showForm;
     $scope.submittedForm = false;
-    $scope.apiClient.campaignGet({"count": 1, campaignIds: id, ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
+    $scope.apiClient.campaignGet({"count": 1, campaignIds: id, ageRange: 0, numberOfFollowers: 0, startKey: "", tags: "", status: ""}, {}, {
             headers:{"Content-type": "application/json"}
         }
     ).then(function(campaigns){
@@ -23,7 +23,7 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
 
     $scope.getMyCampaigns = function(){
         if($scope.user.campaignIds.length > 0 && $scope.myCampaigns < 1){
-            $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
+            $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: "", status: ""}, {}, {
                     headers:{"Content-type": "application/json"}
                 }
             ).then(function(campaigns){
@@ -35,7 +35,7 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
         }
     };
     if($scope.user.campaignIds.length > 0){
-        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
+        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: "", status: ""}, {}, {
                 headers:{"Content-type": "application/json"}
             }
         ).then(function(campaigns){

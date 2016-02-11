@@ -13,7 +13,8 @@ app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope) {
                               "numberOfFollowers": 10,
                                 "campaignIds": "",
                                "startKey": "",
-                               "tags": ""
+                               "tags": "",
+                               "status": "pending,scheduled,confirmed,accepted"
                            };
      $scope.toggleSearch = function(){
             $scope.showSearchCriteria = !$scope.showSearchCriteria;

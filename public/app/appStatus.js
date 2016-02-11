@@ -10,7 +10,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
 //    My Campaigns Tab
     $scope.selectedCampaign = {applications:[]};
     $scope.getMyCampaigns = function(){
-        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
+        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: "", status: ""}, {}, {
                 headers:{"Content-type": "application/json"}
             }
         ).then(function(campaigns){
@@ -142,7 +142,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                         cIds.push($scope.myApplications[i].campaignId);
                     }
                 }
-                $scope.apiClient.campaignGet({"count": 100, campaignIds: cIds.join(), ageRange: 0, numberOfFollowers: 0, startKey:"", tags: ""}, {}, {
+                $scope.apiClient.campaignGet({"count": 100, campaignIds: cIds.join(), ageRange: 0, numberOfFollowers: 0, startKey:"", tags: "", status: ""}, {}, {
                         headers:{"Content-type": "application/json"}
                     }
                 ).then(function(campaigns){
