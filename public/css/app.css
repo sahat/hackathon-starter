@@ -292,6 +292,10 @@
     padding: 0 20px;
     margin-bottom: 17px;
 }
+.card.hovercard .bottom .icon{
+    margin: auto;
+    display: inline-block;
+}
 
 .card .btn{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
 
@@ -330,4 +334,24 @@
 /*Performance Page*/
 .performancePage .campaign-item .thumbnail{
     height: auto;
+}
+
+/*Common*/
+.icon.icon-fb{
+    background: url('../img/FB-f-Logo__blue_512.png');
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+}
+.btn .icon{
+   position: relative;
+   bottom: -3px;
+   background-size: 20px 20px;
+   width: 20px;
+   height: 20px;
+}
+.vertical-secondary-col{
+    min-height: 100%;
+    background: #e7e7e7;
 }

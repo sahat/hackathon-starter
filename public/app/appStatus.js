@@ -114,7 +114,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                 $http.post("/api/scheduleFacebookPosts", {"application": application}, {headers:{"Content-type": "application/json"}}).then(function(res){
                     $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
                     application.status = "scheduled";
-                    var updatedApplication;
+                    var updatedApplication = {};
                     angular.copy(application, updatedApplication);
                     delete updatedApplication.updateTime;
                     delete updatedApplication.ownerAccessToken;

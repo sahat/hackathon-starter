@@ -70,7 +70,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <a ng-href="#/userDetails?userId={{apply.userId}}">
-                                        <img class="media-object avatar-img" ng-src="{{apply.applicantProfile.photo}}" alt="applicant">
+                                        <img class="media-object avatar-img" ng-src="{{apply.applicantProfile.picture}}" alt="applicant">
                                     </a>
                                 </div>
                                 <div class="media-body">
@@ -162,12 +162,11 @@
                                         </div>
                                     </div>
                                     <br/>
-                                    <div ng-show="apply.status=='accepted' || apply.status=='completed'"><label>Scheduled post time:</label>&nbsp;{{apply.actionTime}}</div>
                                     <a ng-show="apply.status=='pending'" class="btn btn-primary pull-right" ng-click="acceptApply(apply)" >Accept</a>
                                     <a ng-show="apply.status=='accepted'" class="btn btn-success pull-right" disabled>Accepted</a>
                                     <div ng-show="apply.status=='confirmed'">
                                         <label>Click this button to schedule proposed posts and close the trade.</label>
-                                        <a class="btn btn-primary pull-right" ng-click="ownerSchedulePosts(apply)"><i class="fa fa-facebook"></i>Agree to post on Facebook</a>
+                                        <a class="btn btn-primary pull-right" ng-click="ownerSchedulePosts(apply)"><span class="icon icon-fb"></span>&nbsp;Agree to post on Facebook</a>
                                     </div>
                                 </div>
                             </div>

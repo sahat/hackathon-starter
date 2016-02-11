@@ -1,6 +1,6 @@
 <div class="performancePage">
     <h3>Performance</h3>
-    <div class="col-sm-6 pre-scrollable">
+    <div class="col-sm-6">
         <h4 class="page-header">Facebook Posts for your campaigns</h4>
         <p ng-show="completedCampaigns.length < 1"class="alert alert-info">
             You don't have any tracked Facebook Posts.
@@ -17,7 +17,10 @@
         </div>
     </div>
 
-    <div class="col-sm-6 pre-scrollable">
+    <div class="col-sm-6 vertical-secondary-col">
+        <p ng-show="!selectedCampaign.completedApplications || selectedCampaign.completedApplications.length < 1"class="alert alert-info">
+            Click on a campaign to see posts.
+        </p>
         <div class="panel panel-info" ng-repeat="apply in selectedCampaign.completedApplications">
             <div class="panel-heading"><a ng-href="http://facebook.com/{{apply.facebookPostId}}" target="_blank" class="pull-right">View post</a>
                 <h4><i class="fa fa-facebook"></i>&nbsp;Post Content for <i>{{selectedCampaign.topic}}</i></h4>
