@@ -63,7 +63,7 @@ app.controller('profileCtrl', function ($rootScope, $scope, $http) {
                 break;
             }
         }
-        $scope.apiClient.insightsFacebookGet({accessToken: fbToken, postId: "", pageId: $scope.user.profile.facebookDefaultPageId}, {}, {
+        $scope.apiClient.facebookGet({accessToken: fbToken, postId: "", pageId: $scope.user.profile.facebookDefaultPageId}, {}, {
                 headers:{"Content-type": "application/json"}
             }
         ).then(function(res){
@@ -83,7 +83,7 @@ app.controller('profileCtrl', function ($rootScope, $scope, $http) {
                         $scope.user.tokens[index].accessToken = res.data.newToken;
                             $http.post("/account/profile", $scope.user, {headers:{"Content-type": "application/json"}
                             });
-                        $scope.apiClient.insightsFacebookGet({accessToken: $scope.user.tokens[index].accessToken, postId: "", pageId: $scope.user.profile.facebookDefaultPageId}, {}, {
+                        $scope.apiClient.facebookGet({accessToken: $scope.user.tokens[index].accessToken, postId: "", pageId: $scope.user.profile.facebookDefaultPageId}, {}, {
                                 headers:{"Content-type": "application/json"}
                             }
                         ).then(function(res){
