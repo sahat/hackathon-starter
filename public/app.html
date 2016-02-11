@@ -46,7 +46,6 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <ul class="nav navbar-nav navbar-right">
             <li ng-show="!$root.user"><a href="#/login">Login</a></li>
-            <li ng-show="!$root.user"><a ng-click="openSignUpModal()">Create Account</a></li>
             <li class="dropdown" ng-show="$root.user">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="/login"><span ng-if="$root.user.profile.name">{{$root.user.profile.name}}</span><span ng-if="!$root.user.profile.name">{{$root.user.email}}</span></a>
                 <ul class="dropdown-menu">
@@ -69,7 +68,7 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
+            <ul ng-show="$root.user" class="nav navbar-nav">
                 <li>
                     <a href="#/campaign">Campaign</a>
                 </li>
