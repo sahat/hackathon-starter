@@ -52,7 +52,7 @@ apigClientFactory.newClient = function (config) {
     }
 
     
-    var endpoint = 'https://ho3j8bqvgf.execute-api.us-east-1.amazonaws.com/dev';
+    var endpoint = 'https://peoocmcc7h.execute-api.us-east-1.amazonaws.com/dev';
     var parser = document.createElement('a');
     parser.href = endpoint;
 
@@ -91,70 +91,70 @@ apigClientFactory.newClient = function (config) {
     
     
     
-    apigClient.applicationApplicationIdGet = function (params, body, additionalParams) {
+    apigClient.applicationGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, ['applicationId'], ['body']);
         
-        var applicationApplicationIdGetRequest = {
+        var applicationGetRequest = {
             verb: 'get'.toUpperCase(),
-            path: pathComponent + uritemplate('/application/{applicationId}').expand(apiGateway.core.utils.parseParametersToObject(params, ['applicationId'])),
+            path: pathComponent + uritemplate('/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['applicationId']),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(applicationApplicationIdGetRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(applicationGetRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.applicationApplicationIdPatch = function (params, body, additionalParams) {
+    apigClient.applicationPatch = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, ['applicationId', 'body'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['body'], ['body']);
         
-        var applicationApplicationIdPatchRequest = {
+        var applicationPatchRequest = {
             verb: 'patch'.toUpperCase(),
-            path: pathComponent + uritemplate('/application/{applicationId}').expand(apiGateway.core.utils.parseParametersToObject(params, ['applicationId', ])),
+            path: pathComponent + uritemplate('/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(applicationApplicationIdPatchRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(applicationPatchRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.applicationApplicationIdOptions = function (params, body, additionalParams) {
+    apigClient.applicationOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['applicationId'], ['body']);
         
-        var applicationApplicationIdOptionsRequest = {
+        var applicationOptionsRequest = {
             verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/application/{applicationId}').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['applicationId']),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(applicationApplicationIdOptionsRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(applicationOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     
     apigClient.campaignGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange', 'startKey', 'tags'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange', 'startKey', 'tags', 'status'], ['body']);
         
         var campaignGetRequest = {
             verb: 'get'.toUpperCase(),
             path: pathComponent + uritemplate('/campaign').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange', 'startKey', 'tags']),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange', 'startKey', 'tags', 'status']),
             body: body
         };
         
@@ -199,219 +199,219 @@ apigClientFactory.newClient = function (config) {
     };
     
     
-    apigClient.campaignCampaignIdApplicationGet = function (params, body, additionalParams) {
+    apigClient.campaignsApplicationGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, ['campaignId'], ['body']);
         
-        var campaignCampaignIdApplicationGetRequest = {
+        var campaignsApplicationGetRequest = {
             verb: 'get'.toUpperCase(),
-            path: pathComponent + uritemplate('/campaign/{campaignId}/application').expand(apiGateway.core.utils.parseParametersToObject(params, ['campaignId'])),
+            path: pathComponent + uritemplate('/campaigns/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['campaignId']),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(campaignCampaignIdApplicationGetRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(campaignsApplicationGetRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.campaignCampaignIdApplicationPost = function (params, body, additionalParams) {
+    apigClient.campaignsApplicationPost = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, ['campaignId', 'body'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['body'], ['body']);
         
-        var campaignCampaignIdApplicationPostRequest = {
+        var campaignsApplicationPostRequest = {
             verb: 'post'.toUpperCase(),
-            path: pathComponent + uritemplate('/campaign/{campaignId}/application').expand(apiGateway.core.utils.parseParametersToObject(params, ['campaignId', ])),
+            path: pathComponent + uritemplate('/campaigns/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(campaignCampaignIdApplicationPostRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(campaignsApplicationPostRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.campaignCampaignIdApplicationPatch = function (params, body, additionalParams) {
+    apigClient.campaignsApplicationPatch = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['body'], ['body']);
+        
+        var campaignsApplicationPatchRequest = {
+            verb: 'patch'.toUpperCase(),
+            path: pathComponent + uritemplate('/campaigns/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(campaignsApplicationPatchRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.campaignsApplicationOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, ['campaignId', 'body'], ['body']);
         
-        var campaignCampaignIdApplicationPatchRequest = {
-            verb: 'patch'.toUpperCase(),
-            path: pathComponent + uritemplate('/campaign/{campaignId}/application').expand(apiGateway.core.utils.parseParametersToObject(params, ['campaignId', ])),
-            headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
-            body: body
-        };
-        
-        
-        return apiGatewayClient.makeRequest(campaignCampaignIdApplicationPatchRequest, authType, additionalParams, config.apiKey);
-    };
-    
-    
-    apigClient.campaignCampaignIdApplicationOptions = function (params, body, additionalParams) {
-        if(additionalParams === undefined) { additionalParams = {}; }
-        
-        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
-        
-        var campaignCampaignIdApplicationOptionsRequest = {
+        var campaignsApplicationOptionsRequest = {
             verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/campaign/{campaignId}/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/campaigns/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['campaignId', ]),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(campaignCampaignIdApplicationOptionsRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(campaignsApplicationOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.insightsFacebookGet = function (params, body, additionalParams) {
+    apigClient.facebookGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, ['postId', 'accessToken', 'pageId'], ['body']);
         
-        var insightsFacebookGetRequest = {
+        var facebookGetRequest = {
             verb: 'get'.toUpperCase(),
-            path: pathComponent + uritemplate('/insights/facebook').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/facebook').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, ['postId', 'accessToken', 'pageId']),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(insightsFacebookGetRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(facebookGetRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.insightsFacebookOptions = function (params, body, additionalParams) {
+    apigClient.facebookOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
         
-        var insightsFacebookOptionsRequest = {
+        var facebookOptionsRequest = {
             verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/insights/facebook').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/facebook').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(insightsFacebookOptionsRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(facebookOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.insightsFacebookPagesGet = function (params, body, additionalParams) {
+    apigClient.pagesGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, ['accessToken'], ['body']);
         
-        var insightsFacebookPagesGetRequest = {
+        var pagesGetRequest = {
             verb: 'get'.toUpperCase(),
-            path: pathComponent + uritemplate('/insights/facebook/pages').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/pages').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, ['accessToken']),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(insightsFacebookPagesGetRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(pagesGetRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.insightsFacebookPagesOptions = function (params, body, additionalParams) {
+    apigClient.pagesOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
         
-        var insightsFacebookPagesOptionsRequest = {
+        var pagesOptionsRequest = {
             verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/insights/facebook/pages').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/pages').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(insightsFacebookPagesOptionsRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(pagesOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.insightsFacebookSchedulepostPost = function (params, body, additionalParams) {
+    apigClient.schedulepostPost = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, ['body'], ['body']);
         
-        var insightsFacebookSchedulepostPostRequest = {
+        var schedulepostPostRequest = {
             verb: 'post'.toUpperCase(),
-            path: pathComponent + uritemplate('/insights/facebook/schedulepost').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/schedulepost').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(insightsFacebookSchedulepostPostRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(schedulepostPostRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.insightsFacebookSchedulepostOptions = function (params, body, additionalParams) {
+    apigClient.schedulepostOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
         
-        var insightsFacebookSchedulepostOptionsRequest = {
+        var schedulepostOptionsRequest = {
             verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/insights/facebook/schedulepost').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/schedulepost').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(insightsFacebookSchedulepostOptionsRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(schedulepostOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.insightsTwitterGet = function (params, body, additionalParams) {
+    apigClient.twitterGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, ['userId'], ['body']);
         
-        var insightsTwitterGetRequest = {
+        var twitterGetRequest = {
             verb: 'get'.toUpperCase(),
-            path: pathComponent + uritemplate('/insights/twitter').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/twitter').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, ['userId']),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(insightsTwitterGetRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(twitterGetRequest, authType, additionalParams, config.apiKey);
     };
     
     
-    apigClient.insightsTwitterOptions = function (params, body, additionalParams) {
+    apigClient.twitterOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
         
-        var insightsTwitterOptionsRequest = {
+        var twitterOptionsRequest = {
             verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/insights/twitter').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/twitter').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(insightsTwitterOptionsRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(twitterOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     
@@ -433,39 +433,21 @@ apigClientFactory.newClient = function (config) {
     };
     
     
-    apigClient.userUserIdApplicationGet = function (params, body, additionalParams) {
-        if(additionalParams === undefined) { additionalParams = {}; }
-        
-        apiGateway.core.utils.assertParametersDefined(params, ['userId'], ['body']);
-        
-        var userUserIdApplicationGetRequest = {
-            verb: 'get'.toUpperCase(),
-            path: pathComponent + uritemplate('/user/{userId}/application').expand(apiGateway.core.utils.parseParametersToObject(params, ['userId'])),
-            headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
-            body: body
-        };
-        
-        
-        return apiGatewayClient.makeRequest(userUserIdApplicationGetRequest, authType, additionalParams, config.apiKey);
-    };
-    
-    
-    apigClient.userUserIdApplicationOptions = function (params, body, additionalParams) {
+    apigClient.userOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
         apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
         
-        var userUserIdApplicationOptionsRequest = {
+        var userOptionsRequest = {
             verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/user/{userId}/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            path: pathComponent + uritemplate('/user').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
         
         
-        return apiGatewayClient.makeRequest(userUserIdApplicationOptionsRequest, authType, additionalParams, config.apiKey);
+        return apiGatewayClient.makeRequest(userOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
 
