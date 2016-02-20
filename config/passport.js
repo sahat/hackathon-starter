@@ -481,6 +481,27 @@ passport.use(new OpenIDStrategy({
 }));
 
 /**
+ * Pinterest API OAuth.
+ */
+passport.use('pinterest', new OAuth2Strategy({
+    authorizationURL: 'https://api.pinterest.com/oauth/',
+    tokenURL: 'https://api.pinterest.com/v1/oauth/token',
+    clientID: process.env.PINTEREST_ID,
+    clientSecret: process.env.PINTEREST_SECRET,
+    callbackURL: process.env.PINTEREST_REDIRECT_URL,
+    passReqToCallback: true
+  },
+  function(req, accessToken, refreshToken, profile, done) {
+    User.findById(req.user._id, function(err, user) {
+      user.tokens.push({ kind: 'pinterest', accessToken: accessToken });
+      user.save(function(err) {
+        done(err, user);
+      });
+    });
+  }
+));
+
+/**
  * Login Required middleware.
  */
 exports.isAuthenticated = function(req, res, next) {

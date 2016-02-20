@@ -852,3 +852,61 @@ exports.postFileUpload = function(req, res, next) {
   req.flash('success', { msg: 'File was uploaded successfully.'});
   res.redirect('/api/upload');
 };
+
+/**
+ * GET /api/pinterest
+ * Pinterest API example.
+ */
+exports.getPinterest = function(req, res, next) {
+  request = require('request');
+
+  var token = _.find(req.user.tokens, { kind: 'pinterest' });
+  request.get({ url: 'https://api.pinterest.com/v1/me/boards/', qs: { access_token: token.accessToken }, json: true }, function(err, request, body) {
+    if (err) {
+      return next(err);
+    }
+
+    res.render('api/pinterest', {
+      title: 'Pinterest API',
+      boards: body.data
+    });
+  });
+};
+
+/**
+ * POST /api/pinterest
+ * Create a pin.
+ */
+exports.postPinterest = function(req, res, next) {
+  req.assert('board', 'Board is required.').notEmpty();
+  req.assert('note', 'Note cannot be blank.').notEmpty();
+  req.assert('image_url', 'Image URL cannot be blank.').notEmpty();
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/api/pinterest');
+  }
+
+  request = require('request');
+
+  var token = _.find(req.user.tokens, { kind: 'pinterest' });
+  var formData = {
+    board: req.body.board,
+    note: req.body.note,
+    link: req.body.link,
+    image_url: req.body.image_url
+  };
+  request.post('https://api.pinterest.com/v1/pins/', { qs: { access_token: token.accessToken }, form: formData }, function(err, request, body) {
+    if (err) {
+      return next(err);
+    }
+    if (request.statusCode !== 201) {
+      req.flash('errors', { msg: JSON.parse(body).message });
+      return res.redirect('/api/pinterest');
+    }
+    req.flash('success', { msg: 'Pin created' });
+    res.redirect('/api/pinterest');
+  });
+};

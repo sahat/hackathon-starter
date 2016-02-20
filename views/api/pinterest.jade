@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+  .page-header
+    h2
+      i.fa.fa-pinterest(style='color: #cb2027')
+      | Pinterest API
+  .btn-group.btn-group-justified
+    a.btn.btn-primary(href='https://developers.pinterest.com/docs/getting-started/introduction/', target='_blank')
+      i.fa.fa-check-square-o
+      | Getting Started
+    a.btn.btn-primary(href='https://developers.pinterest.com/tools/api-explorer/', target='_blank')
+      i.fa.fa-pinterest
+      | API Explorer
+    a.btn.btn-primary(href='https://developers.pinterest.com/docs/api/overview/', target='_blank')
+      i.fa.fa-code-fork
+      | API Overview
+
+  h3 Create a Pin    
+  form(role='form', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.row
+      .col-sm-6
+        label Board
+        select.form-control(name='board')
+          for board in boards
+            option(value=board.id)= board.name
+      .col-sm-6
+        label Note
+        input.form-control(name='note', placeholder='The Pin\'s description.')
+    .form-group.row
+      .col-sm-6
+        label Link
+        input.form-control(name='link', placeholder='The URL the Pin will link to when you click through.')
+      .col-sm-6
+        label Image URL
+        input.form-control(name='image_url', placeholder='The link to the image that you want to Pin.')
+    button.btn.btn-primary(type='submit')
+        i.fa.fa-pinterest
+        |  Pin It
