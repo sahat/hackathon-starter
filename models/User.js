@@ -5,8 +5,8 @@ var mongoose = require('mongoose');
 var userSchema = new mongoose.Schema({
   email: { type: String, lowercase: true, unique: true },
   password: String,
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 
   facebook: String,
   twitter: String,

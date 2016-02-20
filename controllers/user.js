@@ -221,8 +221,8 @@ exports.getReset = function(req, res) {
     return res.redirect('/');
   }
   User
-    .findOne({ resetPasswordToken: req.params.token })
-    .where('resetPasswordExpires').gt(Date.now())
+    .findOne({ passwordResetToken: req.params.token })
+    .where('passwordResetExpires').gt(Date.now())
     .exec(function(err, user) {
       if (err) {
         return next(err);
@@ -255,8 +255,8 @@ exports.postReset = function(req, res, next) {
   async.waterfall([
     function(done) {
       User
-        .findOne({ resetPasswordToken: req.params.token })
-        .where('resetPasswordExpires').gt(Date.now())
+        .findOne({ passwordResetToken: req.params.token })
+        .where('passwordResetExpires').gt(Date.now())
         .exec(function(err, user) {
           if (err) {
             return next(err);
@@ -266,8 +266,8 @@ exports.postReset = function(req, res, next) {
             return res.redirect('back');
           }
           user.password = req.body.password;
-          user.resetPasswordToken = undefined;
-          user.resetPasswordExpires = undefined;
+          user.passwordResetToken = undefined;
+          user.passwordResetExpires = undefined;
           user.save(function(err) {
             if (err) {
               return next(err);
@@ -346,8 +346,8 @@ exports.postForgot = function(req, res, next) {
           req.flash('errors', { msg: 'No account with that email address exists.' });
           return res.redirect('/forgot');
         }
-        user.resetPasswordToken = token;
-        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        user.passwordResetToken = token;
+        user.passwordResetExpires = Date.now() + 3600000; // 1 hour
         user.save(function(err) {
           done(err, token, user);
         });
