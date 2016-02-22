@@ -58,7 +58,7 @@
     "tumblr.js": "^0.0.7",
     "twilio": "^3.3.0-edge",
     "twit": "^2.2.2",
-    "validator": "^4.8.0",
+    "validator": "^5.0.0",
     "yui": "^3.18.1"
   },
   "devDependencies": {
