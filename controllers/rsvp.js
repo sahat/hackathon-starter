@@ -16,6 +16,7 @@ exports.removeEventFromCurrentUser = function(req, res, next) {
 	});
 };
 
+/*test commets*/
 exports.addEventFromEmail = function(req, res, next) {
 	var eventId = crypt.decrypt(req.params.eventId);
 	var userId = crypt.decrypt(req.params.userId);

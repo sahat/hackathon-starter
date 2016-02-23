@@ -11,7 +11,7 @@ var reserve = require('../services/reserve');
 
 /**
  * POST /event
- * Create new event.
+ * Create new event for review.
  */
 exports.createEvent = function(req, res, next) {
 	var event = new Event({
