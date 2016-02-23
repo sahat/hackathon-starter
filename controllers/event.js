@@ -52,6 +52,7 @@ exports.getEvent = function(req, res, next) {
 	});
 };
 
+/*this is a commet added by chamila to test*/
 exports.updateEvent = function(req, res, next) {
 	eventService.findById(req.params.id, function(err, event) {
 		if (err) return next(err);

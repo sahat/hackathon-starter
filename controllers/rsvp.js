@@ -1,6 +1,7 @@
 var reserve = require('../services/reserve');
 var crypt = require('../services/crypt');
 
+/*adding event comment*/
 exports.addEventForCurrentUser = function(req, res, next) {
 	var userId = req.user.id;
 	reserve.addEvent(req.params.eventId, userId, function(result) {

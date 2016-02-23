@@ -30,6 +30,7 @@ exports.remind = function(){
 };
 
 
+/*sms send logic for event*/
 function sendMessageForEvent(event){
 	var eventName = event.title;
 	var participantList = event.participants;
