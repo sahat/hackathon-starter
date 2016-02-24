@@ -216,7 +216,7 @@ exports.getOauthUnlink = function(req, res, next) {
  * GET /reset/:token
  * Reset Password page.
  */
-exports.getReset = function(req, res) {
+exports.getReset = function(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
