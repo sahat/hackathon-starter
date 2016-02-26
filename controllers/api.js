@@ -1,3 +1,6 @@
+var _ = require('lodash');
+var async = require('async');
+
 /**
  * Split into declaration and initialization for better startup performance.
  */
@@ -19,10 +22,6 @@ var lob;
 var ig;
 var Y;
 var request;
-
-var _ = require('lodash');
-var async = require('async');
-var querystring = require('querystring');
 
 /**
  * GET /api
@@ -146,9 +145,6 @@ exports.getScraping = function(req, res, next) {
   request = require('request');
 
   request.get('https://news.ycombinator.com/', function(err, request, body) {
-    if (err) {
-      return next(err);
-    }
     var $ = cheerio.load(body);
     var links = [];
     $('.title a[href^="http"], a[href^="https"]').each(function() {
@@ -200,18 +196,14 @@ exports.getAviary = function(req, res) {
 exports.getNewYorkTimes = function(req, res, next) {
   request = require('request');
 
-  var query = querystring.stringify({
-    'api-key': process.env.NYT_KEY,
-    'list-name': 'young-adult'
-  });
-  var url = 'http://api.nytimes.com/svc/books/v2/lists?' + query;
+  var query = {
+    'list-name': 'young-adult',
+    'api-key': process.env.NYT_KEY
+  };
 
-  request.get(url, function(err, request, body) {
-    if (err) {
-      return next(err);
-    }
+  request.get({ url: 'http://api.nytimes.com/svc/books/v2/lists', qs: query }, function(err, request, body) {
     if (request.statusCode === 403) {
-      return next(Error('Missing or Invalid New York Times API Key'));
+      return next(new Error('Invalid New York Times API Key'));
     }
     var bestsellers = JSON.parse(body);
     res.render('api/nyt', {
@@ -367,22 +359,21 @@ exports.getSteam = function(req, res, next) {
   request = require('request');
 
   var steamId = '76561197982488301';
-  var query = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
+  var params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
+  
   async.parallel({
     playerAchievements: function(done) {
-      query.appid = '49520';
-      var qs = querystring.stringify(query);
-      request.get({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?' + qs, json: true }, function(error, request, body) {
+      params.appid = '49520';
+      request.get({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true }, function(err, request, body) {
         if (request.statusCode === 401) {
-          return done(new Error('Missing or Invalid Steam API Key'));
+          return done(new Error('Invalid Steam API Key'));
         }
-        done(error, body);
+        done(err, body);
       });
     },
     playerSummaries: function(done) {
-      query.steamids = steamId;
-      var qs = querystring.stringify(query);
-      request.get({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?' + qs, json: true }, function(err, request, body) {
+      params.steamids = steamId;
+      request.get({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true }, function(err, request, body) {
         if (request.statusCode === 401) {
           return done(new Error('Missing or Invalid Steam API Key'));
         }
@@ -390,10 +381,9 @@ exports.getSteam = function(req, res, next) {
       });
     },
     ownedGames: function(done) {
-      query.include_appinfo = 1;
-      query.include_played_free_games = 1;
-      var qs = querystring.stringify(query);
-      request.get({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?' + qs, json: true }, function(err, request, body) {
+      params.include_appinfo = 1;
+      params.include_played_free_games = 1;
+      request.get({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true }, function(err, request, body) {
         if (request.statusCode === 401) {
           return done(new Error('Missing or Invalid Steam API Key'));
         }
@@ -529,16 +519,16 @@ exports.getVenmo = function(req, res, next) {
   request = require('request');
 
   var token = _.find(req.user.tokens, { kind: 'venmo' });
-  var query = querystring.stringify({ access_token: token.accessToken });
+  var query = { access_token: token.accessToken };
 
   async.parallel({
     getProfile: function(done) {
-      request.get({ url: 'https://api.venmo.com/v1/me?' + query, json: true }, function(err, request, body) {
+      request.get({ url: 'https://api.venmo.com/v1/me', qs: query, json: true }, function(err, request, body) {
         done(err, body);
       });
     },
     getRecentPayments: function(done) {
-      request.get({ url: 'https://api.venmo.com/v1/payments?' + query, json: true }, function(err, request, body) {
+      request.get({ url: 'https://api.venmo.com/v1/payments', qs: query, json: true }, function(err, request, body) {
         done(err, body);
       });
     }
