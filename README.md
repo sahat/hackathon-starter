@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.4.1?](#changelog)
+Jump to [What's new in 3.5.0?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1106,7 +1106,12 @@ Changelog
 ---------
 
 ### 3.5.0 (March 4, 2016)
-- Removed `setup.js` (generator) due to its limited functionality and a lack of updates
+- Added file upload example
+- Added Pinterest API example
+- Added timestamp support to the User schema
+- Fixed `next` parameter being *undefined* inside `getReset` handler
+- Refactored querysting param usage in *api.js* controller
+- Removed *setup.js* (generator) due to its limited functionality and a lack of updates
 
 ### 3.4.1 (February 6, 2016)
 - Added "Obtaining Twilio API Keys" instructions.
