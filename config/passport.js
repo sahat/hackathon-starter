@@ -246,7 +246,6 @@ passport.use(new TwitterStrategy({
         });
       }
     });
-
   } else {
     User.findOne({ twitter: profile.id }, function(err, existingUser) {
       if (existingUser) {
