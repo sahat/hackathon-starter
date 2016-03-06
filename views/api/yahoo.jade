@@ -4,27 +4,34 @@ block content
   .page-header
     h2
       i.fa.fa-yahoo(style='color: #7b0099')
-      | Yahoo API
-  .btn-group.btn-group-justified
-    a.btn.btn-primary(href='https://developer.yahoo.com/yql/', target='_blank')
-      i.fa.fa-check-square-o
-      | YQL Getting Started
-    a.btn.btn-primary(href='http://yuilibrary.com/yui/docs/node/', target='_blank')
-      i.fa.fa-laptop
-      | YUI on Node.js
-    a.btn.btn-primary(href='https://developer.yahoo.com/everything.html', target='_blank')
-      i.fa.fa-code
-      | Yahoo APIs
-
+      | Yahoo Fiance
+  
+  p.lead
+  form.form-horizontal(action='', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label.col-sm-3.control-label(for='symbol') Symbol
+      .col-sm-7
+        input.form-control(type='symbol', name='symbol', id='symbol', placeholder='Symbol, e.g., GOOG for Google', autofocus=true)
+  p
   br
-  p.lead Weather for ZIP Code:
-    strong  10007
+  p.lead Stock for ZIP Code:
+    //strong  #{location.symbol}
   .alert.alert-info
-    p It is currently
-     strong  #{condition.temp}
-     |  degrees in
-     strong  #{location.city}, #{location.region}
-     | .
+    p     
+    each loc in location 
+      each val, key in loc
+        p #{key}: #{val}
+   
+  table
+    thead
+    tbody
+    for row in location
+      tr
+        for val, key in row
+          td #{key}: #{val}
 
-  h3 YQL Query
-  pre SELECT * FROM weather.forecast WHERE (location = 10007)
+      
+
+  //h3 YQL Query
+  //pre SELECT * FROM weather.forecast 
