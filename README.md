@@ -2,6 +2,12 @@
 Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](https://travis-ci.org/sahat/hackathon-starter.svg?branch=master)](https://travis-ci.org/sahat/hackathon-starter)
 =======================
 
+Yahoo Finance stock [YQL console](https://developer.yahoo.com/yql/console/) and [tutorial](https://developer.yahoo.com/yql/guide/yql-tutorials.html)
+
+```
+select * from yahoo.finance.quote where symbol in ("GOOG")
+```
+
 [![Donate](https://img.shields.io/badge/paypal-donate-blue.svg)](https://paypal.me/sahat) [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Thinkful Pair on Node](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/node/)
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
