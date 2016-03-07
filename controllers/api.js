@@ -661,13 +661,29 @@ exports.getInstagram = function(req, res, next) {
 exports.getYahoo = function(req, res) {
   Y = require('yui/yql');
 
-  Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', function(response) {
-    var location = response.query.results.channel.location;
-    var condition = response.query.results.channel.item.condition;
+  async.parallel([
+    function getFinanceStocks(done) {
+      Y.YQL('SELECT * FROM yahoo.finance.quote WHERE symbol in ("YHOO", "TSLA", "GOOG", "MSFT")', function(response) {
+        var quotes = response.query.results.quote;
+        done(null, quotes);
+      });
+    },
+    function getWeatherReport(done) {
+      Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', function(response) {
+        var location = response.query.results.channel.location;
+        var condition = response.query.results.channel.item.condition;
+        done(null, { location: location, condition: condition });
+      });
+    }
+  ], function(err, results) {
+    var quotes = results[0];
+    var weather = results[1];
+
     res.render('api/yahoo', {
       title: 'Yahoo API',
-      location: location,
-      condition: condition
+      quotes: quotes,
+      location: weather.location,
+      condition: weather.condition
     });
   });
 };
