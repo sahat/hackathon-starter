@@ -502,7 +502,7 @@ download MongoDB [here](http://mongodb.org/downloads), or install it via a packa
 Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
 **Tip:** If you are always connected to the internet, you could just use
-[MongoLab](https://mongolab.com/) or [Compose](https://www.compose.io/) instead
+[mLab](https://mongolab.com/) or [Compose](https://www.compose.io/) instead
 of downloading and installing MongoDB locally. You will only need to update database credentials
 in `.env` file.
 
@@ -510,10 +510,10 @@ in `.env` file.
 Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB`/`MONGOLAB_URI` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
-running on `localhost`. You need to create an account with [MongoLab](https://mongolab.com/)
+running on `localhost`. You need to create an account with [mLab](https://mongolab.com/)
 or [Compose](https://www.compose.io/), then create a free tier database.
 See [Deployment](#deployment) for more information on how to setup an account
-and a new database step-by-step with MongoLab.
+and a new database step-by-step with mLab.
 
 ### Why Jade instead of Handlebars?
 When I first started this project I didn't have any experience with Handlebars. Since then I have worked on Ember.js apps and got myself familiar with the Handlebars syntax. While it is true Handlebars is easier, because it looks like good old HTML, I have no regrets picking Jade over Handlebars. First off, it's the default template engine in Express, so someone who has built Express apps in the past already knows it. Secondly, I find `extends` and `block` to be indispensable, which as far as I know, Handlebars does not have out of the box. And lastly, subjectively speaking, Jade looks much cleaner and shorter than Handlebars, or any non-HAML style for that matter.
@@ -993,7 +993,7 @@ a cloud platform to host it. These are not the only choices, but they are my top
 picks. From my experience, **Heroku** is the easiest to get started with, it will
 automatically restart your Node.js process when it crashes, zero-downtime
 deployments and custom domain support on free accounts. Additionally, you can
-create an account with **MongoLab** and then pick one of the *4* providers below.
+create an account with **mLab** and then pick one of the *4* providers below.
 Again, there are plenty of other choices and you are not limited to just the ones
 listed below.
 
@@ -1003,7 +1003,7 @@ listed below.
 - Download and install [Heroku Toolbelt](https://toolbelt.heroku.com/)
 - In terminal, run `heroku login` and enter your Heroku credentials
 - From *your app* directory run `heroku create`
-- Run `heroku addons:create mongolab`.  This will set up the MongoLab add-on and configure the `MONGOLAB_URI` environment variable in your Heroku app for you.
+- Run `heroku addons:create mongolab`.  This will set up the mLab add-on and configure the `MONGOLAB_URI` environment variable in your Heroku app for you.
 - Lastly, do `git push heroku master`.  Done!
 
 **Note:** To install Heroku add-ons your account must be verified.
@@ -1011,7 +1011,7 @@ listed below.
 ---
 
 <img src="http://i.imgur.com/7KnCa5a.png" width="200">
-- Open [mongolab.com](https://mongolab.com) website
+- Open [mlab.com](https://mlab.com) website
 - Click the yellow **Sign up** button
 - Fill in your user information then hit **Create account**
 - From the dashboard, click on **:zap:Create new** button
@@ -1028,7 +1028,7 @@ listed below.
 - Finally, in `.env` instead of `mongodb://localhost:27017/test`, use the following URI with your credentials:
  - `db: 'mongodb://USERNAME:PASSWORD@ds027479.mongolab.com:27479/DATABASE_NAME'`
 
-**Note:** As an alternative to MongoLab, there is also [Compose](https://www.compose.io/).
+**Note:** As an alternative to mLab, there is also [Compose](https://www.compose.io/).
 
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
@@ -1215,7 +1215,7 @@ Changelog
 - Font Awesome 4.2.0 [01e7bd5c09926911ca856fe4990e6067d9148694](https://github.com/sahat/hackathon-starter/commit/01e7bd5c09926911ca856fe4990e6067d9148694)
 - Code cleanup in `app.js` and `controllers/api.js`. [8ce48f767c0146062296685cc101acf3d5d224d9](https://github.com/sahat/hackathon-starter/commit/8ce48f767c0146062296685cc101acf3d5d224d9) [cdbb9d1888a96bbba92d4d14deec99a8acba2618](https://github.com/sahat/hackathon-starter/commit/cdbb9d1888a96bbba92d4d14deec99a8acba2618)
 - Updated Stripe API example. [afef373cd57b6a44bf856eb093e8f2801fc2dbe2](https://github.com/sahat/hackathon-starter/commit/afef373cd57b6a44bf856eb093e8f2801fc2dbe2)
-- Added 1-step deployment process with Heroku and MongoLab add-on. [c5def7b7b3b98462e9a2e7896dc11aaec1a48b3f](https://github.com/sahat/hackathon-starter/commit/c5def7b7b3b98462e9a2e7896dc11aaec1a48b3f)
+- Added 1-step deployment process with Heroku and mLab add-on. [c5def7b7b3b98462e9a2e7896dc11aaec1a48b3f](https://github.com/sahat/hackathon-starter/commit/c5def7b7b3b98462e9a2e7896dc11aaec1a48b3f)
 - Updated Twitter apps dashboard url. [e378fbbc24e269de69494d326bc20fcb641c0697](https://github.com/sahat/hackathon-starter/commit/e378fbbc24e269de69494d326bc20fcb641c0697)
 - Fixed dead links in the README. [78fac5489c596e8bcef0ab11a96e654335573bb4](https://github.com/sahat/hackathon-starter/commit/78fac5489c596e8bcef0ab11a96e654335573bb4)
 
