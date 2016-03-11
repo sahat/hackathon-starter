@@ -25,7 +25,7 @@
     "express": "^4.13.4",
     "express-flash": "^0.0.2",
     "express-session": "^1.13.0",
-    "express-validator": "^2.19.1",
+    "express-validator": "^2.19.2",
     "fbgraph": "^1.1.0",
     "github-api": "^0.11.2",
     "instagram-node": "^0.5.8",
@@ -57,7 +57,7 @@
     "stripe": "^4.4.0",
     "tumblr.js": "^0.0.7",
     "twilio": "^3.3.0-edge",
-    "twit": "^2.2.2",
+    "twit": "^2.2.3",
     "validator": "^5.1.0",
     "yui": "^3.18.1"
   },
