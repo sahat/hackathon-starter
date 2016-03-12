@@ -83,7 +83,14 @@ app.use(session({
   })
 }));
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(function(req, res, next){
+  if(req.url.match('img/')||req.url.match('css/')||req.url.match('assets/')||req.url.match('favicon/'))
+    next(); // do not invoke passport on static requests
+  else{
+      passport.session()(req, res, next)
+  }
+});
+
 app.use(flash());
 app.use(function(req, res, next) {
   if (req.path === '/api/upload') {
