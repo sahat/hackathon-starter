@@ -325,8 +325,8 @@ Project Structure
 | **public**/                        | Static assets (fonts, css, js, img).                         |
 | **public**/**js**/application.js   | Specify client-side JavaScript dependencies.                 |
 | **public**/**js**/main.js          | Place your client-side JavaScript here.                      |
-| **public**/**css**/main.less       | Main stylesheet for your app.                                |
-| **public/css/themes**/default.less | Some Bootstrap overrides to make it look prettier.           |
+| **public**/**css**/main.scss       | Main stylesheet for your app.                                |
+| **public/css/themes**/default.scss | Some Bootstrap overrides to make it look prettier.           |
 | **views/account**/                 | Templates for *login, password reset, signup, profile*.      |
 | **views/api**/                     | Templates for API Examples.                                  |
 | **views/partials**/flash.jade      | Error, info and success flash notifications.                 |
