@@ -99,7 +99,8 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(function(req, res, next) {
-  if (/api/i.test(req.path)) {
+  // After successful login, redirect back to /api, /contact or /
+  if (/(api)|(contact)|(^\/$)/i.test(req.path)) {
     req.session.returnTo = req.path;
   }
   next();
