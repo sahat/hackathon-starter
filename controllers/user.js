@@ -128,6 +128,15 @@ exports.getAccount = function(req, res) {
  * Update profile information.
  */
 exports.postUpdateProfile = function(req, res, next) {
+  req.assert('email', 'Please enter a valid email address.').isEmail();
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/account');
+  }
+
   User.findById(req.user.id, function(err, user) {
     if (err) {
       return next(err);
