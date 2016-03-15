@@ -19,7 +19,6 @@
     "compression": "^1.6.1",
     "connect-assets": "^5.1.0",
     "connect-mongo": "^1.1.0",
-    "cookie-parser": "^1.4.1",
     "dotenv": "^2.0.0",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",

@@ -359,7 +359,6 @@ List of Packages
 | dotenv                          | Loads environment variables from .env file.                                                |
 | express                         | Node.js web framework.                                                |
 | body-parser                     | Express 4 middleware.                                                 |
-| cookie-parser                   | Express 4 middleware.                                                 |
 | express-session                 | Express 4 middleware.                                                 |
 | morgan                          | Express 4 middleware.                                                 |
 | compression                     | Express 4 middleware.                                                 |

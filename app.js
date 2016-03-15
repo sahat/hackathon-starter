@@ -2,7 +2,6 @@
  * Module dependencies.
  */
 var express = require('express');
-var cookieParser = require('cookie-parser');
 var compress = require('compression');
 var session = require('express-session');
 var bodyParser = require('body-parser');
@@ -72,7 +71,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(methodOverride());
-app.use(cookieParser());
 app.use(session({
   resave: true,
   saveUninitialized: true,
