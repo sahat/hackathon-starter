@@ -1,8 +1,8 @@
-var bcrypt = require('bcrypt-nodejs');
-var crypto = require('crypto');
-var mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
+const crypto = require('crypto');
+const mongoose = require('mongoose');
 
-var userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   email: { type: String, lowercase: true, unique: true },
   password: String,
   passwordResetToken: String,
@@ -30,7 +30,7 @@ var userSchema = new mongoose.Schema({
  * Password hash middleware.
  */
 userSchema.pre('save', function(next) {
-  var user = this;
+  const user = this;
   if (!user.isModified('password')) {
     return next();
   }
@@ -70,10 +70,10 @@ userSchema.methods.gravatar = function(size) {
   if (!this.email) {
     return 'https://gravatar.com/avatar/?s=' + size + '&d=retro';
   }
-  var md5 = crypto.createHash('md5').update(this.email).digest('hex');
+  const md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
 };
 
-var User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

@@ -1,9 +1,9 @@
-var _ = require('lodash');
-var async = require('async');
-var crypto = require('crypto');
-var nodemailer = require('nodemailer');
-var passport = require('passport');
-var User = require('../models/User');
+const _ = require('lodash');
+const async = require('async');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const passport = require('passport');
+const User = require('../models/User');
 
 /**
  * GET /login
@@ -26,7 +26,7 @@ exports.postLogin = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
 
-  var errors = req.validationErrors();
+  const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
@@ -82,14 +82,14 @@ exports.postSignup = function(req, res, next) {
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
-  var errors = req.validationErrors();
+  const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
     return res.redirect('/signup');
   }
 
-  var user = new User({
+  const user = new User({
     email: req.body.email,
     password: req.body.password
   });
@@ -130,7 +130,7 @@ exports.getAccount = function(req, res) {
 exports.postUpdateProfile = function(req, res, next) {
   req.assert('email', 'Please enter a valid email address.').isEmail();
 
-  var errors = req.validationErrors();
+  const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
@@ -169,7 +169,7 @@ exports.postUpdatePassword = function(req, res, next) {
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
-  var errors = req.validationErrors();
+  const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
@@ -211,7 +211,7 @@ exports.postDeleteAccount = function(req, res, next) {
  * Unlink OAuth provider.
  */
 exports.getOauthUnlink = function(req, res, next) {
-  var provider = req.params.provider;
+  const provider = req.params.provider;
   User.findById(req.user.id, function(err, user) {
     if (err) {
       return next(err);
@@ -259,7 +259,7 @@ exports.postReset = function(req, res, next) {
   req.assert('password', 'Password must be at least 4 characters long.').len(4);
   req.assert('confirm', 'Passwords must match.').equals(req.body.password);
 
-  var errors = req.validationErrors();
+  const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
@@ -293,14 +293,14 @@ exports.postReset = function(req, res, next) {
         });
     },
     function(user, done) {
-      var transporter = nodemailer.createTransport({
+      const transporter = nodemailer.createTransport({
         service: 'SendGrid',
         auth: {
           user: process.env.SENDGRID_USER,
           pass: process.env.SENDGRID_PASSWORD
         }
       });
-      var mailOptions = {
+      const mailOptions = {
         to: user.email,
         from: 'hackathon@starter.com',
         subject: 'Your Hackathon Starter password has been changed',
@@ -340,7 +340,7 @@ exports.getForgot = function(req, res) {
 exports.postForgot = function(req, res, next) {
   req.assert('email', 'Please enter a valid email address.').isEmail();
 
-  var errors = req.validationErrors();
+  const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
@@ -350,7 +350,7 @@ exports.postForgot = function(req, res, next) {
   async.waterfall([
     function(done) {
       crypto.randomBytes(16, function(err, buf) {
-        var token = buf.toString('hex');
+        const token = buf.toString('hex');
         done(err, token);
       });
     },
@@ -368,14 +368,14 @@ exports.postForgot = function(req, res, next) {
       });
     },
     function(token, user, done) {
-      var transporter = nodemailer.createTransport({
+      const transporter = nodemailer.createTransport({
         service: 'SendGrid',
         auth: {
           user: process.env.SENDGRID_USER,
           pass: process.env.SENDGRID_PASSWORD
         }
       });
-      var mailOptions = {
+      const mailOptions = {
         to: user.email,
         from: 'hackathon@starter.com',
         subject: 'Reset your password on Hackathon Starter',

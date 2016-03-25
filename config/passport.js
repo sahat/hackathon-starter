@@ -1,18 +1,18 @@
-var _ = require('lodash');
-var passport = require('passport');
-var request = require('request');
-var InstagramStrategy = require('passport-instagram').Strategy;
-var LocalStrategy = require('passport-local').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy;
-var TwitterStrategy = require('passport-twitter').Strategy;
-var GitHubStrategy = require('passport-github').Strategy;
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
-var OpenIDStrategy = require('passport-openid').Strategy;
-var OAuthStrategy = require('passport-oauth').OAuthStrategy;
-var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+const _ = require('lodash');
+const passport = require('passport');
+const request = require('request');
+const InstagramStrategy = require('passport-instagram').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
+const GitHubStrategy = require('passport-github').Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+const OpenIDStrategy = require('passport-openid').Strategy;
+const OAuthStrategy = require('passport-oauth').OAuthStrategy;
+const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
-var User = require('../models/User');
+const User = require('../models/User');
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -57,7 +57,7 @@ passport.use(new InstagramStrategy({
       if (existingUser) {
         return done(null, existingUser);
       }
-      var user = new User();
+      let user = new User();
       user.instagram = profile.id;
       user.tokens.push({ kind: 'instagram', accessToken: accessToken });
       user.profile.name = profile.displayName;
@@ -146,7 +146,7 @@ passport.use(new FacebookStrategy({
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.' });
           done(err);
         } else {
-          var user = new User();
+          let user = new User();
           user.email = profile._json.email;
           user.facebook = profile.id;
           user.tokens.push({ kind: 'facebook', accessToken: accessToken });
@@ -202,7 +202,7 @@ passport.use(new GitHubStrategy({
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with GitHub manually from Account Settings.' });
           done(err);
         } else {
-          var user = new User();
+          let user = new User();
           user.email = profile._json.email;
           user.github = profile.id;
           user.tokens.push({ kind: 'github', accessToken: accessToken });
@@ -251,7 +251,7 @@ passport.use(new TwitterStrategy({
       if (existingUser) {
         return done(null, existingUser);
       }
-      var user = new User();
+      let user = new User();
       // Twitter will not provide an email address.  Period.
       // But a person’s twitter username is guaranteed to be unique
       // so we can "fake" a twitter email address as follows:
@@ -306,7 +306,7 @@ passport.use(new GoogleStrategy({
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' });
           done(err);
         } else {
-          var user = new User();
+          let user = new User();
           user.email = profile.emails[0].value;
           user.google = profile.id;
           user.tokens.push({ kind: 'google', accessToken: accessToken });
@@ -362,7 +362,7 @@ passport.use(new LinkedInStrategy({
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
           done(err);
         } else {
-          var user = new User();
+          let user = new User();
           user.linkedin = profile.id;
           user.tokens.push({ kind: 'linkedin', accessToken: accessToken });
           user.email = profile._json.emailAddress;
@@ -453,17 +453,17 @@ passport.use(new OpenIDStrategy({
   realm: 'http://localhost:3000/',
   stateless: true
 }, function(identifier, done) {
-  var steamId = identifier.match(/\d+$/)[0];
-  var profileURL = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + process.env.STEAM_KEY + '&steamids=' + steamId;
+  const steamId = identifier.match(/\d+$/)[0];
+  const profileURL = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + process.env.STEAM_KEY + '&steamids=' + steamId;
 
   User.findOne({ steam: steamId }, function(err, existingUser) {
     if (existingUser) return done(err, existingUser);
     request(profileURL, function(error, response, body) {
       if (!error && response.statusCode == 200) {
-        var data = JSON.parse(body);
-        var profile = data.response.players[0];
+        const data = JSON.parse(body);
+        const profile = data.response.players[0];
 
-        var user = new User();
+        let user = new User();
         user.steam = steamId;
         user.email = steamId + '@steam.com'; // steam does not disclose emails, prevent duplicate keys
         user.tokens.push({ kind: 'steam', accessToken: steamId });
@@ -514,7 +514,7 @@ exports.isAuthenticated = function(req, res, next) {
  * Authorization Required middleware.
  */
 exports.isAuthorized = function(req, res, next) {
-  var provider = req.path.split('/').slice(-1)[0];
+  const provider = req.path.split('/').slice(-1)[0];
 
   if (_.find(req.user.tokens, { kind: provider })) {
     next();
