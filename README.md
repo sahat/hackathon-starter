@@ -289,14 +289,6 @@ The same goes for other providers.
 
 <hr>
 
-<img src="http://cdn.appstorm.net/web.appstorm.net/web/files/2013/12/mandrill-logo.png" width="100">
-- Go to http://mandrill.com
-- Sign up and add your *Domain Name*
-- From the dashboard, click on *Get SMTP credentials*
-- Copy and paste the default SMTP *Login* and *Password* into `.env` file
-
-<hr>
-
 <img src="https://www.bitgo.com/img/new_bitgo/logo_footer.png" width="200">
 - Go to https://test.bitgo.com/
 - Sign up for an account.
@@ -543,7 +535,7 @@ If you would like to use **Persona** authentication strategy, use the
 reference guide. I have explained my reasons why it could not be merged in
 [issue #63](https://github.com/sahat/hackathon-starter/issues/63#issuecomment-34898290).
 
-### How do I switch SendGrid for another email delivery service, like Mailgun or Mandrill?
+### How do I switch SendGrid for another email delivery service, like Mailgun or SparkPost?
 Inside the `nodemailer.createTransport` method arguments, simply change the service from `'Sendgrid'` to some other email service. Also, be sure to update both username and password below that. See the [list of all supported services](https://github.com/nodemailer/nodemailer-wellknown#supported-services) by Nodemailer.
 
 How It Works (mini guides)
