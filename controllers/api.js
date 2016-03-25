@@ -1,27 +1,27 @@
-var _ = require('lodash');
-var async = require('async');
+const _ = require('lodash');
+const async = require('async');
 
 /**
  * Split into declaration and initialization for better startup performance.
  */
-var validator;
-var cheerio;
-var graph;
-var LastFmNode;
-var tumblr;
-var foursquare;
-var Github;
-var Twit;
-var stripe;
-var twilio;
-var Linkedin;
-var BitGo;
-var clockwork;
-var paypal;
-var lob;
-var ig;
-var Y;
-var request;
+let validator;
+let cheerio;
+let graph;
+let LastFmNode;
+let tumblr;
+let foursquare;
+let Github;
+let Twit;
+let stripe;
+let twilio;
+let Linkedin;
+let BitGo;
+let clockwork;
+let paypal;
+let lob;
+let ig;
+let Y;
+let request;
 
 /**
  * GET /api
@@ -46,7 +46,7 @@ exports.getFoursquare = function(req, res, next) {
     }
   });
 
-  var token = _.find(req.user.tokens, { kind: 'foursquare' });
+  const token = _.find(req.user.tokens, { kind: 'foursquare' });
   async.parallel({
     trendingVenues: function(callback) {
       foursquare.Venues.getTrending('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken, function(err, results) {
@@ -84,8 +84,8 @@ exports.getFoursquare = function(req, res, next) {
 exports.getTumblr = function(req, res, next) {
   tumblr = require('tumblr.js');
 
-  var token = _.find(req.user.tokens, { kind: 'tumblr' });
-  var client = tumblr.createClient({
+  const token = _.find(req.user.tokens, { kind: 'tumblr' });
+  let client = tumblr.createClient({
     consumer_key: process.env.TUMBLR_KEY,
     consumer_secret: process.env.TUMBLR_SECRET,
     token: token.accessToken,
@@ -110,7 +110,7 @@ exports.getTumblr = function(req, res, next) {
 exports.getFacebook = function(req, res, next) {
   graph = require('fbgraph');
 
-  var token = _.find(req.user.tokens, { kind: 'facebook' });
+  const token = _.find(req.user.tokens, { kind: 'facebook' });
   graph.setAccessToken(token.accessToken);
   async.parallel({
     getMe: function(done) {
@@ -145,8 +145,8 @@ exports.getScraping = function(req, res, next) {
   request = require('request');
 
   request.get('https://news.ycombinator.com/', function(err, request, body) {
-    var $ = cheerio.load(body);
-    var links = [];
+    const $ = cheerio.load(body);
+    let links = [];
     $('.title a[href^="http"], a[href^="https"]').each(function() {
       links.push($(this));
     });
@@ -164,9 +164,9 @@ exports.getScraping = function(req, res, next) {
 exports.getGithub = function(req, res, next) {
   Github = require('github-api');
 
-  var token = _.find(req.user.tokens, { kind: 'github' });
-  var github = new Github({ token: token.accessToken });
-  var repo = github.getRepo('sahat', 'requirejs-library');
+  const token = _.find(req.user.tokens, { kind: 'github' });
+  const github = new Github({ token: token.accessToken });
+  const repo = github.getRepo('sahat', 'requirejs-library');
   repo.show(function(err, repo) {
     if (err) {
       return next(err);
@@ -196,7 +196,7 @@ exports.getAviary = function(req, res) {
 exports.getNewYorkTimes = function(req, res, next) {
   request = require('request');
 
-  var query = {
+  const query = {
     'list-name': 'young-adult',
     'api-key': process.env.NYT_KEY
   };
@@ -205,7 +205,7 @@ exports.getNewYorkTimes = function(req, res, next) {
     if (request.statusCode === 403) {
       return next(new Error('Invalid New York Times API Key'));
     }
-    var bestsellers = JSON.parse(body);
+    const bestsellers = JSON.parse(body);
     res.render('api/nyt', {
       title: 'New York Times API',
       books: bestsellers.results
@@ -221,7 +221,7 @@ exports.getLastfm = function(req, res, next) {
   request = require('request');
   LastFmNode = require('lastfm').LastFmNode;
 
-  var lastfm = new LastFmNode({
+  const lastfm = new LastFmNode({
     api_key: process.env.LASTFM_KEY,
     secret: process.env.LASTFM_SECRET
   });
@@ -245,7 +245,7 @@ exports.getLastfm = function(req, res, next) {
         artist: 'The Pierces',
         handlers: {
           success: function(data) {
-            var tracks = [];
+            let tracks = [];
             _.each(data.toptracks.track, function(track) {
               tracks.push(track);
             });
@@ -262,7 +262,7 @@ exports.getLastfm = function(req, res, next) {
         artist: 'The Pierces',
         handlers: {
           success: function(data) {
-            var albums = [];
+            let albums = [];
             _.each(data.topalbums.album, function(album) {
               albums.push(album.image.slice(-1)[0]['#text']);
             });
@@ -279,7 +279,7 @@ exports.getLastfm = function(req, res, next) {
     if (err) {
       return next(err.message);
     }
-    var artist = {
+    const artist = {
       name: results.artistInfo.artist.name,
       image: results.artistInfo.artist.image.slice(-1)[0]['#text'],
       tags: results.artistInfo.artist.tags.tag,
@@ -303,8 +303,8 @@ exports.getLastfm = function(req, res, next) {
 exports.getTwitter = function(req, res, next) {
   Twit = require('twit');
 
-  var token = _.find(req.user.tokens, { kind: 'twitter' });
-  var T = new Twit({
+  const token = _.find(req.user.tokens, { kind: 'twitter' });
+  const T = new Twit({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
     access_token: token.accessToken,
@@ -328,15 +328,15 @@ exports.getTwitter = function(req, res, next) {
 exports.postTwitter = function(req, res, next) {
   req.assert('tweet', 'Tweet cannot be empty.').notEmpty();
 
-  var errors = req.validationErrors();
+  let errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
     return res.redirect('/api/twitter');
   }
 
-  var token = _.find(req.user.tokens, { kind: 'twitter' });
-  var T = new Twit({
+  const token = _.find(req.user.tokens, { kind: 'twitter' });
+  const T = new Twit({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
     access_token: token.accessToken,
@@ -358,9 +358,9 @@ exports.postTwitter = function(req, res, next) {
 exports.getSteam = function(req, res, next) {
   request = require('request');
 
-  var steamId = '76561197982488301';
-  var params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  
+  const steamId = '76561197982488301';
+  const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
+
   async.parallel({
     playerAchievements: function(done) {
       params.appid = '49520';
@@ -422,8 +422,8 @@ exports.getStripe = function(req, res) {
  * Make a payment.
  */
 exports.postStripe = function(req, res, next) {
-  var stripeToken = req.body.stripeToken;
-  var stripeEmail = req.body.stripeEmail;
+  const stripeToken = req.body.stripeToken;
+  const stripeEmail = req.body.stripeEmail;
   stripe.charges.create({
     amount: 395,
     currency: 'usd',
@@ -459,14 +459,14 @@ exports.postTwilio = function(req, res, next) {
   req.assert('number', 'Phone number is required.').notEmpty();
   req.assert('message', 'Message cannot be blank.').notEmpty();
 
-  var errors = req.validationErrors();
+  let errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
     return res.redirect('/api/twilio');
   }
 
-  var message = {
+  const message = {
     to: req.body.number,
     from: '+13472235148',
     body: req.body.message
@@ -497,7 +497,7 @@ exports.getClockwork = function(req, res) {
  * Send a text message using Clockwork SMS
  */
 exports.postClockwork = function(req, res, next) {
-  var message = {
+  const message = {
     To: req.body.telephone,
     From: 'Hackathon',
     Content: 'Hello from the Hackathon Starter'
@@ -518,8 +518,8 @@ exports.postClockwork = function(req, res, next) {
 exports.getVenmo = function(req, res, next) {
   request = require('request');
 
-  var token = _.find(req.user.tokens, { kind: 'venmo' });
-  var query = { access_token: token.accessToken };
+  const token = _.find(req.user.tokens, { kind: 'venmo' });
+  const query = { access_token: token.accessToken };
 
   async.parallel({
     getProfile: function(done) {
@@ -556,15 +556,15 @@ exports.postVenmo = function(req, res, next) {
   req.assert('note', 'Please enter a message to accompany the payment').notEmpty();
   req.assert('amount', 'The amount you want to pay cannot be blank').notEmpty();
 
-  var errors = req.validationErrors();
+  let errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
     return res.redirect('/api/venmo');
   }
 
-  var token = _.find(req.user.tokens, { kind: 'venmo' });
-  var formData = {
+  const token = _.find(req.user.tokens, { kind: 'venmo' });
+  const formData = {
     access_token: token.accessToken,
     note: req.body.note,
     amount: req.body.amount
@@ -596,8 +596,8 @@ exports.postVenmo = function(req, res, next) {
 exports.getLinkedin = function(req, res, next) {
   Linkedin = require('node-linkedin')(process.env.LINKEDIN_ID, process.env.LINKEDIN_SECRET, process.env.LINKEDIN_CALLBACK_URL);
 
-  var token = _.find(req.user.tokens, { kind: 'linkedin' });
-  var linkedin = Linkedin.init(token.accessToken);
+  const token = _.find(req.user.tokens, { kind: 'linkedin' });
+  const linkedin = Linkedin.init(token.accessToken);
   linkedin.people.me(function(err, $in) {
     if (err) {
       return next(err);
@@ -616,7 +616,7 @@ exports.getLinkedin = function(req, res, next) {
 exports.getInstagram = function(req, res, next) {
   ig = require('instagram-node').instagram();
 
-  var token = _.find(req.user.tokens, { kind: 'instagram' });
+  const token = _.find(req.user.tokens, { kind: 'instagram' });
   ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
   ig.use({ access_token: token.accessToken });
   async.parallel({
@@ -664,20 +664,20 @@ exports.getYahoo = function(req, res) {
   async.parallel([
     function getFinanceStocks(done) {
       Y.YQL('SELECT * FROM yahoo.finance.quote WHERE symbol in ("YHOO", "TSLA", "GOOG", "MSFT")', function(response) {
-        var quotes = response.query.results.quote;
+        const quotes = response.query.results.quote;
         done(null, quotes);
       });
     },
     function getWeatherReport(done) {
       Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', function(response) {
-        var location = response.query.results.channel.location;
-        var condition = response.query.results.channel.item.condition;
+        const location = response.query.results.channel.location;
+        const condition = response.query.results.channel.item.condition;
         done(null, { location: location, condition: condition });
       });
     }
   ], function(err, results) {
-    var quotes = results[0];
-    var weather = results[1];
+    const quotes = results[0];
+    const weather = results[1];
 
     res.render('api/yahoo', {
       title: 'Yahoo API',
@@ -701,7 +701,7 @@ exports.getPayPal = function(req, res, next) {
     client_secret: process.env.PAYPAL_SECRET
   });
 
-  var paymentDetails = {
+  const paymentDetails = {
     intent: 'sale',
     payer: {
       payment_method: 'paypal'
@@ -724,8 +724,8 @@ exports.getPayPal = function(req, res, next) {
       return next(err);
     }
     req.session.paymentId = payment.id;
-    var links = payment.links;
-    for (var i = 0; i < links.length; i++) {
+    const links = payment.links;
+    for (let i = 0; i < links.length; i++) {
       if (links[i].rel === 'approval_url') {
         res.render('api/paypal', {
           approvalUrl: links[i].href
@@ -740,8 +740,8 @@ exports.getPayPal = function(req, res, next) {
  * PayPal SDK example.
  */
 exports.getPayPalSuccess = function(req, res) {
-  var paymentId = req.session.paymentId;
-  var paymentDetails = { payer_id: req.query.PayerID };
+  const paymentId = req.session.paymentId;
+  const paymentDetails = { payer_id: req.query.PayerID };
   paypal.payment.execute(paymentId, paymentDetails, function(err) {
     if (err) {
       res.render('api/paypal', {
@@ -796,10 +796,10 @@ exports.getLob = function(req, res, next) {
 exports.getBitGo = function(req, res, next) {
   BitGo = require('bitgo');
 
-  var bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
-  var walletId = req.session.walletId;
+  const bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
+  const walletId = req.session.walletId;
 
-  var renderWalletInfo = function(walletId) {
+  const renderWalletInfo = function(walletId) {
     bitgo.wallets().get({ id: walletId }, function(err, walletResponse) {
       walletResponse.createAddress({}, function(err, addressResponse) {
         walletResponse.transactions({}, function(err, transactionsResponse) {
@@ -834,8 +834,8 @@ exports.getBitGo = function(req, res, next) {
  * BitGo send coins example
  */
 exports.postBitGo = function(req, res, next) {
-  var bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
-  var walletId = req.session.walletId;
+  const bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
+  const walletId = req.session.walletId;
 
   try {
     bitgo.wallets().get({ id: walletId }, function(err, wallet) {
@@ -876,7 +876,7 @@ exports.postFileUpload = function(req, res, next) {
 exports.getPinterest = function(req, res, next) {
   request = require('request');
 
-  var token = _.find(req.user.tokens, { kind: 'pinterest' });
+  const token = _.find(req.user.tokens, { kind: 'pinterest' });
   request.get({ url: 'https://api.pinterest.com/v1/me/boards/', qs: { access_token: token.accessToken }, json: true }, function(err, request, body) {
     if (err) {
       return next(err);
@@ -898,7 +898,7 @@ exports.postPinterest = function(req, res, next) {
   req.assert('note', 'Note cannot be blank.').notEmpty();
   req.assert('image_url', 'Image URL cannot be blank.').notEmpty();
 
-  var errors = req.validationErrors();
+  const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
@@ -907,8 +907,8 @@ exports.postPinterest = function(req, res, next) {
 
   request = require('request');
 
-  var token = _.find(req.user.tokens, { kind: 'pinterest' });
-  var formData = {
+  const token = _.find(req.user.tokens, { kind: 'pinterest' });
+  const formData = {
     board: req.body.board,
     note: req.body.note,
     link: req.body.link,

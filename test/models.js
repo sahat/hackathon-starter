@@ -1,10 +1,10 @@
-var chai = require('chai');
-var should = chai.should();
-var User = require('../models/User');
+const chai = require('chai');
+const should = chai.should();
+const User = require('../models/User');
 
 describe('User Model', function() {
   it('should create a new user', function(done) {
-    var user = new User({
+    let user = new User({
       email: 'test@gmail.com',
       password: 'password'
     });
@@ -15,7 +15,7 @@ describe('User Model', function() {
   });
 
   it('should not create a user with the unique email', function(done) {
-    var user = new User({
+    let user = new User({
       email: 'test@gmail.com',
       password: 'password'
     });

@@ -110,12 +110,12 @@ cd myproject
 # Install NPM dependencies
 npm install
 
-node app.js
+node start.js
 ```
 
 **Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon).
 It watches for any changes in your  node.js app and automatically restarts the
-server. Once installed, instead of `node app.js` use `nodemon app.js`. It will
+server. Once installed, instead of `node start.js` use `nodemon start.js`. It will
 save you a lot of time in the long run, because you won't need to manually
 restart the server each time you make a small change in code. To install, run
 `sudo npm install -g nodemon`.
@@ -465,7 +465,7 @@ want to scrape 3 different websites for some data and render the results in a te
 after all 3 websites have been scraped.
 - Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find)
 function from Lodash. For example, this is how you would retrieve a
-Twitter token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`,
+Twitter token from database: `const token = _.find(req.user.tokens, { kind: 'twitter' });`,
 where 1st parameter is an array, and a 2nd parameter is an object to search for.
 
 FAQ
@@ -757,11 +757,11 @@ when you have one route per line.
 
 **Step 2.** Create a new schema and a model `Book.js` inside the *models* directory.
 ```js
-var bookSchema = new mongoose.Schema({
+const bookSchema = new mongoose.Schema({
   name: String
 });
 
-var Book = mongoose.model('Book', bookSchema);
+const Book = mongoose.model('Book', bookSchema);
 module.exports = Book;
 ```
 
@@ -771,7 +771,7 @@ module.exports = Book;
  * GET /books
  * List all books.
  */
-var Book = require('../models/Book.js');
+const Book = require('../models/Book.js');
 
 exports.getBooks = function(req, res) {
   Book.find(function(err, docs) {
@@ -782,7 +782,7 @@ exports.getBooks = function(req, res) {
 
 **Step 4.** Import that controller in `app.js`.
 ```js
-var bookController = require('./controllers/book');
+const bookController = require('./controllers/book');
 ```
 
 **Step 5.** Create `books.jade` template.
@@ -843,7 +843,7 @@ And what if you are deploying to OpenShift? They do support websockets, but it i
 preview state. So, for OpenShift you would need to change the socket.io connect URI to the following:
 
 ```js
-var socket = io.connect('http://yoursite-namespace.rhcloud.com:8000');
+const socket = io.connect('http://yoursite-namespace.rhcloud.com:8000');
 ```
 
 Wait, why is it on port 8000? Who knows, and if I didn't run across this [blog post](http://velin-georgiev-blog.appspot.com/blog/set-up-nodejs-express-socketio-application-using-websockets-on-openshift-by-red-hat/)
@@ -859,12 +859,12 @@ First you need to install socket.io:
 npm install socket.io --save
 ```
 
-Replace `var app = express();` with the following code:
+Replace `const app = express();` with the following code:
 
 ```js
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 ```
 
 I like to have the following code organization in `app.js` (from top to bottom): module dependencies,
@@ -914,7 +914,7 @@ your main template file, add this to `head` block.
 ```jade
 script(src='/socket.io/socket.io.js')
 script.
-    var socket = io.connect(window.location.href);
+    const socket = io.connect(window.location.href);
     socket.on('greet', function (data) {
       console.log(data);
       socket.emit('respond', { message: 'Hey there, server!' });
@@ -932,7 +932,7 @@ script code into `main.js`, inside the `$(document).ready()` function:
 $(document).ready(function() {
 
   // Place JavaScript code here...
-  var socket = io.connect(window.location.href);
+  const socket = io.connect(window.location.href);
   socket.on('greet', function (data) {
     console.log(data);
     socket.emit('respond', { message: 'Hello to you too, Mr.Server!' });
@@ -955,7 +955,7 @@ User.find(function(err, users) {
 
 #### Find a user by email:
 ```js
-var userEmail = 'example@gmail.com';
+const userEmail = 'example@gmail.com';
 User.findOne({ email: userEmail }, function(err, user) {
   console.log(user);
 });
@@ -1042,8 +1042,8 @@ listed below.
 
 Add these two lines to `app.js`, just place them anywhere before `app.listen()`:
 ```js
-var IP_ADDRESS = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
-var PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+const IP_ADDRESS = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+const PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 ```
 
 Then change `app.listen()` to:
