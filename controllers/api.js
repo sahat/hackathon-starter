@@ -432,7 +432,7 @@ exports.postStripe = function(req, res, next) {
   }, function(err, charge) {
     if (err && err.type === 'StripeCardError') {
       req.flash('errors', { msg: 'Your card has been declined.' });
-      res.redirect('/api/stripe');
+      return res.redirect('/api/stripe');
     }
     req.flash('success', { msg: 'Your card has been charged successfully.' });
     res.redirect('/api/stripe');
