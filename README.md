@@ -363,7 +363,6 @@ List of Packages
 | morgan                          | Express 4 middleware.                                                 |
 | compression                     | Express 4 middleware.                                                 |
 | errorhandler                    | Express 4 middleware.                                                 |
-| method-override                 | Express 4 middleware.                                                 |
 | serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
 | express-flash                   | Provides flash messages for Express.                                  |
 | express-validator               | Easy form validation for Express.                                     |
