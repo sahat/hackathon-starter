@@ -1,0 +1,13 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - "5000:5000"
+    depends_on:
+     - mongodb
+    env_file: .env
+  mongodb:
+    image: mongo:3.0.7
+    ports:
+      - "27017:27017"
