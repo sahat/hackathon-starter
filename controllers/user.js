@@ -391,7 +391,7 @@ exports.postForgot = function(req, res, next) {
       };
       transporter.sendMail(mailOptions, function(err) {
         req.flash('info', { msg: 'An e-mail has been sent to ' + user.email + ' with further instructions.' });
-        done(err, 'done');
+        done(err);
       });
     }
   ], function(err) {
