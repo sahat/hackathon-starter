@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "test": "mocha --reporter spec --timeout 5000"
+    "test": "/src/node_modules/.bin/_mocha --reporter spec --timeout 5000 /src/app/test/**/*.js"
   },
   "dependencies": {
     "async": "^1.5.2",
