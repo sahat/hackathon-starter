@@ -1,8 +1,20 @@
 language: node_js
-sudo: false
+sudo: required
 
 services:
-  - mongodb
+  - docker
 
 node_js:
-  - "4.4"
+  - "5.9.1"
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.6.2
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+script:
+  - docker-compose up -d
+  - npm test
