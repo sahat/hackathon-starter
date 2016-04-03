@@ -1,8 +1,35 @@
 language: node_js
-sudo: false
+sudo: required
 
 services:
-  - mongodb
+  - docker
 
 node_js:
-  - "4.4"
+  - "5.9.1"
+
+env:  
+  global:
+    - DOCKER_VERSION=1.10.1-0~trusty
+    - DOCKER_COMPOSE_VERSION=1.6.1
+
+before_install:  
+  # list docker-engine versions
+  - apt-cache madison docker-engine
+
+  # upgrade docker-engine to specific version
+  - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=${DOCKER_VERSION}
+
+  # reinstall docker-compose at specific version
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - sudo mv /home/travis/build/webschoolfactory/tp-2019/.env.travis /home/travis/build/webschoolfactory/tp-2019/.env
+install:
+  - docker-compose build
+before_script:
+  - docker-compose up -d
+script:
+  - docker version
+  - docker-compose version
+  - ./.bin/docker-test.sh

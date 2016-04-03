@@ -1,0 +1,14 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - "5000:5000"
+    depends_on:
+     - mongodb
+    env_file: .env
+    container_name: tp2019_web
+  mongodb:
+    image: mongo:3.0.7
+    ports:
+      - "27017:27017"
