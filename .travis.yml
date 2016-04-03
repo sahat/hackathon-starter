@@ -8,9 +8,9 @@ node_js:
   - "5.9.1"
 
 env:  
-    global:
-        - DOCKER_VERSION=1.10.1-0~trusty
-        - DOCKER_COMPOSE_VERSION=1.6.1
+  global:
+    - DOCKER_VERSION=1.10.1-0~trusty
+    - DOCKER_COMPOSE_VERSION=1.6.1
 
 before_install:  
   # list docker-engine versions
@@ -24,6 +24,7 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+  - sudo mv /home/travis/build/webschoolfactory/tp-2019/.env.travis /home/travis/build/webschoolfactory/tp-2019/.env
 install:
   - docker-compose build
 after_install:
