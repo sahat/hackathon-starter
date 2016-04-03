@@ -27,7 +27,7 @@ before_install:
   - sudo mv /home/travis/build/webschoolfactory/tp-2019/.env.travis /home/travis/build/webschoolfactory/tp-2019/.env
 install:
   - docker-compose build
-after_install:
+before_script:
   - docker-compose up -d
 script:
   - docker version
