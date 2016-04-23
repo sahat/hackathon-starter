@@ -95,8 +95,12 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(function(req, res, next) {
-  // After successful login, redirect back to /api, /contact or /
-  if (/(api)|(contact)|(^\/$)/i.test(req.path)) {
+  // After successful login, redirect back to the intended page
+  if (req.user == undefined &&
+      req.path !== '/login' &&
+      req.path !== '/signup' &&
+      !req.path.match(/^\/auth/) &&
+      !req.path.match(/\./)) {
     req.session.returnTo = req.path;
   }
   next();
