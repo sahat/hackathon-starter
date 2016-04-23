@@ -360,7 +360,7 @@ exports.getSteam = function(req, res, next) {
 
   var steamId = '76561197982488301';
   var params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  
+
   async.parallel({
     playerAchievements: function(done) {
       params.appid = '49520';
@@ -707,8 +707,8 @@ exports.getPayPal = function(req, res, next) {
       payment_method: 'paypal'
     },
     redirect_urls: {
-      return_url: '/api/paypal/success',
-      cancel_url: '/api/paypal/cancel'
+      return_url: process.env.PAYPAL_RETURN_URL,
+      cancel_url: process.env.PAYPAL_CANCEL_URL
     },
     transactions: [{
       description: 'Hackathon Starter',
