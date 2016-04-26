@@ -669,7 +669,7 @@ exports.getYahoo = function(req, res) {
       });
     },
     function getWeatherReport(done) {
-      Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', function(response) {
+      Y.YQL('SELECT * FROM weather.forecast WHERE woeid in (SELECT woeid FROM geo.places(1) WHERE text="nome, ak")', function(response) {
         var location = response.query.results.channel.location;
         var condition = response.query.results.channel.item.condition;
         done(null, { location: location, condition: condition });
