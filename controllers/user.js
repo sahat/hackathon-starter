@@ -25,7 +25,7 @@ exports.getLogin = function(req, res) {
 exports.postLogin = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
-  req.sanitize('email').normalizeEmail();
+  req.sanitize('email').normalizeEmail({remove_dots: false});
 
   var errors = req.validationErrors();
 
@@ -82,7 +82,7 @@ exports.postSignup = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-  req.sanitize('email').normalizeEmail();
+  req.sanitize('email').normalizeEmail({remove_dots: false});
 
   var errors = req.validationErrors();
 
@@ -131,7 +131,7 @@ exports.getAccount = function(req, res) {
  */
 exports.postUpdateProfile = function(req, res, next) {
   req.assert('email', 'Please enter a valid email address.').isEmail();
-  req.sanitize('email').normalizeEmail();
+  req.sanitize('email').normalizeEmail({remove_dots: false});
 
   var errors = req.validationErrors();
 
