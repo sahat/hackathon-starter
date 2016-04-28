@@ -1,3 +1,6 @@
+var _ = require('lodash');
+var async = require('async');
+
 /**
  * Split into declaration and initialization for better startup performance.
  */
@@ -20,12 +23,6 @@ var ig;
 var Y;
 var request;
 
-var _ = require('lodash');
-var async = require('async');
-var querystring = require('querystring');
-
-var secrets = require('../config/secrets');
-
 /**
  * GET /api
  * List of API examples.
@@ -41,7 +38,13 @@ exports.getApi = function(req, res) {
  * Foursquare API example.
  */
 exports.getFoursquare = function(req, res, next) {
-  foursquare = require('node-foursquare')({ secrets: secrets.foursquare });
+  foursquare = require('node-foursquare')({
+    secrets: {
+      clientId: process.env.FOURSQUARE_ID,
+      clientSecret: process.env.FOURSQUARE_SECRET,
+      redirectUrl: process.env.FOURSQUARE_REDIRECT_URL
+    }
+  });
 
   var token = _.find(req.user.tokens, { kind: 'foursquare' });
   async.parallel({
@@ -83,12 +86,12 @@ exports.getTumblr = function(req, res, next) {
 
   var token = _.find(req.user.tokens, { kind: 'tumblr' });
   var client = tumblr.createClient({
-    consumer_key: secrets.tumblr.consumerKey,
-    consumer_secret: secrets.tumblr.consumerSecret,
+    consumer_key: process.env.TUMBLR_KEY,
+    consumer_secret: process.env.TUMBLR_SECRET,
     token: token.accessToken,
     token_secret: token.tokenSecret
   });
-  client.posts('withinthisnightmare.tumblr.com', { type: 'photo' }, function(err, data) {
+  client.posts('mmosdotcom.tumblr.com', { type: 'photo' }, function(err, data) {
     if (err) {
       return next(err);
     }
@@ -111,7 +114,7 @@ exports.getFacebook = function(req, res, next) {
   graph.setAccessToken(token.accessToken);
   async.parallel({
     getMe: function(done) {
-      graph.get(req.user.facebook, function(err, me) {
+      graph.get(req.user.facebook + "?fields=id,name,email,first_name,last_name,gender,link,locale,timezone", function(err, me) {
         done(err, me);
       });
     },
@@ -142,9 +145,6 @@ exports.getScraping = function(req, res, next) {
   request = require('request');
 
   request.get('https://news.ycombinator.com/', function(err, request, body) {
-    if (err) {
-      return next(err);
-    }
     var $ = cheerio.load(body);
     var links = [];
     $('.title a[href^="http"], a[href^="https"]').each(function() {
@@ -196,15 +196,14 @@ exports.getAviary = function(req, res) {
 exports.getNewYorkTimes = function(req, res, next) {
   request = require('request');
 
-  var query = querystring.stringify({ 'api-key': secrets.nyt.key, 'list-name': 'young-adult' });
-  var url = 'http://api.nytimes.com/svc/books/v2/lists?' + query;
+  var query = {
+    'list-name': 'young-adult',
+    'api-key': process.env.NYT_KEY
+  };
 
-  request.get(url, function(err, request, body) {
-    if (err) {
-      return next(err);
-    }
+  request.get({ url: 'http://api.nytimes.com/svc/books/v2/lists', qs: query }, function(err, request, body) {
     if (request.statusCode === 403) {
-      return next(Error('Missing or Invalid New York Times API Key'));
+      return next(new Error('Invalid New York Times API Key'));
     }
     var bestsellers = JSON.parse(body);
     res.render('api/nyt', {
@@ -222,7 +221,10 @@ exports.getLastfm = function(req, res, next) {
   request = require('request');
   LastFmNode = require('lastfm').LastFmNode;
 
-  var lastfm = new LastFmNode(secrets.lastfm);
+  var lastfm = new LastFmNode({
+    api_key: process.env.LASTFM_KEY,
+    secret: process.env.LASTFM_SECRET
+  });
 
   async.parallel({
     artistInfo: function(done) {
@@ -303,8 +305,8 @@ exports.getTwitter = function(req, res, next) {
 
   var token = _.find(req.user.tokens, { kind: 'twitter' });
   var T = new Twit({
-    consumer_key: secrets.twitter.consumerKey,
-    consumer_secret: secrets.twitter.consumerSecret,
+    consumer_key: process.env.TWITTER_KEY,
+    consumer_secret: process.env.TWITTER_SECRET,
     access_token: token.accessToken,
     access_token_secret: token.tokenSecret
   });
@@ -335,8 +337,8 @@ exports.postTwitter = function(req, res, next) {
 
   var token = _.find(req.user.tokens, { kind: 'twitter' });
   var T = new Twit({
-    consumer_key: secrets.twitter.consumerKey,
-    consumer_secret: secrets.twitter.consumerSecret,
+    consumer_key: process.env.TWITTER_KEY,
+    consumer_secret: process.env.TWITTER_SECRET,
     access_token: token.accessToken,
     access_token_secret: token.tokenSecret
   });
@@ -357,22 +359,21 @@ exports.getSteam = function(req, res, next) {
   request = require('request');
 
   var steamId = '76561197982488301';
-  var query = { l: 'english', steamid: steamId, key: secrets.steam.apiKey };
+  var params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
+
   async.parallel({
     playerAchievements: function(done) {
-      query.appid = '49520';
-      var qs = querystring.stringify(query);
-      request.get({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?' + qs, json: true }, function(error, request, body) {
+      params.appid = '49520';
+      request.get({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true }, function(err, request, body) {
         if (request.statusCode === 401) {
-          return done(new Error('Missing or Invalid Steam API Key'));
+          return done(new Error('Invalid Steam API Key'));
         }
-        done(error, body);
+        done(err, body);
       });
     },
     playerSummaries: function(done) {
-      query.steamids = steamId;
-      var qs = querystring.stringify(query);
-      request.get({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?' + qs, json: true }, function(err, request, body) {
+      params.steamids = steamId;
+      request.get({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true }, function(err, request, body) {
         if (request.statusCode === 401) {
           return done(new Error('Missing or Invalid Steam API Key'));
         }
@@ -380,10 +381,9 @@ exports.getSteam = function(req, res, next) {
       });
     },
     ownedGames: function(done) {
-      query.include_appinfo = 1;
-      query.include_played_free_games = 1;
-      var qs = querystring.stringify(query);
-      request.get({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?' + qs, json: true }, function(err, request, body) {
+      params.include_appinfo = 1;
+      params.include_played_free_games = 1;
+      request.get({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true }, function(err, request, body) {
         if (request.statusCode === 401) {
           return done(new Error('Missing or Invalid Steam API Key'));
         }
@@ -409,11 +409,11 @@ exports.getSteam = function(req, res, next) {
  * Stripe API example.
  */
 exports.getStripe = function(req, res) {
-  stripe = require('stripe')(secrets.stripe.secretKey);
+  stripe = require('stripe')(process.env.STRIPE_SKEY);
 
   res.render('api/stripe', {
     title: 'Stripe API',
-    publishableKey: secrets.stripe.publishableKey
+    publishableKey: process.env.STRIPE_PKEY
   });
 };
 
@@ -432,7 +432,7 @@ exports.postStripe = function(req, res, next) {
   }, function(err, charge) {
     if (err && err.type === 'StripeCardError') {
       req.flash('errors', { msg: 'Your card has been declined.' });
-      res.redirect('/api/stripe');
+      return res.redirect('/api/stripe');
     }
     req.flash('success', { msg: 'Your card has been charged successfully.' });
     res.redirect('/api/stripe');
@@ -444,7 +444,7 @@ exports.postStripe = function(req, res, next) {
  * Twilio API example.
  */
 exports.getTwilio = function(req, res) {
-  twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
+  twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
   res.render('api/twilio', {
     title: 'Twilio API'
@@ -485,7 +485,7 @@ exports.postTwilio = function(req, res, next) {
  * Clockwork SMS API example.
  */
 exports.getClockwork = function(req, res) {
-  clockwork = require('clockwork')({ key: secrets.clockwork.apiKey });
+  clockwork = require('clockwork')({ key: process.env.CLOCKWORK_KEY });
 
   res.render('api/clockwork', {
     title: 'Clockwork SMS API'
@@ -519,16 +519,16 @@ exports.getVenmo = function(req, res, next) {
   request = require('request');
 
   var token = _.find(req.user.tokens, { kind: 'venmo' });
-  var query = querystring.stringify({ access_token: token.accessToken });
+  var query = { access_token: token.accessToken };
 
   async.parallel({
     getProfile: function(done) {
-      request.get({ url: 'https://api.venmo.com/v1/me?' + query, json: true }, function(err, request, body) {
+      request.get({ url: 'https://api.venmo.com/v1/me', qs: query, json: true }, function(err, request, body) {
         done(err, body);
       });
     },
     getRecentPayments: function(done) {
-      request.get({ url: 'https://api.venmo.com/v1/payments?' + query, json: true }, function(err, request, body) {
+      request.get({ url: 'https://api.venmo.com/v1/payments', qs: query, json: true }, function(err, request, body) {
         done(err, body);
       });
     }
@@ -594,7 +594,7 @@ exports.postVenmo = function(req, res, next) {
  * LinkedIn API example.
  */
 exports.getLinkedin = function(req, res, next) {
-  Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL);
+  Linkedin = require('node-linkedin')(process.env.LINKEDIN_ID, process.env.LINKEDIN_SECRET, process.env.LINKEDIN_CALLBACK_URL);
 
   var token = _.find(req.user.tokens, { kind: 'linkedin' });
   var linkedin = Linkedin.init(token.accessToken);
@@ -617,7 +617,7 @@ exports.getInstagram = function(req, res, next) {
   ig = require('instagram-node').instagram();
 
   var token = _.find(req.user.tokens, { kind: 'instagram' });
-  ig.use({ client_id: secrets.instagram.clientID, client_secret: secrets.instagram.clientSecret });
+  ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
   ig.use({ access_token: token.accessToken });
   async.parallel({
     searchByUsername: function(done) {
@@ -661,13 +661,29 @@ exports.getInstagram = function(req, res, next) {
 exports.getYahoo = function(req, res) {
   Y = require('yui/yql');
 
-  Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', function(response) {
-    var location = response.query.results.channel.location;
-    var condition = response.query.results.channel.item.condition;
+  async.parallel([
+    function getFinanceStocks(done) {
+      Y.YQL('SELECT * FROM yahoo.finance.quote WHERE symbol in ("YHOO", "TSLA", "GOOG", "MSFT")', function(response) {
+        var quotes = response.query.results.quote;
+        done(null, quotes);
+      });
+    },
+    function getWeatherReport(done) {
+      Y.YQL('SELECT * FROM weather.forecast WHERE woeid in (SELECT woeid FROM geo.places(1) WHERE text="nome, ak")', function(response) {
+        var location = response.query.results.channel.location;
+        var condition = response.query.results.channel.item.condition;
+        done(null, { location: location, condition: condition });
+      });
+    }
+  ], function(err, results) {
+    var quotes = results[0];
+    var weather = results[1];
+
     res.render('api/yahoo', {
       title: 'Yahoo API',
-      location: location,
-      condition: condition
+      quotes: quotes,
+      location: weather.location,
+      condition: weather.condition
     });
   });
 };
@@ -681,8 +697,8 @@ exports.getPayPal = function(req, res, next) {
 
   paypal.configure({
     mode: 'sandbox',
-    client_id: secrets.paypal.client_id,
-    client_secret: secrets.paypal.client_secret
+    client_id: process.env.PAYPAL_ID,
+    client_secret: process.env.PAYPAL_SECRET
   });
 
   var paymentDetails = {
@@ -691,8 +707,8 @@ exports.getPayPal = function(req, res, next) {
       payment_method: 'paypal'
     },
     redirect_urls: {
-      return_url: secrets.paypal.returnUrl,
-      cancel_url: secrets.paypal.cancelUrl
+      return_url: process.env.PAYPAL_RETURN_URL,
+      cancel_url: process.env.PAYPAL_CANCEL_URL
     },
     transactions: [{
       description: 'Hackathon Starter',
@@ -758,7 +774,7 @@ exports.getPayPalCancel = function(req, res) {
  * Lob API example.
  */
 exports.getLob = function(req, res, next) {
-  lob = require('lob')(secrets.lob.apiKey);
+  lob = require('lob')(process.env.LOB_KEY);
 
   lob.routes.list({
     zip_codes: ['10007']
@@ -780,7 +796,7 @@ exports.getLob = function(req, res, next) {
 exports.getBitGo = function(req, res, next) {
   BitGo = require('bitgo');
 
-  var bitgo = new BitGo.BitGo({ env: 'test', accessToken: secrets.bitgo.accessToken });
+  var bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
   var walletId = req.session.walletId;
 
   var renderWalletInfo = function(walletId) {
@@ -818,7 +834,7 @@ exports.getBitGo = function(req, res, next) {
  * BitGo send coins example
  */
 exports.postBitGo = function(req, res, next) {
-  var bitgo = new BitGo.BitGo({ env: 'test', accessToken: secrets.bitgo.accessToken });
+  var bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
   var walletId = req.session.walletId;
 
   try {
@@ -840,4 +856,73 @@ exports.postBitGo = function(req, res, next) {
     req.flash('errors', { msg: err.message });
     return res.redirect('/api/bitgo');
   }
+};
+
+exports.getFileUpload = function(req, res, next) {
+  res.render('api/upload', {
+    title: 'File Upload'
+  });
+};
+
+exports.postFileUpload = function(req, res, next) {
+  req.flash('success', { msg: 'File was uploaded successfully.'});
+  res.redirect('/api/upload');
+};
+
+/**
+ * GET /api/pinterest
+ * Pinterest API example.
+ */
+exports.getPinterest = function(req, res, next) {
+  request = require('request');
+
+  var token = _.find(req.user.tokens, { kind: 'pinterest' });
+  request.get({ url: 'https://api.pinterest.com/v1/me/boards/', qs: { access_token: token.accessToken }, json: true }, function(err, request, body) {
+    if (err) {
+      return next(err);
+    }
+
+    res.render('api/pinterest', {
+      title: 'Pinterest API',
+      boards: body.data
+    });
+  });
+};
+
+/**
+ * POST /api/pinterest
+ * Create a pin.
+ */
+exports.postPinterest = function(req, res, next) {
+  req.assert('board', 'Board is required.').notEmpty();
+  req.assert('note', 'Note cannot be blank.').notEmpty();
+  req.assert('image_url', 'Image URL cannot be blank.').notEmpty();
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/api/pinterest');
+  }
+
+  request = require('request');
+
+  var token = _.find(req.user.tokens, { kind: 'pinterest' });
+  var formData = {
+    board: req.body.board,
+    note: req.body.note,
+    link: req.body.link,
+    image_url: req.body.image_url
+  };
+  request.post('https://api.pinterest.com/v1/pins/', { qs: { access_token: token.accessToken }, form: formData }, function(err, request, body) {
+    if (err) {
+      return next(err);
+    }
+    if (request.statusCode !== 201) {
+      req.flash('errors', { msg: JSON.parse(body).message });
+      return res.redirect('/api/pinterest');
+    }
+    req.flash('success', { msg: 'Pin created' });
+    res.redirect('/api/pinterest');
+  });
 };

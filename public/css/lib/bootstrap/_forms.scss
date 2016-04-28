@@ -132,6 +132,12 @@ output {
   // Placeholder
   @include placeholder;
 
+  // Unstyle the caret on `<select>`s in IE10+.
+  &::-ms-expand {
+    border: 0;
+    background-color: transparent;
+  }
+
   // Disabled and read-only inputs
   //
   // HTML5 says that controls under a fieldset > legend:first-child won't be
@@ -431,10 +437,10 @@ input[type="checkbox"] {
 .has-feedback label {
 
   & ~ .form-control-feedback {
-     top: ($line-height-computed + 5); // Height of the `label` and its margin
+    top: ($line-height-computed + 5); // Height of the `label` and its margin
   }
   &.sr-only ~ .form-control-feedback {
-     top: 0;
+    top: 0;
   }
 }
 
@@ -595,7 +601,7 @@ input[type="checkbox"] {
   .form-group-lg {
     @media (min-width: $screen-sm-min) {
       .control-label {
-        padding-top: (($padding-large-vertical * $line-height-large) + 1);
+        padding-top: ($padding-large-vertical + 1);
         font-size: $font-size-large;
       }
     }

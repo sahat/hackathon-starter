@@ -16,13 +16,16 @@ block content
         input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
     .form-group
       label.col-sm-3.control-label(for='gender') Gender
-      .col-sm-4
-        label.radio.col-sm-4
+      .col-sm-6
+        label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
           span Male
-        label.radio.col-sm-4
+        label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
           span Female
+        label.radio.col-sm-3
+          input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
+          span Other
     .form-group
       label.col-sm-3.control-label(for='location') Location
       .col-sm-7
@@ -38,7 +41,7 @@ block content
     .form-group
       .col-sm-offset-3.col-sm-4
         button.btn.btn.btn-primary(type='submit')
-          i.fa.fa-pencilr
+          i.fa.fa-pencil
           | Update Profile
 
   .page-header

@@ -3,8 +3,10 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 
 var userSchema = new mongoose.Schema({
-  email: { type: String, unique: true, lowercase: true },
+  email: { type: String, unique: true },
   password: String,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 
   facebook: String,
   twitter: String,
@@ -12,6 +14,7 @@ var userSchema = new mongoose.Schema({
   github: String,
   instagram: String,
   linkedin: String,
+  steam: String,
   tokens: Array,
 
   profile: {
@@ -20,11 +23,8 @@ var userSchema = new mongoose.Schema({
     location: { type: String, default: '' },
     website: { type: String, default: '' },
     picture: { type: String, default: '' }
-  },
-
-  resetPasswordToken: String,
-  resetPasswordExpires: Date
-});
+  }
+}, { timestamps: true });
 
 /**
  * Password hash middleware.
@@ -53,10 +53,7 @@ userSchema.pre('save', function(next) {
  */
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-    if (err) {
-      return cb(err);
-    }
-    cb(null, isMatch);
+    cb(err, isMatch);
   });
 };
 
@@ -74,4 +71,6 @@ userSchema.methods.gravatar = function(size) {
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
 };
 
-module.exports = mongoose.model('User', userSchema);
+var User = mongoose.model('User', userSchema);
+
+module.exports = User;
