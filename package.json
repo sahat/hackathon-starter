@@ -37,7 +37,6 @@
     "multer": "^1.1.0",
     "node-foursquare": "^0.3.0",
     "node-linkedin": "^0.5.3",
-    "node-sass": "^3.6.0",
     "node-sass-middleware": "^0.9.8",
     "nodemailer": "^2.3.2",
     "passport": "0.3.2",
