@@ -144,7 +144,7 @@ exports.getScraping = (req, res, next) => {
     });
     res.render('api/scraping', {
       title: 'Web Scraping',
-      links: links
+      links
     });
   });
 };
@@ -163,7 +163,7 @@ exports.getGithub = (req, res, next) => {
     }
     res.render('api/github', {
       title: 'GitHub API',
-      repo: repo
+      repo,
     });
   });
 
@@ -276,7 +276,7 @@ exports.getLastfm = (req, res, next) => {
     };
     res.render('api/lastfm', {
       title: 'Last.fm API',
-      artist: artist
+      artist
     });
   });
 };
@@ -637,7 +637,7 @@ exports.getYahoo = (req, res) => {
       Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', (response) => {
         const location = response.query.results.channel.location;
         const condition = response.query.results.channel.item.condition;
-        done(null, { location: location, condition: condition });
+        done(null, { location, condition });
       });
     }
   ], (err, results) => {
@@ -646,7 +646,7 @@ exports.getYahoo = (req, res) => {
 
     res.render('api/yahoo', {
       title: 'Yahoo API',
-      quotes: quotes,
+      quotes,
       location: weather.location,
       condition: weather.condition
     });
