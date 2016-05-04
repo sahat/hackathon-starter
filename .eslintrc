@@ -1,0 +1,9 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "comma-dangle": 0,
+    "no-console": 0,
+    "no-param-reassign": 0,
+    "max-len": 0
+  }
+}
