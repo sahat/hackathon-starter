@@ -154,9 +154,8 @@ exports.postUpdateProfile = (req, res, next) => {
         if (err.code === 11000) {
           req.flash('errors', { msg: 'The email address you have entered is already associated with an account.' });
           return res.redirect('/account');
-        } else {
-          return next(err);
         }
+        return next(err);
       }
       req.flash('success', { msg: 'Profile information updated.' });
       res.redirect('/account');

@@ -166,7 +166,6 @@ exports.getGithub = (req, res, next) => {
       repo,
     });
   });
-
 };
 
 /**
@@ -800,7 +799,7 @@ exports.postBitGo = (req, res, next) => {
     bitgo.wallets().get({ id: walletId }, (err, wallet) => {
       wallet.sendCoins({
         address: req.body.address,
-        amount: parseInt(req.body.amount),
+        amount: parseInt(req.body.amount, 10),
         walletPassphrase: req.sessionID
       }, (err, result) => {
         if (err) {

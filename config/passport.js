@@ -458,7 +458,7 @@ passport.use(new OpenIDStrategy({
   User.findOne({ steam: steamId }, (err, existingUser) => {
     if (existingUser) return done(err, existingUser);
     request(profileURL, (error, response, body) => {
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode === 200) {
         const data = JSON.parse(body);
         const profile = data.response.players[0];
 
