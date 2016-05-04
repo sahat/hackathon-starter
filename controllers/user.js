@@ -225,7 +225,7 @@ exports.getOauthUnlink = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      req.flash('info', { msg: provider + ' account has been unlinked.' });
+      req.flash('info', { msg: `${provider} account has been unlinked.` });
       res.redirect('/account');
     });
   });
@@ -309,8 +309,7 @@ exports.postReset = (req, res, next) => {
         to: user.email,
         from: 'hackathon@starter.com',
         subject: 'Your Hackathon Starter password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+        text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
       };
       transporter.sendMail(mailOptions, (err) => {
         req.flash('success', { msg: 'Success! Your password has been changed.' });
@@ -384,13 +383,13 @@ exports.postForgot = (req, res, next) => {
         to: user.email,
         from: 'hackathon@starter.com',
         subject: 'Reset your password on Hackathon Starter',
-        text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+        text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
+          Please click on the following link, or paste this into your browser to complete the process:\n\n
+          http://${req.headers.host}/reset/${token}\n\n
+          If you did not request this, please ignore this email and your password will remain unchanged.\n`
       };
       transporter.sendMail(mailOptions, (err) => {
-        req.flash('info', { msg: 'An e-mail has been sent to ' + user.email + ' with further instructions.' });
+        req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
         done(err);
       });
     }

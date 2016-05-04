@@ -778,7 +778,7 @@ exports.getBitGo = (req, res, next) => {
   } else {
     bitgo.wallets().createWalletWithKeychains({
       passphrase: req.sessionID, // change this!
-      label: 'wallet for session ' + req.sessionID,
+      label: `wallet for session ${req.sessionID}`,
       backupXpub: 'xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU'
     }, (err, res) => {
       req.session.walletId = res.wallet.wallet.id;
@@ -807,7 +807,7 @@ exports.postBitGo = (req, res, next) => {
           req.flash('errors', { msg: err.message });
           return res.redirect('/api/bitgo');
         }
-        req.flash('info', { msg: 'txid: ' + result.hash + ', hex: ' + result.tx });
+        req.flash('info', { msg: `txid: ${result.hash}, hex: ${result.tx}` });
         return res.redirect('/api/bitgo');
       });
     });
