@@ -453,7 +453,7 @@ passport.use(new OpenIDStrategy({
   stateless: true
 }, (identifier, done) => {
   const steamId = identifier.match(/\d+$/)[0];
-  const profileURL = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + process.env.STEAM_KEY + '&steamids=' + steamId;
+  const profileURL = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_KEY}&steamids=${steamId}`;
 
   User.findOne({ steam: steamId }, (err, existingUser) => {
     if (existingUser) return done(err, existingUser);
@@ -464,7 +464,7 @@ passport.use(new OpenIDStrategy({
 
         const user = new User();
         user.steam = steamId;
-        user.email = steamId + '@steam.com'; // steam does not disclose emails, prevent duplicate keys
+        user.email = `${steamId}@steam.com`; // steam does not disclose emails, prevent duplicate keys
         user.tokens.push({ kind: 'steam', accessToken: steamId });
         user.profile.name = profile.personaname;
         user.profile.picture = profile.avatarmedium;
@@ -518,6 +518,6 @@ exports.isAuthorized = (req, res, next) => {
   if (_.find(req.user.tokens, { kind: provider })) {
     next();
   } else {
-    res.redirect('/auth/' + provider);
+    res.redirect(`/auth/${provider}`);
   }
 };

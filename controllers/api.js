@@ -109,12 +109,12 @@ exports.getFacebook = (req, res, next) => {
   graph.setAccessToken(token.accessToken);
   async.parallel({
     getMe: (done) => {
-      graph.get(req.user.facebook + '?fields=id,name,email,first_name,last_name,gender,link,locale,timezone', (err, me) => {
+      graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, me) => {
         done(err, me);
       });
     },
     getMyFriends: (done) => {
-      graph.get(req.user.facebook + '/friends', (err, friends) => {
+      graph.get(`${req.user.facebook}/friends`, (err, friends) => {
         done(err, friends.data);
       });
     }
@@ -452,7 +452,7 @@ exports.postTwilio = (req, res, next) => {
     if (err) {
       return next(err.message);
     }
-    req.flash('success', { msg: 'Text sent to ' + responseData.to + '.' });
+    req.flash('success', { msg: `Text sent to ${responseData.to}.` });
     res.redirect('/api/twilio');
   });
 };
@@ -481,7 +481,7 @@ exports.postClockwork = (req, res, next) => {
     if (err) {
       return next(err.errDesc);
     }
-    req.flash('success', { msg: 'Text sent to ' + responseData.responses[0].to });
+    req.flash('success', { msg: `Text sent to ${responseData.responses[0].to}` });
     res.redirect('/api/clockwork');
   });
 };
