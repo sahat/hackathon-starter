@@ -1040,7 +1040,7 @@ var PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 Then change `app.listen()` to:
 ```js
 app.listen(PORT, IP_ADDRESS,() => {
-  console.log("Express server listening on port %d in %s mode", PORT, app.settings.env);
+  console.log(`Express server listening on port ${PORT} in ${app.settings.env} mode`);
 });
 ```
 Add this to `package.json`, after *name* and *version*. This is necessary because, by default, OpenShift looks for `server.js` file. And by specifying `supervisor app.js` it will automatically restart the server when node.js process crashes.
