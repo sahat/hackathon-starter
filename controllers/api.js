@@ -167,7 +167,7 @@ exports.getGithub = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'github' });
   var github = new Github({ token: token.accessToken });
   var repo = github.getRepo('sahat', 'requirejs-library');
-  repo.show(function(err, repo) {
+  repo.getDetails(function(err, repo) {
     if (err) {
       return next(err);
     }
@@ -360,7 +360,7 @@ exports.getSteam = function(req, res, next) {
 
   var steamId = '76561197982488301';
   var params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  
+
   async.parallel({
     playerAchievements: function(done) {
       params.appid = '49520';
@@ -669,7 +669,7 @@ exports.getYahoo = function(req, res) {
       });
     },
     function getWeatherReport(done) {
-      Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', function(response) {
+      Y.YQL('SELECT * FROM weather.forecast WHERE woeid in (SELECT woeid FROM geo.places(1) WHERE text="nome, ak")', function(response) {
         var location = response.query.results.channel.location;
         var condition = response.query.results.channel.item.condition;
         done(null, { location: location, condition: condition });
@@ -707,8 +707,8 @@ exports.getPayPal = function(req, res, next) {
       payment_method: 'paypal'
     },
     redirect_urls: {
-      return_url: '/api/paypal/success',
-      cancel_url: '/api/paypal/cancel'
+      return_url: process.env.PAYPAL_RETURN_URL,
+      cancel_url: process.env.PAYPAL_CANCEL_URL
     },
     transactions: [{
       description: 'Hackathon Starter',
