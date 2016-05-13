@@ -139,8 +139,8 @@ exports.getScraping = (req, res, next) => {
   request.get('https://news.ycombinator.com/', (err, request, body) => {
     const $ = cheerio.load(body);
     const links = [];
-    $('.title a[href^="http"], a[href^="https"]').each(() => {
-      links.push($(this));
+    $('.title a[href^="http"], a[href^="https"]').each((i, elem) => {
+      links.push($(elem));
     });
     res.render('api/scraping', {
       title: 'Web Scraping',
