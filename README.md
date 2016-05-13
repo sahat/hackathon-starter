@@ -8,7 +8,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 Jump to [What's new in 4.0.0?](#changelog)
 
-:bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5)
+:bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5).
 
 A boilerplate for **Node.js** web applications.
 
