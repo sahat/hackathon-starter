@@ -6,7 +6,9 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 3.5.0?](#changelog)
+Jump to [What's new in 4.0.0?](#changelog)
+
+:bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5)
 
 A boilerplate for **Node.js** web applications.
 
@@ -82,7 +84,7 @@ Prerequisites
 -------------
 
 - [MongoDB](https://www.mongodb.org/downloads)
-- [Node.js](http://nodejs.org)
+- [Node.js 6.0+](http://nodejs.org)
 - Command Line Tools
  - <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
  - <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">&nbsp;**Windows:** [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
@@ -1094,6 +1096,25 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+
+### 4.0.0 (May 13, 2016)
+- **ECMAScript 2015 support!** (Make sure you are using Node.js 6.0+)
+ - Thanks  @vanshady and @prashcr
+- Added `<meta theme-color>` support for *Chrome for Android*
+- Added Yahoo Finance API example
+- Updated Aviary API example
+- Flash an error message when updating email to that which is already taken
+- Removing an email address during profile update is no longer possible
+- PayPal API example now uses *return_url* and *cancel_url* from `.env`
+- Added client-side `required=true` attributes to input fields 
+- Fixed broken `show()` function in the GitHub API example
+- Fixed YQL query in the Yahoo Weather API example
+- Fixed *Can't set headers after they are sent* error in Stripe API example
+- Code refactoring and cleanup
+- Updated Travis-CI Node.js version
+- Updated NPM dependencies
+- Removed Mandrill references
 
 ### 3.5.0 (March 4, 2016)
 - Added file upload example
