@@ -554,9 +554,7 @@ exports.getInstagram = (req, res, next) => {
       });
     }
   }, (err, results) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     res.render('api/instagram', {
       title: 'Instagram API',
       usernames: results.searchByUsername,
