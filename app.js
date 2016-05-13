@@ -92,7 +92,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use((req, res, next) => {
-  // After successful login redirect back to "/api" or "/contact" or "/" routes.
+  // After successful login, redirect back to /api, /contact or /
   if (/(api)|(contact)|(^\/$)/i.test(req.path)) {
     req.session.returnTo = req.path;
   }
@@ -219,7 +219,7 @@ app.use(errorHandler());
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log(`Express server listening on port ${app.get('port')} in ${app.get('env')} mode`);
+  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
 
 module.exports = app;
