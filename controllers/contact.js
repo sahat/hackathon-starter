@@ -33,17 +33,11 @@ exports.postContact = (req, res) => {
     return res.redirect('/contact');
   }
 
-  const from = req.body.email;
-  const name = req.body.name;
-  const body = req.body.message;
-  const to = 'your@email.com';
-  const subject = 'Contact Form | Hackathon Starter';
-
   const mailOptions = {
-    to,
-    from,
-    subject,
-    text: body
+    to: 'your@email.com',
+    from: `${req.body.name} <${req.body.email}>`,
+    subject: 'Contact Form | Hackathon Starter',
+    text: req.body.message
   };
 
   transporter.sendMail(mailOptions, (err) => {
