@@ -1,22 +1,11 @@
 const _ = require('lodash');
 const async = require('async');
-
-/**
- * Split into declaration and initialization for better startup performance.
- */
 const validator = require('validator');
+const request = require('request');
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
 const LastFmNode = require('lastfm').LastFmNode;
 const tumblr = require('tumblr.js');
-const foursquare = require('node-foursquare')({
-  secrets: {
-    clientId: process.env.FOURSQUARE_ID,
-    clientSecret: process.env.FOURSQUARE_SECRET,
-    redirectUrl: process.env.FOURSQUARE_REDIRECT_URL
-  }
-});
-
 const Github = require('github-api');
 const Twit = require('twit');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
@@ -28,7 +17,13 @@ const paypal = require('paypal-rest-sdk');
 const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
 const Y = require('yui/yql');
-const request = require('request');
+const foursquare = require('node-foursquare')({
+  secrets: {
+    clientId: process.env.FOURSQUARE_ID,
+    clientSecret: process.env.FOURSQUARE_SECRET,
+    redirectUrl: process.env.FOURSQUARE_REDIRECT_URL
+  }
+});
 
 /**
  * GET /api
@@ -45,7 +40,7 @@ exports.getApi = (req, res) => {
  * Foursquare API example.
  */
 exports.getFoursquare = (req, res, next) => {
-  const token = _.find(req.user.tokens, { kind: 'foursquare' });
+  const token = req.user.tokens.find(token => token.kind === 'foursquare');
   async.parallel({
     trendingVenues: (callback) => {
       foursquare.Venues.getTrending('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken, (err, results) => {
@@ -64,9 +59,7 @@ exports.getFoursquare = (req, res, next) => {
     }
   },
   (err, results) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     res.render('api/foursquare', {
       title: 'Foursquare API',
       trendingVenues: results.trendingVenues,
@@ -81,7 +74,7 @@ exports.getFoursquare = (req, res, next) => {
  * Tumblr API example.
  */
 exports.getTumblr = (req, res, next) => {
-  const token = _.find(req.user.tokens, { kind: 'tumblr' });
+  const token = req.user.tokens.find(token => token.kind === 'tumblr');
   const client = tumblr.createClient({
     consumer_key: process.env.TUMBLR_KEY,
     consumer_secret: process.env.TUMBLR_SECRET,
@@ -89,9 +82,7 @@ exports.getTumblr = (req, res, next) => {
     token_secret: token.tokenSecret
   });
   client.posts('mmosdotcom.tumblr.com', { type: 'photo' }, (err, data) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     res.render('api/tumblr', {
       title: 'Tumblr API',
       blog: data.blog,
@@ -105,10 +96,10 @@ exports.getTumblr = (req, res, next) => {
  * Facebook API example.
  */
 exports.getFacebook = (req, res, next) => {
-  const token = _.find(req.user.tokens, { kind: 'facebook' });
+  const token = req.user.tokens.find(token => token.kind === 'facebook');
   graph.setAccessToken(token.accessToken);
   async.parallel({
-    getMe: (done) => {
+    getMyProfile: (done) => {
       graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, me) => {
         done(err, me);
       });
@@ -120,12 +111,10 @@ exports.getFacebook = (req, res, next) => {
     }
   },
   (err, results) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     res.render('api/facebook', {
       title: 'Facebook API',
-      me: results.getMe,
+      me: results.getMyProfile,
       friends: results.getMyFriends
     });
   });
@@ -135,12 +124,12 @@ exports.getFacebook = (req, res, next) => {
  * GET /api/scraping
  * Web scraping example using Cheerio library.
  */
-exports.getScraping = (req, res, next) => {
+exports.getScraping = (req, res) => {
   request.get('https://news.ycombinator.com/', (err, request, body) => {
     const $ = cheerio.load(body);
     const links = [];
-    $('.title a[href^="http"], a[href^="https"]').each((i, elem) => {
-      links.push($(elem));
+    $('.title a[href^="http"], a[href^="https"]').each((index, element) => {
+      links.push($(element));
     });
     res.render('api/scraping', {
       title: 'Web Scraping',
@@ -154,16 +143,14 @@ exports.getScraping = (req, res, next) => {
  * GitHub API Example.
  */
 exports.getGithub = (req, res, next) => {
-  const token = _.find(req.user.tokens, { kind: 'github' });
+  const token = req.user.tokens.find(token => token.kind === 'github');
   const github = new Github({ token: token.accessToken });
   const repo = github.getRepo('sahat', 'satellizer');
   repo.getDetails((err, repo) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     res.render('api/github', {
       title: 'GitHub API',
-      repo,
+      repo
     });
   });
 };
@@ -187,15 +174,14 @@ exports.getNewYorkTimes = (req, res, next) => {
     'list-name': 'young-adult',
     'api-key': process.env.NYT_KEY
   };
-
   request.get({ url: 'http://api.nytimes.com/svc/books/v2/lists', qs: query }, (err, request, body) => {
     if (request.statusCode === 403) {
       return next(new Error('Invalid New York Times API Key'));
     }
-    const bestsellers = JSON.parse(body);
+    const books = JSON.parse(body).results;
     res.render('api/nyt', {
       title: 'New York Times API',
-      books: bestsellers.results
+      books
     });
   });
 };
@@ -209,60 +195,37 @@ exports.getLastfm = (req, res, next) => {
     api_key: process.env.LASTFM_KEY,
     secret: process.env.LASTFM_SECRET
   });
-
   async.parallel({
     artistInfo: (done) => {
       lastfm.request('artist.getInfo', {
-        artist: 'The Pierces',
+        artist: 'Roniit',
         handlers: {
-          success: (data) => {
-            done(null, data);
-          },
-          error: (err) => {
-            done(err);
-          }
+          success: (data) => done(null, data),
+          error: (err) => done(err)
         }
       });
     },
     artistTopTracks: (done) => {
       lastfm.request('artist.getTopTracks', {
-        artist: 'The Pierces',
+        artist: 'Roniit',
         handlers: {
-          success: (data) => {
-            const tracks = [];
-            _.each(data.toptracks.track, (track) => {
-              tracks.push(track);
-            });
-            done(null, tracks.slice(0, 10));
-          },
-          error: (err) => {
-            done(err);
-          }
+          success: (data) => done(null, data.toptracks.track.slice(0, 10)),
+          error: (err) => done(err)
         }
       });
     },
     artistTopAlbums: (done) => {
       lastfm.request('artist.getTopAlbums', {
-        artist: 'The Pierces',
+        artist: 'Roniit',
         handlers: {
-          success: (data) => {
-            const albums = [];
-            _.each(data.topalbums.album, (album) => {
-              albums.push(album.image.slice(-1)[0]['#text']);
-            });
-            done(null, albums.slice(0, 4));
-          },
-          error: (err) => {
-            done(err);
-          }
+          success: (data) => done(null, data.topalbums.album.slice(0, 3)),
+          error: (err) => done(err)
         }
       });
     }
   },
   (err, results) => {
-    if (err) {
-      return next(err.message);
-    }
+    if (err) { return next(err); }
     const artist = {
       name: results.artistInfo.artist.name,
       image: results.artistInfo.artist.image.slice(-1)[0]['#text'],
@@ -285,7 +248,7 @@ exports.getLastfm = (req, res, next) => {
  * Twiter API example.
  */
 exports.getTwitter = (req, res, next) => {
-  const token = _.find(req.user.tokens, { kind: 'twitter' });
+  const token = req.user.tokens.find(token => token.kind === 'twitter');
   const T = new Twit({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
@@ -293,9 +256,7 @@ exports.getTwitter = (req, res, next) => {
     access_token_secret: token.tokenSecret
   });
   T.get('search/tweets', { q: 'nodejs since:2013-01-01', geocode: '40.71448,-74.00598,5mi', count: 10 }, (err, reply) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     res.render('api/twitter', {
       title: 'Twitter API',
       tweets: reply.statuses
@@ -307,8 +268,8 @@ exports.getTwitter = (req, res, next) => {
  * POST /api/twitter
  * Post a tweet.
  */
-exports.postTwitter = function(req, res, next) {
-  req.assert('tweet', 'Tweet cannot be empty.').notEmpty();
+exports.postTwitter = (req, res, next) => {
+  req.assert('tweet', 'Tweet cannot be empty').notEmpty();
 
   const errors = req.validationErrors();
 
@@ -317,7 +278,7 @@ exports.postTwitter = function(req, res, next) {
     return res.redirect('/api/twitter');
   }
 
-  const token = _.find(req.user.tokens, { kind: 'twitter' });
+  const token = req.user.tokens.find(token => token.kind === 'twitter');
   const T = new Twit({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
@@ -325,10 +286,8 @@ exports.postTwitter = function(req, res, next) {
     access_token_secret: token.tokenSecret
   });
   T.post('statuses/update', { status: req.body.tweet }, (err, data, response) => {
-    if (err) {
-      return next(err);
-    }
-    req.flash('success', { msg: 'Tweet has been posted.' });
+    if (err) { return next(err); }
+    req.flash('success', { msg: 'Your tweet has been posted.' });
     res.redirect('/api/twitter');
   });
 };
@@ -340,7 +299,6 @@ exports.postTwitter = function(req, res, next) {
 exports.getSteam = (req, res, next) => {
   const steamId = '76561197982488301';
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-
   async.parallel({
     playerAchievements: (done) => {
       params.appid = '49520';
@@ -372,9 +330,7 @@ exports.getSteam = (req, res, next) => {
     }
   },
   (err, results) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     res.render('api/steam', {
       title: 'Steam Web API',
       ownedGames: results.ownedGames.response.games,
@@ -399,7 +355,7 @@ exports.getStripe = (req, res) => {
  * POST /api/stripe
  * Make a payment.
  */
-exports.postStripe = (req, res, next) => {
+exports.postStripe = (req, res) => {
   const stripeToken = req.body.stripeToken;
   const stripeEmail = req.body.stripeEmail;
   stripe.charges.create({
@@ -407,12 +363,12 @@ exports.postStripe = (req, res, next) => {
     currency: 'usd',
     source: stripeToken,
     description: stripeEmail
-  }, (err, charge) => {
+  }, (err) => {
     if (err && err.type === 'StripeCardError') {
       req.flash('errors', { msg: 'Your card has been declined.' });
       return res.redirect('/api/stripe');
     }
-    req.flash('success', { msg: 'Your card has been charged successfully.' });
+    req.flash('success', { msg: 'Your card has been successfully charged.' });
     res.redirect('/api/stripe');
   });
 };
@@ -448,9 +404,7 @@ exports.postTwilio = (req, res, next) => {
     body: req.body.message
   };
   twilio.sendMessage(message, (err, responseData) => {
-    if (err) {
-      return next(err.message);
-    }
+    if (err) { return next(err.message); }
     req.flash('success', { msg: `Text sent to ${responseData.to}.` });
     res.redirect('/api/twilio');
   });
@@ -477,9 +431,7 @@ exports.postClockwork = (req, res, next) => {
     Content: 'Hello from the Hackathon Starter'
   };
   clockwork.sendSms(message, (err, responseData) => {
-    if (err) {
-      return next(err.errDesc);
-    }
+    if (err) { return next(err.errDesc); }
     req.flash('success', { msg: `Text sent to ${responseData.responses[0].to}` });
     res.redirect('/api/clockwork');
   });
@@ -490,9 +442,8 @@ exports.postClockwork = (req, res, next) => {
  * Venmo API example.
  */
 exports.getVenmo = (req, res, next) => {
-  const token = _.find(req.user.tokens, { kind: 'venmo' });
+  const token = req.user.tokens.find(token => token.kind === 'venmo');
   const query = { access_token: token.accessToken };
-
   async.parallel({
     getProfile: (done) => {
       request.get({ url: 'https://api.venmo.com/v1/me', qs: query, json: true }, (err, request, body) => {
@@ -506,9 +457,7 @@ exports.getVenmo = (req, res, next) => {
     }
   },
   (err, results) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     res.render('api/venmo', {
       title: 'Venmo API',
       profile: results.getProfile.data,
@@ -533,12 +482,13 @@ exports.postVenmo = (req, res, next) => {
     return res.redirect('/api/venmo');
   }
 
-  const token = _.find(req.user.tokens, { kind: 'venmo' });
+  const token = req.user.tokens.find(token => token.kind === 'venmo');
   const formData = {
     access_token: token.accessToken,
     note: req.body.note,
     amount: req.body.amount
   };
+
   if (validator.isEmail(req.body.user)) {
     formData.email = req.body.user;
   } else if (validator.isNumeric(req.body.user) && validator.isLength(req.body.user, 10, 11)) {
@@ -546,10 +496,9 @@ exports.postVenmo = (req, res, next) => {
   } else {
     formData.user_id = req.body.user;
   }
+
   request.post('https://api.venmo.com/v1/payments', { form: formData }, (err, request, body) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     if (request.statusCode !== 200) {
       req.flash('errors', { msg: JSON.parse(body).error.message });
       return res.redirect('/api/venmo');
@@ -564,12 +513,10 @@ exports.postVenmo = (req, res, next) => {
  * LinkedIn API example.
  */
 exports.getLinkedin = (req, res, next) => {
-  const token = _.find(req.user.tokens, { kind: 'linkedin' });
+  const token = req.user.tokens.find(token => token.kind === 'linkedin');
   const linkedin = Linkedin.init(token.accessToken);
   linkedin.people.me((err, $in) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     res.render('api/linkedin', {
       title: 'LinkedIn API',
       profile: $in
@@ -582,12 +529,12 @@ exports.getLinkedin = (req, res, next) => {
  * Instagram API example.
  */
 exports.getInstagram = (req, res, next) => {
-  const token = _.find(req.user.tokens, { kind: 'instagram' });
+  const token = req.user.tokens.find(token => token.kind === 'instagram');
   ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
   ig.use({ access_token: token.accessToken });
   async.parallel({
     searchByUsername: (done) => {
-      ig.user_search('richellemead', (err, users, limit) => {
+      ig.user_search('richellemead', (err, users) => {
         done(err, users);
       });
     },
@@ -602,7 +549,7 @@ exports.getInstagram = (req, res, next) => {
       });
     },
     myRecentMedia: (done) => {
-      ig.user_self_media_recent((err, medias, pagination, limit) => {
+      ig.user_self_media_recent((err, medias) => {
         done(err, medias);
       });
     }
@@ -640,14 +587,10 @@ exports.getYahoo = (req, res) => {
       });
     }
   ], (err, results) => {
-    const quotes = results[0];
-    const weather = results[1];
-
     res.render('api/yahoo', {
       title: 'Yahoo API',
-      quotes,
-      location: weather.location,
-      condition: weather.condition
+      quotes: results[0],
+      weather: results[1]
     });
   });
 };
@@ -682,9 +625,7 @@ exports.getPayPal = (req, res, next) => {
   };
 
   paypal.payment.create(paymentDetails, (err, payment) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     req.session.paymentId = payment.id;
     const links = payment.links;
     for (let i = 0; i < links.length; i++) {
@@ -705,17 +646,10 @@ exports.getPayPalSuccess = (req, res) => {
   const paymentId = req.session.paymentId;
   const paymentDetails = { payer_id: req.query.PayerID };
   paypal.payment.execute(paymentId, paymentDetails, (err) => {
-    if (err) {
-      res.render('api/paypal', {
-        result: true,
-        success: false
-      });
-    } else {
-      res.render('api/paypal', {
-        result: true,
-        success: true
-      });
-    }
+    res.render('api/paypal', {
+      result: true,
+      success: !err
+    });
   });
 };
 
@@ -736,12 +670,8 @@ exports.getPayPalCancel = (req, res) => {
  * Lob API example.
  */
 exports.getLob = (req, res, next) => {
-  lob.routes.list({
-    zip_codes: ['10007']
-  }, (err, routes) => {
-    if (err) {
-      return next(err);
-    }
+  lob.routes.list({ zip_codes: ['10007'] }, (err, routes) => {
+    if (err) { return next(err); }
     res.render('api/lob', {
       title: 'Lob API',
       routes: routes.data[0].routes
@@ -756,7 +686,6 @@ exports.getLob = (req, res, next) => {
 exports.getBitGo = (req, res, next) => {
   const bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
   const walletId = req.session.walletId;
-
   const renderWalletInfo = (walletId) => {
     bitgo.wallets().get({ id: walletId }, (err, walletResponse) => {
       walletResponse.createAddress({}, (err, addressResponse) => {
@@ -782,8 +711,7 @@ exports.getBitGo = (req, res, next) => {
     }, (err, res) => {
       req.session.walletId = res.wallet.wallet.id;
       renderWalletInfo(req.session.walletId);
-    }
-    );
+    });
   }
 };
 
@@ -791,10 +719,9 @@ exports.getBitGo = (req, res, next) => {
  * POST /api/bitgo
  * BitGo send coins example
  */
-exports.postBitGo = (req, res, next) => {
+exports.postBitGo = (req, res) => {
   const bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
   const walletId = req.session.walletId;
-
   try {
     bitgo.wallets().get({ id: walletId }, (err, wallet) => {
       wallet.sendCoins({
@@ -832,12 +759,9 @@ exports.postFileUpload = (req, res, next) => {
  * Pinterest API example.
  */
 exports.getPinterest = (req, res, next) => {
-  const token = _.find(req.user.tokens, { kind: 'pinterest' });
+  const token = req.user.tokens.find(token => token.kind === 'pinterest');
   request.get({ url: 'https://api.pinterest.com/v1/me/boards/', qs: { access_token: token.accessToken }, json: true }, (err, request, body) => {
-    if (err) {
-      return next(err);
-    }
-
+    if (err) { return next(err); }
     res.render('api/pinterest', {
       title: 'Pinterest API',
       boards: body.data
@@ -861,17 +785,16 @@ exports.postPinterest = (req, res, next) => {
     return res.redirect('/api/pinterest');
   }
 
-  const token = _.find(req.user.tokens, { kind: 'pinterest' });
+  const token = req.user.tokens.find(token => token.kind === 'pinterest');
   const formData = {
     board: req.body.board,
     note: req.body.note,
     link: req.body.link,
     image_url: req.body.image_url
   };
+
   request.post('https://api.pinterest.com/v1/pins/', { qs: { access_token: token.accessToken }, form: formData }, (err, request, body) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) { return next(err); }
     if (request.statusCode !== 201) {
       req.flash('errors', { msg: JSON.parse(body).message });
       return res.redirect('/api/pinterest');
