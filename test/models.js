@@ -1,5 +1,5 @@
 const chai = require('chai');
-const should = chai.should();
+const expect = chai.expect;
 const User = require('../models/User');
 
 describe('User Model', () => {
@@ -9,7 +9,10 @@ describe('User Model', () => {
       password: 'password'
     });
     user.save((err) => {
-      if (err) return done(err);
+      expect(err).to.be.null;
+      expect(user.email).to.equal('test@gmail.com');
+      expect(user).to.have.property('createdAt');
+      expect(user).to.have.property('updatedAt');
       done();
     });
   });
@@ -20,22 +23,23 @@ describe('User Model', () => {
       password: 'password'
     });
     user.save((err) => {
-      if (err) err.code.should.equal(11000);
+      expect(err).to.be.defined;
+      expect(err.code).to.equal(11000);
       done();
     });
   });
 
   it('should find user by email', (done) => {
     User.findOne({ email: 'test@gmail.com' }, (err, user) => {
-      if (err) return done(err);
-      user.email.should.equal('test@gmail.com');
+      expect(err).to.be.null;
+      expect(user.email).to.equal('test@gmail.com');
       done();
     });
   });
 
   it('should delete a user', (done) => {
     User.remove({ email: 'test@gmail.com' }, (err) => {
-      if (err) return done(err);
+      expect(err).to.be.null;
       done();
     });
   });
