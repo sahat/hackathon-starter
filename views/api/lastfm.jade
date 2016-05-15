@@ -31,7 +31,7 @@ block content
 
   h3 Top Albums
   for album in artist.topAlbums
-    img(src='#{album}', width=150, height=150)
+    img(src='#{album.image.slice(-1)[0]["#text"]}', width=150, height=150)
     |&nbsp;
 
   h3 Top Tracks
