@@ -63,5 +63,8 @@
     "mocha": "^2.4.5",
     "supertest": "^1.2.0"
   },
+  "engines": {
+    "node": "6.1.0"
+  },
   "license": "MIT"
 }
