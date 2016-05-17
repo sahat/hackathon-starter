@@ -6,7 +6,7 @@ Hackathon Starter [![Dependency Status](https://david-dm.org/sahat/hackathon-sta
 
 **Live Demo**: http://hackathonstarter.herokuapp.com
 
-Jump to [What's new in 4.0.0?](#changelog)
+Jump to [What's new in 4.0.1?](#changelog)
 
 :bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5).
 
@@ -1097,6 +1097,9 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 Changelog
 ---------
 
+### 4.0.1 (May 17, 2016)
+- Renamed `MONGODB` to `MONGODB_URI` environment variable
+- Set engine `"node": "6.1.0"` in *package.json*
 
 ### 4.0.0 (May 13, 2016)
 - **ECMAScript 2015 support!** (Make sure you are using Node.js 6.0+)
