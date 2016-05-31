@@ -1,3 +1,4 @@
+'use strict';
 const _ = require('lodash');
 const async = require('async');
 const validator = require('validator');
