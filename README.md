@@ -277,7 +277,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="http://iandouglas.com/presentations/pyconca2012/logos/sendgrid_logo.png" width="200">
+<img src="https://sendgrid.com/brand/sg-logo-300.png" width="200">
 - Go to https://sendgrid.com/user/signup
 - Sign up and **confirm** your account via the *activation email*
 - Then enter your SendGrid *Username* and *Password* into `.env` file
