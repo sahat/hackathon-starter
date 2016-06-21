@@ -9,6 +9,7 @@ const LastFmNode = require('lastfm').LastFmNode;
 const tumblr = require('tumblr.js');
 const Github = require('github-api');
 const Twit = require('twit');
+const twitter = require('twitter');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const Linkedin = require('node-linkedin')(process.env.LINKEDIN_ID, process.env.LINKEDIN_SECRET, process.env.LINKEDIN_CALLBACK_URL);
@@ -246,7 +247,7 @@ exports.getLastfm = (req, res, next) => {
 
 /**
  * GET /api/twitter
- * Twiter API example.
+ * Twitter API example.
  */
 exports.getTwitter = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'twitter');
@@ -264,6 +265,25 @@ exports.getTwitter = (req, res, next) => {
     });
   });
 };
+
+/**
+ * GET /api/twitter/:screen_name
+ * Twitter API with params example
+ */
+export.getTwitterUser = (req, res, next) => {
+  const client = new Twitter({
+    consumer_key: process.env.TWITTER_KEY,
+    constumer_secret: process.env.TWITTER_SECRET,
+    access_token_key: token.accessToken,
+    access_token_secret: token.tokenSecret
+  });
+  client.get('api/twitter/:screen_name', { screen_name: req.params.screen_name }, (err, tweets, response) => {
+    if (err) { 
+      req.flash('error', { msg: 'That user does not exist!' });
+    }
+    res.jsonp(tweets);
+  })
+} 
 
 /**
  * POST /api/twitter
