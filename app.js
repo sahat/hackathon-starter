@@ -20,6 +20,15 @@ const multer = require('multer');
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 /**
+ * Init Socket.io
+ */
+const http = require('http');
+var io = require('socket.io');
+const app = express();
+const server = require('http').createServer(app);
+io = io.listen(server);
+
+/**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
 dotenv.load({ path: '.env.example' });
@@ -36,11 +45,6 @@ const contactController = require('./controllers/contact');
  * API keys and Passport configuration.
  */
 const passportConfig = require('./config/passport');
-
-/**
- * Create Express server.
- */
-const app = express();
 
 /**
  * Connect to MongoDB.
@@ -218,8 +222,14 @@ app.use(errorHandler());
 /**
  * Start Express server.
  */
-app.listen(app.get('port'), () => {
+server.listen(app.get('port'), () => {
   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
+
+/**
+ * Init Socket.io
+ */
+require('./socket/io')(io);
+
 
 module.exports = app;
