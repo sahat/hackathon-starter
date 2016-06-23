@@ -51,6 +51,7 @@
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.6.8",
     "request": "^2.72.0",
+    "socket.io": "^1.4.6",
     "stripe": "^4.6.0",
     "tumblr.js": "^1.0.0",
     "twilio": "^3.3.0-edge",

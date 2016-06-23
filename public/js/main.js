@@ -1,5 +1,15 @@
 $(document).ready(function() {
 
-  // Place JavaScript code here...
+
+    /**
+     *  Socket.io
+     */
+    var socket = io();
+    socket.on('connect', function() {
+        console.log('Connected');
+    });
+    socket.on('app:welcome', function(msg){
+        console.log(msg);
+    });
 
 });
