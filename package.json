@@ -22,7 +22,7 @@
     "errorhandler": "^1.4.3",
     "express": "^4.14.0",
     "express-flash": "^0.0.2",
-    "express-session": "^1.13.0",
+    "express-session": "^1.14.0",
     "express-validator": "^2.20.8",
     "fbgraph": "^1.2.0",
     "github-api": "^2.3.0",
