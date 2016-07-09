@@ -50,7 +50,7 @@
     "passport-openid": "^0.4.0",
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.6.9",
-    "request": "^2.72.0",
+    "request": "^2.73.0",
     "stripe": "^4.7.0",
     "tumblr.js": "^1.0.0",
     "twilio": "^3.3.0-edge",
