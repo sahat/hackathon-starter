@@ -32,7 +32,7 @@
     "lob": "^3.9.0",
     "lodash": "^4.13.1",
     "lusca": "^1.4.1",
-    "mongoose": "^4.5.2",
+    "mongoose": "^4.5.4",
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
     "node-foursquare": "^0.3.0",
