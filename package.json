@@ -12,7 +12,7 @@
   "dependencies": {
     "async": "^2.0.0-rc.6",
     "bcrypt-nodejs": "^0.0.3",
-    "bitgo": "1.8.0",
+    "bitgo": "2.0.0",
     "body-parser": "^1.15.2",
     "cheerio": "^0.20.0",
     "clockwork": "^0.1.4",
@@ -22,7 +22,7 @@
     "errorhandler": "^1.4.3",
     "express": "^4.14.0",
     "express-flash": "^0.0.2",
-    "express-session": "^1.13.0",
+    "express-session": "^1.14.0",
     "express-validator": "^2.20.8",
     "fbgraph": "^1.2.0",
     "github-api": "^2.3.0",
