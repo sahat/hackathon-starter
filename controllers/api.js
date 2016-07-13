@@ -246,7 +246,7 @@ exports.getLastfm = (req, res, next) => {
 
 /**
  * GET /api/twitter
- * Twiter API example.
+ * Twitter API example.
  */
 exports.getTwitter = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'twitter');
