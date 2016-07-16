@@ -237,7 +237,7 @@ The same goes for other providers.
 - Copy the **Secret Key**. and add this into `.env` file
 <hr>
 
-<img src="https://yenniferallulli.com/wp-content/uploads/2015/01/Paypal-Logo-Transparent-png-format-large-size.png" width="200">
+<img src="https://pixabay.com/static/uploads/photo/2015/05/26/09/37/paypal-784404_960_720.png" width="200">
 - Visit [PayPal Developer](https://developer.paypal.com/)
 - Log in to your PayPal account
 - Click **Applications > Create App** in the navigation bar
