@@ -218,18 +218,6 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://s3.amazonaws.com/venmo/venmo_logo_blue.png" width="200">
-- Visit the **Account** section of your Venmo profile after logging in
-- Click on the **Developers** tab
-- Then click on the [new](https://venmo.com/account/app/new) link next to **Your Applications (0)**
-- Fill in the required fields: *App Name* and *What Will The App Be Used For?*
-- For **Web Redirect URL** enter: http://localhost:3000/auth/venmo/callback
-- Hit **Create** button
-- Back on the **Developers** tab click on **view** link next to **Your Applications (1) new**
-- Copy and paste **ID** and **Secret** keys into `.env` file
-
-<hr>
-
 <img src="https://stripe.com/img/about/logos/logos/black@2x.png" width="200">
 - [Sign up](https://stripe.com/) or log into your [dashboard](https://manage.stripe.com)
 - Click on your profile and click on Account Settings
