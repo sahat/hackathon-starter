@@ -422,27 +422,6 @@ passport.use('foursquare', new OAuth2Strategy({
 ));
 
 /**
- * Venmo API OAuth.
- */
-passport.use('venmo', new OAuth2Strategy({
-  authorizationURL: 'https://api.venmo.com/v1/oauth/authorize',
-  tokenURL: 'https://api.venmo.com/v1/oauth/access_token',
-  clientID: process.env.VENMO_ID,
-  clientSecret: process.env.VENMO_SECRET,
-  callbackURL: process.env.VENMO_REDIRECT_URL,
-  passReqToCallback: true
-},
-  (req, accessToken, refreshToken, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      user.tokens.push({ kind: 'venmo', accessToken });
-      user.save((err) => {
-        done(err, user);
-      });
-    });
-  }
-));
-
-/**
  * Steam API OpenID.
  */
 passport.use(new OpenIDStrategy({
