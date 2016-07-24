@@ -6,7 +6,7 @@ Hackathon Starter
 
 **Live Demo**: http://hackathonstarter-sahat.rhcloud.com
 
-Jump to [What's new in 4.0.1?](#changelog)
+Jump to [What's new in 4.1.0?](#changelog)
 
 :bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5).
 
@@ -1075,6 +1075,11 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 4.1.0 (July 23, 2016)
+- Improved redirect logic after login [#435](https://github.com/sahat/hackathon-starter/pull/435)
+- Removed Venmo API (see [Venmo Halts New Developer Access To Its API](https://techcrunch.com/2016/02/26/how-not-to-run-a-platform/))
+- Removed BitGo API due to issues with `secp256k1` dependency on Windows
 
 ### 4.0.1 (May 17, 2016)
 - Renamed `MONGODB` to `MONGODB_URI` environment variable
