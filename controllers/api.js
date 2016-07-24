@@ -12,7 +12,6 @@ const Twit = require('twit');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const Linkedin = require('node-linkedin')(process.env.LINKEDIN_ID, process.env.LINKEDIN_SECRET, process.env.LINKEDIN_CALLBACK_URL);
-const BitGo = require('bitgo');
 const clockwork = require('clockwork')({ key: process.env.CLOCKWORK_KEY });
 const paypal = require('paypal-rest-sdk');
 const lob = require('lob')(process.env.LOB_KEY);
@@ -605,70 +604,6 @@ exports.getLob = (req, res, next) => {
       routes: routes.data[0].routes
     });
   });
-};
-
-/**
- * GET /api/bitgo
- * BitGo wallet example
- */
-exports.getBitGo = (req, res, next) => {
-  const bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
-  const walletId = req.session.walletId;
-  const renderWalletInfo = (walletId) => {
-    bitgo.wallets().get({ id: walletId }, (err, walletResponse) => {
-      walletResponse.createAddress({}, (err, addressResponse) => {
-        walletResponse.transactions({}, (err, transactionsResponse) => {
-          res.render('api/bitgo', {
-            title: 'BitGo API',
-            wallet: walletResponse.wallet,
-            address: addressResponse.address,
-            transactions: transactionsResponse.transactions
-          });
-        });
-      });
-    });
-  };
-
-  if (walletId) {
-    renderWalletInfo(walletId);
-  } else {
-    bitgo.wallets().createWalletWithKeychains({
-      passphrase: req.sessionID, // change this!
-      label: `wallet for session ${req.sessionID}`,
-      backupXpub: 'xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU'
-    }, (err, res) => {
-      req.session.walletId = res.wallet.wallet.id;
-      renderWalletInfo(req.session.walletId);
-    });
-  }
-};
-
-/**
- * POST /api/bitgo
- * BitGo send coins example
- */
-exports.postBitGo = (req, res) => {
-  const bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
-  const walletId = req.session.walletId;
-  try {
-    bitgo.wallets().get({ id: walletId }, (err, wallet) => {
-      wallet.sendCoins({
-        address: req.body.address,
-        amount: parseInt(req.body.amount, 10),
-        walletPassphrase: req.sessionID
-      }, (err, result) => {
-        if (err) {
-          req.flash('errors', { msg: err.message });
-          return res.redirect('/api/bitgo');
-        }
-        req.flash('info', { msg: `txid: ${result.hash}, hex: ${result.tx}` });
-        return res.redirect('/api/bitgo');
-      });
-    });
-  } catch (err) {
-    req.flash('errors', { msg: err.message });
-    return res.redirect('/api/bitgo');
-  }
 };
 
 /**

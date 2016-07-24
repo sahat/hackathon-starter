@@ -279,14 +279,6 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://www.bitgo.com/img/new_bitgo/logo_footer.png" width="200">
-- Go to https://test.bitgo.com/
-- Sign up for an account.
-- Once logged into the dashboard, go to the top right selector and click 'account settings'
-- Under the developers tab, create your access token and copy and paste it into `.env` file
-
-<hr>
-
 <img src="https://s3.amazonaws.com/ahoy-assets.twilio.com/global/images/wordmark.svg" width="200">
 - Go to https://www.twilio.com/try-twilio
 - Sign up for an account.
@@ -334,7 +326,6 @@ List of Packages
 | ------------------------------- | --------------------------------------------------------------------- |
 | async                           | Utility library that provides asynchronous control flow.              |
 | bcrypt-nodejs                   | Library for hashing and salting user passwords.                       |
-| bitgo                           | Multi-sig Bitcoin wallet API.                                         |
 | cheerio                         | Scrape web pages using jQuery-style syntax.                           |
 | clockwork                       | Clockwork SMS API library.                                            |
 | connect-mongo                   | MongoDB session store for Express.                                    |
