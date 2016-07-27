@@ -1073,6 +1073,33 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 A longer version of these instructions with screenshots is available at [http://ibm.biz/hackstart2](http://ibm.biz/hackstart2).
 Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Services and Bluemix](https://www.youtube.com/watch?v=twvyqRnutss) video.
 
+---
+
+<img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=64" width="64" align="left">
+
+# Google Cloud Platform
+
+- [Download and install Node.js](https://nodejs.org/)
+- [Select or create](https://console.cloud.google.com/project) a Google Cloud Platform Console project
+- [Enable billing](https://support.google.com/cloud/answer/6293499#enable-billing) for your project (there's a $300 free trial)
+- Install and initialize the [Google Cloud SDK](https://cloud.google.com/sdk/docs/quickstarts)
+- Create an `app.yaml` file at the root of your `hackathon-starter` folder with the following contents:
+
+    ```yaml
+    runtime: nodejs
+    vm: true
+    manual_scaling:
+      instances: 1
+    ```
+- Make sure you've set `MONGODB_URI` or `MONGOLAB_URI` in `.env.example`
+- Run the following command to deploy the `hackathon-starter` app:
+
+    ```bash
+    gcloud app deploy
+    ```
+- [Monitor your deployed app](https://console.cloud.google.com/appengine) in the Cloud Console
+- [View the logs](https://console.cloud.google.com/logs/viewer) for your app in the Cloud Console
+
 Changelog
 ---------
 
