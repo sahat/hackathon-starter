@@ -135,7 +135,7 @@ all API examples to get you up and running even faster. But don't forget to upda
 them with *your credentials* when you are ready to deploy an app.
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" width="200">
-- Visit [Google Cloud Console](https://cloud.google.com/console/project)
+- Visit <a href="https://cloud.google.com/console/project" target="_blank">Google Cloud Console</a>
 - Click on the **Create Project** button
 - Enter *Project Name*, then click on **Create** button
 - Then click on *APIs & auth* in the sidebar and select *API* tab
@@ -160,7 +160,7 @@ The same goes for other providers.
 <hr>
 
 <img src="http://www.doit.ba/img/facebook.jpg" width="200">
-- Visit [Facebook Developers](https://developers.facebook.com/)
+- Visit <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a>
 - Click **My Apps**, then select **Add a New App* from the dropdown menu
 - Select **Website** platform and enter a new name for your app
 - Click on the **Create New Facebook App ID** button
@@ -178,7 +178,7 @@ The same goes for other providers.
 <hr>
 
 <img src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Logo.png" width="200">
-- Go to [Account Settings](https://github.com/settings/profile)
+- Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
 - Select **Applications** from the sidebar
 - Then inside **Developer applications** click on **Register new application**
 - Enter *Application Name* and *Homepage URL*
@@ -189,7 +189,7 @@ The same goes for other providers.
 <hr>
 
 <img src="https://g.twimg.com/ios_homescreen_icon.png" width="90">
-- Sign in at [https://apps.twitter.com/](https://apps.twitter.com/)
+- Sign in at <a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com</a>
 - Click **Create a new application**
 - Enter your application name, website and description
 - For **Callback URL**: http://127.0.0.1:3000/auth/twitter/callback
@@ -202,7 +202,7 @@ The same goes for other providers.
 <hr>
 
 <img src="http://www.danpontefract.com/wp-content/uploads/2014/02/logo-linkedin.png" width="200">
-- Sign in at [LinkedIn Developer Network](https://developer.linkedin.com/)
+- Sign in at <a href="https://developer.linkedin.com/" target="_blank">LinkedIn Developer Network</a>
 - From the account name dropdown menu select **API Keys**
  - *It may ask you to sign in once again*
 - Click **+ Add New Application** button
@@ -219,14 +219,14 @@ The same goes for other providers.
 <hr>
 
 <img src="https://stripe.com/img/about/logos/logos/black@2x.png" width="200">
-- [Sign up](https://stripe.com/) or log into your [dashboard](https://manage.stripe.com)
+- <a href="https://stripe.com/" target="_blank">Sign up</a> or log into your <a href="https://manage.stripe.com" target="_blank">dashboard</a>
 - Click on your profile and click on Account Settings
-- Then click on [API Keys](https://manage.stripe.com/account/apikeys)
+- Then click on **API Keys**
 - Copy the **Secret Key**. and add this into `.env` file
 <hr>
 
 <img src="https://pixabay.com/static/uploads/photo/2015/05/26/09/37/paypal-784404_960_720.png" width="200">
-- Visit [PayPal Developer](https://developer.paypal.com/)
+- Visit <a href="https://developer.paypal.com" target="_blank">PayPal Developer</a>
 - Log in to your PayPal account
 - Click **Applications > Create App** in the navigation bar
 - Enter *Application Name*, then click **Create app**
@@ -237,7 +237,7 @@ The same goes for other providers.
 <hr>
 
 <img src="http://33.media.tumblr.com/ffaf0075be879b3ab0b87f0b8bcc6814/tumblr_inline_n965bkOymr1qzxhga.png" width="200">
-- Go to [foursquare for Developers](https://developer.foursquare.com/)
+- Go to <a href="https://developer.foursquare.com" target="_blank">Foursquare for Developers</a>
 - Click on **My Apps** in the top menu
 - Click the **Create A New App** button
 - Enter *App Name*, *Welcome page url*,
@@ -248,17 +248,17 @@ The same goes for other providers.
 <hr>
 
 <img src="http://img4.wikia.nocookie.net/__cb20130520163346/logopedia/images/8/8d/Tumblr_logo_by_x_1337_x-d5ikwpp.png" width="200">
-- Go to http://www.tumblr.com/oauth/apps
+- Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
 - Fill in all the details
-- For **Default Callback URL**: http://localhost:3000/auth/tumblr/callback
+- For **Default Callback URL**: `http://localhost:3000/auth/tumblr/callback`
 - Click **✔Register**
 - Copy and paste *OAuth consumer key* and *OAuth consumer secret* keys into `.env` file
 
 <hr>
 
 <img src="http://www.technologytell.com/gaming/files/2012/01/steam_logo.jpg" width="200">
-- Go to http://steamcommunity.com/dev/apikey
+- Go to <a href="http://steamcommunity.com/dev/apikey" target="_blank">http://steamcommunity.com/dev/apikey</a>
 - Sign in with your existing Steam account
 - Enter your *Domain Name*, then and click **Register**
 - Copy and paste *Key* into `.env` file
@@ -266,21 +266,21 @@ The same goes for other providers.
 <hr>
 
 <img src="https://sendgrid.com/brand/sg-logo-300.png" width="200">
-- Go to https://sendgrid.com/user/signup
+- Go to <a href="https://sendgrid.com/user/signup" target="_blank">https://sendgrid.com/user/signup</a>
 - Sign up and **confirm** your account via the *activation email*
 - Then enter your SendGrid *Username* and *Password* into `.env` file
 
 <hr>
 
 <img src="https://raw.github.com/mailgun/media/master/Mailgun_Primary.png" width="200">
-- Go to http://www.mailgun.com
+- Go to <a href="http://www.mailgun.com" target="_blank">http://www.mailgun.com</a>
 - Sign up and add your *Domain Name*
 - From the domain overview, copy and paste the default SMTP *Login* and *Password* into `.env` file
 
 <hr>
 
 <img src="https://s3.amazonaws.com/ahoy-assets.twilio.com/global/images/wordmark.svg" width="200">
-- Go to https://www.twilio.com/try-twilio
+- Go to <a href="https://www.twilio.com/try-twilio" target="_blank">https://www.twilio.com/try-twilio</a>
 - Sign up for an account.
 - Once logged into the dashboard, expand the link 'show api credentials'
 - Copy your Account Sid and Auth Token
