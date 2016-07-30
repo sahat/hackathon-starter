@@ -371,7 +371,6 @@ List of Packages
 | mocha                           | Test framework.                                                       |
 | chai                            | BDD/TDD assertion library.                                            |
 | supertest                       | HTTP assertion library.                                               |
-| yui                             | Used by the Yahoo API example.                                        |
 
 Useful Tools and Resources
 --------------------------

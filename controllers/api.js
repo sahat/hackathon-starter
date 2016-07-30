@@ -16,7 +16,6 @@ const clockwork = require('clockwork')({ key: process.env.CLOCKWORK_KEY });
 const paypal = require('paypal-rest-sdk');
 const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
-const Y = require('yui/yql');
 const foursquare = require('node-foursquare')({
   secrets: {
     clientId: process.env.FOURSQUARE_ID,
@@ -490,34 +489,6 @@ exports.getInstagram = (req, res, next) => {
       userById: results.searchByUserId,
       popularImages: results.popularImages,
       myRecentMedia: results.myRecentMedia
-    });
-  });
-};
-
-/**
- * GET /api/yahoo
- * Yahoo API example.
- */
-exports.getYahoo = (req, res) => {
-  async.parallel([
-    function getFinanceStocks(done) {
-      Y.YQL('SELECT * FROM yahoo.finance.quote WHERE symbol in ("YHOO", "TSLA", "GOOG", "MSFT")', (response) => {
-        const quotes = response.query.results.quote;
-        done(null, quotes);
-      });
-    },
-    function getWeatherReport(done) {
-      Y.YQL('SELECT * FROM weather.forecast WHERE woeid in (SELECT woeid FROM geo.places(1) WHERE text="nome, ak")', (response) => {
-        const location = response.query.results.channel.location;
-        const condition = response.query.results.channel.item.condition;
-        done(null, { location, condition });
-      });
-    }
-  ], (err, results) => {
-    res.render('api/yahoo', {
-      title: 'Yahoo API',
-      quotes: results[0],
-      weather: results[1]
     });
   });
 };
