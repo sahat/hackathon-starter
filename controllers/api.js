@@ -642,3 +642,9 @@ exports.postPinterest = (req, res, next) => {
     res.redirect('/api/pinterest');
   });
 };
+
+exports.getGoogleMaps = (req, res, next) => {
+  res.render('api/google-maps', {
+    title: 'Google Maps API'
+  });
+};
