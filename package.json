@@ -1,6 +1,6 @@
 {
   "name": "hackathon-starter",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/sahat/hackathon-starter.git"
@@ -35,7 +35,7 @@
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
     "node-foursquare": "^0.3.0",
-    "node-linkedin": "^0.5.3",
+    "node-linkedin": "^0.5.4",
     "node-sass-middleware": "^0.9.8",
     "nodemailer": "^2.5.0",
     "passport": "0.3.2",
@@ -52,7 +52,7 @@
     "request": "^2.73.0",
     "stripe": "^4.8.0",
     "tumblr.js": "^1.1.0",
-    "twilio": "^3.3.0-edge",
+    "twilio": "^3.3.1-edge",
     "twit": "^2.2.4",
     "validator": "^5.4.0"
   },
