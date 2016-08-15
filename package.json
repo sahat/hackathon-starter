@@ -27,7 +27,7 @@
     "fbgraph": "^1.1.0",
     "github-api": "^1.1.0",
     "instagram-node": "^0.5.8",
-    "jade": "^1.11.0",
+    "pug": "^2.0.0-alpha7",
     "lastfm": "^0.9.2",
     "lob": "^3.9.0",
     "lodash": "^4.12.0",
