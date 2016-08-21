@@ -6,7 +6,7 @@ Hackathon Starter
 
 **Live Demo**: http://hackathonstarter-sahat.rhcloud.com
 
-Jump to [What's new in 4.1.1?](#changelog)
+Jump to [What's new in 4.2.0?](#changelog)
 
 :bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5).
 
@@ -1101,6 +1101,9 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 4.2.0 (August 21, 2016)
+- Converted templates from jade to pug (See [Rename from "Jade"](https://github.com/pugjs/pug#rename-from-jade))
 
 ### 4.1.1 (August 20, 2016)
 - Updated dependencies
