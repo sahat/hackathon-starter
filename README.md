@@ -303,11 +303,11 @@ Project Structure
 | **public/css/themes**/default.scss | Some Bootstrap overrides to make it look prettier.           |
 | **views/account**/                 | Templates for *login, password reset, signup, profile*.      |
 | **views/api**/                     | Templates for API Examples.                                  |
-| **views/partials**/flash.jade      | Error, info and success flash notifications.                 |
-| **views/partials**/header.jade     | Navbar partial template.                                     |
-| **views/partials**/footer.jade     | Footer partial template.                                     |
-| **views**/layout.jade              | Base template.                                               |
-| **views**/home.jade                | Home page template.                                          |
+| **views/partials**/flash.pug       | Error, info and success flash notifications.                 |
+| **views/partials**/header.pug      | Navbar partial template.                                     |
+| **views/partials**/footer.pug      | Footer partial template.                                     |
+| **views**/layout.pug               | Base template.                                               |
+| **views**/home.pug                 | Home page template.                                          |
 | .travis.yml                        | [Travis CI](https://travis-ci.org/) integration.             |
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
 | app.js                             | The main application file.                                   |
@@ -341,7 +341,7 @@ List of Packages
 | express-validator               | Easy form validation for Express.                                     |
 | fbgraph                         | Facebook Graph API library.                                           |
 | github-api                      | GitHub API library.                                                   |
-| jade                            | Template engine for Express.                                          |
+| pug (jade)                      | Template engine for Express.                                          |
 | lastfm                          | Last.fm API library.                                                  |
 | instagram-node                  | Instagram API library.                                                |
 | lob                             | Lob API library                                                       |
@@ -485,7 +485,7 @@ or [Compose](https://www.compose.io/), then create a free tier database.
 See [Deployment](#deployment) for more information on how to setup an account
 and a new database step-by-step with mLab.
 
-### Why Jade instead of Handlebars?
+### Why Pug (Jade) instead of Handlebars?
 When I first started this project I didn't have any experience with Handlebars. Since then I have worked on Ember.js apps and got myself familiar with the Handlebars syntax. While it is true Handlebars is easier, because it looks like good old HTML, I have no regrets picking Jade over Handlebars. First off, it's the default template engine in Express, so someone who has built Express apps in the past already knows it. Secondly, I find `extends` and `block` to be indispensable, which as far as I know, Handlebars does not have out of the box. And lastly, subjectively speaking, Jade looks much cleaner and shorter than Handlebars, or any non-HAML style for that matter.
 
 ### Why do you have all routes defined in app.js?
@@ -504,8 +504,8 @@ REST API server.
 ### I don't need a sticky footer, can I delete it?
 Absolutely. But unlike a regular footer there is a bit more work involved.
 First, delete `#wrap` and `#footer` ID selectors and `html, body { height: 100%; }`
-from **main.less**. Next, delete `#wrap` and `#footer` lines from **layout.jade**
-(By the way, if no element is specified before class or id, Jade assumes it is
+from **main.less**. Next, delete `#wrap` and `#footer` lines from **layout.pug**
+(By the way, if no element is specified before class or id, Pug assumes it is
 a `div` element). Don't forget to indent everything under `#wrap` to the left
 once, since this project uses two spaces per block indentation.
 
@@ -546,7 +546,7 @@ Move all JavaScript files from `html5up-escape-velocity/js` to `public/js`. Then
 
 **Note:** Do not forget to update all the CSS and JS paths accordingly.
 
-Create a new file `escape-velocity.jade` and paste the Jade markup in `views` folder.
+Create a new file `escape-velocity.pug` and paste the Pug markup in `views` folder.
 Whenever you see the code `res.render('account/login')` - that means it will search for `views/account/login.jade` file.
 
 Let's see how it looks. Create a new controller **escapeVelocity** inside `controllers/home.js`:
@@ -567,8 +567,8 @@ app.get('/escape-velocity', homeController.escapeVelocity);
 Restart the server (if you are not using **nodemon**), then you should see the new template at [http://localhost:3000/escape-velocity](http://localhost:3000/escape-velocity).
 
 I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Jade templates work: `layout.jade` - base template, `index.jade` - home page, `partials/header.jade` - Bootstrap navbar, `partials/footer.jade` - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new `layout.jade`.
-Then, each page that changes, be it `index.jade`, `about.jade`, `contact.jade`
-will be embedded in your new `layout.jade` via `block content`. Use existing templates as a reference.
+Then, each page that changes, be it `index.pug`, `about.pug`, `contact.pug`
+will be embedded in your new `layout.pug` via `block content`. Use existing templates as a reference.
 
 This is a rather lengthy process, and templates you get from elsewhere,
 might have yet another grid system. That's why I chose *Bootstrap* for the Hackathon Starter.
@@ -638,7 +638,7 @@ are formatted. Previously, flash
 messages were scattered throughout each view that used flash messages
 (contact, login, signup, profile), but now, thankfully it is uses a *DRY* approach.
 
-The flash messages partial template is *included* in the `layout.jade`, along with footer and navigation.
+The flash messages partial template is *included* in the `layout.pug`, along with footer and navigation.
 ```jade
 body
   #wrap
@@ -756,7 +756,7 @@ exports.getBooks = (req, res) => {
 var bookController = require('./controllers/book');
 ```
 
-**Step 5.** Create `books.jade` template.
+**Step 5.** Create `books.pug` template.
 ```jade
 extends layout
 
@@ -867,7 +867,7 @@ server.listen(app.get('port'), () => {
 
 At this point we are done with the back-end.
 
-You now have a choice - to include your JavaScript code in Jade templates or have all your client-side
+You now have a choice - to include your JavaScript code in Pug templates or have all your client-side
 JavaScript in a separate file - in `main.js`. I will admit, when I first started out with Node.js and JavaScript in general,
 I placed all JavaScript code inside templates because I have access to template variables passed in from Express
 right then and there. It's the easiest thing you can do, but also the least efficient and harder to maintain. Since then I
@@ -879,7 +879,7 @@ want to [*"get shit done"*](https://www.startupvitamins.com/media/products/13/aa
 Well, either way, use whichever approach makes more sense to you. At the end of the day,
 it's **what** you build that matters, not **how** you build it.
 
-If you want to stick all your JavaScript inside templates, then in `layout.jade` -
+If you want to stick all your JavaScript inside templates, then in `layout.pug` -
 your main template file, add this to `head` block.
 
 ```jade
