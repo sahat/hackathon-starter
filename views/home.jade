@@ -1,27 +1,58 @@
 extends layout
 
 block content
-  h1 Hackathon Starter
-  p.lead A boilerplate for Node.js web applications.
-  hr
-  .row
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
+  .intro-header.fixed-background
+    .container
+      .row
+        .col-lg-12
+          .intro-message
+            .background-color-wrapper
+              h1 CoffeeBuddy
+              h3 Where friends help friends get coffee
+              hr.intro-divider
+              ul.list-inline.intro-social-buttons
+                li
+                  a.btn.btn-default.btn-lg(href='/login')
+                    span.network-name Sign In
+                li
+                  a.btn.btn-default.btn-lg(href='/signup')
+                    span.network-name Create Account
+  .container
+    .row
+      .col-sm-6
+        h2 Heading
+        p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+        p
+          a.btn.btn-default(href='#', role='button') View details »
+      .col-sm-6
+        h2 Heading
+        p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+        p
+          a.btn.btn-default(href='#', role='button') View details »
+      .col-sm-6
+        h2 Heading
+        p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+        p
+          a.btn.btn-default(href='#', role='button') View details »
+      .col-sm-6
+        h2 Heading
+        p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+        p
+          a.btn.btn-default(href='#', role='button') View details »
+
+  .banner
+    .container
+      .row
+        .col-lg-6
+          h2 Share
+        .col-lg-6
+          ul.list-inline.banner-social-buttons
+            li
+              a.btn.btn-default.btn-lg(href='https://twitter.com/gregorysobotka')
+                span.network-name Twitter
+            li
+              a.btn.btn-default.btn-lg(href='https://github.com/gregorysobotka?tab=repositories')
+                span.network-name Github
+            li
+              a.btn.btn-default.btn-lg(href='https://www.linkedin.com/profile/edit?locale=en_US&trk=profile-preview')
+                span.network-name Linkedin

@@ -7,7 +7,6 @@ var userSchema = new mongoose.Schema({
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
-
   facebook: String,
   twitter: String,
   google: String,
@@ -16,6 +15,8 @@ var userSchema = new mongoose.Schema({
   linkedin: String,
   steam: String,
   tokens: Array,
+  buddies: Array,
+  status: String, // public status
 
   profile: {
     name: { type: String, default: '' },

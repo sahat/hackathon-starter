@@ -69,3 +69,29 @@ textarea {
 .fa {
   margin-right: 6px;
 }
+
+// carry over from original version, quick styles for hp
+
+.intro-header {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-align: center;
+  color: #f8f8f8;
+  background: url('//coffeeBuddy.io/assets/img/intro-bg.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.background-color-wrapper {
+  max-width: 41em;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 1em 0;
+  overflow: hidden;
+}
+
+.banner {
+  padding: 100px 0;
+  color: #f8f8f8;
+  background: url('//coffeeBuddy.io/assets/img/banner-bg.jpg') no-repeat center center;
+  background-size: cover;
+}

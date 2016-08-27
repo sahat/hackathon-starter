@@ -11,15 +11,15 @@ html
   body
     include partials/header
 
-    .container
-      include partials/flash
-      block content
+
+    include partials/flash
+    block content
 
     include partials/footer
-
-    script(src='/js/lib/jquery-2.2.0.min.js')
-    script(src='/js/lib/bootstrap.min.js')
-    script(src='/js/main.js')
+    script(src='https://npmcdn.com/react@15.3.0/dist/react.min.js')
+    script(src='https://npmcdn.com/react-dom@15.3.0/dist/react-dom.min.js')
+    script(src='/js/scripts.min.js')
+    script(src='/js/scripts.auth.min.js')
 
     // Google Analytics: change UA-XXXXX-X to be your site's ID
     script.

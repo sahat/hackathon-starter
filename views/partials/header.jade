@@ -7,17 +7,18 @@
         span.icon-bar
         span.icon-bar
       a.navbar-brand(href='/')
-        i.fa.fa-cube
-        | Project name
+        i.fa.fa-coffee
+        | CoffeeBuddy
     .collapse.navbar-collapse
       ul.nav.navbar-nav
         li(class=(title == 'Home') ? 'active' : undefined)
           a(href='/') Home
-        li(class=(title == 'API Examples') ? 'active' : undefined)
-          a(href='/api') API Examples
-        li(class=(title == 'Contact') ? 'active' : undefined)
-          a(href='/contact') Contact
-      ul.nav.navbar-nav.navbar-right
+        li(class=(title == 'About') ? 'active' : undefined)
+          a(href='/about') About
+        li(class=(title == 'New Features') ? 'active' : undefined)
+          a(href='/features') New Features
+      ul
+      nav.navbar-nav.navbar-right
         if !user
           li(class=(title == 'Login') ? 'active' : undefined)
             a(href='/login') Login
@@ -35,6 +36,8 @@
             ul.dropdown-menu
               li
                 a(href='/account') My Account
+              li
+                a(href='/buddies') My Buddies
               li.divider
               li
                 a(href='/logout') Logout
