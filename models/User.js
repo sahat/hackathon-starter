@@ -54,10 +54,8 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
 /**
  * Helper method for getting user's gravatar.
  */
-userSchema.methods.gravatar = function (size) {
-  if (!size) {
-    size = 200;
-  }
+userSchema.methods.gravatar = function (size = 200) {
+  console.log('size', size);
   if (!this.email) {
     return `https://gravatar.com/avatar/?s=${size}&d=retro`;
   }
