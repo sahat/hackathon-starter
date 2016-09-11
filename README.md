@@ -718,7 +718,7 @@ And here is how a route would look if it required an *authentication* and an *au
 app.route('/api/twitter')
   .all(passportConf.isAuthenticated)
   .all(passportConf.isAuthorized)
-  .get(apiController.getTwitter);
+  .get(apiController.getTwitter)
   .post(apiController.postTwitter)
 ```
 
