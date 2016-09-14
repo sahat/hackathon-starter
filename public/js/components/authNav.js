@@ -18,7 +18,7 @@ var AuthNav = React.createClass({
             ),
             React.createElement(
                 "button",
-                { onClick: this.updateController.bind(this, "discover") },
+                { onClick: this.updateController.bind(this, "find") },
                 "Find"
             )
         );

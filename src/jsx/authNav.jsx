@@ -7,7 +7,7 @@ var AuthNav = React.createClass({
             <div>
                 <button onClick={this.updateController.bind(this, "buddies")}>All</button>
                 <button onClick={this.updateController.bind(this, "invite")}>Invite</button>
-                <button onClick={this.updateController.bind(this, "discover")}>Find</button>
+                <button onClick={this.updateController.bind(this, "find")}>Find</button>
             </div>
         );
     }

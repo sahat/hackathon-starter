@@ -1,14 +1,14 @@
 // start of buddies
-var buddiesController = function(){
+var AllBuddiesController = function(){
 
     var buddiesList = new Buddies(); // models/buddies.js
 
     buddiesList
         .fetch()
-        .done(function(){
+        .done(function(buddies){
             ReactDOM.render(
-                React.createElement(AuthBuddies, { buddies: buddiesList.attributes }),
-                window.APP.buddiesMount[0] //
+                React.createElement(AuthBuddies, { buddies: buddiesList.toJSON().buddies }),
+                document.getElementById(window.APP.mounts.buddiesMount) //
             );
         });
 

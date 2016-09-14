@@ -7,7 +7,7 @@ var rename = require('gulp-rename');
 var watch = require('gulp-watch');
 
 gulp.task("babel", function(){
-    return gulp.src("src/jsx/*.jsx").
+    return gulp.src("src/jsx/**/*.jsx").
     pipe(babel({
         plugins: ['transform-react-jsx']
     })).
@@ -19,10 +19,11 @@ gulp.task('public', function (cb) {
     var dest = 'public/js';
     var source = [
         'src/js/lib/jquery-2.2.0.min.js',
+        'src/js/main.js',
         'src/js/lib/underscore-min.js',
         'src/js/lib/backbone-min.js',
         'src/js/lib/bootstrap.min.js',
-        'src/js/main.js'
+        'src/js/lib/pubSub.js'
     ];
 
     return gulp.src(source)

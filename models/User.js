@@ -24,7 +24,13 @@ var userSchema = new mongoose.Schema({
     location: { type: String, default: '' },
     website: { type: String, default: '' },
     picture: { type: String, default: '' }
-  }
+  },
+
+  invites: {
+    directInvites: Array,
+    groupInvites: Array
+  },
+
 }, { timestamps: true });
 
 /**

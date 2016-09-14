@@ -1,20 +1,36 @@
 var AuthBuddies = React.createClass({
-
+    getInitialState: function () {
+        return {
+            buddies: this.props.buddies,
+            buddiesPresent: this.props.buddies.length > 0 ? true : false,
+            inviteTemplate: typeof this.props.requestType !== 'undefined' && this.props.requestType === 'find' ? true : false
+        };
+    },
+    componentDidMount: function () {
+        var self = this;
+        events.subscribe('findBuddies/result', function (buddiesList) {
+            self.setState({
+                buddies: buddiesList.buddies,
+                buddiesPresent: buddiesList.buddies.length > 0 ? true : false,
+                inviteTemplate: buddiesList.requestType === 'find' ? true : false
+            });
+        });
+    },
+    handleBuddiesChange: function () {
+        return { buddies: this.props.buddies };
+    },
     render: function () {
-        window.buddies = this.props.buddies;
-
+        var self = this;
         return React.createElement(
-            "div",
-            null,
-            "for(var index in this.props.buddies)",
-            React.createElement(
-                "section",
-                null,
-                buddies[index].email,
-                " | ",
-                buddies[index].status
-            ),
-            "Buddies!"
+            'div',
+            { className: 'buddies-main' },
+            this.state.buddiesPresent ? this.state.buddies.map(function (buddy, index) {
+                return React.createElement(
+                    'div',
+                    { className: 'BuddiesWrapper' },
+                    self.state.inviteTemplate ? React.createElement(BuddyInvite, { key: index, buddy: buddy }) : React.createElement(BuddyRow, { key: index, buddy: buddy })
+                );
+            }) : React.createElement('div', { className: 'no-buddies' })
         );
     }
 });
