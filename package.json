@@ -51,7 +51,7 @@
     "paypal-rest-sdk": "^1.6.9",
     "pug": "^2.0.0-beta6",
     "request": "^2.74.0",
-    "stripe": "^4.10.0",
+    "stripe": "^4.11.0",
     "tumblr.js": "^1.1.1",
     "twilio": "^3.3.1-edge",
     "twit": "^2.2.4",
