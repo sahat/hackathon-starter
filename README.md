@@ -340,7 +340,7 @@ List of Packages
 | express-flash                   | Provides flash messages for Express.                                  |
 | express-validator               | Easy form validation for Express.                                     |
 | fbgraph                         | Facebook Graph API library.                                           |
-| github-api                      | GitHub API library.                                                   |
+| github                      | GitHub API library.                                                   |
 | pug (jade)                      | Template engine for Express.                                          |
 | lastfm                          | Last.fm API library.                                                  |
 | instagram-node                  | Instagram API library.                                                |
