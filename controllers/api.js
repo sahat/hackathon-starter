@@ -123,8 +123,9 @@ exports.getFacebook = (req, res, next) => {
  * GET /api/scraping
  * Web scraping example using Cheerio library.
  */
-exports.getScraping = (req, res) => {
+exports.getScraping = (req, res, next) => {
   request.get('https://news.ycombinator.com/', (err, request, body) => {
+    if (err) { return next(err); }
     const $ = cheerio.load(body);
     const links = [];
     $('.title a[href^="http"], a[href^="https"]').each((index, element) => {
@@ -173,6 +174,7 @@ exports.getNewYorkTimes = (req, res, next) => {
     'api-key': process.env.NYT_KEY
   };
   request.get({ url: 'http://api.nytimes.com/svc/books/v2/lists', qs: query }, (err, request, body) => {
+    if (err) { return next(err); }
     if (request.statusCode === 403) {
       return next(new Error('Invalid New York Times API Key'));
     }
