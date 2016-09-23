@@ -728,11 +728,11 @@ when you have one route per line.
 
 **Step 2.** Create a new schema and a model `Book.js` inside the *models* directory.
 ```js
-var bookSchema = new mongoose.Schema({
+const bookSchema = new mongoose.Schema({
   name: String
 });
 
-var Book = mongoose.model('Book', bookSchema);
+const Book = mongoose.model('Book', bookSchema);
 module.exports = Book;
 ```
 
@@ -742,7 +742,7 @@ module.exports = Book;
  * GET /books
  * List all books.
  */
-var Book = require('../models/Book.js');
+const Book = require('../models/Book.js');
 
 exports.getBooks = (req, res) => {
   Book.find((err, docs) => {
@@ -753,7 +753,7 @@ exports.getBooks = (req, res) => {
 
 **Step 4.** Import that controller in `app.js`.
 ```js
-var bookController = require('./controllers/book');
+const bookController = require('./controllers/book');
 ```
 
 **Step 5.** Create `books.pug` template.
@@ -814,7 +814,7 @@ And what if you are deploying to OpenShift? They do support websockets, but it i
 preview state. So, for OpenShift you would need to change the socket.io connect URI to the following:
 
 ```js
-var socket = io.connect('http://yoursite-namespace.rhcloud.com:8000');
+const socket = io.connect('http://yoursite-namespace.rhcloud.com:8000');
 ```
 
 Wait, why is it on port 8000? Who knows, and if I didn't run across this [blog post](http://velin-georgiev-blog.appspot.com/blog/set-up-nodejs-express-socketio-application-using-websockets-on-openshift-by-red-hat/)
@@ -830,12 +830,12 @@ First you need to install socket.io:
 npm install socket.io --save
 ```
 
-Replace `var app = express();` with the following code:
+Replace `const app = express();` with the following code:
 
 ```js
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 ```
 
 I like to have the following code organization in `app.js` (from top to bottom): module dependencies,
@@ -885,7 +885,7 @@ your main template file, add this to `head` block.
 ```jade
 script(src='/socket.io/socket.io.js')
 script.
-    var socket = io.connect(window.location.href);
+    let socket = io.connect(window.location.href);
     socket.on('greet', function (data) {
       console.log(data);
       socket.emit('respond', { message: 'Hey there, server!' });
@@ -903,7 +903,7 @@ script code into `main.js`, inside the `$(document).ready()` function:
 $(document).ready(function() {
 
   // Place JavaScript code here...
-  var socket = io.connect(window.location.href);
+  let socket = io.connect(window.location.href);
   socket.on('greet', function (data) {
     console.log(data);
     socket.emit('respond', { message: 'Hello to you too, Mr.Server!' });
@@ -926,7 +926,7 @@ User.find((err, users) => {
 
 #### Find a user by email:
 ```js
-var userEmail = 'example@gmail.com';
+let userEmail = 'example@gmail.com';
 User.findOne({ email: userEmail }, (err, user) => {
   console.log(user);
 });
