@@ -728,6 +728,8 @@ when you have one route per line.
 
 **Step 2.** Create a new schema and a model `Book.js` inside the *models* directory.
 ```js
+const mongoose = require('mongoose');
+
 const bookSchema = new mongoose.Schema({
   name: String
 });
