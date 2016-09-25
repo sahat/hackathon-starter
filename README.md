@@ -338,9 +338,10 @@ List of Packages
 | errorhandler                    | Express 4 middleware.                                                 |
 | serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
 | express-flash                   | Provides flash messages for Express.                                  |
+| express-status-monitor          | Reports real-time server metrics for Express.                                  |
 | express-validator               | Easy form validation for Express.                                     |
 | fbgraph                         | Facebook Graph API library.                                           |
-| github                      | GitHub API library.                                                   |
+| github                          | GitHub API library.                                                   |
 | pug (jade)                      | Template engine for Express.                                          |
 | lastfm                          | Last.fm API library.                                                  |
 | instagram-node                  | Instagram API library.                                                |
