@@ -29,6 +29,14 @@ exports.postContact = (req, res) => {
   const errors = req.validationErrors();
 
   if (errors) {
+    errors.map(error => {
+          return fields.filter(field => 
+            !fields.includes(error.param) ? fields : 
+                                          fields.splice(fields.indexOf(error.param),1)
+          )
+    });
+    fields.map(field => req.flash(field,req.body[field]));
+
     req.flash('errors', errors);
     return res.redirect('/contact');
   }
