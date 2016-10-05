@@ -317,6 +317,7 @@ Project Structure
 | Name                               | Description                                                  |
 | ---------------------------------- | ------------------------------------------------------------ |
 | **config**/passport.js             | Passport Local and OAuth strategies, plus login middleware.  |
+| **config**/routes.js               | Application route handlers and routes.                       |
 | **controllers**/api.js             | Controller for /api route and all api examples.              |
 | **controllers**/contact.js         | Controller for contact form.                                 |
 | **controllers**/home.js            | Controller for home page (index).                            |
@@ -515,19 +516,6 @@ and a new database step-by-step with mLab.
 ### Why Pug (Jade) instead of Handlebars?
 When I first started this project I didn't have any experience with Handlebars. Since then I have worked on Ember.js apps and got myself familiar with the Handlebars syntax. While it is true Handlebars is easier, because it looks like good old HTML, I have no regrets picking Jade over Handlebars. First off, it's the default template engine in Express, so someone who has built Express apps in the past already knows it. Secondly, I find `extends` and `block` to be indispensable, which as far as I know, Handlebars does not have out of the box. And lastly, subjectively speaking, Jade looks much cleaner and shorter than Handlebars, or any non-HAML style for that matter.
 
-### Why do you have all routes defined in app.js?
-For the sake of simplicity. While there might be a better approach,
-such as passing `app` context to each controller as outlined in this
-[blog](http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/),
-I find such style to be confusing for beginners.
-It took me a long time to grasp the concept of `exports` and `module.exports`,
-let alone having a global `app` reference in other files.
-That to me is a backward thinking.
-The `app.js` is the "heart of the app", it should be the one referencing
-models, routes, controllers, etc.
-When working solo on small projects I actually prefer to have everything inside `app.js` as is the case with [this]((https://github.com/sahat/ember-sass-express-starter/blob/master/app.js))
-REST API server.
-
 ### I don't need a sticky footer, can I delete it?
 Absolutely. But unlike a regular footer there is a bit more work involved.
 First, delete `#wrap` and `#footer` ID selectors and `html, body { height: 100%; }`
@@ -586,7 +574,7 @@ exports.escapeVelocity = (req, res) => {
 };
 ```
 
-And then create a route in `app.js`. I placed it right after the index controller:
+And then create a route in `config/routes.js`. I placed it right after the index controller:
 ```js
 app.get('/escape-velocity', homeController.escapeVelocity);
 ```
@@ -780,9 +768,9 @@ exports.getBooks = (req, res) => {
 };
 ```
 
-**Step 4.** Import that controller in `app.js`.
+**Step 4.** Import that controller in `config/routes.js` (top of the file).
 ```js
-const bookController = require('./controllers/book');
+const bookController = require('../controllers/book');
 ```
 
 **Step 5.** Create `books.pug` template.
@@ -868,7 +856,7 @@ const io = require('socket.io')(server);
 ```
 
 I like to have the following code organization in `app.js` (from top to bottom): module dependencies,
-import controllers, import configs, connect to database, express configuration, routes,
+import configs, connect to database, express configuration, import routes,
 start the server, socket.io stuff. That way I always know where to look for things.
 
 Add the following code at the end of `app.js`:
