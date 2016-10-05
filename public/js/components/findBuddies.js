@@ -17,15 +17,24 @@ var FindBuddiesR = React.createClass({
     render: function () {
         var self = this; // eww gross; never again. Must use es6.
         return React.createElement(
-            'section',
+            'div',
             null,
-            React.createElement('input', { type: 'text', placeholder: 'Type here', onChange: this.handleTextChange }),
             React.createElement(
-                'button',
-                { onClick: this.findBuddies.bind(this) },
-                'Find'
+                'h2',
+                null,
+                'Connect with a Buddy'
             ),
-            React.createElement(AuthBuddies, { buddies: self.state.buddies })
+            React.createElement(
+                'section',
+                { className: 'form-group' },
+                React.createElement('input', { className: 'form-control', type: 'text', placeholder: 'Type here', onChange: this.handleTextChange }),
+                React.createElement(
+                    'button',
+                    { className: 'form-control', onClick: this.findBuddies.bind(this) },
+                    'Find'
+                ),
+                React.createElement(AuthBuddies, { buddies: self.state.buddies })
+            )
         );
     }
 });

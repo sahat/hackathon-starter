@@ -10,8 +10,9 @@ var User = require('../models/User');
  * Login page.
  */
 exports.getLogin = function(req, res) {
+
   if (req.user) {
-    return res.redirect('/');
+    return res.redirect('/buddies');
   }
   res.render('account/login', {
     title: 'Login'
@@ -47,7 +48,7 @@ exports.postLogin = function(req, res, next) {
         return next(err);
       }
       req.flash('success', { msg: 'Success! You are logged in.' });
-      res.redirect(req.session.returnTo || '/buddies');
+      res.redirect(/*req.session.returnTo ||*/ '/buddies');
     });
   })(req, res, next);
 };
@@ -109,7 +110,7 @@ exports.postSignup = function(req, res, next) {
         if (err) {
           return next(err);
         }
-        res.redirect('/');
+        res.redirect('/buddies#invite');
       });
     });
   });
@@ -374,16 +375,17 @@ exports.postForgot = function(req, res, next) {
     },
     function(token, user, done) {
       var transporter = nodemailer.createTransport({
-        service: 'SendGrid',
+        service: 'SES-US-WEST-2',
         auth: {
-          user: process.env.SENDGRID_USER,
-          pass: process.env.SENDGRID_PASSWORD
+          user: process.env.SES_USER,
+          pass: process.env.SES_PASSWORD
         }
       });
+      console.log(transporter)
       var mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Reset your password on Hackathon Starter',
+        from: 'admin@coffeebuddy.com',
+        subject: 'Reset your password on CoffeeBuddy',
         text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
           'http://' + req.headers.host + '/reset/' + token + '\n\n' +

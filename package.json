@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "async": "^2.0.0-rc.2",
+    "aws-sdk": "^2.6.6",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "bcrypt-nodejs": "^0.0.3",
     "bitgo": "1.0.0",

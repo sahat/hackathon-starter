@@ -3,6 +3,7 @@ var AppRouter = Backbone.Router.extend({
     routes: {
         "invite": "invite",
         "find": "find",
+        "buddies": "buddies",
         "*actions": "defaultRoute"
         // matches http://example.com/#anything-here
     }
@@ -16,12 +17,15 @@ app_router.on('route:find', function(actions) {
 });
 
 app_router.on('route:invite', function(actions) {
-    console.log('INVITE!!!!')
     InviteController();
 });
 
-app_router.on('route:defaultRoute', function(actions) {
+app_router.on('route:buddies', function(actions) {
     AllBuddiesController();
+});
+
+app_router.on('route:defaultRoute', function(actions) {
+    PendingInvitesController();
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

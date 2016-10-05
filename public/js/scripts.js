@@ -5,9 +5,23 @@ var Buddies = Backbone.Model.extend({
         return this.urlRoot;
     }
 });
+
+var PendingBuddies = Backbone.Model.extend({
+    urlRoot: '/api/v1/buddies/pendingRequests',
+    url: function() {
+        return this.urlRoot;
+    }
+});
 // Find Buddies
 var FindBuddies = Backbone.Model.extend({
     urlRoot: '/api/v1/buddies/find',
+    url: function() {
+        return this.urlRoot;
+    }
+});
+// buddies
+var Invites = Backbone.Model.extend({
+    urlRoot: '/api/v1/invites',
     url: function() {
         return this.urlRoot;
     }
@@ -16,7 +30,7 @@ var FindBuddies = Backbone.Model.extend({
 var AllBuddiesController = function(){
 
     var buddiesList = new Buddies(); // models/buddies.js
-
+console.log('All buddies controller!')
     buddiesList
         .fetch()
         .done(function(buddies){
@@ -31,11 +45,16 @@ var AllBuddiesController = function(){
 var FindBuddiesController = function(){
 
     //Find Buddies
-    ReactDOM.render(React.createElement(FindBuddiesR, null), document.getElementById(window.APP.mounts.buddiesMount));
+    ReactDOM.render(
+        React.createElement(FindBuddiesR, null),
+        document.getElementById(window.APP.mounts.buddiesMount)
+    );
 
 };
 // start of buddies
 var InviteController = function(){
+
+
 
     ReactDOM.render(
         React.createElement(InviteBuddiesR, null),
@@ -43,8 +62,37 @@ var InviteController = function(){
     );
 
 };
+// start of buddies
+var PendingInvitesController = function(){
+    'use strict';
+
+    ReactDOM.render(
+        React.createElement(PendingInvitesR, {
+            upcoming : [],
+            pendingBuddyRequests : []
+        }),
+        document.getElementById(window.APP.mounts.buddiesMount)
+    );
+
+    var pendingSessions = new Invites(),
+        pendingBuddies = new PendingBuddies();
+
+    pendingBuddies
+        .fetch()
+        .done(function(response){
+            events.publish('buddies/pendingRequests', response.buddies);
+        });
+
+    pendingSessions
+        .fetch()
+        .done(function(response){
+            events.publish('buddies/upcomingInvites', response.invites);
+        });
+
+};
 var AuthNav = React.createClass({
     updateController: function (controller) {
+        console.log(this);
         window.location.hash = controller;
     },
     render: function () {
@@ -53,18 +101,23 @@ var AuthNav = React.createClass({
             null,
             React.createElement(
                 "button",
-                { onClick: this.updateController.bind(this, "buddies") },
-                "All"
+                { className: "btn btn-default", onClick: this.updateController.bind(this, "invites") },
+                "Pending"
             ),
             React.createElement(
                 "button",
-                { onClick: this.updateController.bind(this, "invite") },
+                { className: "btn btn-default", onClick: this.updateController.bind(this, "buddies") },
+                "My Buddies"
+            ),
+            React.createElement(
+                "button",
+                { className: "btn btn-default", onClick: this.updateController.bind(this, "invite") },
                 "Invite"
             ),
             React.createElement(
                 "button",
-                { onClick: this.updateController.bind(this, "find") },
-                "Find"
+                { className: "btn btn-default", onClick: this.updateController.bind(this, "find") },
+                "Find a Buddy"
             )
         );
     }
@@ -95,6 +148,11 @@ var AuthBuddies = React.createClass({
         return React.createElement(
             'div',
             { className: 'buddies-main' },
+            self.state.inviteTemplate ? React.createElement('h2', null) : React.createElement(
+                'h2',
+                null,
+                'Your Buddies'
+            ),
             this.state.buddiesPresent ? this.state.buddies.map(function (buddy, index) {
                 return React.createElement(
                     'div',
@@ -124,15 +182,24 @@ var FindBuddiesR = React.createClass({
     render: function () {
         var self = this; // eww gross; never again. Must use es6.
         return React.createElement(
-            'section',
+            'div',
             null,
-            React.createElement('input', { type: 'text', placeholder: 'Type here', onChange: this.handleTextChange }),
             React.createElement(
-                'button',
-                { onClick: this.findBuddies.bind(this) },
-                'Find'
+                'h2',
+                null,
+                'Connect with a Buddy'
             ),
-            React.createElement(AuthBuddies, { buddies: self.state.buddies })
+            React.createElement(
+                'section',
+                { className: 'form-group' },
+                React.createElement('input', { className: 'form-control', type: 'text', placeholder: 'Type here', onChange: this.handleTextChange }),
+                React.createElement(
+                    'button',
+                    { className: 'form-control', onClick: this.findBuddies.bind(this) },
+                    'Find'
+                ),
+                React.createElement(AuthBuddies, { buddies: self.state.buddies })
+            )
         );
     }
 });
@@ -184,15 +251,104 @@ var InviteBuddiesR = React.createClass({
         var self = this; // eww gross; never again. Must use es6.
         return React.createElement(
             'inviteForm',
-            null,
-            React.createElement('input', { type: 'text', placeholder: 'Email address', onChange: this.handleTextChange }),
+            { className: 'form-group' },
+            React.createElement(
+                'h2',
+                null,
+                'Invite a buddy to join'
+            ),
+            React.createElement('input', { className: 'form-control', type: 'text', placeholder: 'Email address', onChange: this.handleTextChange }),
             React.createElement(
                 'button',
-                { onClick: this.sendInvite.bind(this) },
+                { className: 'form-control', onClick: this.sendInvite.bind(this) },
                 'Send invite'
             )
         );
     }
+});
+var PendingInvitesR = React.createClass({
+    getInitialState: function () {
+        return {
+            invites: this.props.upcoming,
+            pendingBuddyRequests: this.props.pendingBuddyRequests
+        };
+    },
+    componentDidMount: function () {
+
+        var self = this;
+
+        events.subscribe('buddies/pendingRequests', function (pendingRequests) {
+            self.setState({ pendingBuddyRequests: pendingRequests });
+        });
+
+        events.subscribe('buddies/upcomingInvites', function (upcomingInvites) {
+            self.setState({ invites: upcomingInvites });
+        });
+    },
+    render: function () {
+        console.log(this);
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'h2',
+                null,
+                'Upcoming Sessions'
+            ),
+            React.createElement(
+                'h2',
+                null,
+                'Pending Invites'
+            ),
+            this.state.pendingBuddyRequests.map(function (buddy, index) {
+                return React.createElement(ApproveBuddyMicro, { key: index, buddy: buddy });
+            })
+        );
+    }
+});
+
+var ApproveBuddyMicro = React.createClass({
+
+    getInitialState: function () {
+        return { buddy: this.props.buddy };
+    },
+    handleInvite: function (approvedStatus) {
+        'use strict';
+
+        var buddy = this.props.buddy;
+        $.ajax({
+            url: '/api/v1/invites/respond',
+            method: 'POST',
+            data: {
+                buddyId: buddy._id,
+                approved: approvedStatus,
+                _csrf: APP._csrf
+            }
+        }).success(function (response) {
+            events.publish('admin/alert', { className: 'text-success', msg: 'Buddy request was approved' });
+        }).fail(function (response) {
+            events.publish('admin/alert', { className: 'text-danger', msg: 'There was a problem approving buddy invite. Please try again.' });
+        });
+    },
+    render: function () {
+        var buddy = this.state.buddy;
+        return React.createElement(
+            'section',
+            null,
+            buddy.profile.name,
+            React.createElement(
+                'button',
+                { onClick: this.handleInvite.bind(this, true) },
+                'Approve'
+            ),
+            React.createElement(
+                'button',
+                { onClick: this.handleInvite.bind(this, false) },
+                'Reject'
+            )
+        );
+    }
+
 });
 
 var InviteBuddyMicro = React.createClass({
@@ -204,8 +360,13 @@ var InviteBuddyMicro = React.createClass({
         'use strict';
 
         var buddy = this.props.buddy;
-        $.get('/api/v1/invite/' + buddy._id, function (response) {}).done(function (response) {
-            // Always when complete
+        $.ajax({
+            url: '/api/v1/invites/',
+            method: 'POST',
+            data: {
+                buddyId: buddy._id,
+                _csrf: APP._csrf
+            }
         }).success(function (response) {
             events.publish('admin/alert', { className: 'text-success', msg: 'Buddy request was sent' });
         }).fail(function (response) {
@@ -239,7 +400,7 @@ var MessageMicro = React.createClass({
                 messagePresent: false,
                 className: self.state.defaultClass
             });
-        }, 10000);
+        }, 30000);
     },
     componentDidMount: function () {
         var self = this;
@@ -273,6 +434,7 @@ var AppRouter = Backbone.Router.extend({
     routes: {
         "invite": "invite",
         "find": "find",
+        "buddies": "buddies",
         "*actions": "defaultRoute"
         // matches http://example.com/#anything-here
     }
@@ -286,12 +448,15 @@ app_router.on('route:find', function(actions) {
 });
 
 app_router.on('route:invite', function(actions) {
-    console.log('INVITE!!!!')
     InviteController();
 });
 
-app_router.on('route:defaultRoute', function(actions) {
+app_router.on('route:buddies', function(actions) {
     AllBuddiesController();
+});
+
+app_router.on('route:defaultRoute', function(actions) {
+    PendingInvitesController();
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

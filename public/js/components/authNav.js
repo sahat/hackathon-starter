@@ -1,5 +1,6 @@
 var AuthNav = React.createClass({
     updateController: function (controller) {
+        console.log(this);
         window.location.hash = controller;
     },
     render: function () {
@@ -8,18 +9,23 @@ var AuthNav = React.createClass({
             null,
             React.createElement(
                 "button",
-                { onClick: this.updateController.bind(this, "buddies") },
-                "All"
+                { className: "btn btn-default", onClick: this.updateController.bind(this, "invites") },
+                "Pending"
             ),
             React.createElement(
                 "button",
-                { onClick: this.updateController.bind(this, "invite") },
+                { className: "btn btn-default", onClick: this.updateController.bind(this, "buddies") },
+                "My Buddies"
+            ),
+            React.createElement(
+                "button",
+                { className: "btn btn-default", onClick: this.updateController.bind(this, "invite") },
                 "Invite"
             ),
             React.createElement(
                 "button",
-                { onClick: this.updateController.bind(this, "find") },
-                "Find"
+                { className: "btn btn-default", onClick: this.updateController.bind(this, "find") },
+                "Find a Buddy"
             )
         );
     }

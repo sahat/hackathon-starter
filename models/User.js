@@ -16,21 +16,19 @@ var userSchema = new mongoose.Schema({
   steam: String,
   tokens: Array,
   buddies: Array,
+  buddyRequests: Array,
+  coffeeSession : {
+    directInvites: Array,
+    groupInvites: Array
+  },
   status: String, // public status
-
   profile: {
     name: { type: String, default: '' },
     gender: { type: String, default: '' },
     location: { type: String, default: '' },
     website: { type: String, default: '' },
     picture: { type: String, default: '' }
-  },
-
-  invites: {
-    directInvites: Array,
-    groupInvites: Array
-  },
-
+  }
 }, { timestamps: true });
 
 /**

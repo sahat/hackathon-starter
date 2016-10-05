@@ -16,7 +16,9 @@ html
           APP.isAuth = true;
           APP.user = !{JSON.stringify(user)}
           APP.mounts = !{JSON.stringify({adminMount: 'admin', buddiesMount: 'buddies'})};
+          APP._csrf = '!{_csrf}';
           window.APP = APP;
+
         })();
   body
     include partials/header

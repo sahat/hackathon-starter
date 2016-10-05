@@ -17,11 +17,14 @@ var FindBuddiesR = React.createClass({
     render: function(){
         var self = this; // eww gross; never again. Must use es6.
         return (
-            <section>
-                <input type="text" placeholder="Type here" onChange={this.handleTextChange}/>
-                <button onClick={this.findBuddies.bind(this)}>Find</button>
-                <AuthBuddies buddies={self.state.buddies} />
-            </section>
+            <div>
+                <h2>Connect with a Buddy</h2>
+                <section className="form-group">
+                    <input className="form-control" type="text" placeholder="Type here" onChange={this.handleTextChange}/>
+                    <button className="form-control" onClick={this.findBuddies.bind(this)}>Find</button>
+                    <AuthBuddies buddies={self.state.buddies} />
+                </section>
+            </div>
         );
     }
 });

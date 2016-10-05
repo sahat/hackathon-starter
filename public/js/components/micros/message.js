@@ -16,7 +16,7 @@ var MessageMicro = React.createClass({
                 messagePresent: false,
                 className: self.state.defaultClass
             });
-        }, 10000);
+        }, 30000);
     },
     componentDidMount: function () {
         var self = this;

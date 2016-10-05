@@ -22,11 +22,16 @@ var InviteBuddiesR = React.createClass({
         var self = this; // eww gross; never again. Must use es6.
         return React.createElement(
             'inviteForm',
-            null,
-            React.createElement('input', { type: 'text', placeholder: 'Email address', onChange: this.handleTextChange }),
+            { className: 'form-group' },
+            React.createElement(
+                'h2',
+                null,
+                'Invite a buddy to join'
+            ),
+            React.createElement('input', { className: 'form-control', type: 'text', placeholder: 'Email address', onChange: this.handleTextChange }),
             React.createElement(
                 'button',
-                { onClick: this.sendInvite.bind(this) },
+                { className: 'form-control', onClick: this.sendInvite.bind(this) },
                 'Send invite'
             )
         );

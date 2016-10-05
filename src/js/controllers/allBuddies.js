@@ -2,7 +2,7 @@
 var AllBuddiesController = function(){
 
     var buddiesList = new Buddies(); // models/buddies.js
-
+console.log('All buddies controller!')
     buddiesList
         .fetch()
         .done(function(buddies){

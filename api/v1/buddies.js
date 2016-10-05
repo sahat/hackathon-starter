@@ -12,39 +12,45 @@ router.get('/', function(req, res, next){
 
 router.get('/ready', function(req, res, next){
 
-    allBuddiesOnline(req, res, "ready");
+    allBuddiesOnline(req, res);
 
 });
 
-router.get('/notready', function(req, res, next){
+//router.get('/notready', function(req, res, next){
+//
+//    allBuddiesOnline(req, res, "not");
+//
+//});
 
-    allBuddiesOnline(req, res, "not");
+router.get('/pendingRequests', function(req, res, next){
+
+    User.findById(req.user.id, function(err, userProfile) {
+console.log(userProfile)
+        User.find({"_id": { $in : userProfile.buddyRequests }}, {"profile.name":1, "email":1} ,function(err, allBuddies){
+
+            res.send({'buddies':allBuddies});
+
+        });
+
+    });
 
 });
 
 router.get('/find/:buddyDetail', function(req, res, next){
 
     var detail = req.params.buddyDetail;
-    console.log(detail)
+
     findBuddies(res, detail);
 
 });
 
-var allBuddiesOnline = function(req, res, status){
+var allBuddiesOnline = function(req, res){
 
     User.findById(req.user.id, function(err, userProfile) {
 
-        var searchCriteria = {
-            "email": { $in : userProfile.buddies },
-        };
+        User.find({"_id": { $in : userProfile.buddies }}, {"profile.name":1, "email":1} ,function(err, allBuddies){
 
-        if(status){
-            searchCriteria.status = status;
-        }
-
-        User.find(searchCriteria, {"status": 1, "email": 1 }, function(err, buddiesStatus){
-
-            res.send({'buddies':buddiesStatus});
+            res.send({'buddies':allBuddies});
 
         });
 

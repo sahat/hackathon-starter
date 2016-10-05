@@ -1,0 +1,16 @@
+FROM ubuntu:14.04
+MAINTAINER Gregory Sobotka <gregorysobotka@gmail.com>
+
+RUN apt-get update -y
+RUN apt-get install nodejs -y
+
+COPY . /opt/cb/
+WORKDIR /opt/cb
+
+CMD npm install
+CMD gulp
+CMD node app
+
+#RUN apt-get update
+
+EXPOSE 3000

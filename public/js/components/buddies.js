@@ -24,6 +24,11 @@ var AuthBuddies = React.createClass({
         return React.createElement(
             'div',
             { className: 'buddies-main' },
+            self.state.inviteTemplate ? React.createElement('h2', null) : React.createElement(
+                'h2',
+                null,
+                'Your Buddies'
+            ),
             this.state.buddiesPresent ? this.state.buddies.map(function (buddy, index) {
                 return React.createElement(
                     'div',

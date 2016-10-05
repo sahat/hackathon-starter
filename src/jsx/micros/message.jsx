@@ -16,12 +16,12 @@ var MessageMicro = React.createClass({
                 messagePresent: false,
                 className: self.state.defaultClass
             });
-        }, 10000);
+        }, 30000);
     },
     componentDidMount: function(){
         var self = this;
         events.subscribe('admin/alert', function(details){
-            console.log(details.className)
+            console.log(details.className);
             self.setState({
                 msg: details.msg,
                 messagePresent: true,

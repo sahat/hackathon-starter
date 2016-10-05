@@ -8,8 +8,13 @@ var InviteBuddyMicro = React.createClass({
         'use strict';
 
         var buddy = this.props.buddy;
-        $.get('/api/v1/invite/' + buddy._id, function (response) {}).done(function (response) {
-            // Always when complete
+        $.ajax({
+            url: '/api/v1/invites/',
+            method: 'POST',
+            data: {
+                buddyId: buddy._id,
+                _csrf: APP._csrf
+            }
         }).success(function (response) {
             events.publish('admin/alert', { className: 'text-success', msg: 'Buddy request was sent' });
         }).fail(function (response) {
