@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "test": "mocha --reporter spec --timeout 5000"
+    "test": "mocha --reporter spec"
   },
   "dependencies": {
     "async": "^2.0.1",
@@ -61,6 +61,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.0.2",
+    "sinon": "^1.17.6",
+    "sinon-mongoose": "^1.3.0",
     "supertest": "^2.0.0"
   },
   "engines": {
