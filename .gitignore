@@ -13,6 +13,9 @@ logs
 results
 tmp
 
+#Build
+public/css/main.css
+
 # API keys and secrets
 .env
 

@@ -7,17 +7,15 @@ const cheerio = require('cheerio');
 const graph = require('fbgraph');
 const LastFmNode = require('lastfm').LastFmNode;
 const tumblr = require('tumblr.js');
-const Github = require('github-api');
+const GitHub = require('github');
 const Twit = require('twit');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const Linkedin = require('node-linkedin')(process.env.LINKEDIN_ID, process.env.LINKEDIN_SECRET, process.env.LINKEDIN_CALLBACK_URL);
-const BitGo = require('bitgo');
 const clockwork = require('clockwork')({ key: process.env.CLOCKWORK_KEY });
 const paypal = require('paypal-rest-sdk');
 const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
-const Y = require('yui/yql');
 const foursquare = require('node-foursquare')({
   secrets: {
     clientId: process.env.FOURSQUARE_ID,
@@ -125,8 +123,9 @@ exports.getFacebook = (req, res, next) => {
  * GET /api/scraping
  * Web scraping example using Cheerio library.
  */
-exports.getScraping = (req, res) => {
+exports.getScraping = (req, res, next) => {
   request.get('https://news.ycombinator.com/', (err, request, body) => {
+    if (err) { return next(err); }
     const $ = cheerio.load(body);
     const links = [];
     $('.title a[href^="http"], a[href^="https"]').each((index, element) => {
@@ -145,9 +144,8 @@ exports.getScraping = (req, res) => {
  */
 exports.getGithub = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'github');
-  const github = new Github({ token: token.accessToken });
-  const repo = github.getRepo('sahat', 'satellizer');
-  repo.getDetails((err, repo) => {
+  const github = new GitHub();
+  github.repos.get({ user: 'sahat', repo: 'hackathon-starter' }, (err, repo) => {
     if (err) { return next(err); }
     res.render('api/github', {
       title: 'GitHub API',
@@ -176,6 +174,7 @@ exports.getNewYorkTimes = (req, res, next) => {
     'api-key': process.env.NYT_KEY
   };
   request.get({ url: 'http://api.nytimes.com/svc/books/v2/lists', qs: query }, (err, request, body) => {
+    if (err) { return next(err); }
     if (request.statusCode === 403) {
       return next(new Error('Invalid New York Times API Key'));
     }
@@ -439,77 +438,6 @@ exports.postClockwork = (req, res, next) => {
 };
 
 /**
- * GET /api/venmo
- * Venmo API example.
- */
-exports.getVenmo = (req, res, next) => {
-  const token = req.user.tokens.find(token => token.kind === 'venmo');
-  const query = { access_token: token.accessToken };
-  async.parallel({
-    getProfile: (done) => {
-      request.get({ url: 'https://api.venmo.com/v1/me', qs: query, json: true }, (err, request, body) => {
-        done(err, body);
-      });
-    },
-    getRecentPayments: (done) => {
-      request.get({ url: 'https://api.venmo.com/v1/payments', qs: query, json: true }, (err, request, body) => {
-        done(err, body);
-      });
-    }
-  },
-  (err, results) => {
-    if (err) { return next(err); }
-    res.render('api/venmo', {
-      title: 'Venmo API',
-      profile: results.getProfile.data,
-      recentPayments: results.getRecentPayments.data
-    });
-  });
-};
-
-/**
- * POST /api/venmo
- * Send money.
- */
-exports.postVenmo = (req, res, next) => {
-  req.assert('user', 'Phone, Email or Venmo User ID cannot be blank').notEmpty();
-  req.assert('note', 'Please enter a message to accompany the payment').notEmpty();
-  req.assert('amount', 'The amount you want to pay cannot be blank').notEmpty();
-
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('/api/venmo');
-  }
-
-  const token = req.user.tokens.find(token => token.kind === 'venmo');
-  const formData = {
-    access_token: token.accessToken,
-    note: req.body.note,
-    amount: req.body.amount
-  };
-
-  if (validator.isEmail(req.body.user)) {
-    formData.email = req.body.user;
-  } else if (validator.isNumeric(req.body.user) && validator.isLength(req.body.user, 10, 11)) {
-    formData.phone = req.body.user;
-  } else {
-    formData.user_id = req.body.user;
-  }
-
-  request.post('https://api.venmo.com/v1/payments', { form: formData }, (err, request, body) => {
-    if (err) { return next(err); }
-    if (request.statusCode !== 200) {
-      req.flash('errors', { msg: JSON.parse(body).error.message });
-      return res.redirect('/api/venmo');
-    }
-    req.flash('success', { msg: 'Venmo money transfer complete' });
-    res.redirect('/api/venmo');
-  });
-};
-
-/**
  * GET /api/linkedin
  * LinkedIn API example.
  */
@@ -562,34 +490,6 @@ exports.getInstagram = (req, res, next) => {
       userById: results.searchByUserId,
       popularImages: results.popularImages,
       myRecentMedia: results.myRecentMedia
-    });
-  });
-};
-
-/**
- * GET /api/yahoo
- * Yahoo API example.
- */
-exports.getYahoo = (req, res) => {
-  async.parallel([
-    function getFinanceStocks(done) {
-      Y.YQL('SELECT * FROM yahoo.finance.quote WHERE symbol in ("YHOO", "TSLA", "GOOG", "MSFT")', (response) => {
-        const quotes = response.query.results.quote;
-        done(null, quotes);
-      });
-    },
-    function getWeatherReport(done) {
-      Y.YQL('SELECT * FROM weather.forecast WHERE woeid in (SELECT woeid FROM geo.places(1) WHERE text="nome, ak")', (response) => {
-        const location = response.query.results.channel.location;
-        const condition = response.query.results.channel.item.condition;
-        done(null, { location, condition });
-      });
-    }
-  ], (err, results) => {
-    res.render('api/yahoo', {
-      title: 'Yahoo API',
-      quotes: results[0],
-      weather: results[1]
     });
   });
 };
@@ -679,70 +579,6 @@ exports.getLob = (req, res, next) => {
 };
 
 /**
- * GET /api/bitgo
- * BitGo wallet example
- */
-exports.getBitGo = (req, res, next) => {
-  const bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
-  const walletId = req.session.walletId;
-  const renderWalletInfo = (walletId) => {
-    bitgo.wallets().get({ id: walletId }, (err, walletResponse) => {
-      walletResponse.createAddress({}, (err, addressResponse) => {
-        walletResponse.transactions({}, (err, transactionsResponse) => {
-          res.render('api/bitgo', {
-            title: 'BitGo API',
-            wallet: walletResponse.wallet,
-            address: addressResponse.address,
-            transactions: transactionsResponse.transactions
-          });
-        });
-      });
-    });
-  };
-
-  if (walletId) {
-    renderWalletInfo(walletId);
-  } else {
-    bitgo.wallets().createWalletWithKeychains({
-      passphrase: req.sessionID, // change this!
-      label: `wallet for session ${req.sessionID}`,
-      backupXpub: 'xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU'
-    }, (err, res) => {
-      req.session.walletId = res.wallet.wallet.id;
-      renderWalletInfo(req.session.walletId);
-    });
-  }
-};
-
-/**
- * POST /api/bitgo
- * BitGo send coins example
- */
-exports.postBitGo = (req, res) => {
-  const bitgo = new BitGo.BitGo({ env: 'test', accessToken: process.env.BITGO_ACCESS_TOKEN });
-  const walletId = req.session.walletId;
-  try {
-    bitgo.wallets().get({ id: walletId }, (err, wallet) => {
-      wallet.sendCoins({
-        address: req.body.address,
-        amount: parseInt(req.body.amount, 10),
-        walletPassphrase: req.sessionID
-      }, (err, result) => {
-        if (err) {
-          req.flash('errors', { msg: err.message });
-          return res.redirect('/api/bitgo');
-        }
-        req.flash('info', { msg: `txid: ${result.hash}, hex: ${result.tx}` });
-        return res.redirect('/api/bitgo');
-      });
-    });
-  } catch (err) {
-    req.flash('errors', { msg: err.message });
-    return res.redirect('/api/bitgo');
-  }
-};
-
-/**
  * GET /api/upload
  * File Upload API example.
  */
@@ -805,5 +641,11 @@ exports.postPinterest = (req, res, next) => {
     }
     req.flash('success', { msg: 'Pin created' });
     res.redirect('/api/pinterest');
+  });
+};
+
+exports.getGoogleMaps = (req, res, next) => {
+  res.render('api/google-maps', {
+    title: 'Google Maps API'
   });
 };

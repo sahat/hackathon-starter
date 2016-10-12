@@ -18,11 +18,11 @@ const userSchema = new mongoose.Schema({
   tokens: Array,
 
   profile: {
-    name: { type: String, default: '' },
-    gender: { type: String, default: '' },
-    location: { type: String, default: '' },
-    website: { type: String, default: '' },
-    picture: { type: String, default: '' }
+    name: String,
+    gender: String,
+    location: String,
+    website: String,
+    picture: String
   }
 }, { timestamps: true });
 
@@ -54,10 +54,7 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
 /**
  * Helper method for getting user's gravatar.
  */
-userSchema.methods.gravatar = function (size) {
-  if (!size) {
-    size = 200;
-  }
+userSchema.methods.gravatar = function (size = 200) {
   if (!this.email) {
     return `https://gravatar.com/avatar/?s=${size}&d=retro`;
   }

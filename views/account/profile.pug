@@ -9,13 +9,13 @@ block content
     .form-group
       label.col-sm-3.control-label(for='email') Email
       .col-sm-7
-        input.form-control(type='email', name='email', id='email', value='#{user.email}')
+        input.form-control(type='email', name='email', id='email', value=user.email)
     .form-group
       label.col-sm-3.control-label(for='name') Name
       .col-sm-7
-        input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
+        input.form-control(type='text', name='name', id='name', value=user.profile.name)
     .form-group
-      label.col-sm-3.control-label(for='gender') Gender
+      label.col-sm-3.control-label Gender
       .col-sm-6
         label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
@@ -29,15 +29,15 @@ block content
     .form-group
       label.col-sm-3.control-label(for='location') Location
       .col-sm-7
-        input.form-control(type='text', name='location', id='location', value='#{user.profile.location}')
+        input.form-control(type='text', name='location', id='location', value=user.profile.location)
     .form-group
       label.col-sm-3.control-label(for='website') Website
       .col-sm-7
-        input.form-control(type='text', name='website', id='website', value='#{user.profile.website}')
+        input.form-control(type='text', name='website', id='website', value=user.profile.website)
     .form-group
-      label.col-sm-3.control-label(for='gravatar') Gravatar
+      label.col-sm-3.control-label Gravatar
       .col-sm-4
-        img(src="#{user.gravatar()}", class='profile', width='100', height='100')
+        img(src=user.gravatar(), class='profile', width='100', height='100')
     .form-group
       .col-sm-offset-3.col-sm-4
         button.btn.btn.btn-primary(type='submit')
