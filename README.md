@@ -77,7 +77,10 @@ Table of Contents
 - [Pro Tips](#pro-tips)
 - [FAQ](#faq)
 - [How It Works](#how-it-works-mini-guides)
-- [Mongoose Cheatsheet](#mongoose-cheatsheet)
+- [Cheatsheets](#cheatsheets)
+    - [ES6](#es6-cheatsheet)
+    - [JavaScript Date](#javascript-date-cheatsheet)
+    - [Mongoose Cheatsheet](#mongoose-cheatsheet)
 - [Deployment](#deployment)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
@@ -612,7 +615,7 @@ page and come back to the login page, that error message will be gone. It is onl
 This project uses *express-flash* module for flash messages. And that
 module is built on top of *connect-flash*, which is what I used in
 this project initially. With *express-flash* you don't have to
-explicity send a flash message to every view inside `res.render()`.
+explicitly send a flash message to every view inside `res.render()`.
 All flash messages are available in your views via `messages` object by default,
 thanks to *express-flash*.
 
@@ -942,9 +945,204 @@ $(document).ready(function() {
 ```
 
 And we are done!
+Cheatsheets
+-----------
 
-Mongoose Cheatsheet
--------------------
+### <img src="https://frontendmasters.com/assets/es6-logo.png" height="34" align="top"> ES6 Cheatsheet
+
+#### Declarations
+
+Declares a read-only named constant.
+
+```js
+const name = 'yourName';
+```
+
+Declares a block scope local variable.
+```js
+let index = 0;
+```
+
+#### Template Strings
+
+Using the **\`${}\`** syntax, strings can embed expressions.
+
+```js
+const name = 'Oggy';
+const age = 3;
+
+console.log(`My cat is named ${name} and is ${age} years old.`);
+```
+
+#### Modules
+
+To import functions, objects or primitives exported from an external module. These are the most common types of importing.
+
+```js
+import name from 'module-name';
+```
+```js
+import * as name from 'module-name';
+```
+```js
+import { foo, bar } from 'module-name';
+```
+
+To export functions, objects or primitives from a given file or module.
+
+```js
+export { myFunction };
+```
+```js
+export const name = 'yourName';
+```
+```js
+export default myFunctionOrClass
+```
+
+#### Spread Operator
+
+The spread operator allows an expression to be expanded in places where multiple arguments (for function calls) or multiple elements (for array literals) are expected.
+
+```js
+myFunction(...iterableObject);
+```
+```jsx
+<ChildComponent {...this.props} />
+```
+
+#### Promises
+
+A Promise is used in asynchronous computations to represent an operation that hasn't completed yet, but is expected in the future.
+
+```js
+var p = new Promise(function(resolve, reject) { });
+```
+
+The `catch()` method returns a Promise and deals with rejected cases only.
+
+```js
+p.catch(function(reason) { /* handle rejection */ });
+```
+
+The `then()` method returns a Promise. It takes 2 arguments: callback for the success & failure cases.
+
+```js
+p.then(function(value) { /* handle fulfillment */, function(reason) { /* handle rejection */ });
+```
+
+The `Promise.all(iterable)` method returns a promise that resolves when all of the promises in the iterable argument have resolved, or rejects with the reason of the first passed promise that rejects.
+
+```js
+Promise.all([p1, p2, p3]).then(function(values) { console.log(values) });
+```
+
+#### Arrow Functions
+
+Arrow function expression. Shorter syntax & lexically binds the `this` value. Arrow functions are anonymous.
+
+```js
+singleParam => { statements }
+```
+```js
+() => { statements }
+```
+```js
+(param1, param2) => expression
+```
+```js
+const arr = [1, 2, 3, 4, 5];
+const squares = arr.map(x => x * x);
+```
+
+#### Classes
+
+The class declaration creates a new class using prototype-based inheritance.
+
+```js
+class Person {
+  constructor(name, age, gender) {
+    this.name   = name;
+    this.age    = age;
+    this.gender = gender;
+  }
+
+  incrementAge() {
+    this.age++;
+  }
+}
+```
+
+:gift: **Credits**: [DuckDuckGo](https://duckduckgo.com/?q=es6+cheatsheet&ia=cheatsheet&iax=1) and [@DrkSephy](https://github.com/DrkSephy/es6-cheatsheet).
+
+:top: <sub>[**back to top**](#table-of-contents)</sub>
+
+### <img src="http://i.stack.imgur.com/Mmww2.png" height="34" align="top"> JavaScript Date Cheatsheet
+
+#### Unix Timestamp (seconds)
+
+```js
+Math.floor(Date.now() / 1000);
+```
+
+#### Add 30 minutes to a Date object
+
+```js
+var now = new Date();
+now.setMinutes(now.getMinutes() + 30);
+```
+
+#### Date Formatting
+
+```js
+// DD-MM-YYYY
+var now = new Date();
+
+var DD = now.getDate();
+var MM = now.getMonth() + 1;
+var YYYY = now.getFullYear();
+
+if (DD < 10) {
+  DD = '0' + DD;
+} 
+
+if (MM < 10) {
+  MM = '0' + MM;
+}
+
+console.log(MM + '-' + DD + '-' + YYYY); // 03-30-2016
+```
+```js
+// hh:mm (12 hour time with am/pm)
+var now = new Date();
+var hours = now.getHours();
+var minutes = now.getMinutes();
+var amPm = hours >= 12 ? 'pm' : 'am';
+
+hours = hours % 12;
+hours = hours ? hours : 12;
+minutes = minutes < 10 ? '0' + minutes : minutes;
+
+console.log(hours + ':' + minutes + ' ' + amPm); // 1:43 am
+```
+
+#### Next week Date object
+
+```js
+var today = new Date();
+var nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+```
+
+#### Yesterday Date object
+
+```js
+var today = new Date();
+var yesterday = date.setDate(date.getDate() - 1);
+```
+
+:top: <sub>[**back to top**](#table-of-contents)</sub>
+
+###Mongoose Cheatsheet
 
 #### Find all users:
 ```js
@@ -983,6 +1181,7 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
   console.log(votesCount.total);
 });
 ```
+:top: <sub>[**back to top**](#table-of-contents)</sub>
 
 Deployment
 ----------
