@@ -1,0 +1,257 @@
+
+@media (min-width: 768px){
+    .navbar-form {
+        margin-top: 21px;
+        margin-bottom: 21px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .navbar-search-form{
+        display: none;
+    }
+    .navbar-nav > li > .dropdown-menu,
+    .dropdown .dropdown-menu{
+        @include transform-scale(0);
+        @include transition($slow-transition-time, $transition-bezier);
+        @include opacity(0);
+        visibility: hidden;
+        display: block;
+    }
+    .navbar-nav > li.open > .dropdown-menu,
+    .dropdown.open .dropdown-menu{
+        @include transform-scale(1);
+        @include transform-origin($dropdown-coordinates);
+        @include opacity(1);
+        visibility: visible;
+    }
+
+    .navbar-nav > li > .dropdown-menu:before{
+        border-bottom: 11px solid rgba(0, 0, 0, 0.2);
+        border-left: 11px solid rgba(0, 0, 0, 0);
+        border-right: 11px solid rgba(0, 0, 0, 0);
+        content: "";
+        display: inline-block;
+        position: absolute;
+        left: 12px;
+        top: -11px;
+    }
+    .navbar-nav > li > .dropdown-menu:after {
+        border-bottom: 11px solid #FFFFFF;
+        border-left: 11px solid rgba(0, 0, 0, 0);
+        border-right: 11px solid rgba(0, 0, 0, 0);
+        content: "";
+        display: inline-block;
+        position: absolute;
+        left: 12px;
+        top: -10px;
+    }
+
+    .navbar-nav.navbar-right > li > .dropdown-menu:before{
+        left: auto;
+        right: 12px;
+    }
+
+    .navbar-nav.navbar-right > li > .dropdown-menu:after{
+        left: auto;
+        right: 12px;
+    }
+
+    .footer:not(.footer-big){
+        nav > ul{
+           li:first-child{
+             margin-left: 0;
+           }
+        }
+    }
+
+    .nav-open .navbar-collapse{
+        @include transform-translate-x(0px);
+    }
+    .nav-open .navbar .container{
+        @include transform-translate-x(-200px);
+    }
+
+    .navbar-burger{
+        .container{
+            padding: 0 15px;
+        }
+        .navbar-header{
+            width: 100%;
+        }
+        .navbar-toggle{
+            display: block;
+            margin-right: 0;
+        }
+
+        &.navbar .navbar-collapse.collapse,
+        &.navbar .navbar-collapse.collapse.in,
+        &.navbar .navbar-collapse.collapsing{
+            display: none !important;
+        }
+    }
+}
+
+/*          Changes for small display      */
+
+@media (max-width: 767px){
+    .navbar-transparent{
+        padding-top: 0px;
+        background-color: rgba(0, 0, 0, 0.45);
+    }
+
+    .body-click {
+        right: 230px;
+    }
+
+    body{
+        position: relative;
+
+        & > .navbar-collapse {
+            width: 230px;
+            @include transform-translate-x(230px);
+        }
+    }
+
+    .navbar{
+        .container{
+            width: 100%;
+            position: relative;
+            @include transform-translate-x(0px);
+            @include transition (0.50s, cubic-bezier(0.685, 0.0473, 0.346, 1));
+
+            .nav-open &{
+                @include transform-translate-x(-230px);
+            }
+        }
+
+        .navbar-collapse.collapse,
+        .navbar .navbar-collapse.collapse.in,
+        .navbar .navbar-collapse.collapsing{
+            display: none !important;
+        }
+    }
+
+    .nav-open .navbar-collapse{
+        @include transform-translate-x(0px);
+    }
+
+    .navbar-toggle .icon-bar{
+        display: block;
+        position: relative;
+        background: $white-color;
+        width: 24px;
+        height: 2px;
+        border-radius: 1px;
+        margin: 0 auto;
+    }
+
+    .navbar-default .navbar-toggle .icon-bar{
+        background-color: $default-color;
+    }
+
+    .navbar-header .navbar-toggle {
+        margin-top: 17px;
+        margin-bottom: 17px;
+        width: 40px;
+        height: 40px;
+    }
+    .bar1,
+    .bar2,
+    .bar3 {
+      outline: 1px solid transparent;
+    }
+    .bar1 {
+      top: 0px;
+      @include bar-animation($topbar-back);
+    }
+    .bar2 {
+      opacity: 1;
+    }
+    .bar3 {
+      bottom: 0px;
+      @include bar-animation($bottombar-back);
+    }
+    .toggled .bar1 {
+      top: 6px;
+      @include bar-animation($topbar-x);
+    }
+    .toggled .bar2 {
+      opacity: 0;
+    }
+    .toggled .bar3 {
+      bottom: 6px;
+      @include bar-animation($bottombar-x);
+    }
+
+    @include topbar-x-rotation();
+    @include topbar-back-rotation();
+    @include bottombar-x-rotation();
+    @include bottombar-back-rotation();
+
+    @-webkit-keyframes fadeIn {
+      0% {opacity: 0;}
+      100% {opacity: 1;}
+    }
+    @-moz-keyframes fadeIn {
+      0% {opacity: 0;}
+      100% {opacity: 1;}
+    }
+    @keyframes fadeIn {
+      0% {opacity: 0;}
+      100% {opacity: 1;}
+    }
+
+    [class*="navbar-"] .navbar-nav {
+        & > li > a,
+        > li > a:hover,
+        > li > a:focus,
+        .active > a,
+        .active > a:hover,
+        .active > a:focus,
+        .open .dropdown-menu > li > a,
+        .open .dropdown-menu > li > a:hover,
+        .open .dropdown-menu > li > a:focus,
+        .navbar-nav .open .dropdown-menu > li > a:active {
+//             color: white;
+        }
+
+        & > li > a,
+        > li > a:hover,
+        > li > a:focus,
+        .open .dropdown-menu > li > a,
+        .open .dropdown-menu > li > a:hover,
+        .open .dropdown-menu > li > a:focus{
+            opacity: .7;
+            background: transparent;
+        }
+
+        &.navbar-nav .open .dropdown-menu > li > a:active {
+            opacity: 1;
+        }
+
+        & .dropdown > a{
+            &:hover .caret {
+                border-bottom-color: #777;
+                border-top-color: #777;
+            }
+            &:active .caret {
+                border-bottom-color: white;
+                border-top-color: white;
+            }
+        }
+    }
+    .dropdown-menu {
+        display: none;
+    }
+    .navbar-fixed-top {
+        -webkit-backface-visibility: hidden;
+    }
+    .navbar-toggle:hover,
+    .navbar-toggle:focus {
+        background-color: transparent !important;
+    }
+    .btn.dropdown-toggle{
+        margin-bottom: 0;
+    }
+
+}
