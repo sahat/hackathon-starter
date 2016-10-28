@@ -339,10 +339,10 @@ Project Structure
 | **views/partials**/footer.pug      | Footer partial template.                                     |
 | **views**/layout.pug               | Base template.                                               |
 | **views**/home.pug                 | Home page template.                                          |
-| .travis.yml                        | [Travis CI](https://travis-ci.org/) integration.             |
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
 | app.js                             | The main application file.                                   |
 | package.json                       | NPM dependencies.                                            |
+| yarn.lock                          | Contains exact versions of NPM dependencies in package.json. |
 
 **Note:** There is no preference how you name or structure your views.
 You could place all your templates in a top-level `views` directory without
@@ -360,7 +360,7 @@ List of Packages
 | cheerio                         | Scrape web pages using jQuery-style syntax.                           |
 | clockwork                       | Clockwork SMS API library.                                            |
 | connect-mongo                   | MongoDB session store for Express.                                    |
-| dotenv                          | Loads environment variables from .env file.                                                |
+| dotenv                          | Loads environment variables from .env file.                           |
 | express                         | Node.js web framework.                                                |
 | body-parser                     | Express 4 middleware.                                                 |
 | express-session                 | Express 4 middleware.                                                 |
@@ -369,7 +369,7 @@ List of Packages
 | errorhandler                    | Express 4 middleware.                                                 |
 | serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
 | express-flash                   | Provides flash messages for Express.                                  |
-| express-status-monitor          | Reports real-time server metrics for Express.                                  |
+| express-status-monitor          | Reports real-time server metrics for Express.                         |
 | express-validator               | Easy form validation for Express.                                     |
 | fbgraph                         | Facebook Graph API library.                                           |
 | github                          | GitHub API library.                                                   |
