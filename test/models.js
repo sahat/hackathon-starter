@@ -1,46 +1,104 @@
 const chai = require('chai');
+const sinon = require('sinon')
+const mongoose =  require('mongoose');
 const expect = chai.expect;
 const User = require('../models/User');
+require('sinon-mongoose');
 
 describe('User Model', () => {
-  it('should create a new user', (done) => {
-    const user = new User({
-      email: 'test@gmail.com',
-      password: 'password'
-    });
-    user.save((err) => {
-      expect(err).to.be.null;
-      expect(user.email).to.equal('test@gmail.com');
-      expect(user).to.have.property('createdAt');
-      expect(user).to.have.property('updatedAt');
-      done();
-    });
-  });
 
-  it('should not create a user with the unique email', (done) => {
-    const user = new User({
-      email: 'test@gmail.com',
-      password: 'password'
-    });
-    user.save((err) => {
-      expect(err).to.be.defined;
-      expect(err.code).to.equal(11000);
-      done();
-    });
-  });
+    it('should create a new user', (done) => {
+        const UserMock = sinon.mock(new User({email: 'test@gmail.com', password: 'password'}));
+        const user = UserMock.object;
+        const expectedResult = {
+            status: true
+        };
+        UserMock
+            .expects('save')
+            .yields(null, expectedResult);
+        user.save(function (err, result) {
+            UserMock.verify();
+            UserMock.restore();
+            expect(result.status).to.be.true;
+            done();
+        });
+    })
 
-  it('should find user by email', (done) => {
-    User.findOne({ email: 'test@gmail.com' }, (err, user) => {
-      expect(err).to.be.null;
-      expect(user.email).to.equal('test@gmail.com');
-      done();
-    });
-  });
+    it('should return error if user is not created', (done) => {
+        const UserMock = sinon.mock(new User({email: 'test@gmail.com', password: 'password'}));
+        const user = UserMock.object;
+        const expectedResult = {
+            status: false
+        };
 
-  it('should delete a user', (done) => {
-    User.remove({ email: 'test@gmail.com' }, (err) => {
-      expect(err).to.be.null;
-      done();
+        UserMock
+            .expects('save')
+            .yields(expectedResult, null);
+        user.save(function (err, result) {
+            UserMock.verify();
+            UserMock.restore();
+            expect(err.status).to.be.false;
+            expect(result).to.be.null;
+            done();
+        });
+    })
+
+    it('should not create a user with the unique email', (done) => {
+        const UserMock = sinon.mock(User({email: 'test@gmail.com', password: 'password'}));
+        const user = UserMock.object;
+        const expectedResult = {
+            status: false
+        };
+
+        UserMock
+            .expects('save')
+            .yields(expectedResult, null);
+        user.save(function (err, result) {
+            UserMock.verify();
+            UserMock.restore();
+            expect(err.status).to.be.false;
+            done();
+        });
+    })
+
+    it('should find user by email', (done) => {
+        const userMock = sinon.mock(User)
+        const expectedUser = {
+            status: true,
+            user: {}
+        };
+
+        userMock
+            .expects('findOne')
+            .withArgs({email: 'test@gmail.com'})
+            .yields(null, expectedUser)
+        User.findOne({
+            email: 'test@gmail.com'
+        }, (err, result) => {
+            userMock.verify();
+            userMock.restore();
+            expect(result.status).to.be.true;
+            done();
+        })
     });
-  });
+
+    it('should delete user by email', (done) => {
+        const userMock = sinon.mock(User)
+        const expectedResult = {
+            status: true
+        };
+
+        userMock
+            .expects('remove')
+            .withArgs({email: 'test@gmail.com'})
+            .yields(null, expectedResult)
+        User.remove({
+            email: 'test@gmail.com'
+        }, (err, result) => {
+            userMock.verify();
+            userMock.restore();
+            expect(result.status).to.be.true;
+            done();
+        })
+    });
 });
