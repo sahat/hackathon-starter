@@ -1,7 +1,6 @@
 'use strict';
-const _ = require('lodash');
+
 const async = require('async');
-const validator = require('validator');
 const request = require('request');
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
