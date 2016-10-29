@@ -1,7 +1,6 @@
 'use strict';
-const _ = require('lodash');
+
 const async = require('async');
-const validator = require('validator');
 const request = require('request');
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
@@ -143,7 +142,6 @@ exports.getScraping = (req, res, next) => {
  * GitHub API Example.
  */
 exports.getGithub = (req, res, next) => {
-  const token = req.user.tokens.find(token => token.kind === 'github');
   const github = new GitHub();
   github.repos.get({ user: 'sahat', repo: 'hackathon-starter' }, (err, repo) => {
     if (err) { return next(err); }
@@ -200,8 +198,12 @@ exports.getLastfm = (req, res, next) => {
       lastfm.request('artist.getInfo', {
         artist: 'Roniit',
         handlers: {
-          success: (data) => done(null, data),
-          error: (err) => done(err)
+          success: (data) => {
+            done(null, data);
+          },
+          error: (err) => {
+            done(err);
+          }
         }
       });
     },
@@ -209,8 +211,12 @@ exports.getLastfm = (req, res, next) => {
       lastfm.request('artist.getTopTracks', {
         artist: 'Roniit',
         handlers: {
-          success: (data) => done(null, data.toptracks.track.slice(0, 10)),
-          error: (err) => done(err)
+          success: (data) => {
+            done(null, data.toptracks.track.slice(0, 10));
+          },
+          error: (err) => {
+            done(err);
+          }
         }
       });
     },
@@ -218,8 +224,12 @@ exports.getLastfm = (req, res, next) => {
       lastfm.request('artist.getTopAlbums', {
         artist: 'Roniit',
         handlers: {
-          success: (data) => done(null, data.topalbums.album.slice(0, 3)),
-          error: (err) => done(err)
+          success: (data) => {
+            done(null, data.topalbums.album.slice(0, 3));
+          },
+          error: (err) => {
+            done(err);
+          }
         }
       });
     }
@@ -285,7 +295,7 @@ exports.postTwitter = (req, res, next) => {
     access_token: token.accessToken,
     access_token_secret: token.tokenSecret
   });
-  T.post('statuses/update', { status: req.body.tweet }, (err, data, response) => {
+  T.post('statuses/update', { status: req.body.tweet }, (err) => {
     if (err) { return next(err); }
     req.flash('success', { msg: 'Your tweet has been posted.' });
     res.redirect('/api/twitter');
@@ -582,14 +592,14 @@ exports.getLob = (req, res, next) => {
  * GET /api/upload
  * File Upload API example.
  */
- 
-exports.getFileUpload = (req, res, next) => {
+
+exports.getFileUpload = (req, res) => {
   res.render('api/upload', {
     title: 'File Upload'
   });
 };
 
-exports.postFileUpload = (req, res, next) => {
+exports.postFileUpload = (req, res) => {
   req.flash('success', { msg: 'File was uploaded successfully.' });
   res.redirect('/api/upload');
 };
@@ -644,7 +654,7 @@ exports.postPinterest = (req, res, next) => {
   });
 };
 
-exports.getGoogleMaps = (req, res, next) => {
+exports.getGoogleMaps = (req, res) => {
   res.render('api/google-maps', {
     title: 'Google Maps API'
   });

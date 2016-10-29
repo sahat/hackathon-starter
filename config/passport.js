@@ -79,7 +79,7 @@ passport.use(new FacebookStrategy({
           if (err) { return done(err); }
           user.facebook = profile.id;
           user.tokens.push({ kind: 'facebook', accessToken });
-          user.profile.name = user.profile.name || profile.name.givenName + ' ' + profile.name.familyName;
+          user.profile.name = user.profile.name || `${profile.name.givenName} ${profile.name.familyName}`;
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
           user.save((err) => {
@@ -105,7 +105,7 @@ passport.use(new FacebookStrategy({
           user.email = profile._json.email;
           user.facebook = profile.id;
           user.tokens.push({ kind: 'facebook', accessToken });
-          user.profile.name = profile.name.givenName + ' ' + profile.name.familyName;
+          user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
           user.profile.gender = profile._json.gender;
           user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';

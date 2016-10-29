@@ -1,10 +1,13 @@
 {
   "name": "hackathon-starter",
   "version": "4.2.1",
+  "description": "A boilerplate for Node.js web applications",
   "repository": {
     "type": "git",
     "url": "https://github.com/sahat/hackathon-starter.git"
   },
+  "author": "Sahat Yalkabov",
+  "license": "MIT",
   "scripts": {
     "start": "node app.js",
     "test": "mocha --reporter spec"
@@ -60,13 +63,24 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^3.8.1",
+    "eslint-config-airbnb-base": "^9.0.0",
+    "eslint-plugin-import": "^2.0.1",
     "mocha": "^3.1.2",
     "sinon": "^1.17.6",
     "sinon-mongoose": "^1.3.0",
     "supertest": "^2.0.1"
   },
-  "engines": {
-    "node": "6.1.0"
-  },
-  "license": "MIT"
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "rules": {
+      "comma-dangle": 0,
+      "consistent-return": 0,
+      "no-param-reassign": 0,
+      "no-underscore-dangle": 0,
+      "no-shadow": 0,
+      "no-console": 0,
+      "no-plusplus": 0
+    }
+  }
 }

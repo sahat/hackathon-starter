@@ -19,6 +19,7 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 /**
@@ -98,7 +99,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
   if (!req.user &&
       req.path !== '/login' &&
