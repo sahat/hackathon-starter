@@ -1,0 +1,63 @@
+/*           Labels & Progress-bar              */
+.label{
+    padding: 0.2em 0.6em 0.2em;
+    border: 1px solid #999999;
+    border-radius: 3px;
+    color: #999999;
+    background-color: #FFFFFF;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 3px;
+}
+.label-primary{
+    border-color: $primary-color;
+    color: $primary-color;
+}
+.label-info{
+    border-color: $info-color;
+    color: $info-color;
+}
+.label-success{
+    border-color: $success-color;
+    color: $success-color;
+}
+.label-warning{
+    border-color: $warning-color;
+    color: $warning-color;
+}
+.label-danger{
+    border-color: $danger-color;
+    color: $danger-color;
+}
+.label.label-fill{
+    color: #FFFFFF;
+}
+.label-primary.label-fill, .progress-bar, .progress-bar-primary{
+   background-color: $primary-color;
+}
+.label-info.label-fill, .progress-bar-info{
+    background-color: $info-color;
+}
+.label-success.label-fill, .progress-bar-success{
+   background-color: $success-color;
+}
+.label-warning.label-fill, .progress-bar-warning{
+   background-color: $warning-color;
+}
+.label-danger.label-fill, .progress-bar-danger{
+   background-color: $danger-color;
+}
+.label-default.label-fill{
+   background-color: #999999;
+}
+.progress {
+    background-color: #E5E5E5;
+    border-radius: 3px;
+    box-shadow: none;
+    height: 4px;
+}
+.progress-thin{
+    height: 2px;
+}
