@@ -1,8 +1,13 @@
 language: node_js
-sudo: false
-
+node_js:
+  - "6"
 services:
   - mongodb
-
-node_js:
-  - "4.4"
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8

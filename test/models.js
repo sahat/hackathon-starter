@@ -1,41 +1,45 @@
-var chai = require('chai');
-var should = chai.should();
-var User = require('../models/User');
+const chai = require('chai');
+const expect = chai.expect;
+const User = require('../models/User');
 
-describe('User Model', function() {
-  it('should create a new user', function(done) {
-    var user = new User({
+describe('User Model', () => {
+  it('should create a new user', (done) => {
+    const user = new User({
       email: 'test@gmail.com',
       password: 'password'
     });
-    user.save(function(err) {
-      if (err) return done(err);
+    user.save((err) => {
+      expect(err).to.be.null;
+      expect(user.email).to.equal('test@gmail.com');
+      expect(user).to.have.property('createdAt');
+      expect(user).to.have.property('updatedAt');
       done();
     });
   });
 
-  it('should not create a user with the unique email', function(done) {
-    var user = new User({
+  it('should not create a user with the unique email', (done) => {
+    const user = new User({
       email: 'test@gmail.com',
       password: 'password'
     });
-    user.save(function(err) {
-      if (err) err.code.should.equal(11000);
+    user.save((err) => {
+      expect(err).to.be.defined;
+      expect(err.code).to.equal(11000);
       done();
     });
   });
 
-  it('should find user by email', function(done) {
-    User.findOne({ email: 'test@gmail.com' }, function(err, user) {
-      if (err) return done(err);
-      user.email.should.equal('test@gmail.com');
+  it('should find user by email', (done) => {
+    User.findOne({ email: 'test@gmail.com' }, (err, user) => {
+      expect(err).to.be.null;
+      expect(user.email).to.equal('test@gmail.com');
       done();
     });
   });
 
-  it('should delete a user', function(done) {
-    User.remove({ email: 'test@gmail.com' }, function(err) {
-      if (err) return done(err);
+  it('should delete a user', (done) => {
+    User.remove({ email: 'test@gmail.com' }, (err) => {
+      expect(err).to.be.null;
       done();
     });
   });
