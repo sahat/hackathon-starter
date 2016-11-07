@@ -6,7 +6,7 @@ Hackathon Starter
 
 **Live Demo**: http://hackathonstarter-sahat.rhcloud.com
 
-Jump to [What's new in 4.2.1?](#changelog)
+Jump to [What's new in 4.3.0?](#changelog)
 
 :bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5).
 
@@ -1331,6 +1331,21 @@ Also, be sure to check out the [Jump-start your hackathon efforts with DevOps Se
 
 Changelog
 ---------
+
+### 4.3.0 (November 6, 2016)
+- [Added new theme](http://demos.creative-tim.com/get-shit-done/index.html) by Creative Tim (Thanks @conacelelena)
+- Added ESLint configuration to *package.json*
+- Added *yarn.lock* (Thanks @niallobrien)
+- Added **express-status-monitor** (to see it in action: `/status`)
+- Added missing error handling checks (Thanks @dskrepps)
+- Server address during the app startup is now clickable (⌘ + LMB) (Thanks @niallobrien)
+- Fixed redirect issue in the account page (Thanks @YasharF)
+- Fixed `Mongoose.promise` issue (Thanks @starcharles)
+- Removed "My Friends" from Facebook API example due to Graph API changes
+- Removed iOS7 theme
+- `User` model unit tests improvements (Thanks @andela-rekemezie)
+- Switched from **github-api** to the more popular **github** NPM module
+- Updated Yarn and NPM dependencies
 
 ### 4.2.1 (September 6, 2016)
 - User model minor code refactoring
