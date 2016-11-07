@@ -96,24 +96,11 @@ exports.getTumblr = (req, res, next) => {
 exports.getFacebook = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'facebook');
   graph.setAccessToken(token.accessToken);
-  async.parallel({
-    getMyProfile: (done) => {
-      graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, me) => {
-        done(err, me);
-      });
-    },
-    getMyFriends: (done) => {
-      graph.get(`${req.user.facebook}/friends`, (err, friends) => {
-        done(err, friends.data);
-      });
-    }
-  },
-  (err, results) => {
+  graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, results) => {
     if (err) { return next(err); }
     res.render('api/facebook', {
       title: 'Facebook API',
-      me: results.getMyProfile,
-      friends: results.getMyFriends
+      profile: results
     });
   });
 };
