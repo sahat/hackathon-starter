@@ -1,9 +1,8 @@
-// Flatly 3.3.5
+// Flatly 3.3.7
 // Bootswatch
 // -----------------------------------------------------
-
+@import "../../lib/bootstrap-social";
 $web-font-path: "https://fonts.googleapis.com/css?family=Lato:400,700,400italic" !default;
-
 @import url($web-font-path);
 
 // Navbar =====================================================================
@@ -121,7 +120,7 @@ table,
 // Forms ======================================================================
 
 .form-control,
-input, {
+input {
   border-width: 2px;
   @include box-shadow(none);
 
@@ -293,7 +292,7 @@ a.list-group-item {
     &.active {
       background-color: $state-warning-bg;
     }
-    
+
     &.active:hover,
     &.active:focus {
       background-color: darken($state-warning-bg, 5%);
@@ -304,7 +303,7 @@ a.list-group-item {
     &.active {
       background-color: $state-danger-bg;
     }
-    
+
     &.active:hover,
     &.active:focus {
       background-color: darken($state-danger-bg, 5%);

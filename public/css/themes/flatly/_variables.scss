@@ -1,5 +1,5 @@
 $bootstrap-sass-asset-helper: false !default;
-// Flatly 3.3.5
+// Flatly 3.3.7
 // Variables
 // --------------------------------------------------
 
@@ -112,7 +112,7 @@ $component-active-color:    #fff !default;
 //** Global background color for active items (e.g., navs or dropdowns).
 $component-active-bg:       $brand-primary !default;
 
-//** Width of the `border` for generating carets that indicator dropdowns.
+//** Width of the `border` for generating carets that indicate dropdowns.
 $caret-width-base:          4px !default;
 //** Carets increase slightly in size for larger components.
 $caret-width-large:         5px !default;
@@ -365,7 +365,7 @@ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
 $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
 $navbar-collapse-max-height:       340px !default;
 
-$navbar-default-color:             #777 !default;
+$navbar-default-color:             #fff !default;
 $navbar-default-bg:                $brand-primary !default;
 $navbar-default-border:            transparent !default;
 
@@ -864,5 +864,7 @@ $blockquote-border-color:     $gray-lighter !default;
 $page-header-border-color:    transparent !default;
 //** Width of horizontal description list titles
 $dl-horizontal-offset:        $component-offset-horizontal !default;
+//** Point at which .dl-horizontal becomes horizontal
+$dl-horizontal-breakpoint:    $grid-float-breakpoint !default;
 //** Horizontal line color.
 $hr-border:                   $gray-lighter !default;
