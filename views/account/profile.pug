@@ -11,9 +11,50 @@ block content
       .col-sm-7
         input.form-control(type='email', name='email', id='email', value=user.email)
     .form-group
-      label.col-sm-3.control-label(for='name') Name
+      label.col-sm-3.control-label(for='phone') Mobile Phone Number
       .col-sm-7
-        input.form-control(type='text', name='name', id='name', value=user.profile.name)
+        input.form-control(type='text', name='phone', id='phone', value=user.profile.phone)
+
+    .form-group
+      label.col-sm-3.control-label(for='firstName') First Name
+      .col-sm-7
+        input.form-control(type='text', name='firstName', id='firstName', value=user.profile.firstName)
+    .form-group
+      label.col-sm-3.control-label(for='lastName') Last Name
+      .col-sm-7
+        input.form-control(type='text', name='lastName', id='lastName', value=user.profile.lastName)
+    .form-group
+      label.col-sm-3.control-label(for='address1') Street Address
+      .col-sm-7
+        input.form-control(type='text', name='address1', id='address1', value=user.profile.address1)
+    .form-group
+      label.col-sm-3.control-label(for='address2') Street Address 2
+      .col-sm-7
+        input.form-control(type='text', name='address2', id='address2', value=user.profile.address2)
+    .form-group
+      label.col-sm-3.control-label(for='city') City
+      .col-sm-7
+        input.form-control(type='text', name='city', id='city', value=user.profile.city)
+    .form-group
+      label.col-sm-3.control-label(for='state') State
+      .col-sm-7
+        input.form-control(type='text', name='state', id='state', value=user.profile.state)
+    .form-group
+      label.col-sm-3.control-label(for='zip') Zip Code
+      .col-sm-7
+        input.form-control(type='text', name='zip', id='zip', value=user.profile.zip)
+    .form-group
+      label.col-sm-3.control-label(for='dob') Date of Birth
+      .col-sm-7
+        input.form-control(type='text', name='dob', id='dob', value=user.profile.dob)
+    .form-group
+      label.col-sm-3.control-label(for='ssn') Social Security Number
+      .col-sm-7
+        input.form-control(type='text', name='ssn', id='ssn', value=user.profile.ssn)
+    .form-group
+      label.col-sm-3.control-label(for='ssn4') Last 4 SSN
+      .col-sm-7
+        input.form-control(type='text', name='lastName', id='lastName', value=user.profile.lastName)
     .form-group
       label.col-sm-3.control-label Gender
       .col-sm-6
@@ -26,10 +67,6 @@ block content
         label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
           span Other
-    .form-group
-      label.col-sm-3.control-label(for='location') Location
-      .col-sm-7
-        input.form-control(type='text', name='location', id='location', value=user.profile.location)
     .form-group
       label.col-sm-3.control-label(for='website') Website
       .col-sm-7
