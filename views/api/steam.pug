@@ -19,7 +19,7 @@ block content
   h3 Profile Information
   .row
     .col-sm-2
-      img(src='#{playerSummary.avatarfull}', width='92', height='92')
+      img(src='' + playerSummary.avatarfull, width='92', height='92')
     .col-sm-8
       span.lead #{playerSummary.personaname}
       div Account since: #{new Date(playerSummary.timecreated * 1000)}
