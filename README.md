@@ -533,13 +533,6 @@ models, routes, controllers, etc.
 When working solo on small projects I actually prefer to have everything inside `app.js` as is the case with [this]((https://github.com/sahat/ember-sass-express-starter/blob/master/app.js))
 REST API server.
 
-### I don't need a sticky footer, can I delete it?
-Absolutely. But unlike a regular footer there is a bit more work involved.
-First, delete `#wrap` and `#footer` ID selectors and `html, body { height: 100%; }`
-from **main.less**. Next, delete `#wrap` and `#footer` lines from **layout.pug**
-(By the way, if no element is specified before class or id, Pug assumes it is
-a `div` element). Don't forget to indent everything under `#wrap` to the left
-once, since this project uses two spaces per block indentation.
 
 ### Why is there no Mozilla Persona as a sign-in option?
 If you would like to use **Persona** authentication strategy, use the
@@ -673,12 +666,13 @@ messages were scattered throughout each view that used flash messages
 The flash messages partial template is *included* in the `layout.pug`, along with footer and navigation.
 ```jade
 body
-  #wrap
-    include partials/navigation
+    include partials/header
+
     .container
       include partials/flash
       block content
-  include partials/footer
+
+    include partials/footer
 ```
 
 If you have any further questions about flash messages,
