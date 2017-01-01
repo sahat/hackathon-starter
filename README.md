@@ -689,7 +689,7 @@ are what's called middleware. Think of middleware as a door. If this door preven
 continuing forward, you won't get to your callback function. One such example is a route that requires authentication.
 
 ```js
-app.get('/account', passportConf.isAuthenticated, userController.getAccount);
+app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
 ```
 
 It always goes from left to right. A user visits `/account` page. Then `isAuthenticated` middleware
@@ -742,8 +742,8 @@ And here is how a route would look if it required an *authentication* and an *au
 
 ```js
 app.route('/api/twitter')
-  .all(passportConf.isAuthenticated)
-  .all(passportConf.isAuthorized)
+  .all(passportConfig.isAuthenticated)
+  .all(passportConfig.isAuthorized)
   .get(apiController.getTwitter)
   .post(apiController.postTwitter)
 ```
