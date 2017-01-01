@@ -1235,7 +1235,7 @@ listed below.
 - First, install this Ruby gem: `sudo gem install rhc` :gem:
 - Run `rhc login` and enter your OpenShift credentials
 - From your app directory run `rhc app create MyApp nodejs-0.10`
- - **Note:** *MyApp* is the name your app (no spaces)
+ - **Note:** *MyApp* is the name of your app (no spaces)
 - Once that is done, you will be provided with **URL**, **SSH** and **Git Remote** links
 - Visit provided **URL** and you should see the *Welcome to your Node.js application on OpenShift* page
 - Copy and and paste **Git Remote** into `git remote add openshift YOUR_GIT_REMOTE`
