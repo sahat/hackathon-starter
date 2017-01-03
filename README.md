@@ -1293,7 +1293,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 - Run `cf bind-service [your-app-name] [your-service-name]` to associate your application with a service created above
 - Run `cf files [your-app-name] logs/env.log` to see the *environment variables created for MongoDB.
 - Copy the **MongoDB URI** that should look something like the following: `mongodb://68638358-a3c6-42a1-bae9-645b607d55e8:46fb97e6-5ce7-4146-9a5d-d623c64ff1fe@192.155.243.23:10123/db`
-- Then set it as an environment variable for your application by running `cf set-env [your-app-name] MONGODB [your-mongodb-uri]`
+- Then set it as an environment variable for your application by running `cf set-env [your-app-name] MONGODB_URI [your-mongodb-uri]`
 - Run `cf restart [your-app-name]` for the changes to take effect.
 - Visit your starter app at **http://[your-app-name].ng.bluemix.net**
 - Done!
