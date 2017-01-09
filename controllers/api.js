@@ -1,6 +1,5 @@
 'use strict';
 
-const async = require('async');
 const request = require('request');
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
@@ -24,6 +23,26 @@ const foursquare = require('node-foursquare')({
 });
 
 /**
+ * Returns a function that will wrap the given func.
+ * Instead of taking a callback, the returned function will
+ * return a promise whose fate is decided by the callback
+ * behavior of the given node function.
+ */
+function promisify(func) {
+  return function funcWrapper(...funcArgs) {
+    const target = this;
+    return new Promise((resolve, reject) => {
+      funcArgs.push((err, ...data) => {
+        if (err) return reject(err);
+        if (data.length === 1) resolve(data[0]);
+        else resolve(data);
+      });
+      func.apply(target, funcArgs);
+    });
+  };
+}
+
+/**
  * GET /api
  * List of API examples.
  */
@@ -39,32 +58,20 @@ exports.getApi = (req, res) => {
  */
 exports.getFoursquare = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'foursquare');
-  async.parallel({
-    trendingVenues: (callback) => {
-      foursquare.Venues.getTrending('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken, (err, results) => {
-        callback(err, results);
-      });
-    },
-    venueDetail: (callback) => {
-      foursquare.Venues.getVenue('49da74aef964a5208b5e1fe3', token.accessToken, (err, results) => {
-        callback(err, results);
-      });
-    },
-    userCheckins: (callback) => {
-      foursquare.Users.getCheckins('self', null, token.accessToken, (err, results) => {
-        callback(err, results);
-      });
-    }
-  },
-  (err, results) => {
-    if (err) { return next(err); }
+  Promise.all([
+    promisify(foursquare.Venues.getTrending)('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken),
+    promisify(foursquare.Venues.getVenue)('49da74aef964a5208b5e1fe3', token.accessToken),
+    promisify(foursquare.Users.getCheckins)('self', null, token.accessToken)
+  ])
+  .then(([trendingVenues, venueDetail, userCheckins]) => {
     res.render('api/foursquare', {
       title: 'Foursquare API',
-      trendingVenues: results.trendingVenues,
-      venueDetail: results.venueDetail,
-      userCheckins: results.userCheckins
+      trendingVenues,
+      venueDetail,
+      userCheckins
     });
-  });
+  })
+  .catch(next);
 };
 
 /**
@@ -180,64 +187,62 @@ exports.getLastfm = (req, res, next) => {
     api_key: process.env.LASTFM_KEY,
     secret: process.env.LASTFM_SECRET
   });
-  async.parallel({
-    artistInfo: (done) => {
-      lastfm.request('artist.getInfo', {
-        artist: 'Roniit',
-        handlers: {
-          success: (data) => {
-            done(null, data);
-          },
-          error: (err) => {
-            done(err);
+  Promise.all([
+    (function artistInfo() {
+      return new Promise((resolve, reject) => {
+        lastfm.request('artist.getInfo', {
+          artist: 'Roniit',
+          handlers: {
+            success: resolve,
+            error: reject
           }
-        }
+        });
       });
-    },
-    artistTopTracks: (done) => {
-      lastfm.request('artist.getTopTracks', {
-        artist: 'Roniit',
-        handlers: {
-          success: (data) => {
-            done(null, data.toptracks.track.slice(0, 10));
-          },
-          error: (err) => {
-            done(err);
+    }()),
+    (function artistTopTracks() {
+      return new Promise((resolve, reject) => {
+        lastfm.request('artist.getTopTracks', {
+          artist: 'Roniit',
+          handlers: {
+            success: (data) => {
+              resolve(data.toptracks.track.slice(0, 10));
+            },
+            error: reject
           }
-        }
+        });
       });
-    },
-    artistTopAlbums: (done) => {
-      lastfm.request('artist.getTopAlbums', {
-        artist: 'Roniit',
-        handlers: {
-          success: (data) => {
-            done(null, data.topalbums.album.slice(0, 3));
-          },
-          error: (err) => {
-            done(err);
+    }()),
+    (function artistTopAlbums() {
+      return new Promise((resolve, reject) => {
+        lastfm.request('artist.getTopAlbums', {
+          artist: 'Roniit',
+          handlers: {
+            success: (data) => {
+              resolve(data.topalbums.album.slice(0, 3));
+            },
+            error: reject
           }
-        }
+        });
       });
-    }
-  },
-  (err, results) => {
-    if (err) { return next(err); }
+    }()),
+  ])
+  .then(([artistInfo, artistTopAlbums, artistTopTracks]) => {
     const artist = {
-      name: results.artistInfo.artist.name,
-      image: results.artistInfo.artist.image.slice(-1)[0]['#text'],
-      tags: results.artistInfo.artist.tags.tag,
-      bio: results.artistInfo.artist.bio.summary,
-      stats: results.artistInfo.artist.stats,
-      similar: results.artistInfo.artist.similar.artist,
-      topAlbums: results.artistTopAlbums,
-      topTracks: results.artistTopTracks
+      name: artistInfo.artist.name,
+      image: artistInfo.artist.image.slice(-1)[0]['#text'],
+      tags: artistInfo.artist.tags.tag,
+      bio: artistInfo.artist.bio.summary,
+      stats: artistInfo.artist.stats,
+      similar: artistInfo.artist.similar.artist,
+      topAlbums: artistTopAlbums,
+      topTracks: artistTopTracks
     };
     res.render('api/lastfm', {
       title: 'Last.fm API',
       artist
     });
-  });
+  })
+  .catch(next);
 };
 
 /**
@@ -296,45 +301,49 @@ exports.postTwitter = (req, res, next) => {
 exports.getSteam = (req, res, next) => {
   const steamId = '76561197982488301';
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  async.parallel({
-    playerAchievements: (done) => {
+  const fetch = promisify(request.get);
+  Promise.all([
+    (function playerAchievements() {
       params.appid = '49520';
-      request.get({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true }, (err, request, body) => {
-        if (request.statusCode === 401) {
-          return done(new Error('Invalid Steam API Key'));
-        }
-        done(err, body);
-      });
-    },
-    playerSummaries: (done) => {
+      return fetch({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
+        .then(([request, body]) => {
+          if (request.statusCode === 401) {
+            throw new Error('Invalid Steam API Key');
+          }
+          return body;
+        });
+    }()),
+    (function playerSummaries() {
       params.steamids = steamId;
-      request.get({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true }, (err, request, body) => {
-        if (request.statusCode === 401) {
-          return done(new Error('Missing or Invalid Steam API Key'));
-        }
-        done(err, body);
-      });
-    },
-    ownedGames: (done) => {
+      return fetch({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
+        .then(([request, body]) => {
+          if (request.statusCode === 401) {
+            throw Error('Missing or Invalid Steam API Key');
+          }
+          return body;
+        });
+    }()),
+    (function ownedGames() {
       params.include_appinfo = 1;
       params.include_played_free_games = 1;
-      request.get({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true }, (err, request, body) => {
-        if (request.statusCode === 401) {
-          return done(new Error('Missing or Invalid Steam API Key'));
-        }
-        done(err, body);
-      });
-    }
-  },
-  (err, results) => {
-    if (err) { return next(err); }
+      return fetch({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true })
+        .then(([request, body]) => {
+          if (request.statusCode === 401) {
+            throw new Error('Missing or Invalid Steam API Key');
+          }
+          return body;
+        });
+    }())
+  ])
+  .then(([ownedGames, playerAchievements, playerSummaries]) => {
     res.render('api/steam', {
       title: 'Steam Web API',
-      ownedGames: results.ownedGames.response.games,
-      playerAchievemments: results.playerAchievements.playerstats,
-      playerSummary: results.playerSummaries.response.players[0]
+      ownedGames: ownedGames.response.games,
+      playerAchievemments: playerAchievements.playerstats,
+      playerSummary: playerSummaries.response.players[0]
     });
-  });
+  })
+  .catch(next);
 };
 
 /**
@@ -458,37 +467,22 @@ exports.getInstagram = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'instagram');
   ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
   ig.use({ access_token: token.accessToken });
-  async.parallel({
-    searchByUsername: (done) => {
-      ig.user_search('richellemead', (err, users) => {
-        done(err, users);
-      });
-    },
-    searchByUserId: (done) => {
-      ig.user('175948269', (err, user) => {
-        done(err, user);
-      });
-    },
-    popularImages: (done) => {
-      ig.media_popular((err, medias) => {
-        done(err, medias);
-      });
-    },
-    myRecentMedia: (done) => {
-      ig.user_self_media_recent((err, medias) => {
-        done(err, medias);
-      });
-    }
-  }, (err, results) => {
-    if (err) { return next(err); }
+  Promise.all([
+    promisify(ig.user_search)('richellemead'),
+    promisify(ig.user)('175948269'),
+    promisify(ig.media_popular)(),
+    promisify(ig.user_self_media_recent)()
+  ])
+  .then(([searchByUsername, searchByUserId, popularImages, myRecentMedia]) => {
     res.render('api/instagram', {
       title: 'Instagram API',
-      usernames: results.searchByUsername,
-      userById: results.searchByUserId,
-      popularImages: results.popularImages,
-      myRecentMedia: results.myRecentMedia
+      usernames: searchByUsername,
+      userById: searchByUserId,
+      popularImages,
+      myRecentMedia
     });
-  });
+  })
+  .catch(next);
 };
 
 /**
