@@ -533,13 +533,6 @@ models, routes, controllers, etc.
 When working solo on small projects I actually prefer to have everything inside `app.js` as is the case with [this]((https://github.com/sahat/ember-sass-express-starter/blob/master/app.js))
 REST API server.
 
-### I don't need a sticky footer, can I delete it?
-Absolutely. But unlike a regular footer there is a bit more work involved.
-First, delete `#wrap` and `#footer` ID selectors and `html, body { height: 100%; }`
-from **main.less**. Next, delete `#wrap` and `#footer` lines from **layout.pug**
-(By the way, if no element is specified before class or id, Pug assumes it is
-a `div` element). Don't forget to indent everything under `#wrap` to the left
-once, since this project uses two spaces per block indentation.
 
 ### Why is there no Mozilla Persona as a sign-in option?
 If you would like to use **Persona** authentication strategy, use the
@@ -579,7 +572,7 @@ Move all JavaScript files from `html5up-escape-velocity/js` to `public/js`. Then
 **Note:** Do not forget to update all the CSS and JS paths accordingly.
 
 Create a new file `escape-velocity.pug` and paste the Pug markup in `views` folder.
-Whenever you see the code `res.render('account/login')` - that means it will search for `views/account/login.jade` file.
+Whenever you see the code `res.render('account/login')` - that means it will search for `views/account/login.pug` file.
 
 Let's see how it looks. Create a new controller **escapeVelocity** inside `controllers/home.js`:
 
@@ -598,7 +591,7 @@ app.get('/escape-velocity', homeController.escapeVelocity);
 
 Restart the server (if you are not using **nodemon**), then you should see the new template at [http://localhost:3000/escape-velocity](http://localhost:3000/escape-velocity).
 
-I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Jade templates work: `layout.jade` - base template, `index.jade` - home page, `partials/header.jade` - Bootstrap navbar, `partials/footer.jade` - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new `layout.jade`.
+I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Jade templates work: `layout.pug` - base template, `index.pug` - home page, `partials/header.pug` - Bootstrap navbar, `partials/footer.pug` - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new `layout.pug`.
 Then, each page that changes, be it `index.pug`, `about.pug`, `contact.pug`
 will be embedded in your new `layout.pug` via `block content`. Use existing templates as a reference.
 
@@ -647,7 +640,7 @@ why an error has occurred. Here is a more general example of what express-valida
 
 To keep consistent with that style, you should pass all flash messages
 as `{ msg: 'My flash message' }` instead of a string. Otherwise you will just see an alert box
-without an error message. That is because, in **partials/flash.jade** template it will try to output
+without an error message. That is because, in **partials/flash.pug** template it will try to output
 `error.msg` (i.e. `"My flash message".msg`), in other words it will try to call a `msg` method on a *String* object,
 which will return *undefined*. Everything I just mentioned about errors, also applies
 to "info" and "success" flash messages, and you could even create a new one yourself, such as:
@@ -665,7 +658,7 @@ if messages.warning
       div= warning.msg
 ```
 
-`partials/flash.jade` is a partial template that contains how flash messages
+`partials/flash.pug` is a partial template that contains how flash messages
 are formatted. Previously, flash
 messages were scattered throughout each view that used flash messages
 (contact, login, signup, profile), but now, thankfully it is uses a *DRY* approach.
@@ -673,12 +666,13 @@ messages were scattered throughout each view that used flash messages
 The flash messages partial template is *included* in the `layout.pug`, along with footer and navigation.
 ```jade
 body
-  #wrap
-    include partials/navigation
+    include partials/header
+
     .container
       include partials/flash
       block content
-  include partials/footer
+
+    include partials/footer
 ```
 
 If you have any further questions about flash messages,
@@ -695,7 +689,7 @@ are what's called middleware. Think of middleware as a door. If this door preven
 continuing forward, you won't get to your callback function. One such example is a route that requires authentication.
 
 ```js
-app.get('/account', passportConf.isAuthenticated, userController.getAccount);
+app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
 ```
 
 It always goes from left to right. A user visits `/account` page. Then `isAuthenticated` middleware
@@ -748,8 +742,8 @@ And here is how a route would look if it required an *authentication* and an *au
 
 ```js
 app.route('/api/twitter')
-  .all(passportConf.isAuthenticated)
-  .all(passportConf.isAuthorized)
+  .all(passportConfig.isAuthenticated)
+  .all(passportConfig.isAuthorized)
   .get(apiController.getTwitter)
   .post(apiController.postTwitter)
 ```
@@ -862,6 +856,11 @@ If you need to use socket.io in your app, please continue reading.
 First you need to install socket.io:
 ```js
 npm install socket.io --save
+```
+
+Or, again, if you use Yarn:
+```js
+yarn add socket.io
 ```
 
 Replace `const app = express();` with the following code:
@@ -1235,7 +1234,7 @@ listed below.
 - First, install this Ruby gem: `sudo gem install rhc` :gem:
 - Run `rhc login` and enter your OpenShift credentials
 - From your app directory run `rhc app create MyApp nodejs-0.10`
- - **Note:** *MyApp* is the name your app (no spaces)
+ - **Note:** *MyApp* is the name of your app (no spaces)
 - Once that is done, you will be provided with **URL**, **SSH** and **Git Remote** links
 - Visit provided **URL** and you should see the *Welcome to your Node.js application on OpenShift* page
 - Copy and and paste **Git Remote** into `git remote add openshift YOUR_GIT_REMOTE`
@@ -1624,7 +1623,7 @@ project, I cannot accept every pull request. Please open an issue before
 submitting a pull request. This project uses
 [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) with a
 few minor exceptions. If you are submitting a pull request that involves
-Jade templates, please make sure you are using *spaces*, not tabs.
+Pug templates, please make sure you are using *spaces*, not tabs.
 
 License
 -------
