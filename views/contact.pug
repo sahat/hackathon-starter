@@ -1,25 +1,32 @@
 extends layout
 
 block content
-  .page-header
-    h3 Contact Form
-
-  form.form-horizontal(method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label(class='col-sm-2 control-label', for='name') Name
-      .col-sm-8
-        input.form-control(type='text', name='name', id='name', autofocus=true)
-    .form-group
-      label(class='col-sm-2 control-label', for='email') Email
-      .col-sm-8
-        input.form-control(type='text', name='email', id='email')
-    .form-group
-      label(class='col-sm-2 control-label', for='message') Body
-      .col-sm-8
-        textarea.form-control(name='message', id='message', rows='7')
-    .form-group
-      .col-sm-offset-2.col-sm-8
-        button.btn.btn-primary(type='submit')
-          i.fa.fa-envelope
-          | Send
+    .container
+        .panel
+            .panel-heading
+                h3.panel-title Contact Form
+            .panel-body
+                form.form-horizontal(method='POST')
+                    input(type='hidden', name='_csrf', value=_csrf)
+                    .form-group
+                        label.col-sm-2(for='name') Name
+                        .col-sm-8
+                            input.form-control(type='text', name='name', id='name', placeholder='Name' , autofocus=true)
+                    .form-group
+                        label.col-sm-2(for='email') Email
+                        .col-sm-8
+                            input.form-control(type='email', name='email', id='email', placeholder='Email')
+                    .form-group
+                        label.col-sm-2(for='message') Body
+                        .col-sm-8
+                            textarea.form-control(name='message', id='message', rows='7')
+                    .form-group
+                        .col-sm-offset-2.col-sm-8
+                            .g-recaptcha(data-sitekey="Your-sitekey")
+                    .form-group
+                        .col-sm-offset-2.col-sm-8
+                            button.btn.btn-success(type='submit')
+                                i.fa.fa-envelope
+                                |  Send
+    block scripts
+        script(src='https://www.google.com/recaptcha/api.js')
