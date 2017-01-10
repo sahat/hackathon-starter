@@ -1,17 +1,24 @@
 extends ../layout
 
+block css
+    link(rel='stylesheet', href='/css/lib/strengthify.css')
+
 block content
-  .col-sm-8.col-sm-offset-2
-    form(method='POST')
-      legend Reset Password
-      input(type='hidden', name='_csrf', value=_csrf)
-      .form-group
-        label(for='password') New Password
-        input.form-control(type='password', name='password', id='password', placeholder='New password', autofocus, required)
-      .form-group
-        label(for='confirm') Confirm Password
-        input.form-control(type='password', name='confirm', id='confirm', placeholder='Confirm password', required)
-      .form-group
-        button.btn.btn-primary.btn-reset(type='submit')
-          i.fa.fa-keyboard-o
-          | Change Password
+    .col-sm-8.col-sm-offset-2
+        form(method='POST')
+            legend Reset Password
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group
+                label(for='password') New Password
+                input.form-control(class="pasword-field", type='password', name='password', id='password', placeholder='New password', autofocus, required)
+            .form-group
+                label(for='confirm') Confirm Password
+                input.form-control(type='password', name='confirm', id='confirm', placeholder='Confirm password', required)
+            .form-group
+                button.btn.btn-primary.btn-reset(type='submit')
+                    i.fa.fa-keyboard-o
+                    | Change Password
+
+block scripts
+    script(src='/js/lib/jquery.strengthify.js')
+    script(src='/js/lib/pass-meter.js')
