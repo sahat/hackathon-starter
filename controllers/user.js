@@ -1,4 +1,5 @@
-const crypto = require('crypto');
+const bluebird = require('bluebird');
+const crypto = bluebird.promisifyAll(require('crypto'));
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
@@ -249,8 +250,8 @@ exports.postReset = (req, res, next) => {
     return res.redirect('back');
   }
 
-  function resetPassword() {
-    return User
+  const resetPassword = () =>
+    User
       .findOne({ passwordResetToken: req.params.token })
       .where('passwordResetExpires').gt(Date.now())
       .then((user) => {
@@ -263,15 +264,14 @@ exports.postReset = (req, res, next) => {
         user.passwordResetExpires = undefined;
         return user.save().then(() => new Promise((resolve, reject) => {
           req.logIn(user, (err) => {
-            if (err) return reject(err);
+            if (err) { return reject(err); }
             resolve(user);
           });
         }));
       });
-  }
 
-  function sendResetPasswordEmail(user) {
-    if (!user) return;
+  const sendResetPasswordEmail = (user) => {
+    if (!user) { return; }
     const transporter = nodemailer.createTransport({
       service: 'SendGrid',
       auth: {
@@ -289,7 +289,7 @@ exports.postReset = (req, res, next) => {
       .then(() => {
         req.flash('success', { msg: 'Success! Your password has been changed.' });    
       });
-  }
+  };
 
   resetPassword()
     .then(sendResetPasswordEmail)
@@ -325,24 +325,27 @@ exports.postForgot = (req, res, next) => {
     return res.redirect('/forgot');
   }
 
-  function createRandomToken() {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) return reject(err);
-        resolve(buf.toString('hex'));
+  const createRandomToken = crypto
+    .randomBytesAsync(16)
+    .then(buf => buf.toString('hex'));
+
+  const setRandomToken = token =>
+    User
+      .findOne({ email: req.body.email })
+      .then((user) => {
+        if (!user) {
+          req.flash('errors', { msg: 'Account with that email address does not exist.' });
+        } else {
+          user.passwordResetToken = token;
+          user.passwordResetExpires = Date.now() + 3600000; // 1 hour
+          user = user.save();
+        }
+        return user;
       });
-    });
-  }
-  function setRandomToken([token, user]) {
-    if (!user) {
-      req.flash('errors', { msg: 'Account with that email address does not exist.' });
-      return res.redirect('/forgot');
-    }
-    user.passwordResetToken = token;
-    user.passwordResetExpires = Date.now() + 3600000; // 1 hour
-    return user.save().then(() => [token, user]);
-  }
-  function sendForgotPasswordEmail([token, user]) {
+
+  const sendForgotPasswordEmail = (user) => {
+    if (!user) { return; }
+    const token = user.passwordResetToken;
     const transporter = nodemailer.createTransport({
       service: 'SendGrid',
       auth: {
@@ -363,13 +366,11 @@ exports.postForgot = (req, res, next) => {
       .then(() => {
         req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
       });
-  }
-  return Promise.all([
-    createRandomToken(),
-    User.findOne({ email: req.body.email }).exec()
-  ])
-  .then(setRandomToken)
-  .then(sendForgotPasswordEmail)
-  .then(() => res.redirect('/forgot'))
-  .catch(err => next(err));
+  };
+
+  createRandomToken
+    .then(setRandomToken)
+    .then(sendForgotPasswordEmail)
+    .then(() => res.redirect('/forgot'))
+    .catch(next);
 };
