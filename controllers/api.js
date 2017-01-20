@@ -1,6 +1,7 @@
 'use strict';
 
-const request = require('request');
+const bluebird = require('bluebird');
+const request = bluebird.promisifyAll(require('request'), { multiArgs: true });
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
 const LastFmNode = require('lastfm').LastFmNode;
@@ -13,7 +14,7 @@ const Linkedin = require('node-linkedin')(process.env.LINKEDIN_ID, process.env.L
 const clockwork = require('clockwork')({ key: process.env.CLOCKWORK_KEY });
 const paypal = require('paypal-rest-sdk');
 const lob = require('lob')(process.env.LOB_KEY);
-const ig = require('instagram-node').instagram();
+const ig = bluebird.promisifyAll(require('instagram-node').instagram());
 const foursquare = require('node-foursquare')({
   secrets: {
     clientId: process.env.FOURSQUARE_ID,
@@ -22,25 +23,8 @@ const foursquare = require('node-foursquare')({
   }
 });
 
-/**
- * Returns a function that will wrap the given func.
- * Instead of taking a callback, the returned function will
- * return a promise whose fate is decided by the callback
- * behavior of the given node function.
- */
-function promisify(func) {
-  return function funcWrapper(...funcArgs) {
-    const target = this;
-    return new Promise((resolve, reject) => {
-      funcArgs.push((err, ...data) => {
-        if (err) return reject(err);
-        if (data.length === 1) resolve(data[0]);
-        else resolve(data);
-      });
-      func.apply(target, funcArgs);
-    });
-  };
-}
+foursquare.Venues = bluebird.promisifyAll(foursquare.Venues);
+foursquare.Users = bluebird.promisifyAll(foursquare.Users);
 
 /**
  * GET /api
@@ -59,9 +43,9 @@ exports.getApi = (req, res) => {
 exports.getFoursquare = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'foursquare');
   Promise.all([
-    promisify(foursquare.Venues.getTrending)('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken),
-    promisify(foursquare.Venues.getVenue)('49da74aef964a5208b5e1fe3', token.accessToken),
-    promisify(foursquare.Users.getCheckins)('self', null, token.accessToken)
+    foursquare.Venues.getTrendingAsync('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken),
+    foursquare.Venues.getVenueAsync('49da74aef964a5208b5e1fe3', token.accessToken),
+    foursquare.Users.getCheckinsAsync('self', null, token.accessToken)
   ])
   .then(([trendingVenues, venueDetail, userCheckins]) => {
     res.render('api/foursquare', {
@@ -187,33 +171,30 @@ exports.getLastfm = (req, res, next) => {
     api_key: process.env.LASTFM_KEY,
     secret: process.env.LASTFM_SECRET
   });
-  Promise.all([
-    (function artistInfo() {
-      return new Promise((resolve, reject) => {
-        lastfm.request('artist.getInfo', {
-          artist: 'Roniit',
-          handlers: {
-            success: resolve,
-            error: reject
-          }
-        });
+  const artistInfo = () =>
+    new Promise((resolve, reject) => {
+      lastfm.request('artist.getInfo', {
+        artist: 'Roniit',
+        handlers: {
+          success: resolve,
+          error: reject
+        }
       });
-    }()),
-    (function artistTopTracks() {
-      return new Promise((resolve, reject) => {
-        lastfm.request('artist.getTopTracks', {
-          artist: 'Roniit',
-          handlers: {
-            success: (data) => {
-              resolve(data.toptracks.track.slice(0, 10));
-            },
-            error: reject
-          }
-        });
+    });
+  const artistTopTracks = () =>
+    new Promise((resolve, reject) => {
+      lastfm.request('artist.getTopTracks', {
+        artist: 'Roniit',
+        handlers: {
+          success: (data) => {
+            resolve(data.toptracks.track.slice(0, 10));
+          },
+          error: reject
+        }
       });
-    }()),
-    (function artistTopAlbums() {
-      return new Promise((resolve, reject) => {
+    });
+  const artistTopAlbums = () =>
+      new Promise((resolve, reject) => {
         lastfm.request('artist.getTopAlbums', {
           artist: 'Roniit',
           handlers: {
@@ -224,7 +205,10 @@ exports.getLastfm = (req, res, next) => {
           }
         });
       });
-    }()),
+  Promise.all([
+    artistInfo(),
+    artistTopTracks(),
+    artistTopAlbums()
   ])
   .then(([artistInfo, artistTopAlbums, artistTopTracks]) => {
     const artist = {
@@ -301,41 +285,43 @@ exports.postTwitter = (req, res, next) => {
 exports.getSteam = (req, res, next) => {
   const steamId = '76561197982488301';
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  const fetch = promisify(request.get);
+  const playerAchievements = () => {
+    params.appid = '49520';
+    return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
+      .then(([request, body]) => {
+        if (request.statusCode === 401) {
+          throw new Error('Invalid Steam API Key');
+        }
+        return body;
+      });
+  };
+  const playerSummaries = () => {
+    params.steamids = steamId;
+    return request.getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
+      .then(([request, body]) => {
+        if (request.statusCode === 401) {
+          throw Error('Missing or Invalid Steam API Key');
+        }
+        return body;
+      });
+  };
+  const ownedGames = () => {
+    params.include_appinfo = 1;
+    params.include_played_free_games = 1;
+    return request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true })
+      .then(([request, body]) => {
+        if (request.statusCode === 401) {
+          throw new Error('Missing or Invalid Steam API Key');
+        }
+        return body;
+      });
+  };
   Promise.all([
-    (function playerAchievements() {
-      params.appid = '49520';
-      return fetch({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
-        .then(([request, body]) => {
-          if (request.statusCode === 401) {
-            throw new Error('Invalid Steam API Key');
-          }
-          return body;
-        });
-    }()),
-    (function playerSummaries() {
-      params.steamids = steamId;
-      return fetch({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
-        .then(([request, body]) => {
-          if (request.statusCode === 401) {
-            throw Error('Missing or Invalid Steam API Key');
-          }
-          return body;
-        });
-    }()),
-    (function ownedGames() {
-      params.include_appinfo = 1;
-      params.include_played_free_games = 1;
-      return fetch({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true })
-        .then(([request, body]) => {
-          if (request.statusCode === 401) {
-            throw new Error('Missing or Invalid Steam API Key');
-          }
-          return body;
-        });
-    }())
+    playerAchievements(),
+    playerSummaries(),
+    ownedGames()
   ])
-  .then(([ownedGames, playerAchievements, playerSummaries]) => {
+  .then(([playerAchievements, playerSummaries, ownedGames]) => {
     res.render('api/steam', {
       title: 'Steam Web API',
       ownedGames: ownedGames.response.games,
@@ -468,10 +454,10 @@ exports.getInstagram = (req, res, next) => {
   ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
   ig.use({ access_token: token.accessToken });
   Promise.all([
-    promisify(ig.user_search)('richellemead'),
-    promisify(ig.user)('175948269'),
-    promisify(ig.media_popular)(),
-    promisify(ig.user_self_media_recent)()
+    ig.user_searchAsync('richellemead'),
+    ig.userAsync('175948269'),
+    ig.media_popularAsync(),
+    ig.user_self_media_recentAsync()
   ])
   .then(([searchByUsername, searchByUserId, popularImages, myRecentMedia]) => {
     res.render('api/instagram', {
