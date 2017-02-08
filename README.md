@@ -70,6 +70,7 @@ Table of Contents
     - [JavaScript Date](#-javascript-date-cheatsheet)
     - [Mongoose Cheatsheet](#mongoose-cheatsheet)
 - [Deployment](#deployment)
+- [Docker](#docker)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
 - [License](#license)
@@ -1183,6 +1184,29 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 });
 ```
 :top: <sub>[**back to top**](#table-of-contents)</sub>
+
+Docker
+----------
+
+You will need docker and docker-compose installed to build the application using docker. 
+
+- [Docker installation](https://docs.docker.com/engine/installation/)
+
+- [Common problems setting up docker](https://docs.docker.com/toolbox/faqs/troubleshoot/)
+
+After installing docker, start the application with the following commands : 
+
+```
+# To build the project for the first time or when you add dependencies
+docker-compose build web  
+
+# To start the application (or to restart after making changes to the source code)
+docker-compose up web
+
+```
+
+To view the app, find your docker ip address + port 3000 ( this will typically be http://192.168.99.100:3000/ ).
+
 
 Deployment
 ----------

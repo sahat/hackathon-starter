@@ -1,0 +1,22 @@
+version: '2'
+services:
+  mongo:
+    image: mongo:3.4
+  node_modules:
+    build: 
+     context: .
+     dockerfile: Dockerfile_nodemodules
+  web:
+    build: .
+    ports:
+     - "3000:3000"
+    environment:
+     - MONGODB_URI=mongodb://mongo:27017/test 
+    links:
+     - mongo 
+    depends_on: 
+     - mongo 
+    volumes:
+     - .:/starter
+     - /starter/node_modules
+     
