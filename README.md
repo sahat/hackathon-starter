@@ -1188,7 +1188,7 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 Docker
 ----------
 
-You will need docker and docker-compose installed to build the application using docker. 
+You will need docker and docker-compose installed to build the application. 
 
 - [Docker installation](https://docs.docker.com/engine/installation/)
 
