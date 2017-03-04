@@ -6,9 +6,9 @@
     "volunteer",
     "vetting"
   ],
-  "website": "https://vettit.co",
+  "website": "http://www.vettit.co",
   "repository": "https://github.com/gozman/vettit",
-  "logo": "https://vettit.co/img/logo-black.svg",
+  "logo": "http://www.vettit.co/img/logo-black.svg",
   "success_url": "/setup",
   "env": {
     "TOKEN_SECRET": {
