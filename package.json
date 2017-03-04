@@ -65,5 +65,9 @@
   },
   "engines": {
     "node": "6.1.0"
+  },
+  "scripts": {
+    "dev": "webpack -d --watch",
+    "build" : "webpack -p"
   }
 }
