@@ -27,6 +27,15 @@ exports.ensureAuthenticated = function(req, res, next) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 };
+
+exports.ensureOrganizer = function(req, res, next) {
+  if (req.isAuthenticated() && req.user.isOrg) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+};
+
   /**
    * POST /login
    * Sign in with email and password
@@ -161,7 +170,7 @@ exports.unlink = function(req, res, next) {
         break;
       case 'github':
           user.github = undefined;
-        break;      
+        break;
       default:
         return res.status(400).send({ msg: 'Invalid OAuth Provider' });
     }
