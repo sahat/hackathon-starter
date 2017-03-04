@@ -27,6 +27,7 @@ var config = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
+          presets: ['react'],
           plugins: [
             ['react-transform', {
               transforms: [
