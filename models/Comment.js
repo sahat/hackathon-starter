@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var User = require('./User');
+var Schema = mongoose.Schema;
 
 var schemaOptions = {
   timestamps: true,
@@ -8,7 +10,7 @@ var schemaOptions = {
 };
 
 var commentSchema = new mongoose.Schema({
-  user: ObjectId,
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   text: String
 }, schemaOptions);
 
