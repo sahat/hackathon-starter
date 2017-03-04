@@ -15,6 +15,8 @@ var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var moment = require('moment');
 var request = require('request');
+var webpack = require('webpack');
+var config = require('./webpack.config');
 
 // Load environment variables from .env file
 dotenv.load();
@@ -36,6 +38,7 @@ var configureStore = require('./app/store/configureStore').default;
 
 var app = express();
 
+var compiler = webpack(config);
 
 mongoose.connect(process.env.MONGODB);
 mongoose.connection.on('error', function() {
@@ -90,6 +93,14 @@ app.use(function(req, res, next) {
   }
 });
 
+if (app.get('env') === 'development') {
+  app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }));
+  app.use(require('webpack-hot-middleware')(compiler));
+}
+
 app.post('/contact', contactController.contactPost);
 app.put('/account', userController.ensureAuthenticated, userController.accountPut);
 app.delete('/account', userController.ensureAuthenticated, userController.accountDelete);
@@ -100,8 +111,6 @@ app.post('/reset/:token', userController.resetPost);
 app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
 app.post('/auth/facebook', userController.authFacebook);
 app.get('/auth/facebook/callback', userController.authFacebookCallback);
-app.post('/auth/google', userController.authGoogle);
-app.get('/auth/google/callback', userController.authGoogleCallback);
 app.post('/auth/twitter', userController.authTwitter);
 app.get('/auth/twitter/callback', userController.authTwitterCallback);
 
