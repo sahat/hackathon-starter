@@ -8,10 +8,10 @@ var schemaOptions = {
 };
 
 var vettRecordSchema = new mongoose.Schema({
-  user: User,
+  user: ObjectId,
   vettStatus: String,
   progress: Number,
-  comments: [Comment]
+  comments: [ObjectId]
 }, schemaOptions);
 
 var VettRecord = mongoose.model('VettRecord', vettRecordSchema);
