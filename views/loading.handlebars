@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Loading</title>
+  <style>
+    html, body {
+      height: 100%;
+      display: flex;
+    }
+    body {
+      margin: -25px auto;
+      display: flex;
+      align-items: center;
+    }
+    .loading {
+      border: 6px solid rgba(0, 0, 0, .1);
+      border-top-color: rgba(0, 0, 0, .4);
+      border-radius: 100%;
+      height: 50px;
+      width: 50px;
+      animation: rotate .6s infinite linear;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(359deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading"></div>
+</body>
+</html>

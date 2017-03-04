@@ -1,0 +1,283 @@
+@import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CRaleway:100,300,600,700,800");
+
+/* Scaffolding
+/* ------------------------- */
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  background-color: #f4f4f4;;
+  margin-bottom: 44px;
+  line-height: 1.57142857;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+}
+
+a {
+  color: #1d7cf4;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+footer {
+  position: absolute;
+  width: 100%;
+  height: 44px;
+  padding: 10px 30px;
+  bottom: 0;
+  background-color: #fff;
+  border-top: 1px solid #e0e0e0;
+}
+
+.login-container {
+  max-width: 555px;
+}
+
+/* Alerts
+/* ------------------------- */
+
+.alert {
+  border-width: 0 0 0 3px;
+}
+
+.alert-info {
+  border-color: #31708f;
+}
+
+.alert-success {
+  color: #fff;
+  background-color: #29b35b;
+  border-color: #1d8141;
+}
+
+.alert-danger {
+  color: #b61b17;
+  background-color: #ffcdd2;
+  border-color: #b61b17;
+}
+
+/* Navbar
+/* ------------------------- */
+
+.navbar-default {
+  background-color: #fff;
+  border-color: #e0e0e0;
+}
+
+.navbar-default .navbar-nav {
+  color: #757575;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: #262626;
+  border-bottom: 3px solid transparent;
+  padding-top: 17.5px;
+  padding-bottom: 14.5px;
+  transition: all 0.25s;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  background-color: transparent;;
+  border-bottom-color: #bdbdbd;
+}
+
+.navbar-default .navbar-nav > li > a.navbar-avatar {
+  padding-top: 13px;
+  padding-bottom: 10px;
+}
+
+.navbar-default .navbar-nav > li > a.navbar-avatar img {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.navbar-default .navbar-nav > li.active > a {
+  border-bottom-color: #3f51b5;
+  background-color: transparent;
+  color: #262626;
+}
+
+/* Panels
+/* ------------------------- */
+
+.panel {
+  border: solid 1px rgba(160, 160, 160, 0.3);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.panel-heading {
+  padding: 20px 30px;
+}
+
+.panel-heading + .panel-body {
+  padding-top: 0;
+}
+
+.panel-body {
+  padding: 30px;
+}
+
+.panel-body h3 {
+  margin-top: 0;
+}
+
+.panel-title {
+  font-size: 18px;
+  color: #424242;
+}
+
+/* Buttons
+/* ------------------------- */
+
+.btn-toolbar > .btn {
+  float: none;
+  margin-bottom: 5px;
+}
+
+.btn {
+  font-weight: 600;
+  border-radius: 3px;
+}
+
+.btn:focus {
+  outline: 0 !important;
+}
+
+.btn-default {
+  border-color: #ccc;
+  background: #f5f5f5 linear-gradient(to bottom, #fff, #f5f5f5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), inset 0 -1px 4px rgba(151, 159, 175, 0.2);
+}
+
+.btn-default:active {
+  background: #e6e6e6 linear-gradient(to bottom, #f0f0f0, #e6e6e6);
+}
+
+.btn-success {
+  border-color: #208a46;
+  background: #29b35b linear-gradient(to bottom, #2ec866, #29b35b);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 -1px 4px rgba(32, 138, 70, 0.3);
+}
+
+.btn-success:active {
+  background: #239a4e linear-gradient(to bottom, #28af59, #239a4e);
+}
+
+.btn-danger {
+  border-color: #8c1512;
+  background: #b61b17 linear-gradient(to bottom, #cc1e1a, #b61b17);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 -1px 4px rgba(140, 21, 18, 0.3);
+}
+
+.btn-danger:active {
+  background: #9b1714 linear-gradient(to bottom, #b11a17, #9b1714);
+}
+
+.btn-facebook {
+  color: #fff;
+  border-color: #335190;
+  background: #3b5998 linear-gradient(to bottom, #4263a9, #3b5998);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 -1px 4px rgba(59, 89, 152, 0.3);
+}
+
+.btn-facebook:hover,
+.btn-facebook:focus {
+  color: #fff;
+}
+
+.btn-twitter {
+  color: #fff;
+  border-color: #009fdb;
+  background: #00aced linear-gradient(to bottom, #05baff, #00aced);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 -1px 4px rgba(0, 172, 237, 0.3);
+}
+
+.btn-twitter:hover,
+.btn-twitter:focus {
+  color: #fff;
+}
+
+.btn-google {
+  color: #fff;
+  border-color: #d54331;
+  background: #dd4b39 linear-gradient(to bottom, #e05d4d, #dd4b39);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 -1px 4px rgba(221, 75, 57, 0.3);
+}
+
+.btn-google:hover,
+.btn-google:focus {
+  color: #fff;
+}
+
+.btn-vk {
+  color: #fff;
+  border-color: #4f7192;
+  background: #587ea3 linear-gradient(to bottom, #678aad, #587ea3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 -1px 4px rgba(79, 113, 146, 0.3);
+}
+
+.btn-vk:hover,
+.btn-vk:focus {
+  color: #fff;
+}
+
+.btn-github {
+  color: #fff;
+  border-color: #444;
+  background: #545454 linear-gradient(to bottom, #616161, #545454);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 -1px 4px rgba(68, 68, 68, 0.3);
+}
+
+.btn-github:hover,
+.btn-github:focus {
+  color: #fff;
+}
+
+/* Forms */
+/* ------------------------- */
+
+textarea {
+  resize: none;
+}
+
+.form-control {
+  height: auto;
+  padding: 8px 12px;
+  border: 2px solid #ebebeb;
+  border-radius: 0;
+  box-shadow: inset 0 1px 2px rgba(150, 160, 175, 0.1), inset 0 1px 15px rgba(150, 160, 175, 0.05);
+}
+
+.form-group > label {
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.hr-title {
+  height: auto;
+  margin-top: 20px;
+  border-top: 1px solid;
+  color: #bbb;
+  font-size: 16px;
+  text-align: center;
+  line-height: 20px;
+}
+
+.hr-title span {
+  position: relative;
+  padding: 2px 10px;
+  top: -10px;
+  background-color: #fff;
+  border-radius: 2px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
