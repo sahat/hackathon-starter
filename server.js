@@ -31,6 +31,7 @@ var User = require('./models/User');
 // Controllers
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
+var orgController = require('./controllers/org');
 
 // React and Server-Side Rendering
 var routes = require('./app/routes');
@@ -102,6 +103,7 @@ if (app.get('env') === 'development') {
 }
 
 app.post('/contact', contactController.contactPost);
+app.post('/org/applicants', userController.ensureOrganizer, orgController.viewApplicants);
 app.put('/account', userController.ensureAuthenticated, userController.accountPut);
 app.delete('/account', userController.ensureAuthenticated, userController.accountDelete);
 app.post('/signup', userController.signupPost);
