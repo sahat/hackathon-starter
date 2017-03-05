@@ -19,15 +19,14 @@ class Header extends React.Component {
     const rightNav = this.props.user && this.props.token ? (
       <div className="nav-dropdown">
         <ul className="nav navbar-nav navbar-right">
-          <li className="dropdown-menu">
+          <li className="nav-dropdown-menu">
             <a href="#" className="navbar-avatar dropdown-toggle">
               <img src={this.props.user.picture || this.props.user.gravatar}/>
               {' '}{this.props.user.name || this.props.user.email || this.props.user.id}{' '}
               <i className="caret"></i>
             </a>
-            <ul className="dropdown-menu" onClick={this.checkClick()}>
+            <ul className="nav-dropdown-menu" onClick={this.checkClick()}>
               <li><Link to="/account">My Account</Link></li>
-              <li className="divider"></li>
               <li><a href="#" onClick={this.handleLogout.bind(this)}>Logout</a></li>
             </ul>
           </li>
