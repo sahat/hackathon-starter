@@ -19,9 +19,11 @@ export default function getRoutes(store) {
     }
   };
   const ensureOrganizer = (nextState, replace) => {
-    console.log(store.getState());
-    if (!store.getState().auth.token || !store.getState().auth.user.isOrg) {
-//      replace('/');
+    if (!store.getState().auth.token || !store.getState().user || !store.getState().user.isOrg) {
+      console.log("Not an organizer!");
+      console.log(store.getState().auth);
+      console.log(store.getState().user);
+      replace('/');
     }
   };
   const skipIfAuthenticated = (nextState, replace) => {
