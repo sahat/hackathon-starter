@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { updateProfile, changePassword, deleteAccount } from './../actions/auth';
 import { link, unlink } from './../actions/oauth';
+import { getApplicants, updateVettRecord } from './../actions/applicants';
 import Messages from './Messages';
-import { getApplicants } from './../actions/applicants';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
@@ -30,6 +30,24 @@ class Applicants extends React.Component {
       console.log(self.state);
     });
 
+  }
+
+  changeVettStatus(applicant, num) {
+    console.log("heyy");
+    console.log(applicant === num);
+    let checknum = applicant.vettStatus == num ? 0 : num;
+    applicant.vettStatus = checknum;
+    let self = this;
+    updateVettRecord(applicant, this.props.user).then((response) => {
+      let newapplicants = this.state.applicants;
+      for (let i = 0; i < newapplicants.length; ++i) {
+        if (newapplicants[i]._id === applicant._id) {
+          newapplicants[i] = applicant;
+        }
+      }
+      self.setState({applicants: newapplicants});
+      console.log(response);
+    });;
   }
 
   render() {
@@ -66,9 +84,15 @@ class Applicants extends React.Component {
                     </TableRowColumn>
                     <TableRowColumn>{applicant.progress}</TableRowColumn>
                     <TableRowColumn>
-                      {<IconButton iconStyle={(applicant.vettStatus == 0) ? {color:'green'} : {color: 'grey'}}><FontIcon>✓</FontIcon></IconButton>}
-                      {<IconButton iconStyle={(applicant.vettStatus == 1) ? {color:'orange'} : {color: 'grey'}}><FontIcon>X</FontIcon></IconButton>}
-                      {<IconButton iconStyle={(applicant.vettStatus == 2) ? {color:'crimson'} : {color: 'grey'}}><FontIcon>?</FontIcon></IconButton>}
+                      {<IconButton onClick={this.changeVettStatus.bind(this, applicant, 1)} iconStyle={(applicant.vettStatus == 1) ? {color:'green'} : {color: 'grey'}}>
+                        <FontIcon>✓</FontIcon>
+                      </IconButton>}
+                      {<IconButton onClick={this.changeVettStatus.bind(this, applicant, 2)} iconStyle={(applicant.vettStatus == 2) ? {color:'crimson'} : {color: 'grey'}}>
+                        <FontIcon>X</FontIcon>
+                      </IconButton>}
+                      {<IconButton onClick={this.changeVettStatus.bind(this, applicant, 3)} iconStyle={(applicant.vettStatus == 3) ? {color:'orange'} : {color: 'grey'}}>
+                        <FontIcon>?</FontIcon>
+		      </IconButton>}
                     </TableRowColumn>
                   </TableRow>
                 ))}
