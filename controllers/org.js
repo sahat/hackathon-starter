@@ -40,8 +40,9 @@ exports.postFormWebhook = function(req, res) {
 exports.updateVettRecord = function (req, res) {
   var vRec = req.body.vettRecord;
   var query = { "_id": vRed._id };
+  console.err("UPDATE", vRec);
   VettRecord.findOneAndUpdate(query, vRec, {upsert:true}, function(err, doc){
     if (err) return res.send(500, { error: err });
-    res.sendStatus(200);
+    res.send(JSON.stringify(doc));
   });
 };

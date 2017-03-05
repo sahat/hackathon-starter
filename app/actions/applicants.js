@@ -12,14 +12,20 @@ export function getApplicants(user) {
 
 }
 
-export function updateVettRecord(vettRecord, text) {
+export function updateVettRecord(vettRecord, performer) {
+  let customHeader = new Headers();
+  customHeader.append('isOrg', performer.isOrg);
+  customHeader.append('Content-Type', 'application/json');
+  console.error("UPDATE");
+  console.error(vettRecord);
   return fetch('/api/org/updateVettRecord', {
       method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+      headers: customHeader,
       body: JSON.stringify({
         vettRecord: vettRecord
       })
     }).then((response) => {
+      console.log(response);
       return "success";
     });
-}
+  }
