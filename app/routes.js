@@ -19,7 +19,7 @@ export default function getRoutes(store) {
     }
   };
   const ensureOrganizer = (nextState, replace) => {
-    if (!store.getState().auth.token || !store.getState().user.isOrg) {
+    if (!store.getState().auth.token || !store.getState().user || !store.getState().user.isOrg) {
       replace('/');
     }
   };
