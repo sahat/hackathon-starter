@@ -15,12 +15,16 @@ exports.postFormWebhook = function(req, res) {
 
   User.findById(formJson.q9_comments,  function(err, user) {
     if(user) {
-        vr = user.details;
+        var vr = user.details;
         if(!vr) {
           return res.status(500);
         }
 
+        console.log("VR object: ");
+        console.log(vr);
+        console.log('----------');
         vr.rawFormData = req.body.rawRequest;
+        console.log(vr);
         vr.save(function(err) {
           if(err) {
             console.log(err);
