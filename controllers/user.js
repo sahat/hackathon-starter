@@ -18,6 +18,8 @@ function generateToken(user) {
 }
 
 function createUser(req, res, err, user) {
+  console.log("Crate User!");
+
   if (user) {
     return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
   }
@@ -30,7 +32,7 @@ function createUser(req, res, err, user) {
   });
 
   user.save(function(err) {
-  res.send({ token: generateToken(user), user: user });
+    res.send({ token: generateToken(user), user: user });
   });
 }
 
@@ -90,11 +92,14 @@ exports.ensureOrganizer = function(req, res, next) {
  * POST /signup
  */
 exports.signupPost = function(req, res, next) {
+  console.log("SignupPost User!");
+
   req.assert('name', 'Name cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('email', 'Email cannot be blank').notEmpty();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.sanitize('email').normalizeEmail({ remove_dots: false });
+  console.log("survived assertions! User!");
 
   var errors = req.validationErrors();
 
@@ -106,15 +111,20 @@ exports.signupPost = function(req, res, next) {
     //Make sure there are no other admin users. We only support one right now...
     User.findOne({isOrg: true}, function(err, user) {
       if (user) {
+        console.log("Admin... User already created");
         return res.status(400).send({ msg: 'An admin user has already been created.' });
       } else {
+        console.log("Signing up admin...");
         User.findOne({ email: req.body.email }, function(err, user) {
           createUser(req, res, err, user);
         });
       }
     });
   } else {
+    console.log("Signing up regular user...");
+    //console.log(User);
     User.findOne({ email: req.body.email }, function(err, user) {
+      console.log("Something happened");
       createUser(req, res, err, user);
     });
   }

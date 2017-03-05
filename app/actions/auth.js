@@ -38,6 +38,8 @@ export function login(email, password) {
 }
 
 export function signup(name, email, password, org) {
+
+  console.log("SIGNUP AUTH.JS");
   return (dispatch) => {
     dispatch({
       type: 'CLEAR_MESSAGES'
