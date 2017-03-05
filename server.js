@@ -17,6 +17,7 @@ var moment = require('moment');
 var request = require('request');
 var webpack = require('webpack');
 var config = require('./webpack.config');
+var multer  = require('multer');
 
 // Load environment variables from .env file
 dotenv.load();
@@ -38,6 +39,7 @@ var routes = require('./app/routes');
 var configureStore = require('./app/store/configureStore').default;
 
 var app = express();
+var multipart = multer();
 
 var compiler = webpack(config);
 
@@ -68,7 +70,7 @@ app.set('port', process.env.PORT || 3000);
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -117,6 +119,7 @@ app.post('/auth/twitter', userController.authTwitter);
 app.get('/auth/twitter/callback', userController.authTwitterCallback);
 app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
+app.post('/jotform', multipart.array(), orgController.postFormWebhook);
 
 // React server rendering
 app.use(function(req, res) {
