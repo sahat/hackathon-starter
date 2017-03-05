@@ -15,7 +15,7 @@ import Applicants from './components/Applicants';
 export default function getRoutes(store) {
   const ensureAuthenticated = (nextState, replace) => {
     if (!store.getState().auth.token) {
-      replace('/login');
+//      replace('/login');
     }
   }; 
   const skipIfAuthenticated = (nextState, replace) => {
