@@ -74,11 +74,9 @@ class Login extends React.Component {
     );
   }
 }
-
 const mapStateToProps = (state) => {
   return {
     messages: state.messages
   };
 };
-
 export default connect(mapStateToProps)(Login);

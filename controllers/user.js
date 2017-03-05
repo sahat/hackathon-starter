@@ -562,3 +562,19 @@ exports.authGoogle = function(req, res) {
 exports.authGoogleCallback = function(req, res) {
   res.render('loading', { layout: false });
 };
+
+/*
+* Retrieve heroku organization config variable
+ */
+
+exports.orgInfo = function(req, res, next) {
+  const orgInfo = {
+    orgName: process.env["ORG_NAME"],
+    orgLogo: process.env["ORG_LOGO_URL"],
+    orgWebsite: process.env["ORG_WEBSITE"],
+    orgAddress: process.env["ORG_ADDRESS"],
+    orgPhone: process.env["ORG_PHONE"],
+    orgMission: process.env["ORG_MISSION"]
+  }
+  res.send({ orgInfo });
+};

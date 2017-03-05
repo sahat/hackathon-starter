@@ -41,7 +41,7 @@ footer {
 }
 
 .login-container {
-  max-width: 555px;
+  max-width: 900px;
 }
 
 /* Alerts
@@ -149,6 +149,8 @@ footer {
 .btn {
   font-weight: 600;
   border-radius: 3px;
+  margin: 5px;
+  width: 165px;
 }
 
 .btn:focus {
@@ -283,4 +285,30 @@ textarea {
   border-radius: 2px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
+}
+
+#sign-up {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.org-info {
+  list-style: none;
+  font-size: 16px;
+}
+
+.org-logo {
+  border-radius: 3px;
+}
+
+.mission {
+  margin: 20px;
+  font-size: 18px;
+}
+
+.contact {
+  font-size: 18px;
 }

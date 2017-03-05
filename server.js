@@ -121,6 +121,7 @@ app.get('/auth/twitter/callback', userController.authTwitterCallback);
 app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
 app.post('/jotform', multipart.array(), orgController.postFormWebhook);
+app.get('/orgInfo', userController.orgInfo);
 
 // React server rendering
 app.use(function(req, res) {
