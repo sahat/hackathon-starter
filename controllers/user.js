@@ -161,7 +161,7 @@ exports.unlink = function(req, res, next) {
         break;
       case 'github':
           user.github = undefined;
-        break;      
+        break;
       default:
         return res.status(400).send({ msg: 'Invalid OAuth Provider' });
     }
@@ -359,6 +359,7 @@ exports.authFacebookCallback = function(req, res) {
  * Sign in with Twitter
  */
 exports.authTwitter = function(req, res) {
+  console.log('in auth twitter');
   var requestTokenUrl = 'https://api.twitter.com/oauth/request_token';
   var accessTokenUrl = 'https://api.twitter.com/oauth/access_token';
   var profileUrl = 'https://api.twitter.com/1.1/users/show.json?screen_name=';
@@ -445,5 +446,82 @@ exports.authTwitter = function(req, res) {
 };
 
 exports.authTwitterCallback = function(req, res) {
+  res.render('loading', { layout: false });
+};
+
+/**
+ * POST /auth/google
+ * Sign in with Google
+ */
+exports.authGoogle = function(req, res) {
+  var profileFields = ['id', 'name', 'email', 'gender', 'location'];
+  var accessTokenUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+  var plusApiUrl = 'https://www.googleapis.com/plus/v1/people/' + profileFields.join(',');
+
+  var params = {
+    code: req.body.code,
+    client_id: req.body.clientId,
+    client_secret: process.env.GOOGLE_SECRET,
+    redirect_uri: req.body.redirectUri,
+    scope: req.body.scope,
+    response_type: 'token'
+  };
+
+  // Step 1. Exchange authorization code for access token.
+  request.get({ url: accessTokenUrl, qs: params, json: true }, function(err, response, accessToken) {
+    if (accessToken.error) {
+      return res.status(500).send({ msg: accessToken.error.message });
+    }
+    // Step 2. Retrieve user's profile information.
+    request.get({ url: plusApiUrl, qs: accessToken, json: true }, function(err, response, profile) {
+      if (profile.error) {
+        return res.status(500).send({ msg: profile.error.message });
+      }
+
+      // Step 3a. Link accounts if user is authenticated.
+      if (req.isAuthenticated()) {
+        User.findOne({ google: profile.id }, function(err, user) {
+          if (user) {
+            return res.status(409).send({ msg: 'There is already an existing account linked with Google that belongs to you.' });
+          }
+          user = req.user;
+          user.name = user.name || profile.name;
+          user.gender = user.gender || profile.gender;
+          user.picture = user.picture || 'https://graph.google.com/' + profile.id + '/picture?type=large';
+          user.google = profile.id;
+          user.save(function() {
+            res.send({ token: generateToken(user), user: user });
+          });
+        });
+      } else {
+        // Step 3b. Create a new user account or return an existing one.
+        User.findOne({ google: profile.id }, function(err, user) {
+          if (user) {
+            return res.send({ token: generateToken(user), user: user });
+          }
+          User.findOne({ email: profile.email }, function(err, user) {
+            if (user) {
+              return res.status(400).send({ msg: user.email + ' is already associated with another account.' })
+            }
+            user = new User({
+              name: profile.name,
+              email: profile.email,
+              gender: profile.gender,
+              location: profile.location && profile.location.name,
+              picture: 'https://graph.google.com/' + profile.id + '/picture?type=large',
+              facebook: profile.id
+            });
+            user.save(function(err) {
+              return res.send({ token: generateToken(user), user: user });
+            });
+          });
+        });
+      }
+    });
+  });
+};
+
+exports.authGoogleCallback = function(req, res) {
   res.render('loading', { layout: false });
 };
