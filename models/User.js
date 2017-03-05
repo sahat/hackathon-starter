@@ -1,6 +1,7 @@
 var crypto = require('crypto');
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose');
+var VettRecord = require('../models/VettRecord');
 
 var schemaOptions = {
   timestamps: true,
@@ -27,8 +28,23 @@ var userSchema = new mongoose.Schema({
   isOrg: Boolean
 }, schemaOptions);
 
+
 userSchema.pre('save', function(next) {
   var user = this;
+  console.log(user);
+  console.log(user.isOrg);
+  if(this.isNew && !user.isOrg) {
+    var vettRecord = new VettRecord({
+      progress: 0,
+      comments: [],
+      user: user._id
+    });
+    vettRecord.save(function () {
+      console.log("Saving new VettRecord");
+      console.log(JSON.stringify(vettRecord));
+    });
+  }
+
   if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, function(err, salt) {
     bcrypt.hash(user.password, salt, null, function(err, hash) {

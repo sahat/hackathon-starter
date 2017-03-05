@@ -57,6 +57,12 @@ class Profile extends React.Component {
     ) : (
       <a role="button" onClick={this.handleLink.bind(this, 'twitter')}>Link your Twitter account</a>
     );
+    const googleLinkedAccount = this.props.user.google ? (
+      <a role="button" className="text-danger" onClick={this.handleUnlink.bind(this, 'google')}>Unlink your Google account</a>
+    ) : (
+      <a role="button" onClick={this.handleLink.bind(this, 'google')}>Link your Google account</a>
+    );
+
     return (
       <div className="container">
         <div className="panel">
@@ -78,12 +84,21 @@ class Profile extends React.Component {
               </div>
               <div className="form-group">
                 <label className="col-sm-3">Gender</label>
-                <div className="col-sm-4">
-                  <label className="radio-inline radio col-sm-4">
+                <div className="col-sm-9">
+                  <label className="radio-inline radio">
                     <input type="radio" name="gender" value="male" checked={this.state.gender === 'male'} onChange={this.handleChange.bind(this)}/><span>Male</span>
                   </label>
-                  <label className="radio-inline col-sm-4">
+                  <label className="radio-inline">
                     <input type="radio" name="gender" value="female" checked={this.state.gender === 'female'} onChange={this.handleChange.bind(this)}/><span>Female</span>
+                  </label>
+                  <label className="radio-inline">
+                    <input type="radio" name="gender" value="trans*" checked={this.state.gender === 'trans*'} onChange={this.handleChange.bind(this)}/><span>Trans*</span>
+                  </label>
+                  <label className="radio-inline">
+                    <input type="radio" name="gender" value="genderqueer" checked={this.state.gender === 'genderqueer'} onChange={this.handleChange.bind(this)}/><span>Genderqueer</span>
+                  </label>
+                  <label className="radio-inline">
+                    <input type="radio" name="gender" value="other" checked={this.state.gender === 'other'} onChange={this.handleChange.bind(this)}/><span>Other</span>
                   </label>
                 </div>
               </div>
@@ -145,6 +160,7 @@ class Profile extends React.Component {
                 <div className="col-sm-offset-3 col-sm-4">
                   <p>{facebookLinkedAccount}</p>
                   <p>{twitterLinkedAccount}</p>
+                  <p>{googleLinkedAccount}</p>
                 </div>
               </div>
             </div>

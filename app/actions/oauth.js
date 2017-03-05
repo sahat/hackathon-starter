@@ -45,6 +45,29 @@ export function twitterLogin() {
   };
 }
 
+// Sign in with Google
+export function googleLogin() {
+  const google = {
+    url: 'http://localhost:3000/auth/google',
+    clientId:"987061408022-holm2tamapb0a7uatsfj0qdirdjf85q9.apps.googleusercontent.com",
+    authorizationUrl:"https://accounts.google.com/o/oauth2/auth",
+    tokenUrl:"https://accounts.google.com/o/oauth2/token",
+    redirectUri:"http://localhost:3000/auth/google/callback",
+    scope: 'profile email',
+    responseType: 'token'
+  };
+
+  return (dispatch) => {
+    oauth2(google, dispatch)
+      .then(openPopup)
+      .then(pollPopup)
+      .then(exchangeCodeForToken)
+      .then(signIn)
+      .then(closePopup);
+  };
+
+}
+
 // Link account
 export function link(provider) {
   switch (provider) {
@@ -52,6 +75,8 @@ export function link(provider) {
       return facebookLogin();
     case 'twitter':
       return twitterLogin();
+    case 'google':
+      return googleLogin();
     default:
       return {
         type: 'LINK_FAILURE',
@@ -234,4 +259,3 @@ function closePopup({ window, interval }) {
     resolve();
   });
 }
-
