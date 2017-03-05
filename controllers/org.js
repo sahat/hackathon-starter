@@ -15,10 +15,11 @@ exports.postFormWebhook = function(req, res) {
 
   User.findById(formJson.q9_comments,  function(err, userInfo) {
     if(userInfo) {
-      VettRecord.find({user: userInfo._id}, function(err, vr) {
+      VettRecord.findOne({user: userInfo._id}, function(err, vr) {
         if(vr) {
           console.log("Found VR: " + vr);
           vr.rawFormData = req.body.rawRequest;
+          console.log("Updated VR: " + vr);
           vr.save(function(err) {
             if(err) {
               console.log(err);
