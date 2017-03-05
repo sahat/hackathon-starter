@@ -17,6 +17,7 @@ exports.postFormWebhook = function(req, res) {
     if(user) {
         var vr = user.details;
         if(!vr) {
+          console.log("NO VR OBJECT!!!");
           return res.status(500);
         }
 
