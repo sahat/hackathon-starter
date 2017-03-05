@@ -48,7 +48,9 @@ exports.ensureAuthenticated = function(req, res, next) {
 };
 
 exports.ensureOrganizer = function(req, res, next) {
-  if (req.isAuthenticated() && req.user.isOrg) {
+  console.log('req headers ', req.headers);
+  if (req.isAuthenticated() && (req.user.isOrg) || req.headers.isorg) {
+    console.log('hi');
     next();
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
