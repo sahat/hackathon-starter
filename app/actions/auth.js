@@ -37,7 +37,7 @@ export function login(email, password) {
   };
 }
 
-export function signup(name, email, password) {
+export function signup(name, email, password, org) {
   return (dispatch) => {
     dispatch({
       type: 'CLEAR_MESSAGES'
@@ -45,7 +45,7 @@ export function signup(name, email, password) {
     return fetch('/signup', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: name, email: email, password: password })
+      body: JSON.stringify({ name: name, email: email, password: password, org: org })
     }).then((response) => {
       return response.json().then((json) => {
         if (response.ok) {
