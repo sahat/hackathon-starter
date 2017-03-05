@@ -17,6 +17,22 @@ function generateToken(user) {
   return jwt.sign(payload, process.env.TOKEN_SECRET);
 }
 
+function createUser(err, user) {
+  if (user) {
+    return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
+  }
+  user = new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    isOrg: req.body.org
+  });
+
+  user.save(function(err) {
+  res.send({ token: generateToken(user), user: user });
+  });
+}
+
 /**
  * Login required middleware
  */
@@ -83,19 +99,18 @@ exports.signupPost = function(req, res, next) {
     return res.status(400).send(errors);
   }
 
-  User.findOne({ email: req.body.email }, function(err, user) {
-    if (user) {
-    return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
-    }
-    user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password
+  if(req.body.org) {
+    //Make sure there are no other admin users. We only support one right now...
+    User.findOne({isOrg: true}, function(err, user) {
+      if (user) {
+        return res.status(400).send({ msg: 'An admin user has already been created.' });
+      } else {
+        User.findOne({ email: req.body.email }, createUser);
+      }
     });
-    user.save(function(err) {
-    res.send({ token: generateToken(user), user: user });
-    });
-  });
+  } else {
+    User.findOne({ email: req.body.email }, createUser);
+  }
 };
 
 
