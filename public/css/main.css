@@ -1,5 +1,9 @@
 @import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CRaleway:100,300,600,700,800");
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+/* To do: Delete these styles */
+
+/* Scaffolding
+/* ------------------------- */
 
 html {
   position: relative;
@@ -7,7 +11,7 @@ html {
 }
 
 body {
-  background-color: #f4f4f4;
+  background-color: #f4f4f4;;
   margin-bottom: 44px;
   line-height: 1.57142857;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -39,6 +43,9 @@ footer {
   max-width: 555px;
 }
 
+/* Alerts
+/* ------------------------- */
+
 .alert {
   border-width: 0 0 0 3px;
 }
@@ -59,6 +66,9 @@ footer {
   border-color: #b61b17;
 }
 
+/* Navbar
+/* ------------------------- */
+
 .navbar-default {
   background-color: #fff;
   border-color: #e0e0e0;
@@ -77,7 +87,7 @@ footer {
 }
 
 .navbar-default .navbar-nav > li > a:hover {
-  background-color: transparent;
+  background-color: transparent;;
   border-bottom-color: #bdbdbd;
 }
 
@@ -97,6 +107,9 @@ footer {
   background-color: transparent;
   color: #262626;
 }
+
+/* Panels
+/* ------------------------- */
 
 .panel {
   border: solid 1px rgba(160, 160, 160, 0.3);
@@ -124,6 +137,8 @@ footer {
   color: #424242;
 }
 
+/* Buttons
+/* ------------------------- */
 
 .btn-toolbar > .btn {
   float: none;
@@ -229,6 +244,8 @@ footer {
   color: #fff;
 }
 
+/* Forms */
+/* ------------------------- */
 
 textarea {
   resize: none;
