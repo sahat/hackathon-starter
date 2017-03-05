@@ -1,0 +1,34 @@
+{
+  "name": "vettit",
+  "description": "This app does one little thing, and does it well.",
+  "keywords": [
+    "non-profit",
+    "volunteer",
+    "vetting"
+  ],
+  "website": "http://www.vettit.co",
+  "repository": "https://github.com/gozman/vettit",
+  "logo": "http://www.vettit.co/img/logo-black.svg",
+  "success_url": "/setup",
+  "env": {
+    "TOKEN_SECRET": {
+      "description": "A secret key for verifying the integrity of the user database",
+      "generator": "secret"
+    },
+    "ORG_NAME": {
+      "description": "The name of your organization"
+    },
+    "ORG_LOGO_URL": {
+      "description": "The URL of the logo you'd like to use on your applicant portal"
+    },
+    "ORG_WEBSITE": {
+      "description": "A link to your organization's website"
+    }
+  },
+  "addons": [
+    {
+      "plan": "mongolab:sandbox",
+      "as": "MONGO"
+    }
+  ]
+}
