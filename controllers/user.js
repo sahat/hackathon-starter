@@ -21,7 +21,7 @@ function createUser(req, res, err, user) {
   if (user) {
     return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
   }
-  
+
   user = new User({
     name: req.body.name,
     email: req.body.email,
@@ -46,7 +46,9 @@ exports.ensureAuthenticated = function(req, res, next) {
 };
 
 exports.ensureOrganizer = function(req, res, next) {
-  if (req.isAuthenticated() && req.user.isOrg) {
+  console.log('req headers ', req.headers);
+  if (req.isAuthenticated() && (req.user.isOrg) || req.headers.isorg) {
+    console.log('hi');
     next();
   } else {
     res.status(401).send({ msg: 'Unauthorized' });

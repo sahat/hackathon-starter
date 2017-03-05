@@ -11,7 +11,6 @@ class Applicants extends React.Component {
     this.state = {
       applicants: []
     };
-    console.log("props", this.props);
   }
 
   componentDidMount() {
@@ -19,13 +18,13 @@ class Applicants extends React.Component {
 
     console.log(self.state);
 
-    getApplicants().then((applicants) => {
+    getApplicants(this.props.user).then((applicants) => {
       self.setState({
         applicants: applicants
       });
       console.log(self.state);
     });
-    
+
   }
 
   render() {
@@ -35,7 +34,7 @@ class Applicants extends React.Component {
         <div className="panel">
           <div className="panel-body">
             <Messages messages={this.props.messages}/>
-            
+
           </div>
         </div>
       </div>
