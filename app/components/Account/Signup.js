@@ -17,6 +17,7 @@ class Signup extends React.Component {
 
   handleSignup(event) {
     event.preventDefault();
+    console.log("signup clicked!");
     this.props.dispatch(signup(this.state.name, this.state.email, this.state.password, false));
   }
 
