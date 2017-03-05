@@ -57,6 +57,12 @@ class Profile extends React.Component {
     ) : (
       <a role="button" onClick={this.handleLink.bind(this, 'twitter')}>Link your Twitter account</a>
     );
+    const googleLinkedAccount = this.props.user.google ? (
+      <a role="button" className="text-danger" onClick={this.handleUnlink.bind(this, 'google')}>Unlink your Google account</a>
+    ) : (
+      <a role="button" onClick={this.handleLink.bind(this, 'google')}>Link your Google account</a>
+    );
+
     return (
       <div className="container">
         <div className="panel">
@@ -145,6 +151,7 @@ class Profile extends React.Component {
                 <div className="col-sm-offset-3 col-sm-4">
                   <p>{facebookLinkedAccount}</p>
                   <p>{twitterLinkedAccount}</p>
+                  <p>{googleLinkedAccount}</p>
                 </div>
               </div>
             </div>
