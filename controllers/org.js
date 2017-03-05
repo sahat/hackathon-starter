@@ -5,7 +5,17 @@ exports.viewApplicants = function (req, res) {
   VettRecord.find({}).
     populate('user').
     exec(function (err, docs) {
-    console.log(docs);
+    console.error(docs);
+    res.send(docs);
+  });
+};
+
+exports.viewApproved = function (req, res) {
+  VettRecord.find({vettStatus:1}).
+    populate('user').
+    exec(function (err, docs) {
+    console.error("HI");
+    console.error(docs);
     res.send(docs);
   });
 };
@@ -39,9 +49,11 @@ exports.postFormWebhook = function(req, res) {
 
 exports.updateVettRecord = function (req, res) {
   var vRec = req.body.vettRecord;
-  var query = { "_id": vRed._id };
-  console.err("UPDATE", vRec);
+  var query = { "_id": vRec._id };
+  console.error("UPDATE", vRec);
   VettRecord.findOneAndUpdate(query, vRec, {upsert:true}, function(err, doc){
+    console.error("OOOUPDATE");
+    console.error(doc);
     if (err) return res.send(500, { error: err });
     res.send(JSON.stringify(doc));
   });

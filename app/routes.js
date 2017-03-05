@@ -11,6 +11,7 @@ import Profile from './components/Account/Profile';
 import Forgot from './components/Account/Forgot';
 import Reset from './components/Account/Reset';
 import Applicants from './components/Applicants';
+import Approved from './components/Approved';
 
 export default function getRoutes(store) {
   const ensureAuthenticated = (nextState, replace) => {
@@ -47,6 +48,7 @@ export default function getRoutes(store) {
       <Route path="/forgot" component={Forgot} onEnter={skipIfAuthenticated} onLeave={clearMessages}/>
       <Route path='/reset/:token' component={Reset} onEnter={skipIfAuthenticated} onLeave={clearMessages}/>
       <Route path='/org/applicants' component={Applicants} onEnter={ensureOrganizer} onLeave={clearMessages}/>
+      <Route path='/org/approved' component={Approved} onEnter={ensureOrganizer} onLeave={clearMessages}/>
       <Route path="*" component={NotFound} onLeave={clearMessages}/>
     </Route>
   );

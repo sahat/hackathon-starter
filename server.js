@@ -105,8 +105,9 @@ if (app.get('env') === 'development') {
 }
 
 app.post('/contact', contactController.contactPost);
-app.get('/api/org/applicants', userController.ensureOrganizer, orgController.viewApplicants);
-app.get('/api/org/updateVettRecord', userController.ensureOrganizer, orgController.updateVettRecord);
+app.post('/org/api/applicants', userController.ensureOrganizer, orgController.viewApplicants);
+app.post('/org/api/approved', userController.ensureOrganizer, orgController.viewApproved);
+app.post('/org/api/updateVettRecord', userController.ensureOrganizer, orgController.updateVettRecord);
 app.put('/account', userController.ensureAuthenticated, userController.accountPut);
 app.delete('/account', userController.ensureAuthenticated, userController.accountDelete);
 app.post('/signup', userController.signupPost);

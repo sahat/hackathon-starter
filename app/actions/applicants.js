@@ -1,8 +1,8 @@
-export function getApplicants(user) {
+export function getApplicants(user, approvedOnly) {
   let customHeader = new Headers();
-  customHeader.append('isOrg', user.isOrg);
-  return fetch('/api/org/applicants', {
-    method: 'get',
+  customHeader.append('isorg', user.isOrg);
+  return fetch(approvedOnly ? 'api/approved' : 'api/applicants', {
+    method: 'post',
     headers: customHeader
   }).then((response) => {
     return response.json().then((json) => {
@@ -14,11 +14,11 @@ export function getApplicants(user) {
 
 export function updateVettRecord(vettRecord, performer) {
   let customHeader = new Headers();
-  customHeader.append('isOrg', performer.isOrg);
+  customHeader.append('isorg', performer.isOrg);
   customHeader.append('Content-Type', 'application/json');
-  console.error("UPDATE");
+  console.error("UPDATEFRONT");
   console.error(vettRecord);
-  return fetch('/api/org/updateVettRecord', {
+  return fetch('api/updateVettRecord', {
       method: 'post',
       headers: customHeader,
       body: JSON.stringify({
