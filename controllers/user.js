@@ -107,15 +107,19 @@ exports.signupPost = function(req, res, next) {
     return res.status(400).send(errors);
   }
 
+  console.log("survived assertions! User 2!");
+
   if(req.body.org) {
     //Make sure there are no other admin users. We only support one right now...
     User.findOne({isOrg: true}, function(err, user) {
+      console.log("Searched for admin");
+
       if (user) {
         console.log("Admin... User already created");
         return res.status(400).send({ msg: 'An admin user has already been created.' });
       } else {
-        console.log("Signing up admin...");
         User.findOne({ email: req.body.email }, function(err, user) {
+          console.log("Signing up admin...");
           createUser(req, res, err, user);
         });
       }
