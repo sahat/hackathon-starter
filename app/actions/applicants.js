@@ -22,5 +22,4 @@ export function updateVettRecord(vettRecord, text) {
     }).then((response) => {
       return "success";
     });
-  }
 }
