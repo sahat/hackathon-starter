@@ -54,6 +54,7 @@
     "babel-plugin-rewire": "1.0.0-rc-3",
     "babel-register": "^6.8.0",
     "chai": "^3.5.0",
+    "css-loader": "^0.26.2",
     "enzyme": "^2.3.0",
     "fetch-mock": "3.0.2",
     "mocha": "^2.4.5",
@@ -61,6 +62,7 @@
     "redux-mock-store": "^1.0.2",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
+    "style-loader": "^0.13.2",
     "supertest": "^1.2.0"
   },
   "engines": {
