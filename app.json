@@ -18,11 +18,20 @@
     "ORG_NAME": {
       "description": "The name of your organization"
     },
-    "ORG_LOGO_URL": {
-      "description": "The URL of the logo you'd like to use on your applicant portal"
+    "ORG_MISSION": {
+      "description": "The mission of your organization"
+    },
+    "ORG_PHONE": {
+      "description": "The phone of your organization"
+    },
+    "ORG_ADDRESS": {
+      "description": "The address of your organization"
     },
     "ORG_WEBSITE": {
       "description": "A link to your organization's website"
+    },
+    "ORG_LOGO_URL": {
+      "description": "The URL of the logo you'd like to use on your applicant portal"
     }
   },
   "addons": [
