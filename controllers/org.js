@@ -13,7 +13,7 @@ exports.viewApplicants = function (req, res) {
 exports.postFormWebhook = function(req, res) {
   var formJson = JSON.parse(req.body.rawRequest);
 
-  User.findById(formJson.q10_applicantid,  function(err, user) {
+  User.findById(formJson.q9_comments,  function(err, user) {
     if(user) {
         vr = user.details;
         if(!vr) {
