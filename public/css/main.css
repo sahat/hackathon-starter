@@ -1,8 +1,13 @@
 @import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CRaleway:100,300,600,700,800");
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+<<<<<<< 630689f035e1e6684116b5ba3cb662ba17f1e997
 @import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
 
 /* To do: Delete these styles */
+=======
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+
+>>>>>>> Add org info
 
 /* Scaffolding
 /* ------------------------- */
@@ -42,7 +47,7 @@ footer {
 }
 
 .login-container {
-  max-width: 555px;
+  max-width: 900px;
 }
 
 /* Alerts
@@ -72,12 +77,13 @@ footer {
 /* ------------------------- */
 
 .navbar-default {
-  background-color: #fff;
+  background-color: #3F51B5
+;
   border-color: #e0e0e0;
 }
 
 .navbar-default .navbar-nav {
-  color: #757575;
+  color: #3F51B5;
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -150,6 +156,8 @@ footer {
 .btn {
   font-weight: 600;
   border-radius: 3px;
+  margin: 5px;
+  width: 175px;
 }
 
 .btn:focus {
@@ -284,4 +292,17 @@ textarea {
   border-radius: 2px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
+}
+
+#sign-up {
+  text-align: center;
+  border-left: 2px;
+}
+
+.orgInfo {
+  list-style: none;
+}
+
+.sign-in-title {
+  font-family: 'Lobster', cursive;
 }
