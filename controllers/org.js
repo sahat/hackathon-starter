@@ -13,27 +13,25 @@ exports.viewApplicants = function (req, res) {
 exports.postFormWebhook = function(req, res) {
   var formJson = JSON.parse(req.body.rawRequest);
 
-  User.findById(formJson.q9_comments,  function(err, user) {
-    if(user) {
-        var vr = user.details;
-        if(!vr) {
+  User.findById(formJson.q9_comments,  function(err, userInfo) {
+    if(userInfo) {
+      VettRecord.find({user: userInfo._id}, function(err, vr) {
+        if(vr) {
+          console.log("Found VR: " + vr);
+          vr.rawFormData = req.body.rawRequest;
+          vr.save(function(err) {
+            if(err) {
+              console.log(err);
+              return res.status(500);
+            } else {
+              return res.status(200);
+            }
+          });
+        } else {
           console.log("NO VR OBJECT!!!");
           return res.status(500);
         }
-
-        console.log("VR object: ");
-        console.log(vr);
-        console.log('----------');
-        vr.rawFormData = req.body.rawRequest;
-        console.log(vr);
-        vr.save(function(err) {
-          if(err) {
-            console.log(err);
-            return res.status(500);
-          } else {
-            return res.status(200);
-          }
-        });
+      });
     }
   });
 }

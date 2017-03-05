@@ -68,14 +68,6 @@ userSchema.virtual('gravatar').get(function() {
   return 'https://gravatar.com/avatar/' + md5 + '?s=200&d=retro';
 });
 
-userSchema.virtual('details').get(function() {
- console.log("IN DETAILS");
- VettRecord.find({user: this._id}, function(err, vr) {
-   console.log("Found VR: " + vr);
-   return vr;
- });
-});
-
 userSchema.options.toJSON = {
   transform: function(doc, ret, options) {
     delete ret.password;
