@@ -113,6 +113,8 @@ app.post('/auth/facebook', userController.authFacebook);
 app.get('/auth/facebook/callback', userController.authFacebookCallback);
 app.post('/auth/twitter', userController.authTwitter);
 app.get('/auth/twitter/callback', userController.authTwitterCallback);
+app.post('/auth/google', userController.authGoogle);
+app.get('/auth/google/callback', userController.authGoogleCallback);
 
 // React server rendering
 app.use(function(req, res) {
