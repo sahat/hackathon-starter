@@ -7,25 +7,32 @@ class Header extends React.Component {
   handleLogout(event) {
     event.preventDefault();
     this.props.dispatch(logout());
+    this.checkClick = this.checkClick.bind(this);
+  }
+
+  checkClick() {
+    console.log('hi i got clicked');
   }
 
   render() {
     const active = { borderBottomColor: '#3f51b5' };
     const rightNav = this.props.user && this.props.token ? (
-      <ul className="nav navbar-nav navbar-right">
-        <li className="dropdown">
-          <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
-            <img src={this.props.user.picture || this.props.user.gravatar}/>
-            {' '}{this.props.user.name || this.props.user.email || this.props.user.id}{' '}
-            <i className="caret"></i>
-          </a>
-          <ul className="dropdown-menu">
-            <li><Link to="/account">My Account</Link></li>
-            <li className="divider"></li>
-            <li><a href="#" onClick={this.handleLogout.bind(this)}>Logout</a></li>
-          </ul>
-        </li>
-      </ul>
+      <div className="nav-dropdown">
+        <ul className="nav navbar-nav navbar-right">
+          <li className="dropdown-menu">
+            <a href="#" className="navbar-avatar dropdown-toggle">
+              <img src={this.props.user.picture || this.props.user.gravatar}/>
+              {' '}{this.props.user.name || this.props.user.email || this.props.user.id}{' '}
+              <i className="caret"></i>
+            </a>
+            <ul className="dropdown-menu" onClick={this.checkClick()}>
+              <li><Link to="/account">My Account</Link></li>
+              <li className="divider"></li>
+              <li><a href="#" onClick={this.handleLogout.bind(this)}>Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     ) : (
       <ul className="nav navbar-nav navbar-right">
         <li><Link to="/signup" activeStyle={active}>Sign up</Link></li>
