@@ -32,7 +32,7 @@ function createUser(req, res, err, user) {
   });
 
   user.save(function(err) {
-  res.send({ token: generateToken(user), user: user });
+    res.send({ token: generateToken(user), user: user });
   });
 }
 
