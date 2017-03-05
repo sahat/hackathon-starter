@@ -60,3 +60,5 @@ typings/
 # webpack bundle business
 public/js/bundle.js
 public/js/bundle.js.map
+
+**/*.swp
