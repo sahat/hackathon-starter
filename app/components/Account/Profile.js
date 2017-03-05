@@ -78,12 +78,21 @@ class Profile extends React.Component {
               </div>
               <div className="form-group">
                 <label className="col-sm-3">Gender</label>
-                <div className="col-sm-4">
-                  <label className="radio-inline radio col-sm-4">
+                <div className="col-sm-9">
+                  <label className="radio-inline radio">
                     <input type="radio" name="gender" value="male" checked={this.state.gender === 'male'} onChange={this.handleChange.bind(this)}/><span>Male</span>
                   </label>
-                  <label className="radio-inline col-sm-4">
+                  <label className="radio-inline">
                     <input type="radio" name="gender" value="female" checked={this.state.gender === 'female'} onChange={this.handleChange.bind(this)}/><span>Female</span>
+                  </label>
+                  <label className="radio-inline">
+                    <input type="radio" name="gender" value="trans*" checked={this.state.gender === 'trans*'} onChange={this.handleChange.bind(this)}/><span>Trans*</span>
+                  </label>
+                  <label className="radio-inline">
+                    <input type="radio" name="gender" value="genderqueer" checked={this.state.gender === 'genderqueer'} onChange={this.handleChange.bind(this)}/><span>Genderqueer</span>
+                  </label>
+                  <label className="radio-inline">
+                    <input type="radio" name="gender" value="other" checked={this.state.gender === 'other'} onChange={this.handleChange.bind(this)}/><span>Other</span>
                   </label>
                 </div>
               </div>
