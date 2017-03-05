@@ -17,10 +17,11 @@ function generateToken(user) {
   return jwt.sign(payload, process.env.TOKEN_SECRET);
 }
 
-function createUser(err, user) {
+function createUser(req, res, err, user) {
   if (user) {
     return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
   }
+  
   user = new User({
     name: req.body.name,
     email: req.body.email,
@@ -105,11 +106,15 @@ exports.signupPost = function(req, res, next) {
       if (user) {
         return res.status(400).send({ msg: 'An admin user has already been created.' });
       } else {
-        User.findOne({ email: req.body.email }, createUser);
+        User.findOne({ email: req.body.email }, function(err, user) {
+          createUser(req, res, err, user);
+        });
       }
     });
   } else {
-    User.findOne({ email: req.body.email }, createUser);
+    User.findOne({ email: req.body.email }, function(err, user) {
+      createUser(req, res, err, user);
+    });
   }
 };
 
