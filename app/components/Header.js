@@ -11,7 +11,7 @@ class Header extends React.Component {
 
   render() {
     const active = { borderBottomColor: '#3f51b5' };
-    const rightNav = this.props.user ? (
+    const rightNav = this.props.user && this.props.token ? (
       <ul className="nav navbar-nav navbar-right">
         <li className="dropdown">
           <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
