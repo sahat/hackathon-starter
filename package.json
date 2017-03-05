@@ -23,6 +23,7 @@
     "express-handlebars": "^3.0.0",
     "express-validator": "^2.20.4",
     "jsonwebtoken": "^5.7.0",
+    "material-ui": "^0.17.0",
     "moment": "^2.12.0",
     "mongoose": "^4.4.8",
     "morgan": "^1.7.0",
@@ -32,6 +33,7 @@
     "react-dom": "15.1.0",
     "react-redux": "4.4.1",
     "react-router": "^2.4.0",
+    "react-tap-event-plugin": "^1.0.0",
     "react-transform-catch-errors": "^1.0.2",
     "react-transform-hmr": "^1.0.4",
     "redbox-react": "^1.2.4",
@@ -46,9 +48,13 @@
     "whatwg-fetch": "^0.11.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
     "babel-plugin-rewire": "1.0.0-rc-3",
     "babel-register": "^6.8.0",
     "chai": "^3.5.0",
+    "css-loader": "^0.26.2",
     "enzyme": "^2.3.0",
     "fetch-mock": "3.0.2",
     "mocha": "^2.4.5",
@@ -56,6 +62,7 @@
     "redux-mock-store": "^1.0.2",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
+    "style-loader": "^0.13.2",
     "supertest": "^1.2.0"
   },
   "engines": {
