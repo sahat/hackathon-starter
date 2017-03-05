@@ -1,0 +1,14 @@
+{
+  "name": "Boba Vett",
+  "email": "boba@vettit.com",
+  "gender": "male",
+  "location": "cloud city",
+  "website": "example.com",
+  "picture": "some picture",
+  "facebook": "facebookid",
+  "twitter": "twitterid",
+  "google": "googleid",
+  "github": "githubid",
+  "vk": "vkid",
+  "isOrg": "false"
+}
