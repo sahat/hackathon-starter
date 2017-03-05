@@ -69,7 +69,9 @@ userSchema.virtual('gravatar').get(function() {
 });
 
 userSchema.virtual('details').get(function() {
+ console.log("IN DETAILS");
  VettRecord.find({user: this._id}, function(err, vr) {
+   console.log("Found VR: " + vr);
    return vr;
  });
 });
