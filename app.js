@@ -61,17 +61,16 @@ mongoose.connection.on('error', () => {
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.use(expressStatusMonitor());
-app.use(compression());
-app.use(sass({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public')
-}));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressValidator());
-app.use(session({
+
+/** 
+* Express middle-ware.
+*/
+app.use([
+  logger('dev'),
+  bodyParser.json(),
+  bodyParser.urlencoded({ extended: true }),
+  expressValidator(),
+  session({
   resave: true,
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
@@ -79,10 +78,22 @@ app.use(session({
     url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
     autoReconnect: true
   })
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
+}),
+  passport.initialize(),
+  passport.session(),
+  flash(),
+  express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }),
+  lusca.xframe('SAMEORIGIN'),
+  lusca.xssProtection(true),
+  errorHandler(),
+  sass({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public')
+}),
+  compression(),
+  expressStatusMonitor()
+]);
+
 app.use((req, res, next) => {
   if (req.path === '/api/upload') {
     next();
@@ -90,8 +101,6 @@ app.use((req, res, next) => {
     lusca.csrf()(req, res, next);
   }
 });
-app.use(lusca.xframe('SAMEORIGIN'));
-app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
@@ -110,7 +119,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 /**
  * Primary app routes.
@@ -217,7 +225,6 @@ app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRed
 /**
  * Error Handler.
  */
-app.use(errorHandler());
 
 /**
  * Start Express server.
