@@ -18,9 +18,18 @@ const userSchema = new mongoose.Schema({
   tokens: Array,
 
   profile: {
-    name: String,
+    firstName: String,
+    lastName: String,
     gender: String,
-    location: String,
+    address1: String,
+    address2: String,
+	city: String,
+    state: String,
+    zip: String,
+    dob: String,
+    ssn: String,
+    ssn4: String,
+    phone: String,
     website: String,
     picture: String
   }
