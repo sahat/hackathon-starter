@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const passport = require('passport');
 const request = require('request');
 const InstagramStrategy = require('passport-instagram').Strategy;
@@ -522,8 +521,8 @@ exports.isAuthenticated = (req, res, next) => {
  */
 exports.isAuthorized = (req, res, next) => {
   const provider = req.path.split('/').slice(-1)[0];
-
-  if (_.find(req.user.tokens, { kind: provider })) {
+  const token = req.user.tokens.find(token => token.kind === provider);
+  if (token) {
     next();
   } else {
     res.redirect(`/auth/${provider}`);
