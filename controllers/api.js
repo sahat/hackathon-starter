@@ -130,7 +130,7 @@ exports.getScraping = (req, res, next) => {
  */
 exports.getGithub = (req, res, next) => {
   const github = new GitHub();
-  github.repos.get({ user: 'sahat', repo: 'hackathon-starter' }, (err, repo) => {
+  github.repos.get({ owner: 'sahat', repo: 'hackathon-starter' }, (err, repo) => {
     if (err) { return next(err); }
     res.render('api/github', {
       title: 'GitHub API',
