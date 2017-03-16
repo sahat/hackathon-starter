@@ -1,0 +1,13 @@
+ version: "2"
+
+ services:
+   web:
+     build: .
+     ports:
+       - "80:3000"
+     links:
+       - mongo
+   mongo:
+     image: mongo
+     ports:
+       - "27017:27017"
