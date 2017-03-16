@@ -1372,7 +1372,7 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 ### Watson catalog of services     
 
-**<img src="https://ace-resources-production-20170203-200557.cdn.us-south.s-bluemix.net/resources/cache/286-4147526951/build/08fb1a72-e228-4e83-a37d-b90a4fa709d3-featured.png" width="25"> AlchemyAPI** - An AlchemyAPI service that analyzes your unstructured text and image content.      
+**<img src="https://kpprod1.alchemyapi.com/images/alchemy_logo_24.png" width="25"> AlchemyAPI** - An AlchemyAPI service that analyzes your unstructured text and image content.      
 
 **<img src="http://csbmixbroker.mybluemix.net/commerce_24.png" width="25"> Cognitive Commerce** - Cognitive Commerce is a service provided by Cognitive Scale.  
 
@@ -1380,13 +1380,13 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 **<img src="http://csbmixbroker.mybluemix.net/insights_24.png" width="25"> Cognitive Insights** - Cognitive Insights™ is a service provided by Cognitive Scale.  
 
-**<img src="https://ace-catalog-production-20170203-200557.cdn.us-south.s-bluemix.net/catalog/cache/3d6-3652049723/imgs/logos/servicedefault50.png" width="25"> Conversation** - 	Add a natural language interface to your application to automate interactions with your end users. Common applications include virtual agents and chat bots that can integrate and communicate on any channel or device.  
+**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> Conversation** - 	Add a natural language interface to your application to automate interactions with your end users. Common applications include virtual agents and chat bots that can integrate and communicate on any channel or device.  
 
-**<img src="https://ace-catalog-production-20170203-200557.cdn.us-south.s-bluemix.net/catalog/cache/3d6-3652049723/imgs/logos/servicedefault50.png" width="25"> Discovery** - Add a cognitive search and content analytics engine to applications.  
+**<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> Discovery** - Add a cognitive search and content analytics engine to applications.  
 
 **<img src="https://wbi.mybluemix.net/icons/document-conversion.svg?version=2" width="25"> Document Conversion** - Converts a HTML, PDF, or Microsoft Word™ document into a normalized HTML, plain text, or a set of JSON-formatted Answer units.  
 
-**<img src="https://ace-catalog-production-20170203-200557.cdn.us-south.s-bluemix.net/catalog/cache/3d6-3652049723/imgs/logos/servicedefault50.png" width="20" width="25"> Language Translator** - Translate text from one language to another for specific domains.
+**<img src="https://wbi.mybluemix.net/icons/language-translator.svg?version=4" width="20" width="25"> Language Translator** - Translate text from one language to another for specific domains.
 
 **<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> Natural Language Classifier** - Natural Language Classifier performs natural language classification on question texts. A user would be able to train their data and the predict the appropriate class for a input question.  
 
@@ -1400,7 +1400,7 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 **<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> Tone Analyzer** - Tone Analyzer uses linguistic analysis to detect three types of tones from communications: emotion, social, and language. This insight can then be used to drive high impact communications.  
 
-**<img src="https://ace-catalog-production-20170203-200557.cdn.us-south.s-bluemix.net/catalog/cache/3d6-3652049723/imgs/logos/servicedefault50.png" width="25" > Tradeoff Analytics** - Helps make better choices under multiple conflicting goals. Combines smart visualization and recommendations for tradeoff exploration.    
+**<img src="http://34b70.http.dal05.cdn.softlayer.net/broker-static/icons/24.png" width="25" > Tradeoff Analytics** - Helps make better choices under multiple conflicting goals. Combines smart visualization and recommendations for tradeoff exploration.    
 
 **<img src="https://kpprod1.alchemyapi.com/images/vis_rec.svg" width="25"> Visual Recognition** - Find meaning in visual content! Analyze images for scenes, objects, faces, and other content. Choose a default model off the shelf, or create your own custom classifier. Find similar images within a collection. Develop smart applications that analyze the visual content of images or video frames to understand what is happening in a scene.  
 
