@@ -1400,7 +1400,7 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 **<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> Tone Analyzer** - Tone Analyzer uses linguistic analysis to detect three types of tones from communications: emotion, social, and language. This insight can then be used to drive high impact communications.  
 
-**<img src="http://34b70.http.dal05.cdn.softlayer.net/broker-static/icons/24.png" width="25" > Tradeoff Analytics** - Helps make better choices under multiple conflicting goals. Combines smart visualization and recommendations for tradeoff exploration.    
+**<img src="https://wbi.mybluemix.net/icons/retrieve-and-rank.svg?version=2" width="25" > Tradeoff Analytics** - Helps make better choices under multiple conflicting goals. Combines smart visualization and recommendations for tradeoff exploration.    
 
 **<img src="https://kpprod1.alchemyapi.com/images/vis_rec.svg" width="25"> Visual Recognition** - Find meaning in visual content! Analyze images for scenes, objects, faces, and other content. Choose a default model off the shelf, or create your own custom classifier. Find similar images within a collection. Develop smart applications that analyze the visual content of images or video frames to understand what is happening in a scene.  
 
