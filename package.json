@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node app.js",
     "test": "mocha --reporter spec",
-    "postinstall": "npm rebuild node-sass"
+    "postinstall": "npm rebuild node-sass",
+    "eslint": "eslint **/*.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",
@@ -63,8 +64,9 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint": "^3.9.1",
-    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.1.3",
+    "eslint-plugin-chai-friendly": "^0.2.0",
     "eslint-plugin-import": "^2.1.0",
     "mocha": "^3.1.2",
     "sinon": "^2.0.0",
@@ -80,7 +82,17 @@
       "no-underscore-dangle": 0,
       "no-shadow": 0,
       "no-console": 0,
-      "no-plusplus": 0
-    }
+      "no-plusplus": 0,
+      "no-unused-expressions": 0,
+      "chai-friendly/no-unused-expressions": 2
+    },
+    "env": {
+      "jasmine": true,
+      "mocha": true,
+      "node": true
+    },
+    "plugins": [
+      "chai-friendly"
+    ]
   }
 }
