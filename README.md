@@ -552,7 +552,7 @@ how a particular functionality works. Maybe you are just curious about
 how it works, or maybe you are lost and confused while reading the code,
 I hope it provides some guidance to you.
 
-###Custom HTML and CSS Design 101
+### Custom HTML and CSS Design 101
 
 [HTML5 UP](http://html5up.net/) has many beautiful templates that you can download for free.
 
@@ -1144,7 +1144,7 @@ var yesterday = date.setDate(date.getDate() - 1);
 
 :top: <sub>[**back to top**](#table-of-contents)</sub>
 
-###Mongoose Cheatsheet
+### Mongoose Cheatsheet
 
 #### Find all users:
 ```js
