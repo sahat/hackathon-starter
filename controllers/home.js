@@ -7,3 +7,9 @@ exports.index = (req, res) => {
     title: 'Home'
   });
 };
+
+exports.zero = function(req, res) {
+  res.render('zero', {
+    title: 'Landing Page'
+  });
+};
