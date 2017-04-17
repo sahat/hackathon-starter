@@ -118,7 +118,18 @@ here is another great tutorial for complete beginners - [Getting Started With No
 Getting Started
 ---------------
 
-The easiest way to get started is to clone the repository:
+The easiest way to get started is to manualfork the repository. Manualfork is a tool that does 1:1 mirrors of Github repos. Click on the button below to begin cloning this repo.
+
+[![manualfork this repo](http://manualfork.therebelrobot.com/badge-large.svg)](http://manualfork.therebelrobot.com/?source=sahat/hackathon-starter)
+
+Alternatively, you can use the [manualfork cli tool](https://github.com/therebelrobot/node-manualfork) to clone it from the command line:
+
+```bash
+npm install -g manualfork
+manualfork sahat/hackathon-starter to USER/REPO -u USERNAME -t ACCESS_TOKEN
+```
+
+If you like, you can also clone the repository:
 
 ```bash
 # Get the latest snapshot
