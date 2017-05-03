@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  h1= title
+  if activities
+    ul.flex-container-activity
+      li.flex-item-activity Total time: #{totalTime} min
+      li.flex-item-activity Total distances: #{totalDistance} km
+      li.flex-item-activity Average pace: #{averagePaceMin} min and #{averagePaceSec} sec
+    div(id="container" style="width:100%; height:400px;")
+    table.table
+      thead.thead-inverse
+        tr
+          th #
+          th Date
+          th Duration
+          th Distance
+          th Pace
+          th Type
+      tbody
+        each activity, i in activities
+          tr
+            th(scope="row")= i
+            td=moment(activity.date).locale('en').format('ll')
+            td=activity.duration
+            td=activity.distance.toFixed(2)
+            td=activity.pace
+            td=activity.type
+
+append script
+  script(type="text/javascript").
+    $('#container').highcharts(!{JSON.stringify(options)});
