@@ -1,12 +1,12 @@
 {
-  "name": "hackathon-starter",
-  "version": "4.3.0",
-  "description": "A boilerplate for Node.js web applications",
+  "name": "sportTrackcer",
+  "version": "1.0.0",
+  "description": "Track your sport activity and follow your goal",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/Girardvjonathan/sportTracker"
   },
-  "author": "Sahat Yalkabov",
+  "author": "Jonathan Girard Viau",
   "license": "MIT",
   "scripts": {
     "start": "nodemon app.js",
