@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Create an Activity
+
+  form.form-horizontal(action='/activity/create', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label.col-sm-3.control-label(for='date') Date
+      .col-sm-3
+        input.form-control(type='date', name='date', id='date', value=now)
+    .form-group
+      label.col-sm-3.control-label(for='hour') Duration
+      .col-sm-1
+        input.form-control(type='number',min=0,max=20, value=0, name='hour', id='hour')
+      .col-sm-1
+        input.form-control(type='number',min=0,max=59, value=10, name='minute', id='minute')
+      .col-sm-1
+        input.form-control(type='number',min=0,max=59, value=0, name='seconde', id='seconde')
+    .form-group
+      label.col-sm-3.control-label(for='distance') Distance
+      .col-sm-2
+        input.form-control(type='number', min=0, name='distance', id='distance')
+      .col-sm-1
+        select.form-control(name='unit')
+          option(value='km') km
+          option(value='mi') mi
+    .form-group
+      .col-sm-offset-3.col-sm-4
+        button.btn.btn.btn-primary(type='submit')
+          i.fa.fa-pencil
+          | Create Activity
