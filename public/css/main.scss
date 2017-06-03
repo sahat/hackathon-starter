@@ -5,6 +5,24 @@
 
 @import "themes/default/default";
 
+// search/lawyers
+span.card-img-top {
+  display: block;
+  height: 180px;
+  width: 130px;
+  background-image: url(https://t3.ftcdn.net/jpg/00/57/19/90/240_F_57199025_Sd9yFYqAkNuCC4ifBqTSLRGltRjwYFUr.jpg);
+  background-position: -190px -25px;
+}
+
+span.card-img-top.female {
+  background-position: -40px -25px;
+}
+
+span.card-img-top.male {
+  background-position: -190px -25px;
+}
+//
+
 // Scaffolding
 // -------------------------
 
@@ -82,4 +100,16 @@ textarea {
 
 .fa {
   margin-right: 6px;
+}
+
+//Home page
+// -------------------------
+.practice_area {
+  border: solid 1px;
+  border-radius: 1em;
+  margin: .5em;
+}
+
+.practice_area_title {
+  font-size: 2em;
 }
