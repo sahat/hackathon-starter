@@ -25,7 +25,7 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.load({ path: '.env.example' });
+dotenv.load({ path: '.env' });
 
 /**
  * Controllers (route handlers).
@@ -35,6 +35,7 @@ const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 const searchController = require('./controllers/search');
+const orderController = require('./controllers/orders');
 
 /**
  * API keys and Passport configuration.
@@ -128,6 +129,7 @@ app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
+app.get('/order', orderController.getOrder);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/search/lawyers', searchController.findLawyers);
