@@ -4,7 +4,17 @@ block content
   .page-header
     h3 Sign up
   form.form-horizontal(id='signup-form', method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
+    input(type='hidden', name='', value=_csrf)
+    .form-group
+      p.col-sm-7.col-sm-offset-3.text-center Are you a client or a lawyer?
+      label.col-sm-2.col-sm-offset-3.control-label(for='lawyer') I'm a client
+      input.col-sm-1(type='radio', name='cl', value='lawyer', id='client')
+      label.col-sm-2.control-label(for='lawyer') I'm a lawyer
+      input.col-sm-1(type='radio', checked="checked", name='cl', value='lawyer', id='lawyer')
+    .form-group
+      label.col-sm-3.control-label(for='email') Name
+      .col-sm-7
+        input.form-control(type='text', name='name', id='name', placeholder='Name and Surname', autofocus, required)
     .form-group
       label.col-sm-3.control-label(for='email') Email
       .col-sm-7
@@ -17,6 +27,297 @@ block content
       label.col-sm-3.control-label(for='confirmPassword') Confirm Password
       .col-sm-7
         input.form-control(type='password', name='confirmPassword', id='confirmPassword', placeholder='Confirm Password', required)
+    .form-group
+      p.col-sm-7.col-sm-offset-3 What areas do you practice in?
+      .radio.col-sm-7.col-sm-offset-3
+        ul.list-unstyled
+          each val in ['Residential Real Estate', 'Wills', 'Family', 'Criminal', 'Business', 'Notary Public']
+            li
+              input(type='checkbox', name='cl', value=`${val}`, id=`${val}`)
+              label.control-label(for=`${val}`) #{val}
+    .form-group
+      label.col-sm-3.control-label(for='email') Keywords
+      .col-sm-7
+        input.form-control(type='text', name='keywords', id='keywords', placeholder='Keywords', autofocus, required)
+    .form-group
+      label.col-sm-3.control-label(for='lawfirm') Law Firm
+      .col-sm-7
+        input.form-control(type='text', name='lawfirm', id='lawfirm', placeholder='Law Firm', autofocus)
+    .form-group
+      label.col-sm-3.control-label(for='city') City/Town
+      .col-sm-7
+        input.form-control(type='text', name='city', id='city', placeholder='City', autofocus)
+    .form-group
+      label.col-sm-3.control-label(for='admissionyear') Year of Ontario Bar Admission
+      .col-sm-7
+        input.form-control(type='number', name='emailadmissionyear', id='admissionyear', placeholder='Year of admission', autofocus)
+    .form-group
+      label.col-sm-3.control-label(for="languageselect") Languages of service
+      .col-sm-3
+        select(name='language', id='language')
+          option(value="91") ACHOLI
+          option(value="32") AFRIKAANS
+          option(value="69") AKAN
+          option(value="A9") ALBANIAN
+          option(value="48") AMERICAN SIGN LANGUAGE
+          option(value="62") AMHARIC
+          option(value="01") ARABIC
+          option(value="75") ARMENIAN
+          option(value="34") ASSYRIAN
+          option(value="73") AZARI
+          option(value="68") BENGALI
+          option(value="61") BISLAMA
+          option(value="20") BOSNIAN
+          option(value="03") BULGARIAN
+          option(value="35") BURMESE
+          option(value="36") CAMBODIAN
+          option(value="86") CANTONESE
+          option(value="87") CATALAN
+          option(value="AS") CEBUANO
+          option(value="63") CHEWA
+          option(value="04") CHINESE
+          option(value="AO") CHITUMBUKA
+          option(value="65") CREOLE
+          option(value="57") CROATIAN
+          option(value="05") CZECH
+          option(value="AE") DAGAARE
+          option(value="06") DANISH
+          option(value="AC") DARI
+          option(value="07") DUTCH
+          option(selected="selected", value="08") ENGLISH
+          option(value="A4") ERITREAN
+          option(value="37") ESTONIAN
+          option(value="72") ETHIOPIAN
+          option(value="70") FARSI
+          option(value="38") FILIPINO
+          option(value="09") FINNISH
+          option(value="95") FLEMISH
+          option(value="10") FRENCH
+          option(value="A1") FUKIEN
+          option(value="B0") FUZHOU
+          option(value="AL") GA
+          option(value="A8") GA-ADANGME-KROBO
+          option(value="39") GAELIC
+          option(value="AT") GANDA
+          option(value="94") GEORGIAN
+          option(value="11") GERMAN
+          option(value="84") GHANA
+          option(value="12") GREEK
+          option(value="59") GUJARATI
+          option(value="AG") HAKKA
+          option(value="AB") HAUSA
+          option(value="13") HEBREW
+          option(value="40") HINDI
+          option(value="14") HUNGARIAN
+          option(value="AW") IBIBIO
+          option(value="67") IBO
+          option(value="98") ICELANDIC
+          option(value="AJ") IGBO
+          option(value="41") ILOCANO
+          option(value="15") INDONESIAN
+          option(value="74") IRANIAN
+          option(value="16") ITALIAN
+          option(value="33") JAMAICAN CREOLE
+          option(value="17") JAPANESE
+          option(value="AU") KAAMBA
+          option(value="AV") KABYLE
+          option(value="A0") KACHCHI
+          option(value="42") KANNADA
+          option(value="92") KASHMIRI
+          option(value="AI") KONKANI
+          option(value="18") KOREAN
+          option(value="AD") KURDI
+          option(value="A2") LAO
+          option(value="43") LATVIAN
+          option(value="AM") LINGALA
+          option(value="44") LITHUANIAN
+          option(value="45") MACEDONIAN
+          option(value="A3") MALAY
+          option(value="85") MALAYALAM
+          option(value="58") MALTESE
+          option(value="83") MANDARIN
+          option(value="71") MARATHI
+          option(value="21") NEPALI
+          option(value="22") NORWEGIAN
+          option(value="A6") NZEMA
+          option(value="90") OJIBWA
+          option(value="AR") ORIYA
+          option(value="99") OTHER
+          option(value="46") PANJABI/PUNJABI
+          option(value="78") PERSIAN
+          option(value="23") POLISH
+          option(value="24") PORTUGUESE
+          option(value="76") PUSHTO
+          option(value="AP") QUECHUA
+          option(value="25") ROMANIAN
+          option(value="26") RUSSIAN
+          option(value="AN") SAMOAN
+          option(value="47") SERBIAN
+          option(value="60") SESOTHO
+          option(value="97") SINDHI
+          option(value="49") SINHALA
+          option(value="56") SINHALESE
+          option(value="27") SLOVAK
+          option(value="93") SLOVENIAN
+          option(value="AZ") SOGA
+          option(value="02") SOMALIAN
+          option(value="28") SPANISH
+          option(value="77") SWAHILI
+          option(value="AA") SWATOW
+          option(value="29") SWEDISH
+          option(value="50") TAGALOG
+          option(value="A5") TAIWANESE
+          option(value="64") TAMIL
+          option(value="51") TELUGU
+          option(value="52") THAI
+          option(value="AQ") TIGRIGNA
+          option(value="AY") TIV
+          option(value="A7") TOK PISIN
+          option(value="80") TULU
+          option(value="30") TURKISH
+          option(value="53") UKRAINIAN
+          option(value="54") URDU
+          option(value="31") VIETNAMESE
+          option(value="96") VISAYAN
+          option(value="79") WELSH
+          option(value="89") XHOSA
+          option(value="55") YIDDISH
+          option(value="66") YORUBA
+          option(value="82") YUGOSLAV
+          option(value="81") ZULU
+      .col-sm-3
+        select(name='language', id='language2')
+          option(selected="selected",value="91") Select another
+          option(value="91") ACHOLI
+          option(value="32") AFRIKAANS
+          option(value="69") AKAN
+          option(value="A9") ALBANIAN
+          option(value="48") AMERICAN SIGN LANGUAGE
+          option(value="62") AMHARIC
+          option(value="01") ARABIC
+          option(value="75") ARMENIAN
+          option(value="34") ASSYRIAN
+          option(value="73") AZARI
+          option(value="68") BENGALI
+          option(value="61") BISLAMA
+          option(value="20") BOSNIAN
+          option(value="03") BULGARIAN
+          option(value="35") BURMESE
+          option(value="36") CAMBODIAN
+          option(value="86") CANTONESE
+          option(value="87") CATALAN
+          option(value="AS") CEBUANO
+          option(value="63") CHEWA
+          option(value="04") CHINESE
+          option(value="AO") CHITUMBUKA
+          option(value="65") CREOLE
+          option(value="57") CROATIAN
+          option(value="05") CZECH
+          option(value="AE") DAGAARE
+          option(value="06") DANISH
+          option(value="AC") DARI
+          option(value="07") DUTCH
+          option(value="08") ENGLISH
+          option(value="A4") ERITREAN
+          option(value="37") ESTONIAN
+          option(value="72") ETHIOPIAN
+          option(value="70") FARSI
+          option(value="38") FILIPINO
+          option(value="09") FINNISH
+          option(value="95") FLEMISH
+          option(value="10") FRENCH
+          option(value="A1") FUKIEN
+          option(value="B0") FUZHOU
+          option(value="AL") GA
+          option(value="A8") GA-ADANGME-KROBO
+          option(value="39") GAELIC
+          option(value="AT") GANDA
+          option(value="94") GEORGIAN
+          option(value="11") GERMAN
+          option(value="84") GHANA
+          option(value="12") GREEK
+          option(value="59") GUJARATI
+          option(value="AG") HAKKA
+          option(value="AB") HAUSA
+          option(value="13") HEBREW
+          option(value="40") HINDI
+          option(value="14") HUNGARIAN
+          option(value="AW") IBIBIO
+          option(value="67") IBO
+          option(value="98") ICELANDIC
+          option(value="AJ") IGBO
+          option(value="41") ILOCANO
+          option(value="15") INDONESIAN
+          option(value="74") IRANIAN
+          option(value="16") ITALIAN
+          option(value="33") JAMAICAN CREOLE
+          option(value="17") JAPANESE
+          option(value="AU") KAAMBA
+          option(value="AV") KABYLE
+          option(value="A0") KACHCHI
+          option(value="42") KANNADA
+          option(value="92") KASHMIRI
+          option(value="AI") KONKANI
+          option(value="18") KOREAN
+          option(value="AD") KURDI
+          option(value="A2") LAO
+          option(value="43") LATVIAN
+          option(value="AM") LINGALA
+          option(value="44") LITHUANIAN
+          option(value="45") MACEDONIAN
+          option(value="A3") MALAY
+          option(value="85") MALAYALAM
+          option(value="58") MALTESE
+          option(value="83") MANDARIN
+          option(value="71") MARATHI
+          option(value="21") NEPALI
+          option(value="22") NORWEGIAN
+          option(value="A6") NZEMA
+          option(value="90") OJIBWA
+          option(value="AR") ORIYA
+          option(value="99") OTHER
+          option(value="46") PANJABI/PUNJABI
+          option(value="78") PERSIAN
+          option(value="23") POLISH
+          option(value="24") PORTUGUESE
+          option(value="76") PUSHTO
+          option(value="AP") QUECHUA
+          option(value="25") ROMANIAN
+          option(value="26") RUSSIAN
+          option(value="AN") SAMOAN
+          option(value="47") SERBIAN
+          option(value="60") SESOTHO
+          option(value="97") SINDHI
+          option(value="49") SINHALA
+          option(value="56") SINHALESE
+          option(value="27") SLOVAK
+          option(value="93") SLOVENIAN
+          option(value="AZ") SOGA
+          option(value="02") SOMALIAN
+          option(value="28") SPANISH
+          option(value="77") SWAHILI
+          option(value="AA") SWATOW
+          option(value="29") SWEDISH
+          option(value="50") TAGALOG
+          option(value="A5") TAIWANESE
+          option(value="64") TAMIL
+          option(value="51") TELUGU
+          option(value="52") THAI
+          option(value="AQ") TIGRIGNA
+          option(value="AY") TIV
+          option(value="A7") TOK PISIN
+          option(value="80") TULU
+          option(value="30") TURKISH
+          option(value="53") UKRAINIAN
+          option(value="54") URDU
+          option(value="31") VIETNAMESE
+          option(value="96") VISAYAN
+          option(value="79") WELSH
+          option(value="89") XHOSA
+          option(value="55") YIDDISH
+          option(value="66") YORUBA
+          option(value="82") YUGOSLAV
+          option(value="81") ZULU
     .form-group
       .col-sm-offset-3.col-sm-7
         button.btn.btn-success(type='submit')
