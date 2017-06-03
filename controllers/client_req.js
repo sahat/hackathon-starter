@@ -29,9 +29,7 @@ function validation() {
 }
 
 exports.postClientReq= (req,res) => {
-  res.render('search/upload', {
-    title: 'Upload Document'
-  });
+  res.redirect('/search/lawyers');
 }
 
 exports.getClientReq = (req, res) => {
