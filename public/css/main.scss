@@ -46,6 +46,21 @@ textarea {
   margin: -15px 15px -15px;
 }
 
+#navbar-header {
+  height: 4em;
+}
+
+#navbar-nav {
+  line-height: 100%;
+  padding: 0.5em;
+}
+
+.logo {
+  max-height: 100%;
+  padding-top: 0.5em;
+  padding-bottom: 0;
+}
+
 // Alerts
 // -------------------------
 
