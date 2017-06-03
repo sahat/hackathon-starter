@@ -29,7 +29,9 @@ function validation() {
 }
 
 exports.postClientReq= (req,res) => {
-
+  res.render('search', {
+    title: 'Upload Document'
+  });
 }
 
 exports.getClientReq = (req, res) => {

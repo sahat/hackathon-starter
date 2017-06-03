@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Lawyers matching your search
+    span Document keywords found: <strong style="color:#1abc9c">#{docAnalysis}</strong>
+  br
+  br
+  form.form-horizontal(method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    div(class="row")
+        each val in searchResult
+            div(class="col-sm-3")            
+                div(class="card" style="width: 20rem; padding-top: 2rem;")
+                    span(class="card-img-top "+val.gender)
+                    div(class="card-block")
+                        h4(class="card-title")=val.name
+                        p(class="card-text")=val.bio
+                        ul(style="list-style:none;padding-left:0;")
+                            li="Experience: " + val.exp + " years"
+                            li="Rating: "
+                                span
+                                    each count in [1,2,3,4,5]
+                                        if val.rating >= count
+                                            i(class="fa fa-star")
+                                        else
+                                            i(class="fa fa-star-o")
+                        a(href="#" class="btn btn-primary") Connect with this lawyer
