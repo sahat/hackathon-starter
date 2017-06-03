@@ -2,26 +2,18 @@ extends layout
 
 block content
   .page-header
-    h3 Client Information
+    h3 Upload a document
 
-  form.form-horizontal(method='POST')
+  form.form-horizontal( method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
-      label(class='col-sm-2 control-label', for='name') Name
+      label(class='col-sm-2 control-label', for='name') Select a file (word, pdf, doc)
       .col-sm-5
-        input.form-control(type='text', name='name', id='name', autofocus=true)
-    .form-group
-      label(class='col-sm-2 control-label', for='email') Email
-      .col-sm-5
-        input.form-control(type='email', name='email', id='email')
+        input.form-control(type='file', name='file', id='file', autofocus=true)
     .form-group
       label(class='col-sm-2 control-label', for='due_date') Due Date
       .col-sm-5
         input.form-control(type='date', name='due_date', id='due_date')
-    .form-group
-      label(class='col-sm-2 control-label', for='Area') Area
-      .col-sm-5
-        input.form-control(type='text', name='Area', id='Area')
     .form-group
       label(class='col-sm-2 control-label', for='budget') Budget
       .col-sm-5
