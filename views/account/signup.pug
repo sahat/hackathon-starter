@@ -6,15 +6,22 @@ block content
   form.form-horizontal(id='signup-form', method='POST')
     input(type='hidden', name='', value=_csrf)
     .form-group
-      p.col-sm-7.col-sm-offset-3.text-center Are you a client or a lawyer?
-      label.col-sm-2.col-sm-offset-3.control-label(for='lawyer') I'm a client
-      input.col-sm-1(type='radio', name='cl', value='lawyer', id='client')
-      label.col-sm-2.control-label(for='lawyer') I'm a lawyer
-      input.col-sm-1(type='radio', checked="checked", name='cl', value='lawyer', id='lawyer')
+      .col-sm-offset-3.col-sm-7.text-center
+        button.btn.btn-success(type='submit')
+          i.fa.fa-user-o
+          | I'm a lawyer
+        button.btn.btn-default(type='submit')
+          i.fa.fa-user-o
+          | I need a lawyer
+      //- p.col-sm-7.col-sm-offset-3.text-center Are you a client or a lawyer?
+      //- label.col-sm-2.col-sm-offset-3.control-label(for='lawyer') I'm a client
+      //- input.col-sm-1(type='radio', name='cl', value='lawyer', id='client')
+      //- label.col-sm-2.control-label(for='lawyer') I'm a lawyer
+      //- input.col-sm-1(type='radio', checked="checked", name='cl', value='lawyer', id='lawyer')
     .form-group
       label.col-sm-3.control-label(for='email') Name
       .col-sm-7
-        input.form-control(type='text', name='name', id='name', placeholder='Name and Surname', autofocus, required)
+        input.form-control(type='text', name='name', id='name', placeholder='Name and surname', autofocus, required)
     .form-group
       label.col-sm-3.control-label(for='email') Email
       .col-sm-7
@@ -31,8 +38,8 @@ block content
       p.col-sm-7.col-sm-offset-3 What areas do you practice in?
       .radio.col-sm-7.col-sm-offset-3
         ul.list-unstyled
-          each val in ['Residential Real Estate', 'Wills', 'Family', 'Criminal', 'Business', 'Notary Public']
-            li
+          each val in ['Real Estate', 'Wills', 'Family', 'Criminal', 'Business', 'Immigration', 'Notary Public']
+            li.col-sm-3
               input(type='checkbox', name='cl', value=`${val}`, id=`${val}`)
               label.control-label(for=`${val}`) #{val}
     .form-group
@@ -321,5 +328,5 @@ block content
     .form-group
       .col-sm-offset-3.col-sm-7
         button.btn.btn-success(type='submit')
-          i.fa.fa-user-plus
-          | Signup
+          i.fa.fa-check
+          | Sign up
