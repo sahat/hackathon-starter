@@ -10,19 +10,25 @@ block content
     input(type='hidden', name='_csrf', value=_csrf)
     div(class="row")
         each val in searchResult
-            div(class="col-sm-3")            
-                div(class="card" style="width: 20rem; padding-top: 2rem;")
-                    span(class="card-img-top "+val.gender)
-                    div(class="card-block")
+            div(class="col-sm-6" style="padding-top: 20px;")
+                div(class="card" style="width: 80%;margin: 10px 20px;text-align: center;background: #ecf0f1;border-radius: 5px;")
+                    span(class="card-img-top "+val.gender style="margin: auto;")
+                    div(class="card-block" )
                         h4(class="card-title")=val.name
-                        p(class="card-text")=val.bio
+                        p(class="card-text" style="padding: 10px 20px;")=val.bio
                         ul(style="list-style:none;padding-left:0;")
                             li="Experience: " + val.exp + " years"
                             li="Rating: "
                                 span
                                     each count in [1,2,3,4,5]
                                         if val.rating >= count
-                                            i(class="fa fa-star")
+                                            i(class="fa fa-star" style="color: #16a085;border-color: #16a085;")
                                         else
                                             i(class="fa fa-star-o")
-                        a(href="#" class="btn btn-primary") Connect with this lawyer
+                        a(href="#" class="btn btn-primary" style={
+                        'background-color': '#1abc9c',
+                        'width': '100%',
+                        'border-color' : '#1abc9c',
+                        'border-bottom-right-radius': '5px',
+                        'border-bottom-left-radius': '5px',
+                        }) Connect with this lawyer

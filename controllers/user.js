@@ -353,6 +353,17 @@ exports.postForgot = (req, res, next) => {
         return user;
       });
 
+/**
+ * GET /order
+ * Order page.
+ */
+
+exports.getSignup = (req, res) => {
+  res.render('account/order', {
+    title: 'Create Account'
+  });
+};
+
   const sendForgotPasswordEmail = (user) => {
     if (!user) { return; }
     const token = user.passwordResetToken;
