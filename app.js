@@ -37,6 +37,8 @@ const contactController = require('./controllers/contact');
 const clientReqController = require ('./controllers/client_req');
 const searchController = require('./controllers/search');
 const clientUploadAndTagController = require('./controllers/upload_and_taging');
+const orderController = require('./controllers/orders');
+
 
 /**
  * API keys and Passport configuration.
@@ -130,12 +132,14 @@ app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
+app.get('/order', orderController.getOrder);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/search/lawyers', searchController.findLawyers);
 app.get('/search/upload', searchController.uploadDoc);
 app.post('/search/upload', searchController.postUploadDoc);
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
+app.get('/account/dashboard', passportConfig.isAuthenticated, userController.getDashboard);
 app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);

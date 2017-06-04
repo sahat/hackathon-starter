@@ -105,11 +105,19 @@ textarea {
 //Home page
 // -------------------------
 .practice_area {
+  color: #16a085;
   border: solid 1px;
   border-radius: 1em;
   margin: .5em;
+  padding: 1.5em;
 }
 
 .practice_area_title {
   font-size: 2em;
+}
+
+//Dashboard
+// --------------------------
+.current_cases td {
+  padding: 1em;
 }
