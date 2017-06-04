@@ -36,6 +36,7 @@ const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 const clientReqController = require ('./controllers/client_req');
 const searchController = require('./controllers/search');
+const clientUploadAndTagController = require('./controllers/upload_and_taging');
 
 /**
  * API keys and Passport configuration.
@@ -141,6 +142,7 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.post('/account/client/request',clientReqController.postClientReq);
 app.get('/account/client/request',clientReqController.getClientReq);
+app.get('/account/client/request/upload',clientUploadAndTagController.getUploadAndTag);
 
 /**
  * API examples routes.
