@@ -142,7 +142,8 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.post('/account/client/request',clientReqController.postClientReq);
 app.get('/account/client/request',clientReqController.getClientReq);
-app.get('/account/client/request/upload',clientUploadAndTagController.getUploadAndTag);
+app.get('/client/request/upload',clientUploadAndTagController.getUploadAndTag);
+// app.post('/account/client/request/upload',clientUploadAndTagController.getUploadAndTag);
 
 /**
  * API examples routes.
