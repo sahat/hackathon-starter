@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  body
+    #open_pdf.col-sm-6
+      iframe(src='http://docs.google.com/gview?url=https://github.com/borishaw/legal-hack/raw/master/uploads/ResidentialLease.pdf&embedded=true', style='width: 560px;height: 700px;margin-top: 30px;', frameborder='0')
+    #tag_pdf.col-sm-6
+      img(src='https://github.com/borishaw/legal-hack/raw/client_req/uploads/Screen%20Shot%202017-06-04%20at%203.29.32%20AM.png', style='width: 560px;margin-top: 185px;margin-left: 60px;')
+    .col-sm-offset-2.col-sm-4.control-label
+      button.btn.btn-primary(type='submit' style={
+      'background-color': '#1abc9c',
+      'width': '100%',
+      'border-color' : '#1abc9c',
+      'font-size': '20px',
+      'margin-top': '100px',
+      'margin-left': '100px'
+      })
+        | find lawyers

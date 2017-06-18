@@ -120,6 +120,16 @@ exports.getAccount = (req, res) => {
 };
 
 /**
+ * Get /account/dashboard
+ * User Dashboard.
+ */
+exports.getDashboard = (req, res) => {
+  res.render('account/dashboard', {
+    title: 'User Dashboard'
+  });
+};
+
+/**
  * POST /account/profile
  * Update profile information.
  */
@@ -342,6 +352,17 @@ exports.postForgot = (req, res, next) => {
         }
         return user;
       });
+
+/**
+ * GET /order
+ * Order page.
+ */
+
+exports.getSignup = (req, res) => {
+  res.render('account/order', {
+    title: 'Create Account'
+  });
+};
 
   const sendForgotPasswordEmail = (user) => {
     if (!user) { return; }
