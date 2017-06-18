@@ -1030,7 +1030,7 @@ p.catch(function(reason) { /* handle rejection */ });
 The `then()` method returns a Promise. It takes 2 arguments: callback for the success & failure cases.
 
 ```js
-p.then(function(value) { /* handle fulfillment */, function(reason) { /* handle rejection */ });
+p.then(function(value) { /* handle fulfillment */ }, function(reason) { /* handle rejection */ });
 ```
 
 The `Promise.all(iterable)` method returns a promise that resolves when all of the promises in the iterable argument have resolved, or rejects with the reason of the first passed promise that rejects.
@@ -1144,7 +1144,7 @@ var yesterday = date.setDate(date.getDate() - 1);
 
 :top: <sub>[**back to top**](#table-of-contents)</sub>
 
-###Mongoose Cheatsheet
+### Mongoose Cheatsheet
 
 #### Find all users:
 ```js
