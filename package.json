@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/sahat/hackathon-starter.git"
   },
+  "engines": {
+    "node": "^8.0.0"
+  },
   "author": "Sahat Yalkabov",
   "license": "MIT",
   "scripts": {
