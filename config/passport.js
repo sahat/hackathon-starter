@@ -17,29 +17,33 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findByIdAsync(id);
+    done(user);
+  } catch (err) {
+    done(err);
+  }
 });
 
 /**
  * Sign in using Email and Password.
  */
-passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-  User.findOne({ email: email.toLowerCase() }, (err, user) => {
-    if (err) { return done(err); }
-    if (!user) {
-      return done(null, false, { msg: `Email ${email} not found.` });
-    }
+passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+  try {
+    const user = await User.findOneAsync({ email: email.toLowerCase() });
+    if (!user) return done(null, false, { msg: `Email ${email} not found.` });
+
     user.comparePassword(password, (err, isMatch) => {
-      if (err) { return done(err); }
-      if (isMatch) {
-        return done(null, user);
-      }
+      if (err) return done(err);
+
+      if (isMatch) return done(null, user);
+
       return done(null, false, { msg: 'Invalid email or password.' });
     });
-  });
+  } catch (err) {
+    return done(err);
+  }
 }));
 
 /**
@@ -66,36 +70,45 @@ passport.use(new FacebookStrategy({
   callbackURL: '/auth/facebook/callback',
   profileFields: ['name', 'email', 'link', 'locale', 'timezone', 'gender'],
   passReqToCallback: true
-}, (req, accessToken, refreshToken, profile, done) => {
+}, async (req, accessToken, refreshToken, profile, done) => {
   if (req.user) {
-    User.findOne({ facebook: profile.id }, (err, existingUser) => {
-      if (err) { return done(err); }
+    try {
+      const existingUser = await User.findOneAsync({ facebook: profile.id });
+
       if (existingUser) {
         req.flash('errors', { msg: 'There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         done(err);
       } else {
-        User.findById(req.user.id, (err, user) => {
-          if (err) { return done(err); }
+        try {
+          const user = await User.findByIdAsync(req.user.id);
+
           user.facebook = profile.id;
           user.tokens.push({ kind: 'facebook', accessToken });
           user.profile.name = user.profile.name || `${profile.name.givenName} ${profile.name.familyName}`;
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
-          user.save((err) => {
+          user.save((e) => {
             req.flash('info', { msg: 'Facebook account has been linked.' });
-            done(err, user);
+            done(e, user);
           });
-        });
+        } catch (e) {
+          return done(e);
+        }
       }
-    });
+    } catch (err) {
+      return done(err);
+    }
   } else {
-    User.findOne({ facebook: profile.id }, (err, existingUser) => {
-      if (err) { return done(err); }
+    try {
+      const existingUser = await User.findOneAsync({ facebook: profile.id });
+
       if (existingUser) {
         return done(null, existingUser);
       }
-      User.findOne({ email: profile._json.email }, (err, existingEmailUser) => {
-        if (err) { return done(err); }
+
+      try {
+        const existingEmailUser = await User.findOneAsync({ email: profile._json.email });
+
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.' });
           done(err);
@@ -108,12 +121,17 @@ passport.use(new FacebookStrategy({
           user.profile.gender = profile._json.gender;
           user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';
+
           user.save((err) => {
             done(err, user);
           });
         }
-      });
-    });
+      } catch (e) {
+        return done(e);
+      }
+    } catch (err) {
+      return done(err);
+    }
   }
 }));
 
