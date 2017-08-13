@@ -53,7 +53,7 @@ block content
           td
             ul
               for entry in transaction.entries
-                if entry.account == wallet.id
+                if entry.account === wallet.id
                   b
                     li #{entry.account}: #{entry.value}
                 else
