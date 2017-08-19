@@ -200,7 +200,7 @@ The same goes for other providers.
 - Click on the **Create New Facebook App ID** button
 - Choose a **Category** that best describes your app
 - Click on **Create App ID** button
-- In the upper right corner click on **Skip Quick Star**
+- In the upper right corner click on **Skip Quick Start**
 - Copy and paste *App ID* and *App Secret* keys into `.env`
  - **Note:** *App ID* is **clientID**, *App Secret* is **clientSecret**
 - Click on the *Settings* tab in the left nav, then click on **+ Add Platform**
