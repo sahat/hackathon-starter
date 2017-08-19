@@ -23,4 +23,4 @@ block content
     | #{blog.posts} posts
   h4 Latest Photo Post
   for photo in photoset
-    img.item(src='#{photo.original_size.url}')
+    img.item(src='' + photo.original_size.url)

@@ -5,7 +5,7 @@ block content
     h2
       i.fa.fa-foursquare
       | Foursquare API
-  
+
   .btn-group.btn-group-justified
     a.btn.btn-primary(href='https://developer.foursquare.com/start', target='_blank')
       i.fa.fa-check-square-o
@@ -34,8 +34,7 @@ block content
   br
   h3.text-primary Venue Detail
   p
-    img(src='#{venueDetail.venue.photos.groups[0].items[0].prefix}150x150#{venueDetail.venue.photos.groups[0].items[0].suffix}')
-
+img(src=''+ venueDetail.venue.photos.groups[0].items[0].prefix150x150 + venueDetail.venue.photos.groups[0].items[0].suffix)
   .label.label-primary #{venueDetail.venue.name} (#{venueDetail.venue.categories[0].shortName})
   .label.label-success #{venueDetail.venue.location.address}, #{venueDetail.venue.location.city}, #{venueDetail.venue.location.state}
   .label.label-warning #{venueDetail.venue.likes.count} likes, #{venueDetail.venue.rating} rating

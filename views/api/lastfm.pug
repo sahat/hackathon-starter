@@ -17,7 +17,7 @@ block content
       | API Endpoints
 
   h3= artist.name
-  img.thumbnail(src='#{artist.image}')
+  img.thumbnail(src='' + artist.image)
 
   h3 Tags
   for tag in artist.tags
@@ -31,17 +31,17 @@ block content
 
   h3 Top Albums
   for album in artist.topAlbums
-    img(src='#{album.image.slice(-1)[0]["#text"]}', width=150, height=150)
+    img(src='' + album.image.slice(-1)[0]["#text"], width=150, height=150)
     |&nbsp;
 
   h3 Top Tracks
   ol
     for track in artist.topTracks
       li
-        a(href='#{track.url}') #{track.name}
+        a(href='' + track.url) #{track.name}
 
   h3 Similar Artists
   ul.list-unstyled.list-inline
     for similarArtist in artist.similar
       li
-        a(href='#{similarArtist.url}') #{similarArtist.name}
+        a(href='' + similarArtist.url) #{similarArtist.name}
