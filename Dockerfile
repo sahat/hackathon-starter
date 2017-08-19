@@ -7,7 +7,7 @@ COPY .env.example /starter/.env.example
 WORKDIR /starter
 
 ENV NODE_ENV production
-RUN yarn install --production
+RUN npm install --production
 
 CMD ["npm","start"]
 

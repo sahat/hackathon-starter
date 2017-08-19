@@ -130,9 +130,6 @@ cd myproject
 # Install NPM dependencies
 npm install
 
-# Or, if you prefer to use `yarn` instead of `npm`
-yarn install
-
 # Then simply start your app
 node app.js
 ```
@@ -143,16 +140,6 @@ server. Once installed, instead of `node app.js` use `nodemon app.js`. It will
 save you a lot of time in the long run, because you won't need to manually
 restart the server each time you make a small change in code. To install, run
 `sudo npm install -g nodemon`.
-
-Yarn vs NPM
------------
-Yarn is a new JavaScript package manager built by Facebook, Google, Exponent and Tilde. Yarn is not an attempt to replace `npm`, 
-it's simply an alternative CLI client for fetching modules from the npm registry but it does have some unique benefits over using `npm`,
-most noticeably speed and consistency (via a lock file which ensures that only specific versions of dependencies are installed).
-Hackathon Starter includes a `yarn.lock` file by default and as project dependencies are updated, this file will be updated to reflect those changes.
-
-To upgrade your local dependencies using Yarn, simply run `yarn upgrade`. This will update all dependencies to their latest version based on the [version range](https://docs.npmjs.com/getting-started/semantic-versioning#semver-for-consumers) specified in the `package.json` file. The yarn.lock file will be recreated as well.
-For further information, please see the official documention for [managing dependencies](https://yarnpkg.com/en/docs/managing-dependencies) and [upgrading dependencies](https://yarnpkg.com/en/docs/cli/upgrade). This [Yarn vs NPM](https://www.sitepoint.com/yarn-vs-npm/) article by SitePoint also has some very useful information.
 
 Obtaining API Keys
 ------------------
@@ -357,7 +344,7 @@ Project Structure
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
 | app.js                             | The main application file.                                   |
 | package.json                       | NPM dependencies.                                            |
-| yarn.lock                          | Contains exact versions of NPM dependencies in package.json. |
+| package-lock.lock                          | Contains exact versions of NPM dependencies in package.json. |
 
 **Note:** There is no preference how you name or structure your views.
 You could place all your templates in a top-level `views` directory without
@@ -871,11 +858,6 @@ If you need to use socket.io in your app, please continue reading.
 First you need to install socket.io:
 ```js
 npm install socket.io --save
-```
-
-Or, again, if you use Yarn:
-```js
-yarn add socket.io
 ```
 
 Replace `const app = express();` with the following code:
