@@ -25,7 +25,7 @@ block content
       div Account since: #{new Date(playerSummary.timecreated * 1000)}
       div Last Online: #{new Date(playerSummary.lastlogoff * 1000)}
       div Online Status:
-        if playerSummary.personastate == 1
+        if playerSummary.personastate === 1
           strong.text-success  Online
         else
           strong.text-danger  Offline
