@@ -59,7 +59,8 @@ mongoose.connection.on('error', (err) => {
 /**
  * Express configuration.
  */
-app.set('port', process.env.PORT || 3000);
+app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
+app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(expressStatusMonitor());
@@ -107,7 +108,7 @@ app.use((req, res, next) => {
       !req.path.match(/\./)) {
     req.session.returnTo = req.path;
   } else if (req.user &&
-      req.path == '/account') {
+      req.path === '/account') {
     req.session.returnTo = req.path;
   }
   next();
@@ -225,7 +226,7 @@ app.use(errorHandler());
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env')); 
+  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
 
