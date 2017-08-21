@@ -45,7 +45,7 @@ block content
       li.media
         a.pull-left(href='#')
           - var image = tweet.user.profile_image_url.replace('_normal', '');
-          img.media-object(src='#{image}', style='width: 64px; height: 64px;')
+          img.media-object(src=image, style='width: 64px; height: 64px;')
         .media-body
           strong.media-heading #{tweet.user.name}
           span.text-muted  @#{tweet.user.screen_name}
