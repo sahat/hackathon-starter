@@ -13,7 +13,7 @@ block content
     a.btn.btn-success(href='https://dev.twitter.com/docs', target='_blank')
       i.fa.fa-check-square-o
       | Overview
-    a.btn.btn-success(href='https://dev.twitter.com/docs/api/1.1', target='_blank')
+    a.btn.btn-success(href='https://dev.twitter.com/rest/public', target='_blank')
       i.fa.fa-code-fork
       | API Endpoints
 
@@ -45,7 +45,7 @@ block content
       li.media
         a.pull-left(href='#')
           - var image = tweet.user.profile_image_url.replace('_normal', '');
-          img.media-object(src='#{image}', style='width: 64px; height: 64px;')
+          img.media-object(src=image, style='width: 64px; height: 64px;')
         .media-body
           strong.media-heading #{tweet.user.name}
           span.text-muted  @#{tweet.user.screen_name}
