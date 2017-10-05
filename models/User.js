@@ -22,8 +22,8 @@ const userSchema = new mongoose.Schema({
     gender: String,
     location: String,
     website: String,
-    picture: String
-  }
+    picture: String,
+  },
 }, { timestamps: true });
 
 /**
@@ -32,12 +32,12 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', function save(next) {
   const user = this;
   if (!user.isModified('password')) { return next(); }
-  bcrypt.genSalt(10, (err, salt) => {
+  return bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
-      if (err) { return next(err); }
+    return bcrypt.hash(user.password, salt, null, (err2, hash) => {
+      if (err2) { return next(err2); }
       user.password = hash;
-      next();
+      return next();
     });
   });
 });
@@ -55,14 +55,15 @@ userSchema.methods.comparePassword = function comparePassword(candidatePassword,
  * Helper method for getting user's gravatar.
  */
 userSchema.methods.gravatar = function gravatar(size) {
+  let avatarSize = size;
   if (!size) {
-    size = 200;
+    avatarSize = 200;
   }
   if (!this.email) {
-    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
+    return `https://gravatar.com/avatar/?s=${avatarSize}&d=retro`;
   }
   const md5 = crypto.createHash('md5').update(this.email).digest('hex');
-  return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
+  return `https://gravatar.com/avatar/${md5}?s=${avatarSize}&d=retro`;
 };
 
 const User = mongoose.model('User', userSchema);

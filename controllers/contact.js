@@ -4,8 +4,8 @@ const transporter = nodemailer.createTransport({
   service: 'SendGrid',
   auth: {
     user: process.env.SENDGRID_USER,
-    pass: process.env.SENDGRID_PASSWORD
-  }
+    pass: process.env.SENDGRID_PASSWORD,
+  },
 });
 
 /**
@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
  */
 exports.getContact = (req, res) => {
   res.render('contact', {
-    title: 'Contact'
+    title: 'Contact',
   });
 };
 
@@ -38,15 +38,15 @@ exports.postContact = (req, res) => {
     to: 'your@email.com',
     from: `${req.body.name} <${req.body.email}>`,
     subject: 'Contact Form | Hackathon Starter',
-    text: req.body.message
+    text: req.body.message,
   };
 
-  transporter.sendMail(mailOptions, (err) => {
+  return transporter.sendMail(mailOptions, (err) => {
     if (err) {
       req.flash('errors', { msg: err.message });
       return res.redirect('/contact');
     }
     req.flash('success', { msg: 'Email has been sent successfully!' });
-    res.redirect('/contact');
+    return res.redirect('/contact');
   });
 };
