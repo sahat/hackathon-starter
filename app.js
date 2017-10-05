@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 /**
  * Module dependencies.
  */
@@ -49,7 +51,9 @@ const app = express();
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
+mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI, {
+  useMongoClient: true,
+});
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
@@ -67,7 +71,7 @@ app.use(expressStatusMonitor());
 app.use(compression());
 app.use(sass({
   src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public')
+  dest: path.join(__dirname, 'public'),
 }));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -80,8 +84,8 @@ app.use(session({
   store: new MongoStore({
     url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
     autoReconnect: true,
-    clear_interval: 3600
-  })
+    clear_interval: 3600,
+  }),
 }));
 app.use(passport.initialize());
 app.use(passport.session());

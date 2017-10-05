@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(() => {
 
   // Place JavaScript code here...
 
