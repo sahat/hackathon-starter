@@ -55,3 +55,18 @@ exports.deleteSport = (req, res) => {
         res.redirect("/list");
     })
 }
+
+exports.updateSportForm =(req,res) => {
+    Sport.findOne({name: req.params.name}, function(err, sport){
+        console.log(err,sport)
+        if (err) { req.flash('errors', { msg: 'Account with that email address already exists.' }); }
+        res.render('sports/update', {sport:sport});
+
+    })
+}
+exports.updateSport = (req, res) => {
+    Sport.findOneAndUpdate({_id: req.body.id}, req.body, function(err, place){
+        res.redirect('/list');
+    })
+}
+

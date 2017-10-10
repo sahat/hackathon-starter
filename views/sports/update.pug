@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+    .page-header
+        h3 Create Sports
+    form.form-horizontal(id='signup-form', method='post' action='/updateSport')
+        input(type='hidden', name='_csrf', value=_csrf)
+        input(type='hidden', name='id', value=sport.id)
+        .form-group
+            label.col-sm-3.control-label(for='name') Name
+            .col-sm-7
+                input.form-control(type='text', name='name', id='name', required, value=sport.name)
+        .form-group
+            label.col-sm-3.control-label(for='type') Type
+            .col-sm-7
+                input.form-control(type='text', name='type', id='type', required, value=sport.type)
+        .form-group
+            .col-sm-offset-3.col-sm-7
+                button.btn.btn-success(type='submit')
+                    i.fa.fa-user-plus
+                    | Create
