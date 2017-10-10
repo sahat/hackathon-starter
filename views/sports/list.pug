@@ -2,7 +2,7 @@ extends ../layout
 block content
     ul
         each sportslist in sportList
-            li= sportslist
+            li: a(href = '/sport/'+sportslist.name) #{sportslist.name}
         else
             li There are no sports
 

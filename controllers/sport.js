@@ -27,16 +27,31 @@ exports.createSport = (req, res, next) => {
         }
         sport.save((err) => {
             if (err) { req.flash('errors', { msg: 'Account with that email address already exists.' }); }
-                res.redirect('/');
+                res.redirect('/sport/'+sport.name);
             });
         });
 };
 
-exports.listSports = (req, res,) => {
+exports.listSports = (req, res) => {
     Sport.find({}, function(err, sports) {
         if (err) { req.flash('errors', { msg: 'Account with that email address already exists.' }); }
 
         res.render("sports/list", {sportList: sports, title: "List of sports"});
 
+    })
+
+}
+
+exports.showSport = (req, res) => {
+    Sport.findOne({}, function(err, sports){
+        if (err) { req.flash('errors', { msg: 'Account with that email address already exists.' }); }
+        res.render("sports/sport", {sportList: sports, title: "List of sports"});
+    })
+}
+
+exports.deleteSport = (req, res) => {
+    Sport.remove({name: req.body.name}, function(err, sports){
+        if (err) { req.flash('errors', { msg: 'Account with that email address already exists.' }); }
+        res.redirect("/list");
     })
 }
