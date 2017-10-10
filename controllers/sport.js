@@ -31,3 +31,12 @@ exports.createSport = (req, res, next) => {
             });
         });
 };
+
+exports.listSports = (req, res,) => {
+    Sport.find({}, function(err, sports) {
+        if (err) { req.flash('errors', { msg: 'Account with that email address already exists.' }); }
+
+        res.render("sports/list", {sportList: sports, title: "List of sports"});
+
+    })
+}
