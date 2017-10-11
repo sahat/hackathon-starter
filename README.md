@@ -101,7 +101,7 @@ Features
 Prerequisites
 -------------
 
-- [MongoDB](https://www.mongodb.org/downloads)
+- [MongoDB](https://www.mongodb.org/downloads) needs to be installed and running.
 - [Node.js 6.0+](http://nodejs.org)
 - Command Line Tools
  - <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
@@ -183,16 +183,18 @@ The same goes for other providers.
 
 - Visit <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a>
 - Click **My Apps**, then select **Add a New App* from the dropdown menu
-- Select **Website** platform and enter a new name for your app
-- Click on the **Create New Facebook App ID** button
-- Choose a **Category** that best describes your app
-- Click on **Create App ID** button
-- In the upper right corner click on **Skip Quick Start**
+- Enter a new name for your app
+- Click on the **Create App ID** button
+- Find the Facebook Login Product and click on **Facebook Login**
+- Instead of going through their Quickstart, click on **Settings** for your app in the top left corner 
 - Copy and paste *App ID* and *App Secret* keys into `.env`
- - **Note:** *App ID* is **clientID**, *App Secret* is **clientSecret**
-- Click on the *Settings* tab in the left nav, then click on **+ Add Platform**
-- Select **Website**
+- **Note:** *App ID* is **FACEBOOK_ID**, *App Secret* is **FACEBOOK_SECRET** in `.env`
+- Enter `localhost` under *App Domains*
+- Choose a **Category** that best describes your app
+- Click on **+ Add Platform** and select **Website**
 - Enter `http://localhost:3000` under *Site URL*
+- Click on the *Settings* tab in the left nav under Facebook Login
+- Enter `http://localhost:3000/auth/facebook/callback` under Valid OAuth redirect URIs
 
 **Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
