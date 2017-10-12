@@ -3,7 +3,7 @@ extends ../layout
 block content
     .page-header
         h3 Create Sports
-    form.form-horizontal(id='signup-form', method='POST' action='/createSport')
+    form.form-horizontal(id='signup-form', method='POST', action='/createSport')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group
             label.col-sm-3.control-label(for='name') Name
@@ -18,3 +18,11 @@ block content
                 button.btn.btn-success(type='submit')
                     i.fa.fa-user-plus
                     | Create
+
+    form(method='post', action='/msports')
+        input(type='hidden', name='_csrf', value=_csrf)
+        button.btn.btn-success(type='submit')
+            i.fa.fa-user-plus
+            | CreateSports
+    br
+    a(href='/list') Show all sports

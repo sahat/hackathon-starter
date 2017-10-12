@@ -18,17 +18,25 @@ $(document).ready(function() {
             });
     })
 
-    $("#deleteAjax").click(function(){
-        $.ajax({
-            method: "post",
-            url: "/deleteSport",
-            data: {_csrf:$("#_csrf").val(), name:$("#name").val(), type:$("#type").val() }
+    $("form").each(function(e){
+        var form = this;
+
+        $(form).find(".btnD").click(function(e){
+            e.preventDefault();
+            console.log("hihi");
+            var name=$(form).find(".name").val();
+            $.ajax({
+                method: "post",
+                url: "/deleteSport",
+                data: {_csrf:$("#_csrf").val(), name:name, type:$("#type").val() }
+            })
+                .done(function( msg) {
+                    console.log(msg);
+                    $(form).parent().remove();
+                });
+
         })
-        .done(function( msg ) {
-            console.log(msg);
-            //$('#sporthide').show();
-            //$('#editform').hide();
-        });
+
     })
 });
 

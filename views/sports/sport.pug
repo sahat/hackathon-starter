@@ -9,14 +9,14 @@ block content
         li= sportList.name
         li= sportList.type
 
-        form.form-horizontal(id='delete-form', method='POST' action='/deletesport')
-            input(type='hidden', name='_csrf', value=_csrf)
-            input(type='hidden', name='name', value=sportList.name)
-            .form-group
-                .col-sm-offset-3.col-sm-7
-                    button.btn.btn-success(type='submit')
-                        i.fa.fa-trash-o
-                        | Delete
+        //form.form-horizontal(id='delete-form', method='POST' action='/deletesport')
+        //    input(type='hidden', name='_csrf', value=_csrf, id="_csrf")
+        //    input(type='hidden', name='name', value=sportList.name)
+        //    .form-group
+        //        .col-sm-offset-3.col-sm-7
+        //            button.btn.btn-success(type='submit')
+        //                i.fa.fa-trash-o
+        //                | Delete
 
     form.form-horizontal(id='editform')
             input(type='hidden', name='_csrf', value=_csrf, id="_csrf")
