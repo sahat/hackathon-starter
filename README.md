@@ -1370,25 +1370,25 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 ### Watson catalog of services      
 
-**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> Conversation** - 	Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.  
+**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> [Conversation](https://www.ibm.com/watson/services/conversation/)** - 	Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.  
 
-**<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> Discovery** - Unlock hidden value in data to find answers, monitor trends and surface patterns with the world’s most advanced cloud-native insight engine.
+**<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> [Discovery](https://www.ibm.com/watson/services/discovery/)** - Unlock hidden value in data to find answers, monitor trends and surface patterns with the world’s most advanced cloud-native insight engine.
 
-**<img src="https://wbi.mybluemix.net/icons/language-translator.svg?version=4" width="20" width="25"> Language Translator** - Translate text from one language to another.
+**<img src="https://wbi.mybluemix.net/icons/language-translator.svg?version=4" width="20" width="25"> [Language Translator](https://www.ibm.com/watson/services/language-translator/)** - Translate text from one language to another.
 
-**<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> Natural Language Classifier** - Interpret and classify natural language with confidence.  
+**<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> [Natural Language Classifier](https://www.ibm.com/watson/services/natural-language-classifier/)** - Interpret and classify natural language with confidence.  
 
-**<img src="https://wbi.mybluemix.net/icons/natural-language-understanding.svg?version=2" width="25"> Natural Language Understanding** - Analyze text to extract meta-data from content such as concepts, entities, keywords and more.
+**<img src="https://wbi.mybluemix.net/icons/natural-language-understanding.svg?version=2" width="25"> [Natural Language Understanding](https://www.ibm.com/watson/services/natural-language-understanding/)** - Analyze text to extract meta-data from content such as concepts, entities, keywords and more.
 
-**<img src="https://wbi.mybluemix.net/icons/personality-insights.svg?version=2" width="25"> Personality Insights** - Predict personality characteristics, needs and values through written text.
+**<img src="https://wbi.mybluemix.net/icons/personality-insights.svg?version=2" width="25"> [Personality Insights](https://www.ibm.com/watson/services/personality-insights/)** - Predict personality characteristics, needs and values through written text.
 
-**<img src="https://wbi.mybluemix.net/icons/speech-to-text.svg?version=2" width="25"> Speech to Text** - Convert audio and voice into written text for quick understanding of content.
+**<img src="https://wbi.mybluemix.net/icons/speech-to-text.svg?version=2" width="25"> [Speech to Text](https://www.ibm.com/watson/services/speech-to-text/)** - Convert audio and voice into written text for quick understanding of content.
 
-**<img src="https://wbi.mybluemix.net/icons/text-to-speech.svg?version=2" width="25"> Text to Speech** - Convert written text into natural sounding audio in a variety of languages and voices.  
+**<img src="https://wbi.mybluemix.net/icons/text-to-speech.svg?version=2" width="25"> [Text to Speech](https://www.ibm.com/watson/services/text-to-speech/)** - Convert written text into natural sounding audio in a variety of languages and voices.  
 
-**<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> Tone Analyzer** - Understand emotions, social tendencies and perceived writing style. 
+**<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> [Tone Analyzer](https://www.ibm.com/watson/services/tone-analyzer/)** - Understand emotions, social tendencies and perceived writing style. 
 
-**<img src="https://kpprod1.alchemyapi.com/images/vis_rec.svg" width="25"> Visual Recognition** - Tag, classify and search visual content using machine learning.
+**<img src="https://kpprod1.alchemyapi.com/images/vis_rec.svg" width="25"> [Visual Recognition](https://www.ibm.com/watson/services/visual-recognition/)** - Tag, classify and search visual content using machine learning.
 
 
 
