@@ -1368,39 +1368,27 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 
 
-### Watson catalog of services     
+### Watson catalog of services      
 
-**<img src="https://kpprod1.alchemyapi.com/images/alchemy_logo_24.png" width="25"> AlchemyAPI** - An AlchemyAPI service that analyzes your unstructured text and image content.      
+**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> Conversation** - 	Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.  
 
-**<img src="http://csbmixbroker.mybluemix.net/commerce_24.png" width="25"> Cognitive Commerce** - Cognitive Commerce is a service provided by Cognitive Scale.  
+**<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> Discovery** - Unlock hidden value in data to find answers, monitor trends and surface patterns with the world’s most advanced cloud-native insight engine.
 
-**<img src="http://csbmixbroker.mybluemix.net/graph_24.png" width="25"> Cognitive Graph** - Cognitive Graph is a service provided by Cognitive Scale.  
+**<img src="https://wbi.mybluemix.net/icons/language-translator.svg?version=4" width="20" width="25"> Language Translator** - Translate text from one language to another.
 
-**<img src="http://csbmixbroker.mybluemix.net/insights_24.png" width="25"> Cognitive Insights** - Cognitive Insights™ is a service provided by Cognitive Scale.  
+**<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> Natural Language Classifier** - Interpret and classify natural language with confidence.  
 
-**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> Conversation** - 	Add a natural language interface to your application to automate interactions with your end users. Common applications include virtual agents and chat bots that can integrate and communicate on any channel or device.  
+**<img src="https://wbi.mybluemix.net/icons/natural-language-understanding.svg?version=2" width="25"> Natural Language Understanding** - Analyze text to extract meta-data from content such as concepts, entities, keywords and more.
 
-**<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> Discovery** - Add a cognitive search and content analytics engine to applications.  
+**<img src="https://wbi.mybluemix.net/icons/personality-insights.svg?version=2" width="25"> Personality Insights** - Predict personality characteristics, needs and values through written text.
 
-**<img src="https://wbi.mybluemix.net/icons/document-conversion.svg?version=2" width="25"> Document Conversion** - Converts a HTML, PDF, or Microsoft Word™ document into a normalized HTML, plain text, or a set of JSON-formatted Answer units.  
+**<img src="https://wbi.mybluemix.net/icons/speech-to-text.svg?version=2" width="25"> Speech to Text** - Convert audio and voice into written text for quick understanding of content.
 
-**<img src="https://wbi.mybluemix.net/icons/language-translator.svg?version=4" width="20" width="25"> Language Translator** - Translate text from one language to another for specific domains.
+**<img src="https://wbi.mybluemix.net/icons/text-to-speech.svg?version=2" width="25"> Text to Speech** - Convert written text into natural sounding audio in a variety of languages and voices.  
 
-**<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> Natural Language Classifier** - Natural Language Classifier performs natural language classification on question texts. A user would be able to train their data and the predict the appropriate class for a input question.  
+**<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> Tone Analyzer** - Understand emotions, social tendencies and perceived writing style. 
 
-**<img src="https://wbi.mybluemix.net/icons/personality-insights.svg?version=2" width="25"> Personality Insights** - The Watson Personality Insights derives insights from transactional and social media data to identify psychological traits.  
-
-**<img src="https://wbi.mybluemix.net/icons/retrieve-and-rank.svg?version=2" width="25"> Retrieve and Rank** - Add machine learning enhanced search capabilities to your application.   
-
-**<img src="https://wbi.mybluemix.net/icons/speech-to-text.svg?version=2" width="25"> Speech to Text** - Low-latency, streaming transcription.  
-
-**<img src="https://wbi.mybluemix.net/icons/text-to-speech.svg?version=2" width="25"> Text to Speech** - Synthesizes natural-sounding speech from text.  
-
-**<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> Tone Analyzer** - Tone Analyzer uses linguistic analysis to detect three types of tones from communications: emotion, social, and language. This insight can then be used to drive high impact communications.  
-
-**<img src="https://wbi.mybluemix.net/icons/retrieve-and-rank.svg?version=2" width="25" > Tradeoff Analytics** - Helps make better choices under multiple conflicting goals. Combines smart visualization and recommendations for tradeoff exploration.    
-
-**<img src="https://kpprod1.alchemyapi.com/images/vis_rec.svg" width="25"> Visual Recognition** - Find meaning in visual content! Analyze images for scenes, objects, faces, and other content. Choose a default model off the shelf, or create your own custom classifier. Find similar images within a collection. Develop smart applications that analyze the visual content of images or video frames to understand what is happening in a scene.  
+**<img src="https://kpprod1.alchemyapi.com/images/vis_rec.svg" width="25"> Visual Recognition** - Tag, classify and search visual content using machine learning.
 
 
 
