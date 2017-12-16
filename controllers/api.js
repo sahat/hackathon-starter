@@ -208,7 +208,7 @@ exports.getLastfm = (req, res, next) => {
     artistTopTracks(),
     artistTopAlbums()
   ])
-  .then(([artistInfo, artistTopAlbums, artistTopTracks]) => {
+  .then(([artistInfo, artistTopTracks, artistTopAlbums]) => {
     const artist = {
       name: artistInfo.artist.name,
       image: artistInfo.artist.image.slice(-1)[0]['#text'],
