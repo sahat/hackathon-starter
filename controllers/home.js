@@ -7,6 +7,9 @@ const request = require('request');
 const Parking = require('../models/Parking.js');
 const Velo = require('../models/Velo.js');
 
+sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 exports.index = (req, res, next) => {
         request('https://geoservices.grand-nancy.org/arcgis/rest/services/public/VOIRIE_Parking/MapServer/0/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&queryByDistance=&returnExtentsOnly=false&datumTransformation=&parameterValues=&rangeValues=&f=pjson',
@@ -114,24 +117,26 @@ exports.index = (req, res, next) => {
 
                             });
 
-                            Velo.find((err, docs) => {
-                                res.render('home', {
+                            Parking.find((err, docs1) => {
+// pour les vélos : j'ai un soucis du à l'Asynchronisme de mon code.. ce n'est que au deuxième chargement que je recois mes valeurs dans docs
+                                Velo.find((err, docs) => {
+                                console.log("ICI CEST les parking : ", docs1)
+                            res.render('home', {
                                 title: 'Home',
-                                allVelo: docs
+                                allVelo: docs,
+                                allPark: docs1
                             });
+                        });
+
                         });
                         } else {
                             console.log(error);
                         }
+
+
                     });
 
-                Parking.find((err, docs) => {
-                    res.render('home', {
-                    title: 'Home',
 
-                    allPark: docs
-                });
-            });
 
             }else{
                 console.log(error);
@@ -141,3 +146,4 @@ exports.index = (req, res, next) => {
 
 
 };
+

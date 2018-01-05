@@ -16,6 +16,8 @@ block content
         var map;
 
         var parkings = !{JSON.stringify(allPark)}
+        var velos = !{JSON.stringify(allVelo)}
+
 
         function initMap() {
             var bounds = new google.maps.LatLngBounds();
@@ -39,15 +41,14 @@ block content
                         animation: google.maps.Animation.DROP
                     });
                 markers.push(marker);
-                console.log(markers)
 
                 var contentString = '<div id="content">' +
                     '<div id="siteNotice">' +
                     '</div>' +
-                    '<h1 id="firstHeading" class="firstHeading">' + parking.name + '</h1>' +
+                    '<h1 id="firstHeading" class="firstHeading">' + 'Parking ' + parking.name + '</h1>' +
                     '<div id="bodyContent">' +
                     '<p>' + parking.adresse + '</p>' +
-                    '<p>' + parking.places + '</p>' +
+                    '<p> Il reste ' + parking.places + ' places</p>' +
                     '<a href =' + parking.lien + '>Allez voir >> </a>' +
                     '</div>' +
                     '</div>';
@@ -59,10 +60,42 @@ block content
                     infowindow.open(map, marker);
                 });
 
-
-
             });
 
+            velos.forEach(function (velo) {
+                var marker = new google.maps.Marker(
+                {
+                    position: {lat: velo.latitude, lng: velo.longitude},
+                    icon: {
+                    url:'/bike-zone-signal.png',
+                scaledSize: new google.maps.Size(24, 24)
+                },
+                map: map,
+                title: velo.name.slice(7),
+                animation: google.maps.Animation.DROP
+                });
+                markers.push(marker);
+
+                var contentString = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    '<h1 id="firstHeading" class="firstHeading"> Parking ' + velo.name.slice(7) + '</h1>' +
+                    '<div id="bodyContent">' +
+                    '<p> Stands libre : ' + velo.available_bike_stands + '</p>' +
+                    '<p> Velo libre : ' + velo.available_bikes + '</p>' +
+                    '<p> Borne de paiement : '+ velo.banking +'</p>' +
+                    '</div>' +
+                    '</div>';
+
+
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                marker.addListener('click', function () {
+                    infowindow.open(map, marker);
+                });
+            })
             google.maps.event.addListenerOnce(map, 'idle', function () {
                 $.each(markers, function (i, marker) {
                     bounds.extend(marker.position);
@@ -70,7 +103,67 @@ block content
                 map.fitBounds(bounds);
 
             });
+
+            //géolocalisation
+            var infoWindow = new google.maps.InfoWindow({map: map});
+            if (navigator.geolocation) {
+
+
+
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var coordsGeoloc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                console.log(coordsGeoloc);
+                    var markerPerson = new google.maps.Marker(
+                        {
+                            position: coordsGeoloc,
+                            icon: {
+                                url: '/person.png',
+                                scaledSize: new google.maps.Size(24, 24)
+                            },
+                            map: map,
+                            title: 'Vous etes ici',
+                            animation: google.maps.Animation.DROP
+                        });
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('Vous êtes ici !');
+                    map.setCenter(pos);
+
+                    //relation entre point d'interet
+                    markers.forEach(function (marker) {
+                        var distance = google.maps.geometry.spherical.computeDistanceBetween(markerPerson.getPosition(), marker.getPosition());
+                        console.log(distance);
+
+                        if (distance <= 600) {
+                            marker.icon =
+                                {
+                                    url: '/pin.png',
+                                    scaledSize: new google.maps.Size(24, 24)
+                                };
+                            infoWindow.setPosition(marker.position);
+                            infoWindow.setContent('Voici les parkings les plus proche de vous !');
+                        }
+                        /**var icone = (distance > 10) ? nearIcon : farIcon;
+                        // affectation icone qui va bien
+                        marker.setOptions({'icon': icone});
+                         */
+                    })
+
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+              //  markers.push(markerPerson);
+
+
+            }
+
+
+
+
         }
 
-script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyD1JSwbMYv3Slqd5fFXHRWnezi8ZJnOYnc&callback=initMap')
-
+script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyD1JSwbMYv3Slqd5fFXHRWnezi8ZJnOYnc&callback=initMap&libraries=geometry,drawing')
