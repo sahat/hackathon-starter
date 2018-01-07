@@ -1,4 +1,4 @@
-FROM node:6-slim
+FROM node:8.9-slim
 
 COPY . /starter
 COPY package.json /starter/package.json
@@ -11,4 +11,4 @@ RUN npm install --production
 
 CMD ["npm","start"]
 
-EXPOSE 8888
+EXPOSE 8080
