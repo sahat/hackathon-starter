@@ -90,7 +90,8 @@ app.use(flash());
 // Exclude /api/upload from lusca.csrf() middleware check
 // as multipart/form-data conflicts with 'bodyparser'
 app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
+  const regex = new RegExp(/^api\/upload\/*$/i);
+  if (!regex.test(req.path)) {
     next();
   } else {
     lusca.csrf()(req, res, next);
