@@ -87,6 +87,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+// Exclude /api/upload from lusca.csrf() middleware check
+// as multipart/form-data conflicts with 'bodyparser'
 app.use((req, res, next) => {
   if (req.path === '/api/upload') {
     next();
