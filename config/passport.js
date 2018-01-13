@@ -414,15 +414,15 @@ passport.use('tumblr', new OAuthStrategy({
   callbackURL: '/auth/tumblr/callback',
   passReqToCallback: true
 },
-  (req, token, tokenSecret, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
-      user.save((err) => {
-        done(err, user);
-      });
+(req, token, tokenSecret, profile, done) => {
+  User.findById(req.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
+    user.save((err) => {
+      done(err, user);
     });
-  }
+  });
+}
 ));
 
 /**
@@ -436,15 +436,15 @@ passport.use('foursquare', new OAuth2Strategy({
   callbackURL: process.env.FOURSQUARE_REDIRECT_URL,
   passReqToCallback: true
 },
-  (req, accessToken, refreshToken, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.tokens.push({ kind: 'foursquare', accessToken });
-      user.save((err) => {
-        done(err, user);
-      });
+(req, accessToken, refreshToken, profile, done) => {
+  User.findById(req.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({ kind: 'foursquare', accessToken });
+    user.save((err) => {
+      done(err, user);
     });
-  }
+  });
+}
 ));
 
 /**
@@ -495,15 +495,15 @@ passport.use('pinterest', new OAuth2Strategy({
   callbackURL: process.env.PINTEREST_REDIRECT_URL,
   passReqToCallback: true
 },
-  (req, accessToken, refreshToken, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.tokens.push({ kind: 'pinterest', accessToken });
-      user.save((err) => {
-        done(err, user);
-      });
+(req, accessToken, refreshToken, profile, done) => {
+  User.findById(req.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({ kind: 'pinterest', accessToken });
+    user.save((err) => {
+      done(err, user);
     });
-  }
+  });
+}
 ));
 
 /**
