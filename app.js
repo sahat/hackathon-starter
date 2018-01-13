@@ -88,7 +88,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 // Exclude /api/upload from lusca.csrf() middleware check
-// as multipart/form-data conflicts with 'bodyparser'
+// as there is some bugs in 'multipart/form-data' for 'multer'
 app.use((req, res, next) => {
   const regex = new RegExp(/^\/api\/upload\/*$/i);
   if (regex.test(req.path)) {
