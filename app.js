@@ -92,7 +92,6 @@ app.use(flash());
 app.use((req, res, next) => {
   const regex = new RegExp(/^\/api\/upload\/*$/i);
   if (regex.test(req.path)) {
-    console.log('UPLOAD PAGE');
     next();
   } else {
     lusca.csrf()(req, res, next);
