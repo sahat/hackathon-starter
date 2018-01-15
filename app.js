@@ -48,6 +48,13 @@ const passportConfig = require('./config/passport');
 const app = express();
 
 /**
+ * Create Socket server.
+ */
+const socketApp = express();
+const socketServer = require('http').createServer(socketApp);
+const socketIo = require('socket.io')(socketServer);
+
+/**
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
@@ -62,7 +69,8 @@ mongoose.connection.on('error', (err) => {
  * Express configuration.
  */
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
-app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
+app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000);
+app.set('socket-port', process.env.SOCKET_PORT || 8000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(compression());
@@ -239,5 +247,18 @@ app.listen(app.get('port'), () => {
   console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
+
+/**
+ * Start Socket server.
+ */
+socketIo.on('connection', (client) => {
+  console.log('client connected: ', client.id);
+  client.on('message', (data) => {
+    console.log('recieved client message :', data);
+    socketIo.emit('message', `Hello client ${client.id}`);
+  });
+  client.on('disconnect', () => { console.log('client disconnected: ', client.id); });
+});
+socketServer.listen(app.get('socket-port'));
 
 module.exports = app;
