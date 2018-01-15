@@ -53,6 +53,7 @@ const app = express();
 const socketApp = express();
 const socketServer = require('http').createServer(socketApp);
 const socketIo = require('socket.io')(socketServer);
+const socketController = require('./controllers/socket')(socketIo);
 
 /**
  * Connect to MongoDB.
@@ -253,10 +254,7 @@ app.listen(app.get('port'), () => {
  */
 socketIo.on('connection', (client) => {
   console.log('client connected: ', client.id);
-  client.on('message', (data) => {
-    console.log('recieved client message :', data);
-    socketIo.emit('message', `Hello client ${client.id}`);
-  });
+  client.on('message', socketController.onMessage(client));
   client.on('disconnect', () => { console.log('client disconnected: ', client.id); });
 });
 socketServer.listen(app.get('socket-port'));

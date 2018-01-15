@@ -12,7 +12,6 @@
     "start": "nodemon -e js,pug app.js",
     "test": "mocha --reporter spec",
     "postinstall": "npm rebuild node-sass",
-    "eslint": "eslint **/*.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",
@@ -43,6 +42,7 @@
     "node-linkedin": "^0.5.6",
     "node-sass-middleware": "^0.11.0",
     "nodemailer": "^4.0.1",
+    "oauth2-server": "^3.0.0",
     "passport": "0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-github": "^1.1.0",
@@ -65,36 +65,10 @@
   },
   "devDependencies": {
     "chai": "^4.1.1",
-    "eslint": "^4.4.1",
-    "eslint-config-airbnb-base": "^11.3.1",
-    "eslint-plugin-chai-friendly": "^0.4.0",
-    "eslint-plugin-import": "^2.7.0",
     "mocha": "^3.5.0",
     "nodemon": "^1.14.7",
     "sinon": "^3.2.1",
     "sinon-mongoose": "^2.0.2",
     "supertest": "^3.0.0"
-  },
-  "eslintConfig": {
-    "extends": "airbnb-base",
-    "rules": {
-      "comma-dangle": 0,
-      "consistent-return": 0,
-      "no-param-reassign": 0,
-      "no-underscore-dangle": 0,
-      "no-shadow": 0,
-      "no-console": 0,
-      "no-plusplus": 0,
-      "no-unused-expressions": 0,
-      "chai-friendly/no-unused-expressions": 2
-    },
-    "env": {
-      "jasmine": true,
-      "mocha": true,
-      "node": true
-    },
-    "plugins": [
-      "chai-friendly"
-    ]
   }
 }
