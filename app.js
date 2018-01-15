@@ -16,7 +16,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const expressValidator = require('express-validator');
-const expressStatusMonitor = require('express-status-monitor');
+// Set path to '' to avoid middleware serving the html page
+// (path must be a string not equal to the wanted route)
+const expressStatusMonitor = require('express-status-monitor')({ path: '' });
 const sass = require('node-sass-middleware');
 const multer = require('multer');
 
@@ -46,10 +48,18 @@ const passportConfig = require('./config/passport');
 const app = express();
 
 /**
+ * Create Socket server.
+ */
+const socketApp = express();
+const socketServer = require('http').createServer(socketApp);
+const socketIo = require('socket.io')(socketServer);
+const socketController = require('./controllers/socket')(socketIo);
+
+/**
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
+mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI, { useMongoClient: true });
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
@@ -60,10 +70,10 @@ mongoose.connection.on('error', (err) => {
  * Express configuration.
  */
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
-app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
+app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000);
+app.set('socket-port', process.env.SOCKET_PORT || 8000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.use(expressStatusMonitor());
 app.use(compression());
 app.use(sass({
   src: path.join(__dirname, 'public'),
@@ -86,8 +96,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+// Exclude /api/upload from lusca.csrf() middleware check
+// as there is some bugs in 'multipart/form-data' for 'multer'
 app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
+  const regex = new RegExp(/^\/api\/upload\/*$/i);
+  if (regex.test(req.path)) {
     next();
   } else {
     lusca.csrf()(req, res, next);
@@ -135,6 +148,12 @@ app.post('/account/profile', passportConfig.isAuthenticated, userController.post
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+
+/**
+ * Express status Monitor
+ */
+app.use(expressStatusMonitor.middleware);
+app.get('/status', passportConfig.isAuthenticated, expressStatusMonitor.pageRoute);
 
 /**
  * API examples routes.
@@ -229,5 +248,15 @@ app.listen(app.get('port'), () => {
   console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
+
+/**
+ * Start Socket server.
+ */
+socketIo.on('connection', (client) => {
+  console.log('client connected: ', client.id);
+  client.on('message', socketController.onMessage(client));
+  client.on('disconnect', socketController.onDisconnected(client));
+});
+socketServer.listen(app.get('socket-port'));
 
 module.exports = app;

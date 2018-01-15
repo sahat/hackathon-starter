@@ -1,18 +1,25 @@
-version: '2'
+version: "3"
+
 services:
   mongo:
     image: mongo:3.4
+    ports:
+     - "27017:27017"
+    networks:
+     - webnet
   web:
     build: .
     ports:
      - "3000:3000"
+     - "8000:8000"
     environment:
-     - MONGODB_URI=mongodb://mongo:27017/test 
-    links:
-     - mongo 
+     - MONGODB_URI=mongodb://mongo:27017/test
     depends_on: 
      - mongo 
     volumes:
      - .:/starter
-     - /starter/node_modules
-     
+    networks:
+     - webnet
+networks:
+  webnet:
+    driver: bridge
