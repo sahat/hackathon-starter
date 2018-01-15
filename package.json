@@ -11,7 +11,7 @@
   "scripts": {
     "start": "nodemon -e js,pug app.js",
     "test": "mocha --reporter spec",
-    "postinstall": "npm rebuild node-sass",
+    "postinstall": "npm rebuild node-sass"
   },
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",

@@ -255,7 +255,7 @@ app.listen(app.get('port'), () => {
 socketIo.on('connection', (client) => {
   console.log('client connected: ', client.id);
   client.on('message', socketController.onMessage(client));
-  client.on('disconnect', () => { console.log('client disconnected: ', client.id); });
+  client.on('disconnect', socketController.onDisconnected(client));
 });
 socketServer.listen(app.get('socket-port'));
 
