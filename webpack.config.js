@@ -7,7 +7,7 @@ module.exports = {
   },
   target: 'node',
   externals: [nodeExternals({
-    whitelist: ['jquery', 'bootstrap']
+    whitelist: ['jquery', 'bootstrap', 'bootstrap-3-typeahead', 'moment']
   })],
   watchOptions: {
     ignored: /node_modules/
