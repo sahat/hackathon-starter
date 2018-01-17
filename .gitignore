@@ -18,7 +18,7 @@ public/css/main.css
 public/js/bundle.js
 
 # API keys and secrets
-.env
+
 
 # Dependency directory
 node_modules
