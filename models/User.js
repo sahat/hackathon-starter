@@ -2,20 +2,26 @@ const bcrypt = require('bcrypt-nodejs');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 
+const contactSchema = new mongoose.Schema({
+  name: String,
+  start_time: Date,
+  end_time: Date,
+  emotion: String,
+  laughter: String,
+  medium: String
+});
+
 const userSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
+  email: {
+    type: String,
+    unique: true
+  },
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
 
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  steam: String,
   tokens: Array,
+  contacts: [contactSchema],
 
   profile: {
     name: String,
@@ -24,18 +30,28 @@ const userSchema = new mongoose.Schema({
     website: String,
     picture: String
   }
-}, { timestamps: true });
+}, {
+  timestamps: true
+});
+
+
 
 /**
  * Password hash middleware.
  */
 userSchema.pre('save', function save(next) {
   const user = this;
-  if (!user.isModified('password')) { return next(); }
+  if (!user.isModified('password')) {
+    return next();
+  }
   bcrypt.genSalt(10, (err, salt) => {
-    if (err) { return next(err); }
+    if (err) {
+      return next(err);
+    }
     bcrypt.hash(user.password, salt, null, (err, hash) => {
-      if (err) { return next(err); }
+      if (err) {
+        return next(err);
+      }
       user.password = hash;
       next();
     });
