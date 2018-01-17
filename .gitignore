@@ -15,7 +15,7 @@ tmp
 
 #Build
 public/css/main.css
-#public/js/bundle.js
+public/js/bundle.js
 
 # API keys and secrets
 .env
