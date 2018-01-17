@@ -4,13 +4,14 @@
   "description": "Node.js webapp for a university project",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Honga1/hackathon-starter.git"
+    "url": "https://github.com/Honga1/interaction-keeper"
   },
-  "author": "Sahat Yalkabov",
+  "author": "Jae Perris",
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
     "start:dev": "npm-run-all --parallel watch:server watch:build",
+    "start:mongo": "\"C:\\Program Files\\MongoDB\\Server\\3.6\\bin\\mongod\" --dbpath data",
     "watch:server": "nodemon --ignore public/",
     "watch:build": "webpack --watch",
     "test": "mocha --reporter spec",
