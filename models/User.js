@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
   google: String,
   github: String,
   instagram: String,
+  strava: String,
   linkedin: String,
   steam: String,
   tokens: Array,

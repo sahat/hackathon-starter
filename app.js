@@ -196,6 +196,10 @@ app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE
 app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
+app.get('/auth/strava', passport.authenticate('strava')); // VV
+app.get('/auth/strava/callback', passport.authenticate('strava', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
 
 /**
  * OAuth authorization routes. (API examples)
