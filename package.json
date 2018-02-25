@@ -29,7 +29,7 @@
     "express-flash": "^0.0.2",
     "express-session": "^1.15.5",
     "express-status-monitor": "^1.0.0",
-    "express-validator": "^3.2.1",
+    "express-validator": "^5.0.1",
     "fbgraph": "^1.4.1",
     "github": "^9.2.0",
     "instagram-node": "^0.5.8",
