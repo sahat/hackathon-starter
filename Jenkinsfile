@@ -22,6 +22,7 @@ pipeline {
             steps {
                 echo 'Testing...'
                 sh 'npm test'
+		sh 'npm lint'
             }
         }
     }
