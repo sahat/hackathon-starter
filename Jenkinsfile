@@ -16,7 +16,6 @@ pipeline {
             steps {
                 echo 'Building...'
                 sh 'npm install'
-		sh 'mocha test/test.js --reporter spec'
             }
         }
         stage('Test') {
