@@ -22,7 +22,8 @@ pipeline {
             steps {
                 echo 'Testing...'
                 sh 'npm test'
-		/* sh 'npm run lint' */
+		/*sh 'npm run lint' */
+		eslint -c config.eslintrc -f checkstyle **/*.js > eslint.xml
             }
         }
     }
