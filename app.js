@@ -1,5 +1,5 @@
 /**
- * Module dependencies.
+ * Module dependencies. #Example
  */
 const express = require('express');
 const compression = require('compression');
