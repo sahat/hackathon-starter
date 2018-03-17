@@ -11,7 +11,7 @@ pipeline {
     }
 
 
-    stages {
+       stages {
         stage('Build') {
             steps {
                 echo 'Building...'
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 echo 'Testing...'
                 sh 'npm test'
-		sh 'npm run lint'
+		/* sh 'npm run lint' */
             }
         }
     }
