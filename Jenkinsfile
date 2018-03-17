@@ -2,12 +2,6 @@
 
 pipeline {
 
-#    agent {
-#        docker {
-#            image 'node'
-#            args '-u root'
-#        }
-#    }
     agent any
 
     stages {
