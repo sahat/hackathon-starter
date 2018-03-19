@@ -101,7 +101,7 @@ Features
 Prerequisites
 -------------
 
-- [MongoDB](https://www.mongodb.org/downloads) needs to be installed and running.
+- [MongoDB](https://www.mongodb.org/downloads)
 - [Node.js 6.0+](http://nodejs.org)
 - Command Line Tools
  - <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
