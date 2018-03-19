@@ -201,8 +201,8 @@ The same goes for other providers.
 <img src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Logo.png" width="200">
 
 - Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
-- Select **Applications** from the sidebar
-- Then inside **Developer applications** click on **Register new application**
+- Select **Developer settings** from the sidebar
+- Then inside click on **Register new application**
 - Enter *Application Name* and *Homepage URL*
 - For *Authorization Callback URL*: http://localhost:3000/auth/github/callback
 - Click **Register application**
