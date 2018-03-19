@@ -621,6 +621,7 @@ exports.postPinterest = (req, res, next) => {
 
 exports.getGoogleMaps = (req, res) => {
   res.render('api/google-maps', {
-    title: 'Google Maps API'
+    title: 'Google Maps API',
+    google_map_api_key: process.env.GOOGLE_MAP_API_KEY
   });
 };
