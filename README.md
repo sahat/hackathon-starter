@@ -344,7 +344,7 @@ Project Structure
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
 | app.js                             | The main application file.                                   |
 | package.json                       | NPM dependencies.                                            |
-| package-lock.lock                          | Contains exact versions of NPM dependencies in package.json. |
+| package-lock.json                  | Contains exact versions of NPM dependencies in package.json. |
 
 **Note:** There is no preference how you name or structure your views.
 You could place all your templates in a top-level `views` directory without
