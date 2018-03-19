@@ -11,7 +11,7 @@
   "scripts": {
     "postinstall": "npm rebuild node-sass",
     "start": "node app.js",
-    "test": "mocha --reporter spec",
+    "test": "mocha --exit --reporter spec",
     "lint": "eslint **/*.js"
   },
   "dependencies": {
