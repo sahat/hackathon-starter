@@ -1,0 +1,44 @@
+extends ../layout
+block content
+    style(type='text/css').
+        #editform{
+            display: none;
+        }
+
+    ul(id="sporthide")
+        li= sportList.name
+        li= sportList.type
+
+        //form.form-horizontal(id='delete-form', method='POST' action='/deletesport')
+        //    input(type='hidden', name='_csrf', value=_csrf, id="_csrf")
+        //    input(type='hidden', name='name', value=sportList.name)
+        //    .form-group
+        //        .col-sm-offset-3.col-sm-7
+        //            button.btn.btn-success(type='submit')
+        //                i.fa.fa-trash-o
+        //                | Delete
+
+    form.form-horizontal(id='editform')
+            input(type='hidden', name='_csrf', value=_csrf, id="_csrf")
+            input(type='hidden', name='id', value=sportList.id, id="id")
+            .form-group
+                label.col-sm-3.control-label(for='name') Names
+                .col-sm-7
+                    input.form-control(type='text', name='name', id='name', placeholder='Enter Sport Name', autofocus, required)
+            .form-group
+                label.col-sm-3.control-label(for='type') Type
+                .col-sm-7
+                    input.form-control(type='text', name='type', id='type', placeholder='Sport Type', required)
+            .form-group
+                .col-sm-offset-3.col-sm-7
+                    button.btn.btn-success(type='submit' id="updater")
+                        i.fa.fa-user-plus
+                        | Submit
+
+
+    a(id='updaterForm' href = "#") update #{sportList.name}
+    br
+    a(href='/create') Create a new sport
+    br
+    a(href='/list') Show all sports
+

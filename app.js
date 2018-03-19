@@ -35,6 +35,8 @@ const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 
+const sportController = require('./controllers/sport');
+
 /**
  * API keys and Passport configuration.
  */
@@ -135,6 +137,19 @@ app.post('/account/profile', passportConfig.isAuthenticated, userController.post
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+
+app.get('/create', sportController.createSportForm);
+app.post('/createSport', sportController.createSport);
+app.post('/msports', sportController.multipleSports);
+app.get('/list', sportController.listSports);
+app.get('/sport/:name', sportController.showSport);
+app.post('/deletesport', sportController.deleteSport);
+app.get('/update/:name', sportController.updateSportForm);
+app.post('/updateSport', sportController.updateSport);
+
+
+
+
 
 /**
  * API examples routes.

@@ -1,0 +1,17 @@
+extends ../layout
+block content
+    ul
+        each sportslist in sportList
+            li:a(href = '/sport/'+sportslist.name) #{sportslist.name}
+                form.form-horizontal(id='delete-form')
+                    input(type='hidden', name='_csrf', value=_csrf, id="_csrf")
+                    input(type='hidden', name='name', value=sportslist.name, id="name", class="name")
+                    input(type='hidden', name='id', value=sportslist.id, id="id")
+                    button.btn.btn-danger(id="delete", class="btnD")
+                        i.fa.fa-trash-o
+                        | Delete
+        else
+            li There are no sports
+    br
+    a(href='/create') Create a new sport
+
