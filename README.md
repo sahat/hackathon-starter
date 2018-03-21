@@ -166,8 +166,8 @@ them with *your credentials* when you are ready to deploy an app.
 - Fill out the required fields then click on **Save**
 - In the *Create Client ID* modal dialog:
  - **Application Type**: Web Application
- - **Authorized Javascript origins**: http://localhost:3000
- - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
+ - **Authorized Javascript origins**: http://localhost:8080
+ - **Authorized redirect URI**: http://localhost:8080/auth/google/callback
 - Click on **Create Client ID** button
 - Copy and paste *Client ID* and *Client secret* keys into `.env`
 
@@ -192,9 +192,9 @@ The same goes for other providers.
 - Enter `localhost` under *App Domains*
 - Choose a **Category** that best describes your app
 - Click on **+ Add Platform** and select **Website**
-- Enter `http://localhost:3000` under *Site URL*
+- Enter `http://localhost:8080` under *Site URL*
 - Click on the *Settings* tab in the left nav under Facebook Login
-- Enter `http://localhost:3000/auth/facebook/callback` under Valid OAuth redirect URIs
+- Enter `http://localhost:8080/auth/facebook/callback` under Valid OAuth redirect URIs
 
 **Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
@@ -206,7 +206,7 @@ The same goes for other providers.
 - Select **Developer settings** from the sidebar
 - Then inside click on **Register new application**
 - Enter *Application Name* and *Homepage URL*
-- For *Authorization Callback URL*: http://localhost:3000/auth/github/callback
+- For *Authorization Callback URL*: http://localhost:8080/auth/github/callback
 - Click **Register application**
 - Now copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
@@ -217,7 +217,7 @@ The same goes for other providers.
 - Sign in at <a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com</a>
 - Click **Create a new application**
 - Enter your application name, website and description
-- For **Callback URL**: http://127.0.0.1:3000/auth/twitter/callback
+- For **Callback URL**: http://127.0.0.1:8080/auth/twitter/callback
 - Go to **Settings** tab
 - Under *Application Type* select **Read and Write** access
 - Check the box **Allow this application to be used to Sign in with Twitter**
@@ -233,8 +233,8 @@ The same goes for other providers.
  - *It may ask you to sign in once again*
 - Click **+ Add New Application** button
 - Fill out all the *required* fields
- - **OAuth 2.0 Redirect URLs**: http://localhost:3000/auth/linkedin/callback
- - **JavaScript API Domains**: http://localhost:3000
+ - **OAuth 2.0 Redirect URLs**: http://localhost:8080/auth/linkedin/callback
+ - **JavaScript API Domains**: http://localhost:8080
 - For **Default Application Permissions** make sure at least the following is checked:
  - `r_basicprofile`
 - Finish by clicking **Add Application** button
@@ -271,7 +271,7 @@ The same goes for other providers.
 - Click on **My Apps** in the top menu
 - Click the **Create A New App** button
 - Enter *App Name*, *Welcome page url*,
-- For **Redirect URI**: http://localhost:3000/auth/foursquare/callback
+- For **Redirect URI**: http://localhost:8080/auth/foursquare/callback
 - Click **Save Changes**
 - Copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
@@ -282,7 +282,7 @@ The same goes for other providers.
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
 - Fill in all the details
-- For **Default Callback URL**: `http://localhost:3000/auth/tumblr/callback`
+- For **Default Callback URL**: `http://localhost:8080/auth/tumblr/callback`
 - Click **✔Register**
 - Copy and paste *OAuth consumer key* and *OAuth consumer secret* keys into `.env` file
 
@@ -593,7 +593,7 @@ And then create a route in `app.js`. I placed it right after the index controlle
 app.get('/escape-velocity', homeController.escapeVelocity);
 ```
 
-Restart the server (if you are not using **nodemon**), then you should see the new template at [http://localhost:3000/escape-velocity](http://localhost:3000/escape-velocity).
+Restart the server (if you are not using **nodemon**), then you should see the new template at [http://localhost:8080/escape-velocity](http://localhost:8080/escape-velocity).
 
 I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Jade templates work: `layout.pug` - base template, `index.pug` - home page, `partials/header.pug` - Bootstrap navbar, `partials/footer.pug` - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new `layout.pug`.
 Then, each page that changes, be it `index.pug`, `about.pug`, `contact.pug`
@@ -1726,7 +1726,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2016 Sahat Yalkabov
+Copyright (c) 2014-2018 Sahat Yalkabov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
