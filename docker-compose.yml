@@ -1,11 +1,11 @@
-version: '2'
+version: '3'
 services:
   mongo:
-    image: mongo:3.4
+    image: mongo:3.6
   web:
     build: .
     ports:
-     - "3000:3000"
+     - "8080:8080"
     environment:
      - MONGODB_URI=mongodb://mongo:27017/test 
     links:

@@ -1,4 +1,4 @@
-FROM node:6-slim
+FROM node:8-slim
 
 WORKDIR /starter
 ENV NODE_ENV production
@@ -12,4 +12,4 @@ COPY . /starter
 
 CMD ["npm","start"]
 
-EXPOSE 8888
+EXPOSE 8080
