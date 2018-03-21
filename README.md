@@ -1203,7 +1203,7 @@ docker-compose up web
 
 ```
 
-To view the app, find your docker ip address + port 3000 ( this will typically be http://192.168.99.100:3000/ ).
+To view the app, find your docker ip address + port 8080 ( this will typically be http://localhost:8080/ ).  To use a port other than 8080, you would need to modify the port in app.js, Dockerfile and docker-compose.yml.
 
 
 Deployment
