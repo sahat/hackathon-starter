@@ -6,16 +6,17 @@ block content
 
   form.form-horizontal(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
+    if (unknownUser)
+      .form-group
+        label(class='col-sm-2 control-label', for='name') Name
+        .col-sm-8
+          input.form-control(type='text', name='name', id='name', autofocus=true)
+        .form-group
+        label(class='col-sm-2 control-label', for='email') Email
+        .col-sm-8
+          input.form-control(type='text', name='email', id='email')
     .form-group
-      label(class='col-sm-2 control-label', for='name') Name
-      .col-sm-8
-        input.form-control(type='text', name='name', id='name', autofocus=true)
-    .form-group
-      label(class='col-sm-2 control-label', for='email') Email
-      .col-sm-8
-        input.form-control(type='text', name='email', id='email')
-    .form-group
-      label(class='col-sm-2 control-label', for='message') Body
+      label(class='col-sm-2 control-label', for='message') Please describe the issue or suggestion
       .col-sm-8
         textarea.form-control(name='message', id='message', rows='7')
     .form-group
