@@ -281,16 +281,25 @@ exports.postTwitter = (req, res, next) => {
  * Steam API example.
  */
 exports.getSteam = (req, res, next) => {
-  const steamId = '76561197982488301';
+  const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
   const playerAchievements = () => {
-    params.appid = '49520';
-    return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
-      .then(([request, body]) => {
-        if (request.statusCode === 401) {
+    //get the list of the recently played games, and pick the most recent one and get its achievements
+    return request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
+      .then(([req, body]) => {
+        if (req.statusCode === 401) {
           throw new Error('Invalid Steam API Key');
         }
-        return body;
+        if (body.response.total_count > 0) {
+          params.appid = body.response.games[0].appid
+          return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
+            .then(([req, body]) => {
+              if (req.statusCode === 401) {
+                throw new Error('Invalid Steam API Key');
+              }
+              return body;
+            });
+        }
       });
   };
   const playerSummaries = () => {
