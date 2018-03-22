@@ -15,6 +15,7 @@
     "lint": "eslint **/*.js"
   },
   "dependencies": {
+    "@octokit/rest": "^15.2.5",
     "bcrypt-nodejs": "^0.0.3",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
@@ -31,7 +32,6 @@
     "express-status-monitor": "^1.0.0",
     "express-validator": "^5.0.3",
     "fbgraph": "^1.4.1",
-    "github": "^13.1.0",
     "instagram-node": "^0.5.8",
     "lastfm": "^0.9.2",
     "lob": "^5.1.0",
