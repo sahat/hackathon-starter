@@ -4,9 +4,9 @@ Hackathon Starter
 
 [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](https://travis-ci.org/sahat/hackathon-starter.svg?branch=master)](https://travis-ci.org/sahat/hackathon-starter) [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Thinkful Pair on Node](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/node/)
 
-**Live Demo**: http://hackathonstarter-sahat.rhcloud.com
+**Live Demo**: https://hackathon-starter-2018.herokuapp.com
 
-Jump to [What's new in 4.3.0?](#changelog)
+Jump to [What's new in 4.4.0?](#changelog)
 
 :bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5).
 
@@ -1426,6 +1426,30 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 Changelog
 ---------
+
+### 4.4.0 (March 23, 2018)
+- Added Docker support (Thanks to @gregorysobotka, @praveenweb, @ryanhanwu).  The initial integration has also been upgraded to use NodeJS 8 and Mongo 3.6.
+- Removed dependency on async in favor of using promises (@fmcarvalho). Note that the promise support will be upgraded in the upcoming releases to remove the use of Bluebird.
+- The contact form will no longer ask for the user's name and email address if they have logged-in already
+- Adding a confirmation prompt when a user asks for their account to be deleted
+- Fixed Steam Oauth and API integration
+- Fixed Last.fm API example (@JonLim)
+- Fixed Google Map integration example (@whmsysu)
+- Fixed Twitter API integration (@shahzeb1)
+- Fixed Facebook integration/request scope (@RobTS)
+- Removed MONGOLAB_URI env var, use MONGODB_URI instead
+- Preserve the query parameters during authentication session returns (@shreedharshetty)
+- normalizeEmail options key remove_dots changed to gmail_remove_dots (@amakhnev)
+- Fixed Heroku re-deploy issue (@gballet)
+- Migrated from Jade to Pug
+- Migrated from GitHub npm package to @octokit/rest to address the related deprecation warning. See https://git.io/vNB11
+- Dependency update and upgrades
+- Updated left over port 3000 to the current default of port of 8080
+- Removed bitgo.pug since bitgo has not been supported by hackathon-starter since v4.1.0
+- Removed bitgo from api/index view (@JonLim)
+- Fixed unsecure external content by switching them to https
+- New address for the Live Demo site
+- Code formatting, text prompt, and Readme improvements
 
 ### 4.3.0 (November 6, 2016)
 - [Added new theme](http://demos.creative-tim.com/get-shit-done/index.html) by Creative Tim (Thanks @conacelelena)
