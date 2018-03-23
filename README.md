@@ -513,7 +513,7 @@ of downloading and installing MongoDB locally. You will only need to update data
 in `.env` file.
 
 ### I get an error when I deploy my app, why?
-Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB`/`MONGOLAB_URI` is
+Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
 running on `localhost`. You need to create an account with [mLab](https://mongolab.com/)
@@ -1225,7 +1225,7 @@ listed below.
 - Download and install [Heroku Toolbelt](https://toolbelt.heroku.com/)
 - In terminal, run `heroku login` and enter your Heroku credentials
 - From *your app* directory run `heroku create`
-- Run `heroku addons:create mongolab`.  This will set up the mLab add-on and configure the `MONGOLAB_URI` environment variable in your Heroku app for you.
+- Run `heroku addons:create mongolab`.  This will set up the mLab add-on and configure the `MONGODB_URI` environment variable in your Heroku app for you.
 - Lastly, do `git push heroku master`.  Done!
 
 **Note:** To install Heroku add-ons your account must be verified.
@@ -1415,7 +1415,7 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
     manual_scaling:
       instances: 1
     ```
-- Make sure you've set `MONGODB_URI` or `MONGOLAB_URI` in `.env.example`
+- Make sure you've set `MONGODB_URI` in `.env.example`
 - Run the following command to deploy the `hackathon-starter` app:
 
     ```bash
