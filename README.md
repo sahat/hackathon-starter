@@ -359,30 +359,30 @@ List of Packages
 
 | Package                         | Description                                                           |
 | ------------------------------- | --------------------------------------------------------------------- |
-| async                           | Utility library that provides asynchronous control flow.              |
+| @octokit/rest                   | GitHub API library.                                                   |
 | bcrypt-nodejs                   | Library for hashing and salting user passwords.                       |
+| body-parser                     | Express 4 middleware.                                                 |
+| chai                            | BDD/TDD assertion library.                                            |
 | cheerio                         | Scrape web pages using jQuery-style syntax.                           |
 | clockwork                       | Clockwork SMS API library.                                            |
+| compression                     | Express 4 middleware.                                                 |
 | connect-mongo                   | MongoDB session store for Express.                                    |
 | dotenv                          | Loads environment variables from .env file.                           |
-| express                         | Node.js web framework.                                                |
-| body-parser                     | Express 4 middleware.                                                 |
-| express-session                 | Express 4 middleware.                                                 |
-| morgan                          | Express 4 middleware.                                                 |
-| compression                     | Express 4 middleware.                                                 |
 | errorhandler                    | Express 4 middleware.                                                 |
-| serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
+| express                         | Node.js web framework.                                                |
+| express-session                 | Express 4 middleware.                                                 |
 | express-flash                   | Provides flash messages for Express.                                  |
 | express-status-monitor          | Reports real-time server metrics for Express.                         |
 | express-validator               | Easy form validation for Express.                                     |
 | fbgraph                         | Facebook Graph API library.                                           |
-| github                          | GitHub API library.                                                   |
-| pug (jade)                      | Template engine for Express.                                          |
-| lastfm                          | Last.fm API library.                                                  |
 | instagram-node                  | Instagram API library.                                                |
+| lastfm                          | Last.fm API library.                                                  |
 | lob                             | Lob API library                                                       |
+| lodash                          | Handy JavaScript utlities library.                                    |
 | lusca                           | CSRF middleware.                                                      |
+| mocha                           | Test framework.                                                       |
 | mongoose                        | MongoDB ODM.                                                          |
+| morgan                          | Express 4 middleware.                                                 |
 | node-foursquare                 | Foursquare API library.                                               |
 | node-linkedin                   | LinkedIn API library.                                                 |
 | node-sass-middleware            | Sass middleware compiler.                                                 |
@@ -397,16 +397,15 @@ List of Packages
 | passport-linkedin-oauth2        | Sign-in with LinkedIn plugin.                                         |
 | passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.    |
 | paypal-rest-sdk                 | PayPal APIs library.                                                  |
+| pug (jade)                      | Template engine for Express.                                          |
 | request                         | Simplified HTTP request library.                                      |
+| serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
 | stripe                          | Offical Stripe API library.                                           |
+| supertest                       | HTTP assertion library.                                               |
 | tumblr.js                       | Tumblr API library.                                                   |
 | twilio                          | Twilio API library.                                                   |
 | twit                            | Twitter API library.                                                  |
-| lodash                          | Handy JavaScript utlities library.                                    |
 | validator                       | Used in conjunction with express-validator in **controllers/api.js**. |
-| mocha                           | Test framework.                                                       |
-| chai                            | BDD/TDD assertion library.                                            |
-| supertest                       | HTTP assertion library.                                               |
 
 Useful Tools and Resources
 --------------------------
