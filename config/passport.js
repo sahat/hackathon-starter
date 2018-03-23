@@ -453,16 +453,44 @@ passport.use('foursquare', new OAuth2Strategy({
 passport.use(new OpenIDStrategy({
   apiKey: process.env.STEAM_KEY,
   providerURL: 'http://steamcommunity.com/openid',
-  returnURL: 'http://localhost:3000/auth/steam/callback',
-  realm: 'http://localhost:3000/',
-  stateless: true
-}, (identifier, done) => {
+  returnURL: process.env.BASE_URL + '/auth/steam/callback',
+  realm: process.env.BASE_URL + '/',
+  stateless: true,
+  passReqToCallback: true,
+}, (req, identifier, done) => {
+
   const steamId = identifier.match(/\d+$/)[0];
   const profileURL = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_KEY}&steamids=${steamId}`;
 
-  User.findOne({ steam: steamId }, (err, existingUser) => {
-    if (err) { return done(err); }
-    if (existingUser) return done(err, existingUser);
+  if (req.user) {
+    User.findOne({ steam: steamId }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser) {
+        req.flash('errors', { msg: 'There is already an account associated with the SteamID. Sign in with that account or delete it, then link it with your current account.' });
+        done(err);
+      } else {
+        User.findById(req.user.id, (err, user) => {
+          if (err) { return done(err); }
+          user.steam = steamId;
+          user.tokens.push({ kind: 'steam', accessToken: steamId });
+          request(profileURL, (error, response, body) => {
+            if (!error && response.statusCode === 200) {
+              const data = JSON.parse(body);
+              const profile = data.response.players[0];
+              user.profile.name = user.profile.name || profile.personaname;
+              user.profile.picture = user.profile.picture || profile.avatarmedium;
+              user.save((err) => {
+                done(err, user);
+              });
+            } else {
+              user.save((err) => { done(err, user); });
+              done(error, null);
+            }
+          });
+        });
+      }
+    });
+  } else {
     request(profileURL, (error, response, body) => {
       if (!error && response.statusCode === 200) {
         const data = JSON.parse(body);
@@ -481,7 +509,7 @@ passport.use(new OpenIDStrategy({
         done(error, null);
       }
     });
-  });
+  }
 }));
 
 /**
