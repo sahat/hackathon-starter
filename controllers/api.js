@@ -18,6 +18,10 @@ const foursquare = require('node-foursquare')({
     clientId: process.env.FOURSQUARE_ID,
     clientSecret: process.env.FOURSQUARE_SECRET,
     redirectUrl: process.env.FOURSQUARE_REDIRECT_URL
+  },
+  foursquare: {
+    mode: 'foursquare',
+    version: 20140806,
   }
 });
 
