@@ -2,17 +2,19 @@ extends ../layout
 
 block content
   .page-header
-    h2 Stripe API
+    h2
+      i.fab.fa-cc-stripe.fa-sm
+      | Stripe API
 
   .btn-group.btn-group-justified
     a.btn.btn-primary(href='https://stripe.com/docs/tutorials/checkout')
-      i.fa.fa-home
+      i.fas.fa-home.fa-sm
       | Stripe Checkout
     a.btn.btn-primary(href='https://stripe.com/docs/api', target='_blank')
-      i.fa.fa-code
+      i.fas.fa-code.fa-sm
       | API Reference
     a.btn.btn-primary(href='https://manage.stripe.com/account/apikeys', target='_blank')
-      i.fa.fa-gear
+      i.fas.fa-cog.fa-sm
       | Get API Keys
 
   br
@@ -29,7 +31,7 @@ block content
     data-amount='395')
 
   h3
-    i.fa.fa-credit-card
+    i.far.fa-credit-card.fa-sm
     | Test Cards
   p In test mode, you can use these test cards to simulate a successful transaction:
 

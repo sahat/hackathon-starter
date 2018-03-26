@@ -3,21 +3,21 @@ extends ../layout
 block content
   .page-header
     h2
-      i.fa.fa-facebook-square(style='color: #335397')
+      i.fab.fa-facebook-square(style='color: #335397').fa-sm
       | Facebook API
   .btn-group.btn-group-justified
     a.btn.btn-primary(href='https://developers.facebook.com/docs/graph-api/quickstart/', target='_blank')
-      i.fa.fa-check-square-o
+      i.far.fa-check-square.fa-sm
       | Quickstart
     a.btn.btn-primary(href='https://developers.facebook.com/tools/explorer', target='_blank')
-      i.fa.fa-facebook
+      i.fab.fa-facebook.fa-sm
       | Graph API Explorer
     a.btn.btn-primary(href='https://developers.facebook.com/docs/graph-api/reference/', target='_blank')
-      i.fa.fa-code-fork
+      i.fas.fa-code-branch.fa-sm
       | API Reference
 
   h3
-    i.fa.fa-user
+    i.far.fa-user.fa-sm
     |  My Profile
   img.thumbnail(src=`https://graph.facebook.com/${profile.id}/picture?type=large`, width='90', height='90')
   h4= profile.name

@@ -3,18 +3,18 @@ extends ../layout
 block content
   .page-header
     h2
-      i.fa.fa-twitter(style='color: #4099ff')
+      i.fab.fa-twitter(style='color: #4099ff').fa-sm
       | Twitter API
 
   .btn-group.btn-group-justified
     a.btn.btn-success(href='https://github.com/ttezel/twit', target='_blank')
-      i.fa.fa-file-text-o
+      i.far.fa-file-alt.fa-sm
       | Twit Library Docs
     a.btn.btn-success(href='https://dev.twitter.com/docs', target='_blank')
-      i.fa.fa-check-square-o
+      i.far.fa-check-square.fa-sm
       | Overview
     a.btn.btn-success(href='https://dev.twitter.com/rest/public', target='_blank')
-      i.fa.fa-code-fork
+      i.fas.fa-code-branch.fa-sm
       | API Endpoints
 
   br
@@ -27,7 +27,7 @@ block content
         input.form-control(type='text', name='tweet', autofocus)
         p.help-block This new Tweet will be posted on your Twitter profile.
       button.btn.btn-primary(type='submit')
-        i.fa.fa-twitter
+        i.fab.fa-twitter.fa-sm
         |  Tweet
 
   br
