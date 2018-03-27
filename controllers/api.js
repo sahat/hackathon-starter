@@ -2,7 +2,7 @@ const bluebird = require('bluebird');
 const request = bluebird.promisifyAll(require('request'), { multiArgs: true });
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
-const LastFmNode = require('lastfm').LastFmNode;
+const { LastFmNode } = require('lastfm');
 const tumblr = require('tumblr.js');
 const GitHub = require('@octokit/rest');
 const Twit = require('twit');
@@ -287,15 +287,18 @@ exports.postTwitter = (req, res, next) => {
 exports.getSteam = (req, res, next) => {
   const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  const playerAchievements = () => {
-    //get the list of the recently played games, and pick the most recent one and get its achievements
-    return request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
+  const playerAchievements = () =>
+    /**
+     * get the list of the recently played games,
+     * and pick the most recent one and get its achievements
+     */
+    request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
       .then(([req, body]) => {
         if (req.statusCode === 401) {
           throw new Error('Invalid Steam API Key');
         }
         if (body.response.total_count > 0) {
-          params.appid = body.response.games[0].appid
+          params.appid = body.response.games[0].appid;
           return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
             .then(([req, body]) => {
               if (req.statusCode === 401) {
@@ -305,7 +308,6 @@ exports.getSteam = (req, res, next) => {
             });
         }
       });
-  };
   const playerSummaries = () => {
     params.steamids = steamId;
     return request.getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })

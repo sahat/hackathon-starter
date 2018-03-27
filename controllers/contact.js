@@ -13,12 +13,11 @@ const transporter = nodemailer.createTransport({
  * Contact form page.
  */
 exports.getContact = (req, res) => {
-
-  var unknownUser = (req.user) ? false : true;
+  const unknownUser = !(req.user);
 
   res.render('contact', {
     title: 'Contact',
-    unknownUser: unknownUser,
+    unknownUser,
   });
 };
 
@@ -27,8 +26,6 @@ exports.getContact = (req, res) => {
  * Send a contact form via Nodemailer.
  */
 exports.postContact = (req, res) => {
-  var fromName;
-  var fromEmail;
   if (!req.user) {
     req.assert('name', 'Name cannot be blank').notEmpty();
     req.assert('email', 'Email is not valid').isEmail();
@@ -42,10 +39,9 @@ exports.postContact = (req, res) => {
     return res.redirect('/contact');
   }
 
-  if (!req.user) {
-    fromName = req.body.name;
-    fromEmail = req.body.email;
-  } else {
+  let fromName = req.body.name;
+  let fromEmail = req.body.email;
+  if (req.user) {
     fromName = req.user.profile.name || '';
     fromEmail = req.user.email;
   }
