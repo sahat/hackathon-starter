@@ -49,7 +49,7 @@ const app = express();
 /**
  * Connect to MongoDB.
  */
-/*
+
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
@@ -57,7 +57,7 @@ mongoose.connection.on('error', (err) => {
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
   process.exit();
 });
-*/
+
 
 /**
  * Express configuration.
@@ -81,10 +81,10 @@ app.use(session({
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
   cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
-  // store: new MongoStore({
-  //   url: process.env.MONGODB_URI,
-  //   autoReconnect: true,
-  // })
+  store: new MongoStore({
+    url: process.env.MONGODB_URI,
+    autoReconnect: true,
+  })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
