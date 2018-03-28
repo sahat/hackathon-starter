@@ -39,8 +39,7 @@ exports.postContact = (req, res) => {
     return res.redirect('/contact');
   }
 
-  let fromName = req.body.name;
-  let fromEmail = req.body.email;
+  let { fromName, fromEmail } = req.body;
   if (req.user) {
     fromName = req.user.profile.name || '';
     fromEmail = req.user.email;

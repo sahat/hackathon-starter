@@ -199,7 +199,7 @@ exports.postDeleteAccount = (req, res, next) => {
  * Unlink OAuth provider.
  */
 exports.getOauthUnlink = (req, res, next) => {
-  const provider = req.params.provider;
+  const { provider } = req.params;
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
     user[provider] = undefined;
