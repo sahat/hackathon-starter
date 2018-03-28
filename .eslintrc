@@ -9,6 +9,7 @@
   "rules": {
     "comma-dangle": 0,
     "consistent-return": 0,
+    "function-paren-newline": ["error", "never"],
     "no-param-reassign": 0,
     "no-underscore-dangle": 0,
     "no-shadow": 0,
