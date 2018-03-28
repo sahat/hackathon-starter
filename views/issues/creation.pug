@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Voice your Issue
+
+  form.form-horizontal(method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label(class='col-sm-2 control-label', for='name') Title
+      .col-sm-8
+        input.form-control(type='text', name='name', id='name', autofocus=true)
+    .form-group
+      label(class='col-sm-2 control-label', for='name') Category
+      .col-sm-8
+        input.form-control(type='text', name='name', id='name', autofocus=true)
+    .form-group
+      label(class='col-sm-2 control-label', for='name') Subject
+      .col-sm-8
+        select.field-select(name='field4')
+          option(value='Municipilities') Municipilities
+          option(value='Snatching') Snatching
+          option(value='Others') Others
+    .form-group
+      label(class='col-sm-2 control-label', for='message') Description
+      .col-sm-8
+        textarea.form-control(name='message', id='message', rows='7')
+    .form-group
+      .col-sm-offset-2.col-sm-8
+        button.btn.btn-primary(type='submit')
+          | Submit 
+          i.fa.fa-bullhorn
