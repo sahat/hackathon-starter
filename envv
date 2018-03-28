@@ -1,5 +1,5 @@
 BASE_URL=http://localhost:8080
-MONGODB_URI=mongodb://localhost:27017/test
+MONGODB_URI=mongodb://localhost:27017/shehri
 
 SESSION_SECRET=Your Session Secret goes here
 
