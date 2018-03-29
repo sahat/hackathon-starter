@@ -2,7 +2,7 @@ const bluebird = require('bluebird');
 const request = bluebird.promisifyAll(require('request'), { multiArgs: true });
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
-const LastFmNode = require('lastfm').LastFmNode;
+const { LastFmNode } = require('lastfm');
 const tumblr = require('tumblr.js');
 const GitHub = require('@octokit/rest');
 const Twit = require('twit');
@@ -89,11 +89,11 @@ exports.getTumblr = (req, res, next) => {
 exports.getFacebook = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'facebook');
   graph.setAccessToken(token.accessToken);
-  graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, results) => {
+  graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, profile) => {
     if (err) { return next(err); }
     res.render('api/facebook', {
       title: 'Facebook API',
-      profile: results
+      profile
     });
   });
 };
@@ -188,8 +188,8 @@ exports.getLastfm = (req, res, next) => {
       lastfm.request('artist.getTopTracks', {
         artist: 'Roniit',
         handlers: {
-          success: (data) => {
-            resolve(data.toptracks.track.slice(0, 10));
+          success: ({ toptracks }) => {
+            resolve(toptracks.track.slice(0, 10));
           },
           error: reject
         }
@@ -200,8 +200,8 @@ exports.getLastfm = (req, res, next) => {
       lastfm.request('artist.getTopAlbums', {
         artist: 'Roniit',
         handlers: {
-          success: (data) => {
-            resolve(data.topalbums.album.slice(0, 3));
+          success: ({ topalbums }) => {
+            resolve(topalbums.album.slice(0, 3));
           },
           error: reject
         }
@@ -287,15 +287,15 @@ exports.postTwitter = (req, res, next) => {
 exports.getSteam = (req, res, next) => {
   const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  const playerAchievements = () => {
-    //get the list of the recently played games, and pick the most recent one and get its achievements
-    return request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
+  const playerAchievements = () =>
+    // get the list of the recently played games, pick the most recent one and get its achievements
+    request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
       .then(([req, body]) => {
         if (req.statusCode === 401) {
           throw new Error('Invalid Steam API Key');
         }
         if (body.response.total_count > 0) {
-          params.appid = body.response.games[0].appid
+          params.appid = body.response.games[0].appid;
           return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
             .then(([req, body]) => {
               if (req.statusCode === 401) {
@@ -305,7 +305,6 @@ exports.getSteam = (req, res, next) => {
             });
         }
       });
-  };
   const playerSummaries = () => {
     params.steamids = steamId;
     return request.getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
@@ -359,8 +358,7 @@ exports.getStripe = (req, res) => {
  * Make a payment.
  */
 exports.postStripe = (req, res) => {
-  const stripeToken = req.body.stripeToken;
-  const stripeEmail = req.body.stripeEmail;
+  const { stripeToken, stripeEmail } = req.body;
   stripe.charges.create({
     amount: 395,
     currency: 'usd',
@@ -513,8 +511,8 @@ exports.getPayPal = (req, res, next) => {
 
   paypal.payment.create(paymentDetails, (err, payment) => {
     if (err) { return next(err); }
-    req.session.paymentId = payment.id;
-    const links = payment.links;
+    const { links, id } = payment;
+    req.session.paymentId = id;
     for (let i = 0; i < links.length; i++) {
       if (links[i].rel === 'approval_url') {
         res.render('api/paypal', {
@@ -530,7 +528,7 @@ exports.getPayPal = (req, res, next) => {
  * PayPal SDK example.
  */
 exports.getPayPalSuccess = (req, res) => {
-  const paymentId = req.session.paymentId;
+  const { paymentId } = req.session;
   const paymentDetails = { payer_id: req.query.PayerID };
   paypal.payment.execute(paymentId, paymentDetails, (err) => {
     res.render('api/paypal', {

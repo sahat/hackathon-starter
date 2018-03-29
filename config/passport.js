@@ -8,8 +8,8 @@ const GitHubStrategy = require('passport-github').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 const OpenIDStrategy = require('passport-openid').Strategy;
-const OAuthStrategy = require('passport-oauth').OAuthStrategy;
-const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+const { OAuthStrategy } = require('passport-oauth');
+const { OAuth2Strategy } = require('passport-oauth');
 
 const User = require('../models/User');
 
@@ -414,16 +414,15 @@ passport.use('tumblr', new OAuthStrategy({
   callbackURL: '/auth/tumblr/callback',
   passReqToCallback: true
 },
-  (req, token, tokenSecret, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
-      user.save((err) => {
-        done(err, user);
-      });
+(req, token, tokenSecret, profile, done) => {
+  User.findById(req.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
+    user.save((err) => {
+      done(err, user);
     });
-  }
-));
+  });
+}));
 
 /**
  * Foursquare API OAuth.
@@ -436,16 +435,15 @@ passport.use('foursquare', new OAuth2Strategy({
   callbackURL: process.env.FOURSQUARE_REDIRECT_URL,
   passReqToCallback: true
 },
-  (req, accessToken, refreshToken, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.tokens.push({ kind: 'foursquare', accessToken });
-      user.save((err) => {
-        done(err, user);
-      });
+(req, accessToken, refreshToken, profile, done) => {
+  User.findById(req.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({ kind: 'foursquare', accessToken });
+    user.save((err) => {
+      done(err, user);
     });
-  }
-));
+  });
+}));
 
 /**
  * Steam API OpenID.
@@ -453,12 +451,11 @@ passport.use('foursquare', new OAuth2Strategy({
 passport.use(new OpenIDStrategy({
   apiKey: process.env.STEAM_KEY,
   providerURL: 'http://steamcommunity.com/openid',
-  returnURL: process.env.BASE_URL + '/auth/steam/callback',
-  realm: process.env.BASE_URL + '/',
+  returnURL: `${process.env.BASE_URL}/auth/steam/callback`,
+  realm: `${process.env.BASE_URL}/`,
   stateless: true,
   passReqToCallback: true,
 }, (req, identifier, done) => {
-
   const steamId = identifier.match(/\d+$/)[0];
   const profileURL = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_KEY}&steamids=${steamId}`;
 
@@ -523,16 +520,15 @@ passport.use('pinterest', new OAuth2Strategy({
   callbackURL: process.env.PINTEREST_REDIRECT_URL,
   passReqToCallback: true
 },
-  (req, accessToken, refreshToken, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.tokens.push({ kind: 'pinterest', accessToken });
-      user.save((err) => {
-        done(err, user);
-      });
+(req, accessToken, refreshToken, profile, done) => {
+  User.findById(req.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({ kind: 'pinterest', accessToken });
+    user.save((err) => {
+      done(err, user);
     });
-  }
-));
+  });
+}));
 
 /**
  * Login Required middleware.
