@@ -30,11 +30,12 @@ block content
         else
           strong.text-danger  Offline
 
-  h3 #{playerAchievemments.gameName} Achievements
-  ul.lead.list-unstyled
-    for achievement in playerAchievemments.achievements
-      if achievement.achieved
-        li.text-success= achievement.name
+  if playerStats
+    h3 #{playerStats.gameName} Achievements
+    ul.lead.list-unstyled
+      for achievement in playerStats.achievements
+        if achievement.achieved
+          li.text-success= achievement.name
 
   h3 Owned Games
   each game in ownedGames

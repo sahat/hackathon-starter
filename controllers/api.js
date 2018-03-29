@@ -287,7 +287,7 @@ exports.postTwitter = (req, res, next) => {
 exports.getSteam = (req, res, next) => {
   const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  const playerAchievements = () =>
+  const playerAchievements = () => {
     // get the list of the recently played games, pick the most recent one and get its achievements
     request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
       .then(([req, body]) => {
@@ -305,6 +305,7 @@ exports.getSteam = (req, res, next) => {
             });
         }
       });
+  };
   const playerSummaries = () => {
     params.steamids = steamId;
     return request.getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
@@ -335,7 +336,7 @@ exports.getSteam = (req, res, next) => {
       res.render('api/steam', {
         title: 'Steam Web API',
         ownedGames: ownedGames.response.games,
-        playerAchievemments: playerAchievements.playerstats,
+        playerStats: playerAchievements ? playerAchievements.playerstats : null,
         playerSummary: playerSummaries.response.players[0]
       });
     })
