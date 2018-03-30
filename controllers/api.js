@@ -287,25 +287,24 @@ exports.postTwitter = (req, res, next) => {
 exports.getSteam = (req, res, next) => {
   const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  const playerAchievements = () => {
-    // get the list of the recently played games, pick the most recent one and get its achievements
-    request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
-      .then(([req, body]) => {
-        if (req.statusCode === 401) {
-          throw new Error('Invalid Steam API Key');
-        }
-        if (body.response.total_count > 0) {
-          params.appid = body.response.games[0].appid;
-          return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
-            .then(([req, body]) => {
-              if (req.statusCode === 401) {
-                throw new Error('Invalid Steam API Key');
-              }
-              return body;
-            });
-        }
-      });
-  };
+
+  // get the list of the recently played games, pick the most recent one and get its achievements
+  const playerAchievements = () => request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
+    .then(([req, body]) => {
+      if (req.statusCode === 401) {
+        throw new Error('Invalid Steam API Key');
+      }
+      if (body.response.total_count > 0) {
+        params.appid = body.response.games[0].appid;
+        return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
+          .then(([req, body]) => {
+            if (req.statusCode === 401) {
+              throw new Error('Invalid Steam API Key');
+            }
+            return body;
+          });
+      }
+    });
   const playerSummaries = () => {
     params.steamids = steamId;
     return request.getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
@@ -335,7 +334,7 @@ exports.getSteam = (req, res, next) => {
     .then(([playerAchievements, playerSummaries, ownedGames]) => {
       res.render('api/steam', {
         title: 'Steam Web API',
-        ownedGames: ownedGames.response.games,
+        ownedGames: ownedGames.response,
         playerStats: playerAchievements ? playerAchievements.playerstats : null,
         playerSummary: playerSummaries.response.players[0]
       });
