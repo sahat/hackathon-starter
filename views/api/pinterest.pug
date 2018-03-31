@@ -3,17 +3,17 @@ extends ../layout
 block content
   .page-header
     h2
-      i.fa.fa-pinterest(style='color: #cb2027')
+      i.fab.fa-pinterest(style='color: #cb2027').fa-sm
       | Pinterest API
   .btn-group.btn-group-justified
     a.btn.btn-primary(href='https://developers.pinterest.com/docs/getting-started/introduction/', target='_blank')
-      i.fa.fa-check-square-o
+      i.far.fa-check-square.fa-sm
       | Getting Started
     a.btn.btn-primary(href='https://developers.pinterest.com/tools/api-explorer/', target='_blank')
-      i.fa.fa-pinterest
+      i.fab.fa-pinterest.fa-sm
       | API Explorer
     a.btn.btn-primary(href='https://developers.pinterest.com/docs/api/overview/', target='_blank')
-      i.fa.fa-code-fork
+      i.fas.fa-code-branch.fa-sm
       | API Overview
 
   h3 Create a Pin    
@@ -36,5 +36,5 @@ block content
         label Image URL
         input.form-control(name='image_url', placeholder='The link to the image that you want to Pin.')
     button.btn.btn-primary(type='submit')
-        i.fa.fa-pinterest
+        i.fab.fa-pinterest.fa-sm
         |  Pin It

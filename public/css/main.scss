@@ -1,7 +1,10 @@
 @import "themes/default/variables";
 
 @import "lib/bootstrap/bootstrap";
-@import "lib/font-awesome/font-awesome";
+@import "lib/font-awesome/fontawesome";
+@import "lib/font-awesome/fa-brands";
+@import "lib/font-awesome/fa-regular";
+@import "lib/font-awesome/fa-solid";
 
 @import "themes/default/default";
 
@@ -66,5 +69,17 @@ textarea {
 // -------------------------
 
 .fa {
+  margin-right: 6px;
+}
+
+.fab {
+  margin-right: 6px;
+}
+
+.fas {
+  margin-right: 6px;
+}
+
+.far {
   margin-right: 6px;
 }

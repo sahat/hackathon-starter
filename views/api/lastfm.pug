@@ -3,17 +3,17 @@ extends ../layout
 block content
   .page-header
     h2
-      i.fa.fa-play-circle-o(style='color: #db1302')
+      i.far.fa-play-circle(style='color: #db1302').fa-sm
       | Last.fm API
   .btn-group.btn-group-justified
     a.btn.btn-primary(href='https://github.com/jammus/lastfm-node#lastfm-node', target='_blank')
-      i.fa.fa-check-square-o
+      i.far.fa-check-square.fa-sm
       | Last.fm Node Docs
     a.btn.btn-primary(href='http://www.last.fm/api/account/create', target='_blank')
-      i.fa.fa-laptop
+      i.fas.fa-laptop.fa-sm
       | Create API Account
     a.btn.btn-primary(href='http://www.last.fm/api', target='_blank')
-      i.fa.fa-code-fork
+      i.fas.fa-code-branch.fa-sm
       | API Endpoints
 
   h3= artist.name
@@ -22,7 +22,7 @@ block content
   h3 Tags
   for tag in artist.tags
     span.label.label-primary
-      i.fa.fa-tag
+      i.fas.fa-tag.fa-sm
       | #{tag.name}
     |&nbsp;
 
