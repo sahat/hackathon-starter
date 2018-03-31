@@ -320,16 +320,6 @@ The same goes for other providers.
 - Once logged into the dashboard, expand the link 'show api credentials'
 - Copy your Account Sid and Auth Token
 
-<hr>
-
-<img src="https://static.opentok.com/img/styleguide/tokbox-logo-horizontal.png" width="200">
-
-- Go to <a href="https://tokbox.com/account/user/signup" target="_blank">https://tokbox.com/account/user/signup</a>
-- Sign up for an account
-- Once logged into the dashboard, create a new project
-- Copy your Api Key and Secret
-
-
 Project Structure
 -----------------
 
@@ -414,7 +404,6 @@ List of Packages
 | supertest                       | HTTP assertion library.                                               |
 | tumblr.js                       | Tumblr API library.                                                   |
 | twilio                          | Twilio API library.                                                   |
-| tokbox                          | TokBox API library.                                                   |
 | twit                            | Twitter API library.                                                  |
 | validator                       | Used in conjunction with express-validator in **controllers/api.js**. |
 

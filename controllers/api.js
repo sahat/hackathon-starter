@@ -8,7 +8,6 @@ const GitHub = require('@octokit/rest');
 const Twit = require('twit');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
-const OpenTok = require('opentok');
 const Linkedin = require('node-linkedin')(process.env.LINKEDIN_ID, process.env.LINKEDIN_SECRET, process.env.LINKEDIN_CALLBACK_URL);
 const clockwork = require('clockwork')({ key: process.env.CLOCKWORK_KEY });
 const paypal = require('paypal-rest-sdk');
@@ -409,33 +408,6 @@ exports.postTwilio = (req, res, next) => {
     if (err) { return next(err.message); }
     req.flash('success', { msg: `Text sent to ${responseData.to}.` });
     res.redirect('/api/twilio');
-  });
-};
-
-/**
- * GET /api/tokbox
- * TokBox API example.
- */
-exports.getTokBox = (req, res) => {
-  const opentok = new OpenTok(
-    process.env.TOKBOX_API_KEY,
-    process.env.TOKBOX_SECRET
-  );
-  const render = (sessionId) => {
-    return res.render('api/tokbox', {
-      title: 'TokBox API',
-      apiKey: process.env.TOKBOX_API_KEY,
-      sessionId: sessionId,
-      token: opentok.generateToken(sessionId)
-    });
-  }
-  const sessionId = req.query.sessionId;
-  if (sessionId) {
-    return render(sessionId);
-  }
-  opentok.createSession((err, session) => {
-    if (err) { return next(err); }
-    return render(session.sessionId);
   });
 };
 
