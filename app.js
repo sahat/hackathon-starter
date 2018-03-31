@@ -108,7 +108,7 @@ app.use((req, res, next) => {
     !req.path.match(/\./)) {
     req.session.returnTo = req.originalUrl;
   } else if (req.user &&
-    req.path === '/account') {
+    (req.path === '/account' || req.path.match(/^\/api/))) {
     req.session.returnTo = req.originalUrl;
   }
   next();
@@ -210,7 +210,7 @@ app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect:
 });
 app.get('/auth/steam', passport.authorize('openid', { state: 'SOME STATE' }));
 app.get('/auth/steam/callback', passport.authorize('openid', { failureRedirect: '/api' }), (req, res) => {
-  res.redirect('/api/steam');
+  res.redirect(req.session.returnTo);
 });
 app.get('/auth/pinterest', passport.authorize('pinterest', { scope: 'read_public write_public' }));
 app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRedirect: '/login' }), (req, res) => {

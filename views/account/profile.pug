@@ -109,3 +109,8 @@ block content
           p: a.text-danger(href='/account/unlink/linkedin') Unlink your LinkedIn account
         else
           p: a(href='/auth/linkedin') Link your LinkedIn account
+      .col-sm-offset-3.col-sm-4
+        if user.steam
+          p: a.text-danger(href='/account/unlink/steam') Unlink your Steam account
+        else
+          p: a(href='/auth/steam') Link your Steam account
