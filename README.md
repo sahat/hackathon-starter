@@ -2,11 +2,11 @@
 Hackathon Starter 
 =======================
 
-[![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](https://travis-ci.org/sahat/hackathon-starter.svg?branch=master)](https://travis-ci.org/sahat/hackathon-starter) [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Thinkful Pair on Node](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/node/)
+[![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](https://travis-ci.org/sahat/hackathon-starter.svg?branch=master)](https://travis-ci.org/sahat/hackathon-starter) [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**Live Demo**: http://hackathonstarter-sahat.rhcloud.com
+**Live Demo**: https://hackathon-starter-2018.herokuapp.com
 
-Jump to [What's new in 4.3.0?](#changelog)
+Jump to [What's new in 4.4.0?](#changelog)
 
 :bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5).
 
@@ -166,8 +166,8 @@ them with *your credentials* when you are ready to deploy an app.
 - Fill out the required fields then click on **Save**
 - In the *Create Client ID* modal dialog:
  - **Application Type**: Web Application
- - **Authorized Javascript origins**: http://localhost:3000
- - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
+ - **Authorized Javascript origins**: http://localhost:8080
+ - **Authorized redirect URI**: http://localhost:8080/auth/google/callback
 - Click on **Create Client ID** button
 - Copy and paste *Client ID* and *Client secret* keys into `.env`
 
@@ -183,16 +183,18 @@ The same goes for other providers.
 
 - Visit <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a>
 - Click **My Apps**, then select **Add a New App* from the dropdown menu
-- Select **Website** platform and enter a new name for your app
-- Click on the **Create New Facebook App ID** button
-- Choose a **Category** that best describes your app
-- Click on **Create App ID** button
-- In the upper right corner click on **Skip Quick Start**
+- Enter a new name for your app
+- Click on the **Create App ID** button
+- Find the Facebook Login Product and click on **Facebook Login**
+- Instead of going through their Quickstart, click on **Settings** for your app in the top left corner 
 - Copy and paste *App ID* and *App Secret* keys into `.env`
- - **Note:** *App ID* is **clientID**, *App Secret* is **clientSecret**
-- Click on the *Settings* tab in the left nav, then click on **+ Add Platform**
-- Select **Website**
-- Enter `http://localhost:3000` under *Site URL*
+- **Note:** *App ID* is **FACEBOOK_ID**, *App Secret* is **FACEBOOK_SECRET** in `.env`
+- Enter `localhost` under *App Domains*
+- Choose a **Category** that best describes your app
+- Click on **+ Add Platform** and select **Website**
+- Enter `http://localhost:8080` under *Site URL*
+- Click on the *Settings* tab in the left nav under Facebook Login
+- Enter `http://localhost:8080/auth/facebook/callback` under Valid OAuth redirect URIs
 
 **Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
@@ -201,10 +203,10 @@ The same goes for other providers.
 <img src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Logo.png" width="200">
 
 - Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
-- Select **Applications** from the sidebar
-- Then inside **Developer applications** click on **Register new application**
+- Select **Developer settings** from the sidebar
+- Then inside click on **Register new application**
 - Enter *Application Name* and *Homepage URL*
-- For *Authorization Callback URL*: http://localhost:3000/auth/github/callback
+- For *Authorization Callback URL*: http://localhost:8080/auth/github/callback
 - Click **Register application**
 - Now copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
@@ -215,7 +217,7 @@ The same goes for other providers.
 - Sign in at <a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com</a>
 - Click **Create a new application**
 - Enter your application name, website and description
-- For **Callback URL**: http://127.0.0.1:3000/auth/twitter/callback
+- For **Callback URL**: http://127.0.0.1:8080/auth/twitter/callback
 - Go to **Settings** tab
 - Under *Application Type* select **Read and Write** access
 - Check the box **Allow this application to be used to Sign in with Twitter**
@@ -231,8 +233,8 @@ The same goes for other providers.
  - *It may ask you to sign in once again*
 - Click **+ Add New Application** button
 - Fill out all the *required* fields
- - **OAuth 2.0 Redirect URLs**: http://localhost:3000/auth/linkedin/callback
- - **JavaScript API Domains**: http://localhost:3000
+ - **OAuth 2.0 Redirect URLs**: http://localhost:8080/auth/linkedin/callback
+ - **JavaScript API Domains**: http://localhost:8080
 - For **Default Application Permissions** make sure at least the following is checked:
  - `r_basicprofile`
 - Finish by clicking **Add Application** button
@@ -269,7 +271,7 @@ The same goes for other providers.
 - Click on **My Apps** in the top menu
 - Click the **Create A New App** button
 - Enter *App Name*, *Welcome page url*,
-- For **Redirect URI**: http://localhost:3000/auth/foursquare/callback
+- For **Redirect URI**: http://localhost:8080/auth/foursquare/callback
 - Click **Save Changes**
 - Copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
@@ -280,13 +282,13 @@ The same goes for other providers.
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
 - Fill in all the details
-- For **Default Callback URL**: `http://localhost:3000/auth/tumblr/callback`
+- For **Default Callback URL**: `http://localhost:8080/auth/tumblr/callback`
 - Click **✔Register**
 - Copy and paste *OAuth consumer key* and *OAuth consumer secret* keys into `.env` file
 
 <hr>
 
-<img src="http://www.technologytell.com/gaming/files/2012/01/steam_logo.jpg" width="200">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Steam_logo.svg" width="200">
 
 - Go to <a href="http://steamcommunity.com/dev/apikey" target="_blank">http://steamcommunity.com/dev/apikey</a>
 - Sign in with your existing Steam account
@@ -354,7 +356,7 @@ Project Structure
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
 | app.js                             | The main application file.                                   |
 | package.json                       | NPM dependencies.                                            |
-| package-lock.lock                          | Contains exact versions of NPM dependencies in package.json. |
+| package-lock.json                  | Contains exact versions of NPM dependencies in package.json. |
 
 **Note:** There is no preference how you name or structure your views.
 You could place all your templates in a top-level `views` directory without
@@ -367,30 +369,30 @@ List of Packages
 
 | Package                         | Description                                                           |
 | ------------------------------- | --------------------------------------------------------------------- |
-| async                           | Utility library that provides asynchronous control flow.              |
+| @octokit/rest                   | GitHub API library.                                                   |
 | bcrypt-nodejs                   | Library for hashing and salting user passwords.                       |
+| body-parser                     | Express 4 middleware.                                                 |
+| chai                            | BDD/TDD assertion library.                                            |
 | cheerio                         | Scrape web pages using jQuery-style syntax.                           |
 | clockwork                       | Clockwork SMS API library.                                            |
+| compression                     | Express 4 middleware.                                                 |
 | connect-mongo                   | MongoDB session store for Express.                                    |
 | dotenv                          | Loads environment variables from .env file.                           |
-| express                         | Node.js web framework.                                                |
-| body-parser                     | Express 4 middleware.                                                 |
-| express-session                 | Express 4 middleware.                                                 |
-| morgan                          | Express 4 middleware.                                                 |
-| compression                     | Express 4 middleware.                                                 |
 | errorhandler                    | Express 4 middleware.                                                 |
-| serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
+| express                         | Node.js web framework.                                                |
+| express-session                 | Express 4 middleware.                                                 |
 | express-flash                   | Provides flash messages for Express.                                  |
 | express-status-monitor          | Reports real-time server metrics for Express.                         |
 | express-validator               | Easy form validation for Express.                                     |
 | fbgraph                         | Facebook Graph API library.                                           |
-| github                          | GitHub API library.                                                   |
-| pug (jade)                      | Template engine for Express.                                          |
-| lastfm                          | Last.fm API library.                                                  |
 | instagram-node                  | Instagram API library.                                                |
+| lastfm                          | Last.fm API library.                                                  |
 | lob                             | Lob API library                                                       |
+| lodash                          | Handy JavaScript utlities library.                                    |
 | lusca                           | CSRF middleware.                                                      |
+| mocha                           | Test framework.                                                       |
 | mongoose                        | MongoDB ODM.                                                          |
+| morgan                          | Express 4 middleware.                                                 |
 | node-foursquare                 | Foursquare API library.                                               |
 | node-linkedin                   | LinkedIn API library.                                                 |
 | node-sass-middleware            | Sass middleware compiler.                                                 |
@@ -405,17 +407,16 @@ List of Packages
 | passport-linkedin-oauth2        | Sign-in with LinkedIn plugin.                                         |
 | passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.    |
 | paypal-rest-sdk                 | PayPal APIs library.                                                  |
+| pug (jade)                      | Template engine for Express.                                          |
 | request                         | Simplified HTTP request library.                                      |
+| serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
 | stripe                          | Offical Stripe API library.                                           |
+| supertest                       | HTTP assertion library.                                               |
 | tumblr.js                       | Tumblr API library.                                                   |
 | twilio                          | Twilio API library.                                                   |
 | tokbox                          | TokBox API library.                                                   |
 | twit                            | Twitter API library.                                                  |
-| lodash                          | Handy JavaScript utlities library.                                    |
 | validator                       | Used in conjunction with express-validator in **controllers/api.js**. |
-| mocha                           | Test framework.                                                       |
-| chai                            | BDD/TDD assertion library.                                            |
-| supertest                       | HTTP assertion library.                                               |
 
 Useful Tools and Resources
 --------------------------
@@ -517,12 +518,12 @@ download MongoDB [here](http://mongodb.org/downloads), or install it via a packa
 Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
 **Tip:** If you are always connected to the internet, you could just use
-[mLab](https://mongolab.com/) or [Compose](https://www.compose.io/) instead
+[mLab](https://mlab.com/) or [Compose](https://www.compose.io/) instead
 of downloading and installing MongoDB locally. You will only need to update database credentials
 in `.env` file.
 
 ### I get an error when I deploy my app, why?
-Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB`/`MONGOLAB_URI` is
+Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
 running on `localhost`. You need to create an account with [mLab](https://mongolab.com/)
@@ -602,7 +603,7 @@ And then create a route in `app.js`. I placed it right after the index controlle
 app.get('/escape-velocity', homeController.escapeVelocity);
 ```
 
-Restart the server (if you are not using **nodemon**), then you should see the new template at [http://localhost:3000/escape-velocity](http://localhost:3000/escape-velocity).
+Restart the server (if you are not using **nodemon**), then you should see the new template at [http://localhost:8080/escape-velocity](http://localhost:8080/escape-velocity).
 
 I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Jade templates work: `layout.pug` - base template, `index.pug` - home page, `partials/header.pug` - Bootstrap navbar, `partials/footer.pug` - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new `layout.pug`.
 Then, each page that changes, be it `index.pug`, `about.pug`, `contact.pug`
@@ -1212,7 +1213,7 @@ docker-compose up web
 
 ```
 
-To view the app, find your docker ip address + port 3000 ( this will typically be http://192.168.99.100:3000/ ).
+To view the app, find your docker ip address + port 8080 ( this will typically be http://localhost:8080/ ).  To use a port other than 8080, you would need to modify the port in app.js, Dockerfile and docker-compose.yml.
 
 
 Deployment
@@ -1229,19 +1230,19 @@ listed below.
 
 ### 1-Step Deployment with Heroku
 
-<img src="http://blog.exadel.com/wp-content/uploads/2013/10/heroku-Logo-1.jpg" width="200">
+<img src="https://upload.wikimedia.org/wikipedia/en/a/a9/Heroku_logo.png" width="200">
 
 - Download and install [Heroku Toolbelt](https://toolbelt.heroku.com/)
 - In terminal, run `heroku login` and enter your Heroku credentials
 - From *your app* directory run `heroku create`
-- Run `heroku addons:create mongolab`.  This will set up the mLab add-on and configure the `MONGOLAB_URI` environment variable in your Heroku app for you.
+- Run `heroku addons:create mongolab`.  This will set up the mLab add-on and configure the `MONGODB_URI` environment variable in your Heroku app for you.
 - Lastly, do `git push heroku master`.  Done!
 
 **Note:** To install Heroku add-ons your account must be verified.
 
 ---
 
-<img src="http://i.imgur.com/7KnCa5a.png" width="200">
+<img src="https://mlab.com/company/img/branding/mLab-logo-onlight.svg" width="200">
 
 - Open [mlab.com](https://mlab.com) website
 - Click the yellow **Sign up** button
@@ -1379,39 +1380,27 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 
 
-### Watson catalog of services     
+### Watson catalog of services      
 
-**<img src="https://kpprod1.alchemyapi.com/images/alchemy_logo_24.png" width="25"> AlchemyAPI** - An AlchemyAPI service that analyzes your unstructured text and image content.      
+**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> [Conversation](https://www.ibm.com/watson/services/conversation/)** - 	Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.  
 
-**<img src="http://csbmixbroker.mybluemix.net/commerce_24.png" width="25"> Cognitive Commerce** - Cognitive Commerce is a service provided by Cognitive Scale.  
+**<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> [Discovery](https://www.ibm.com/watson/services/discovery/)** - Unlock hidden value in data to find answers, monitor trends and surface patterns with the world’s most advanced cloud-native insight engine.
 
-**<img src="http://csbmixbroker.mybluemix.net/graph_24.png" width="25"> Cognitive Graph** - Cognitive Graph is a service provided by Cognitive Scale.  
+**<img src="https://wbi.mybluemix.net/icons/language-translator.svg?version=4" width="20" width="25"> [Language Translator](https://www.ibm.com/watson/services/language-translator/)** - Translate text from one language to another.
 
-**<img src="http://csbmixbroker.mybluemix.net/insights_24.png" width="25"> Cognitive Insights** - Cognitive Insights™ is a service provided by Cognitive Scale.  
+**<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> [Natural Language Classifier](https://www.ibm.com/watson/services/natural-language-classifier/)** - Interpret and classify natural language with confidence.  
 
-**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> Conversation** - 	Add a natural language interface to your application to automate interactions with your end users. Common applications include virtual agents and chat bots that can integrate and communicate on any channel or device.  
+**<img src="https://wbi.mybluemix.net/icons/natural-language-understanding.svg?version=2" width="25"> [Natural Language Understanding](https://www.ibm.com/watson/services/natural-language-understanding/)** - Analyze text to extract meta-data from content such as concepts, entities, keywords and more.
 
-**<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> Discovery** - Add a cognitive search and content analytics engine to applications.  
+**<img src="https://wbi.mybluemix.net/icons/personality-insights.svg?version=2" width="25"> [Personality Insights](https://www.ibm.com/watson/services/personality-insights/)** - Predict personality characteristics, needs and values through written text.
 
-**<img src="https://wbi.mybluemix.net/icons/document-conversion.svg?version=2" width="25"> Document Conversion** - Converts a HTML, PDF, or Microsoft Word™ document into a normalized HTML, plain text, or a set of JSON-formatted Answer units.  
+**<img src="https://wbi.mybluemix.net/icons/speech-to-text.svg?version=2" width="25"> [Speech to Text](https://www.ibm.com/watson/services/speech-to-text/)** - Convert audio and voice into written text for quick understanding of content.
 
-**<img src="https://wbi.mybluemix.net/icons/language-translator.svg?version=4" width="20" width="25"> Language Translator** - Translate text from one language to another for specific domains.
+**<img src="https://wbi.mybluemix.net/icons/text-to-speech.svg?version=2" width="25"> [Text to Speech](https://www.ibm.com/watson/services/text-to-speech/)** - Convert written text into natural sounding audio in a variety of languages and voices.  
 
-**<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> Natural Language Classifier** - Natural Language Classifier performs natural language classification on question texts. A user would be able to train their data and the predict the appropriate class for a input question.  
+**<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> [Tone Analyzer](https://www.ibm.com/watson/services/tone-analyzer/)** - Understand emotions, social tendencies and perceived writing style. 
 
-**<img src="https://wbi.mybluemix.net/icons/personality-insights.svg?version=2" width="25"> Personality Insights** - The Watson Personality Insights derives insights from transactional and social media data to identify psychological traits.  
-
-**<img src="https://wbi.mybluemix.net/icons/retrieve-and-rank.svg?version=2" width="25"> Retrieve and Rank** - Add machine learning enhanced search capabilities to your application.   
-
-**<img src="https://wbi.mybluemix.net/icons/speech-to-text.svg?version=2" width="25"> Speech to Text** - Low-latency, streaming transcription.  
-
-**<img src="https://wbi.mybluemix.net/icons/text-to-speech.svg?version=2" width="25"> Text to Speech** - Synthesizes natural-sounding speech from text.  
-
-**<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> Tone Analyzer** - Tone Analyzer uses linguistic analysis to detect three types of tones from communications: emotion, social, and language. This insight can then be used to drive high impact communications.  
-
-**<img src="https://wbi.mybluemix.net/icons/retrieve-and-rank.svg?version=2" width="25" > Tradeoff Analytics** - Helps make better choices under multiple conflicting goals. Combines smart visualization and recommendations for tradeoff exploration.    
-
-**<img src="https://kpprod1.alchemyapi.com/images/vis_rec.svg" width="25"> Visual Recognition** - Find meaning in visual content! Analyze images for scenes, objects, faces, and other content. Choose a default model off the shelf, or create your own custom classifier. Find similar images within a collection. Develop smart applications that analyze the visual content of images or video frames to understand what is happening in a scene.  
+**<img src="https://kpprod1.alchemyapi.com/images/vis_rec.svg" width="25"> [Visual Recognition](https://www.ibm.com/watson/services/visual-recognition/)** - Tag, classify and search visual content using machine learning.
 
 
 
@@ -1436,7 +1425,7 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
     manual_scaling:
       instances: 1
     ```
-- Make sure you've set `MONGODB_URI` or `MONGOLAB_URI` in `.env.example`
+- Make sure you've set `MONGODB_URI` in `.env.example`
 - Run the following command to deploy the `hackathon-starter` app:
 
     ```bash
@@ -1447,6 +1436,30 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 Changelog
 ---------
+
+### 4.4.0 (March 23, 2018)
+- Added Docker support (Thanks to @gregorysobotka, @praveenweb, @ryanhanwu).  The initial integration has also been upgraded to use NodeJS 8 and Mongo 3.6.
+- Removed dependency on async in favor of using promises (@fmcarvalho). Note that the promise support will be upgraded in the upcoming releases to remove the use of Bluebird.
+- The contact form will no longer ask for the user's name and email address if they have logged-in already
+- Adding a confirmation prompt when a user asks for their account to be deleted
+- Fixed Steam Oauth and API integration
+- Fixed Last.fm API example (@JonLim)
+- Fixed Google Map integration example (@whmsysu)
+- Fixed Twitter API integration (@shahzeb1)
+- Fixed Facebook integration/request scope (@RobTS)
+- Removed MONGOLAB_URI env var, use MONGODB_URI instead
+- Preserve the query parameters during authentication session returns (@shreedharshetty)
+- normalizeEmail options key remove_dots changed to gmail_remove_dots (@amakhnev)
+- Fixed Heroku re-deploy issue (@gballet)
+- Migrated from Jade to Pug
+- Migrated from GitHub npm package to @octokit/rest to address the related deprecation warning. See https://git.io/vNB11
+- Dependency update and upgrades
+- Updated left over port 3000 to the current default of port of 8080
+- Removed bitgo.pug since bitgo has not been supported by hackathon-starter since v4.1.0
+- Removed bitgo from api/index view (@JonLim)
+- Fixed unsecure external content by switching them to https
+- New address for the Live Demo site
+- Code formatting, text prompt, and Readme improvements
 
 ### 4.3.0 (November 6, 2016)
 - [Added new theme](http://demos.creative-tim.com/get-shit-done/index.html) by Creative Tim (Thanks @conacelelena)
@@ -1747,7 +1760,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2016 Sahat Yalkabov
+Copyright (c) 2014-2018 Sahat Yalkabov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

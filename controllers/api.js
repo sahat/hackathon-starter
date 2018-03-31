@@ -2,9 +2,9 @@ const bluebird = require('bluebird');
 const request = bluebird.promisifyAll(require('request'), { multiArgs: true });
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
-const LastFmNode = require('lastfm').LastFmNode;
+const { LastFmNode } = require('lastfm');
 const tumblr = require('tumblr.js');
-const GitHub = require('github');
+const GitHub = require('@octokit/rest');
 const Twit = require('twit');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
@@ -19,6 +19,10 @@ const foursquare = require('node-foursquare')({
     clientId: process.env.FOURSQUARE_ID,
     clientSecret: process.env.FOURSQUARE_SECRET,
     redirectUrl: process.env.FOURSQUARE_REDIRECT_URL
+  },
+  foursquare: {
+    mode: 'foursquare',
+    version: 20140806,
   }
 });
 
@@ -46,15 +50,15 @@ exports.getFoursquare = (req, res, next) => {
     foursquare.Venues.getVenueAsync('49da74aef964a5208b5e1fe3', token.accessToken),
     foursquare.Users.getCheckinsAsync('self', null, token.accessToken)
   ])
-  .then(([trendingVenues, venueDetail, userCheckins]) => {
-    res.render('api/foursquare', {
-      title: 'Foursquare API',
-      trendingVenues,
-      venueDetail,
-      userCheckins
-    });
-  })
-  .catch(next);
+    .then(([trendingVenues, venueDetail, userCheckins]) => {
+      res.render('api/foursquare', {
+        title: 'Foursquare API',
+        trendingVenues,
+        venueDetail,
+        userCheckins
+      });
+    })
+    .catch(next);
 };
 
 /**
@@ -86,11 +90,11 @@ exports.getTumblr = (req, res, next) => {
 exports.getFacebook = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'facebook');
   graph.setAccessToken(token.accessToken);
-  graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, results) => {
+  graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, profile) => {
     if (err) { return next(err); }
     res.render('api/facebook', {
       title: 'Facebook API',
-      profile: results
+      profile
     });
   });
 };
@@ -124,7 +128,7 @@ exports.getGithub = (req, res, next) => {
     if (err) { return next(err); }
     res.render('api/github', {
       title: 'GitHub API',
-      repo
+      repo: repo.data
     });
   });
 };
@@ -185,47 +189,47 @@ exports.getLastfm = (req, res, next) => {
       lastfm.request('artist.getTopTracks', {
         artist: 'Roniit',
         handlers: {
-          success: (data) => {
-            resolve(data.toptracks.track.slice(0, 10));
+          success: ({ toptracks }) => {
+            resolve(toptracks.track.slice(0, 10));
           },
           error: reject
         }
       });
     });
   const artistTopAlbums = () =>
-      new Promise((resolve, reject) => {
-        lastfm.request('artist.getTopAlbums', {
-          artist: 'Roniit',
-          handlers: {
-            success: (data) => {
-              resolve(data.topalbums.album.slice(0, 3));
-            },
-            error: reject
-          }
-        });
+    new Promise((resolve, reject) => {
+      lastfm.request('artist.getTopAlbums', {
+        artist: 'Roniit',
+        handlers: {
+          success: ({ topalbums }) => {
+            resolve(topalbums.album.slice(0, 3));
+          },
+          error: reject
+        }
       });
+    });
   Promise.all([
     artistInfo(),
     artistTopTracks(),
     artistTopAlbums()
   ])
-  .then(([artistInfo, artistTopAlbums, artistTopTracks]) => {
-    const artist = {
-      name: artistInfo.artist.name,
-      image: artistInfo.artist.image.slice(-1)[0]['#text'],
-      tags: artistInfo.artist.tags.tag,
-      bio: artistInfo.artist.bio.summary,
-      stats: artistInfo.artist.stats,
-      similar: artistInfo.artist.similar.artist,
-      topAlbums: artistTopAlbums,
-      topTracks: artistTopTracks
-    };
-    res.render('api/lastfm', {
-      title: 'Last.fm API',
-      artist
-    });
-  })
-  .catch(next);
+    .then(([artistInfo, artistTopTracks, artistTopAlbums]) => {
+      const artist = {
+        name: artistInfo.artist.name,
+        image: artistInfo.artist.image.slice(-1)[0]['#text'],
+        tags: artistInfo.artist.tags.tag,
+        bio: artistInfo.artist.bio.summary,
+        stats: artistInfo.artist.stats,
+        similar: artistInfo.artist.similar.artist,
+        topAlbums: artistTopAlbums,
+        topTracks: artistTopTracks
+      };
+      res.render('api/lastfm', {
+        title: 'Last.fm API',
+        artist
+      });
+    })
+    .catch(next);
 };
 
 /**
@@ -282,18 +286,26 @@ exports.postTwitter = (req, res, next) => {
  * Steam API example.
  */
 exports.getSteam = (req, res, next) => {
-  const steamId = '76561197982488301';
+  const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  const playerAchievements = () => {
-    params.appid = '49520';
-    return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
-      .then(([request, body]) => {
-        if (request.statusCode === 401) {
+  const playerAchievements = () =>
+    // get the list of the recently played games, pick the most recent one and get its achievements
+    request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
+      .then(([req, body]) => {
+        if (req.statusCode === 401) {
           throw new Error('Invalid Steam API Key');
         }
-        return body;
+        if (body.response.total_count > 0) {
+          params.appid = body.response.games[0].appid;
+          return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
+            .then(([req, body]) => {
+              if (req.statusCode === 401) {
+                throw new Error('Invalid Steam API Key');
+              }
+              return body;
+            });
+        }
       });
-  };
   const playerSummaries = () => {
     params.steamids = steamId;
     return request.getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
@@ -320,15 +332,15 @@ exports.getSteam = (req, res, next) => {
     playerSummaries(),
     ownedGames()
   ])
-  .then(([playerAchievements, playerSummaries, ownedGames]) => {
-    res.render('api/steam', {
-      title: 'Steam Web API',
-      ownedGames: ownedGames.response.games,
-      playerAchievemments: playerAchievements.playerstats,
-      playerSummary: playerSummaries.response.players[0]
-    });
-  })
-  .catch(next);
+    .then(([playerAchievements, playerSummaries, ownedGames]) => {
+      res.render('api/steam', {
+        title: 'Steam Web API',
+        ownedGames: ownedGames.response.games,
+        playerAchievemments: playerAchievements.playerstats,
+        playerSummary: playerSummaries.response.players[0]
+      });
+    })
+    .catch(next);
 };
 
 /**
@@ -347,8 +359,7 @@ exports.getStripe = (req, res) => {
  * Make a payment.
  */
 exports.postStripe = (req, res) => {
-  const stripeToken = req.body.stripeToken;
-  const stripeEmail = req.body.stripeEmail;
+  const { stripeToken, stripeEmail } = req.body;
   stripe.charges.create({
     amount: 395,
     currency: 'usd',
@@ -485,16 +496,16 @@ exports.getInstagram = (req, res, next) => {
     ig.media_popularAsync(),
     ig.user_self_media_recentAsync()
   ])
-  .then(([searchByUsername, searchByUserId, popularImages, myRecentMedia]) => {
-    res.render('api/instagram', {
-      title: 'Instagram API',
-      usernames: searchByUsername,
-      userById: searchByUserId,
-      popularImages,
-      myRecentMedia
-    });
-  })
-  .catch(next);
+    .then(([searchByUsername, searchByUserId, popularImages, myRecentMedia]) => {
+      res.render('api/instagram', {
+        title: 'Instagram API',
+        usernames: searchByUsername,
+        userById: searchByUserId,
+        popularImages,
+        myRecentMedia
+      });
+    })
+    .catch(next);
 };
 
 /**
@@ -528,8 +539,8 @@ exports.getPayPal = (req, res, next) => {
 
   paypal.payment.create(paymentDetails, (err, payment) => {
     if (err) { return next(err); }
-    req.session.paymentId = payment.id;
-    const links = payment.links;
+    const { links, id } = payment;
+    req.session.paymentId = id;
     for (let i = 0; i < links.length; i++) {
       if (links[i].rel === 'approval_url') {
         res.render('api/paypal', {
@@ -545,7 +556,7 @@ exports.getPayPal = (req, res, next) => {
  * PayPal SDK example.
  */
 exports.getPayPalSuccess = (req, res) => {
-  const paymentId = req.session.paymentId;
+  const { paymentId } = req.session;
   const paymentDetails = { payer_id: req.query.PayerID };
   paypal.payment.execute(paymentId, paymentDetails, (err) => {
     res.render('api/paypal', {
@@ -649,6 +660,7 @@ exports.postPinterest = (req, res, next) => {
 
 exports.getGoogleMaps = (req, res) => {
   res.render('api/google-maps', {
-    title: 'Google Maps API'
+    title: 'Google Maps API',
+    google_map_api_key: process.env.GOOGLE_MAP_API_KEY
   });
 };

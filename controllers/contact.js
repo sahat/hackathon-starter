@@ -13,8 +13,11 @@ const transporter = nodemailer.createTransport({
  * Contact form page.
  */
 exports.getContact = (req, res) => {
+  const unknownUser = !(req.user);
+
   res.render('contact', {
-    title: 'Contact'
+    title: 'Contact',
+    unknownUser,
   });
 };
 
@@ -23,8 +26,12 @@ exports.getContact = (req, res) => {
  * Send a contact form via Nodemailer.
  */
 exports.postContact = (req, res) => {
-  req.assert('name', 'Name cannot be blank').notEmpty();
-  req.assert('email', 'Email is not valid').isEmail();
+  let fromName;
+  let fromEmail;
+  if (!req.user) {
+    req.assert('name', 'Name cannot be blank').notEmpty();
+    req.assert('email', 'Email is not valid').isEmail();
+  }
   req.assert('message', 'Message cannot be blank').notEmpty();
 
   const errors = req.validationErrors();
@@ -34,9 +41,17 @@ exports.postContact = (req, res) => {
     return res.redirect('/contact');
   }
 
+  if (!req.user) {
+    fromName = req.body.name;
+    fromEmail = req.body.email;
+  } else {
+    fromName = req.user.profile.name || '';
+    fromEmail = req.user.email;
+  }
+
   const mailOptions = {
     to: 'your@email.com',
-    from: `${req.body.name} <${req.body.email}>`,
+    from: `${fromName} <${fromEmail}>`,
     subject: 'Contact Form | Hackathon Starter',
     text: req.body.message
   };

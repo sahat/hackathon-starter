@@ -3,23 +3,23 @@ extends ../layout
 block content
   .page-header
     h2
-      i.fa.fa-tumblr-square
+      i.fab.fa-tumblr-square.fa-sm
       | Tumblr API
 
   .btn-group.btn-group-justified
     a.btn.btn-primary(href='http://www.tumblr.com/docs/en/api/v2#overview', target='_blank')
-      i.fa.fa-check-square-o
+      i.far.fa-check-square.fa-sm
       | Overview
     a.btn.btn-primary(href='https://api.tumblr.com/console', target='_blank')
-      i.fa.fa-laptop
+      i.fas.fa-laptop.fa-sm
       | API Console
     a.btn.btn-primary(href='http://www.tumblr.com/docs/en/api/v2#blog_methods', target='_blank')
-      i.fa.fa-code-fork
+      i.fas.fa-code-branch.fa-sm
       | API Endpoints
 
   h3.text-primary #{blog.name}'s blog
   .btn.btn-xs.btn-primary-outline
-    i.fa.fa-file-text-o
+    i.far.fa-file-alt.fa-sm
     | #{blog.posts} posts
   h4 Latest Photo Post
   for photo in photoset

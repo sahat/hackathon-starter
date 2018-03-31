@@ -2,18 +2,18 @@ extends ../layout
 
 block content
   h2
-    i.fa.fa-github
+    i.fab.fa-github.fa-sm
     | GitHub API
 
   .btn-group.btn-group-justified
     a.btn.btn-primary(href='http://developer.github.com/guides/getting-started/', target='_blank')
-      i.fa.fa-check-square-o
+      i.far.fa-check-square.fa-sm
       | Getting Started
     a.btn.btn-primary(href='https://apigee.com/console/github', target='_blank')
-      i.fa.fa-laptop
+      i.fas.fa-laptop.fa-sm
       | API Console
     a.btn.btn-primary(href='http://developer.github.com/v3/', target='_blank')
-      i.fa.fa-file-text-o
+      i.far.fa-file-alt.fa-sm
       | Documentation
   br
   .panel.panel-primary
@@ -25,19 +25,19 @@ block content
           img.img-rounded.img-responsive(src='https://github.global.ssl.fastly.net/images/modules/logos_page/Octocat.png')
         .col-xs-8
           h4
-            a(href='#{repo.html_url}') #{repo.name}
+            a(href=repo.html_url) #{repo.name}
           ul.list-inline
             li
-              i.fa.fa-eye-slash
+              i.far.fa-eye-slash.fa-sm
               | Subscribers: #{repo.subscribers_count}
             li
-              i.fa.fa-star
+              i.far.fa-star.fa-sm
               | Starred: #{repo.stargazers_count}
             li
-              i.fa.fa-code-fork
+              i.fas.fa-code-branch.fa-sm
               | Forks: #{repo.forks_count}
             li
-              i.fa.fa-code
+              i.fas.fa-code.fa-sm
               | #{repo.language}
           strong DESCRIPTION
           p= repo.description

@@ -3,18 +3,18 @@ extends ../layout
 block content
   .page-header
     h2
-      i.fa.fa-foursquare
+      i.fab.fa-foursquare.fa-sm
       | Foursquare API
   
   .btn-group.btn-group-justified
     a.btn.btn-primary(href='https://developer.foursquare.com/start', target='_blank')
-      i.fa.fa-check-square-o
+      i.far.fa-check-square.fa-sm
       | Getting Started
     a.btn.btn-primary(href='https://developer.foursquare.com/docs/explore', target='_blank')
-      i.fa.fa-laptop
+      i.fas.fa-laptop.fa-sm
       | API Console
     a.btn.btn-primary(href='https://developer.foursquare.com/docs/', target='_blank')
-      i.fa.fa-code-fork
+      i.fas.fa-code-branch.fa-sm  
       | API Endpoints
   h3.text-primary Trending Venues
   table.table.table-striped.table-bordered
@@ -34,7 +34,7 @@ block content
   br
   h3.text-primary Venue Detail
   p
-    img(src='#{venueDetail.venue.photos.groups[0].items[0].prefix}150x150#{venueDetail.venue.photos.groups[0].items[0].suffix}')
+    img(src=venueDetail.venue.photos.groups[0].items[0].prefix + '150x150' + venueDetail.venue.photos.groups[0].items[0].suffix)
 
   .label.label-primary #{venueDetail.venue.name} (#{venueDetail.venue.categories[0].shortName})
   .label.label-success #{venueDetail.venue.location.address}, #{venueDetail.venue.location.city}, #{venueDetail.venue.location.state}
