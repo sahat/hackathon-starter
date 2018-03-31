@@ -44,6 +44,7 @@
     "node-sass": "^4.7.2",
     "node-sass-middleware": "^0.11.0",
     "nodemailer": "^4.6.3",
+    "opentok": "^2.6.2",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-github": "^1.1.0",
