@@ -30,13 +30,17 @@ block content
         else
           strong.text-danger  Offline
 
-  h3 #{playerAchievemments.gameName} Achievements
-  ul.lead.list-unstyled
-    for achievement in playerAchievemments.achievements
-      if achievement.achieved
-        li.text-success= achievement.name
+  if playerStats
+    h3 #{playerStats.gameName} Achievements
+    ul.lead.list-unstyled
+      for achievement in playerStats.achievements
+        if achievement.achieved
+          li.text-success= achievement.name
+  else
+    span.lead No player achievements
 
   h3 Owned Games
-  each game in ownedGames
+  span.lead #{ownedGames.game_count} games
+  for game in ownedGames.games
     a(href='https://store.steampowered.com/app/' + game.appid)
       img.thumbnail(src='https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_logo_url + '.jpg' width=92)
