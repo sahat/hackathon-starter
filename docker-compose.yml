@@ -2,6 +2,14 @@ version: '3'
 services:
   mongo:
     image: mongo:3.6
+  mongoexpress:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    links:
+      - mongo
+    depends_on:
+      - mongo  
   web:
     build: .
     ports:
