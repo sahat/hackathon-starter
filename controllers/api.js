@@ -1,5 +1,5 @@
-const bluebird = require('bluebird');
-const request = bluebird.promisifyAll(require('request'), { multiArgs: true });
+const util = require('util');
+const request = require('request');
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
 const { LastFmNode } = require('lastfm');
@@ -12,8 +12,8 @@ const Linkedin = require('node-linkedin')(process.env.LINKEDIN_ID, process.env.L
 const clockwork = require('clockwork')({ key: process.env.CLOCKWORK_KEY });
 const paypal = require('paypal-rest-sdk');
 const lob = require('lob')(process.env.LOB_KEY);
-const ig = bluebird.promisifyAll(require('instagram-node').instagram());
-const foursquare = require('node-foursquare')({
+const ig = require('instagram-node').instagram();
+const { Venues, Users } = require('node-foursquare')({
   secrets: {
     clientId: process.env.FOURSQUARE_ID,
     clientSecret: process.env.FOURSQUARE_SECRET,
@@ -24,9 +24,6 @@ const foursquare = require('node-foursquare')({
     version: 20140806,
   }
 });
-
-foursquare.Venues = bluebird.promisifyAll(foursquare.Venues);
-foursquare.Users = bluebird.promisifyAll(foursquare.Users);
 
 /**
  * GET /api
@@ -42,22 +39,24 @@ exports.getApi = (req, res) => {
  * GET /api/foursquare
  * Foursquare API example.
  */
-exports.getFoursquare = (req, res, next) => {
+exports.getFoursquare = async (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'foursquare');
-  Promise.all([
-    foursquare.Venues.getTrendingAsync('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken),
-    foursquare.Venues.getVenueAsync('49da74aef964a5208b5e1fe3', token.accessToken),
-    foursquare.Users.getCheckinsAsync('self', null, token.accessToken)
-  ])
-    .then(([trendingVenues, venueDetail, userCheckins]) => {
-      res.render('api/foursquare', {
-        title: 'Foursquare API',
-        trendingVenues,
-        venueDetail,
-        userCheckins
-      });
-    })
-    .catch(next);
+  try {
+    const getTrendingAsync = util.promisify(Venues.getTrending);
+    const getVenueAsync = util.promisify(Venues.getVenue);
+    const getCheckinsAsync = util.promisify(Users.getCheckins);
+    const trendingVenues = await getTrendingAsync('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken);
+    const venueDetail = await getVenueAsync('49da74aef964a5208b5e1fe3', token.accessToken);
+    const userCheckins = await getCheckinsAsync('self', null, token.accessToken);
+    return res.render('api/foursquare', {
+      title: 'Foursquare API',
+      trendingVenues,
+      venueDetail,
+      userCheckins
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 /**
@@ -287,18 +286,20 @@ exports.postTwitter = (req, res, next) => {
 exports.getSteam = (req, res, next) => {
   const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
+  const getAsync = util.promisify(request.get);
+
+  // get the list of the recently played games, pick the most recent one and get its achievements
   const playerAchievements = () =>
-    // get the list of the recently played games, pick the most recent one and get its achievements
-    request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
-      .then(([req, body]) => {
-        if (req.statusCode === 401) {
+    getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
+      .then(({ request, body }) => {
+        if (request.statusCode === 401) {
           throw new Error('Invalid Steam API Key');
         }
         if (body.response.total_count > 0) {
           params.appid = body.response.games[0].appid;
-          return request.getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
-            .then(([req, body]) => {
-              if (req.statusCode === 401) {
+          return getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
+            .then(({ request, body }) => {
+              if (request.statusCode === 401) {
                 throw new Error('Invalid Steam API Key');
               }
               return body;
@@ -307,8 +308,8 @@ exports.getSteam = (req, res, next) => {
       });
   const playerSummaries = () => {
     params.steamids = steamId;
-    return request.getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
-      .then(([request, body]) => {
+    return getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
+      .then(({ request, body }) => {
         if (request.statusCode === 401) {
           throw Error('Missing or Invalid Steam API Key');
         }
@@ -318,8 +319,8 @@ exports.getSteam = (req, res, next) => {
   const ownedGames = () => {
     params.include_appinfo = 1;
     params.include_played_free_games = 1;
-    return request.getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true })
-      .then(([request, body]) => {
+    return getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true })
+      .then(({ request, body }) => {
         if (request.statusCode === 401) {
           throw new Error('Missing or Invalid Steam API Key');
         }
@@ -458,26 +459,29 @@ exports.getLinkedin = (req, res, next) => {
  * GET /api/instagram
  * Instagram API example.
  */
-exports.getInstagram = (req, res, next) => {
+exports.getInstagram = async (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'instagram');
   ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
   ig.use({ access_token: token.accessToken });
-  Promise.all([
-    ig.user_searchAsync('richellemead'),
-    ig.userAsync('175948269'),
-    ig.media_popularAsync(),
-    ig.user_self_media_recentAsync()
-  ])
-    .then(([searchByUsername, searchByUserId, popularImages, myRecentMedia]) => {
-      res.render('api/instagram', {
-        title: 'Instagram API',
-        usernames: searchByUsername,
-        userById: searchByUserId,
-        popularImages,
-        myRecentMedia
-      });
-    })
-    .catch(next);
+  try {
+    const userSearchAsync = util.promisify(ig.user_search);
+    const userAsync = util.promisify(ig.user);
+    const mediaPopularAsync = util.promisify(ig.media_popular);
+    const userSelfMediaRecentAsync = util.promisify(ig.user_self_media_recent);
+    const searchByUsername = await userSearchAsync('richellemead');
+    const searchByUserId = await userAsync('175948269');
+    const popularImages = await mediaPopularAsync();
+    const myRecentMedia = await userSelfMediaRecentAsync();
+    return res.render('api/instagram', {
+      title: 'Instagram API',
+      usernames: searchByUsername,
+      userById: searchByUserId,
+      popularImages,
+      myRecentMedia
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
 /**
