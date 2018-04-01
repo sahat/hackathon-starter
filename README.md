@@ -360,6 +360,7 @@ List of Packages
 | Package                         | Description                                                           |
 | ------------------------------- | --------------------------------------------------------------------- |
 | @octokit/rest                   | GitHub API library.                                                   |
+| axios                           | Promise based HTTP client for the browser and node.js                 |
 | bcrypt-nodejs                   | Library for hashing and salting user passwords.                       |
 | body-parser                     | Express 4 middleware.                                                 |
 | chai                            | BDD/TDD assertion library.                                            |
@@ -398,7 +399,6 @@ List of Packages
 | passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.    |
 | paypal-rest-sdk                 | PayPal APIs library.                                                  |
 | pug (jade)                      | Template engine for Express.                                          |
-| request                         | Simplified HTTP request library.                                      |
 | serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
 | stripe                          | Offical Stripe API library.                                           |
 | supertest                       | HTTP assertion library.                                               |
