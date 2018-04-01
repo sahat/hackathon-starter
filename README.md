@@ -1,5 +1,5 @@
 ![](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg)
-Hackathon Starter 
+Hackathon Starter
 =======================
 
 [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](https://travis-ci.org/sahat/hackathon-starter.svg?branch=master)](https://travis-ci.org/sahat/hackathon-starter) [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -88,27 +88,27 @@ Features
 - Bootstrap 3 + Extra Themes
 - Contact Form (powered by Mailgun, Sendgrid or Mandrill)
 - **Account Management**
- - Gravatar
- - Profile Details
- - Change Password
- - Forgot Password
- - Reset Password
- - Link multiple OAuth strategies to one account
- - Delete Account
+- Gravatar
+- Profile Details
+- Change Password
+- Forgot Password
+- Reset Password
+- Link multiple OAuth strategies to one account
+- Delete Account
 - CSRF protection
 - **API Examples**: Facebook, Foursquare, Last.fm, Tumblr, Twitter, Stripe, LinkedIn and more.
 
 Prerequisites
 -------------
 
-- [MongoDB](https://www.mongodb.org/downloads)
-- [Node.js 6.0+](http://nodejs.org)
+- [Docker](https://www.docker.com/)
+- [Node.js 8.0+](http://nodejs.org)
 - Command Line Tools
- - <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
- - <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">&nbsp;**Windows:** [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
- - <img src="https://lh5.googleusercontent.com/-2YS1ceHWyys/AAAAAAAAAAI/AAAAAAAAAAc/0LCb_tsTvmU/s46-c-k/photo.jpg" height="17">&nbsp;**Ubuntu** / <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Logo_Linux_Mint.png" height="17">&nbsp;**Linux Mint:** `sudo apt-get install build-essential`
- - <img src="http://i1-news.softpedia-static.com/images/extra/LINUX/small/slw218news1.png" height="17">&nbsp;**Fedora**: `sudo dnf groupinstall "Development Tools"`
- - <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE:** `sudo zypper install --type pattern devel_basis`
+- <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
+- <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">&nbsp;**Windows:** [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
+- <img src="https://lh5.googleusercontent.com/-2YS1ceHWyys/AAAAAAAAAAI/AAAAAAAAAAc/0LCb_tsTvmU/s46-c-k/photo.jpg" height="17">&nbsp;**Ubuntu** / <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Logo_Linux_Mint.png" height="17">&nbsp;**Linux Mint:** `sudo apt-get install build-essential`
+- <img src="http://i1-news.softpedia-static.com/images/extra/LINUX/small/slw218news1.png" height="17">&nbsp;**Fedora**: `sudo dnf groupinstall "Development Tools"`
+- <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE:** `sudo zypper install --type pattern devel_basis`
 
 **Note:** If you are new to Node or Express, I recommend to watch
 [Node.js and Express 101](https://www.youtube.com/watch?v=BN0JlMZCtNU)
@@ -129,6 +129,9 @@ cd myproject
 
 # Install NPM dependencies
 npm install
+
+# Launch docker in background
+docker-compose up -d
 
 # Then simply start your app
 node app.js
@@ -343,8 +346,14 @@ Project Structure
 | **views/partials**/footer.pug      | Footer partial template.                                     |
 | **views**/layout.pug               | Base template.                                               |
 | **views**/home.pug                 | Home page template.                                          |
+| .dockerignore                      | Folder and files ignored by docker usage.                    |
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
+| .eslintrc                          | Rules for eslint linter.                                     |
+| .gitignore                         | Folder and files ignored by git.                             |
+| .travis.yml                        | Configuration files for continue integration.                |
 | app.js                             | The main application file.                                   |
+| docker-compose.yml                 | Docker compose configuration file.                           |
+| Dockerfile                         | Docker configuration file.                                   |
 | package.json                       | NPM dependencies.                                            |
 | package-lock.json                  | Contains exact versions of NPM dependencies in package.json. |
 
@@ -357,58 +366,68 @@ Just don't forget to update `extends ../layout`  and corresponding
 List of Packages
 ----------------
 
-| Package                         | Description                                                           |
-| ------------------------------- | --------------------------------------------------------------------- |
-| @octokit/rest                   | GitHub API library.                                                   |
-| axios                           | Promise based HTTP client for the browser and node.js                 |
-| bcrypt-nodejs                   | Library for hashing and salting user passwords.                       |
-| body-parser                     | Express 4 middleware.                                                 |
-| chai                            | BDD/TDD assertion library.                                            |
-| cheerio                         | Scrape web pages using jQuery-style syntax.                           |
-| clockwork                       | Clockwork SMS API library.                                            |
-| compression                     | Express 4 middleware.                                                 |
-| connect-mongo                   | MongoDB session store for Express.                                    |
-| dotenv                          | Loads environment variables from .env file.                           |
-| errorhandler                    | Express 4 middleware.                                                 |
-| express                         | Node.js web framework.                                                |
-| express-session                 | Express 4 middleware.                                                 |
-| express-flash                   | Provides flash messages for Express.                                  |
-| express-status-monitor          | Reports real-time server metrics for Express.                         |
-| express-validator               | Easy form validation for Express.                                     |
-| fbgraph                         | Facebook Graph API library.                                           |
-| instagram-node                  | Instagram API library.                                                |
-| lastfm                          | Last.fm API library.                                                  |
-| lob                             | Lob API library                                                       |
-| lodash                          | Handy JavaScript utlities library.                                    |
-| lusca                           | CSRF middleware.                                                      |
-| mocha                           | Test framework.                                                       |
-| mongoose                        | MongoDB ODM.                                                          |
-| morgan                          | Express 4 middleware.                                                 |
-| node-foursquare                 | Foursquare API library.                                               |
-| node-linkedin                   | LinkedIn API library.                                                 |
-| node-sass-middleware            | Sass middleware compiler.                                                 |
-| nodemailer                      | Node.js library for sending emails.                                   |
-| passport                        | Simple and elegant authentication library for node.js                 |
-| passport-facebook               | Sign-in with Facebook plugin.                                         |
-| passport-github                 | Sign-in with GitHub plugin.                                           |
-| passport-google-oauth           | Sign-in with Google plugin.                                           |
-| passport-twitter                | Sign-in with Twitter plugin.                                          |
-| passport-instagram              | Sign-in with Instagram plugin.                                        |
-| passport-local                  | Sign-in with Username and Password plugin.                            |
-| passport-linkedin-oauth2        | Sign-in with LinkedIn plugin.                                         |
-| passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.    |
-| paypal-rest-sdk                 | PayPal APIs library.                                                  |
-| pug (jade)                      | Template engine for Express.                                          |
-| serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
-| stripe                          | Offical Stripe API library.                                           |
-| supertest                       | HTTP assertion library.                                               |
-| tumblr.js                       | Tumblr API library.                                                   |
-| twilio                          | Twilio API library.                                                   |
-| twit                            | Twitter API library.                                                  |
-| validator                       | Used in conjunction with express-validator in **controllers/api.js**. |
+| Package                         | Description                                                             |
+| ------------------------------- | ------------------------------------------------------------------------|
+| @octokit/rest                   | GitHub API library.                                                     |
+| axios                           | Promise based HTTP client for the browser and node.js                   |
+| bcrypt-nodejs                   | Library for hashing and salting user passwords.                         |
+| body-parser                     | Node.js body parsing middleware.                                        |
+| chai                            | BDD/TDD assertion library.                                              |
+| chalk                           | Terminal string styling done right.                                     |
+| cheerio                         | Scrape web pages using jQuery-style syntax.                             |
+| clockwork                       | Clockwork SMS API library.                                              |
+| compression                     | Node.js compression middleware.                                         |
+| connect-mongo                   | MongoDB session store for Express.                                      |
+| dotenv                          | Loads environment variables from .env file.                             |
+| errorhandler                    | Development-only error handler middleware.                              |
+| eslint                          | Linter JavaScript.                                                      |
+| eslint-config-airbnb-base       | Configuration eslint by airbnb.                                         |
+| eslint-plugin-chai-friendly     | Makes eslint friendly towards Chai.js 'expect' and 'should' statements. |
+| eslint-plugin-import            | ESLint plugin with rules that help validate proper imports.             |
+| express                         | Node.js web framework.                                                  |
+| express-flash                   | Provides flash messages for Express.                                    |
+| express-session                 | Simple session middleware for Express.                                  |
+| express-status-monitor          | Reports real-time server metrics for Express.                           |
+| express-validator               | Easy form validation for Express.                                       |
+| fbgraph                         | Facebook Graph API library.                                             |
+| instagram-node                  | Instagram API library.                                                  |
+| lastfm                          | Last.fm API library.                                                    |
+| lob                             | Lob API library.                                                        |
+| lusca                           | CSRF middleware.                                                        |
+| mocha                           | Test framework.                                                         |
+| mongoose                        | MongoDB ODM.                                                            |
+| morgan                          | HTTP request logger middleware for node.js.                             |
+| multer                          | Node.js middleware for handling `multipart/form-data`.                  |
+| node-foursquare                 | Foursquare API library.                                                 |
+| node-linkedin                   | LinkedIn API library.                                                   |
+| node-sass                       | Node.js bindings to libsass.                                            |
+| node-sass-middleware            | Sass middleware compiler.                                               |
+| nyc                             | Coverage test.                                                          |
+| nodemailer                      | Node.js library for sending emails.                                     |
+| passport                        | Simple and elegant authentication library for node.js.                  |
+| passport-facebook               | Sign-in with Facebook plugin.                                           |
+| passport-github                 | Sign-in with GitHub plugin.                                             |
+| passport-google-oauth           | Sign-in with Google plugin.                                             |
+| passport-instagram              | Sign-in with Instagram plugin.                                          |
+| passport-linkedin-oauth2        | Sign-in with LinkedIn plugin.                                           |
+| passport-local                  | Sign-in with Username and Password plugin.                              |
+| passport-openid                 | Sign-in with OpenId plugin.                                             |
+| passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.      |
+| passport-twitter                | Sign-in with Twitter plugin.                                            |
+| paypal-rest-sdk                 | PayPal APIs library.                                                    |
+| pug (jade)                      | Template engine for Express.                                            |
+| sinon                           | Test spies, stubs and mocks for JavaScript.                             |
+| sinon-mongoose                  | Extend Sinon stubs for Mongoose methods to test chained methods easily. |
+| stripe                          | Offical Stripe API library.                                             |
+| supertest                       | HTTP assertion library.                                                 |
+| tumblr.js                       | Tumblr API library.                                                     |
+| twilio                          | Twilio API library.                                                     |
+| twit                            | Twitter API library.                                                    |
+| validator                       | Used in conjunction with express-validator in **controllers/api.js**.   |
 
 Useful Tools and Resources
 --------------------------
+
 - [JavaScripting](http://www.javascripting.com/) - The Database of JavaScript Libraries
 - [JS Recipes](http://sahatyalkabov.com/jsrecipes/) - JavaScript tutorials for backend and frontend development.
 - [Jade Syntax Documentation by Example](http://naltatis.github.io/jade-syntax-docs/#attributes) - Even better than official Jade docs.
@@ -418,6 +437,7 @@ Useful Tools and Resources
 
 Recommended Design Resources
 ----------------------------
+
 - [Code Guide](http://codeguide.co/) - Standards for developing flexible, durable, and sustainable HTML and CSS.
 - [Bootsnipp](http://bootsnipp.com/) - Code snippets for Bootstrap.
 - [UIBox](http://www.uibox.in) - Curated HTML, CSS, JS, UI components.
@@ -430,7 +450,6 @@ Recommended Design Resources
 - [Medium Scroll Effect](http://codepen.io/andreasstorm/pen/pyjEh) - Fade in/out header background image as you scroll.
 - [GeoPattern](https://github.com/btmills/geopattern) - SVG background pattern generator.
 - [Trianglify](https://github.com/qrohlf/trianglify) - SVG low-poly background pattern generator.
-
 
 Recommended Node.js Libraries
 -----------------------------
