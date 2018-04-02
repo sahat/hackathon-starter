@@ -1,7 +1,10 @@
 /**
  * Module dependencies.
  */
+const fs = require('fs');
 const express = require('express');
+const http = require('http');
+const https = require('https');
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -225,8 +228,22 @@ app.use(errorHandler());
 /**
  * Start Express server.
  */
-app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
+let server;
+let url;
+if (process.argv.includes('HTTPS')) {
+  const options = {
+    key: fs.readFileSync('host.key'),
+    cert: fs.readFileSync('host.crt')
+  };
+  url = `https://localhost:${app.get('port')} (SSL support)`;
+  server = https.createServer(options, app);
+} else {
+  url = `http://localhost:${app.get('port')}`;
+  server = http.createServer(app);
+}
+
+server.listen(app.get('port'), () => {
+  console.log(`${chalk.green('✓')} App is running at ${url} in ${app.get('env')} mode`);
   console.log('  Press CTRL-C to stop\n');
 });
 

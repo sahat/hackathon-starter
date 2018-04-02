@@ -130,6 +130,9 @@ npm install
 
 # Then simply start your app
 node app.js
+
+# Fort start you app on https
+node app.js HTTPS
 ```
 
 **Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon).
