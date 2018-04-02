@@ -16,7 +16,6 @@ html {
 }
 
 body {
-  padding-top: 60px;
   margin-bottom: 75px;
 }
 
@@ -41,6 +40,10 @@ textarea {
 
 // Navbar
 // -------------------------
+
+.navbar-default {
+  margin-bottom: 25px; 
+}
 
 .navbar-nav img {
   width: 30px;
