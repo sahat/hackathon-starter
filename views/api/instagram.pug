@@ -30,7 +30,7 @@ block content
       for user in usernames
         tr
           td
-            img(src='#{user.profile_picture}', width='75', height='75')
+            img(src=user.profile_picture, width='75', height='75')
           td= user.username
           td= user.full_name
           td= user.bio
@@ -39,25 +39,12 @@ block content
   p.lead User Search for ID
     strong  175948269
 
-
   .media
-    a.pull-left(href='http://instagram.com/#{userById.username}')
-      img.thumbnail(src='#{userById.profile_picture}', width='110', height='110')
+    a.pull-left(href='http://instagram.com/' + userById.username)
+      img.thumbnail(src=userById.profile_picture, width='110', height='110')
     .media-body
       h4= userById.full_name
       p= userById.bio
-
-  hr
-  p.lead
-    strong Popular Images
-    |  on Instagram
-  .row
-    for image in popularImages
-      .col-xs-3
-        a.thumbnail(href='#{image.link}')
-          img(src='#{image.images.standard_resolution.url}', height='320px')
-
-
 
   hr
   p.lead
@@ -66,5 +53,5 @@ block content
   .row
     for image in myRecentMedia
       .col-xs-3
-        a.thumbnail(href='#{image.link}')
-          img(src='#{image.images.standard_resolution.url}', height='320px')
+        a.thumbnail(href=image.link)
+          img(src=image.images.standard_resolution.url, height='320px')

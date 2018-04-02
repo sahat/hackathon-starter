@@ -327,6 +327,7 @@ exports.getSteam = async (req, res, next) => {
   const getOwnedGames = async () => {
     params.include_appinfo = 1;
     params.include_played_free_games = 1;
+
     const { status, data } = await axios({
       url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/',
       params
@@ -478,7 +479,6 @@ exports.getInstagram = async (req, res, next) => {
   try {
     const userSearchAsync = util.promisify(instagram.user_search);
     const userAsync = util.promisify(instagram.user);
-    const mediaPopularAsync = util.promisify(instagram.media_popular);
     const userSelfMediaRecentAsync = util.promisify(instagram.user_self_media_recent);
     const searchByUsername = await userSearchAsync('richellemead');
     const searchByUserId = await userAsync('175948269');
@@ -488,7 +488,7 @@ exports.getInstagram = async (req, res, next) => {
       title: 'Instagram API',
       usernames: searchByUsername,
       userById: searchByUserId,
-      popularImages,
+      popularImages: [],
       myRecentMedia
     });
   } catch (error) {

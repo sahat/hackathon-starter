@@ -332,7 +332,7 @@ exports.postForgot = async (req, res, next) => {
     req.flash('errors', errors);
     return res.redirect('/forgot');
   }
-
+  
   const setRandomToken = async (token) => {
     let user = await User.findOne({ email: req.body.email });
     if (!user) {

@@ -6,9 +6,7 @@ Hackathon Starter
 
 **Live Demo**: https://hackathon-starter-2018.herokuapp.com
 
-Jump to [What's new in 4.4.0?](#changelog)
-
-:bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5).
+Jump to [What's new in 5.0.0?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -101,14 +99,14 @@ Features
 Prerequisites
 -------------
 
-- [Docker](https://www.docker.com/)
+- [MongoDB](https://www.mongodb.org/downloads)
 - [Node.js 8.0+](http://nodejs.org)
 - Command Line Tools
-- <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
-- <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">&nbsp;**Windows:** [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
-- <img src="https://lh5.googleusercontent.com/-2YS1ceHWyys/AAAAAAAAAAI/AAAAAAAAAAc/0LCb_tsTvmU/s46-c-k/photo.jpg" height="17">&nbsp;**Ubuntu** / <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Logo_Linux_Mint.png" height="17">&nbsp;**Linux Mint:** `sudo apt-get install build-essential`
-- <img src="http://i1-news.softpedia-static.com/images/extra/LINUX/small/slw218news1.png" height="17">&nbsp;**Fedora**: `sudo dnf groupinstall "Development Tools"`
-- <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE:** `sudo zypper install --type pattern devel_basis`
+ - <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
+ - <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">&nbsp;**Windows:** [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs) OR [Visaul Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+ - <img src="https://lh5.googleusercontent.com/-2YS1ceHWyys/AAAAAAAAAAI/AAAAAAAAAAc/0LCb_tsTvmU/s46-c-k/photo.jpg" height="17">&nbsp;**Ubuntu** / <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Logo_Linux_Mint.png" height="17">&nbsp;**Linux Mint:** `sudo apt-get install build-essential`
+ - <img src="http://i1-news.softpedia-static.com/images/extra/LINUX/small/slw218news1.png" height="17">&nbsp;**Fedora**: `sudo dnf groupinstall "Development Tools"`
+ - <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE:** `sudo zypper install --type pattern devel_basis`
 
 **Note:** If you are new to Node or Express, I recommend to watch
 [Node.js and Express 101](https://www.youtube.com/watch?v=BN0JlMZCtNU)
@@ -369,7 +367,6 @@ List of Packages
 | Package                         | Description                                                             |
 | ------------------------------- | ------------------------------------------------------------------------|
 | @octokit/rest                   | GitHub API library.                                                     |
-| axios                           | Promise based HTTP client for the browser and node.js                   |
 | bcrypt-nodejs                   | Library for hashing and salting user passwords.                         |
 | body-parser                     | Node.js body parsing middleware.                                        |
 | chai                            | BDD/TDD assertion library.                                              |
@@ -416,6 +413,7 @@ List of Packages
 | passport-twitter                | Sign-in with Twitter plugin.                                            |
 | paypal-rest-sdk                 | PayPal APIs library.                                                    |
 | pug (jade)                      | Template engine for Express.                                            |
+| request                         | Simplified HTTP request library.                                        |
 | sinon                           | Test spies, stubs and mocks for JavaScript.                             |
 | sinon-mongoose                  | Extend Sinon stubs for Mongoose methods to test chained methods easily. |
 | stripe                          | Offical Stripe API library.                                             |
@@ -1272,6 +1270,7 @@ listed below.
 **Note:** As an alternative to mLab, there is also [Compose](https://www.compose.io/).
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
+**NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you the new process, please feel free to help us update this page*
 
 - First, install this Ruby gem: `sudo gem install rhc` :gem:
 - Run `rhc login` and enter your OpenShift credentials
@@ -1308,7 +1307,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 - And you are done!
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
-
+**NOTE** *Beyound the initial 12 month trial of Azure, the platform does not seem to offer a free tier for hosting NodeJS apps.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
 - Login to [Windows Azure Management Portal](https://manage.windowsazure.com/)
 - Click the **+ NEW** button on the bottom left of the portal
 - Click **COMPUTE**, then **WEB APP**, then **QUICK CREATE**
@@ -1328,6 +1327,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 
 # IBM Bluemix Cloud Platform
+**NOTE** *At this point it appears that Bluemix's free tier to host NodeJS apps is limited to 30 days.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
 
 1. Create a Bluemix Account
 
@@ -1444,6 +1444,21 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 Changelog
 ---------
+
+### 5.0.0 (April 1, 2018)
+- NodeJS 8.0+ is now required
+- Removed dependency on Bluebird in favor of native NodeJS promisify support
+- Font awesome 5 Upgrade
+- Fix console warning about Foursquare API version
+- Added environment configs to eslint configs and cleaned up code (Thanks to @nacimgoura)
+- Fixed eslint rules to better match the project
+- Fixed Instagram API example view (@nacimgoura)
+- Adding additional code editor related files to .gitignore (@nacimgoura)
+- Upgraded syntax at various places to use ES6 syntax (Thanks to @nacimgoura)
+- Re-added travis-ci.yml (Thanks to @nacimgoura)
+- Fixed bug in Steam API when the user had no achievements (Thanks to @nacimgoura)
+- Readme and documentation improvements
+- Dependency updates
 
 ### 4.4.0 (March 23, 2018)
 - Added Docker support (Thanks to @gregorysobotka, @praveenweb, @ryanhanwu).  The initial integration has also been upgraded to use NodeJS 8 and Mongo 3.6.
