@@ -17,7 +17,8 @@ block content
       | API Endpoints
 
   h3= artist.name
-  img.thumbnail(src='' + artist.image)
+  if artist.image
+    img.thumbnail(src='' + artist.image)
 
   h3 Tags
   for tag in artist.tags
@@ -27,7 +28,10 @@ block content
     |&nbsp;
 
   h3 Biography
-  p!= artist.bio
+  if artist.bio
+    p!= artist.bio
+  else 
+    p No biography
 
   h3 Top Albums
   for album in artist.topAlbums

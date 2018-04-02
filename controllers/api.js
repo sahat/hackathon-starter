@@ -167,12 +167,12 @@ exports.getNewYorkTimes = (req, res, next) => {
  * GET /api/lastfm
  * Last.fm API example.
  */
-exports.getLastfm = (req, res, next) => {
+exports.getLastfm = async (req, res, next) => {
   const lastfm = new LastFmNode({
     api_key: process.env.LASTFM_KEY,
     secret: process.env.LASTFM_SECRET
   });
-  const artistInfo = () =>
+  const getArtistInfo = () =>
     new Promise((resolve, reject) => {
       lastfm.request('artist.getInfo', {
         artist: 'Roniit',
@@ -182,7 +182,7 @@ exports.getLastfm = (req, res, next) => {
         }
       });
     });
-  const artistTopTracks = () =>
+  const getArtistTopTracks = () =>
     new Promise((resolve, reject) => {
       lastfm.request('artist.getTopTracks', {
         artist: 'Roniit',
@@ -194,7 +194,7 @@ exports.getLastfm = (req, res, next) => {
         }
       });
     });
-  const artistTopAlbums = () =>
+  const getArtistTopAlbums = () =>
     new Promise((resolve, reject) => {
       lastfm.request('artist.getTopAlbums', {
         artist: 'Roniit',
@@ -206,28 +206,27 @@ exports.getLastfm = (req, res, next) => {
         }
       });
     });
-  Promise.all([
-    artistInfo(),
-    artistTopTracks(),
-    artistTopAlbums()
-  ])
-    .then(([artistInfo, artistTopTracks, artistTopAlbums]) => {
-      const artist = {
-        name: artistInfo.artist.name,
-        image: artistInfo.artist.image.slice(-1)[0]['#text'],
-        tags: artistInfo.artist.tags.tag,
-        bio: artistInfo.artist.bio.summary,
-        stats: artistInfo.artist.stats,
-        similar: artistInfo.artist.similar.artist,
-        topAlbums: artistTopAlbums,
-        topTracks: artistTopTracks
-      };
-      res.render('api/lastfm', {
-        title: 'Last.fm API',
-        artist
-      });
-    })
-    .catch(next);
+  try {
+    const { artist: artistInfo } = await getArtistInfo();
+    const topTracks = await getArtistTopTracks();
+    const topAlbums = await getArtistTopAlbums();
+    const artist = {
+      name: artistInfo.name,
+      image: artistInfo.image ? artistInfo.image.slice(-1)[0]['#text'] : null,
+      tags: artistInfo.tags ? artistInfo.tags.tag : [],
+      bio: artistInfo.bio ? artistInfo.bio.summary : '',
+      stats: artistInfo.stats,
+      similar: artistInfo.similar ? artistInfo.similar.artist : [],
+      topTracks,
+      topAlbums
+    };
+    return res.render('api/lastfm', {
+      title: 'Last.fm API',
+      artist
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 /**
