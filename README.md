@@ -6,9 +6,7 @@ Hackathon Starter
 
 **Live Demo**: https://hackathon-starter-2018.herokuapp.com
 
-Jump to [What's new in 4.4.0?](#changelog)
-
-:bulb: Looking for ES5 code? [Click here](https://github.com/sahat/hackathon-starter/tree/es5).
+Jump to [What's new in 5.0.0?](#changelog)
 
 A boilerplate for **Node.js** web applications.
 
@@ -1440,6 +1438,21 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 Changelog
 ---------
+
+### 5.0.0 (April 1, 2018)
+- NodeJS 8.0+ is now required
+- Removed dependency on Bluebird in favor of native NodeJS promisify support
+- Font awesome 5 Upgrade
+- Fix console warning about Foursquare API version
+- Added environment configs to eslint configs and cleaned up code (Thanks to @nacimgoura)
+- Fixed eslint rules to better match the project
+- Fixed Instagram API example view (@nacimgoura)
+- Adding additional code editor related files to .gitignore (@nacimgoura)
+- Upgraded syntax at various places to use ES6 syntax (thThanksanks to @nacimgoura)
+- Re-added travis-ci.yml (Thanks to @nacimgoura)
+- Fixed bug in Steam API when the user had no achievements (Thanks to @nacimgoura)
+- Readme and documentation improvements
+- Dependency updates
 
 ### 4.4.0 (March 23, 2018)
 - Added Docker support (Thanks to @gregorysobotka, @praveenweb, @ryanhanwu).  The initial integration has also been upgraded to use NodeJS 8 and Mongo 3.6.
