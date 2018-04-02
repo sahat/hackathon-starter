@@ -1,13 +1,13 @@
 const passport = require('passport');
 const request = require('request');
-const InstagramStrategy = require('passport-instagram').Strategy;
-const LocalStrategy = require('passport-local').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
-const TwitterStrategy = require('passport-twitter').Strategy;
-const GitHubStrategy = require('passport-github').Strategy;
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
-const OpenIDStrategy = require('passport-openid').Strategy;
+const { Strategy: InstagramStrategy } = require('passport-instagram');
+const { Strategy: LocalStrategy } = require('passport-local');
+const { Strategy: FacebookStrategy } = require('passport-facebook');
+const { Strategy: TwitterStrategy } = require('passport-twitter');
+const { Strategy: GitHubStrategy } = require('passport-github');
+const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
+const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
+const { Strategy: OpenIDStrategy } = require('passport-openid');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
 
