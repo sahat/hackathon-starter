@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@octokit/rest": "^15.2.6",
+    "axios": "^0.18.0",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.2",
     "chalk": "^2.3.2",
@@ -55,15 +56,11 @@
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.8.1",
     "pug": "^2.0.3",
-    "request": "^2.85.0",
     "stripe": "^5.6.1",
     "tumblr.js": "^1.1.1",
     "twilio": "^3.14.0",
     "twit": "^2.2.9",
     "validator": "^9.4.1"
-  },
-  "peerDependencies": {
-    "node-sass": "^4.7.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",
