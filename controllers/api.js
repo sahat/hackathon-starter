@@ -466,17 +466,14 @@ exports.getInstagram = async (req, res, next) => {
   try {
     const userSearchAsync = util.promisify(ig.user_search);
     const userAsync = util.promisify(ig.user);
-    const mediaPopularAsync = util.promisify(ig.media_popular);
     const userSelfMediaRecentAsync = util.promisify(ig.user_self_media_recent);
     const searchByUsername = await userSearchAsync('richellemead');
     const searchByUserId = await userAsync('175948269');
-    const popularImages = await mediaPopularAsync();
     const myRecentMedia = await userSelfMediaRecentAsync();
     return res.render('api/instagram', {
       title: 'Instagram API',
       usernames: searchByUsername,
       userById: searchByUserId,
-      popularImages,
       myRecentMedia
     });
   } catch (error) {
