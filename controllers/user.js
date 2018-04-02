@@ -1,8 +1,10 @@
-const bluebird = require('bluebird');
-const crypto = bluebird.promisifyAll(require('crypto'));
+const { promisify } = require('util');
+const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
+
+const randomBytesAsync = promisify(crypto.randomBytes);
 
 /**
  * GET /login
@@ -329,8 +331,7 @@ exports.postForgot = (req, res, next) => {
     return res.redirect('/forgot');
   }
 
-  const createRandomToken = crypto
-    .randomBytesAsync(16)
+  const createRandomToken = randomBytesAsync(16)
     .then(buf => buf.toString('hex'));
 
   const setRandomToken = token =>

@@ -17,7 +17,6 @@
   "dependencies": {
     "@octokit/rest": "^15.2.5",
     "bcrypt-nodejs": "^0.0.3",
-    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "chalk": "^2.3.2",
     "cheerio": "^1.0.0-rc.2",
