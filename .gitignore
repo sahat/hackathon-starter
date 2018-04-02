@@ -18,6 +18,7 @@ tmp
 
 #Build
 public/css/main.css
+public/js/lib/bootstrap.min*
 .nyc_output/*
 
 # API keys and secrets
