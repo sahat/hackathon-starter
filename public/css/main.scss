@@ -1,8 +1,7 @@
 @import "themes/default/variables";
 
-@import "lib/bootstrap/bootstrap";
-@import "lib/font-awesome/fontawesome";
-@import "lib/font-awesome/fa-brands";
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/@ladjs/bootstrap-social/bootstrap-social.scss";
 @import "lib/font-awesome/fa-regular";
 @import "lib/font-awesome/fa-solid";
 

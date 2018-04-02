@@ -9,15 +9,17 @@
   "author": "Sahat Yalkabov",
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm rebuild node-sass",
+    "postinstall": "cp node_modules/bootstrap/dist/js/bootstrap.min.* public/js/lib && npm rebuild node-sass",
     "start": "node app.js",
     "test": "nyc mocha --timeout=3000 --exit",
     "lint": "eslint **/*.js"
   },
   "dependencies": {
+    "@ladjs/bootstrap-social": "^7.0.2",
     "@octokit/rest": "^15.2.6",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.2",
+    "bootstrap": "^4.0.0",
     "chalk": "^2.3.2",
     "cheerio": "^1.0.0-rc.2",
     "clockwork": "^0.1.4",
