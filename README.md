@@ -1266,6 +1266,7 @@ listed below.
 **Note:** As an alternative to mLab, there is also [Compose](https://www.compose.io/).
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
+**NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you the new process, please feel free to help us update this page*
 
 - First, install this Ruby gem: `sudo gem install rhc` :gem:
 - Run `rhc login` and enter your OpenShift credentials
@@ -1302,7 +1303,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 - And you are done!
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
-
+**NOTE** *Beyound the initial 12 month trial of Azure, the platform does not seem to offer a free tier for hosting NodeJS apps.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
 - Login to [Windows Azure Management Portal](https://manage.windowsazure.com/)
 - Click the **+ NEW** button on the bottom left of the portal
 - Click **COMPUTE**, then **WEB APP**, then **QUICK CREATE**
@@ -1322,6 +1323,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 
 # IBM Bluemix Cloud Platform
+**NOTE** *At this point it appears that Bluemix's free tier to host NodeJS apps is limited to 30 days.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
 
 1. Create a Bluemix Account
 
@@ -1448,7 +1450,7 @@ Changelog
 - Fixed eslint rules to better match the project
 - Fixed Instagram API example view (@nacimgoura)
 - Adding additional code editor related files to .gitignore (@nacimgoura)
-- Upgraded syntax at various places to use ES6 syntax (thThanksanks to @nacimgoura)
+- Upgraded syntax at various places to use ES6 syntax (Thanks to @nacimgoura)
 - Re-added travis-ci.yml (Thanks to @nacimgoura)
 - Fixed bug in Steam API when the user had no achievements (Thanks to @nacimgoura)
 - Readme and documentation improvements
