@@ -334,7 +334,7 @@ exports.getSteam = (req, res, next) => {
     .then(([playerAchievements, playerSummaries, ownedGames]) => {
       res.render('api/steam', {
         title: 'Steam Web API',
-        ownedGames: ownedGames.response.games,
+        ownedGames: ownedGames.response,
         playerAchievemments: playerAchievements ? playerAchievements.playerstats : null,
         playerSummary: playerSummaries.response.players[0]
       });
