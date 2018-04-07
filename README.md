@@ -132,6 +132,17 @@ npm install
 node app.js
 ```
 
+**Warning:** If you want to use some api that need https to work (for example pinterest or facebook),
+you will need to download [ngrok](https://ngrok.com/).
+You must start ngrok after starting the project.
+
+```bash
+# start ngrok to intercept the data exchanged on port 8080
+./ngrok http 8080
+```
+
+Next, you must use the https url defined by ngrok, for example `https://hackaton.ngrok.io`
+
 **Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon).
 It watches for any changes in your  node.js app and automatically restarts the
 server. Once installed, instead of `node app.js` use `nodemon app.js`. It will
