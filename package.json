@@ -62,9 +62,6 @@
     "twit": "^2.2.9",
     "validator": "^9.4.1"
   },
-  "peerDependencies": {
-    "node-sass": "^4.7.2"
-  },
   "devDependencies": {
     "chai": "^4.1.2",
     "eslint": "^4.19.1",
