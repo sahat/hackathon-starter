@@ -1001,25 +1001,25 @@ console.log(`My cat is named ${name} and is ${age} years old.`);
 To import functions, objects or primitives exported from an external module. These are the most common types of importing.
 
 ```js
-import name from 'module-name';
+const name = require('module-name');
 ```
+
 ```js
-import * as name from 'module-name';
-```
-```js
-import { foo, bar } from 'module-name';
+const { foo, bar } = require('module-name');
 ```
 
 To export functions, objects or primitives from a given file or module.
 
 ```js
-export { myFunction };
+module.exports = { myFunction };
 ```
+
 ```js
-export const name = 'yourName';
+module.exports.name = 'yourName';
 ```
+
 ```js
-export default myFunctionOrClass
+module.exports = myFunctionOrClass;
 ```
 
 #### Spread Operator
