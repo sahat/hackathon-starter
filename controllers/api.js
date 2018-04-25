@@ -124,12 +124,12 @@ exports.getGithub = async (req, res, next) => {
   const github = new GitHub();
   try {
     const { data: repo } = await github.repos.get({ owner: 'sahat', repo: 'hackathon-starter' });
-    return res.render('api/github', {
+    res.render('api/github', {
       title: 'GitHub API',
       repo
     });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
 
