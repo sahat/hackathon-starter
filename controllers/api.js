@@ -247,12 +247,12 @@ exports.getTwitter = async (req, res, next) => {
       geocode: '40.71448,-74.00598,5mi',
       count: 10
     });
-    return res.render('api/twitter', {
+    res.render('api/twitter', {
       title: 'Twitter API',
       tweets
     });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
 
