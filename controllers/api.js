@@ -120,15 +120,17 @@ exports.getScraping = (req, res, next) => {
  * GET /api/github
  * GitHub API Example.
  */
-exports.getGithub = (req, res, next) => {
+exports.getGithub = async (req, res, next) => {
   const github = new GitHub();
-  github.repos.get({ owner: 'sahat', repo: 'hackathon-starter' }, (err, repo) => {
-    if (err) { return next(err); }
+  try {
+    const { data: repo } = await github.repos.get({ owner: 'sahat', repo: 'hackathon-starter' });
     res.render('api/github', {
       title: 'GitHub API',
-      repo: repo.data
+      repo
     });
-  });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
