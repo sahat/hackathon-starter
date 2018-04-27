@@ -38,7 +38,7 @@
 // Navbar
 // -------------------------
 
-.navbar-default {
+.navbar-light {
   border: 0;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
 
@@ -48,6 +48,50 @@
       font-weight: 500;
       text-transform: uppercase;
       transition: all 0.2s linear;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .nav-link {
+      color: black;
+      padding-left: 15px;
+      padding-right: 15px;
     }
   }
+  .navbar-brand {
+    color: $navbar-light-color;
+    line-height: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  .navbar-collapse {
+    background: #ffffff;
+    opacity: 0.9;
+  }
+  .navbar-toggler {
+    border-bottom-color: rgb(221, 221, 221);
+    color: rgb(51,51,51);
+  }
+  .navbar-toggler:focus {
+    background: rgb(221, 221, 221);
+  }
+
+  .navbar-toggler:hover {
+    background: rgb(221, 221, 221);
+  }
+}
+
+.navbar-toggler-icon {
+  color: rgb(51,51,51);
+}
+
+.dropdown-item {
+  > a {
+    color: black;
+    text-decoration: none;
+  }
+}
+
+.dropdown-menu {
+  left: initial;
+  right: 0; /* add right with 0 or a low pixel value */
 }
