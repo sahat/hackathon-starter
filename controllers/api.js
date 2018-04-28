@@ -290,13 +290,13 @@ exports.postTwitter = (req, res, next) => {
  * GET /api/steam
  * Steam API example.
  */
-exports.getSteam = (req, res, next) => {
+exports.getSteam = async (req, res, next) => {
   const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
   const getAsync = util.promisify(request.get);
 
   // get the list of the recently played games, pick the most recent one and get its achievements
-  const playerAchievements = () =>
+  const getPlayerAchievements = () =>
     getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
       .then(({ request, body }) => {
         if (request.statusCode === 401) {
@@ -313,7 +313,7 @@ exports.getSteam = (req, res, next) => {
             });
         }
       });
-  const playerSummaries = () => {
+  const getPlayerSummaries = () => {
     params.steamids = steamId;
     return getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
       .then(({ request, body }) => {
@@ -323,7 +323,7 @@ exports.getSteam = (req, res, next) => {
         return body;
       });
   };
-  const ownedGames = () => {
+  const getOwnedGames = () => {
     params.include_appinfo = 1;
     params.include_played_free_games = 1;
     return getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true })
@@ -334,20 +334,19 @@ exports.getSteam = (req, res, next) => {
         return body;
       });
   };
-  Promise.all([
-    playerAchievements(),
-    playerSummaries(),
-    ownedGames()
-  ])
-    .then(([playerAchievements, playerSummaries, ownedGames]) => {
-      res.render('api/steam', {
-        title: 'Steam Web API',
-        ownedGames: ownedGames.response,
-        playerAchievemments: playerAchievements ? playerAchievements.playerstats : null,
-        playerSummary: playerSummaries.response.players[0]
-      });
-    })
-    .catch(next);
+  try {
+    const playerAchievements = await getPlayerAchievements();
+    const playerSummaries = await getPlayerSummaries();
+    const ownedGames = await getOwnedGames();
+    res.render('api/steam', {
+      title: 'Steam Web API',
+      ownedGames: ownedGames.response,
+      playerAchievemments: playerAchievements ? playerAchievements.playerstats : null,
+      playerSummary: playerSummaries.response.players[0]
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 /**
