@@ -9,7 +9,7 @@
   "author": "Sahat Yalkabov",
   "license": "MIT",
   "scripts": {
-    "postinstall": "cp node_modules/bootstrap/dist/js/bootstrap.min.* public/js/lib && npm rebuild node-sass",
+    "postinstall": "cp node_modules/bootstrap/dist/js/bootstrap.min.* public/js/lib && cp node_modules/jquery/dist/jquery.min.js public/js/lib && npm rebuild node-sass",
     "start": "node app.js",
     "test": "nyc mocha --timeout=3000 --exit",
     "lint": "eslint **/*.js"
@@ -19,7 +19,7 @@
     "@octokit/rest": "^15.2.6",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.2",
-    "bootstrap": "^4.0.0",
+    "bootstrap": "^4.1.0",
     "chalk": "^2.3.2",
     "cheerio": "^1.0.0-rc.2",
     "clockwork": "^0.1.4",
@@ -34,6 +34,7 @@
     "express-validator": "^5.1.0",
     "fbgraph": "^1.4.1",
     "instagram-node": "^0.5.8",
+    "jquery": "^3.3.1",
     "lastfm": "^0.9.2",
     "lob": "^5.2.0",
     "lusca": "^1.5.2",
