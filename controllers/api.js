@@ -1,4 +1,4 @@
-const util = require('util');
+const { promisify } = require('util');
 const request = require('request');
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
@@ -42,9 +42,9 @@ exports.getApi = (req, res) => {
 exports.getFoursquare = async (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'foursquare');
   try {
-    const getTrendingAsync = util.promisify(Venues.getTrending);
-    const getVenueAsync = util.promisify(Venues.getVenue);
-    const getCheckinsAsync = util.promisify(Users.getCheckins);
+    const getTrendingAsync = promisify(Venues.getTrending);
+    const getVenueAsync = promisify(Venues.getVenue);
+    const getCheckinsAsync = promisify(Users.getCheckins);
     const trendingVenues = await getTrendingAsync('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken);
     const venueDetail = await getVenueAsync('49da74aef964a5208b5e1fe3', token.accessToken);
     const userCheckins = await getCheckinsAsync('self', null, token.accessToken);
@@ -293,7 +293,7 @@ exports.postTwitter = (req, res, next) => {
 exports.getSteam = async (req, res, next) => {
   const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  const getAsync = util.promisify(request.get);
+  const getAsync = promisify(request.get);
 
   // get the list of the recently played games, pick the most recent one and get its achievements
   const getPlayerAchievements = () =>
@@ -470,9 +470,9 @@ exports.getInstagram = async (req, res, next) => {
   ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
   ig.use({ access_token: token.accessToken });
   try {
-    const userSearchAsync = util.promisify(ig.user_search);
-    const userAsync = util.promisify(ig.user);
-    const userSelfMediaRecentAsync = util.promisify(ig.user_self_media_recent);
+    const userSearchAsync = promisify(ig.user_search);
+    const userAsync = promisify(ig.user);
+    const userSelfMediaRecentAsync = promisify(ig.user_self_media_recent);
     const searchByUsername = await userSearchAsync('richellemead');
     const searchByUserId = await userAsync('175948269');
     const myRecentMedia = await userSelfMediaRecentAsync();
