@@ -16,8 +16,10 @@
   box-shadow: none;
 }
 
-.btn-default, .btn-default:focus {
+.btn-raised, .btn-raised:focus, .btn-raised:active, .btn-raised:hover {
+  color: rgb(51, 51, 51);
   background-image: linear-gradient(to bottom, #ffffff 60%, #f8f8f8 100%);
+  border-color: rgb(204, 204, 204);
 }
 
 // Forms
