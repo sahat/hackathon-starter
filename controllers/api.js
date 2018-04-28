@@ -222,12 +222,12 @@ exports.getLastfm = async (req, res, next) => {
       topTracks,
       topAlbums
     };
-    return res.render('api/lastfm', {
+    res.render('api/lastfm', {
       title: 'Last.fm API',
       artist
     });
   } catch (err) {
-    return next(err);
+    next(err);
   }
 };
 
@@ -477,14 +477,14 @@ exports.getInstagram = async (req, res, next) => {
     const searchByUsername = await userSearchAsync('richellemead');
     const searchByUserId = await userAsync('175948269');
     const myRecentMedia = await userSelfMediaRecentAsync();
-    return res.render('api/instagram', {
+    res.render('api/instagram', {
       title: 'Instagram API',
       usernames: searchByUsername,
       userById: searchByUserId,
       myRecentMedia
     });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
 
