@@ -1,29 +1,29 @@
 extends ../layout
 
 block content
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Sign in
-  form.form-horizontal(method='POST')
+  form(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.col-sm-3.control-label(for='email') Email
-      .col-sm-7
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
+      .col-md-7
         input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus, required)
-    .form-group
-      label.col-sm-3.control-label(for='password') Password
-      .col-sm-7
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') Password
+      .col-md-7
         input.form-control(type='password', name='password', id='password', placeholder='Password', required)
     .form-group
-      .col-sm-offset-3.col-sm-7
-        button.col-sm-3.btn.btn-primary(type='submit')
+      .offset-sm-3.col-md-7.p-1
+        button.col-md-3.btn.btn-primary(type='submit')
           i.far.fa-user.fa-sm
           | Login
         a.btn.btn-link(href='/forgot') Forgot your password?
     .form-group
-      .col-sm-offset-3.col-sm-7
+      .offset-sm-3.col-md-7.p-1
         hr
     .form-group
-      .col-sm-offset-3.col-sm-7
+      .offset-sm-3.col-md-7.p-1
         a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
           i.fab.fa-facebook-f.fa-sm
           | Sign in with Facebook
