@@ -1,21 +1,21 @@
 extends ../layout
 
 block content
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Profile Information
 
-  form.form-horizontal(action='/account/profile', method='POST')
+  form(action='/account/profile', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.col-sm-3.control-label(for='email') Email
-      .col-sm-7
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
+      .col-md-7
         input.form-control(type='email', name='email', id='email', value=user.email)
-    .form-group
-      label.col-sm-3.control-label(for='name') Name
-      .col-sm-7
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='name') Name
+      .col-md-7
         input.form-control(type='text', name='name', id='name', value=user.profile.name)
-    .form-group
-      label.col-sm-3.control-label Gender
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right Gender
       .col-sm-6
         label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
@@ -26,91 +26,90 @@ block content
         label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
           span Other
-    .form-group
-      label.col-sm-3.control-label(for='location') Location
-      .col-sm-7
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='location') Location
+      .col-md-7
         input.form-control(type='text', name='location', id='location', value=user.profile.location)
-    .form-group
-      label.col-sm-3.control-label(for='website') Website
-      .col-sm-7
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='website') Website
+      .col-md-7
         input.form-control(type='text', name='website', id='website', value=user.profile.website)
-    .form-group
-      label.col-sm-3.control-label Gravatar
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right Gravatar
       .col-sm-4
         img(src=user.gravatar(), class='profile', width='100', height='100')
     .form-group
-      .col-sm-offset-3.col-sm-4
+      .offset-sm-3.col-md-7.pl-2
         button.btn.btn.btn-primary(type='submit')
           i.fas.fa-pencil-alt.fa-sm
           | Update Profile
 
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Change Password
 
-  form.form-horizontal(action='/account/password', method='POST')
+  form(action='/account/password', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.col-sm-3.control-label(for='password') New Password
-      .col-sm-7
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') New Password
+      .col-md-7
         input.form-control(type='password', name='password', id='password')
-    .form-group
-      label.col-sm-3.control-label(for='confirmPassword') Confirm Password
-      .col-sm-7
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='confirmPassword') Confirm Password
+      .col-md-7
         input.form-control(type='password', name='confirmPassword', id='confirmPassword')
     .form-group
-      .col-sm-offset-3.col-sm-4
+      .offset-sm-3.col-md-7.pl-2
         button.btn.btn-primary(type='submit')
           i.fas.fa-lock.fa-sm
           | Change Password
 
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Delete Account
 
-  form.form-horizontal(action='/account/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
+  form(action='/account/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
     .form-group
-      p.col-sm-offset-3.col-sm-4 You can delete your account, but keep in mind this action is irreversible.
+      p.offset-sm-3.col-md-7.pl-2 You can delete your account, but keep in mind this action is irreversible.
       input(type='hidden', name='_csrf', value=_csrf)
-      .col-sm-offset-3.col-sm-4
+      .offset-sm-3.col-md-7.pl-2
         button.btn.btn-danger(type='submit')
           i.fas.fa-trash-alt.fa-sm
           | Delete my account
 
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Linked Accounts
-  .form-horizontal
-    .form-group
-      .col-sm-offset-3.col-sm-4
-        if user.instagram
-          p: a.text-danger(href='/account/unlink/instagram') Unlink your Instagram account
-        else
-          p: a(href='/auth/instagram') Link your Instagram account
-      .col-sm-offset-3.col-sm-4
-        if user.google
-          p: a.text-danger(href='/account/unlink/google') Unlink your Google account
-        else
-          p: a(href='/auth/google') Link your Google account
-      .col-sm-offset-3.col-sm-4
-        if user.facebook
-          p: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
-        else
-          p: a(href='/auth/facebook') Link your Facebook account
-      .col-sm-offset-3.col-sm-4
-        if user.twitter
-          p: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
-        else
-          p: a(href='/auth/twitter') Link your Twitter account
-      .col-sm-offset-3.col-sm-4
-        if user.github
-          p: a.text-danger(href='/account/unlink/github') Unlink your GitHub account
-        else
-          p: a(href='/auth/github') Link your GitHub account
-      .col-sm-offset-3.col-sm-4
-        if user.linkedin
-          p: a.text-danger(href='/account/unlink/linkedin') Unlink your LinkedIn account
-        else
-          p: a(href='/auth/linkedin') Link your LinkedIn account
-      .col-sm-offset-3.col-sm-4
-        if user.steam
-          p: a.text-danger(href='/account/unlink/steam') Unlink your Steam account
-        else
-          p: a(href='/auth/steam') Link your Steam account
+  .form-group
+    .offset-sm-3.col-md-7.pl-2
+      if user.instagram
+        p.mb-1: a.text-danger(href='/account/unlink/instagram') Unlink your Instagram account
+      else
+        p.mb-1: a(href='/auth/instagram') Link your Instagram account
+    .offset-sm-3.col-md-7.pl-2
+      if user.google
+        p.mb-1: a.text-danger(href='/account/unlink/google') Unlink your Google account
+      else
+        p.mb-1: a(href='/auth/google') Link your Google account
+    .offset-sm-3.col-md-7.pl-2
+      if user.facebook
+        p.mb-1: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
+      else
+        p.mb-1: a(href='/auth/facebook') Link your Facebook account
+    .offset-sm-3.col-md-7.pl-2
+      if user.twitter
+        p.mb-1: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
+      else
+        p.mb-1: a(href='/auth/twitter') Link your Twitter account
+    .offset-sm-3.col-md-7.pl-2
+      if user.github
+        p.mb-1: a.text-danger(href='/account/unlink/github') Unlink your GitHub account
+      else
+        p.mb-1: a(href='/auth/github') Link your GitHub account
+    .offset-sm-3.col-md-7.pl-2
+      if user.linkedin
+        p.mb-1: a.text-danger(href='/account/unlink/linkedin') Unlink your LinkedIn account
+      else
+        p.mb-1: a(href='/auth/linkedin') Link your LinkedIn account
+    .offset-sm-3.col-md-7.pl-2
+      if user.steam
+        p.mb-1: a.text-danger(href='/account/unlink/steam') Unlink your Steam account
+      else
+        p.mb-1: a(href='/auth/steam') Link your Steam account
