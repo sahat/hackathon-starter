@@ -43,7 +43,8 @@
 .navbar-light {
   border: 0;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-
+  background: #ffffff;
+  opacity: 0.9;
   .navbar-nav {
     > li > a {
       font-size: 12px;
@@ -64,10 +65,6 @@
     line-height: 20px;
     padding-top: 15px;
     padding-bottom: 15px;
-  }
-  .navbar-collapse {
-    background: #ffffff;
-    opacity: 0.9;
   }
   .navbar-toggler {
     border-bottom-color: rgb(221, 221, 221);
