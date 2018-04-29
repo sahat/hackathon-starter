@@ -53,6 +53,7 @@
     "passport-oauth": "^1.0.0",
     "passport-openid": "^0.4.0",
     "passport-twitter": "^1.0.4",
+    "passport-lichess": "^1.1.0",
     "paypal-rest-sdk": "^1.8.1",
     "pug": "^2.0.3",
     "request": "^2.85.0",

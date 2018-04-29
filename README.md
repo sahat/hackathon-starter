@@ -78,7 +78,7 @@ Features
 
 - **Local Authentication** using Email and Password
 - **OAuth 1.0a Authentication** via Twitter
-- **OAuth 2.0 Authentication** via Facebook, Google, GitHub, LinkedIn, Instagram
+- **OAuth 2.0 Authentication** via Facebook, Google, GitHub, LinkedIn, Instagram, Lichess
 - Flash notifications
 - MVC Project Structure
 - Node.js clusters support
@@ -328,6 +328,16 @@ The same goes for other providers.
 - Sign up for an account.
 - Once logged into the dashboard, expand the link 'show api credentials'
 - Copy your Account Sid and Auth Token
+
+<hr>
+
+<img src="https://lichess1.org/assets/images/logo-text.png" width="200">
+
+- Create a <a href="https://lichess.org/account/oauth/app/create" target="_blank">new Lichess App</a>
+- Enter *App name*, *App description*, *Homepage url*
+- For **Callback URL**: http://localhost:8080/auth/lichess/callback
+- Click **Submit**
+- Copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
 Project Structure
 -----------------

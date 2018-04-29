@@ -195,6 +195,10 @@ app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE
 app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
+app.get('/auth/lichess', passport.authenticate('lichess'));
+app.get('/auth/lichess/callback', passport.authenticate('lichess', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
 
 /**
  * OAuth authorization routes. (API examples)

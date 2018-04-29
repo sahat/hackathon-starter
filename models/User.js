@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
   instagram: String,
   linkedin: String,
   steam: String,
+  lichess: String,
   tokens: Array,
 
   profile: {

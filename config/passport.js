@@ -8,6 +8,7 @@ const { Strategy: GitHubStrategy } = require('passport-github');
 const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
 const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
 const { Strategy: OpenIDStrategy } = require('passport-openid');
+const { Strategy: LichessStrategy } = require('passport-lichess');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
 
@@ -395,6 +396,50 @@ passport.use(new InstagramStrategy({
       user.email = `${profile.username}@instagram.com`;
       user.profile.website = profile._json.data.website;
       user.profile.picture = profile._json.data.profile_picture;
+      user.save((err) => {
+        done(err, user);
+      });
+    });
+  }
+}));
+
+/**
+ * Sign in with Lichess.
+ */
+passport.use(new LichessStrategy({
+  clientID: process.env.LICHESS_ID,
+  clientSecret: process.env.LICHESS_SECRET,
+  callbackURL: '/auth/lichess/callback',
+  passReqToCallback: true
+}, (req, accessToken, refreshToken, profile, done) => {
+  if (req.user) {
+    User.findOne({ lichess: profile.id }, (err, existingUser) => {
+      if (existingUser) {
+        req.flash('errors', { msg: 'There is already a Lichess account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        done(err);
+      } else {
+        User.findById(req.user.id, (err, user) => {
+          if (err) { return done(err); }
+          user.lichess = profile.id;
+          user.tokens.push({ kind: 'lichess', accessToken });
+          user.profile.name = user.profile.username;
+          user.save((err) => {
+            req.flash('info', { msg: 'Lichess account has been linked.' });
+            done(err, user);
+          });
+        });
+      }
+    });
+  } else {
+    User.findOne({ lichess: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      const user = new User();
+      user.lichess = profile.id;
+      user.tokens.push({ kind: 'lichess', accessToken });
+      user.profile.name = profile.username;
       user.save((err) => {
         done(err, user);
       });
