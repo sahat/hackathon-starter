@@ -1,7 +1,7 @@
 FROM node:8-slim
 
 WORKDIR /starter
-ENV NODE_ENV production
+ENV NODE_ENV development
 
 COPY package.json /starter/package.json
 
