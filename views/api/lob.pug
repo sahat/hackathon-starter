@@ -1,18 +1,18 @@
 extends ../layout
 
 block content
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h2
       i.far.fa-envelope.fa-sm
       | Lob API
-  .btn-group.btn-group-justified
+  .btn-group.d-flex(role='group')
     a.btn.btn-primary(href='https://lob.com/docs')
       i.far.fa-check-square.fa-sm
       | API Documentation 
-    a.btn.btn-primary(href='https://github.com/lob/lob-node', target='_blank')
+    a.btn.btn-primary(href='https://github.com/lob/lob-node', target='_blank').w-100
       i.fas.fa-code.fa-sm
       | Lob Node Docs
-    a.btn.btn-primary(href='https://dashboard.lob.com/register', target='_blank')
+    a.btn.btn-primary(href='https://dashboard.lob.com/register', target='_blank').w-100
       i.fas.fa-cog.fa-sm
       | Create API Account
   br

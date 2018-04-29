@@ -1,19 +1,19 @@
 extends ../layout
 
 block content
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h2
       i.fas.fa-phone(style='color: #f00').fa-sm
       | Twilio API
 
-  .btn-group.btn-group-justified
-    a.btn.btn-primary(href='http://twilio.github.io/twilio-node/', target='_blank')
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='http://twilio.github.io/twilio-node/', target='_blank').w-100
       i.far.fa-check-square.fa-sm
       | Twilio Node
-    a.btn.btn-primary(href='https://apigee.com/console/twilio', target='_blank')
+    a.btn.btn-primary(href='https://apigee.com/console/twilio', target='_blank').w-100
       i.fas.fa-laptop.fa-sm
       | API Console
-    a.btn.btn-primary(href='https://www.twilio.com/docs/api/rest', target='_blank')
+    a.btn.btn-primary(href='https://www.twilio.com/docs/api/rest', target='_blank').w-100
       i.fas.fa-code-branch.fa-sm
       | REST API
 
@@ -22,7 +22,6 @@ block content
   .row
     .col-sm-6
       form(role='form', method='POST')
-        h1= _csrf
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group
           label.control-label Number to text
@@ -30,6 +29,6 @@ block content
         .form-group
           label.control-label Message
           input.form-control(type='text', name='message')
-        button.btn.btn-default(type='submit')
+        button.btn.btn-raised(type='submit')
           i.fas.fa-location-arrow.fa-sm
           | Send

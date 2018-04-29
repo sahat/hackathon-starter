@@ -1,18 +1,18 @@
 extends ../layout
 
 block content
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h2
       i.far.fa-play-circle(style='color: #db1302').fa-sm
       | Last.fm API
-  .btn-group.btn-group-justified
-    a.btn.btn-primary(href='https://github.com/jammus/lastfm-node#lastfm-node', target='_blank')
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://github.com/jammus/lastfm-node#lastfm-node', target='_blank').w-100
       i.far.fa-check-square.fa-sm
       | Last.fm Node Docs
-    a.btn.btn-primary(href='http://www.last.fm/api/account/create', target='_blank')
+    a.btn.btn-primary(href='http://www.last.fm/api/account/create', target='_blank').w-100
       i.fas.fa-laptop.fa-sm
       | Create API Account
-    a.btn.btn-primary(href='http://www.last.fm/api', target='_blank')
+    a.btn.btn-primary(href='http://www.last.fm/api', target='_blank').w-100
       i.fas.fa-code-branch.fa-sm
       | API Endpoints
 
