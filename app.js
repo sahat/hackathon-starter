@@ -220,7 +220,10 @@ app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRed
 /**
  * Error Handler.
  */
-app.use(errorHandler());
+if (process.env.NODE_ENV === 'development') {
+  // only use in development
+  app.use(errorHandler());
+}
 
 /**
  * Start Express server.
