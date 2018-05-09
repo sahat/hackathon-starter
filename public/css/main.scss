@@ -1,6 +1,7 @@
 @import "themes/default/variables";
 
-@import "lib/bootstrap/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/@ladjs/bootstrap-social/bootstrap-social.scss";
 @import "lib/font-awesome/fontawesome";
 @import "lib/font-awesome/fa-brands";
 @import "lib/font-awesome/fa-regular";
@@ -17,8 +18,9 @@ html {
 }
 
 body {
-  padding-top: 60px;
+  padding-top: 80px;
   margin-bottom: 75px;
+  font-size: 14px;
 }
 
 footer {
@@ -45,8 +47,37 @@ textarea {
 
 .navbar-nav img {
   width: 30px;
-  height: 30px;
+  min-height: 30px;
   margin: -15px 15px -15px;
+}
+
+.navbar{
+  padding: 0px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.navbar-brand{
+  font-size: 18px;
+  float: left;
+  margin-left: 15px;
+}
+
+.navbar-toggler {
+  position: relative;
+  float: right;
+  margin-right: 15px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.navbar-toggler-icon {
+  font-size: 16px;
+}
+
+.dropdown-menu {
+  left: initial;
+  right: 0;
 }
 
 // Alerts

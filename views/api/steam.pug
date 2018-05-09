@@ -1,12 +1,12 @@
 extends ../layout
 
 block content
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h2
       i.fab.fa-steam-square.fa-sm
       | Steam Web API
-  .btn-group.btn-group-justified
-    a.btn.btn-primary(href='https://developer.valvesoftware.com/wiki/Steam_Web_API', target='_blank')
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://developer.valvesoftware.com/wiki/Steam_Web_API', target='_blank').w-100
       i.far.fa-check-square.fa-sm
       | API Overview
 

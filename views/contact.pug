@@ -1,26 +1,26 @@
 extends layout
 
 block content
-  .page-header
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Contact Form
 
-  form.form-horizontal(method='POST')
+  form(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     if (unknownUser)
-      .form-group
-        label(class='col-sm-2 control-label', for='name') Name
-        .col-sm-8
+      .form-group.row
+        label(class='col-md-2 col-form-label font-weight-bold', for='name') Name
+        .col-md-8
           input.form-control(type='text', name='name', id='name', autofocus=true)
-        .form-group
-        label(class='col-sm-2 control-label', for='email') Email
-        .col-sm-8
+      .form-group.row
+        label(class='col-md-2 col-form-label font-weight-bold', for='email') Email
+        .col-md-8
           input.form-control(type='text', name='email', id='email')
-    .form-group
-      label(class='col-sm-2 control-label', for='message') Please describe the issue or suggestion
-      .col-sm-8
+    .form-group.row
+      label(class='col-md-2 col-form-label font-weight-bold', for='message') Please describe the issue or your suggestion
+      .col-md-8
         textarea.form-control(name='message', id='message', rows='7')
     .form-group
-      .col-sm-offset-2.col-sm-8
+      .offset-md-2.col-md-8.p-1
         button.btn.btn-primary(type='submit')
           i.far.fa-envelope.fa-sm
           | Send
