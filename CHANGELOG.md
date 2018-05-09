@@ -1,6 +1,20 @@
 # Changelog
 ---------
 
+### 5.1.0 (May 9, 2018)
+- Bootstrap 4.1 upgrade (breaking change)
+- Addition of popper.js
+- jQuery and Bootstrap will be pulled in the project using their npm packages
+- Dockerfile will use development instead of production
+- Security improvement by removing X-Powered-By header
+- Removed deprecated Instagram popular images API call from the Instagram example (@nacimgoura)
+- Removed `mongoose global.Promise` as it is no longer needed (@nacimgoura)
+- Refactoring of GitHub, last.fm api, twitter examples and code improvements to use ES6/ES7 features (@nacimgoura)
+- Add NodeJS 10 in travis.yml (@nacimgoura)
+- Improvements to the Steam API example (@nacimgoura)
+- Readme and documentation improvements (thanks in part to @nacimgoura)
+- Dependency updates
+
 ### 5.0.0 (April 1, 2018)
 - NodeJS 8.0+ is now required
 - Removed dependency on Bluebird in favor of native NodeJS promisify support
