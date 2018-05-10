@@ -7,6 +7,7 @@
 - jQuery and Bootstrap will be pulled in the project using their npm packages
 - Dockerfile will use development instead of production
 - Security improvement by removing X-Powered-By header
+- Express errorhandler will only be used in development to match its documentation
 - Removed deprecated Instagram popular images API call from the Instagram example (@nacimgoura)
 - Removed `mongoose global.Promise` as it is no longer needed (@nacimgoura)
 - Refactoring of GitHub, last.fm api, twitter examples and code improvements to use ES6/ES7 features (@nacimgoura)
