@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
+  email: { type: String, unique: true, require: true },
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
@@ -18,11 +18,34 @@ const userSchema = new mongoose.Schema({
   tokens: Array,
 
   profile: {
-    name: String,
+    firstName: String,
+    lastName: String,
+    phoneNumber: {type: String, require: true},
     gender: String,
     location: String,
     website: String,
     picture: String
+  },
+
+  coach: {
+    isCoach: {type: Boolean, default: false},
+    coachTeam: String // teamschema
+  },
+
+  admin: {
+    isAdmin: {type: Boolean, default: false},
+    adminSports: Array // Array[teamSchema]
+  },
+
+  athlete: {
+    isAthlete: {type: Boolean, default: false},
+    sport: String,
+    maxBench: Number,
+    maxClean: Number,
+    maxSquat: Number,
+    maxDeadlift: Number,
+    groups: Array, // Array[groupSchema]
+    workouts: Array // Array[workoutSchema]
   }
 }, { timestamps: true });
 
