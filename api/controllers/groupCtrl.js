@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var User = mongoose.model('User');
 var Group = mongoose.model('Group');
 
 var sendJsonResponse = function(res, status, content) {
@@ -7,7 +6,7 @@ var sendJsonResponse = function(res, status, content) {
     res.json(content);
 };
 
-// Create a new group
+// Create a new group - POST
 module.exports.createGroup = function(req, res) {
 	console.log('creating new group');
     const group = new Group({
@@ -26,7 +25,7 @@ module.exports.createGroup = function(req, res) {
     })
 };
 
-// Get a group by ID
+// Get a group by ID - GET
 module.exports.getGroupById = function(req, res) {
 	console.log('reading one group');
     console.log('Finding group details', req.params);
@@ -54,7 +53,7 @@ module.exports.getGroupById = function(req, res) {
     }
 }
 
-// Get all groups
+// Get all groups - GET
 module.exports.getAllGroups = function(req, res) {
 	console.log('getting all groups');
     Group
@@ -74,7 +73,7 @@ module.exports.getAllGroups = function(req, res) {
         });
 }
 
-// Update a group by ID
+// Update a group by ID - PUT
 module.exports.updateGroup = function(req, res) {
  	if (req.params && req.params.groupid) {
  		Group
@@ -109,7 +108,7 @@ module.exports.updateGroup = function(req, res) {
  	}  
 }
 
-// Delete a group by Id
+// Delete a group by Id - DELETE
 module.exports.deleteGroup = function(req, res) {
 	if (req.params && req.params.groupid) {
  		Group
