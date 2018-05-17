@@ -11,7 +11,7 @@ router.get('/allUsers', userCtrl.getAllUsers);
 router.get('/team/:teamid', teamCtrl.getTeamById);
 router.post('/createTeam', teamCtrl.createTeam);
 router.get('/allTeams', teamCtrl.getAllTeams);
-router.put('/updateTeam', teamCtrl.updateTeam);
+router.put('/updateTeam/:teamid', teamCtrl.updateTeam);
 
 
 module.exports = router;
