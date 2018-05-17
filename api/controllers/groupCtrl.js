@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Group = mongoose.model('Group');
 var Team = mongoose.model('Team');
+var User = mongoose.model('User');
 
 var sendJsonResponse = function(res, status, content) {
     res.status(status);
@@ -171,6 +172,55 @@ module.exports.deleteGroup = function(req, res) {
             "message": "No groupid in request"
         });
  	}  	
+}
+
+// Add a user to a group - PUT
+module.exports.addUser = function(req, res) {
+	console.log('adding a user to a group');
+	if (req.params && req.params.groupid && req.params.userid) {
+		console.log(req.params.groupid)
+		Group
+            .findById(req.params.groupid)
+            .exec(function(err, group) {
+                if (!group) {
+                    sendJsonResponse(res, 404, err);
+                    return;
+                } else if (err) {
+                    console.log(err)
+                    sendJsonResponse(res, 404, err);
+                    return;
+                }
+                User
+                	.findById(req.params.userid)
+                	.exec(function(err, user) {
+                		if (!user) {
+		                    sendJsonResponse(res, 404, {
+		                        "message": "groupid not found"
+		                    });
+		                    return;
+		                } else if (err) {
+		                    console.log(err)
+		                    sendJsonResponse(res, 404, err);
+		                    return;
+		                }
+		                newAthletesArr = group.athletes.concat([user])
+		                group.athletes = newAthletesArr
+		                group.save((err) => {
+					      	if (err) {
+					        	return err;
+					      	}
+					      	req.flash('success', { msg: 'The user has been added to the group' });
+					      	console.log('The user has been added to the group');
+					    });
+                		sendJsonResponse(res, 200, group);
+                	})
+            });
+	} else {
+		console.log('No userid specified');
+        sendJsonResponse(res, 404, {
+            "message": "No userid in request"
+        });
+	}
 }
 
 

@@ -19,6 +19,7 @@ router.get('/getTeam/:teamid', teamCtrl.getTeamById);
 router.post('/createTeam', teamCtrl.createTeam);
 router.get('/allTeams', teamCtrl.getAllTeams);
 router.put('/updateTeam/:teamid', teamCtrl.updateTeam);
+router.put('/addUserToTeam/:teamid/:userid', teamCtrl.addUser); // THIS STILL NEEDS TO BE TESTED
 
 // groupCtrl routes
 router.get('/getGroup/:groupid', groupCtrl.getGroupById);
@@ -26,6 +27,7 @@ router.get('/allGroups', groupCtrl.getAllGroups);
 router.post('/createGroup/:teamid', groupCtrl.createGroup);
 router.put('/updateGroup/:groupid', groupCtrl.updateGroup);
 router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
+router.put('/addUserToGroup/:groupid/:userid', groupCtrl.addUser); // THIS STILL NEEDS TO BE TESTED
 
 //phaseCtrl routes
 router.get('/getPhase/:phaseid', phaseCtrl.getPhaseById);

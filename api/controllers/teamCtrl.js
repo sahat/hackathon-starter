@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Team = mongoose.model('Team');
+var User = mongoose.model('User');
 
 var sendJsonResponse = function(res, status, content) {
     res.status(status);
@@ -18,7 +19,7 @@ module.exports.createTeam = function(req, res) {
     team.save((err) => {
     	if (err) {
     		sendJsonResponse(res, 404, err);
-    		return next(err);
+    		return err;
     	} else {
     		sendJsonResponse(res, 200, team);
     		console.log('team successfully added')
@@ -108,6 +109,53 @@ module.exports.updateTeam = function(req, res) {
             "message": "No teamid in request"
         });
  	}  
+}
+
+module.exports.addUser = function(req, res) {
+	if (req.params && req.params.teamid && req.params.userid) {
+		console.log(req.params.teamid)
+		Team
+            .findById(req.params.teamid)
+            .exec(function(err, team) {
+                if (!team) {
+                    sendJsonResponse(res, 404, err);
+                    return;
+                } else if (err) {
+                    console.log(err)
+                    sendJsonResponse(res, 404, err);
+                    return;
+                }
+                User
+                	.findById(req.params.userid)
+                	.exec(function(err, user) {
+                		if (!user) {
+		                    sendJsonResponse(res, 404, {
+		                        "message": "groupid not found"
+		                    });
+		                    return;
+		                } else if (err) {
+		                    console.log(err)
+		                    sendJsonResponse(res, 404, err);
+		                    return;
+		                }
+		                newAthletesArr = team.athletes.concat([user])
+		                team.athletes = newAthletesArr
+		                team.save((err) => {
+					      	if (err) {
+					        	return err;
+					      	}
+					      	req.flash('success', { msg: 'The user has been added to the group' });
+					      	console.log('The user has been added to the group');
+					    });
+                		sendJsonResponse(res, 200, team);
+                	})
+            });
+	} else {
+		console.log('No userid specified');
+        sendJsonResponse(res, 404, {
+            "message": "No userid in request"
+        });
+	}
 }
 
 
