@@ -30,10 +30,10 @@ dotenv.load({ path: '.env.example' });
 /**
  * Controllers (route handlers).
  */
-const homeController = require('./controllers/home');
-const userController = require('./controllers/user');
-const apiController = require('./controllers/api');
-const contactController = require('./controllers/contact');
+const homeController = require('./api/controllers/home');
+const userController = require('./api/controllers/user');
+const apiController = require('./api/controllers/api');
+const contactController = require('./api/controllers/contact');
 
 /**
  * API keys and Passport configuration.
