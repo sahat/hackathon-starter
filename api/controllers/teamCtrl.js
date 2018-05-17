@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var User = mongoose.model('User');
 var Team = mongoose.model('Team');
 
 var sendJsonResponse = function(res, status, content) {
@@ -7,7 +6,7 @@ var sendJsonResponse = function(res, status, content) {
     res.json(content);
 };
 
-// Create a new team
+// Create a new team - POST
 module.exports.createTeam = function(req, res) {
 	console.log('creating new team');
     const team = new Team({
@@ -27,7 +26,7 @@ module.exports.createTeam = function(req, res) {
     })
 };
 
-// Get a team by ID
+// Get a team by ID - GET
 module.exports.getTeamById = function(req, res) {
 	console.log('reading one team');
     console.log('Finding team details', req.params);
@@ -55,7 +54,7 @@ module.exports.getTeamById = function(req, res) {
     }
 }
 
-// Get all teams
+// Get all teams - GET
 module.exports.getAllTeams = function(req, res) {
 	console.log('getting all teams');
     Team
@@ -75,7 +74,7 @@ module.exports.getAllTeams = function(req, res) {
         });
 }
 
-// Update a team by ID
+// Update a team by ID - PUT
 module.exports.updateTeam = function(req, res) {
  	if (req.params && req.params.teamid) {
  		Team
