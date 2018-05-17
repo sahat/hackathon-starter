@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Group = mongoose.model('Group');
+var Team = mongoose.model('Team');
 
 var sendJsonResponse = function(res, status, content) {
     res.status(status);
@@ -18,11 +19,42 @@ module.exports.createGroup = function(req, res) {
     	if (err) {
     		sendJsonResponse(res, 404, err);
     		return err;
-    	} else {
-    		sendJsonResponse(res, 200, group);
-    		console.log('group successfully created')
-    	}
+    	} 
     })
+
+    // Get the team and add the new group to it
+    if (req.params && req.params.teamid) {
+        Team
+            .findById(req.params.teamid)
+            .exec(function(err, team) {
+                if (!team) {
+                    sendJsonResponse(res, 404, {
+                        "message": "teamid not found"
+                    });
+                    return;
+                } else if (err) {
+                    console.log(err)
+                    sendJsonResponse(res, 404, err);
+                    return;
+                }
+                newTeamGroups = team.groups.concat(group);
+                team.groups = newTeamGroups;
+                console.log(team);
+                team.save((err) => {
+			      	if (err) {
+			      		sendJsonResponse(res, 404, err);
+			        	return;
+			      	}
+			      	sendJsonResponse(res, 200, team);
+			      	console.log('The new group has been added to the team');
+			    });
+            });
+    } else {
+        console.log('No groupid specified');
+        sendJsonResponse(res, 404, {
+            "message": "No groupid in request"
+        });
+    }
 };
 
 // Get a group by ID - GET

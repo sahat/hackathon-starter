@@ -22,7 +22,7 @@ router.put('/updateTeam/:teamid', teamCtrl.updateTeam);
 // groupCtrl routes
 router.get('/getGroup/:groupid', groupCtrl.getGroupById);
 router.get('/allGroups', groupCtrl.getAllGroups);
-router.post('/createGroup', groupCtrl.createGroup);
+router.post('/createGroup/:teamid', groupCtrl.createGroup);
 router.put('/updateGroup/:groupid', groupCtrl.updateGroup);
 router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
 
