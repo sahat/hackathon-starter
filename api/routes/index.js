@@ -36,7 +36,7 @@ router.put('/addUserToGroup/:groupid/:userid', groupCtrl.addUser);
 router.get('/getPhase/:phaseid', phaseCtrl.getPhaseById);//needs to be tested
 router.get('/allPhaseTeam', phaseCtrl.getPhaseByTeam);//needs to be tested
 
-//router.get('/allPhaseUser', groupCtrl.getAllPhasesByUser);
+router.get('/allPhaseUser', phaseCtrl.getAllPhasesByUser);
 router.get('/allPhases', phaseCtrl.allPhases);//rendering route, tbd
 router.put('/updatePhaseTeam/:phaseid', phaseCtrl.updatePhaseByTeam);//NEEDS TO BE TESTED
 router.put('/updatePhaseUser/:phaseid',phaseCtrl.updatePhaseByUser);//NEEDS TO BE TESTED
