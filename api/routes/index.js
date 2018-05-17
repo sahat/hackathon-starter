@@ -25,6 +25,7 @@ router.get('/allGroups', groupCtrl.getAllGroups);
 router.post('/createGroup/:teamid', groupCtrl.createGroup);
 router.put('/updateGroup/:groupid', groupCtrl.updateGroup);
 router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
+router.put('/addUser/:groupid/:userid', groupCtrl.addUser);
 
 
 module.exports = router;
