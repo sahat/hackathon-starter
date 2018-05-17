@@ -77,21 +77,6 @@ module.exports.getAllTeams = function(req, res) {
 
 // Update a team by ID
 module.exports.updateTeam = function(req, res) {
-	// Team.findById(req.teamid, (err, team) => {
- //    if (err) { 
-
- //    	return next(err); 
- //    }
- //    team.name = req.body.name;
- //    team.athletes = req.body.athletes;
- //    team.groups = req.body.groups;
- //    team.save((err) => {
- //      	if (err) {
- //        	return next(err);
- //      	}
- //      	req.flash('success', { msg: 'Profile information has been updated.' });
- //      	console.log('team information was updated');
- //    });
  	if (req.params && req.params.teamid) {
  		Team
             .findById(req.params.teamid)
