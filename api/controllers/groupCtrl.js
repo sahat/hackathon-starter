@@ -203,7 +203,8 @@ module.exports.addUser = function(req, res) {
 		                    sendJsonResponse(res, 404, err);
 		                    return;
 		                }
-		                group.athletes = group.athletes.push(user)
+		                newAthletesArr = group.athletes.concat([user])
+		                group.athletes = newAthletesArr
 		                group.save((err) => {
 					      	if (err) {
 					        	return err;
