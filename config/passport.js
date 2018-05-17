@@ -11,7 +11,7 @@ const { Strategy: OpenIDStrategy } = require('passport-openid');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
 
-const User = require('../models/User');
+const User = require('../api/models/User');
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
