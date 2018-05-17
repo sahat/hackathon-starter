@@ -2,7 +2,44 @@ const bcrypt = require('bcrypt-nodejs');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 
- 
+
+
+ const setSchema = new mongoose.Schema({
+   setnumber: {type: Number, require: true},
+   reps: {type: String, require: true},//string to account for reps/each and running "reps"
+   percent: Number,
+   calcweight: Number,
+   actweight: Number
+ })
+
+ const exerciseSchema = new mongoose.Schema({
+  name: {type: String, require: true},
+  sets: [setSchema],
+  tutorial: String,
+  trainingnotes: String,
+  max: {} //this will hold and exercise object that the set percentages will be calculated off of
+ });
+
+ const blockSchema = new mongoose.Schema({
+  name: {type: String, require: true},
+  exercises: [exerciseSchema]
+ });
+
+ const workoutSchema = new mongoose.Schema({
+  name: {type: String, require: true},
+  blocks: [blockSchema],
+  time: {type: Date, require: true},
+  trainingnotes: String,
+  athletenotes: String
+ });
+
+ const phaseSchema = new mongoose.Schema({
+  name: {type: String, require: true},
+  start: {type: Date, require: true},
+  end: {type: Date, require: true},
+  workouts: [workoutSchema],
+  notes: String
+ });
 
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, require: true },
@@ -31,12 +68,12 @@ const userSchema = new mongoose.Schema({
 
   coach: {
     isCoach: {type: Boolean, default: false},
-    coachTeam: String // teamschema
+    coachTeam: {} // will hold an object of the team
   },
 
   admin: {
     isAdmin: {type: Boolean, default: false},
-    adminSports: Array // Array[teamSchema]
+    adminSports: [] // Array of all teams 
   },
 
   athlete: {
@@ -46,8 +83,8 @@ const userSchema = new mongoose.Schema({
     maxClean: Number,
     maxSquat: Number,
     maxDeadlift: Number,
-    groups: Array, // Array[groupSchema]
-    workouts: Array // Array[workoutSchema]
+    groups: [], // Array[groupSchema], array of groups the athlete is apart of 
+    phases: [phaseSchema] // Array[workoutSchema]
   }
 }, { timestamps: true });
 
