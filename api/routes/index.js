@@ -6,6 +6,8 @@ var groupCtrl = require('../controllers/groupCtrl');
 var phaseCtrl = require('../controllers/phaseCtrl');
 var workoutCtrl = require('../controllers/workoutCtrl');
 
+
+
 // userCtrl routes
 router.get('/getUser/:userid', userCtrl.getUserById);
 router.get('/allUsers', userCtrl.getAllUsers);
@@ -30,14 +32,15 @@ router.put('/updateGroup/:groupid', groupCtrl.updateGroup);
 router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
 router.put('/addUserToGroup/:groupid/:userid', groupCtrl.addUser);
 
-// phaseCtrl routes
-router.get('/getPhase/:phaseid', phaseCtrl.getPhaseById);
-router.get('/allPhaseTeam', phaseCtrl.getPhaseByTeam);
+//phaseCtrl routes
+router.get('/getPhase/:phaseid', phaseCtrl.getPhaseById);//needs to be tested
+router.get('/allPhaseTeam', phaseCtrl.getPhaseByTeam);//needs to be tested
+
 //router.get('/allPhaseUser', groupCtrl.getAllPhasesByUser);
-router.get('/allPhases', phaseCtrl.allPhases);
-router.put('/updatePhaseTeam/:phaseid', phaseCtrl.updatePhaseByTeam);
-router.put('/updatePhaseUser/:phaseid',phaseCtrl.updatePhaseByUser);
-router.post('/:teamid/phase', phaseCtrl.createPhaseTeam)
+router.get('/allPhases', phaseCtrl.allPhases);//rendering route, tbd
+router.put('/updatePhaseTeam/:phaseid', phaseCtrl.updatePhaseByTeam);//NEEDS TO BE TESTED
+router.put('/updatePhaseUser/:phaseid',phaseCtrl.updatePhaseByUser);//NEEDS TO BE TESTED
+router.post('/:teamid/phase', phaseCtrl.createPhaseTeam);//TESTED AND PASSED
 
 // workoutCtrl routes
 router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise);
