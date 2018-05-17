@@ -72,7 +72,7 @@ module.exports.getAllTeams = function(req, res) {
 }
 
 // Update a team by ID
-mdoule.exports.updateTeam = function(req, res) {
+module.exports.updateTeam = function(req, res) {
 	Team.findById(req.teamid, (err, team) => {
     if (err) { return next(err); }
     team.name = req.body.name;
