@@ -90,14 +90,14 @@ const userSchema = new mongoose.Schema({
 
 const groupSchema = new mongoose.Schema({
   name: {type: String, unique: true, require: true},
-  athletes: [userSchema],
+  athletes: Array, //will contain id's of athletes in the user collection
   phases: [phaseSchema]
 })
 
 const teamSchema = new mongoose.Schema({
   name: {type: String, unique: true, require: true},
-  athletes: [userSchema],
-  groups: [groupSchema],
+  athletes: Array, //will contain id's of athletes in the user collection
+  groups: [groupSchema], //may consider transforming groups to have their own collection too??
   phases: [phaseSchema]
 });
 

@@ -67,15 +67,40 @@ var doAddPhaseTeam = function(req, res, team) {
         console.log(athletes);
         
         for(var i = 0; i < athletes.length; i++){
-            console.log(athletes[i].athletes);
-            console.log(athletes[i].athlete.phases);
-            athletes[i].athlete.phases.push({
-                name: req.body.name,
-                start: req.body.start,
-                end: req.body.end,
-                workouts: req.body.workouts,
-                notes: req.body.notes
-            });
+            console.log(athletes[i]);
+            // console.log(athletes[i].athlete.phases);
+            // athletes[i].athlete.phases.push({
+            //     name: req.body.name,
+            //     start: req.body.start,
+            //     end: req.body.end,
+            //     workouts: req.body.workouts,
+            //     notes: req.body.notes
+            // });
+
+            /***Going to put the find user by id hear, will use athlete "id" which points
+            *** to the athlete in the user collection, commecnted out below*************
+            */
+            // if (req.params.teamid) {
+            //     Team
+            //         .findById(req.params.teamid)
+            //         .select('phases athletes')
+            //         .exec(
+            //             function(err, team) {
+            //                 if (err) {
+            //                     sendJsonResponse(res, 400, err);
+            //                 } else {
+            //                     //console.log(req.body);
+            //                     //console.log(res);
+            //                     //console.log(user);
+            //                     doAddPhaseTeam(req, res, team);
+            //                 }
+            //             }
+            //         );
+            // } else {
+            //     sendJsonResponse(res, 404, {
+            //         "message": "Not found, teamid required"
+            //     });
+            // }
         }
 
         team.save(function(err, team) {
@@ -95,30 +120,51 @@ var doAddPhaseTeam = function(req, res, team) {
 };
 
 
-// Get a phase by ID
-module.exports.getPhaseById = function(req, res) {
-    console.log('reading one phase');
-    console.log('Finding phase details', req.params);
-    if (req.params && req.params.phaseid) {
-        Phase
-            .findById(req.params.phaseid)
-            .exec(function(err, phase) {
-                if (!phase) {
-                    sendJsonResponse(res, 404, {
-                        "message": "phaseid not found"
-                    });
-                    return;
-                } else if (err) {
-                    console.log(err)
-                    sendJsonResponse(res, 404, err);
-                    return;
+// Get a phase by ID from the Team
+module.exports.getAthletePhaseByIdTeam = function(req, res) {
+    console.log("Getting phase by id");
+    if (req.params && req.params.teamid && req.params.phasesid) {
+        User
+            .findById(req.params.userid)
+            .select('sale')
+            .exec(
+                function(err, user) {
+                    //console.log(user);
+                    var response, item;
+                    if (!user) {
+                        sendJsonResponse(res, 404, {
+                            "message": "userid not found"
+                        });
+                        return;
+                    } else if (err) {
+                        sendJsonResponse(res, 400, err);
+                        return;
+                    }
+                    if (user.sale) {
+                        item = user.sale.id(req.params.itemid);
+                        if (!item) {
+                            sendJsonResponse(res, 404, {
+                                "message": "itemid not found"
+                            });
+                        } else {
+                            response = {
+                                user: {
+                                    id: req.params.userid
+                                },
+                                item: item
+                            };
+                            sendJsonResponse(res, 200, response);
+                        }
+                    } else {
+                        sendJsonResponse(res, 404, {
+                            "message": "No item found"
+                        });
+                    }
                 }
-                sendJsonResponse(res, 200, phase);
-            });
+            );
     } else {
-        console.log('No phaseid specified');
         sendJsonResponse(res, 404, {
-            "message": "No phaseid in request"
+            "message": "Not found, userid and itemid are both required"
         });
     }
 }
