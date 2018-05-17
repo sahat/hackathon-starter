@@ -98,7 +98,7 @@ module.exports.updateTeam = function(req, res) {
 			      	if (err) {
 			        	return next(err);
 			      	}
-			      	req.flash('success', { msg: 'Profile information has been updated.' });
+			      	req.flash('success', { msg: 'Team information has been updated.' });
 			      	console.log('team information was updated');
 			    });
                 sendJsonResponse(res, 200, team);
@@ -108,8 +108,7 @@ module.exports.updateTeam = function(req, res) {
         sendJsonResponse(res, 404, {
             "message": "No teamid in request"
         });
- 	}
-    
+ 	}  
 }
 
 
