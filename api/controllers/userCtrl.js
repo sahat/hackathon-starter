@@ -24,7 +24,6 @@ module.exports.getUserById = function(req, res) {
                     sendJsonResponse(res, 404, err);
                     return;
                 }
-               // console.log(user)
                 sendJsonResponse(res, 200, user);
             });
     } else {
