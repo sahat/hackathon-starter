@@ -20,12 +20,12 @@ var sendJsonResponse = function(res, status, content) {
     res.json(content);
 };
 
-// Create a new phase for a Team
+// Create a new phase for a Team and adds that phase to each athlete on the team
 module.exports.createPhaseTeam = function(req, res) {
     if (req.params.teamid) {
         Team
             .findById(req.params.teamid)
-            .select('phases')
+            .select('phases athletes')
             .exec(
                 function(err, team) {
                     if (err) {
@@ -64,9 +64,12 @@ var doAddPhaseTeam = function(req, res, team) {
         });
 
         var athletes = team.athletes;
-
+        console.log(athletes);
+        
         for(var i = 0; i < athletes.length; i++){
-            athletes[i].phases.push({
+            console.log(athletes[i].athletes);
+            console.log(athletes[i].athlete.phases);
+            athletes[i].athlete.phases.push({
                 name: req.body.name,
                 start: req.body.start,
                 end: req.body.end,
