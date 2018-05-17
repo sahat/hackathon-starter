@@ -1,0 +1,130 @@
+{
+	"name": "Monday Workout - Football Phase 1",
+	"block": [{
+	"name": "A",
+	"exercises": [{
+	"name": "Back Squat",
+	"sets": [{
+		"_id": new ObjectId(),
+		"setnumber": 1,
+		"reps": 5,
+		"percent": 50,
+		"calcweight": 185,
+		"actweight": 185
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 2,
+		"reps": 5,
+		"percent": 55,
+		"calcweight": 200,
+		"actweight": 200
+	}
+	{
+		"_id": new ObjectId(),
+		"setnumber": 3,
+		"reps": 5,
+		"percent": 60,
+		"calcweight": 225,
+		"actweight": 225
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 4,
+		"reps": 5,
+		"percent": 65,
+		"calcweight": 245,
+		"actweight": 255
+	}],
+	"tutorial": "https://youtube.com",
+	"trainingnotes": "get proper depth, bigs don't be fat"
+	},
+	{
+		"name": "Hip Abduction Walks",
+		"sets": [{
+			"_id": new ObjectId(),
+			"setnumber": 1,
+			"reps": "Red Band"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 2,
+			"reps": "Red Band"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 3,
+			"reps": "Red Band"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 4,
+			"reps": "Red Band"
+		}]
+	},
+	{
+	"name": "B",
+	"exercises": [{
+	"name": "Hang Clean",
+	"sets": [{
+		"_id": new ObjectId(),
+		"setnumber": 1,
+		"reps": 3,
+		"percent": 50,
+		"calcweight": 185,
+		"actweight": 185
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 2,
+		"reps": 3,
+		"percent": 55,
+		"calcweight": 200,
+		"actweight": 200
+	}
+	{
+		"_id": new ObjectId(),
+		"setnumber": 3,
+		"reps": 3,
+		"percent": 60,
+		"calcweight": 225,
+		"actweight": 225
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 4,
+		"reps": 3,
+		"percent": 65,
+		"calcweight": 245,
+		"actweight": 255
+	}],
+	"tutorial": "https://youtube.com",
+	"trainingnotes": "make sure you explode on your cleans"
+	},
+	{
+		"name": "Short Hurdle Hops",
+		"sets": [{
+			"_id": new ObjectId(),
+			"setnumber": 1,
+			"reps": "3"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 2,
+			"reps": "3"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 3,
+			"reps": "3"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 4,
+			"reps": "3"
+		}]
+	}],
+	"time": "06/01/2018",
+	"trainingnotes": "Get the most out of this training session",
+	"athletenotes": "This sucked!!"
+}

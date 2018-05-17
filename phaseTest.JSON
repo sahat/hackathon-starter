@@ -1,0 +1,252 @@
+{
+	"name": "Football Summer Phase 1 Anabolic Preparation",
+	"start": "05/14/2018",
+	"end": "05/21/2018",
+	"workouts": [{
+	"name": "Monday Workout - Football Phase 1",
+	"block": [{
+	"name": "A",
+	"exercises": [{
+	"name": "Back Squat",
+	"sets": [{
+		"_id": new ObjectId(),
+		"setnumber": 1,
+		"reps": 5,
+		"percent": 50,
+		"calcweight": 185,
+		"actweight": 185
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 2,
+		"reps": 5,
+		"percent": 55,
+		"calcweight": 200,
+		"actweight": 200
+	}
+	{
+		"_id": new ObjectId(),
+		"setnumber": 3,
+		"reps": 5,
+		"percent": 60,
+		"calcweight": 225,
+		"actweight": 225
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 4,
+		"reps": 5,
+		"percent": 65,
+		"calcweight": 245,
+		"actweight": 255
+	}],
+	"tutorial": "https://youtube.com",
+	"trainingnotes": "get proper depth, bigs don't be fat"
+	},
+	{
+		"name": "Hip Abduction Walks",
+		"sets": [{
+			"_id": new ObjectId(),
+			"setnumber": 1,
+			"reps": "Red Band"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 2,
+			"reps": "Red Band"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 3,
+			"reps": "Red Band"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 4,
+			"reps": "Red Band"
+		}]
+	},
+	{
+	"name": "B",
+	"exercises": [{
+	"name": "Hang Clean",
+	"sets": [{
+		"_id": new ObjectId(),
+		"setnumber": 1,
+		"reps": 3,
+		"percent": 50,
+		"calcweight": 185,
+		"actweight": 185
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 2,
+		"reps": 3,
+		"percent": 55,
+		"calcweight": 200,
+		"actweight": 200
+	}
+	{
+		"_id": new ObjectId(),
+		"setnumber": 3,
+		"reps": 3,
+		"percent": 60,
+		"calcweight": 225,
+		"actweight": 225
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 4,
+		"reps": 3,
+		"percent": 65,
+		"calcweight": 245,
+		"actweight": 255
+	}],
+	"tutorial": "https://youtube.com",
+	"trainingnotes": "make sure you explode on your cleans"
+	},
+	{
+		"name": "Short Hurdle Hops",
+		"sets": [{
+			"_id": new ObjectId(),
+			"setnumber": 1,
+			"reps": "3"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 2,
+			"reps": "3"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 3,
+			"reps": "3"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 4,
+			"reps": "3"
+		}]
+	}],
+		"time": "06/01/2018",
+		"trainingnotes": "Get the most out of this training session",
+		"athletenotes": "This sucked!!"
+	},
+	{
+	"name": "Day 2 Workout - Football Phase 1",
+	"block": [{
+	"name": "A",
+	"exercises": [{
+	"name": "Bench Press",
+	"sets": [{
+		"_id": new ObjectId(),
+		"setnumber": 1,
+		"reps": 5,
+		"percent": 50,
+		"calcweight": 185,
+		"actweight": 185
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 2,
+		"reps": 5,
+		"percent": 55,
+		"calcweight": 200,
+		"actweight": 200
+	}
+	{
+		"_id": new ObjectId(),
+		"setnumber": 3,
+		"reps": 5,
+		"percent": 60,
+		"calcweight": 225,
+		"actweight": 225
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 4,
+		"reps": 5,
+		"percent": 65,
+		"calcweight": 245,
+		"actweight": 255
+	}],
+	"tutorial": "https://youtube.com",
+	"trainingnotes": "get proper depth, bigs don't be fat"
+	},
+	{
+		"name": "Scap Push-ups",
+		"sets": [{
+			"_id": new ObjectId(),
+			"setnumber": 1,
+			"reps": "25 - add a 45lb. plate"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 2,
+			"reps": "25 - add a 45lb. plate"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 3,
+			"reps": "25 - add a 45lb. plate"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 4,
+			"reps": "25 - add a 45lb. plate"
+		}]
+	},
+	{
+	"name": "B",
+	"exercises": [{
+	"name": "Bent Over Row",
+	"sets": [{
+		"_id": new ObjectId(),
+		"setnumber": 1,
+		"reps": 8,
+		"percent": 50,
+		"calcweight": 185,
+		"actweight": 185
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 2,
+		"reps": 8,
+		"percent": 50,
+		"calcweight": 185,
+		"actweight": 185
+	}
+	{
+		"_id": new ObjectId(),
+		"setnumber": 3,
+		"reps": 8,
+		"percent": 50,
+		"calcweight": 185,
+		"actweight": 185
+	}],
+	"tutorial": "https://youtube.com",
+	"trainingnotes": "make sure you explode on your cleans"
+	},
+	{
+		"name": "Chin-ups",
+		"sets": [{
+			"_id": new ObjectId(),
+			"setnumber": 1,
+			"reps": "10 add chains or bands as needed"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 2,
+			"reps": "10 add chains or bands as needed"
+		},
+		{
+			"_id": new ObjectId(),
+			"setnumber": 3,
+			"reps": "10 add chains or bands as needed"
+		}]
+	}],
+		"time": "06/03/2018",
+		"trainingnotes": "Get the most out of this training session",
+		"athletenotes": "This sucked worse than Monday!!"
+	}]
+}

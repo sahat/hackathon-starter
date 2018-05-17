@@ -12,17 +12,17 @@ const mongoose = require('mongoose');
    actweight: Number
  })
 
- const exerciseSchema = new mongoose.Schema({
+ const exerciseWithRepsSchema = new mongoose.Schema({
   name: {type: String, require: true},
   sets: [setSchema],
   tutorial: String,
   trainingnotes: String,
-  max: {} //this will hold and exercise object that the set percentages will be calculated off of
+  max: {} //this will hold an object that will hold the name of the exercise the set percentages will be calculated off of as well as the atheletes max for that exercise
  });
 
  const blockSchema = new mongoose.Schema({
   name: {type: String, require: true},
-  exercises: [exerciseSchema]
+  exercises: [exerciseWithRepsSchema]
  });
 
  const workoutSchema = new mongoose.Schema({
@@ -38,7 +38,8 @@ const mongoose = require('mongoose');
   start: {type: Date, require: true},
   end: {type: Date, require: true},
   workouts: [workoutSchema],
-  notes: String
+  notes: String,
+  approved: Boolean
  });
 
 const userSchema = new mongoose.Schema({
