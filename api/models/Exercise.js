@@ -1,3 +1,5 @@
+/*This file is for exercises that aren't yet assigned to a workout*/
+
 const mongoose = require('mongoose');
 
 

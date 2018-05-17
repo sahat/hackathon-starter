@@ -39,7 +39,7 @@ const mongoose = require('mongoose');
   end: {type: Date, require: true},
   workouts: [workoutSchema],
   notes: String,
-  approved: Boolean
+  approved: {type: Boolean, default: false}
  });
 
 const userSchema = new mongoose.Schema({
@@ -58,27 +58,26 @@ const userSchema = new mongoose.Schema({
   tokens: Array,
 
   profile: {
-    firstName: String,
-    lastName: String,
-    phoneNumber: {type: String, require: true},
+    first: {type: String, require: true},
+    last: {type: String, require: true},
+    phone: {type: String, require: true},
     gender: String,
     location: String,
     website: String,
     picture: String
   },
-
+  isCoach: {type: Boolean, default: false},
+  isAdmin: {type: Boolean, default: false},
+  
   coach: {
-    isCoach: {type: Boolean, default: false},
     coachTeam: {} // will hold an object of the team
   },
 
   admin: {
-    isAdmin: {type: Boolean, default: false},
     adminSports: [] // Array of all teams 
   },
 
   athlete: {
-    isAthlete: {type: Boolean, default: false},
     sport: String,
     maxBench: Number,
     maxClean: Number,
@@ -91,13 +90,15 @@ const userSchema = new mongoose.Schema({
 
 const groupSchema = new mongoose.Schema({
   name: {type: String, unique: true, require: true},
-  athletes: [userSchema]
+  athletes: [userSchema],
+  phases: [phaseSchema]
 })
 
 const teamSchema = new mongoose.Schema({
   name: {type: String, unique: true, require: true},
   athletes: [userSchema],
-  groups: [groupSchema]
+  groups: [groupSchema],
+  phases: [phaseSchema]
 });
 
 /**
@@ -142,7 +143,9 @@ userSchema.methods.gravatar = function gravatar(size) {
 const User = mongoose.model('User', userSchema);
 const Team = mongoose.model('Team', teamSchema);
 const Group = mongoose.model('Group', groupSchema);
+const Phase = mongoose.model('Phase', phaseSchema);
 
 module.exports = User;
 module.exports = Team;
 module.exports = Group;
+module.exports = Phase;

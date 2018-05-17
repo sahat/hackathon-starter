@@ -1,36 +1,91 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Team = mongoose.model('Team');
+var Phase = mongoose.model('Phase');
+
+var request = require('request');
+var apiOptions = {
+    server: "http://localhost:8080"
+};
+
+
+//need to set this to production variable
+if (process.env.NODE_ENV === 'production') {
+    apiOptions.server = "https://nameless-basin-42853.herokuapp.com";
+}
+
 
 var sendJsonResponse = function(res, status, content) {
     res.status(status);
     res.json(content);
 };
 
-// Create a new team
-module.exports.createPhase = function(req, res) {
-    const phase = new Phase({
-    	name: req.body.name,
-        start: req.body.start,
-        end: req.body.end,
-  		workouts: req.body.workouts,
-  		notes: req.body.notes
-    });
+// Create a new phase for a Team
+module.exports.createPhaseTeam = function(req, res) {
+    if (req.params.teamid) {
+        Team
+            .findById(req.params.teamid)
+            .select('phases')
+            .exec(
+                function(err, team) {
+                    if (err) {
+                        sendJsonResponse(res, 400, err);
+                    } else {
+                        //console.log(req.body);
+                        //console.log(res);
+                        //console.log(user);
+                        doAddPhaseTeam(req, res, team);
+                    }
+                }
+            );
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid required"
+        });
+    }
 
-    phase.save((err) => {
-    	if (err) {
-    		return next(err);
-    	} else {
-    		console.log('team successfully added')
-    	}
-    })
 };
 
-// Get a team by ID
+var doAddPhaseTeam = function(req, res, team) {
+    if (!team) {
+        sendJsonResponse(res, 404, "teamid not found");
+    } else {
+        console.log('inside of doAddPhaseTeam');
+
+        console.log(team);
+        console.log(req.body);
+        var d = new Date();
+        team.phases.push({
+            name: req.body.name,
+            start: req.body.start,
+            end: req.body.end,
+            workouts: req.body.workouts,
+            notes: req.body.notes
+        });
+
+        team.save(function(err, team) {
+            var thisPhase;
+            if (err) {
+                console.log(err);
+                sendJsonResponse(res, 400, err);
+            } else {
+
+                thisPhase = team.phases[team.phases.length - 1];
+                //console.log(thisAssignment);
+                sendJsonResponse(res, 201, thisPhase);
+            }
+        });
+
+    }
+};
+
+
+// Get a phase by ID
 module.exports.getPhaseById = function(req, res) {
-	console.log('reading one phase');
+    console.log('reading one phase');
     console.log('Finding phase details', req.params);
     if (req.params && req.params.phaseid) {
-        User
+        Phase
             .findById(req.params.phaseid)
             .exec(function(err, phase) {
                 if (!phase) {
@@ -43,51 +98,217 @@ module.exports.getPhaseById = function(req, res) {
                     sendJsonResponse(res, 404, err);
                     return;
                 }
-                sendJsonResponse(res, 200, user);
+                sendJsonResponse(res, 200, phase);
             });
     } else {
         console.log('No phaseid specified');
         sendJsonResponse(res, 404, {
-            "message": "No teamid in request"
+            "message": "No phaseid in request"
         });
     }
 }
 
-// Get all teams
-module.exports.getAllPhases = function(req, res) {
-	console.log('getting all phases');
-    Phase
-        .find()
-        .exec(function(err, phase) {
-            if (!team) {
-                sendJsonResponse(res, 404, {
-                    "message": "No phases found"
-                });
-                return;
-            } else if (err) {
-                console.log(err)
-                sendJsonResponse(res, 404, err);
-                return;
+// Get all phases
+// module.exports.getAllPhases = function(req, res) {
+//     console.log('getting all phases');
+//     Team
+//         .find()
+//         .exec(function(err, team) {
+//             if (!team) {
+//                 sendJsonResponse(res, 404, {
+//                     "message": "No teams found"
+//                 });
+//                 return;
+//             } else if (err) {
+//                 console.log(err)
+//                 sendJsonResponse(res, 404, err);
+//                 return;
+//             }
+//             sendJsonResponse(res, 200, team);
+//         });
+// }
+
+
+//will get all team-wide phases
+var getAllPhasesByTeam = (req, res, callback) => {
+    var requestOptions, path;
+    console.log('inside getAllItems');
+    path = "/getPhaseByTeam";
+    requestOptions = {
+        url: apiOptions.server + path,
+        method: "GET",
+        json: {}
+    };
+    request(
+        requestOptions,
+        function(err, response, body) {
+            var data = body;
+            if (response.statusCode === 200) {
+
+                callback(req, res, data);
+            } else {
+                _showError(req, res, response.statusCode);
             }
-            sendJsonResponse(res, 200, user);
-        });
+        }
+    );
 }
 
-// Update a phase by ID
-module.exports.updatePhase = function(req, res) {
-	Phase.findById(req.teamid, (err, team) => {
-    if (err) { return next(err); }
-    team.name = req.body.name;
-    team.athletes = req.body.athletes;
-    team.groups = req.body.groups;
-    team.save((err) => {
-      	if (err) {
-        	return next(err);
-      	}
-      	req.flash('success', { msg: 'Profile information has been updated.' });
-      	console.log('team information was updated');
+/**
+* GET /getPhaseByTeam
+* get all phases that are for the whole team
+*/
+exports.getPhaseByTeam = (req,res) => {
+    
+    
+    console.log('getting recent items in exports')
+    phases = User.aggregate(
+        [{ $unwind: "$phases" },
+        { $project: {name: 1, _id: 1, profile: 1, phase_id: "$phases._id", phase_name: "$phases.name", phase_start: "$phases.start", phase_end: "$phases.end", phase_workouts: "$phases.workouts", phase_notes: "$phases.notes", phase_approved: "$phases_approved"} },
+        { $sort: {phase_id: 1} }]).exec(
+            function(err, phases) {
+                if (!items){
+                    sendJsonResponse(res, 404, 'No documents found');
+                    return;
+                } else if (err) {
+                    sendJsonResponse(res, 400, err)
+                    return;
+                }
+                if(items) {
+                    sendJsonResponse(res, 200, items);
+                }
+            }
+        );
+}
+
+exports.allPhases = (req,res) => {
+    console.log('inside All phases');
+    // console.log(req.params.itemid);
+    // console.log(req.params.userid);
+
+    getAllPhasesByTeam(req, res, function(req, res, responseData) {
+        //renderAllItems(req, res, responseData);
+        console.log('got inside of allPhases export, need to write a renderAllPhasesByTeam page')
     });
-  });
 }
 
+// Update a phase by Team
+module.exports.updatePhaseByTeam = function(req, res) {
+    if (!req.params.teamid || !req.params.phaseid) {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid and phaseid are both required"
+        });
+        return;
+    }
+    Team
+        .findById(req.params.teamid)
+        .select('phases')
+        .exec(
+            function(err, team) {
+                var thisPhase;
+                if (!team) {
+                    sendJsonResponse(res, 404, {
+                        "message": "phaseid not found"
+                    });
+                    return;
+                } else if (err) {
+                    sendJsonResponse(res, 400, err);
+                    return;
+                }
+                if (team.phases) {
+                    thisPhase = team.phase.id(req.params.phaseid);
+                    if (!thisPhase) {
+                        sendJsonResponse(res, 404, {
+                            "message": "phaseid not found"
+                        });
+                    } else {
+                       // console.log(team);
+                       console.log('inside of update item')
+                        console.log(req.body)
 
+                        thisPhase.name = req.body.name;
+                        thisPhase.start = req.body.start;
+                        thisPhase.end = req.body.end;
+                        thisPhase.workouts = req.body.workouts;
+                        thisPhase.notes = req.body.notes;
+                        thisPhase.approved = req.body.approved;
+
+                        team.save(function(err, team) {
+                            
+                            if (err) {
+                                sendJsonResponse(res, 400, err);
+                            } else {
+                                //console.log(thisPhase);
+                                sendJsonResponse(res, 200, thisPhase);
+                            }
+                        });
+
+                    }
+                } else {
+                    sendJsonResponse(res, 404, {
+                        "message": "No phase to update"
+                    });
+                }
+            }
+        );
+};
+
+//update a phase by user
+module.exports.updatePhaseByUser = function(req, res) {
+    if (!req.params.userid || !req.params.phaseid) {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, userid and phaseid are both required"
+        });
+        return;
+    }
+    User
+        .findById(req.params.userid)
+        .select('athlete.phases')
+        .exec(
+            function(err, user) {
+                var thisPhase;
+                if (!user) {
+                    sendJsonResponse(res, 404, {
+                        "message": "phaseid not found"
+                    });
+                    return;
+                } else if (err) {
+                    sendJsonResponse(res, 400, err);
+                    return;
+                }
+                if (user.athlete.phases) {
+                    thisPhase = user.athlete.phase.id(req.params.phaseid);
+                    if (!thisPhase) {
+                        sendJsonResponse(res, 404, {
+                            "message": "phaseid not found"
+                        });
+                    } else {
+                       // console.log(team);
+                       console.log('inside of update phaseByUser')
+                        console.log(req.body)
+
+                        thisPhase.name = req.body.name;
+                        thisPhase.start = req.body.start;
+                        thisPhase.end = req.body.end;
+                        thisPhase.workouts = req.body.workouts;
+                        thisPhase.notes = req.body.notes;
+                        thisPhase.approved = req.body.approved;
+
+                        user.save(function(err, user) {
+                            
+                            if (err) {
+                                sendJsonResponse(res, 400, err);
+                            } else {
+                                //console.log(thisPhase);
+                                sendJsonResponse(res, 200, thisPhase);
+                            }
+                        });
+
+                    }
+                } else {
+                    sendJsonResponse(res, 404, {
+                        "message": "No phase to update"
+                    });
+                }
+            }
+        );
+};

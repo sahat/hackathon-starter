@@ -5,7 +5,7 @@
     "workouts": [
     {
         "name": "Monday Workout - Football Phase 1",
-        "block": [
+        "blocks": [
         {
             "name": "A",
             "exercises": [
@@ -13,7 +13,6 @@
                 "name": "Back Squat",
                 "sets": [
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 1,
                     "reps": 5,
                     "percent": 50,
@@ -21,15 +20,13 @@
                     "actweight": 185
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 2,
                     "reps": 5,
                     "percent": 55,
                     "calcweight": 200,
                     "actweight": 200
-                }
+                },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 3,
                     "reps": 5,
                     "percent": 60,
@@ -37,7 +34,6 @@
                     "actweight": 225
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 4,
                     "reps": 5,
                     "percent": 65,
@@ -51,22 +47,18 @@
                 "name": "Hip Abduction Walks",
                 "sets": [
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 1,
                     "reps": "Red Band"
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 2,
                     "reps": "Red Band"
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 3,
                     "reps": "Red Band"
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 4,
                     "reps": "Red Band"
                 }]
@@ -79,7 +71,6 @@
                 "name": "Hang Clean",
                 "sets": [
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 1,
                     "reps": 3,
                     "percent": 50,
@@ -87,15 +78,13 @@
                     "actweight": 185
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 2,
                     "reps": 3,
                     "percent": 55,
                     "calcweight": 200,
                     "actweight": 200
-                }
+                },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 3,
                     "reps": 3,
                     "percent": 60,
@@ -103,7 +92,6 @@
                     "actweight": 225
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 4,
                     "reps": 3,
                     "percent": 65,
@@ -117,22 +105,18 @@
                 "name": "Short Hurdle Hops",
                 "sets": [
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 1,
                     "reps": "3"
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 2,
                     "reps": "3"
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 3,
                     "reps": "3"
                 },
                 {
-                    "_id": new ObjectId(),
                     "setnumber": 4,
                     "reps": "3"
                 }]
