@@ -115,6 +115,9 @@ app.use((req, res, next) => {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
+const routeApi = require('./api/routes/index');
+app.use('/api', routeApi);
+
 /**
  * Primary app routes.
  */
