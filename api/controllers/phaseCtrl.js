@@ -63,6 +63,18 @@ var doAddPhaseTeam = function(req, res, team) {
             notes: req.body.notes
         });
 
+        var athletes = team.athletes;
+
+        for(var i = 0; i < athletes.length; i++){
+            athletes[i].phases.push({
+                name: req.body.name,
+                start: req.body.start,
+                end: req.body.end,
+                workouts: req.body.workouts,
+                notes: req.body.notes
+            });
+        }
+
         team.save(function(err, team) {
             var thisPhase;
             if (err) {

@@ -1,0 +1,15 @@
+{
+    "email": "test1@test.com",
+    "profile":
+    {
+        "first": "John",
+        "last": "Doe",
+        "phone": "(253)333-3333"
+    },
+    "isCoach": false,
+    "isAdmin": false,
+    "athlete":
+    {
+        "sport": "mens soccer"
+    }
+}
