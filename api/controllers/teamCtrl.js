@@ -75,6 +75,13 @@ module.exports.getAllTeams = function(req, res) {
         });
 }
 
+//Get all athletes
+module.exports.getAllAthletes = function(req, res) {
+
+}
+
+
+
 // Update a team by ID - PUT
 module.exports.updateTeam = function(req, res) {
  	if (req.params && req.params.teamid) {
@@ -138,8 +145,16 @@ module.exports.addUser = function(req, res) {
 		                    sendJsonResponse(res, 404, err);
 		                    return;
 		                }
-		                newAthletesArr = team.athletes.concat([user])
-		                team.athletes = newAthletesArr
+
+                        console.log('inside of addUser about to log user');
+                        console.log(user);
+                        console.log(user._id);
+                        var athlete_id = user._id;
+
+                        team.athletes.push(athlete_id);
+
+		                //newAthletesArr = team.athletes.concat([user])
+		                //team.athletes = newAthletesArr
 		                team.save((err) => {
 					      	if (err) {
 					        	return err;

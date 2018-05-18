@@ -174,6 +174,12 @@ module.exports.deleteGroup = function(req, res) {
  	}  	
 }
 
+//Get all athletes - GET
+module.exports.getAllAthletes = function(req, res) {
+
+}
+
+
 // Add a user to a group - PUT
 module.exports.addUser = function(req, res) {
 	console.log('adding a user to a group');
@@ -203,8 +209,14 @@ module.exports.addUser = function(req, res) {
 		                    sendJsonResponse(res, 404, err);
 		                    return;
 		                }
-		                newAthletesArr = group.athletes.concat([user])
-		                group.athletes = newAthletesArr
+		                
+
+                  //       newAthletesArr = group.athletes.concat([user])
+		                // group.athletes = newAthletesArr
+                        var athlete_id = user._id;
+
+                        group.athletes.push(athlete_id);
+
 		                group.save((err) => {
 					      	if (err) {
 					        	return err;
