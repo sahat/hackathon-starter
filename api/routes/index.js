@@ -33,14 +33,13 @@ router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
 router.put('/addUserToGroup/:groupid/:userid', groupCtrl.addUser);
 
 //phaseCtrl routes
-router.get('/getPhaseTeam/:teamid/:userid', phaseCtrl.getAthletePhaseByIdTeam);//needs to be tested
-router.get('/allPhaseTeam', phaseCtrl.getPhaseByTeam);//needs to be tested
-//router.get('/allPhaseUser', phaseCtrl.getAllPhasesByUser);//need to write controller
+
+router.get('/allPhaseTeam', phaseCtrl.getPhasesByTeam);//needs to be tested
 router.get('/allPhases', phaseCtrl.allPhases);//rendering route, tbd
-router.put('/updatePhaseTeam/:phaseid', phaseCtrl.updatePhaseByTeam);//NEEDS TO BE TESTED
-router.put('/updatePhaseUser/:phaseid',phaseCtrl.updatePhaseByUser);//NEEDS TO BE TESTED
+router.put('/updatePhaseTeam/:phaseid', phaseCtrl.updatePhaseByTeam);//additional functionality if time allows
+router.put('/updatePhaseUser/:phaseid',phaseCtrl.updatePhaseByUser);//additional functionality if time allows
 router.post('/:teamid/phase', phaseCtrl.createPhaseTeam);//works as intended
-router.post('/:groupid/phase')
+router.post('/:groupid/phase', phaseCtrl.createPhaseGroup)//needs to be written and tested
 
 // workoutCtrl routes
 router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise);

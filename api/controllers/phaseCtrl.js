@@ -152,54 +152,7 @@ var doAddPhaseTeam = function(req, res, team) {
 };
 
 
-// Get a phase by ID from the Team
-module.exports.getAthletePhaseByIdTeam = function(req, res) {
-    console.log("Getting phase by id");
-    if (req.params && req.params.teamid && req.params.phasesid) {
-        User
-            .findById(req.params.userid)
-            .select('sale')
-            .exec(
-                function(err, user) {
-                    //console.log(user);
-                    var response, item;
-                    if (!user) {
-                        sendJsonResponse(res, 404, {
-                            "message": "userid not found"
-                        });
-                        return;
-                    } else if (err) {
-                        sendJsonResponse(res, 400, err);
-                        return;
-                    }
-                    if (user.sale) {
-                        item = user.sale.id(req.params.itemid);
-                        if (!item) {
-                            sendJsonResponse(res, 404, {
-                                "message": "itemid not found"
-                            });
-                        } else {
-                            response = {
-                                user: {
-                                    id: req.params.userid
-                                },
-                                item: item
-                            };
-                            sendJsonResponse(res, 200, response);
-                        }
-                    } else {
-                        sendJsonResponse(res, 404, {
-                            "message": "No item found"
-                        });
-                    }
-                }
-            );
-    } else {
-        sendJsonResponse(res, 404, {
-            "message": "Not found, userid and itemid are both required"
-        });
-    }
-}
+
 
 // Get all phases
 // module.exports.getAllPhases = function(req, res) {
@@ -250,7 +203,7 @@ var getAllPhasesByTeam = (req, res, callback) => {
  * GET /getPhaseByTeam
  * get all phases that are for the whole team
  */
-exports.getPhaseByTeam = (req, res) => {
+exports.getPhasesByTeam = (req, res) => {
 
 
     console.log('getting recent items in exports')
