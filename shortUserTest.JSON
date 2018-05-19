@@ -1,9 +1,9 @@
 {
-    "email": "test2@test.com",
+    "email": "test3@test.com",
     "profile":
     {
-        "first": "Jo2hn",
-        "last": "D2oe",
+        "first": "Trey",
+        "last": "Miller",
         "phone": "(223)333-3333"
     },
     "isCoach": false,
