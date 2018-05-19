@@ -21,7 +21,7 @@ var sendJsonResponse = function(res, status, content) {
 };
 
 // Create a new phase for a group and adds that phase to each athlete in the group
-module.exports.createPhaseTeam = function(req, res) {
+module.exports.createPhaseGroup = function(req, res) {
     // if (req.params.teamid) {
     //     Team
     //         .findById(req.params.teamid)
