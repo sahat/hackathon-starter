@@ -40,7 +40,8 @@ router.get('/allPhaseTeam', phaseCtrl.getPhaseByTeam);//needs to be tested
 router.get('/allPhases', phaseCtrl.allPhases);//rendering route, tbd
 router.put('/updatePhaseTeam/:phaseid', phaseCtrl.updatePhaseByTeam);//NEEDS TO BE TESTED
 router.put('/updatePhaseUser/:phaseid',phaseCtrl.updatePhaseByUser);//NEEDS TO BE TESTED
-router.post('/:teamid/phase', phaseCtrl.createPhaseTeam);//TESTED AND PASSED
+router.post('/:teamid/phase', phaseCtrl.createPhaseTeam);//works as intended
+router.post('/:groupid/phase')
 
 // workoutCtrl routes
 router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise);
