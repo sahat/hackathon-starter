@@ -48,5 +48,7 @@ router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise);
 router.post('/createWorkout/:phaseid', workoutCtrl.createWorkout);
 router.get('/getWorkout/:workoutid', workoutCtrl.getWorkout);
 router.get('/allWorkouts', workoutCtrl.getAllWorkouts);
+router.get('/allBlocks/:workoutid', workoutCtrl.getAllBlocks);
+
 
 module.exports = router;
