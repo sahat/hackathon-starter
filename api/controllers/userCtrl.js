@@ -250,6 +250,136 @@ module.exports.getWorkout = function(req, res) {
     }
 }
 
+// Update a user's sets in a workout - PUT
+// This function will take a userid, phaseid, workoutid, blockid, exerciseid, and setid as params and the new set in the body
+module.exports.updateSet = function(req, res) {
+	if (req.params && req.params.userid && req.params.workoutid) {
+        User
+            .findById(req.params.userid)
+            .exec(function(err, user) {
+                if (!user) {
+                    sendJsonResponse(res, 404, {
+                        "message": "userid not found"
+                    });
+                    return;
+                } else if (err) {
+                    console.log(err)
+                    sendJsonResponse(res, 404, err);
+                    return;
+                }
+                // get the index of the phase that matches the phaseid
+                var phase;
+                var phaseIndex;
+                for(var i = 0; i < user.athlete.phases.length; i++) {
+                	if(user.athlete.phases[i]._id == req.params.phaseid) {
+                		phase = user.athlete.phases[i];
+                		phaseIndex = i;
+                	}
+                }
+
+                if(phase) {
+                	// get the index of the workout that matches the workoutid
+                	var workout;
+                	var workoutIndex;
+                	for(var i = 0; i < phase.workouts.length; i++) {
+                		if(phase.workouts[i]._id == req.params.workoutid) {
+                			workout = phase.workouts[i];
+                			workoutIndex = i;
+                		}
+                	}
+
+                	if(workout) {
+                		// get the index of the block that matches the blockid
+                		var block;
+                		var blockIndex;
+                		for(var i = 0; i < workout.blocks.length; i++) {
+                			if(workout.blocks[i]._id == req.params.blockid) {
+	                			block = workout.blocks[i];
+	                			blockIndex = i;
+	                		}
+                		}
+
+                		if(block) {
+                			// get the index of the exercise that matches the exerciseid
+                			var exercise;
+                			var exerciseIndex;
+                			for(var i = 0; i < block.exercises.length; i++) {
+                				if(block.exercises[i]._id == req.params.exerciseid) {
+                					exercise = block.exercises[i]
+                					exerciseIndex = i;
+                				}
+                			}
+
+                			if(exercise) {
+                				// find the set that matches the id and set it equal to the new set
+                				var setIndex;
+                				for(var i = 0; i < exercise.sets.length; i++) {
+                					if(exercise.sets[i]._id == req.params.setid) {
+                						setIndex = i;
+                					}
+                				}
+
+                				console.log(setIndex);
+
+                				if(setIndex > -1) {
+                					// use the index's to reference the real set object in the user
+                					// update all of the set information except the ObjectId
+                					user.athlete.phases[phaseIndex].workouts[workoutIndex].blocks[blockIndex].exercises[exerciseIndex].sets[setIndex].setnumber = req.body.setnumber;
+                					user.athlete.phases[phaseIndex].workouts[workoutIndex].blocks[blockIndex].exercises[exerciseIndex].sets[setIndex].reps = req.body.reps;
+                					user.athlete.phases[phaseIndex].workouts[workoutIndex].blocks[blockIndex].exercises[exerciseIndex].sets[setIndex].percent = req.body.percent;
+                					user.athlete.phases[phaseIndex].workouts[workoutIndex].blocks[blockIndex].exercises[exerciseIndex].sets[setIndex].calcweight = req.body.calcweight;
+                					user.athlete.phases[phaseIndex].workouts[workoutIndex].blocks[blockIndex].exercises[exerciseIndex].sets[setIndex].actweight = req.body.actweight;
+
+                					user.save((err) => {
+								      	if (err) {
+								        	return err;
+								      	}
+								      	sendJsonResponse(res, 200, user);
+								      	console.log('User set information was updated');
+								    });
+                				} else {
+                					console.log('no sets have the specified setid');
+				                	sendJsonResponse(res, 404, {
+							            "message": "no sets have the specified setid"
+							        });
+                				}
+
+                			} else {
+                				console.log('no exercises have the specified exerciseid');
+			                	sendJsonResponse(res, 404, {
+						            "message": "no exercises have the specified exerciseid"
+						        });
+                			}
+
+                		} else {
+                			console.log('no blocks have the specified blockid');
+		                	sendJsonResponse(res, 404, {
+					            "message": "no blocks have the specified blockid"
+					        });
+                		}
+
+                	} else {
+                		console.log('no workouts have the specified workoutid');
+	                	sendJsonResponse(res, 404, {
+				            "message": "no workouts have the specified workoutid"
+				        });
+                	}
+
+                } else {
+                	console.log('no phases have the specified phaseid');
+                	sendJsonResponse(res, 404, {
+			            "message": "no phases have the specified phaseid"
+			        });
+                }
+            });
+    } else {
+    	console.log('No userid specified');
+        sendJsonResponse(res, 404, {
+            "message": "No userid in request"
+        });
+    }
+}
+
 
 
 
