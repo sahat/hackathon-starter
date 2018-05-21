@@ -1,5 +1,5 @@
 {
-    "email": "test3@test.com",
+    "email": "test2@test.com",
     "profile":
     {
         "first": "Trey",
@@ -10,6 +10,6 @@
     "isAdmin": false,
     "athlete":
     {
-        "sport": "mens soccer"
+        "sport": "Men's Track"
     }
 }

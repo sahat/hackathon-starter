@@ -30,7 +30,7 @@ router.get('/allGroups', groupCtrl.getAllGroups);
 router.post('/createGroup/:teamid', groupCtrl.createGroup);
 router.put('/updateGroup/:groupid', groupCtrl.updateGroup);
 router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
-router.put('/addUserToGroup/:groupid/:userid', groupCtrl.addUser);
+router.put('/addUserToGroup/:teamid/:groupid/:userid', groupCtrl.addUser);//tested and works as intended
 
 //phaseCtrl routes
 
@@ -38,8 +38,8 @@ router.get('/allPhaseTeam', phaseCtrl.getPhasesByTeam);//needs to be tested
 router.get('/allPhases', phaseCtrl.allPhases);//rendering route, tbd
 router.put('/updatePhaseTeam/:phaseid', phaseCtrl.updatePhaseByTeam);//additional functionality if time allows
 router.put('/updatePhaseUser/:phaseid',phaseCtrl.updatePhaseByUser);//additional functionality if time allows
-router.post('/:teamid/phase', phaseCtrl.createPhaseTeam);//works as intended
-router.post('/:groupid/phase', phaseCtrl.createPhaseGroup)//needs to be written and tested
+router.post('/phase/:teamid', phaseCtrl.createPhaseTeam);//works as intended
+router.post('/phase/:teamid/:groupid', phaseCtrl.createPhaseGroup)//needs to be written and tested
 
 // workoutCtrl routes
 router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise);
