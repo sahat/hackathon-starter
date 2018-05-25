@@ -1,8 +1,9 @@
 {
     "name": "Monday Workout - Football Phase 1",
-    "block": [
+    "blocks": [
     {
         "name": "A",
+        "_id": new ObjectId(),
         "exercises": [
         {
             "name": "Back Squat",
@@ -22,7 +23,7 @@
                 "percent": 55,
                 "calcweight": 200,
                 "actweight": 200
-            }
+            },
             {
                 "_id": new ObjectId(),
                 "setnumber": 3,
@@ -69,6 +70,7 @@
     },
     {
         "name": "B",
+        "_id": new ObjectId(),
         "exercises": [
         {
             "name": "Hang Clean",
@@ -88,7 +90,7 @@
                 "percent": 55,
                 "calcweight": 200,
                 "actweight": 200
-            }
+            },
             {
                 "_id": new ObjectId(),
                 "setnumber": 3,
