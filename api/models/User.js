@@ -48,22 +48,11 @@ const userSchema = new mongoose.Schema({
   passwordResetToken: String,
   passwordResetExpires: Date,
 
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  steam: String,
-  tokens: Array,
-
   profile: {
     first: {type: String, require: true},
     last: {type: String, require: true},
     phone: {type: String, require: true},
     gender: String,
-    location: String,
-    website: String,
     picture: String
   },
   isCoach: {type: Boolean, default: false},
@@ -83,8 +72,8 @@ const userSchema = new mongoose.Schema({
     maxClean: Number,
     maxSquat: Number,
     maxDeadlift: Number,
-    groups: [], // Array[groupSchema], array of groups the athlete is apart of 
-    phases: [phaseSchema] // Array[workoutSchema]
+    groups: [], 
+    phases: [phaseSchema] 
   }
 }, { timestamps: true });
 

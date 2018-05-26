@@ -92,11 +92,33 @@ exports.postSignup = (req, res, next) => {
     return res.redirect('/signup');
   }
 
-  
+  var isAdmin = false
+  var isCoach = false
+
+  if (req.body.userType == 'Admin') {
+    isAdmin = true
+  } else if (req.body.userType == 'Coach') {
+    isCoach = true
+  } 
 
   const user = new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    isAdmin: isAdmin,
+    isCoach: isCoach,
+    profile: {
+      first: req.body.first,
+      last: req.body.last,
+      phone: req.body.phone,
+      gender: req.body.gender
+    },
+    athlete: {
+      sport: req.body.sport,
+      maxBench: req.body.bench,
+      maxClean: req.body.clean,
+      maxSquat: req.body.squat,
+      maxDeadlift: req.body.deadlift
+    }
   });
   console.log(User);
   console.log(req.body);
