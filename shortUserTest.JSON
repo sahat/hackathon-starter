@@ -1,0 +1,15 @@
+{
+    "email": "test2@test.com",
+    "profile":
+    {
+        "first": "Trey",
+        "last": "Miller",
+        "phone": "(223)333-3333"
+    },
+    "isCoach": false,
+    "isAdmin": false,
+    "athlete":
+    {
+        "sport": "Men's Track"
+    }
+}

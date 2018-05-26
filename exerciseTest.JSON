@@ -1,0 +1,37 @@
+{
+	"name": "Back Squat",
+	"sets": [{
+		"_id": new ObjectId(),
+		"setnumber": 1,
+		"reps": 5,
+		"percent": 50,
+		"calcweight": 185,
+		"actweight": 185
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 2,
+		"reps": 5,
+		"percent": 55,
+		"calcweight": 200,
+		"actweight": 200
+	}
+	{
+		"_id": new ObjectId(),
+		"setnumber": 3,
+		"reps": 5,
+		"percent": 60,
+		"calcweight": 225,
+		"actweight": 225
+	},
+	{
+		"_id": new ObjectId(),
+		"setnumber": 4,
+		"reps": 5,
+		"percent": 65,
+		"calcweight": 245,
+		"actweight": 255
+	}],
+	"tutorial": "https://youtube.com",
+	"trainingnotes": "get lit!!!!"
+}
