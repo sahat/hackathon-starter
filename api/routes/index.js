@@ -14,7 +14,8 @@ router.put('/deletePhase/:userid/:phaseid', userCtrl.deletePhase);
 router.get('/allPhases/:userid', userCtrl.getAllPhases);
 router.get('/allWorkouts/:userid', userCtrl.getAllWorkouts);
 router.get('/workout/:userid/:workoutid', userCtrl.getWorkout);
-router.put('/updateSet/:userid/:phaseid/:workoutid/:blockid/:exerciseid/:setid', userCtrl.updateSet)
+router.put('/updateSet/:userid/:phaseid/:workoutid/:blockid/:exerciseid/:setid', userCtrl.updateSet);
+// router.get('/allExercises/:userid', userCtrl.getAllExercises);
 
 // teamCtrl routes
 router.get('/getTeam/:teamid', teamCtrl.getTeamById);

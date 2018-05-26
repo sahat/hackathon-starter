@@ -380,7 +380,56 @@ module.exports.updateSet = function(req, res) {
     }
 }
 
-
+// GET - get all exercises
+// This function will take a userid and return a list of exercises the user has done
+// module.exports.getAllExercises = function(req, res) {
+// 	if (req.params && req.params.userid) {
+//         User
+//             .findById(req.params.userid)
+//             .exec(function(err, user) {
+//                 if (!user) {
+//                     sendJsonResponse(res, 404, {
+//                         "message": "userid not found"
+//                     });
+//                     return;
+//                 } else if (err) {
+//                     console.log(err)
+//                     sendJsonResponse(res, 404, err);
+//                     return;
+//                 }
+//                 var phases = user.athlete.phases;
+//                 var workouts = [];
+//                 for (var i = 0; i < phases.length; i++) {
+//                 	console.log(phases[i].workouts)
+//                 	workouts += phases[i].workouts;
+//                 }
+//            //      if(workouts) {
+//            //      	allBlocks = [];
+//            //      	// loop through the workouts and create a list of the exercises
+//            //      	for(var i = 0; i < workouts.length; i++) {
+//            //      		allBlocks += workouts[i].blocks
+//            //      	}
+//            //      	console.log(allBlocks)
+                	
+//            //      	allExercises = [];
+//            //      	for(var i = 0; i < allBlocks.length; i++) {
+//            //      		allExercises += allBlocks[i].exercises;
+//            //      	}
+//            //      	sendJsonResponse(res, 200, allExercises);
+//            //      } else if (!workouts.length) {
+//            //      	console.log('No workout with that workoutid exists');
+// 			        // sendJsonResponse(res, 404, {
+// 			        //     "message": "No workout with the specified workoutid exists"
+// 			        // });
+//            //      }
+//             });
+//     } else {
+//         console.log('No userid specified');
+//         sendJsonResponse(res, 404, {
+//             "message": "No userid in request"
+//         });
+//     }	
+// }
 
 
 
