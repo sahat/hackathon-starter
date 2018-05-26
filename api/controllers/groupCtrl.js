@@ -247,7 +247,7 @@ module.exports.addUser = function(req, res) {
                                 req.flash('success', { msg: 'The user has been added to the group' });
                                 console.log('The user has been added to the group');
                             });
-                            sendJsonResponse(res, 200, thisGroup);
+                            sendJsonResponse(res, 201, thisGroup);
                         })
                 }
             });

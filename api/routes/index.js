@@ -14,8 +14,8 @@ router.get('/allUsers', userCtrl.getAllUsers);
 router.put('/addPhase/:userid', userCtrl.addPhase);
 router.put('/deletePhase/:userid/:phaseid', userCtrl.deletePhase);
 router.get('/allPhases/:userid', userCtrl.getAllPhases);
-router.get('/allWorkouts/:userid', userCtrl.getAllWorkouts);
-router.get('/workout/:userid/:workoutid', userCtrl.getWorkout);
+// router.get('/allWorkouts/:userid', userCtrl.getAllWorkouts);
+// router.get('/workout/:userid/:workoutid', userCtrl.getWorkout);
 //router.put('/updateSet/:userid/:phaseid/:workoutid/:blockid/:exerciseid/:setid', userCtrl.updateSet)
 
 
@@ -32,12 +32,12 @@ router.get('/allGroups', groupCtrl.getAllGroups);
 router.post('/createGroup/:teamid', groupCtrl.createGroup);
 router.put('/updateGroup/:groupid', groupCtrl.updateGroup);
 router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
-router.put('/addUserToGroup/:groupid/:userid', groupCtrl.addUser);
+router.put('/addUserToGroup/:teamid/:groupid/:userid', groupCtrl.addUser);
 
 //phaseCtrl routes
-router.get('/getPhaseTeam/:teamid/:userid', phaseCtrl.getAthletePhaseByIdTeam);//needs to be tested
-router.get('/allPhaseTeam/:teamid', phaseCtrl.getPhaseByTeam);//needs to be written
-router.get('/allPhaseGroup/:teamid/:groupid', phaseCtrl.getPhaseByGroup);
+//router.get('/getPhaseTeam/:teamid/:userid', phaseCtrl.getAthletePhaseByIdTeam);//needs to be tested
+router.get('/allPhasesTeam/:teamid', phaseCtrl.getPhasesByTeam);//needs to be written
+router.get('/allPhasesGroup/:teamid/:groupid', phaseCtrl.getPhasesByGroup);
 router.post('/:teamid/phase', phaseCtrl.createPhaseTeam);//works as intended
 router.post('/:teamid/:groupid/phase', phaseCtrl.createPhaseGroup);
 
