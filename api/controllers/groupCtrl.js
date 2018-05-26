@@ -8,7 +8,7 @@ var sendJsonResponse = function(res, status, content) {
     res.json(content);
 };
 
-// Create a new group - POST
+// Create a new group - POST -DONE 
 module.exports.createGroup = function(req, res) {
     console.log('creating new group');
     const group = new Group({
@@ -96,7 +96,7 @@ module.exports.getAllGroups = function(req, res) {
         .exec(function(err, group) {
             if (!group) {
                 sendJsonResponse(res, 404, {
-                    "message": "No gropus found"
+                    "message": "No grous found"
                 });
                 return;
             } else if (err) {
@@ -182,7 +182,7 @@ module.exports.getAllAthletes = function(req, res) {
 }
 
 
-// Add a user to a group - PUT
+// Add a user to a group - PUT - DONE
 module.exports.addUser = function(req, res) {
     console.log('adding a user to a group');
     if (req.params && req.params.teamid && req.params.groupid && req.params.userid) {

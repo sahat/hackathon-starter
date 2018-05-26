@@ -36,16 +36,16 @@ module.exports.createPhaseGroup = function(req, res) {
                         //console.log(user);
 
 
-                       thisGroup = team.groups.id(req.params.groupid);
-                       if (!thisGroup) {
-                           sendJsonResponse(res, 404, {
-                               "message": "groupid not found"
-                           });
-                       } else {
-                        console.log('group found');
-                        doAddPhaseGroup(req, res, team, thisGroup);
-                       }
-                        
+                        thisGroup = team.groups.id(req.params.groupid);
+                        if (!thisGroup) {
+                            sendJsonResponse(res, 404, {
+                                "message": "groupid not found"
+                            });
+                        } else {
+                            console.log('group found');
+                            doAddPhaseGroup(req, res, team, thisGroup);
+                        }
+
                     }
                 }
             );
@@ -243,209 +243,76 @@ var doAddPhaseTeam = function(req, res, team) {
 
 
 
-
-// Get all phases
-// module.exports.getAllPhases = function(req, res) {
-//     console.log('getting all phases');
-//     Team
-//         .find()
-//         .exec(function(err, team) {
-//             if (!team) {
-//                 sendJsonResponse(res, 404, {
-//                     "message": "No teams found"
-//                 });
-//                 return;
-//             } else if (err) {
-//                 console.log(err)
-//                 sendJsonResponse(res, 404, err);
-//                 return;
-//             }
-//             sendJsonResponse(res, 200, team);
-//         });
-// }
-
-
-//will get all team-wide phases
-var getAllPhasesByTeam = (req, res, callback) => {
-    var requestOptions, path;
-    console.log('inside getAllItems');
-    path = "/getPhaseByTeam";
-    requestOptions = {
-        url: apiOptions.server + path,
-        method: "GET",
-        json: {}
-    };
-    request(
-        requestOptions,
-        function(err, response, body) {
-            var data = body;
-            if (response.statusCode === 200) {
-
-                callback(req, res, data);
-            } else {
-                _showError(req, res, response.statusCode);
-            }
-        }
-    );
-}
-
 /**
  * GET /getPhaseByTeam
  * get all phases that are for the whole team
  */
 exports.getPhasesByTeam = (req, res) => {
 
-
-    console.log('getting recent items in exports')
-    phases = User.aggregate(
-        [{ $unwind: "$phases" },
-            { $project: { name: 1, _id: 1, profile: 1, phase_id: "$phases._id", phase_name: "$phases.name", phase_start: "$phases.start", phase_end: "$phases.end", phase_workouts: "$phases.workouts", phase_notes: "$phases.notes", phase_approved: "$phases_approved" } },
-            { $sort: { phase_id: 1 } }
-        ]).exec(
-        function(err, phases) {
-            if (!items) {
-                sendJsonResponse(res, 404, 'No documents found');
-                return;
-            } else if (err) {
-                sendJsonResponse(res, 400, err)
-                return;
-            }
-            if (items) {
-                sendJsonResponse(res, 200, items);
-            }
-        }
-    );
-}
-
-exports.allPhases = (req, res) => {
-    console.log('inside All phases');
-    // console.log(req.params.itemid);
-    // console.log(req.params.userid);
-
-    getAllPhasesByTeam(req, res, function(req, res, responseData) {
-        //renderAllItems(req, res, responseData);
-        console.log('got inside of allPhases export, need to write a renderAllPhasesByTeam page')
-    });
-}
-
-// Update a phase by Team
-module.exports.updatePhaseByTeam = function(req, res) {
-    if (!req.params.teamid || !req.params.phaseid) {
-        sendJsonResponse(res, 404, {
-            "message": "Not found, teamid and phaseid are both required"
-        });
-        return;
-    }
-    Team
-        .findById(req.params.teamid)
-        .select('phases')
-        .exec(
-            function(err, team) {
-                var thisPhase;
+    console.log('Getting phases for one team')
+    if (req.params && req.params.teamid) {
+        Team
+            .findById(req.params.teamid)
+            .exec(function(err, team) {
                 if (!team) {
                     sendJsonResponse(res, 404, {
-                        "message": "phaseid not found"
+                        "message": "teamid not found"
                     });
                     return;
                 } else if (err) {
-                    sendJsonResponse(res, 400, err);
+                    console.log(err)
+                    sendJsonResponse(res, 404, err);
                     return;
                 }
-                if (team.phases) {
-                    thisPhase = team.phase.id(req.params.phaseid);
-                    if (!thisPhase) {
-                        sendJsonResponse(res, 404, {
-                            "message": "phaseid not found"
-                        });
-                    } else {
-                        // console.log(team);
-                        console.log('inside of update item')
-                        console.log(req.body)
-
-                        thisPhase.name = req.body.name;
-                        thisPhase.start = req.body.start;
-                        thisPhase.end = req.body.end;
-                        thisPhase.workouts = req.body.workouts;
-                        thisPhase.notes = req.body.notes;
-                        thisPhase.approved = req.body.approved;
-
-                        team.save(function(err, team) {
-
-                            if (err) {
-                                sendJsonResponse(res, 400, err);
-                            } else {
-                                //console.log(thisPhase);
-                                sendJsonResponse(res, 200, thisPhase);
-                            }
-                        });
-
-                    }
-                } else {
-                    sendJsonResponse(res, 404, {
-                        "message": "No phase to update"
-                    });
-                }
-            }
-        );
-};
-
-//update a phase by user
-module.exports.updatePhaseByUser = function(req, res) {
-    if (!req.params.userid || !req.params.phaseid) {
+                var phases = team.phases;
+                sendJsonResponse(res, 200, phases);
+            });
+    } else {
+        console.log('No teamid specified');
         sendJsonResponse(res, 404, {
-            "message": "Not found, userid and phaseid are both required"
+            "message": "No teamid in request"
         });
-        return;
     }
-    User
-        .findById(req.params.userid)
-        .select('athlete.phases')
-        .exec(
-            function(err, user) {
-                var thisPhase;
-                if (!user) {
-                    sendJsonResponse(res, 404, {
-                        "message": "phaseid not found"
-                    });
-                    return;
-                } else if (err) {
-                    sendJsonResponse(res, 400, err);
-                    return;
-                }
-                if (user.athlete.phases) {
-                    thisPhase = user.athlete.phase.id(req.params.phaseid);
-                    if (!thisPhase) {
-                        sendJsonResponse(res, 404, {
-                            "message": "phaseid not found"
-                        });
+
+}
+
+/**
+ * GET /getPhaseByGroup
+ * get all phases that are for the whole team
+ */
+exports.getPhasesByGroup = (req, res) => {
+    if (req.params.teamid && req.params.groupid) {
+        Team
+            .findById(req.params.teamid)
+            .select('groups')
+            .exec(
+                function(err, team) {
+                    if (err) {
+                        sendJsonResponse(res, 400, err);
                     } else {
-                        // console.log(team);
-                        console.log('inside of update phaseByUser')
-                        console.log(req.body)
+                        //console.log(req.body);
+                        //console.log(res);
+                        //console.log(user);
 
-                        thisPhase.name = req.body.name;
-                        thisPhase.start = req.body.start;
-                        thisPhase.end = req.body.end;
-                        thisPhase.workouts = req.body.workouts;
-                        thisPhase.notes = req.body.notes;
-                        thisPhase.approved = req.body.approved;
 
-                        user.save(function(err, user) {
-
-                            if (err) {
-                                sendJsonResponse(res, 400, err);
-                            } else {
-                                //console.log(thisPhase);
-                                sendJsonResponse(res, 200, thisPhase);
-                            }
-                        });
+                        thisGroup = team.groups.id(req.params.groupid);
+                        if (!thisGroup) {
+                            sendJsonResponse(res, 404, {
+                                "message": "groupid not found"
+                            });
+                        } else {
+                            console.log('group found');
+                            var phases = thisGroup.phases;
+                            sendJsonResponse(res, 200, phases);
+                        }
 
                     }
-                } else {
-                    sendJsonResponse(res, 404, {
-                        "message": "No phase to update"
-                    });
                 }
-            }
-        );
-};
+            );
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid and groupid required"
+        });
+    }
+
+}
