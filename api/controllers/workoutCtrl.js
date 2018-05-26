@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
-var ExerciseWithReps = mongoose.model('ExerciseWithReps');
-var SetSchema = mongoose.model('Set');
-var Block = mongoose.model('Block');
+// var ExerciseWithReps = mongoose.model('ExerciseWithReps');
+// var SetSchema = mongoose.model('Set');
+// var Block = mongoose.model('Block');
 var Workout = mongoose.model('Workout');
-var Phase = mongoose.model('Phase');
+// var Phase = mongoose.model('Phase');
 
 var sendJsonResponse = function(res, status, content) {
     res.status(status);

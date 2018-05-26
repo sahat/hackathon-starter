@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Team = mongoose.model('Team');
-var Phase = mongoose.model('Phase');
+// var Phase = mongoose.model('Phase');
 
 var request = require('request');
 var apiOptions = {

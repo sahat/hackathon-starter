@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Group = mongoose.model('Group');
+// var Group = mongoose.model('Group');
 var Team = mongoose.model('Team');
 var User = mongoose.model('User');
 

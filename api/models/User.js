@@ -142,18 +142,19 @@ userSchema.methods.gravatar = function gravatar(size) {
 
 const User = mongoose.model('User', userSchema);
 const Team = mongoose.model('Team', teamSchema);
-const Group = mongoose.model('Group', groupSchema);
-const Phase = mongoose.model('Phase', phaseSchema);
-const SetSchema = mongoose.model('Set', setSchema);
-const ExerciseWithReps = mongoose.model('ExerciseWithReps', exerciseWithRepsSchema);
-const Block = mongoose.model('Block', blockSchema);
+// const Group = mongoose.model('Group', groupSchema);
+// const Phase = mongoose.model('Phase', phaseSchema);
+// const SetSchema = mongoose.model('Set', setSchema);
+// const ExerciseWithReps = mongoose.model('ExerciseWithReps', exerciseWithRepsSchema);
+// const Block = mongoose.model('Block', blockSchema);
 const Workout = mongoose.model('Workout', workoutSchema);
 
-module.exports = User;
+
 module.exports = Team;
-module.exports = Group;
-module.exports = Phase;
-module.exports = SetSchema;
-module.exports = ExerciseWithReps;
-module.exports = Block;
+// module.exports = Group;
+// module.exports = Phase;
+// module.exports = SetSchema;
+// module.exports = ExerciseWithReps;
+// module.exports = Block;
 module.exports = Workout;
+module.exports = User;

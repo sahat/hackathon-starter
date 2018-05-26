@@ -92,10 +92,15 @@ exports.postSignup = (req, res, next) => {
     return res.redirect('/signup');
   }
 
+  
+
   const user = new User({
     email: req.body.email,
     password: req.body.password
   });
+  console.log(User);
+  console.log(req.body);
+  console.log(user);
 
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }
