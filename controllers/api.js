@@ -244,7 +244,7 @@ exports.getTwitter = async (req, res, next) => {
     access_token_secret: token.tokenSecret
   });
   try {
-    const { statuses: tweets } = await T.get('search/tweets', {
+    const { data: { statuses: tweets } } = await T.get('search/tweets', {
       q: 'nodejs since:2013-01-01',
       geocode: '40.71448,-74.00598,5mi',
       count: 10
