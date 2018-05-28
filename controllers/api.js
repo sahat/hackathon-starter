@@ -411,11 +411,10 @@ exports.postTwilio = (req, res, next) => {
     from: '+13472235148',
     body: req.body.message
   };
-  twilio.sendMessage(message, (err, responseData) => {
-    if (err) { return next(err.message); }
-    req.flash('success', { msg: `Text sent to ${responseData.to}.` });
+  twilio.messages.create(message).then((sentMessage) => {
+    req.flash('success', { msg: `Text send to ${sentMessage.to}` });
     res.redirect('/api/twilio');
-  });
+  }).catch(next);
 };
 
 /**
