@@ -390,6 +390,7 @@ List of Packages
 | eslint-plugin-chai-friendly     | Makes eslint friendly towards Chai.js 'expect' and 'should' statements. |
 | eslint-plugin-import            | ESLint plugin with rules that help validate proper imports.             |
 | express                         | Node.js web framework.                                                  |
+| express-generator               | Express generator tool, to quickly create an application skeleton       |
 | express-flash                   | Provides flash messages for Express.                                    |
 | express-session                 | Simple session middleware for Express.                                  |
 | express-status-monitor          | Reports real-time server metrics for Express.                           |
