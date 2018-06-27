@@ -18,7 +18,7 @@ block content
     .form-group.row
       label(class='col-md-2 col-form-label font-weight-bold', for='message') Please describe the issue or your suggestion
       .col-md-8
-        textarea.form-control(name='message', id='message', rows='7')
+        textarea.form-control(name='message', id='message', rows='7', autofocus=(!unknownUser).toString())
     .form-group
       .offset-md-2.col-md-8.p-1
         button.btn.btn-primary(type='submit')
