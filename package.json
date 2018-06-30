@@ -9,7 +9,7 @@
   "author": "Sahat Yalkabov",
   "license": "MIT",
   "scripts": {
-    "postinstall": "cp node_modules/popper.js/dist/popper.min.* public/js/lib && cp node_modules/bootstrap/dist/js/bootstrap.min.* public/js/lib && cp node_modules/jquery/dist/jquery.min.* public/js/lib && npm rebuild node-sass",
+    "postinstall": "cpy node_modules/popper.js/dist/popper.min.* public/js/lib && cpy node_modules/bootstrap/dist/js/bootstrap.min.* public/js/lib && cpy node_modules/jquery/dist/jquery.min.* public/js/lib && npm rebuild node-sass",
     "start": "node app.js",
     "test": "nyc mocha --timeout=3000 --exit",
     "lint": "eslint **/*.js"
@@ -68,6 +68,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "cpy-cli": "^2.0.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-chai-friendly": "^0.4.1",
