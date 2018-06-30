@@ -9,7 +9,7 @@
   "author": "Sahat Yalkabov",
   "license": "MIT",
   "scripts": {
-    "postinstall": "cp node_modules/popper.js/dist/popper.min.* public/js/lib && cp node_modules/bootstrap/dist/js/bootstrap.min.* public/js/lib && cp node_modules/jquery/dist/jquery.min.* public/js/lib && npm rebuild node-sass",
+    "postinstall": "cpy node_modules/popper.js/dist/popper.min.* public/js/lib && cpy node_modules/bootstrap/dist/js/bootstrap.min.* public/js/lib && cpy node_modules/jquery/dist/jquery.min.* public/js/lib && npm rebuild node-sass",
     "start": "node app.js",
     "test": "nyc mocha --timeout=3000 --exit",
     "lint": "eslint **/*.js"
