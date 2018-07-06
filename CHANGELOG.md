@@ -1,6 +1,16 @@
 # Changelog
 ---------
 
+### 5.1.1 (July 5, 2018)
+- Upgraded FontAwesome to FontAwesome v5.1 - FontAwsome is now integrated using its npm package
+- Fixed bug with JS libraries missing in Windows Dev envs
+- Enabled autofocus in the Contact view when the user is logged in
+- Fixed Home always being active (@dkimot)
+- Modified Lob example to address recent API changes
+- Updated Twilio API (@garretthogan)
+- Fixed Twitter API (@garretthogan)
+- Dependency updates
+
 ### 5.1.0 (May 9, 2018)
 - Bootstrap 4.1 upgrade (breaking change)
 - Addition of popper.js
