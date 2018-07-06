@@ -565,7 +565,7 @@ exports.getLob = (req, res, next) => {
     if (err) { return next(err); }
     res.render('api/lob', {
       title: 'Lob API',
-      zipdetails: zipdetails,
+      zipdetails,
     });
   });
 };
