@@ -15,6 +15,7 @@
     "lint": "eslint **/*.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.1.0",
     "@ladjs/bootstrap-social": "^7.0.2",
     "@octokit/rest": "^15.9.2",
     "bcrypt-nodejs": "^0.0.3",
