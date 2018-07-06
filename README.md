@@ -83,7 +83,7 @@ Features
 - MVC Project Structure
 - Node.js clusters support
 - Sass stylesheets (auto-compiled via middleware)
-- Bootstrap 3 + Extra Themes
+- Bootstrap 4 + Extra Themes
 - Contact Form (powered by Mailgun, Sendgrid or Mandrill)
 - **Account Management**
  - Gravatar
