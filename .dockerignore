@@ -1,6 +1,1 @@
 node_modules
-
-# ignoring the files below so they're copied later by Dockerfile
-!node_modules/popper.js/dist/popper.min.*
-!node_modules/bootstrap/dist/js/bootstrap.min.*
-!node_modules/jquery/dist/jquery.min.*
