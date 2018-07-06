@@ -561,11 +561,11 @@ exports.getPayPalCancel = (req, res) => {
  * Lob API example.
  */
 exports.getLob = (req, res, next) => {
-  lob.routes.list({ zip_codes: ['10007'] }, (err, routes) => {
+  lob.usZipLookups.lookup({ zip_code: '94107' }, (err, zipdetails) => {
     if (err) { return next(err); }
     res.render('api/lob', {
       title: 'Lob API',
-      routes: routes.data[0].routes
+      zipdetails: zipdetails,
     });
   });
 };
