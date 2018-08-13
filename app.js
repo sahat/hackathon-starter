@@ -101,14 +101,14 @@ app.use((req, res, next) => {
 });
 app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
-  if (!req.user &&
-    req.path !== '/login' &&
-    req.path !== '/signup' &&
-    !req.path.match(/^\/auth/) &&
-    !req.path.match(/\./)) {
+  if (!req.user
+    && req.path !== '/login'
+    && req.path !== '/signup'
+    && !req.path.match(/^\/auth/)
+    && !req.path.match(/\./)) {
     req.session.returnTo = req.originalUrl;
-  } else if (req.user &&
-    (req.path === '/account' || req.path.match(/^\/api/))) {
+  } else if (req.user
+    && (req.path === '/account' || req.path.match(/^\/api/))) {
     req.session.returnTo = req.originalUrl;
   }
   next();
