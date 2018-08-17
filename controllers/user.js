@@ -278,7 +278,7 @@ exports.postReset = (req, res, next) => {
 
   const sendResetPasswordEmail = (user) => {
     if (!user) { return; }
-    const transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
       service: 'SendGrid',
       auth: {
         user: process.env.SENDGRID_USER,
@@ -294,6 +294,28 @@ exports.postReset = (req, res, next) => {
     return transporter.sendMail(mailOptions)
       .then(() => {
         req.flash('success', { msg: 'Success! Your password has been changed.' });
+      })
+      .catch((err) => {
+        if (err.message === 'self signed certificate in certificate chain') {
+          console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
+          transporter = nodemailer.createTransport({
+            service: 'SendGrid',
+            auth: {
+              user: process.env.SENDGRID_USER,
+              pass: process.env.SENDGRID_PASSWORD
+            },
+            tls: {
+              rejectUnauthorized: false
+            }
+          });
+          return transporter.sendMail(mailOptions)
+            .then(() => {
+              req.flash('success', { msg: 'Success! Your password has been changed.' });
+            });
+        }
+        console.log('ERROR: Could not send password reset confirmation email after security downgrade.\n', err);
+        req.flash('warning', { msg: 'Your password has been changed, however we were unable to send you a confirmation email. We will be looking into it shortly.' });
+        return err;
       });
   };
 
@@ -351,7 +373,7 @@ exports.postForgot = (req, res, next) => {
   const sendForgotPasswordEmail = (user) => {
     if (!user) { return; }
     const token = user.passwordResetToken;
-    const transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
       service: 'SendGrid',
       auth: {
         user: process.env.SENDGRID_USER,
@@ -370,6 +392,28 @@ exports.postForgot = (req, res, next) => {
     return transporter.sendMail(mailOptions)
       .then(() => {
         req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
+      })
+      .catch((err) => {
+        if (err.message === 'self signed certificate in certificate chain') {
+          console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
+          transporter = nodemailer.createTransport({
+            service: 'SendGrid',
+            auth: {
+              user: process.env.SENDGRID_USER,
+              pass: process.env.SENDGRID_PASSWORD
+            },
+            tls: {
+              rejectUnauthorized: false
+            }
+          });
+          return transporter.sendMail(mailOptions)
+            .then(() => {
+              req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
+            });
+        }
+        console.log('ERROR: Could not send forgot password email after security downgrade.\n', err);
+        req.flash('errors', { msg: 'Error sending the password reset message. Please try again shortly.' });
+        return err;
       });
   };
 

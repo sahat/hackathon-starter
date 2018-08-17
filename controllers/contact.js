@@ -1,13 +1,5 @@
 const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-  service: 'SendGrid',
-  auth: {
-    user: process.env.SENDGRID_USER,
-    pass: process.env.SENDGRID_PASSWORD
-  }
-});
-
 /**
  * GET /contact
  * Contact form page.
@@ -49,6 +41,13 @@ exports.postContact = (req, res) => {
     fromEmail = req.user.email;
   }
 
+  let transporter = nodemailer.createTransport({
+    service: 'SendGrid',
+    auth: {
+      user: process.env.SENDGRID_USER,
+      pass: process.env.SENDGRID_PASSWORD
+    }
+  });
   const mailOptions = {
     to: 'your@email.com',
     from: `${fromName} <${fromEmail}>`,
@@ -56,12 +55,39 @@ exports.postContact = (req, res) => {
     text: req.body.message
   };
 
-  transporter.sendMail(mailOptions, (err) => {
-    if (err) {
-      req.flash('errors', { msg: err.message });
+  return transporter.sendMail(mailOptions)
+    .then(() => {
+      req.flash('success', { msg: 'Email has been sent successfully!' });
+      res.redirect('/contact');
+    })
+    .catch((err) => {
+      if (err.message === 'self signed certificate in certificate chain') {
+        console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
+        transporter = nodemailer.createTransport({
+          service: 'SendGrid',
+          auth: {
+            user: process.env.SENDGRID_USER,
+            pass: process.env.SENDGRID_PASSWORD
+          },
+          tls: {
+            rejectUnauthorized: false
+          }
+        });
+        return transporter.sendMail(mailOptions);
+      }
+      console.log('ERROR: Could not send contact email after security downgrade.\n', err);
+      req.flash('errors', { msg: 'Error sending the message. Please try again shortly.' });
+      return false;
+    })
+    .then((result) => {
+      if (result) {
+        req.flash('success', { msg: 'Email has been sent successfully!' });
+        return res.redirect('/contact');
+      }
+    })
+    .catch((err) => {
+      console.log('ERROR: Could not send contact email.\n', err);
+      req.flash('errors', { msg: 'Error sending the message. Please try again shortly.' });
       return res.redirect('/contact');
-    }
-    req.flash('success', { msg: 'Email has been sent successfully!' });
-    res.redirect('/contact');
-  });
+    });
 };
