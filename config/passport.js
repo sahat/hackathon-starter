@@ -176,8 +176,9 @@ passport.use(new GitHubStrategy({
   }
 }));
 
-// Sign in with Twitter.
-
+/**
+ * Sign in with Twitter.
+ */
 passport.use(new TwitterStrategy({
   consumerKey: process.env.TWITTER_KEY,
   consumerSecret: process.env.TWITTER_SECRET,
