@@ -16,36 +16,39 @@ block content
       i.fas.fa-code-branch.fa-sm
       | API Endpoints
 
-  h3= artist.name
-  if artist.image
-    img.thumbnail(src='' + artist.image)
+  if error
+    h3= error.message
+  else
+    h3= artist.name
+    if artist.image
+      img.thumbnail(src='' + artist.image)
 
-  h3 Tags
-  for tag in artist.tags
-    span.label.label-primary
-      i.fas.fa-tag.fa-sm
-      | #{tag.name}
-    |&nbsp;
+    h3 Tags
+    for tag in artist.tags
+      span.label.label-primary
+        i.fas.fa-tag.fa-sm
+        | #{tag.name}
+      |&nbsp;
 
-  h3 Biography
-  if artist.bio
-    p!= artist.bio
-  else 
-    p No biography
+    h3 Biography
+    if artist.bio
+      p!= artist.bio
+    else
+      p No biography
 
-  h3 Top Albums
-  for album in artist.topAlbums
-    img(src='' + album.image.slice(-1)[0]["#text"], width=150, height=150)
-    | &nbsp;
+    h3 Top Albums
+    for album in artist.topAlbums
+      img(src='' + album.image.slice(-1)[0]["#text"], width=150, height=150)
+      | &nbsp;
 
-  h3 Top Tracks
-  ol
-    for track in artist.topTracks
-      li
-        a(href='' + track.url) #{track.name}
+    h3 Top Tracks
+    ol
+      for track in artist.topTracks
+        li
+          a(href='' + track.url) #{track.name}
 
-  h3 Similar Artists
-  ul.list-unstyled.list-inline
-    for similarArtist in artist.similar
-      li
-        a(href='' + similarArtist.url) #{similarArtist.name}
+    h3 Similar Artists
+    ul.list-unstyled.list-inline
+      for similarArtist in artist.similar
+        li
+          a(href='' + similarArtist.url) #{similarArtist.name}
