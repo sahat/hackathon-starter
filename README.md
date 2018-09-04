@@ -148,7 +148,7 @@ It watches for any changes in your  node.js app and automatically restarts the
 server. Once installed, instead of `node app.js` use `nodemon app.js`. It will
 save you a lot of time in the long run, because you won't need to manually
 restart the server each time you make a small change in code. To install, run
-`sudo npm install -g nodemon`.
+`npm install -g nodemon`.
 
 Obtaining API Keys
 ------------------
