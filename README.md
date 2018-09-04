@@ -520,8 +520,10 @@ That's a custom error message defined in `app.js` to indicate that there was a
 problem connecting to MongoDB:
 
 ```js
-mongoose.connection.on('error', () => {
-  console.error('MongoDB Connection Error. Please make sure MongoDB is running.');
+mongoose.connection.on('error', (err) => {
+  console.error(err);
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
+  process.exit();
 });
 ```
 You need to have a MongoDB server running before launching `app.js`. You can
