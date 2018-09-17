@@ -230,7 +230,7 @@ exports.getLastfm = async (req, res, next) => {
     if (err.error !== undefined) {
       console.error(err);
       // see error code list: https://www.last.fm/api/errorcodes
-      switch(err.error) {
+      switch (err.error) {
         // potentially handle each code uniquely
         case 10: // Invalid API key
           res.render('api/lastfm', {
