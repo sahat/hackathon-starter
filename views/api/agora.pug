@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  #div_device.panel.panel-default
+  .select
+    label(for='audioSource') Audio source: 
+    select#audioSource
+  .select
+    label(for='videoSource') Video source: 
+    select#videoSource
+  #div_join.panel.panel-default
+  .panel-body
+    | App ID: 
+    input#appId(type='text', value='', size='36')
+    | Channel: 
+    input#channel(type='text', value='1000', size='4')
+    | Host: 
+    input#video(type='checkbox', checked='')
+    button#join.btn.btn-primary(onclick='join()') Join
+    button#leave.btn.btn-primary(onclick='leave()') Leave
+    button#publish.btn.btn-primary(onclick='publish()') Publish
+    button#unpublish.btn.btn-primary(onclick='unpublish()') Unpublish
+
+  #video(style='margin:0 auto;')
+    #agora_local(style='float:right;width:210px;height:147px;display:inline-block;')
+
+  script(type='application/javascript' src='/js/lib/AgoraRTCSDK-2.4.1.js')
+  script(type='application/javascript' src='/js/lib/AgoraDemo.js')

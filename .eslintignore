@@ -1,0 +1,2 @@
+#ignoring lib file. Does not have a npm module.
+public/js/lib/AgoraRTCSDK-2.4.1.js

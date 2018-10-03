@@ -659,3 +659,9 @@ exports.getGoogleMaps = (req, res) => {
     google_map_api_key: process.env.GOOGLE_MAP_API_KEY
   });
 };
+
+exports.getAgora = (req, res) => {
+  res.render('api/agora', {
+    title: 'Agora Video Demo'
+  });
+};
