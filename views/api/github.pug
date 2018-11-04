@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+  h2
+    i.fab.fa-github.fa-sm
+    | GitHub API
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='http://developer.github.com/guides/getting-started/', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Getting Started
+    a.btn.btn-primary(href='https://apigee.com/console/github', target='_blank').w-100
+      i.fas.fa-laptop.fa-sm
+      | API Console
+    a.btn.btn-primary(href='http://developer.github.com/v3/', target='_blank').w-100
+      i.far.fa-file-alt.fa-sm
+      | Documentation
+  br
+  .card.text-white.bg-primary
+    .card-header
+      h6.panel-title.mb-0 Repository Information
+    .card-body.text-dark.bg-white
+      .row
+        .col-4
+          img.rounded.img-fluid(src='https://github.global.ssl.fastly.net/images/modules/logos_page/Octocat.png')
+        .col-8
+          h4
+            a(href=repo.html_url) #{repo.name}
+          ul.list-inline
+            li.list-inline-item
+              i.far.fa-eye-slash.fa-sm
+              | Subscribers: #{repo.subscribers_count}
+            li.list-inline-item
+              i.far.fa-star.fa-sm
+              | Starred: #{repo.stargazers_count}
+            li.list-inline-item
+              i.fas.fa-code-branch.fa-sm
+              | Forks: #{repo.forks_count}
+            li.list-inline-item
+              i.fas.fa-code.fa-sm
+              | #{repo.language}
+          strong DESCRIPTION
+          p= repo.description

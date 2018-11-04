@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-linkedin.fa-sm
+      | LinkedIn API
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://github.com/Kuew/node-linkedin', target='_blank').w-100
+      i.fas.fa-book.fa-sm
+      | Node LinkedIn Docs
+    a.btn.btn-primary(href='http://developer.linkedin.com/documents/authentication', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Getting Started
+    a.btn.btn-primary(href='http://developer.linkedin.com/apis', target='_blank').w-100
+      i.fas.fa-code-branch.fa-sm
+      | API Endpoints
+
+  h3.text-primary My LinkedIn Profile
+  .card.bg-light.card-body.mb-3.card.bg-faded.p-1.mb-3
+    .col-md-12.row
+      .col-md-2
+        br
+        img.thumbnail(src=profile.pictureUrl)
+      .col-md-10.mt-3
+        h3= profile.formattedName
+        h4= profile.headline
+        span.text-muted #{profile.location.name} | #{profile.industry}
+    br
+
+    .container-fluid
+      dl.row
+        dt.col-sm-2.text-right.text-muted Current
+        dd.col-sm-10.ul.list-unstyled
+          for company in profile.positions.values
+            if company.isCurrent
+              li
+                strong= company.title
+                |  at
+                strong  #{company.company.name}
+        dt.col-sm-2.text-right.text-muted Connections
+        dd.col-sm-10
+          strong #{profile.numConnections}
+          |  connections
+    .text-center
+      small.text-muted= profile.publicProfileUrl

@@ -1,0 +1,73 @@
+/*           Font Smoothing      */
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, .btn-simple, a, .td-name, td{
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Helvetica Neue","Open Sans",Arial,sans-serif;
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4{
+    font-weight: $font-weight-normal;
+    margin: $margin-large-vertical 0 $margin-base-vertical;
+}
+
+h1, .h1 {
+    font-size: $font-size-h1;
+}
+h2, .h2{
+    font-size: $font-size-h2;
+}
+h3, .h3{
+    font-size: $font-size-h3;
+    margin: 20px 0 10px;
+}
+h4, .h4{
+    font-size: $font-size-h4;
+    line-height: 30px;
+}
+h5, .h5 {
+    font-size: $font-size-h5;
+    margin-bottom: 15px;
+}
+h6, .h6{
+    font-size: $font-size-h6;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+}
+p{
+    font-size: $font-paragraph;
+    line-height: $line-height-general;
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
+    color: $dark-gray;
+    font-weight: $font-weight-light;
+    line-height: $line-height-general;
+}
+
+h1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {
+    font-size: 60%;
+}
+
+h1 .subtitle{
+    display: block;
+    font-family: 'Grand Hotel',cursive;
+    margin: 0 0 $margin-large-vertical;   
+}
+
+.text-primary, .text-primary:hover{
+    color: $primary-color !important;
+}
+.text-info, .text-info:hover{
+    color: $info-color !important;
+}
+.text-success, .text-success:hover{
+    color: $success-color !important;
+}
+.text-warning, .text-warning:hover{
+    color: $warning-color !important;
+}
+.text-danger, .text-danger:hover{
+    color: $danger-color !important;
+}
+

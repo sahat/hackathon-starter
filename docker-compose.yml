@@ -1,16 +1,18 @@
-app:
-    build: ./
-    links:
-        - "mongo:mongo"
+version: '3'
+services:
+  mongo:
+    image: mongo:3.6
+  web:
+    build: .
     ports:
-        - "3000:3000"
-    dockerfile: Dockerfile
+     - "8080:8080"
     environment:
-        - "MONGODB=mongodb://mongo:27017/dev"
-    restart: always
-    
-mongo:
-    image: mongo
-    ports:
-        - "27001:27017"
-    restart: always
+     - MONGODB_URI=mongodb://mongo:27017/test 
+    links:
+     - mongo 
+    depends_on: 
+     - mongo 
+    volumes:
+     - .:/starter
+     - /starter/node_modules
+     

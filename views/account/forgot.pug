@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 Forgot Password
+  form(method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    p.pb-4 Enter your email address below and we will send you password reset instructions.
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
+      .col-md-7
+        input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus, autocomplete='email', required)
+    .form-group.offset-sm-3.col-md-7.pl-2
+      button.btn.btn-primary(type='submit')
+        i.fas.fa-key.fa-sm
+        | Reset Password

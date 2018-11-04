@@ -1,0 +1,54 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.far.fa-play-circle(style='color: #db1302').fa-sm
+      | Last.fm API
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://github.com/jammus/lastfm-node#lastfm-node', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Last.fm Node Docs
+    a.btn.btn-primary(href='http://www.last.fm/api/account/create', target='_blank').w-100
+      i.fas.fa-laptop.fa-sm
+      | Create API Account
+    a.btn.btn-primary(href='http://www.last.fm/api', target='_blank').w-100
+      i.fas.fa-code-branch.fa-sm
+      | API Endpoints
+
+  if error
+    h3= error.message
+  else
+    h3= artist.name
+    if artist.image
+      img.thumbnail(src='' + artist.image)
+
+    h3 Tags
+    for tag in artist.tags
+      span.label.label-primary
+        i.fas.fa-tag.fa-sm
+        | #{tag.name}
+      |&nbsp;
+
+    h3 Biography
+    if artist.bio
+      p!= artist.bio
+    else
+      p No biography
+
+    h3 Top Albums
+    for album in artist.topAlbums
+      img(src='' + album.image.slice(-1)[0]["#text"], width=150, height=150)
+      | &nbsp;
+
+    h3 Top Tracks
+    ol
+      for track in artist.topTracks
+        li
+          a(href='' + track.url) #{track.name}
+
+    h3 Similar Artists
+    ul.list-unstyled.list-inline
+      for similarArtist in artist.similar
+        li
+          a(href='' + similarArtist.url) #{similarArtist.name}

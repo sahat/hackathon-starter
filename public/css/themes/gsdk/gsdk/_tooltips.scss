@@ -1,0 +1,107 @@
+.tooltip {
+    font-size: $font-size-base;
+    font-weight: $font-weight-bold;
+    
+    &.top {
+        margin-top: -11px;
+        padding: 0;
+    }
+    &.top .tooltip-inner:after {
+        border-top: 11px solid #FAE6A4;
+        border-left: 11px solid rgba(0, 0, 0, 0);
+        border-right: 11px solid rgba(0, 0, 0, 0);
+        bottom: -10px;
+    }
+    &.top .tooltip-inner:before {
+        border-top: 11px solid rgba(0, 0, 0, 0.2);
+        border-left: 11px solid rgba(0, 0, 0, 0);
+        border-right: 11px solid rgba(0, 0, 0, 0);
+        bottom: -11px;
+    }
+    &.bottom {
+        margin-top: 11px;
+        padding: 0;
+    }
+    &.bottom .tooltip-inner:after {
+        border-bottom: 11px solid #FAE6A4;
+        border-left: 11px solid rgba(0, 0, 0, 0);
+        border-right: 11px solid rgba(0, 0, 0, 0);
+        top: -10px;
+    }
+    &.bottom .tooltip-inner:before {
+        border-bottom: 11px solid rgba(0, 0, 0, 0.2);
+        border-left: 11px solid rgba(0, 0, 0, 0);
+        border-right: 11px solid rgba(0, 0, 0, 0);
+        top: -11px;
+    }
+    &.left{
+        margin-left: -11px;
+        padding: 0;
+    }
+    &.left .tooltip-inner:after {
+        border-left: 11px solid #FAE6A4;
+        border-top: 11px solid rgba(0, 0, 0, 0);
+        border-bottom: 11px solid rgba(0, 0, 0, 0);
+        right: -10px;
+        left: auto;
+        margin-left: 0;
+    }
+    &.left .tooltip-inner:before {
+        border-left: 11px solid rgba(0, 0, 0, 0.2);
+        border-top: 11px solid rgba(0, 0, 0, 0);
+        border-bottom: 11px solid rgba(0, 0, 0, 0);
+        right: -11px;
+        left: auto;
+        margin-left: 0;
+    }
+    &.right{
+        margin-left: 11px;
+        padding: 0;
+    }
+    &.right .tooltip-inner:after {
+        border-right: 11px solid #FAE6A4;
+        border-top: 11px solid rgba(0, 0, 0, 0);
+        border-bottom: 11px solid rgba(0, 0, 0, 0);
+        left: -10px;
+        top: 0;
+        margin-left: 0;
+    }
+    &.right .tooltip-inner:before {
+        border-right: 11px solid rgba(0, 0, 0, 0.2);
+        border-top: 11px solid rgba(0, 0, 0, 0);
+        border-bottom: 11px solid rgba(0, 0, 0, 0);
+        left: -11px;
+        top: 0;
+        margin-left: 0;
+    }
+}
+
+.tooltip-arrow{
+    display: none;
+    opacity: 0;
+}
+.tooltip-inner {
+    background-color: #FAE6A4;
+    border-radius: 4px;
+    box-shadow: 0 1px 13px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(115, 71, 38, 0.23);
+    color: #734726;
+    max-width: 260px;
+    min-width: 86px;
+    padding: 6px 10px;
+    text-align: center;
+    text-decoration: none;
+}
+.tooltip-inner:after {
+    content: "";
+    display: inline-block;
+    left: 100%;
+    margin-left: -60%;
+    position: absolute;
+}
+.tooltip-inner:before {
+    content: "";
+    display: inline-block;
+    left: 100%;
+    margin-left: -60%;
+    position: absolute;
+}

@@ -1,0 +1,93 @@
+.btn-social { 
+	opacity: 0.85;
+	padding: 8px 9px;
+
+	.fa {
+		font-size: 18px;
+		vertical-align: middle;
+		display: inline-block;
+	}
+
+	&.btn-round {
+		padding: 9px 10px;
+	}
+
+	&.btn-simple {
+		padding: 9px 5px;
+		font-size: 16px;
+
+		.fa{
+			font-size: 20px;
+			position: relative;
+			top: -2px;
+			width: 24px;
+		}
+	}
+
+}
+
+@mixin btn-social($color){
+
+    color: $white-color;
+    background-color: $color;
+    border-color: $color;
+    opacity: 0.9;
+    
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle{
+        background-color: $color;
+        border-color: $color;
+        color: $white-color;
+        opacity: 1;
+    }
+  
+    &.btn-border{
+      border-color: $color;
+      color: $color;
+      
+      &:hover,
+      &:focus,
+      &:active,
+      &.active,
+      .open > &.dropdown-toggle {
+        background-color: $transparent-bg;
+        color: $color;
+        border-color: $color;
+        opacity: 1;
+      }
+    
+      &:disabled,
+      &[disabled],
+      &.disabled {
+        background-color: $transparent-bg;
+        border-color: $color;
+      }  
+    }
+  
+  
+}
+
+.btn-adn           { @include btn-social(#d87a68); }
+.btn-bitbucket     { @include btn-social(#205081); }
+.btn-dropbox       { @include btn-social(#1087dd); }
+.btn-facebook      { @include btn-social(#3b5998); }
+.btn-flickr        { @include btn-social(#ff0084); }
+.btn-foursquare    { @include btn-social(#f94877); }
+.btn-github        { @include btn-social(#444444); }
+.btn-google        { @include btn-social(#dd4b39); }
+.btn-instagram     { @include btn-social(#3f729b); }
+.btn-linkedin      { @include btn-social(#007bb6); }
+.btn-microsoft     { @include btn-social(#2672ec); }
+.btn-odnoklassniki { @include btn-social(#f4731c); }
+.btn-openid        { @include btn-social(#f7931e); }
+.btn-pinterest     { @include btn-social(#cb2027); }
+.btn-reddit        { @include btn-social(#eff7ff); }
+.btn-soundcloud    { @include btn-social(#ff5500); }
+.btn-tumblr        { @include btn-social(#2c4762); }
+.btn-twitter       { @include btn-social(#55acee); }
+.btn-vimeo         { @include btn-social(#1ab7ea); }
+.btn-vk            { @include btn-social(#587ea3); }
+.btn-yahoo         { @include btn-social(#720e9e); }

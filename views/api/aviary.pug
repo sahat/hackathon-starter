@@ -1,0 +1,48 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.far.fa-image
+      | Aviary API
+  
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='http://developers.aviary.com/docs/web/setup-guide#constructor', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | API Overview
+    a.btn.btn-primary(href='http://developers.aviary.com/docs/web/setup-guide#saving', target='_blank').w-100
+      i.far.fa-save.fa-sm
+      | Saving Images
+    a.btn.btn-primary(href='http://developers.aviary.com/docs/web/setup-guide#styling', target='_blank').w-100
+      i.fas.fa-flask.fa-sm
+      | CSS Styling
+  br
+  p: button.btn.btn-success(onclick='return launchEditor("myimage", "https://orig11.deviantart.net/1db8/f/2016/106/b/7/light_perhaps_by_milliganvick-d9z4q8m.jpg");')
+    i.fas.fa-magic.fa-sm
+    | Edit Photo
+  h4
+    a(href='http://milliganvick.deviantart.com/art/Bioshock-Infinite-Burial-at-Sea-Light-perhaps-603202774') Bioshock Infinite Burial at Sea - Light perhaps?
+  img#myimage(src='https://orig11.deviantart.net/1db8/f/2016/106/b/7/light_perhaps_by_milliganvick-d9z4q8m.jpg', width=600)
+
+  script(src='http://feather.aviary.com/imaging/v3/editor.js')
+  script.
+    var featherEditor = new Aviary.Feather({
+      apiKey: 'd427cf051abb47f689171eff5c31e36d',
+      theme: 'dark',
+      tools: 'all',
+      appendTo: '',
+      onSave: function(imageID, newURL) {
+        var img = document.getElementById(imageID);
+        img.src = newURL;
+      },
+      onError: function(errorObj) {
+        alert(errorObj.message);
+      }
+    });
+    function launchEditor(id, src) {
+      featherEditor.launch({
+        image: id,
+        url: src
+      });
+      return false;
+    }

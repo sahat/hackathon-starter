@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-facebook-square(style='color: #335397').fa-sm
+      | Facebook API
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://developers.facebook.com/docs/graph-api/quickstart/', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Quickstart
+    a.btn.btn-primary(href='https://developers.facebook.com/tools/explorer', target='_blank').w-100
+      i.fab.fa-facebook.fa-sm
+      | Graph API Explorer
+    a.btn.btn-primary(href='https://developers.facebook.com/docs/graph-api/reference/', target='_blank').w-100
+      i.fas.fa-code-branch.fa-sm
+      | API Reference
+
+  h3
+    i.far.fa-user.fa-sm
+    |  My Profile
+  img.thumbnail(src=`https://graph.facebook.com/${profile.id}/picture?type=large`, width='90', height='90')
+  h4= profile.name
+  h6 First Name: #{profile.first_name}
+  h6 Last Name: #{profile.last_name}
+  h6 Gender: #{profile.gender}
+  h6 Username: #{profile.username}
+  h6 Link: #{profile.link}
+  h6 Email: #{profile.email}
+  h6 Locale: #{profile.locale}
+  h6 Timezone: #{profile.timezone}

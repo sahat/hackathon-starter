@@ -1,8 +1,14 @@
 language: node_js
-sudo: false
-
-services:
-  - mongodb
-
 node_js:
-  - "4.4"
+  - "8"
+  - "10"
+services: mongodb  
+cache:  
+  directories:
+    - "node_modules"
+sudo: false
+install:
+  - npm install
+script:
+  - npm run lint
+  - npm test

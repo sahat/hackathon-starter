@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-twitter(style='color: #4099ff').fa-sm
+      | Twitter API
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-success(href='https://github.com/ttezel/twit', target='_blank').w-100
+      i.far.fa-file-alt.fa-sm
+      | Twit Library Docs
+    a.btn.btn-success(href='https://dev.twitter.com/docs', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Overview
+    a.btn.btn-success(href='https://dev.twitter.com/rest/public', target='_blank').w-100
+      i.fas.fa-code-branch.fa-sm
+      | API Endpoints
+
+  br
+
+  .card.bg-light.card-body.mb-3
+    h4 Compose new Tweet
+    form(role='form', method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        input.form-control(type='text', name='tweet', autofocus)
+        p.form-text This new Tweet will be posted on your Twitter profile.
+      button.btn.btn-primary(type='submit')
+        i.fab.fa-twitter.fa-sm
+        |  Tweet
+
+  br
+
+  .lead Latest
+    strong  #{tweets.length}
+    |  Tweets containing the term
+    strong  nodejs
+    |  in NYC within
+    strong  5
+    |  miles radius
+
+  ul.media-list
+    for tweet in tweets
+      li.media
+        a.float-left(href='#')
+          - var image = tweet.user.profile_image_url.replace('_normal', '');
+          img.media-object(src=image, style='width: 64px; height: 64px;')
+        .media-body
+          strong.media-heading #{tweet.user.name}
+          span.text-muted  @#{tweet.user.screen_name}
+          p= tweet.text

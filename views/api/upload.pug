@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fas.fa-upload.fa-sm
+      | File Upload
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-success(href='https://github.com/expressjs/multer', target='_blank').w-100
+      i.fas.fa-book.fa-sm
+      | Multer Documentation
+    a.btn.btn-success(href='http://codepen.io/search/pens?q=custom+file+upload&limit=all&type=type-pens', target='_blank').w-100
+      i.fas.fa-laptop.fa-sm
+      | Customize File Upload
+
+  h3 File Upload Form
+  .row
+    .col-md-6
+      p All files will be uploaded to "/uploads" directory.
+      form(role='form', enctype='multipart/form-data', method='POST')
+        .form-group
+          label.col-form-label.font-weight-bold File Input
+          .col-md-6
+            input(type='file', name='myFile')
+        button.btn.btn-primary(type='submit') Submit

@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-pinterest(style='color: #cb2027').fa-sm
+      | Pinterest API
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://developers.pinterest.com/docs/getting-started/introduction/', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Getting Started
+    a.btn.btn-primary(href='https://developers.pinterest.com/tools/api-explorer/', target='_blank').w-100
+      i.fab.fa-pinterest.fa-sm
+      | API Explorer
+    a.btn.btn-primary(href='https://developers.pinterest.com/docs/api/overview/', target='_blank').w-100
+      i.fas.fa-code-branch.fa-sm
+      | API Overview
+
+  h3 Create a Pin    
+  form(role='form', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.row
+      .col-md-6
+        label.col-form-label.font-weight-bold Board
+        select.form-control(name='board')
+          for board in boards
+            option(value=board.id)= board.name
+      .col-md-6
+        label.col-form-label.font-weight-bold Note
+        .col-md-6
+          input.form-control(name='note', placeholder='The Pin\'s description.')
+    .form-group.row
+      .col-md-6
+        label.col-form-label.font-weight-bold Link
+        .col-md-6
+          input.form-control(name='link', placeholder='The URL the Pin will link to when you click through.')
+      .col-md-6
+        label.col-form-label.font-weight-bold Image URL
+        .col-md-6
+          input.form-control(name='image_url', placeholder='The link to the image that you want to Pin.')
+    button.btn.btn-primary(type='submit')
+        i.fab.fa-pinterest.fa-sm
+        |  Pin It

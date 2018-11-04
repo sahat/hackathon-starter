@@ -1,0 +1,195 @@
+//== Buttons
+//
+//## For each of Bootstrap's buttons, define text, background and border color.
+
+$none:                       0   !default;
+$border-thin:                1px !default;
+$border-thick:               2px !default;
+
+$white-color:                #FFFFFF !default;
+$white-bg:                   #FFFFFF !default;
+
+$smoke-bg:                   #F5F5F5 !default;
+
+$black-bg:                   rgba(30,30,30,.97) !default;
+
+$black-color:                #333333 !default;
+$black-hr:                   #444444 !default;
+
+$light-gray:                 #E3E3E3 !default;
+$medium-gray:                #DDDDDD !default; 
+$dark-gray:                  #9A9A9A !default;
+
+$transparent-bg:             transparent !default;
+
+$default-color:              #888888 !default;
+$default-bg:                 #888888 !default;
+$default-states-color:       #777777 !default; 
+
+$primary-color:              #3472F7 !default;
+$primary-bg:                 #3472F7 !default;
+$primary-states-color:       #1D62F0 !default;
+
+$success-color:              #05AE0E !default;
+$success-bg:                 #05AE0E !default;
+$success-states-color:       #049F0C !default; 
+
+$info-color:                 #2CA8FF !default;
+$info-bg:                    #2CA8FF !default;
+$info-states-color:          #109CFF !default;
+
+$warning-color:              #FF9500 !default;
+$warning-bg:                 #FF9500 !default;
+$warning-states-color:       #ED8D00 !default;
+
+
+$danger-color:               #FF3B30 !default;
+$danger-bg:                  #FF3B30 !default;
+$danger-states-color:        #EE2D20 !default;
+
+
+
+$link-disabled-color:        #666666 !default;
+
+
+/*      light colors         */
+$light-blue:                 rgba($primary-color, .2);
+$light-azure:                rgba($info-color, .2);
+$light-green:                rgba($success-color, .2);
+$light-orange:               rgba($warning-color, .2);
+$light-red:                  rgba($danger-color, .2); 
+
+
+//== Components
+//
+
+$padding-base-vertical:         8px !default;
+$padding-base-horizontal:      16px !default;
+
+$padding-round-vertical:        9px !default;
+$padding-round-horizontal:     18px !default;
+
+$padding-simple-vertical:      10px !default;
+$padding-simple-horizontal:    18px !default;
+
+$padding-large-vertical:       14px !default;
+$padding-large-horizontal:     30px !default;
+
+$padding-small-vertical:        5px !default;
+$padding-small-horizontal:     10px !default;
+
+$padding-xs-vertical:           1px !default;
+$padding-xs-horizontal:         5px !default;
+
+$padding-label-vertical:        2px !default;
+$padding-label-horizontal:     12px !default;
+
+$margin-large-vertical:        30px !default;
+$margin-base-vertical:         15px !default;
+
+$margin-bottom:                0 0 10px 0 !default;
+$border-radius-small:           3px !default;
+$border-radius-base:            4px !default;
+$border-radius-large:           6px !default;
+$border-radius-extreme:        10px !default;
+
+$border-radius-large-top:      $border-radius-large $border-radius-large 0 0 !default;
+$border-radius-large-bottom:   0 0 $border-radius-large $border-radius-large !default;
+
+$btn-round-radius:             30px !default;
+
+$height-base:                  40px !default;
+
+$font-size-base:               14px !default;
+$font-size-small:              12px !default;
+$font-size-medium:             16px !default; 
+$font-size-large:              18px !default;
+$font-size-large-navbar:       20px !default;
+
+$font-size-h1:                 52px !default;
+$font-size-h2:                 36px !default;
+$font-size-h3:                 28px !default;
+$font-size-h4:                 22px !default;
+$font-size-h5:                 18px !default;
+$font-size-h6:                 14px !default;
+$font-paragraph:               16px !default;
+$font-size-navbar:             16px !default;
+$font-size-small:              12px !default;
+
+$font-weight-light:          300 !default; 
+$font-weight-normal:         400 !default;
+$font-weight-semi:           500 !default;
+$font-weight-bold:           600 !default;
+
+$line-height-general:          1.5 !default;
+$line-height:                 20px !default;
+$line-height-lg:              54px !default;
+
+
+$border-radius-top:        10px 10px 0 0 !default;
+$border-radius-bottom:     0 0 10px 10px !default;
+
+$dropdown-shadow:          1px 2px 3px rgba(0, 0, 0, 0.125);
+
+$general-transition-time:  300ms !default;
+
+$slow-transition-time:           370ms !default; 
+$dropdown-coordinates:      29px -50px !default;
+
+$fast-transition-time:           150ms !default;
+$select-coordinates:         50% -40px !default;
+
+$transition-linear:                                   linear !default;
+$transition-bezier:         cubic-bezier(0.34, 1.61, 0.7, 1) !default;
+$transition-ease:           ease 0s;
+
+$navbar-padding-a:               10px 15px;
+$navbar-margin-a:                15px  3px;
+
+$padding-social-a:               10px  5px;
+
+$navbar-margin-a-btn:            15px 3px;
+$navbar-margin-a-btn-round:      16px 3px;
+
+$navbar-padding-a-icons:         6px 15px;
+$navbar-margin-a-icons:          6px  3px;
+
+$navbar-padding-brand:           20px 15px;
+$navbar-margin-brand:             5px  0px;
+
+$navbar-margin-brand-icons:      12px auto;
+
+$navbar-margin-btn:              15px  3px;
+
+
+
+$height-icon-sm:				 32px;
+$width-icon-sm:					 32px;
+$padding-icon-sm:			     4px;
+$border-radius-icon-sm:			 7px;
+
+$height-icon-message:			 40px;
+$width-icon-message:			 40px;
+
+$height-icon-message-sm: 		 20px;
+$width-icon-message-sm:			 20px;
+
+
+$white-navbar:              rgba(#FFFFFF, .96);
+$blue-navbar:               rgba(#34ACDC, .98);
+$azure-navbar:              rgba(#5BCAFF, .98);
+$green-navbar:              rgba(#4CD964, .98);
+$orange-navbar:             rgba(#FF9500, .98);
+$red-navbar:                rgba(#FF4C40, .98);
+
+
+
+$topbar-x:             topbar-x !default;
+$topbar-back:          topbar-back !default;
+$bottombar-x:          bottombar-x !default;
+$bottombar-back:       bottombar-back !default;
+
+
+
+
+

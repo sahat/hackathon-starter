@@ -1,4 +1,5 @@
-$(document).ready(function() {
+/* eslint-env jquery, browser */
+$(document).ready(() => {
 
   // Place JavaScript code here...
 

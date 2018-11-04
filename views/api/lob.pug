@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.far.fa-envelope.fa-sm
+      | Lob API
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://lob.com/docs')
+      i.far.fa-check-square.fa-sm
+      | API Documentation 
+    a.btn.btn-primary(href='https://github.com/lob/lob-node', target='_blank').w-100
+      i.fas.fa-code.fa-sm
+      | Lob Node Docs
+    a.btn.btn-primary(href='https://dashboard.lob.com/register', target='_blank').w-100
+      i.fas.fa-cog.fa-sm
+      | Create API Account
+  br
+  h3 Details of zip code: #{zipdetails.zip_code}
+  br
+  p ID: #{zipdetails.id}
+  p Zip Code Type: #{zipdetails.zip_code_type}
+
+  table.table.table-striped.table-bordered
+    thead
+      tr
+        th City
+        th State
+        th County
+        th County Fips
+        th Preferred
+    tbody
+      for cities in zipdetails.cities
+        tr
+          td= cities.city
+          td= cities.state
+          td= cities.county
+          td= cities.county_fips
+          td= cities.preferred

@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-tumblr-square.fa-sm
+      | Tumblr API
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='http://www.tumblr.com/docs/en/api/v2#overview', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Overview
+    a.btn.btn-primary(href='https://api.tumblr.com/console', target='_blank').w-100
+      i.fas.fa-laptop.fa-sm
+      | API Console
+    a.btn.btn-primary(href='http://www.tumblr.com/docs/en/api/v2#blog_methods', target='_blank').w-100
+      i.fas.fa-code-branch.fa-sm
+      | API Endpoints
+
+  h3.text-primary #{blog.name}'s blog
+  .btn.btn-raised
+    i.far.fa-file-alt.fa-sm
+    | #{blog.posts} posts
+  h4 Latest Photo Post
+  for photo in photoset
+    img.item(src=photo.original_size.url)

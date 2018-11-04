@@ -1,0 +1,57 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-foursquare.fa-sm
+      | Foursquare API
+  
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://developer.foursquare.com/start', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Getting Started
+    a.btn.btn-primary(href='https://developer.foursquare.com/docs/explore', target='_blank').w-100
+      i.fas.fa-laptop.fa-sm
+      | API Console
+    a.btn.btn-primary(href='https://developer.foursquare.com/docs/', target='_blank').w-100
+      i.fas.fa-code-branch.fa-sm  
+      | API Endpoints
+  h3.text-primary Trending Venues
+  table.table.table-striped.table-bordered
+    thead
+      tr
+        th Name
+        th.d-xs.d-sm Category
+        th.d-xs Checkins
+        th Here Now
+    tbody
+      for venue in trendingVenues.venues
+        tr
+          td= venue.name
+          td.d-xs.d-sm #{venue.categories[0].name}
+          td.d-xs #{venue.stats.checkinsCount}
+          td= venue.hereNow.count
+  br
+  h3.text-primary Venue Detail
+  p
+    img(src=venueDetail.venue.photos.groups[0].items[0].prefix + '150x150' + venueDetail.venue.photos.groups[0].items[0].suffix)
+
+  .badge.badge-primary #{venueDetail.venue.name} (#{venueDetail.venue.categories[0].shortName})
+  .badge.badge-success #{venueDetail.venue.location.address}, #{venueDetail.venue.location.city}, #{venueDetail.venue.location.state}
+  .badge.badge-warning #{venueDetail.venue.likes.count} likes, #{venueDetail.venue.rating} rating
+
+  h3.text-primary User Checkins
+  table.table.table-bordered.table-hover
+    thead
+      tr
+        th Name
+        th Location
+        th Category
+        th Checkins
+    tbody
+      for checkin in userCheckins.checkins.items
+        tr
+          td= checkin.venue.name
+          td #{checkin.venue.location.address}, #{checkin.venue.location.city}, #{checkin.venue.location.state}
+          td= checkin.venue.categories[0].shortName
+          td= checkin.venue.stats.checkinsCount

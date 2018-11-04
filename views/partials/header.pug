@@ -1,0 +1,39 @@
+.navbar.navbar-light.fixed-top.navbar-expand-md
+  .container
+    a.navbar-brand(href='/')
+      i.fas.fa-cube
+      | Project name
+    button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+      span.sr-only Toggle navigation
+      span.navbar-toggler-icon
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li.nav-item(class=(title === 'Home') ? 'active' : undefined)
+          a.nav-link(href='/') Home
+        li.nav-item(class=(title === 'API Examples') ? 'active' : undefined)
+          a.nav-link(href='/api') API Examples
+        li.nav-item(class=(title === 'Contact') ? 'active' : undefined)
+          a.nav-link(href='/contact') Contact
+        li.nav-item(class=(title === 'Status') ? 'active' : undefined)
+          a.nav-link(href='/status') Status
+      ul.nav.navbar-nav.ml-auto
+        if !user
+          li.nav-item(class=(title === 'Login') ? 'active' : undefined)
+            a.nav-link(href='/login') Login
+          li.nav-item(class=(title === 'Create Account') ? 'active' : undefined)
+            a.nav-link(href='/signup') Create Account
+        else
+          li.dropdown(class=(title === 'Account Management') ? 'active' : undefined).nav-item
+            a.dropdown-toggle.nav-link(href='#', data-toggle='dropdown')
+              if user.profile.picture
+                img(src=user.profile.picture)
+              else
+                img(src=user.gravatar(60))
+              span= user.profile.name || user.email || user.id
+              i.caret
+            ul.dropdown-menu
+              li.dropdown-item
+                a(href='/account') My Account
+              li.divider.dropdown-item
+              li.dropdown-item
+                a(href='/logout') Logout

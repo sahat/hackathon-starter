@@ -1,0 +1,37 @@
+.alert{
+    border: 0;
+    border-radius: 0;
+    color: #FFFFFF;
+    padding: 10px 15px;
+    font-size: 14px;
+    
+    .container &{
+        border-radius: 4px;
+    
+    }
+    .navbar &{
+        border-radius: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 85px;
+        width: 100%;
+        z-index: 3;
+    }
+    .navbar:not(.navbar-transparent) &{
+        top: 70px;
+    }
+}
+.alert-info{
+     background-color: $azure-navbar;
+}
+.alert-success {
+    background-color: $green-navbar;
+}
+.alert-warning {
+     background-color: $orange-navbar;
+}
+.alert-danger {
+     background-color: $red-navbar;
+}
+

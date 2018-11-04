@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-steam-square.fa-sm
+      | Steam Web API
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://developer.valvesoftware.com/wiki/Steam_Web_API', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | API Overview
+
+  br
+
+  .alert.alert-info
+    h4 Steam ID
+    p Displaying public information for Steam ID: #{playerSummary.steamid}.
+
+  h3 Profile Information
+  .row
+    .col-sm-2
+      img(src=playerSummary.avatarfull, width='92', height='92')
+    .col-sm-8
+      span.lead #{playerSummary.personaname}
+      div Account since: #{new Date(playerSummary.timecreated * 1000)}
+      div Last Online: #{new Date(playerSummary.lastlogoff * 1000)}
+      div Online Status:
+        if playerSummary.personastate === 1
+          strong.text-success  Online
+        else
+          strong.text-danger  Offline
+
+  if playerAchievemments
+    h3 #{playerAchievemments.gameName} Achievements
+    ul.lead.list-unstyled
+      for achievement in playerAchievemments.achievements
+        if achievement.achieved
+          li.text-success= achievement.name
+  else
+    span.lead No player achievements
+
+  if ownedGames.games
+    h3 Owned Games
+    span.lead #{ownedGames.game_count} games
+    for game in ownedGames.games
+      a(href='https://store.steampowered.com/app/' + game.appid)
+        img.thumbnail(src='https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_logo_url + '.jpg' width=92)

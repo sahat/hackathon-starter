@@ -1,0 +1,34 @@
+.panel-group{
+    .panel {
+        border: 0;
+        border-bottom: 1px solid $medium-gray;
+        box-shadow: none;
+    }
+    .panel-default > .panel-heading {
+        background-color: $white-color;
+        border-color: $white-color;
+    }
+    .panel{
+        border-radius: 0;
+    }
+    .panel-title{
+        font-size: $font-size-h5;
+    }
+    .panel-title a:hover, .panel-title a:focus{
+        text-decoration: none;
+    }
+    .gsdk-collapse{
+        display: block;
+        height: 0px;
+        visibility: visible;
+        overflow: hidden;
+        transition: all 400ms;
+    }
+    .panel-title a:hover,
+    .panel-title a:focus{
+        color: $default-states-color;
+    }
+    .panel-default > .panel-heading + .panel-collapse.gsdk-collapse > .panel-body {
+        box-shadow: inset 0 7px 10px -7px rgba(0,0,0,0.14);
+    }
+}

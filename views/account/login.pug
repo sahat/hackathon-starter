@@ -1,0 +1,44 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 Sign in
+  form(method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
+      .col-md-7
+        input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus, autocomplete='email', required)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') Password
+      .col-md-7
+        input.form-control(type='password', name='password', id='password', placeholder='Password', autocomplete='current-password', required)
+    .form-group
+      .offset-sm-3.col-md-7.pl-2
+        button.col-md-3.btn.btn-primary(type='submit')
+          i.far.fa-user.fa-sm
+          | Login
+        a.btn.btn-link(href='/forgot') Forgot your password?
+    .form-group
+      .offset-sm-3.col-md-7.pl-2
+        hr
+    .form-group
+      .offset-sm-3.col-md-7.pl-2
+        a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
+          i.fab.fa-facebook-f.fa-sm
+          | Sign in with Facebook
+        a.btn.btn-block.btn-twitter.btn-social(href='/auth/twitter')
+          i.fab.fa-twitter.fa-sm
+          | Sign in with Twitter
+        a.btn.btn-block.btn-google.btn-social(href='/auth/google')
+          i.fab.fa-google-plus-g.fa-xs
+          | Sign in with Google
+        a.btn.btn-block.btn-github.btn-social(href='/auth/github')
+          i.fab.fa-github.fa-sm
+          | Sign in with GitHub
+        a.btn.btn-block.btn-linkedin.btn-social(href='/auth/linkedin')
+          i.fab.fa-linkedin-in.fa-sm
+          | Sign in with LinkedIn
+        a.btn.btn-block.btn-instagram.btn-social(href='/auth/instagram')
+          i.fab.fa-instagram.fa-sm
+          | Sign in with Instagram
