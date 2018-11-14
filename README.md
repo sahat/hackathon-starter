@@ -1462,7 +1462,7 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
     ```yaml
     runtime: nodejs
-    vm: true
+    env: flex
     manual_scaling:
       instances: 1
     ```
