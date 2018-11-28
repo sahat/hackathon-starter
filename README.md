@@ -205,7 +205,7 @@ The same goes for other providers.
 **Note:** For production use, don't forget to:
 
 - generate a *Confidential OAuth2 Client* in the **Production Environment** and use the production *Private Key* and *OAuth2 Client ID*
-- add the production url to **Redirect URLs* section**, e.g. `http://my-awesome-app.herokuapp.com/auth/snapchat/callback`
+- add the production url to **Redirect URLs** section, e.g. `http://my-awesome-app.herokuapp.com/auth/snapchat/callback`
 - submit the app for review and wait for approval
 
 <hr>

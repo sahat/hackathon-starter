@@ -79,7 +79,7 @@ textarea {
   right: 0;
 }
 
-/* 
+/*
 * Solves Bootstrap 4 issue
 * https://github.com/twbs/bootstrap/issues/25654
 */
@@ -146,4 +146,14 @@ textarea {
 
 .far {
   margin-right: 6px;
+}
+
+// Basic Snapchat Button CSS
+.btn-snapchat {
+  background-color: #fffc00;
+  color: #000 !important;
+
+  &:hover, &:active {
+    background-color: #f1ef00;
+  }
 }
