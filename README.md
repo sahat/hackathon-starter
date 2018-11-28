@@ -188,7 +188,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://seeklogo.com/images/S/snapchat-logo-F20CDB1199-seeklogo.com.png" width="200">
+<img src="https://seeklogo.com/images/S/snapchat-logo-F20CDB1199-seeklogo.com.png" height="90">
 
 - Visit <a href="https://kit.snapchat.com/portal" target="_blank">Snap Kit Developer Portal</a>
 - Click on the **+** button to create an app
