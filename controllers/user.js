@@ -209,7 +209,22 @@ exports.getOauthUnlink = (req, res, next) => {
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
     user[provider] = undefined;
-    user.tokens = user.tokens.filter(token => token.kind !== provider);
+    const tokensWithoutProviderToUnlink = user.tokens.filter(token => token.kind !== provider);
+    // Snapchat Login Kit does not provide an email address, so there
+    // will be no way to sign into the account if the Snapchat account
+    // is unlinked and there is no other login method.
+    if (
+      provider === 'snapchat'
+      && !(user.email && user.password)
+      && tokensWithoutProviderToUnlink.length === 0
+    ) {
+      req.flash('errors', {
+        msg: 'The Snapchat account cannot be unlinked without another form of login enabled.'
+          + ' Please link another account or add an email address and password.'
+      });
+      return res.redirect('/account');
+    }
+    user.tokens = tokensWithoutProviderToUnlink;
     user.save((err) => {
       if (err) { return next(err); }
       req.flash('info', { msg: `${provider} account has been unlinked.` });

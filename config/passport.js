@@ -97,6 +97,10 @@ passport.use(new SnapchatStrategy({
         return done(null, existingUser);
       } else {
         const user = new User();
+        // Similar to Twitter & Instagram APIs, assign a temporary e-mail address
+        // to get on with the registration process. It can be changed later
+        // to a valid e-mail address in Profile Management.
+        user.email = `${profile.id}@snapchat.com`;
         user.snapchat = profile.id;
         user.tokens.push({ kind: 'snapchat', accessToken });
         user.profile.name = profile.displayName;
