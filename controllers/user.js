@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
+const toTitleCase = require('../utils/toTitleCase');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -208,18 +209,20 @@ exports.getOauthUnlink = (req, res, next) => {
   const { provider } = req.params;
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
-    user[provider] = undefined;
-    const tokensWithoutProviderToUnlink = user.tokens.filter(token => token.kind !== provider);
-    // Snapchat Login Kit does not provide an email address, so there
-    // will be no way to sign into the account if the Snapchat account
-    // is unlinked and there is no other login method.
+    const lowerCaseProvider = provider.toLowerCase();
+    const titleCaseProvider = toTitleCase(provider);
+    user[lowerCaseProvider] = undefined;
+    const tokensWithoutProviderToUnlink = user.tokens.filter(token =>
+      token.kind !== lowerCaseProvider);
+    // Some auth providers do not provide an email address in the user profile.
+    // As a result, we need to verify that unlinking the provider is safe by ensuring
+    // that another login method exists.
     if (
-      provider === 'snapchat'
-      && !(user.email && user.password)
+      !(user.email && user.password)
       && tokensWithoutProviderToUnlink.length === 0
     ) {
       req.flash('errors', {
-        msg: 'The Snapchat account cannot be unlinked without another form of login enabled.'
+        msg: `The ${titleCaseProvider} account cannot be unlinked without another form of login enabled.`
           + ' Please link another account or add an email address and password.'
       });
       return res.redirect('/account');
@@ -227,7 +230,7 @@ exports.getOauthUnlink = (req, res, next) => {
     user.tokens = tokensWithoutProviderToUnlink;
     user.save((err) => {
       if (err) { return next(err); }
-      req.flash('info', { msg: `${provider} account has been unlinked.` });
+      req.flash('info', { msg: `${titleCaseProvider} account has been unlinked.` });
       res.redirect('/account');
     });
   });
