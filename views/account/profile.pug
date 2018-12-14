@@ -19,12 +19,15 @@ block content
       .col-sm-6
         label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
+          | &nbsp;
           span Male
         label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
+          | &nbsp;
           span Female
         label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
+          | &nbsp;
           span Other
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='location') Location
