@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "npm rebuild node-sass",
-    "start": "node app.js",
+    "start": "node www/index.js",
     "test": "nyc mocha --timeout=10000 --exit",
     "lint": "eslint \"**/*.js\""
   },
@@ -18,6 +18,7 @@
     "@fortawesome/fontawesome-free": "^5.3.1",
     "@ladjs/bootstrap-social": "^7.0.2",
     "@octokit/rest": "^15.11.3",
+    "aws-serverless-express": "^3.3.5",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.1.3",
