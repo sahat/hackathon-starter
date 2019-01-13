@@ -95,20 +95,19 @@ passport.use(new SnapchatStrategy({
       if (err) { return done(err); }
       if (existingUser) {
         return done(null, existingUser);
-      } else {
-        const user = new User();
-        // Similar to Twitter & Instagram APIs, assign a temporary e-mail address
-        // to get on with the registration process. It can be changed later
-        // to a valid e-mail address in Profile Management.
-        user.email = `${profile.id}@snapchat.com`;
-        user.snapchat = profile.id;
-        user.tokens.push({ kind: 'snapchat', accessToken });
-        user.profile.name = profile.displayName;
-        user.profile.picture = profile.bitmoji.avatarUrl;
-        user.save((err) => {
-          done(err, user);
-        });
       }
+      const user = new User();
+      // Similar to Twitter & Instagram APIs, assign a temporary e-mail address
+      // to get on with the registration process. It can be changed later
+      // to a valid e-mail address in Profile Management.
+      user.email = `${profile.id}@snapchat.com`;
+      user.snapchat = profile.id;
+      user.tokens.push({ kind: 'snapchat', accessToken });
+      user.profile.name = profile.displayName;
+      user.profile.picture = profile.bitmoji.avatarUrl;
+      user.save((err) => {
+        done(err, user);
+      });
     });
   }
 }));
