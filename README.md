@@ -555,7 +555,7 @@ download MongoDB [here](http://mongodb.org/downloads), or install it via a packa
 Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
 **Tip:** If you are always connected to the internet, you could just use
-[mLab](https://mlab.com/) or [Compose](https://www.compose.io/) instead
+[MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or [Compose](https://www.compose.io/) instead
 of downloading and installing MongoDB locally. You will only need to update database credentials
 in `.env` file.
 
@@ -563,10 +563,10 @@ in `.env` file.
 Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
-running on `localhost`. You need to create an account with [mLab](https://mongolab.com/)
+running on `localhost`. You need to create an account with [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 or [Compose](https://www.compose.io/), then create a free tier database.
 See [Deployment](#deployment) for more information on how to setup an account
-and a new database step-by-step with mLab.
+and a new database step-by-step with MongoDB Atlas.
 
 ### Why Pug (Jade) instead of Handlebars?
 When I first started this project I didn't have any experience with Handlebars. Since then I have worked on Ember.js apps and got myself familiar with the Handlebars syntax. While it is true Handlebars is easier, because it looks like good old HTML, I have no regrets picking Jade over Handlebars. First off, it's the default template engine in Express, so someone who has built Express apps in the past already knows it. Secondly, I find `extends` and `block` to be indispensable, which as far as I know, Handlebars does not have out of the box. And lastly, subjectively speaking, Jade looks much cleaner and shorter than Handlebars, or any non-HAML style for that matter.
@@ -1285,7 +1285,7 @@ a cloud platform to host it. These are not the only choices, but they are my top
 picks. From my experience, **Heroku** is the easiest to get started with, it will
 automatically restart your Node.js process when it crashes, zero-downtime
 deployments and custom domain support on free accounts. Additionally, you can
-create an account with **mLab** and then pick one of the *4* providers below.
+create an account with **MongoDB Atlas** and then pick one of the *4* providers below.
 Again, there are plenty of other choices and you are not limited to just the ones
 listed below.
 
@@ -1303,26 +1303,29 @@ listed below.
 
 ---
 
-<img src="https://mlab.com/company/img/branding/mLab-logo-onlight.svg" width="200">
+<img src="https://www.mongodb.com/assets/images/global/MongoDB_Logo_Dark.svg" width="200">
 
-- Open [mlab.com](https://mlab.com) website
-- Click the yellow **Sign up** button
-- Fill in your user information then hit **Create account**
-- From the dashboard, click on **:zap:Create new** button
-- Select **any** cloud provider (I usually go with AWS)
-- Under *Plan* click on **Single-node (development)** tab and select **Sandbox** (it's free)
- - *Leave MongoDB version as is - `2.4.x`*
-- Enter *Database name** for your web app
-- Then click on **:zap:Create new MongoDB deployment** button
-- Now, to access your database you need to create a DB user
-- Click to the recently created database
-- You should see the following message:
- - *A database user is required to connect to this database.* **Click here** *to create a new one.*
-- Click the link and fill in **DB Username** and **DB Password** fields
-- Finally, in `.env` instead of `mongodb://localhost:27017/test`, use the following URI with your credentials:
- - `db: 'mongodb://USERNAME:PASSWORD@ds027479.mongolab.com:27479/DATABASE_NAME'`
+- Go to [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+- Click the green **Get started free** button
+- Fill in your information then hit **Get started free**
+- You will be redirected to Create New Cluster page.
+- Select a **Cloud Provider and Region** (such as AWS and a free tier region)
+- Select cluster Tier to **Free Shared Clusters**
+- Give Cluster a name (default: Cluster0)
+- Click on green **:zap:Create Cluster button**
+- Now, to access your database you need to create a DB user. To create a new MongoDB user, from the **Clusters view**, select the **Security tab**
+- Under the **MongoDB Users** tab, click on **+Add New User**
+- Fill in a username and password and give it either **Atlas Admin** User Privilege
+- Next, you will need to create an IP address whitelist and obtain the connection URI.  In the Clusters view, under the cluster details (i.e. SANDBOX - Cluster0), click on the **CONNECT** button.
+- Under section **(1) Check the IP Whitelist**, click on **ALLOW ACCESS FROM ANYWHERE**. The form will add a field with `0.0.0.0/0`.  Click **SAVE** to save the `0.0.0.0/0` whitelist.
+- Under section **(2) Choose a connection method**, click on **Connect Your Application**
+- In the new screen, click on **SRV connection string (3.4+ driver)**. __*WARNING*__: Do not pick 3.6+ since there Express Session currently has a compatibility issue with it.
+- Finally, copy the SRV string and replace the URI in MONGODB_URI of `.env.example` with this SRV string.  Make sure to replace the <PASSWORD> with the db User password that you created under the Security tab.
+- Note that after some of the steps in the Atlas UI, you may see a banner stating `We are deploying your changes`.  You will need to wait for the deployment to finish before using the DB in your application.
 
-**Note:** As an alternative to mLab, there is also [Compose](https://www.compose.io/).
+
+
+**Note:** As an alternative to MongDB Atlas, there is also [Compose](https://www.compose.io/).
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
 **NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you the new process, please feel free to help us update this page*
