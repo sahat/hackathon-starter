@@ -1,6 +1,24 @@
 # Changelog
 ---------
 
+### 5.1.2 (January 13, 2019)
+Added Login by Snapchat (thanks to @nicholasgonzalezsc)
+Migrate the Foursquare API example to use Axios calls instead of the npm library.
+Fixed minor visual issue in the web scraping example.
+Fixed issue with Popper.js integration (thanks to @binarymax and @Furchin)
+Fixed wrapping issues in the navbar and logo indentation (thanks to @estevanmaito)
+Fixed MongoDB deprecation warnings
+Add production error handler middleware that returns 500 to handle errors.  Also, handle server errors in the lastfm API example (thanks to @jagatfx)
+Added  autocomplete properties to the views to address Chrome warnings (thanks to @peterblazejewicz)
+Fixed issues in the unit tests.
+Fixed issues in the modern theme variables and imports to be consistent (thanks to @monkeywithacupcake)
+Upgraded to Fontawesome to the latest version (thanks in part to @gesa)
+Upgraded eslint to v5.
+Updated dependencies
+Updated copyright year to include 2019
+Minor code formatting improvements
+Replaced mLab instructions with MongoDB Atlas instructions (thanks to @
+
 ### 5.1.1 (July 5, 2018)
 - Upgraded FontAwesome to FontAwesome v5.1 - FontAwsome is now integrated using its npm package
 - Fixed bug with JS libraries missing in Windows Dev envs
