@@ -1,4 +1,4 @@
-.btn-social { 
+.btn-social {
 	opacity: 0.85;
 	padding: 8px 9px;
 
@@ -32,7 +32,7 @@
     background-color: $color;
     border-color: $color;
     opacity: 0.9;
-    
+
     &:hover,
     &:focus,
     &:active,
@@ -43,11 +43,11 @@
         color: $white-color;
         opacity: 1;
     }
-  
+
     &.btn-border{
       border-color: $color;
       color: $color;
-      
+
       &:hover,
       &:focus,
       &:active,
@@ -58,16 +58,16 @@
         border-color: $color;
         opacity: 1;
       }
-    
+
       &:disabled,
       &[disabled],
       &.disabled {
         background-color: $transparent-bg;
         border-color: $color;
-      }  
+      }
     }
-  
-  
+
+
 }
 
 .btn-adn           { @include btn-social(#d87a68); }
@@ -85,6 +85,7 @@
 .btn-openid        { @include btn-social(#f7931e); }
 .btn-pinterest     { @include btn-social(#cb2027); }
 .btn-reddit        { @include btn-social(#eff7ff); }
+.btn-snapchat      { @include btn-social(#fffc00); }
 .btn-soundcloud    { @include btn-social(#ff5500); }
 .btn-tumblr        { @include btn-social(#2c4762); }
 .btn-twitter       { @include btn-social(#55acee); }

@@ -1,5 +1,5 @@
 ![](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg)
-Hackathon Starter 
+Hackathon Starter
 =======================
 
 [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![Build Status](https://travis-ci.org/sahat/hackathon-starter.svg?branch=master)](https://travis-ci.org/sahat/hackathon-starter) [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -188,6 +188,28 @@ The same goes for other providers.
 
 <hr>
 
+<img src="https://seeklogo.com/images/S/snapchat-logo-F20CDB1199-seeklogo.com.png" height="90">
+
+- Visit <a href="https://kit.snapchat.com/portal" target="_blank">Snap Kit Developer Portal</a>
+- Click on the **+** button to create an app
+- Enter a name for your app
+- Enable the scopes that you will want to use in your app
+- Click on the **Continue** button
+- Find the **Kits** section and make sure that **Login Kit** is enabled
+- Find the **Redirect URLs** section, click the **+ Add** button, and enter `http://localhost:8080/auth/snapchat/callback`
+- Find the **Development Environment** section. Click the **Generate** button next to the *Confidential OAuth2 Client* heading within it.
+- Copy and paste the generated *Private Key* and *OAuth2 Client ID* keys into `.env`
+- **Note:** *OAuth2 Client ID* is **SNAPCHAT_ID**, *Private Key* is **SNAPCHAT_SECRET** in `.env`
+- To prepare the app for submission, fill out the rest of the required fields: *Category*, *Description*, *Privacy Policy Url*, and *App Icon*
+
+**Note:** For production use, don't forget to:
+
+- generate a *Confidential OAuth2 Client* in the **Production Environment** and use the production *Private Key* and *OAuth2 Client ID*
+- add the production url to **Redirect URLs** section, e.g. `http://my-awesome-app.herokuapp.com/auth/snapchat/callback`
+- submit the app for review and wait for approval
+
+<hr>
+
 <img src="http://www.doit.ba/img/facebook.jpg" width="200">
 
 - Visit <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a>
@@ -195,7 +217,7 @@ The same goes for other providers.
 - Enter a new name for your app
 - Click on the **Create App ID** button
 - Find the Facebook Login Product and click on **Facebook Login**
-- Instead of going through their Quickstart, click on **Settings** for your app in the top left corner 
+- Instead of going through their Quickstart, click on **Settings** for your app in the top left corner
 - Copy and paste *App ID* and *App Secret* keys into `.env`
 - **Note:** *App ID* is **FACEBOOK_ID**, *App Secret* is **FACEBOOK_SECRET** in `.env`
 - Enter `localhost` under *App Domains*
@@ -418,6 +440,7 @@ List of Packages
 | passport-local                  | Sign-in with Username and Password plugin.                              |
 | passport-openid                 | Sign-in with OpenId plugin.                                             |
 | passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.      |
+| passport-snapchat               | Sign-in with Snapchat plugin.                                           |
 | passport-twitter                | Sign-in with Twitter plugin.                                            |
 | paypal-rest-sdk                 | PayPal APIs library.                                                    |
 | pug (jade)                      | Template engine for Express.                                            |
@@ -532,7 +555,7 @@ download MongoDB [here](http://mongodb.org/downloads), or install it via a packa
 Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
 **Tip:** If you are always connected to the internet, you could just use
-[mLab](https://mlab.com/) or [Compose](https://www.compose.io/) instead
+[MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or [Compose](https://www.compose.io/) instead
 of downloading and installing MongoDB locally. You will only need to update database credentials
 in `.env` file.
 
@@ -540,10 +563,10 @@ in `.env` file.
 Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
 running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
-running on `localhost`. You need to create an account with [mLab](https://mongolab.com/)
+running on `localhost`. You need to create an account with [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 or [Compose](https://www.compose.io/), then create a free tier database.
 See [Deployment](#deployment) for more information on how to setup an account
-and a new database step-by-step with mLab.
+and a new database step-by-step with MongoDB Atlas.
 
 ### Why Pug (Jade) instead of Handlebars?
 When I first started this project I didn't have any experience with Handlebars. Since then I have worked on Ember.js apps and got myself familiar with the Handlebars syntax. While it is true Handlebars is easier, because it looks like good old HTML, I have no regrets picking Jade over Handlebars. First off, it's the default template engine in Express, so someone who has built Express apps in the past already knows it. Secondly, I find `extends` and `block` to be indispensable, which as far as I know, Handlebars does not have out of the box. And lastly, subjectively speaking, Jade looks much cleaner and shorter than Handlebars, or any non-HAML style for that matter.
@@ -1136,7 +1159,7 @@ var YYYY = now.getFullYear();
 
 if (DD < 10) {
   DD = '0' + DD;
-} 
+}
 
 if (MM < 10) {
   MM = '0' + MM;
@@ -1234,17 +1257,17 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 Docker
 ----------
 
-You will need docker and docker-compose installed to build the application. 
+You will need docker and docker-compose installed to build the application.
 
 - [Docker installation](https://docs.docker.com/engine/installation/)
 
 - [Common problems setting up docker](https://docs.docker.com/toolbox/faqs/troubleshoot/)
 
-After installing docker, start the application with the following commands : 
+After installing docker, start the application with the following commands :
 
 ```
 # To build the project for the first time or when you add dependencies
-docker-compose build web  
+docker-compose build web
 
 # To start the application (or to restart after making changes to the source code)
 docker-compose up web
@@ -1262,7 +1285,7 @@ a cloud platform to host it. These are not the only choices, but they are my top
 picks. From my experience, **Heroku** is the easiest to get started with, it will
 automatically restart your Node.js process when it crashes, zero-downtime
 deployments and custom domain support on free accounts. Additionally, you can
-create an account with **mLab** and then pick one of the *4* providers below.
+create an account with **MongoDB Atlas** and then pick one of the *4* providers below.
 Again, there are plenty of other choices and you are not limited to just the ones
 listed below.
 
@@ -1280,26 +1303,29 @@ listed below.
 
 ---
 
-<img src="https://mlab.com/company/img/branding/mLab-logo-onlight.svg" width="200">
+<img src="https://www.mongodb.com/assets/images/global/MongoDB_Logo_Dark.svg" width="200">
 
-- Open [mlab.com](https://mlab.com) website
-- Click the yellow **Sign up** button
-- Fill in your user information then hit **Create account**
-- From the dashboard, click on **:zap:Create new** button
-- Select **any** cloud provider (I usually go with AWS)
-- Under *Plan* click on **Single-node (development)** tab and select **Sandbox** (it's free)
- - *Leave MongoDB version as is - `2.4.x`*
-- Enter *Database name** for your web app
-- Then click on **:zap:Create new MongoDB deployment** button
-- Now, to access your database you need to create a DB user
-- Click to the recently created database
-- You should see the following message:
- - *A database user is required to connect to this database.* **Click here** *to create a new one.*
-- Click the link and fill in **DB Username** and **DB Password** fields
-- Finally, in `.env` instead of `mongodb://localhost:27017/test`, use the following URI with your credentials:
- - `db: 'mongodb://USERNAME:PASSWORD@ds027479.mongolab.com:27479/DATABASE_NAME'`
+- Go to [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+- Click the green **Get started free** button
+- Fill in your information then hit **Get started free**
+- You will be redirected to Create New Cluster page.
+- Select a **Cloud Provider and Region** (such as AWS and a free tier region)
+- Select cluster Tier to **Free Shared Clusters**
+- Give Cluster a name (default: Cluster0)
+- Click on green **:zap:Create Cluster button**
+- Now, to access your database you need to create a DB user. To create a new MongoDB user, from the **Clusters view**, select the **Security tab**
+- Under the **MongoDB Users** tab, click on **+Add New User**
+- Fill in a username and password and give it either **Atlas Admin** User Privilege
+- Next, you will need to create an IP address whitelist and obtain the connection URI.  In the Clusters view, under the cluster details (i.e. SANDBOX - Cluster0), click on the **CONNECT** button.
+- Under section **(1) Check the IP Whitelist**, click on **ALLOW ACCESS FROM ANYWHERE**. The form will add a field with `0.0.0.0/0`.  Click **SAVE** to save the `0.0.0.0/0` whitelist.
+- Under section **(2) Choose a connection method**, click on **Connect Your Application**
+- In the new screen, click on **Standard connection string (3.4+ driver)**. __*WARNING*__: Do not pick 3.6+ since there Express Session currently has a compatibility issue with it.
+- Finally, copy the URI connection string and replace the URI in MONGODB_URI of `.env.example` with this URI string.  Make sure to replace the <PASSWORD> with the db User password that you created under the Security tab.
+- Note that after some of the steps in the Atlas UI, you may see a banner stating `We are deploying your changes`.  You will need to wait for the deployment to finish before using the DB in your application.
 
-**Note:** As an alternative to mLab, there is also [Compose](https://www.compose.io/).
+
+
+**Note:** As an alternative to MongDB Atlas, there is also [Compose](https://www.compose.io/).
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
 **NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you the new process, please feel free to help us update this page*
@@ -1364,7 +1390,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 1. Create a Bluemix Account
 
-    [Sign up](https://console.ng.bluemix.net/registration/?target=%2Fdashboard%2Fapps) for Bluemix, or use an existing account.  
+    [Sign up](https://console.ng.bluemix.net/registration/?target=%2Fdashboard%2Fapps) for Bluemix, or use an existing account.
 
 1. Download and install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) to push your applications to Bluemix.
 
@@ -1378,7 +1404,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
     - myMongo-db-name
   ```
 
-  The host you use will determinate your application url initially, e.g. `<host>.mybluemix.net`.  
+  The host you use will determinate your application url initially, e.g. `<host>.mybluemix.net`.
   The service name 'myMongo-db-name' is a declaration of your MongoDB service.  If you are using other services like Watson for example, then you would declare them the same way.
 
 1. Connect and login to Bluemix via the Cloud-foundry CLI
@@ -1390,7 +1416,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
   ```
   $ cf create-service mongodb 100 [your-service-name]
   ```
-  **Note:** this is a free and experiment verion of MongoDB instance.  
+  **Note:** this is a free and experiment verion of MongoDB instance.
   Use the MongoDB by Compose instance for production applications:
   ```
   $ cf create-service compose-for-mongodb Standard [your-service-name]'
@@ -1408,11 +1434,11 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
     ```
 
-**Done**, now go to the staging domain(`<host>.mybluemix.net`.) and see your app running.  
+**Done**, now go to the staging domain(`<host>.mybluemix.net`.) and see your app running.
 
-[Cloud Foundry Commands](https://console.ng.bluemix.net/docs/cli/reference/bluemix_cli/index.html)  
-[More Bluemix samples](https://ibm-bluemix.github.io/)  
-[Simple ToDo app in a programming language of your choice](https://github.com/IBM-Bluemix/todo-apps)  
+[Cloud Foundry Commands](https://console.ng.bluemix.net/docs/cli/reference/bluemix_cli/index.html)
+[More Bluemix samples](https://ibm-bluemix.github.io/)
+[Simple ToDo app in a programming language of your choice](https://github.com/IBM-Bluemix/todo-apps)
 
 
 
@@ -1421,15 +1447,15 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 
 
-### Watson catalog of services      
+### Watson catalog of services
 
-**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> [Conversation](https://www.ibm.com/watson/services/conversation/)** - 	Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.  
+**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> [Conversation](https://www.ibm.com/watson/services/conversation/)** - 	Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.
 
 **<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> [Discovery](https://www.ibm.com/watson/services/discovery/)** - Unlock hidden value in data to find answers, monitor trends and surface patterns with the world’s most advanced cloud-native insight engine.
 
 **<img src="https://wbi.mybluemix.net/icons/language-translator.svg?version=4" width="20" width="25"> [Language Translator](https://www.ibm.com/watson/services/language-translator/)** - Translate text from one language to another.
 
-**<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> [Natural Language Classifier](https://www.ibm.com/watson/services/natural-language-classifier/)** - Interpret and classify natural language with confidence.  
+**<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> [Natural Language Classifier](https://www.ibm.com/watson/services/natural-language-classifier/)** - Interpret and classify natural language with confidence.
 
 **<img src="https://wbi.mybluemix.net/icons/natural-language-understanding.svg?version=2" width="25"> [Natural Language Understanding](https://www.ibm.com/watson/services/natural-language-understanding/)** - Analyze text to extract meta-data from content such as concepts, entities, keywords and more.
 
@@ -1437,9 +1463,9 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 **<img src="https://wbi.mybluemix.net/icons/speech-to-text.svg?version=2" width="25"> [Speech to Text](https://www.ibm.com/watson/services/speech-to-text/)** - Convert audio and voice into written text for quick understanding of content.
 
-**<img src="https://wbi.mybluemix.net/icons/text-to-speech.svg?version=2" width="25"> [Text to Speech](https://www.ibm.com/watson/services/text-to-speech/)** - Convert written text into natural sounding audio in a variety of languages and voices.  
+**<img src="https://wbi.mybluemix.net/icons/text-to-speech.svg?version=2" width="25"> [Text to Speech](https://www.ibm.com/watson/services/text-to-speech/)** - Convert written text into natural sounding audio in a variety of languages and voices.
 
-**<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> [Tone Analyzer](https://www.ibm.com/watson/services/tone-analyzer/)** - Understand emotions, social tendencies and perceived writing style. 
+**<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> [Tone Analyzer](https://www.ibm.com/watson/services/tone-analyzer/)** - Understand emotions, social tendencies and perceived writing style.
 
 **<img src="https://kpprod1.alchemyapi.com/images/vis_rec.svg" width="25"> [Visual Recognition](https://www.ibm.com/watson/services/visual-recognition/)** - Tag, classify and search visual content using machine learning.
 
@@ -1497,7 +1523,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 Sahat Yalkabov
+Copyright (c) 2014-2019 Sahat Yalkabov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

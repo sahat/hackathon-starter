@@ -3,6 +3,7 @@ const request = require('request');
 const { Strategy: InstagramStrategy } = require('passport-instagram');
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: FacebookStrategy } = require('passport-facebook');
+const { Strategy: SnapchatStrategy } = require('passport-snapchat');
 const { Strategy: TwitterStrategy } = require('passport-twitter');
 const { Strategy: GitHubStrategy } = require('passport-github');
 const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
@@ -56,6 +57,60 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
  *       - If there is, return an error message.
  *       - Else create a new account.
  */
+
+/**
+ * Sign in with Snapchat.
+ */
+passport.use(new SnapchatStrategy({
+  clientID: process.env.SNAPCHAT_ID,
+  clientSecret: process.env.SNAPCHAT_SECRET,
+  callbackURL: '/auth/snapchat/callback',
+  profileFields: ['id', 'displayName', 'bitmoji'],
+  scope: ['user.display_name', 'user.bitmoji.avatar'],
+  passReqToCallback: true
+}, (req, accessToken, refreshToken, profile, done) => {
+  if (req.user) {
+    User.findOne({ snapchat: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser) {
+        req.flash('errors', { msg: 'There is already a Snapchat account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        done(err);
+      } else {
+        User.findById(req.user.id, (err, user) => {
+          if (err) { return done(err); }
+          user.snapchat = profile.id;
+          user.tokens.push({ kind: 'snapchat', accessToken });
+          user.profile.name = user.profile.name || profile.displayName;
+          user.profile.gender = user.profile.gender;
+          user.profile.picture = user.profile.picture || profile.bitmoji.avatarUrl;
+          user.save((err) => {
+            req.flash('info', { msg: 'Snapchat account has been linked.' });
+            done(err, user);
+          });
+        });
+      }
+    });
+  } else {
+    User.findOne({ snapchat: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      const user = new User();
+      // Similar to Twitter & Instagram APIs, assign a temporary e-mail address
+      // to get on with the registration process. It can be changed later
+      // to a valid e-mail address in Profile Management.
+      user.email = `${profile.id}@snapchat.com`;
+      user.snapchat = profile.id;
+      user.tokens.push({ kind: 'snapchat', accessToken });
+      user.profile.name = profile.displayName;
+      user.profile.picture = profile.bitmoji.avatarUrl;
+      user.save((err) => {
+        done(err, user);
+      });
+    });
+  }
+}));
 
 /**
  * Sign in with Facebook.

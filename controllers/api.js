@@ -13,17 +13,7 @@ const clockwork = require('clockwork')({ key: process.env.CLOCKWORK_KEY });
 const paypal = require('paypal-rest-sdk');
 const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
-const { Venues, Users } = require('node-foursquare')({
-  secrets: {
-    clientId: process.env.FOURSQUARE_ID,
-    clientSecret: process.env.FOURSQUARE_SECRET,
-    redirectUrl: process.env.FOURSQUARE_REDIRECT_URL
-  },
-  foursquare: {
-    mode: 'foursquare',
-    version: 20140806,
-  }
-});
+const axios = require('axios');
 
 /**
  * GET /api
@@ -41,22 +31,28 @@ exports.getApi = (req, res) => {
  */
 exports.getFoursquare = async (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'foursquare');
-  try {
-    const getTrendingAsync = promisify(Venues.getTrending);
-    const getVenueAsync = promisify(Venues.getVenue);
-    const getCheckinsAsync = promisify(Users.getCheckins);
-    const trendingVenues = await getTrendingAsync('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken);
-    const venueDetail = await getVenueAsync('49da74aef964a5208b5e1fe3', token.accessToken);
-    const userCheckins = await getCheckinsAsync('self', null, token.accessToken);
-    return res.render('api/foursquare', {
-      title: 'Foursquare API',
-      trendingVenues,
-      venueDetail,
-      userCheckins
+  let trendingVenues;
+  let venueDetail;
+  let userCheckins;
+  axios.all([
+    axios.get(`https://api.foursquare.com/v2/venues/trending?ll=40.7222756,-74.0022724&limit=50&oauth_token=${token.accessToken}&v=20140806`),
+    axios.get(`https://api.foursquare.com/v2/venues/49da74aef964a5208b5e1fe3?oauth_token=${token.accessToken}&v=20190113`),
+    axios.get(`https://api.foursquare.com/v2/users/self/checkins?oauth_token=${token.accessToken}&v=20190113`)
+  ])
+    .then(axios.spread((trendingVenuesRes, venueDetailRes, userCheckinsRes) => {
+      trendingVenues = trendingVenuesRes.data.response;
+      venueDetail = venueDetailRes.data.response;
+      userCheckins = userCheckinsRes.data.response;
+      res.render('api/foursquare', {
+        title: 'Foursquare API',
+        trendingVenues,
+        venueDetail,
+        userCheckins
+      });
+    }))
+    .catch((error) => {
+      next(error);
     });
-  } catch (err) {
-    return next(err);
-  }
 };
 
 /**
@@ -106,7 +102,7 @@ exports.getScraping = (req, res, next) => {
     if (err) { return next(err); }
     const $ = cheerio.load(body);
     const links = [];
-    $('.title a[href^="http"], a[href^="https"]').each((index, element) => {
+    $('.title a[href^="http"], a[href^="https"]').slice(1).each((index, element) => {
       links.push($(element));
     });
     res.render('api/scraping', {

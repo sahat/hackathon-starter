@@ -93,6 +93,10 @@ block content
         p.mb-1: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
       else
         p.mb-1: a(href='/auth/facebook') Link your Facebook account
+      if user.snapchat
+        p.mb-1: a.text-danger(href='/account/unlink/snapchat') Unlink your Snapchat account
+      else
+        p.mb-1: a(href='/auth/snapchat') Link your Snapchat account
     .offset-sm-3.col-md-7.pl-2
       if user.twitter
         p.mb-1: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
