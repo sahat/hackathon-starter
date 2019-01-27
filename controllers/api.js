@@ -150,8 +150,8 @@ exports.getNewYorkTimes = (req, res, next) => {
   };
   request.get({ url: 'http://api.nytimes.com/svc/books/v2/lists', qs: query }, (err, request, body) => {
     if (err) { return next(err); }
-    if (request.statusCode === 403) {
-      return next(new Error('Invalid New York Times API Key'));
+    if (request.statusCode >= 400) {
+      return next(new Error(`New York Times API - ${body}`));
     }
     const books = JSON.parse(body).results;
     res.render('api/nyt', {
