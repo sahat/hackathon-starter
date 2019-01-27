@@ -584,13 +584,6 @@ models, routes, controllers, etc.
 When working solo on small projects I actually prefer to have everything inside `app.js` as is the case with [this]((https://github.com/sahat/ember-sass-express-starter/blob/master/app.js))
 REST API server.
 
-
-### Why is there no Mozilla Persona as a sign-in option?
-If you would like to use **Persona** authentication strategy, use the
-[pull request #64](https://github.com/sahat/hackathon-starter/pull/64) as a
-reference guide. I have explained my reasons why it could not be merged in
-[issue #63](https://github.com/sahat/hackathon-starter/issues/63#issuecomment-34898290).
-
 ### How do I switch SendGrid for another email delivery service, like Mailgun or SparkPost?
 Inside the `nodemailer.createTransport` method arguments, simply change the service from `'Sendgrid'` to some other email service. Also, be sure to update both username and password below that. See the [list of all supported services](https://github.com/nodemailer/nodemailer-wellknown#supported-services) by Nodemailer.
 
