@@ -118,7 +118,7 @@ passport.use(new SnapchatStrategy({
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_ID,
   clientSecret: process.env.FACEBOOK_SECRET,
-  callbackURL: '/auth/facebook/callback',
+  callbackURL: `${process.env.BASE_URL}/auth/facebook/callback`,
   profileFields: ['name', 'email', 'link', 'locale', 'timezone', 'gender'],
   passReqToCallback: true
 }, (req, accessToken, refreshToken, profile, done) => {
