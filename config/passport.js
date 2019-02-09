@@ -11,6 +11,7 @@ const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
 const { Strategy: OpenIDStrategy } = require('passport-openid');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
+const _ = require('lodash');
 
 const User = require('../models/User');
 
@@ -179,7 +180,8 @@ passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_ID,
   clientSecret: process.env.GITHUB_SECRET,
   callbackURL: '/auth/github/callback',
-  passReqToCallback: true
+  passReqToCallback: true,
+  scope: ['user:email']
 }, (req, accessToken, refreshToken, profile, done) => {
   if (req.user) {
     User.findOne({ github: profile.id }, (err, existingUser) => {
@@ -215,7 +217,7 @@ passport.use(new GitHubStrategy({
           done(err);
         } else {
           const user = new User();
-          user.email = profile._json.email;
+          user.email = _.get(_.orderBy(profile.emails, ['primary', 'verified'], ['desc', 'desc']), [0, 'value'], null);
           user.github = profile.id;
           user.tokens.push({ kind: 'github', accessToken });
           user.profile.name = profile.displayName;
