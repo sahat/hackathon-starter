@@ -80,7 +80,8 @@
     "nyc": "^13.3.0",
     "sinon": "^7.2.4",
     "sinon-mongoose": "^2.2.1",
-    "supertest": "^3.4.2"
+    "supertest": "^3.4.2",
+    "supertest-session": "^3.3.0"
   },
   "engines": {
     "node": ">=8.11.3",
