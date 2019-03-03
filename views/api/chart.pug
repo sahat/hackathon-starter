@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+    .container
+      h2(style='text-align: center;') Chart.js — Line Chart Demo
+      div(style='width:90%; height:80%; margin: 0 auto;')
+        canvas#chart
+    script.
+      var datesList = !{dates};
+      var closingList = !{closing};
+      var ctx = document.getElementById('chart').getContext('2d');
+      var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+      labels: datesList,
+      datasets: [{
+      label: "Microsoft's Closing Stock Values",
+      data: closingList,
+      borderColor: "#3e95cd",
+      backgroundColor: "rgba(118,152,255,0.4)"
+      }]
+      },
+      options: {
+      responsive:true,
+      maintainAspectRatio: true,
+      },
+      });
