@@ -488,7 +488,7 @@ exports.getChart = async (req, res, next) => {
       let dates = []; // 7 days
       let closing = []; // stock closing value
       const keys = Object.getOwnPropertyNames(arr);
-      for (let i = 0; i < 7; i++) {
+      for (let i = 0; i < 100; i++) {
         dates.push(keys[i]);
         closing.push(arr[keys[i]]['4. close']);
       }
