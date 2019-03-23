@@ -6,8 +6,11 @@
     "type": "git",
     "url": "https://github.com/sahat/hackathon-starter.git"
   },
-  "author": "Sahat Yalkabov",
   "license": "MIT",
+  "author": "Sahat Yalkabov",
+  "contributors": [
+    "Yashar Fakhari (https://github.com/YasharF)"
+  ],
   "scripts": {
     "postinstall": "npm rebuild node-sass",
     "start": "node app.js",
