@@ -476,16 +476,13 @@ exports.getLinkedin = (req, res, next) => {
 /**
  * GET /api/chart
  * Chart example.
- * Limit param set to 7 most recent days
  */
 exports.getChart = async (req, res, next) => {
-  // Get your API key: https://www.alphavantage.co/documentation/
   const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=compact&apikey=${process.env.ALPHA_VANTAGE_KEY}`;
   axios.get(url)
     .then((response) => {
-      // handle success
       const arr = response.data['Time Series (Daily)'];
-      let dates = []; // 7 days
+      let dates = [];
       let closing = []; // stock closing value
       const keys = Object.getOwnPropertyNames(arr);
       for (let i = 0; i < 100; i++) {
@@ -503,7 +500,6 @@ exports.getChart = async (req, res, next) => {
         closing
       });
     }).catch((err) => {
-      // handle error
       next(err);
     });
 };
