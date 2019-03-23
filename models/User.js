@@ -17,11 +17,13 @@ const userSchema = new mongoose.Schema({
   linkedin: String,
   steam: String,
   tokens: Array,
-
+  location: {
+    latitude: String,
+    longitude: String
+  },
   profile: {
     name: String,
     gender: String,
-    location: String,
     website: String,
     picture: String,
     tags: Array

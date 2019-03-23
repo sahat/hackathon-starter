@@ -6,6 +6,18 @@ block content
 
   form(action='/account/profile', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
+    script.
+      function success(pos) {
+        var crd = pos.coords;
+        var lat = document.getElementById("latitude");
+        var lon = document.getElementById("longitude");
+        if (lat.value && lon.value) {
+          return
+        }
+        lat.value = crd.latitude;
+        lon.value = crd.longitude;
+      }
+      navigator.geolocation.getCurrentPosition(success);
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
       .col-md-7
@@ -19,13 +31,13 @@ block content
       .col-md-7
         input.form-control(type='text', name='tags', id='tags', value=user.profile.tags.join(), autocomplete='tags')
     .form-group.row
-      label.col-md-3.col-form-label.font-weight-bold.text-right(for='location') Location
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='latitude') Latitude
       .col-md-7
-        input.form-control(type='text', name='location', id='location', value=user.profile.location, autocomplete)
-    //.form-group.row
-      label.col-md-3.col-form-label.font-weight-bold.text-right(for='website') Website
+        input.form-control(type='text', name='latitude', id='latitude', value=user.location.latitude, autocomplete)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='longitude') Longitude
       .col-md-7
-        input.form-control(type='text', name='website', id='website', value=user.profile.website, autocomplete='url')
+        input.form-control(type='text', name='longitude', id='longitude', value=user.location.longitude, autocomplete)
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right Gravatar
       .col-sm-4
