@@ -17,21 +17,7 @@ block content
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='name') Tags
       .col-md-7
-        input.form-control(type='text', name='tags', id='tags', value=user.profile.tags, autocomplete='tags')
-    .form-group.row
-      label.col-md-3.col-form-label.font-weight-bold.text-right Gender
-      .col-sm-6
-        .form-check.form-check-inline
-          input(type='radio', class='form-check-input' checked=user.profile.gender == 'male', name='gender', value='male', data-toggle='radio')
-          label.form-check-label Male
-
-        .form-check.form-check-inline
-          input(type='radio', class='form-check-input' checked=user.profile.gender == 'female', name='gender', value='female', data-toggle='radio')
-          label.form-check-label Female
-
-        .form-check.form-check-inline
-          input(type='radio', class='form-check-input' checked=user.profile.gender == 'other', name='gender', value='other', data-toggle='radio')
-          label.form-check-label Other
+        input.form-control(type='text', name='tags', id='tags', value=user.profile.tags.join(), autocomplete='tags')
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='location') Location
       .col-md-7

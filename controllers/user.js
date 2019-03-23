@@ -13,7 +13,7 @@ const randomBytesAsync = promisify(crypto.randomBytes);
  */
 exports.getLogin = (req, res) => {
   if (req.user) {
-    return res.redirect('/');
+    return res.redirect('/account');
   }
   res.render('account/login', {
     title: 'Login'
@@ -45,7 +45,7 @@ exports.postLogin = (req, res, next) => {
     req.logIn(user, (err) => {
       if (err) { return next(err); }
       req.flash('success', { msg: 'Success! You are logged in.' });
-      res.redirect(req.session.returnTo || '/');
+      res.redirect('/account');
     });
   })(req, res, next);
 };
@@ -69,7 +69,7 @@ exports.logout = (req, res) => {
  */
 exports.getSignup = (req, res) => {
   if (req.user) {
-    return res.redirect('/');
+    return res.redirect('/account');
   }
   res.render('account/signup', {
     title: 'Create Account'
@@ -110,7 +110,7 @@ exports.postSignup = (req, res, next) => {
         if (err) {
           return next(err);
         }
-        res.redirect('/');
+        res.redirect('/account');
       });
     });
   });
@@ -148,7 +148,7 @@ exports.postUpdateProfile = (req, res, next) => {
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
     user.profile.website = req.body.website || '';
-    user.profile.tags = req.body.tags || '';
+    user.profile.tags = req.body.tags.split(',') || '';
     user.save((err) => {
       if (err) {
         if (err.code === 11000) {
