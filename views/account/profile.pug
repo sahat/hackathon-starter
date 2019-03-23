@@ -15,6 +15,10 @@ block content
       .col-md-7
         input.form-control(type='text', name='name', id='name', value=user.profile.name, autocomplete='name')
     .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='name') Tags
+      .col-md-7
+        input.form-control(type='text', name='tags', id='tags', value=user.profile.tags, autocomplete='tags')
+    .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right Gender
       .col-sm-6
         .form-check.form-check-inline
