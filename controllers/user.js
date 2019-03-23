@@ -209,6 +209,7 @@ exports.getOauthUnlink = (req, res, next) => {
   const { provider } = req.params;
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
+    user[provider.toLowerCase()] = undefined;
     const tokensWithoutProviderToUnlink = user.tokens.filter(token =>
       token.kind !== provider.toLowerCase());
     // Some auth providers do not provide an email address in the user profile.
