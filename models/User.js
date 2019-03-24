@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 
@@ -35,7 +35,7 @@ userSchema.pre('save', function save(next) {
   if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
+    bcrypt.hash(user.password, salt, (err, hash) => {
       if (err) { return next(err); }
       user.password = hash;
       next();

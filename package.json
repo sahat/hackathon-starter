@@ -22,7 +22,7 @@
     "@ladjs/bootstrap-social": "^7.0.2",
     "@octokit/rest": "^16.16.0",
     "axios": "^0.18.0",
-    "bcrypt-nodejs": "^0.0.3",
+    "bcrypt": "^3.0.5",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
     "chalk": "^2.4.2",
