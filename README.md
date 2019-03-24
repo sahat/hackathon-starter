@@ -99,7 +99,7 @@ Features
 Prerequisites
 -------------
 
-- [MongoDB](https://www.mongodb.org/downloads)
+- [MongoDB](https://www.mongodb.com/download-center/community)
 - [Node.js 8.0+](http://nodejs.org)
 - Command Line Tools
  - <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
@@ -397,7 +397,7 @@ List of Packages
 | Package                         | Description                                                             |
 | ------------------------------- | ------------------------------------------------------------------------|
 | @octokit/rest                   | GitHub API library.                                                     |
-| bcrypt-nodejs                   | Library for hashing and salting user passwords.                         |
+| bcrypt                          | Library for hashing and salting user passwords.                         |
 | body-parser                     | Node.js body parsing middleware.                                        |
 | chai                            | BDD/TDD assertion library.                                              |
 | chalk                           | Terminal string styling done right.                                     |
@@ -550,7 +550,7 @@ mongoose.connection.on('error', (err) => {
 });
 ```
 You need to have a MongoDB server running before launching `app.js`. You can
-download MongoDB [here](http://mongodb.org/downloads), or install it via a package manager.
+download MongoDB [here](https://www.mongodb.com/download-center/community), or install it via a package manager.
 <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">
 Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
