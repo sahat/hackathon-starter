@@ -1,4 +1,4 @@
-// Flatly 4.0.0
+// Flatly 4.3.1
 // Bootswatch
 
 //
@@ -36,6 +36,8 @@ $warning:       $yellow !default;
 $danger:        $red !default;
 $light:         $gray-200 !default;
 $dark:          $gray-700 !default;
+
+$yiq-contrasted-threshold:  175 !default;
 
 // Links
 
@@ -96,8 +98,8 @@ $pagination-disabled-border-color:  transparent !default;
 
 // Progress bars
 
-$progress-height:                   10px !default;
-$progress-font-size:                10px !default;
+$progress-height:                   0.625rem !default;
+$progress-font-size:                0.625rem !default;
 
 // List group
 
