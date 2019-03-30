@@ -37,11 +37,12 @@ block content
         if achievement.achieved
           li.text-success= achievement.name
   else
-    span.lead No player achievements
+    span.lead No player achievements, or the player achievements are not public
 
   if ownedGames.games
     h3 Owned Games
     span.lead #{ownedGames.game_count} games
+    br
     for game in ownedGames.games
       a(href='https://store.steampowered.com/app/' + game.appid)
         img.thumbnail(src='https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_logo_url + '.jpg' width=92)

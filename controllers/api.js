@@ -348,13 +348,13 @@ exports.getSteam = async (req, res, next) => {
       });
   };
   try {
-    const playerAchievements = await getPlayerAchievements();
+    const { playerstats } = await getPlayerAchievements();
     const playerSummaries = await getPlayerSummaries();
     const ownedGames = await getOwnedGames();
     res.render('api/steam', {
       title: 'Steam Web API',
       ownedGames: ownedGames.response,
-      playerAchievemments: playerAchievements ? playerAchievements.playerstats : null,
+      playerAchievemments: playerstats.success ? playerstats : null,
       playerSummary: playerSummaries.response.players[0]
     });
   } catch (err) {
