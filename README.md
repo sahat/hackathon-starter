@@ -68,6 +68,7 @@ Table of Contents
     - [JavaScript Date](#-javascript-date-cheatsheet)
     - [Mongoose Cheatsheet](#mongoose-cheatsheet)
 - [Deployment](#deployment)
+- [Production](#production)
 - [Docker](#docker)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
@@ -1493,6 +1494,13 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
     ```
 - [Monitor your deployed app](https://console.cloud.google.com/appengine) in the Cloud Console
 - [View the logs](https://console.cloud.google.com/logs/viewer) for your app in the Cloud Console
+
+
+Production
+---------
+
+If you are starting with this boilerplate to build an application for prod deployment, or if after your hackathon you would like to get your project hardened for production use, see [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md).
+
 
 Changelog
 ---------
