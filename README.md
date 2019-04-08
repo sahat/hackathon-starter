@@ -68,7 +68,6 @@ Table of Contents
     - [JavaScript Date](#-javascript-date-cheatsheet)
     - [Mongoose Cheatsheet](#mongoose-cheatsheet)
 - [Deployment](#deployment)
-- [Production](#production)
 - [Docker](#docker)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
@@ -421,6 +420,7 @@ List of Packages
 | instagram-node                  | Instagram API library.                                                  |
 | lastfm                          | Last.fm API library.                                                    |
 | lob                             | Lob API library.                                                        |
+| lodash                          | A utility library for working with arrays, numbers, objects, strings.   |
 | lusca                           | CSRF middleware.                                                        |
 | mocha                           | Test framework.                                                         |
 | mongoose                        | MongoDB ODM.                                                            |
@@ -1297,6 +1297,8 @@ listed below.
 
 ---
 
+### Hosted MongoDB Atlas
+
 <img src="https://www.mongodb.com/assets/images/global/MongoDB_Logo_Dark.svg" width="200">
 
 - Go to [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
@@ -1318,8 +1320,11 @@ listed below.
 - Note that after some of the steps in the Atlas UI, you may see a banner stating `We are deploying your changes`.  You will need to wait for the deployment to finish before using the DB in your application.
 
 
-
 **Note:** As an alternative to MongDB Atlas, there is also [Compose](https://www.compose.io/).
+
+---
+
+### OpenShift
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
 **NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you the new process, please feel free to help us update this page*
@@ -1358,6 +1363,10 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
  - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. **Do not** run `git pull` as it will create unnecessary merge conflicts.
 - And you are done!
 
+---
+
+### Azure
+
 <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
 **NOTE** *Beyound the initial 12 month trial of Azure, the platform does not seem to offer a free tier for hosting NodeJS apps.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
 
@@ -1376,10 +1385,10 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
  - **Note:** *You will be prompted for the password you created earlier*
 - On **Deployments** tab of your Windows Azure Web App, you will see the deployment history
 
-------
+---
 
+## IBM Bluemix Cloud Platform
 
-# IBM Bluemix Cloud Platform
 **NOTE** *At this point it appears that Bluemix's free tier to host NodeJS apps is limited to 30 days.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
 
 1. Create a Bluemix Account
@@ -1435,13 +1444,11 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 [Simple ToDo app in a programming language of your choice](https://github.com/IBM-Bluemix/todo-apps)
 
 
-
-## IBM Watson
+### IBM Watson
 Be sure to check out the full list of Watson services to forwarder enhance your application functionality with a little effort. Watson services are easy to get going, it is simply an RESTful API call. Here is an example of a [Watson Toner Analyzer](https://tone-analyzer-demo.mybluemix.net/) to understand the emotional context of a piece of text that you send to Watson.
 
 
-
-### Watson catalog of services
+#### Watson catalog of services
 
 **<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> [Conversation](https://www.ibm.com/watson/services/conversation/)** - 	Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.
 
@@ -1470,9 +1477,9 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 ---
 
-<img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=64" width="64" align="left">
+### Google Cloud Platform
 
-# Google Cloud Platform
+<img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=64" width="64" align="left">
 
 - [Download and install Node.js](https://nodejs.org/)
 - [Select or create](https://console.cloud.google.com/project) a Google Cloud Platform Console project
@@ -1494,13 +1501,6 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
     ```
 - [Monitor your deployed app](https://console.cloud.google.com/appengine) in the Cloud Console
 - [View the logs](https://console.cloud.google.com/logs/viewer) for your app in the Cloud Console
-
-
-Production
----------
-
-If you are starting with this boilerplate to build an application for prod deployment, or if after your hackathon you would like to get your project hardened for production use, see [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md).
-
 
 Changelog
 ---------
