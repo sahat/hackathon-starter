@@ -1477,9 +1477,8 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 ---
 
-### Google Cloud Platform
-
-<img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=64" width="64" align="left">
+###  Google Cloud Platform
+<img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=64" width="64">
 
 - [Download and install Node.js](https://nodejs.org/)
 - [Select or create](https://console.cloud.google.com/project) a Google Cloud Platform Console project
