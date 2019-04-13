@@ -99,8 +99,8 @@ exports.getFacebook = (req, res, next) => {
  */
 exports.getScraping = (req, res, next) => {
   axios.get('https://news.ycombinator.com/')
-  .then(axiosRes => {
-    const $ = cheerio.load(axiosRes.data);
+  .then(response => {
+    const $ = cheerio.load(response.data);
     const links = []
     $('.title a[href^="http"], a[href^="https"]').slice(1).each((index, element) => {
       links.push($(element));
@@ -110,7 +110,7 @@ exports.getScraping = (req, res, next) => {
       links
     });
   })
-  .catch(err => next(err));
+  .catch(error => next(error));
 };
 
 /**
@@ -146,12 +146,9 @@ exports.getAviary = (req, res) => {
  */
 exports.getNewYorkTimes = (req, res, next) => {
   const apiKey = process.env.NYT_KEY
-  const url = new URL('http://api.nytimes.com/svc/books/v2/lists');
-  url.searchParams.append('list-name', 'young-adult');
-  url.searchParams.append('api-key', 'JItWGN9QpZ9KPV2OZrX0W88P7NFuhKL0');
-  axios.get(url.toString())
-  .then(axiosRes => {
-    const books = axiosRes.data.results;
+  axios.get(`http://api.nytimes.com/svc/books/v2/lists?list-name=young-adult&api-key=${apiKey}`)
+  .then(response => {
+    const books = response.data.results;
     res.render('api/nyt', {
       title: 'New York Times API',
       books
@@ -159,7 +156,7 @@ exports.getNewYorkTimes = (req, res, next) => {
   })
   .catch(err => {
     const message = JSON.stringify(err.response.data.fault)
-    return next(new Error(`New York Times API - ${err.response.status} ${err.response.statusText} ${message}`))
+    next(new Error(`New York Times API - ${err.response.status} ${err.response.statusText} ${message}`))
   });
 };
 
@@ -636,24 +633,67 @@ exports.postFileUpload = (req, res) => {
  * GET /api/pinterest
  * Pinterest API example.
  */
+// exports.getPinterest = (req, res, next) => {
+//   const token = req.user.tokens.find(token => token.kind === 'pinterest');
+//   request.get({ url: 'https://api.pinterest.com/v1/me/boards/', qs: { access_token: token.accessToken }, json: true }, (err, request, body) => {
+//     if (err) { return next(err); }
+//     console.log(body.data)
+//     res.render('api/pinterest', {
+//       title: 'Pinterest API',
+//       boards: body.data
+//     });
+//   });
+// };
 exports.getPinterest = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'pinterest');
-  request.get({ url: 'https://api.pinterest.com/v1/me/boards/', qs: { access_token: token.accessToken }, json: true }, (err, request, body) => {
-    if (err) { return next(err); }
+  axios.get(`https://api.pinterest.com/v1/me/boards?access_token=${token.accessToken}`)
+  .then(response => {
     res.render('api/pinterest', {
       title: 'Pinterest API',
-      boards: body.data
+      boards: response.data.data
     });
-  });
-};
-
+  })
+  .catch(error => {
+    next(error)
+  })
+}
 /**
  * POST /api/pinterest
  * Create a pin.
  */
+// exports.postPinterest = (req, res, next) => {
+//   req.assert('board', 'Board is required.').notEmpty();
+//   req.assert('note', 'Note cannot be blank.').notEmpty();
+//   req.assert('image_url', 'Image URL cannot be blank.').notEmpty();
+
+//   const errors = req.validationErrors();
+
+//   if (errors) {
+//     req.flash('errors', errors);
+//     return res.redirect('/api/pinterest');
+//   }
+
+//   const token = req.user.tokens.find(token => token.kind === 'pinterest');
+//   const formData = {
+//     board: req.body.board,
+//     note: req.body.note,
+//     link: req.body.link,
+//     image_url: req.body.image_url
+//   };
+
+//   request.post('https://api.pinterest.com/v1/pins/', { qs: { access_token: token.accessToken }, form: formData }, (err, request, body) => {
+//     if (err) { return next(err); }
+//     if (request.statusCode !== 201) {
+//       req.flash('errors', { msg: JSON.parse(body).message });
+//       return res.redirect('/api/pinterest');
+//     }
+//     req.flash('success', { msg: 'Pin created' });
+//     res.redirect('/api/pinterest');
+//   });
+// };
 exports.postPinterest = (req, res, next) => {
   req.assert('board', 'Board is required.').notEmpty();
-  req.assert('note', 'Note cannot be blank.').notEmpty();
+  req.assert('note', 'Note cannot be blank').notEmpty();
   req.assert('image_url', 'Image URL cannot be blank.').notEmpty();
 
   const errors = req.validationErrors();
@@ -671,16 +711,17 @@ exports.postPinterest = (req, res, next) => {
     image_url: req.body.image_url
   };
 
-  request.post('https://api.pinterest.com/v1/pins/', { qs: { access_token: token.accessToken }, form: formData }, (err, request, body) => {
-    if (err) { return next(err); }
-    if (request.statusCode !== 201) {
-      req.flash('errors', { msg: JSON.parse(body).message });
-      return res.redirect('/api/pinterest');
-    }
-    req.flash('success', { msg: 'Pin created' });
+  axios.post(`https://api.pinterest.com/v1/me/boards/?access_token=${token.accessToken}`, formData)
+  .then(response => {
+    req.flash('success', { msg: 'Pin created'});
     res.redirect('/api/pinterest');
-  });
-};
+  })
+  .catch(error => {
+    req.flash('errors', { msg: error.response.data.message});
+    res.redirect('/api/pinterest');
+  })
+}
+
 
 exports.getGoogleMaps = (req, res) => {
   res.render('api/google-maps', {
