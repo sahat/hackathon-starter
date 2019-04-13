@@ -30,10 +30,10 @@ block content
         else
           strong.text-danger  Offline
 
-  if playerAchievemments
-    h3 #{playerAchievemments.gameName} Achievements
+  if playerAchievements
+    h3 #{playerAchievements.gameName} Achievements
     ul.lead.list-unstyled
-      for achievement in playerAchievemments.achievements
+      for achievement in playerAchievements.achievements
         if achievement.achieved
           li.text-success= achievement.name
   else
