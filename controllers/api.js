@@ -145,20 +145,21 @@ exports.getAviary = (req, res) => {
  * New York Times API example.
  */
 exports.getNewYorkTimes = (req, res, next) => {
-  const query = {
-    'list-name': 'young-adult',
-    'api-key': process.env.NYT_KEY
-  };
-  request.get({ url: 'http://api.nytimes.com/svc/books/v2/lists', qs: query }, (err, request, body) => {
-    if (err) { return next(err); }
-    if (request.statusCode >= 400) {
-      return next(new Error(`New York Times API - ${body}`));
-    }
-    const books = JSON.parse(body).results;
+  const apiKey = process.env.NYT_KEY
+  const url = new URL('http://api.nytimes.com/svc/books/v2/lists');
+  url.searchParams.append('list-name', 'young-adult');
+  url.searchParams.append('api-key', 'JItWGN9QpZ9KPV2OZrX0W88P7NFuhKL0');
+  axios.get(url.toString())
+  .then(axiosRes => {
+    const books = axiosRes.data.results;
     res.render('api/nyt', {
       title: 'New York Times API',
       books
     });
+  })
+  .catch(err => {
+    const message = JSON.stringify(err.response.data.fault)
+    return next(new Error(`New York Times API - ${err.response.status} ${err.response.statusText} ${message}`))
   });
 };
 
