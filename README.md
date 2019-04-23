@@ -244,7 +244,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://g.twimg.com/ios_homescreen_icon.png" width="90">
+<img src="https://seeklogo.com/images/T/twitter-2012-positive-logo-916EDF1309-seeklogo.com.png" width="90">
 
 - Sign in at <a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com</a>
 - Click **Create a new application**
