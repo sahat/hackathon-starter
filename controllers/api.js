@@ -639,17 +639,6 @@ exports.postFileUpload = (req, res) => {
  * GET /api/pinterest
  * Pinterest API example.
  */
-// exports.getPinterest = (req, res, next) => {
-//   const token = req.user.tokens.find(token => token.kind === 'pinterest');
-//   request.get({ url: 'https://api.pinterest.com/v1/me/boards/', qs: { access_token: token.accessToken }, json: true }, (err, request, body) => {
-//     if (err) { return next(err); }
-//     console.log(body.data)
-//     res.render('api/pinterest', {
-//       title: 'Pinterest API',
-//       boards: body.data
-//     });
-//   });
-// };
 exports.getPinterest = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'pinterest');
   axios.get(`https://api.pinterest.com/v1/me/boards?access_token=${token.accessToken}`)
@@ -667,36 +656,6 @@ exports.getPinterest = (req, res, next) => {
  * POST /api/pinterest
  * Create a pin.
  */
-// exports.postPinterest = (req, res, next) => {
-//   req.assert('board', 'Board is required.').notEmpty();
-//   req.assert('note', 'Note cannot be blank.').notEmpty();
-//   req.assert('image_url', 'Image URL cannot be blank.').notEmpty();
-
-//   const errors = req.validationErrors();
-
-//   if (errors) {
-//     req.flash('errors', errors);
-//     return res.redirect('/api/pinterest');
-//   }
-
-//   const token = req.user.tokens.find(token => token.kind === 'pinterest');
-//   const formData = {
-//     board: req.body.board,
-//     note: req.body.note,
-//     link: req.body.link,
-//     image_url: req.body.image_url
-//   };
-
-//   request.post('https://api.pinterest.com/v1/pins/', { qs: { access_token: token.accessToken }, form: formData }, (err, request, body) => {
-//     if (err) { return next(err); }
-//     if (request.statusCode !== 201) {
-//       req.flash('errors', { msg: JSON.parse(body).message });
-//       return res.redirect('/api/pinterest');
-//     }
-//     req.flash('success', { msg: 'Pin created' });
-//     res.redirect('/api/pinterest');
-//   });
-// };
 exports.postPinterest = (req, res, next) => {
   req.assert('board', 'Board is required.').notEmpty();
   req.assert('note', 'Note cannot be blank').notEmpty();
@@ -717,7 +676,7 @@ exports.postPinterest = (req, res, next) => {
     image_url: req.body.image_url
   };
 
-  axios.post(`https://api.pinterest.com/v1/me/boards/?access_token=${token.accessToken}`, formData)
+  axios.post(`https://api.pinterest.com/v1/pins/?access_token=${token.accessToken}`, formData)
   .then(response => {
     req.flash('success', { msg: 'Pin created'});
     res.redirect('/api/pinterest');
