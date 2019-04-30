@@ -552,7 +552,7 @@ passport.use(new OpenIDStrategy({
         user.steam = steamId;
         user.email = `${steamId}@steam.com`; // steam does not disclose emails, prevent duplicate keys
         user.tokens.push({ kind: 'steam', accessToken: steamId });
-        user.profile.name = profile.personname;
+        user.profile.name = profile.personaname;
         user.profile.picture = profile.avatarmedium;
         user.save((err) => {
           done(err, user);

@@ -326,7 +326,11 @@ exports.getSteam = async (req, res, next) => {
         params.appid = data.response.games[0].appid;
         const achievementsURL = makeURL('http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', params);
         return axios.get(achievementsURL)
-          .then(({ data }) => data);
+          .then(({ data }) => {
+            if (!data.playerstats.success) {
+              return { playerstats: null }
+            }
+          });
       });
   };
   const getPlayerSummaries = () => {
@@ -658,7 +662,7 @@ exports.getPinterest = (req, res, next) => {
  */
 exports.postPinterest = (req, res, next) => {
   req.assert('board', 'Board is required.').notEmpty();
-  req.assert('note', 'Note cannot be blank').notEmpty();
+  req.assert('note', 'Note cannot be blank.').notEmpty();
   req.assert('image_url', 'Image URL cannot be blank.').notEmpty();
 
   const errors = req.validationErrors();
