@@ -316,48 +316,53 @@ exports.getSteam = async (req, res, next) => {
   const getPlayerAchievements = () => {
     const recentGamesURL = makeURL('http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', params);
     return axios.get(recentGamesURL)
-      .then(({ status, data }) => {
-        if (status === 401) {
-          throw new Error('Missing or Invalid Steam API Key');
+      .then(({ data }) => {
+        // handle if player owns no games
+        if (Object.keys(data.response).length === 0) {
+          return null;
         }
+        // handle if there are no recently played games
         if (data.response.total_count === 0) {
-          return { playerstats: null };
+          return null;
         }
         params.appid = data.response.games[0].appid;
         const achievementsURL = makeURL('http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', params);
         return axios.get(achievementsURL)
           .then(({ data }) => {
-            if (!data.playerstats.success) {
-              return { playerstats: null }
+            // handle if there are no achievements for most recent game
+            if (!data.playerstats.achievements) {
+              return null;
             }
+            return data.playerstats;
           });
+      })
+      .catch((err) => {
+        if (err.response) {
+          // handle private profile or invalid key
+          if (err.response.status === 403) {
+            return null;
+          }
+        }
+        return Promise.reject(new Error('There was an error while getting achievements'));
       });
   };
   const getPlayerSummaries = () => {
     params.steamids = steamId;
     const url = makeURL('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', params);
     return axios.get(url)
-      .then(({ status, data }) => {
-        if (status === 401) {
-          throw Error('Missing or Invalid Steam API Key');
-        }
-        return data;
-      });
+      .then(({ data }) => data)
+      .catch(() => Promise.reject(new Error('There was an error while getting player summary')));
   };
   const getOwnedGames = () => {
     params.include_appinfo = 1;
     params.include_played_free_games = 1;
     const url = makeURL('http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', params);
     return axios.get(url)
-      .then(({ status, data }) => {
-        if (status === 401) {
-          throw new Error('Missing or Invalid Steam API Key');
-        }
-        return data;
-      });
+      .then(({ data }) => data)
+      .catch(() => Promise.reject(new Error('There was an error while getting owned games')));
   };
   try {
-    const { playerstats } = await getPlayerAchievements();
+    const playerstats = await getPlayerAchievements();
     const playerSummaries = await getPlayerSummaries();
     const ownedGames = await getOwnedGames();
     res.render('api/steam', {
