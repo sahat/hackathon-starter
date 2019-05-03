@@ -18,7 +18,7 @@ authentication? You can spend hours on it if you are not familiar with how OAuth
 
 When I started this project, my primary focus was on **simplicity** and **ease of use**.
 I also tried to make it as **generic** and **reusable** as possible to cover most use cases of hackathon web apps,
-without being too specific. In the worst case you can use this as a learning guide for your projects,
+without being too specific. In the worst case, you can use this as a learning guide for your projects,
 if for example you are only interested in **Sign in with Google** authentication and nothing else.
 
 ### Testimonials
@@ -133,7 +133,7 @@ npm install
 node app.js
 ```
 
-**Warning:** If you want to use some api that need https to work (for example pinterest or facebook),
+**Warning:** If you want to use some API that need https to work (for example Pinterest or facebook),
 you will need to download [ngrok](https://ngrok.com/).
 You must start ngrok after starting the project.
 
@@ -142,7 +142,7 @@ You must start ngrok after starting the project.
 ./ngrok http 8080
 ```
 
-Next, you must use the https url defined by ngrok, for example `https://hackaton.ngrok.io`
+Next, you must use the https URL defined by ngrok, for example, `https://hackaton.ngrok.io`
 
 **Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon).
 It watches for any changes in your  node.js app and automatically restarts the
@@ -182,7 +182,7 @@ them with *your credentials* when you are ready to deploy an app.
 - Copy and paste *Client ID* and *Client secret* keys into `.env`
 
 **Note:** When you ready to deploy to production don't forget to
-add your new url to *Authorized Javascript origins* and *Authorized redirect URI*,
+add your new URL to *Authorized Javascript origins* and *Authorized redirect URI*,
 e.g. `http://my-awesome-app.herokuapp.com` and
 `http://my-awesome-app.herokuapp.com/auth/google/callback` respectively.
 The same goes for other providers.
@@ -206,7 +206,7 @@ The same goes for other providers.
 **Note:** For production use, don't forget to:
 
 - generate a *Confidential OAuth2 Client* in the **Production Environment** and use the production *Private Key* and *OAuth2 Client ID*
-- add the production url to **Redirect URLs** section, e.g. `http://my-awesome-app.herokuapp.com/auth/snapchat/callback`
+- add the production URL to **Redirect URLs** section, e.g. `http://my-awesome-app.herokuapp.com/auth/snapchat/callback`
 - submit the app for review and wait for approval
 
 <hr>
@@ -228,7 +228,7 @@ The same goes for other providers.
 - Click on the *Settings* tab in the left nav under Facebook Login
 - Enter `http://localhost:8080/auth/facebook/callback` under Valid OAuth redirect URIs
 
-**Note:** After a successful sign in with Facebook, a user will be redirected back to home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
+**Note:** After a successful sign in with Facebook, a user will be redirected back to the home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
 <hr>
 
@@ -460,7 +460,7 @@ Useful Tools and Resources
 --------------------------
 - [JavaScripting](http://www.javascripting.com/) - The Database of JavaScript Libraries
 - [JS Recipes](http://sahatyalkabov.com/jsrecipes/) - JavaScript tutorials for backend and frontend development.
-- [HTML to Pug converter](https://html-to-pug.com/) - HTML to PUG is a free online converter helping you to convert html files to pug syntax in realtime.
+- [HTML to Pug converter](https://html-to-pug.com/) - HTML to PUG is a free online converter helping you to convert HTML files to pug syntax in real-time.
 - [JavascriptOO](http://www.javascriptoo.com/) - A directory of JavaScript libraries with examples, CDN links, statistics, and videos.
 - [Favicon Generator](http://realfavicongenerator.net/) - Generate favicons for PC, Android, iOS, Windows 8.
 
@@ -514,9 +514,7 @@ Pro Tips
 - When installing an NPM package, add a *--save* flag, and it will be automatically
 added to `package.json` as well. For example, `npm install --save moment`.
 - Use [async.parallel()](https://github.com/caolan/async#parallel) when you need to run multiple
-asynchronous tasks, and then render a page, but only when all tasks are completed. For example, you might
-want to scrape 3 different websites for some data and render the results in a template
-after all 3 websites have been scraped.
+asynchronous tasks, and then render a page, but only when all tasks are completed. For example, you might want to scrape three different websites for some data and render the results in a template after all three websites have been scraped.
 - Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find)
 function from Lodash. For example, this is how you would retrieve a
 Twitter token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`,
@@ -580,21 +578,21 @@ such as passing `app` context to each controller as outlined in this
 I find such style to be confusing for beginners.
 It took me a long time to grasp the concept of `exports` and `module.exports`,
 let alone having a global `app` reference in other files.
-That to me is a backward thinking.
+That to me is backward thinking.
 The `app.js` is the "heart of the app", it should be the one referencing
 models, routes, controllers, etc.
-When working solo on small projects I actually prefer to have everything inside `app.js` as is the case with [this]((https://github.com/sahat/ember-sass-express-starter/blob/master/app.js))
+When working solo on small projects, I prefer to have everything inside `app.js` as is the case with [this]((https://github.com/sahat/ember-sass-express-starter/blob/master/app.js))
 REST API server.
 
 ### How do I switch SendGrid for another email delivery service, like Mailgun or SparkPost?
-Inside the `nodemailer.createTransport` method arguments, simply change the service from `'Sendgrid'` to some other email service. Also, be sure to update both username and password below that. See the [list of all supported services](https://github.com/nodemailer/nodemailer-wellknown#supported-services) by Nodemailer.
+Inside the `nodemailer.createTransport` method arguments, change the service from `'Sendgrid'` to some other email service. Also, be sure to update both username and password below that. See the [list of all supported services](https://github.com/nodemailer/nodemailer-wellknown#supported-services) by Nodemailer.
 
 How It Works (mini guides)
 --------------------------
 
-This section is intended for giving you a detailed explanation about
+This section is intended for giving you a detailed explanation of
 how a particular functionality works. Maybe you are just curious about
-how it works, or maybe you are lost and confused while reading the code,
+how it works, or perhaps you are lost and confused while reading the code,
 I hope it provides some guidance to you.
 
 ### Custom HTML and CSS Design 101
@@ -635,14 +633,13 @@ And then create a route in `app.js`. I placed it right after the index controlle
 app.get('/escape-velocity', homeController.escapeVelocity);
 ```
 
-Restart the server (if you are not using **nodemon**), then you should see the new template at [http://localhost:8080/escape-velocity](http://localhost:8080/escape-velocity).
+Restart the server (if you are not using **nodemon**); then you should see the new template at [http://localhost:8080/escape-velocity](http://localhost:8080/escape-velocity).
 
 I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Pug templates work: `layout.pug` - base template, `index.pug` - home page, `partials/header.pug` - Bootstrap navbar, `partials/footer.pug` - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new `layout.pug`.
 Then, each page that changes, be it `index.pug`, `about.pug`, `contact.pug`
 will be embedded in your new `layout.pug` via `block content`. Use existing templates as a reference.
 
-This is a rather lengthy process, and templates you get from elsewhere,
-might have yet another grid system. That's why I chose *Bootstrap* for the Hackathon Starter.
+This is a rather lengthy process, and templates you get from elsewhere might have yet another grid system. That's why I chose *Bootstrap* for the Hackathon Starter.
  Many people are already familiar with *Bootstrap*, plus it's easy to get started with it if you have never used *Bootstrap*.
  You can also buy many beautifully designed *Bootstrap* themes at [Themeforest](http://themeforest.net/), and use them as a drop-in replacement for Hackathon Starter. However, if you would like to go with a completely custom HTML/CSS design, this should help you to get started!
 
@@ -670,12 +667,11 @@ if messages.errors
 ```
 In the first step, `'errors'` is the name of a flash message, which should match the
 name of the property on `messages` object in your views. You place alert messages
-inside `if message.errors` because you don't want to show them flash messages are actually present.
-The reason why you pass an error like `{ msg: 'Error messages goes here' }` instead
-of just a string - `'Error messages goes here'`, is for the sake of consistency.
+inside `if message.errors` because you don't want to show them flash messages are present.
+The reason why you pass an error like `{ msg: 'Error message goes here' }` instead
+of just a string - `'Error message goes here'`, is for the sake of consistency.
 To clarify that, *express-validator* module which is used for validating and sanitizing user's input,
-returns all errors as an array of objects, where each object has a `msg` property with a message
-why an error has occurred. Here is a more general example of what express-validator returns when there are errors present:
+returns all errors as an array of objects, where each object has a `msg` property with a message why an error has occurred. Here is a more general example of what express-validator returns when there are errors present:
 
 ```js
 [
@@ -685,9 +681,9 @@ why an error has occurred. Here is a more general example of what express-valida
 ```
 
 To keep consistent with that style, you should pass all flash messages
-as `{ msg: 'My flash message' }` instead of a string. Otherwise you will just see an alert box
-without an error message. That is because, in **partials/flash.pug** template it will try to output
-`error.msg` (i.e. `"My flash message".msg`), in other words it will try to call a `msg` method on a *String* object,
+as `{ msg: 'My flash message' }` instead of a string. Otherwise, you will see an alert box
+without an error message. That is because in **partials/flash.pug** template it will try to output
+`error.msg` (i.e. `"My flash message".msg`), in other words, it will try to call a `msg` method on a *String* object,
 which will return *undefined*. Everything I just mentioned about errors, also applies
 to "info" and "success" flash messages, and you could even create a new one yourself, such as:
 
@@ -707,7 +703,7 @@ if messages.warning
 `partials/flash.pug` is a partial template that contains how flash messages
 are formatted. Previously, flash
 messages were scattered throughout each view that used flash messages
-(contact, login, signup, profile), but now, thankfully it is uses a *DRY* approach.
+(contact, login, signup, profile), but now, thankfully it uses a *DRY* approach.
 
 The flash messages partial template is *included* in the `layout.pug`, along with footer and navigation.
 ```pug
@@ -722,15 +718,14 @@ body
 ```
 
 If you have any further questions about flash messages,
-please feel free to open an issue and I will update this mini-guide accordingly,
-or send a pull request if you  would like to include something that I missed.
+please feel free to open an issue, and I will update this mini-guide accordingly,
+or send a pull request if you would like to include something that I missed.
 
 <hr>
 
 ### How do I create a new page?
 A more correct way to say this would be "How do I create a new route?" The main file `app.js` contains all the routes.
-Each route has a callback function associated with it. Sometimes you will see 3 or more arguments
-to routes. In cases like that, the first argument is still a URL string, while middle arguments
+Each route has a callback function associated with it. Sometimes you will see three or more arguments for a route. In a case like that, the first argument is still a URL string, while middle arguments
 are what's called middleware. Think of middleware as a door. If this door prevents you from
 continuing forward, you won't get to your callback function. One such example is a route that requires authentication.
 
@@ -738,8 +733,7 @@ continuing forward, you won't get to your callback function. One such example is
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
 ```
 
-It always goes from left to right. A user visits `/account` page. Then `isAuthenticated` middleware
-checks if you are authenticated:
+It always goes from left to right. A user visits `/account` page. Then `isAuthenticated` middleware checks if you are authenticated:
 
 ```js
 exports.isAuthenticated = (req, res, next) => {
@@ -751,7 +745,7 @@ exports.isAuthenticated = (req, res, next) => {
 ```
 
 If you are authenticated, you let this visitor pass through your "door" by calling `return next();`. It then proceeds to the
-next middleware until it reaches the last argument, which is a callback function that typically renders a template on `GET` requests or redirects on `POST` requests. In this case, if you are authenticated, you will be redirected to *Account Management* page, otherwise you will be redirected to *Login* page.
+next middleware until it reaches the last argument, which is a callback function that typically renders a template on `GET` requests or redirects on `POST` requests. In this case, if you are authenticated, you will be redirected to the *Account Management* page; otherwise, you will be redirected to the *Login* page.
 
 ```js
 exports.getAccount = (req, res) => {
@@ -761,11 +755,10 @@ exports.getAccount = (req, res) => {
 };
 ```
 
-Express.js has `app.get`, `app.post`, `app.put`, `app.delete`, but for the most part you will only use the first two HTTP verbs, unless you are building a RESTful API.
+Express.js has `app.get`, `app.post`, `app.put`, `app.delete`, but for the most part, you will only use the first two HTTP verbs, unless you are building a RESTful API.
 If you just want to display a page, then use `GET`, if you are submitting a form, sending a file then use `POST`.
 
-Here is a typical workflow for adding new routes to your application. Let's say we are building
-a page that lists all books from database.
+Here is a typical workflow for adding new routes to your application. Let's say we are building a page that lists all books from the database.
 
 **Step 1.** Start by defining a route.
 ```js
@@ -774,7 +767,7 @@ app.get('/books', bookController.getBooks);
 
 ---
 
-**Note:** As of Express 4.x you can define you routes like so:
+**Note:** As of Express 4.x you can define your routes like so:
 
 ```js
 app.route('/books')
@@ -794,9 +787,7 @@ app.route('/api/twitter')
   .post(apiController.postTwitter)
 ```
 
-Use whichever style that makes sense to you. Either one is acceptable. I really think that chaining HTTP verbs on
-`app.route` is very clean and elegant approach, but on the other hand I can no longer see all my routes at a glance
-when you have one route per line.
+Use whichever style that makes sense to you. Either one is acceptable. I think that chaining HTTP verbs on `app.route` is a very clean and elegant approach, but on the other hand, I can no longer see all my routes at a glance when you have one route per line.
 
 **Step 2.** Create a new schema and a model `Book.js` inside the *models* directory.
 ```js
@@ -853,18 +844,17 @@ app.get('/books',(req, res) => {
 });
 ```
 
-Sure, it's simpler, but as soon as you pass 1000 lines of code in `app.js` it becomes a little difficult to navigate the file.
+Sure, it's simpler, but as soon as you pass 1000 lines of code in `app.js` it becomes a little challenging to navigate the file.
 I mean, the whole point of this boilerplate project was to separate concerns, so you could
-work with your teammates without running into *MERGE CONFLICTS*. Imagine you have 4 developers
+work with your teammates without running into *MERGE CONFLICTS*. Imagine you have four developers
 working on a single `app.js`, I promise you it won't be fun resolving merge conflicts all the time.
-If you are the only developer then it's fine. But as I said, once it gets up to a certain LoC size, it becomes
-difficult to maintain everything in a single file.
+If you are the only developer, then it's okay. But as I said, once it gets up to a certain LoC size, it becomes difficult to maintain everything in a single file.
 
 That's all there is to it. Express.js is super simple to use.
 Most of the time you will be dealing with other APIs to do the real work:
 [Mongoose](http://mongoosejs.com/docs/guide.html) for querying database, socket.io for sending and receiving messages over websockets,
 sending emails via [Nodemailer](http://nodemailer.com/), form validation using [express-validator](https://github.com/ctavan/express-validator) library,
-parsing websites using [Cheerio](https://github.com/cheeriojs/cheerio), and etc.
+parsing websites using [Cheerio](https://github.com/cheeriojs/cheerio), etc.
 
 <hr>
 
@@ -876,8 +866,7 @@ principles of the Hackathon Starter:
 > I also tried to make it as generic and reusable as possible to cover most use cases of
 > hackathon web apps, **without being too specific**.
 
-When I need to use socket.io, I **really** need it, but most of the time - I don't. But more
-importantly, websockets support is still experimental on most hosting providers. As of October 2013,
+When I need to use socket.io, I **really** need it, but most of the time - I don't. But more importantly, websockets support is still experimental on most hosting providers. As of October 2013,
 Heroku supports websockets, but not until you opt-in by running this command:
 
 ```js
@@ -899,7 +888,7 @@ have a websockets support, because many other PaaS providers still do not suppor
 Due to the aforementioned issues with websockets, I cannot include socket.io as part of the Hackathon Starter. *For now...*
 If you need to use socket.io in your app, please continue reading.
 
-First you need to install socket.io:
+First, you need to install socket.io:
 ```js
 npm install socket.io --save
 ```
@@ -939,15 +928,15 @@ to
 server.listen(app.get('port'), () => {
 ```
 
-At this point we are done with the back-end.
+At this point, we are done with the back-end.
 
 You now have a choice - to include your JavaScript code in Pug templates or have all your client-side
-JavaScript in a separate file - in `main.js`. I will admit, when I first started out with Node.js and JavaScript in general,
+JavaScript in a separate file - in `main.js`. I admit, when I first started with Node.js and JavaScript in general,
 I placed all JavaScript code inside templates because I have access to template variables passed in from Express
 right then and there. It's the easiest thing you can do, but also the least efficient and harder to maintain. Since then I
 almost never include inline JavaScript inside templates anymore.
 
-But it's also understandable if you want take the easier road.
+But it's also understandable if you want to take the easier road.
 Most of the time you don't even care about performance during hackathons, you just
 want to [*"get shit done"*](https://www.startupvitamins.com/media/products/13/aaron_levie_poster_black.jpg) before the time runs out.
 Well, either way, use whichever approach makes more sense to you. At the end of the day,
@@ -1067,13 +1056,13 @@ The `catch()` method returns a Promise and deals with rejected cases only.
 p.catch(function(reason) { /* handle rejection */ });
 ```
 
-The `then()` method returns a Promise. It takes 2 arguments: callback for the success & failure cases.
+The `then()` method returns a Promise. It takes two arguments: callback for the success & failure cases.
 
 ```js
 p.then(function(value) { /* handle fulfillment */ }, function(reason) { /* handle rejection */ });
 ```
 
-The `Promise.all(iterable)` method returns a promise that resolves when all of the promises in the iterable argument have resolved, or rejects with the reason of the first passed promise that rejects.
+The `Promise.all(iterable)` method returns a promise that resolves when all of the promises in the iterable argument have resolved or rejects with the reason of the first passed promise that rejects.
 
 ```js
 Promise.all([p1, p2, p3]).then(function(values) { console.log(values) });
@@ -1236,7 +1225,7 @@ User
   });
 ```
 
-#### Get total count of a field from all documents:
+#### Get the total count of a field from all documents:
 Let's suppose that each user has a `votes` field and you would like to count
 the total number of votes in your database across all users. One very
 inefficient way would be to loop through each document and manually accumulate
@@ -1269,19 +1258,15 @@ docker-compose up web
 
 ```
 
-To view the app, find your docker ip address + port 8080 ( this will typically be http://localhost:8080/ ).  To use a port other than 8080, you would need to modify the port in app.js, Dockerfile and docker-compose.yml.
+To view the app, find your docker IP address + port 8080 ( this will typically be http://localhost:8080/ ).  To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.
 
 
 Deployment
 ----------
 
-Once you are ready to deploy your app, you will need to create an account with
-a cloud platform to host it. These are not the only choices, but they are my top
-picks. From my experience, **Heroku** is the easiest to get started with, it will
-automatically restart your Node.js process when it crashes, zero-downtime
-deployments and custom domain support on free accounts. Additionally, you can
+Once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not the only choices, but they are my top picks. From my experience, the easiest way to get started is with **Heroku**. It will automatically restart your Node.js process when it crashes, has zero-downtime deployments and supports custom domains on free accounts. Additionally, you can
 create an account with **MongoDB Atlas** and then pick one of the *4* providers below.
-Again, there are plenty of other choices and you are not limited to just the ones
+Again, there are plenty of other choices, and you are not limited to just the ones
 listed below.
 
 ### 1-Step Deployment with Heroku
@@ -1289,7 +1274,7 @@ listed below.
 <img src="https://upload.wikimedia.org/wikipedia/en/a/a9/Heroku_logo.png" width="200">
 
 - Download and install [Heroku Toolbelt](https://toolbelt.heroku.com/)
-- In terminal, run `heroku login` and enter your Heroku credentials
+- In a terminal, run `heroku login` and enter your Heroku credentials
 - From *your app* directory run `heroku create`
 - Run `heroku addons:create mongolab`.  This will set up the mLab add-on and configure the `MONGODB_URI` environment variable in your Heroku app for you.
 - Lastly, do `git push heroku master`.  Done!
@@ -1321,7 +1306,7 @@ listed below.
 - Note that after some of the steps in the Atlas UI, you may see a banner stating `We are deploying your changes`.  You will need to wait for the deployment to finish before using the DB in your application.
 
 
-**Note:** As an alternative to MongDB Atlas, there is also [Compose](https://www.compose.io/).
+**Note:** As an alternative to MongoDB Atlas, there is also [Compose](https://www.compose.io/).
 
 ---
 
@@ -1335,8 +1320,8 @@ listed below.
 - From your app directory run `rhc app create MyApp nodejs-0.10`
  - **Note:** *MyApp* is the name of your app (no spaces)
 - Once that is done, you will be provided with **URL**, **SSH** and **Git Remote** links
-- Visit provided **URL** and you should see the *Welcome to your Node.js application on OpenShift* page
-- Copy and and paste **Git Remote** into `git remote add openshift YOUR_GIT_REMOTE`
+- Visit provided **URL**, and you should see the *Welcome to your Node.js application on OpenShift* page
+- Copy and paste **Git Remote** into `git remote add openshift YOUR_GIT_REMOTE`
 - Before you push your app, you need to do a few modifications to your code
 
 Add these two lines to `app.js`, just place them anywhere before `app.listen()`:
@@ -1369,7 +1354,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 ### Azure
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
-**NOTE** *Beyound the initial 12 month trial of Azure, the platform does not seem to offer a free tier for hosting NodeJS apps.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
+**NOTE** *Beyond the initial 12 month trial of Azure, the platform does not seem to offer a free tier for hosting NodeJS apps.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
 
 - Login to [Windows Azure Management Portal](https://manage.windowsazure.com/)
 - Click the **+ NEW** button on the bottom left of the portal
@@ -1382,7 +1367,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 - To enable Git publishing, Azure will ask you to create a user name and password
 - Once the Git repository is ready, you will be presented with a **GIT URL**
 - Inside your *Hackathon Starter* directory, run `git remote add azure [Azure Git URL]`
-- To push your changes simply run `git push azure master`
+- To push your changes run `git push azure master`
  - **Note:** *You will be prompted for the password you created earlier*
 - On **Deployments** tab of your Windows Azure Web App, you will see the deployment history
 
@@ -1408,7 +1393,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
     - myMongo-db-name
   ```
 
-  The host you use will determinate your application url initially, e.g. `<host>.mybluemix.net`.
+  The host you use will determinate your application URL initially, e.g. `<host>.mybluemix.net`.
   The service name 'myMongo-db-name' is a declaration of your MongoDB service.  If you are using other services like Watson for example, then you would declare them the same way.
 
 1. Connect and login to Bluemix via the Cloud-foundry CLI
@@ -1446,12 +1431,12 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 
 ### IBM Watson
-Be sure to check out the full list of Watson services to forwarder enhance your application functionality with a little effort. Watson services are easy to get going, it is simply an RESTful API call. Here is an example of a [Watson Toner Analyzer](https://tone-analyzer-demo.mybluemix.net/) to understand the emotional context of a piece of text that you send to Watson.
+Be sure to check out the full list of Watson services to forwarder enhance your application functionality with a little effort. Watson services are easy to get going; it is simply a RESTful API call. Here is an example of a [Watson Toner Analyzer](https://tone-analyzer-demo.mybluemix.net/) to understand the emotional context of a piece of text that you send to Watson.
 
 
 #### Watson catalog of services
 
-**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> [Conversation](https://www.ibm.com/watson/services/conversation/)** - 	Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.
+**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> [Conversation](https://www.ibm.com/watson/services/conversation/)** -     Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.
 
 **<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> [Discovery](https://www.ibm.com/watson/services/discovery/)** - Unlock hidden value in data to find answers, monitor trends and surface patterns with the world’s most advanced cloud-native insight engine.
 
