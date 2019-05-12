@@ -179,7 +179,7 @@ passport.use(new FacebookStrategy({
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_ID,
   clientSecret: process.env.GITHUB_SECRET,
-  callbackURL: '/auth/github/callback',
+  callbackURL: `${process.env.BASE_URL}/auth/github/callback`,
   passReqToCallback: true,
   scope: ['user:email']
 }, (req, accessToken, refreshToken, profile, done) => {
