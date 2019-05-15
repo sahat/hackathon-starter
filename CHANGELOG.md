@@ -1,6 +1,16 @@
 # Changelog
 ---------
 
+### 5.1.4 (May 14, 2019)
+- Migrate from requestjs to axios (thanks to @FX-Wood)
+- Enable page templates to add items to the HTML head element
+- Fix bold font issue on macs (thanks to @neighlyd)
+- Use BASE_URL for github
+- Update min node engine to require Feb 2019 NodeJS security release
+- Add Node.js 12 to the travis build
+- Update dependencies
+- Update documentation (thanks in part to @anubhavsrivastava, @Fullchee, @luckymurari)
+
 ### 5.1.3 (April 7, 2019)
 - Update Steam API Integration
 - Upgrade flatly theme files to 4.3.1
