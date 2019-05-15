@@ -1,11 +1,24 @@
 const mongoose = require('mongoose');
 
 const tradingSignalSchema = new mongoose.Schema({
-  signalId : { type:String, unique: true },
-  symbol: String,
-  signal: int,
+  signalId : { 
+    type:String, 
+    unique: true,
+    required: true
+  },
+  symbol: { 
+    type:String,
+    required: true
+  },
+  signal: { 
+    type:Number,
+    required: true
+  },
   snapshot: String,
-  time: Date
+  time: { 
+    type:Date,
+    required: true
+  }
 }, { timestamps: true });
 
 const TradingSignal = mongoose.model('TradingSignal', tradingSignalSchema);

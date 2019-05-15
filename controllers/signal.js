@@ -7,8 +7,13 @@ const TradingSignal = require('../models/TradingSignal');
  */
 exports.getTradingSignals = (req, res) => {
 
-  res.render('signal', {
-    title: 'Signal'
+  var records = TradingSignal.find( {} , function(err, items) {
+    if (err) {
+      req.flash(err);
+    } else {
+      console.log(items);
+      res.jsonp(items);
+    }          
   });
 };
 
@@ -23,19 +28,17 @@ exports.postTradingSignals = (req, res) => {
   if (!req.user) {
     // validate origin, validate token
   }
-  req.assert('signal', 'Signal cannot be blank').notEmpty();
+  req.assert('TickBundleDetails', 'TickBundleDetails cannot be blank').notEmpty();
 
   const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/signal');
+    return res.redirect('/');
   }
 
   // parse signal content
-  tickSignalsLog = JSON.parse(req.body);
-  
-  var tickBundleDetails = tickSignalsLog.TickBundleDetails;
+  var tickBundleDetails = req.body.TickBundleDetails;
   for (var i = 0; i < tickBundleDetails.length; i++){
     var symbol = tickBundleDetails[i].symbol;
     var signalCount = tickBundleDetails[i].signalCount;
