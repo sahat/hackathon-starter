@@ -1,5 +1,4 @@
 const { promisify } = require('util');
-const request = require('request');
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
 const { LastFmNode } = require('lastfm');
@@ -98,18 +97,19 @@ exports.getFacebook = (req, res, next) => {
  * Web scraping example using Cheerio library.
  */
 exports.getScraping = (req, res, next) => {
-  request.get('https://news.ycombinator.com/', (err, request, body) => {
-    if (err) { return next(err); }
-    const $ = cheerio.load(body);
-    const links = [];
-    $('.title a[href^="http"], a[href^="https"]').slice(1).each((index, element) => {
-      links.push($(element));
-    });
-    res.render('api/scraping', {
-      title: 'Web Scraping',
-      links
-    });
-  });
+  axios.get('https://news.ycombinator.com/')
+    .then((response) => {
+      const $ = cheerio.load(response.data);
+      const links = [];
+      $('.title a[href^="http"], a[href^="https"]').slice(1).each((index, element) => {
+        links.push($(element));
+      });
+      res.render('api/scraping', {
+        title: 'Web Scraping',
+        links
+      });
+    })
+    .catch(error => next(error));
 };
 
 /**
@@ -144,21 +144,19 @@ exports.getAviary = (req, res) => {
  * New York Times API example.
  */
 exports.getNewYorkTimes = (req, res, next) => {
-  const query = {
-    'list-name': 'young-adult',
-    'api-key': process.env.NYT_KEY
-  };
-  request.get({ url: 'http://api.nytimes.com/svc/books/v2/lists', qs: query }, (err, request, body) => {
-    if (err) { return next(err); }
-    if (request.statusCode >= 400) {
-      return next(new Error(`New York Times API - ${body}`));
-    }
-    const books = JSON.parse(body).results;
-    res.render('api/nyt', {
-      title: 'New York Times API',
-      books
+  const apiKey = process.env.NYT_KEY;
+  axios.get(`http://api.nytimes.com/svc/books/v2/lists?list-name=young-adult&api-key=${apiKey}`)
+    .then((response) => {
+      const books = response.data.results;
+      res.render('api/nyt', {
+        title: 'New York Times API',
+        books
+      });
+    })
+    .catch((err) => {
+      const message = JSON.stringify(err.response.data.fault);
+      next(new Error(`New York Times API - ${err.response.status} ${err.response.statusText} ${message}`));
     });
-  });
 };
 
 /**
@@ -227,7 +225,7 @@ exports.getLastfm = async (req, res, next) => {
       console.error(err);
       // see error code list: https://www.last.fm/api/errorcodes
       switch (err.error) {
-        // potentially handle each code uniquely
+      // potentially handle each code uniquely
         case 10: // Invalid API key
           res.render('api/lastfm', {
             error: err
@@ -306,55 +304,71 @@ exports.postTwitter = (req, res, next) => {
 exports.getSteam = async (req, res, next) => {
   const steamId = req.user.steam;
   const params = { l: 'english', steamid: steamId, key: process.env.STEAM_KEY };
-  const getAsync = promisify(request.get);
 
-  // get the list of the recently played games, pick the most recent one and get its achievements
-  const getPlayerAchievements = () =>
-    getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', qs: params, json: true })
-      .then(({ request, body }) => {
-        if (request.statusCode === 401) {
-          throw new Error('Invalid Steam API Key');
+  // makes a url with search query
+  const makeURL = (baseURL, params) => {
+    const url = new URL(baseURL);
+    const urlParams = new URLSearchParams(params);
+    url.search = urlParams.toString();
+    return url.toString();
+  };
+    // get the list of the recently played games, pick the most recent one and get its achievements
+  const getPlayerAchievements = () => {
+    const recentGamesURL = makeURL('http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', params);
+    return axios.get(recentGamesURL)
+      .then(({ data }) => {
+        // handle if player owns no games
+        if (Object.keys(data.response).length === 0) {
+          return null;
         }
-        if (body.response.total_count > 0) {
-          params.appid = body.response.games[0].appid;
-          return getAsync({ url: 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', qs: params, json: true })
-            .then(({ request, body }) => {
-              if (request.statusCode === 401) {
-                throw new Error('Invalid Steam API Key');
-              }
-              return body;
-            });
+        // handle if there are no recently played games
+        if (data.response.total_count === 0) {
+          return null;
         }
+        params.appid = data.response.games[0].appid;
+        const achievementsURL = makeURL('http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/', params);
+        return axios.get(achievementsURL)
+          .then(({ data }) => {
+            // handle if there are no achievements for most recent game
+            if (!data.playerstats.achievements) {
+              return null;
+            }
+            return data.playerstats;
+          });
+      })
+      .catch((err) => {
+        if (err.response) {
+          // handle private profile or invalid key
+          if (err.response.status === 403) {
+            return null;
+          }
+        }
+        return Promise.reject(new Error('There was an error while getting achievements'));
       });
+  };
   const getPlayerSummaries = () => {
     params.steamids = steamId;
-    return getAsync({ url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', qs: params, json: true })
-      .then(({ request, body }) => {
-        if (request.statusCode === 401) {
-          throw Error('Missing or Invalid Steam API Key');
-        }
-        return body;
-      });
+    const url = makeURL('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/', params);
+    return axios.get(url)
+      .then(({ data }) => data)
+      .catch(() => Promise.reject(new Error('There was an error while getting player summary')));
   };
   const getOwnedGames = () => {
     params.include_appinfo = 1;
     params.include_played_free_games = 1;
-    return getAsync({ url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', qs: params, json: true })
-      .then(({ request, body }) => {
-        if (request.statusCode === 401) {
-          throw new Error('Missing or Invalid Steam API Key');
-        }
-        return body;
-      });
+    const url = makeURL('http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/', params);
+    return axios.get(url)
+      .then(({ data }) => data)
+      .catch(() => Promise.reject(new Error('There was an error while getting owned games')));
   };
   try {
-    const { playerstats } = await getPlayerAchievements();
+    const playerstats = await getPlayerAchievements();
     const playerSummaries = await getPlayerSummaries();
     const ownedGames = await getOwnedGames();
     res.render('api/steam', {
       title: 'Steam Web API',
       ownedGames: ownedGames.response,
-      playerAchievemments: playerstats.success ? playerstats : null,
+      playerAchievements: playerstats,
       playerSummary: playerSummaries.response.players[0]
     });
   } catch (err) {
@@ -636,15 +650,17 @@ exports.postFileUpload = (req, res) => {
  */
 exports.getPinterest = (req, res, next) => {
   const token = req.user.tokens.find(token => token.kind === 'pinterest');
-  request.get({ url: 'https://api.pinterest.com/v1/me/boards/', qs: { access_token: token.accessToken }, json: true }, (err, request, body) => {
-    if (err) { return next(err); }
-    res.render('api/pinterest', {
-      title: 'Pinterest API',
-      boards: body.data
+  axios.get(`https://api.pinterest.com/v1/me/boards?access_token=${token.accessToken}`)
+    .then((response) => {
+      res.render('api/pinterest', {
+        title: 'Pinterest API',
+        boards: response.data.data
+      });
+    })
+    .catch((error) => {
+      next(error);
     });
-  });
 };
-
 /**
  * POST /api/pinterest
  * Create a pin.
@@ -669,16 +685,17 @@ exports.postPinterest = (req, res, next) => {
     image_url: req.body.image_url
   };
 
-  request.post('https://api.pinterest.com/v1/pins/', { qs: { access_token: token.accessToken }, form: formData }, (err, request, body) => {
-    if (err) { return next(err); }
-    if (request.statusCode !== 201) {
-      req.flash('errors', { msg: JSON.parse(body).message });
-      return res.redirect('/api/pinterest');
-    }
-    req.flash('success', { msg: 'Pin created' });
-    res.redirect('/api/pinterest');
-  });
+  axios.post(`https://api.pinterest.com/v1/pins/?access_token=${token.accessToken}`, formData)
+    .then(() => {
+      req.flash('success', { msg: 'Pin created' });
+      res.redirect('/api/pinterest');
+    })
+    .catch((error) => {
+      req.flash('errors', { msg: error.response.data.message });
+      res.redirect('/api/pinterest');
+    });
 };
+
 
 exports.getGoogleMaps = (req, res) => {
   res.render('api/google-maps', {
