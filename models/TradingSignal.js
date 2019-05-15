@@ -10,7 +10,7 @@ const tradingSignalSchema = new mongoose.Schema({
     type:String,
     required: true
   },
-  signal: { 
+  signalCount: { 
     type:Number,
     required: true
   },
