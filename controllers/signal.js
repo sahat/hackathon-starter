@@ -6,14 +6,13 @@ const TradingSignal = require('../models/TradingSignal');
  * Trading signals page
  */
 exports.getTradingSignals = (req, res) => {
-
-  var records = TradingSignal.find( {} , function(err, items) {
+  TradingSignal.find({}, function(err, items) {
     if (err) {
       req.flash(err);
     } else {
       console.log(items);
       res.jsonp(items);
-    }          
+    }
   });
 };
 
@@ -22,16 +21,14 @@ exports.getTradingSignals = (req, res) => {
  * Add tradingsignals to db
  */
 exports.postTradingSignals = (req, res) => {
-  let tickSignalsLog;
-
   const validateSource = () => {
-    var qc_code = process.env.QC_CODE;
-    var code = req.body.QcCode;
-    if (qc_code !== code) {
+    let qcCode = process.env.QC_CODE;
+    let code = req.body.QcCode;
+    if (qcCode !== code) {
       req.flash('error code');
       return res.redirect('/');
     }
-  }
+  };
   // post request validation, not setup yet
   if (!req.user) {
     // validate origin, validate token
@@ -48,46 +45,49 @@ exports.postTradingSignals = (req, res) => {
     return res.redirect('/');
   }
 
-  // parse signal content
-  var tickBundleDetails = req.body.TickBundleDetails;
-  for (var i = 0; i < tickBundleDetails.length; i++){
-    var symbol = tickBundleDetails[i].TickBundleSymbol;
-    var signalCount = tickBundleDetails[i].SignalCount;
-    var time = tickBundleDetails[i].Time;
-    var snapshot = JSON.stringify(tickBundleDetails[i].TickDetails);
+  const saveSignal = (err, tradingSignal) => {
+    if (err) { 
+      req.flash('errors', err);
+      return res.redirect('/');
+    }
 
-    var id = crypto.createHash('md5').update(symbol + time.toString()).digest('hex');
+    if (tradingSignal){
+      req.flash('errors: record exists');
+      return res.redirect('/');
+    }
 
-    TradingSignal.findOne({'signalId': id}, (err, tradingSignal) => {
-      if (err) { 
-        req.flash('errors', err);
-        return res.redirect('/');
-      }
-
-      if (tradingSignal){
-        req.flash('errors: record exists');
-        return res.redirect('/');
-      }
-
-      tradingSignal = new TradingSignal({
-        signalId: id,
-        symbol: symbol,
-        signalCount: signalCount,
-        snapshot: snapshot,
-        time: time
-      });
-
-      tradingSignal.save((err) => {
-        if (err) {
-          if (err.code === 11000) {
-            req.flash('errors', { msg: 'The tradingSignal you have entered already exists.' });
-            return res.redirect('/signal');
-          }
-          return next(err);
-        }
-        req.flash('success', { msg: 'Trading signals added.' });
-        res.redirect('/signal');
-      });
+    tradingSignal = new TradingSignal({
+      signalId: id,
+      symbol: symbol,
+      signalCount: signalCount,
+      snapshot: snapshot,
+      time: time
     });
+
+    tradingSignal.save((err) => {
+      if (err) {
+        if (err.code === 11000) {
+          req.flash('errors', { msg: 'The tradingSignal you have entered already exists.' });
+          return res.redirect('/signal');
+        }
+        return next(err);
+      }
+      req.flash('success', { msg: 'Trading signals added.' });
+      res.redirect('/signal');
+    });
+  };
+
+  // parse signal content
+  let tickBundleDetails = req.body.TickBundleDetails;
+  let i;
+  for (i = 0; i < tickBundleDetails.length; i++){
+    let symbol = tickBundleDetails[i].TickBundleSymbol;
+    let signalCount = tickBundleDetails[i].SignalCount;
+    let time = tickBundleDetails[i].Time;
+    let snapshot = JSON.stringify(tickBundleDetails[i].TickDetails);
+
+    let id = crypto.createHash('md5').update(symbol + time.toString()).digest('hex');
+
+    TradingSignal.findOne({ signalId: id }, saveSignal);
   };
 };

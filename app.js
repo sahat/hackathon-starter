@@ -94,7 +94,7 @@ app.use((req, res, next) => {
     next();
   } else {
     lusca.csrf({
-      "blacklist": ["/tradingSignals"]
+      blacklist: ['/tradingSignals']
     })(req, res, next);
   }
 });
