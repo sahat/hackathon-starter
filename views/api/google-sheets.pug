@@ -1,0 +1,214 @@
+extends ../layout
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-google(style='color: #1B4A7D').fa-sm
+      | Google Sheets API
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://docs.google.com/spreadsheets/d/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/edit#gid=0', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Quickstart
+    a.btn.btn-primary(href='https://medium.com/@clarkjasonngo/google-sheets-as-json-endpoint-31fe3b97bcc7', target='_blank').w-100
+      i.fas.fa-code.fa-sm
+      | Setup Guide
+  br      
+  h3 Sample JSON Endpoint
+  div
+    p Redirects to a Google Sheets JSON endpoint.
+    a(href='https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full?alt=json')
+      button.btn.btn-primary Get JSON endpoint from Quickstart
+  br
+  h3
+    i.fas.fa-database.fa-sm
+    | Sample Data in Google Sheets
+
+  table.table.table-striped.table-bordered.table-sm
+    thead
+      tr
+        th Post_id
+        th Post_content
+      tbody
+        tr
+          td 1
+          td Hi
+        tr
+          td 2
+          td Bye
+
+  .card.text-white.bg-primary
+    .card-header Google Sheets Successful JSON Endpoint Example
+    .card-body.text-dark.bg-white
+      p This is the response you will get when you call the JSON endpoint. For the raw data, please refer to the last JSON example.
+        | JavaScript code to extract JSON from Google Sheets
+      pre.card.bg-light.
+        // function to get a url and return as a string
+        function getJSON(url) {
+          var resp;
+          var xmlHttp;
+
+          resp  = '' ;
+          xmlHttp = new XMLHttpRequest();
+
+          if(xmlHttp != null)
+          {
+            xmlHttp.open( "GET", url, false );
+            xmlHttp.send( null );
+            resp = xmlHttp.responseText;
+          }
+
+          return resp;
+        }
+        // template url = https://spreadsheets.google.com/feeds/cells/YOURGOOGLESHEETCODE/SHEETPAGENUMBER/od6/public/values?alt=json
+
+        var jsonUrl = 'https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full?alt=json';
+
+        var jsonString = getJSON(jsonUrl);       // this is a string
+
+        var jsonParsed = JSON.parse(jsonString); // this is a json object
+
+        var length = myJson.length;              // length used for the for loop
+
+        // iterate over json
+        for (var id = 0; id < length; id++) {
+          myJson = jsonParsed['feed']['entry'][id]['content']['$t'];  // where the content lives
+          console.log(myJson);
+        }
+      p Output of console.log(myJson):         
+      pre.card.bg-light.
+        "Post_id"
+        "Post_content"
+        "1"
+        "Hi "
+        "2"
+        "Bye"
+      p Raw JSON data:         
+      pre.card.bg-light.
+        { version: "1.0",
+          encoding: "UTF-8",
+          feed: {
+          xmlns: "http://www.w3.org/2005/Atom",
+          xmlns$openSearch: "http://a9.com/-/spec/opensearchrss/1.0/",
+          xmlns$batch: "http://schemas.google.com/gdata/batch",
+          xmlns$gs: "http://schemas.google.com/spreadsheets/2006",
+          id: { $t: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full" },
+                updated: { $t: "2019-05-27T05:43:53.872Z" },
+                category: [ { cheme: "http://schemas.google.com/spreadsheets/2006",
+                              term: "http://schemas.google.com/spreadsheets/2006#cell" } ],
+                title: { type: "text",
+                         $t: "Sheet1" },
+                         link: [ { rel: "alternate",
+                         type: "application/atom+xml",
+                         href: "https://docs.google.com/spreadsheets/d/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/pubhtml" },
+                       { rel: "http://schemas.google.com/g/2005#feed",
+                         type: "application/atom+xml",
+                         href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full" },
+                       { rel: "http://schemas.google.com/g/2005#post",
+                         type: "application/atom+xml",
+                         href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full" },
+                       { rel: "http://schemas.google.com/g/2005#batch",
+                         type: "application/atom+xml",
+                         href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/batch" },
+                       { rel: "self",
+                         type: "application/atom+xml",
+                         href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full?alt=json" } ],
+                         author: [ { name: {
+                                     $t: "someone" },
+                                     email: { $t: "someone@gmail.com" } } ],
+                         openSearch$totalResults: { $t: "6" },
+                         openSearch$startIndex: { $t: "1" },
+                         gs$rowCount: { $t: "1000" },
+                         gs$colCount: { $t: "26" },
+                         entry: [ { id: { $t: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R1C1" },
+                         updated: { $t: "2019-05-27T05:43:53.872Z" },
+                         category: [ { scheme: "http://schemas.google.com/spreadsheets/2006",
+                         term: "http://schemas.google.com/spreadsheets/2006#cell" } ],
+                         title: { type: "text",
+                                  $t: "A1" },
+                         content: { type: "text",
+                                    $t: "Post_id" },
+                         link: [ { rel: "self",
+                                   type: "application/atom+xml",
+                                   href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R1C1" } ],
+                         gs$cell: { row: "1",
+                                    col: "1",
+                                    inputValue: "Post_id",
+                                    $t: "Post_id" } },
+                       { id: { $t: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R1C2" },
+                         updated: { $t: "2019-05-27T05:43:53.872Z" },
+                         category: [ { scheme: "http://schemas.google.com/spreadsheets/2006",
+                                       term: "http://schemas.google.com/spreadsheets/2006#cell" } ],
+                         title: { type: "text",
+                                  $t: "B1" },
+                         content: { type: "text",
+                                    $t: "Post_content" },
+                         link: [ { rel: "self",
+                                   type: "application/atom+xml",
+                                   href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R1C2" } ],
+                         gs$cell: { row: "1",
+                                    col: "2",
+                                    inputValue: "Post_content",
+                                    $t: "Post_content" } },
+                      { id: { $t: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R2C1" },
+                              updated: {
+                              $t: "2019-05-27T05:43:53.872Z" },
+                        category: [ { scheme: "http://schemas.google.com/spreadsheets/2006",
+                                      term: "http://schemas.google.com/spreadsheets/2006#cell" } ],
+                        title: { type: "text",
+                                $t: "A2" },
+                        content: { type: "text",
+                                  $t: "1" },
+                        link: [ { rel: "self",
+                                  type: "application/atom+xml",
+                                  href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R2C1" } ],
+                        gs$cell: { row: "2",
+                                   col: "1",
+                                   inputValue: "1",
+                                   numericValue: "1.0",
+                                   $t: "1" } },
+                      { id: { $t: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R2C2" },
+                        updated: { $t: "2019-05-27T05:43:53.872Z" },
+                        category: [ { scheme: "http://schemas.google.com/spreadsheets/2006",
+                                      term: "http://schemas.google.com/spreadsheets/2006#cell" } ],
+                        title: { type: "text",
+                                 $t: "B2" },
+                        content: { type: "text",
+                                   $t: "Hi " },
+                        link: [ { rel: "self",
+                                  type: "application/atom+xml",
+                                  href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R2C2" } ],
+                        gs$cell: { row: "2",
+                                   col: "2",
+                                   inputValue: "Hi ",
+                                   $t: "Hi " } },
+                      { id: { $t: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R3C1" },
+                        updated: { $t: "2019-05-27T05:43:53.872Z" },
+                        category: [ { scheme: "http://schemas.google.com/spreadsheets/2006",
+                                      term: "http://schemas.google.com/spreadsheets/2006#cell" } ],
+                        title: { type: "text",
+                                 $t: "A3" },
+                        content: { type: "text",
+                                   $t: "2" },
+                        link: [ { rel: "self",
+                                  type: "application/atom+xml",
+                                  href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R3C1" } ],
+                        gs$cell: { row: "3",
+                                   col: "1",
+                                   inputValue: "2",
+                                   numericValue: "2.0",
+                                   $t: "2" } },
+                      { id: { $t: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R3C2" },
+                        updated: { $t: "2019-05-27T05:43:53.872Z" },
+                                   category: [ { scheme: "http://schemas.google.com/spreadsheets/2006",
+                                                 term: "http://schemas.google.com/spreadsheets/2006#cell" } ],
+                        title: { type: "text",
+                                 $t: "B3" },
+                        content: { type: "text",
+                                   $t: "Bye" },
+                        link: [ { rel: "self",
+                                  type: "application/atom+xml",
+                                  href: "https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full/R3C2" } ],
+                        gs$cell: { row: "3",
+                                   col: "2",
+                                   inputValue: "Bye",
+                                   $t: "Bye" } } ] } }          
+                                   
