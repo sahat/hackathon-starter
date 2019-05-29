@@ -703,3 +703,10 @@ exports.getGoogleMaps = (req, res) => {
     google_map_api_key: process.env.GOOGLE_MAP_API_KEY
   });
 };
+
+exports.getGoogleSheets = (req, res) => {
+  res.render('api/google-sheets', {
+    title: 'Google Sheets API',
+    google_sheets_api_key: process.env.GOOGLE_SHEETS_CODE
+  });
+};
