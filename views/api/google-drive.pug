@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-google.fa-sm
+      | Google Drive API List Of Files
+    for file in files
+      li
+        img(src=file.iconLink)
+        | 
+        a(href=file.webViewLink, target="_blank")
+         =file.name
