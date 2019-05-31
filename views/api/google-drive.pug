@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-google.fa-sm
+      | Google Drive API
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://developers.google.com/drive/api/v3/quickstart/nodejs', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Getting Started
+    a.btn.btn-primary(href='https://console.developers.google.com/apis/dashboard', target='_blank').w-100
+      i.fas.fa-laptop.fa-sm
+      | API Console
+
+  br
+  .pb-2.mt-2.mb-4.border-bottom
+    h4
+      | The list of files at the root of your Google Drive
+    for file in files
+      li
+        img(src=file.iconLink)
+        | 
+        a(href=file.webViewLink, target="_blank")
+         =file.name
