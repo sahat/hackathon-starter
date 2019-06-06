@@ -170,6 +170,7 @@ them with *your credentials* when you are ready to deploy an app.
 - Enter *Project Name*, then click on **Create** button
 - Then click on *APIs & auth* in the sidebar and select *API* tab
 - Click on **Google+ API** under *Social APIs*, then click **Enable API**
+- Click on **Google Drive API** under *G Suite*, then click **Enable API**
 - Next, under *APIs & auth* in the sidebar click on *Credentials* tab
 - Click on **Create new Client ID** button
 - Select *Web Application* and click on **Configure Consent Screen**

@@ -723,7 +723,7 @@ exports.getGoogleDrive = (req, res) => {
     fields: 'files(iconLink, webViewLink, name)'
   }, (err, response) => {
     if (err) return console.log(`The API returned an error: ${err}`);
-    res.render('api/google-drive', {
+    res.render('api/google/drive', {
       title: 'Google Drive API',
       files: response.data.files,
     });
