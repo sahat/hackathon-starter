@@ -14,6 +14,8 @@ const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
 const axios = require('axios');
 const { google } = require('googleapis');
+const refresh = require('passport-oauth2-refresh');
+const User = require('../models/User');
 
 /**
  * GET /api
@@ -722,7 +724,20 @@ exports.getGoogleDrive = (req, res) => {
   drive.files.list({
     fields: 'files(iconLink, webViewLink, name)'
   }, (err, response) => {
-    if (err) return console.log(`The API returned an error: ${err}`);
+    if (err) {
+      if (err.code === 401) {
+        refresh.requestNewAccessToken('google', token.refreshToken, (err, newAccessToken) => {
+          if (err) return console.log(`Requesting new access token failed: ${err}`);
+          User.updateOne({
+            _id: req.user.id,
+            'tokens.accessToken': token.accessToken
+          }, {
+            $set: { 'tokens.$.accessToken': newAccessToken }
+          }).then(() => res.redirect('/api/google/drive')).catch(err => console.log(`User update returned an error: ${err}`));
+        });
+      }
+      return console.log(`The API returned an error: ${err}`);
+    }
     res.render('api/google-drive', {
       title: 'Google Drive API',
       files: response.data.files,

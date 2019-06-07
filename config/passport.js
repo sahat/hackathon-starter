@@ -11,6 +11,7 @@ const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
 const { Strategy: OpenIDStrategy } = require('passport-openid');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
+const refresh = require('passport-oauth2-refresh');
 const _ = require('lodash');
 
 const User = require('../models/User');
@@ -290,7 +291,7 @@ passport.use(new TwitterStrategy({
 /**
  * Sign in with Google.
  */
-passport.use(new GoogleStrategy({
+const googleStrategy = new GoogleStrategy({
   clientID: process.env.GOOGLE_ID,
   clientSecret: process.env.GOOGLE_SECRET,
   callbackURL: '/auth/google/callback',
@@ -306,7 +307,7 @@ passport.use(new GoogleStrategy({
         User.findById(req.user.id, (err, user) => {
           if (err) { return done(err); }
           user.google = profile.id;
-          user.tokens.push({ kind: 'google', accessToken });
+          user.tokens.push({ kind: 'google', accessToken, refreshToken });
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || profile._json.picture;
@@ -332,7 +333,7 @@ passport.use(new GoogleStrategy({
           const user = new User();
           user.email = profile.emails[0].value;
           user.google = profile.id;
-          user.tokens.push({ kind: 'google', accessToken });
+          user.tokens.push({ kind: 'google', accessToken, refreshToken });
           user.profile.name = profile.displayName;
           user.profile.gender = profile._json.gender;
           user.profile.picture = profile._json.picture;
@@ -343,7 +344,9 @@ passport.use(new GoogleStrategy({
       });
     });
   }
-}));
+});
+passport.use(googleStrategy);
+refresh.use(googleStrategy);
 
 /**
  * Sign in with LinkedIn.
