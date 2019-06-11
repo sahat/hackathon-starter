@@ -15,12 +15,15 @@ block content
     a.btn.btn-primary(href='https://dashboard.lob.com/register', target='_blank').w-100
       i.fas.fa-cog.fa-sm
       | Create API Account
+  .pb-2.mt-2.mb-4.border-bottom
+  h3 Details of zip code: #{zipDetails.zip_code}
   br
-  h3 Details of zip code: #{zipdetails.zip_code}
+  p Note that Lob.com's test API key does not perform any verification, automatic correction, or standardization for addresses. The responses from their test API will always be the response for
+    a(href='https://lob.com/docs#us-verification-test-environment', target='_blank')
+      |  PO BOX 720114, San Francisco, CA 94172-0114
   br
-  p ID: #{zipdetails.id}
-  p Zip Code Type: #{zipdetails.zip_code_type}
-
+  p ID: #{zipDetails.id}
+  p Zip Code Type: #{zipDetails.zip_code_type}
   table.table.table-striped.table-bordered
     thead
       tr
@@ -30,10 +33,30 @@ block content
         th County Fips
         th Preferred
     tbody
-      for cities in zipdetails.cities
+      for cities in zipDetails.cities
         tr
           td= cities.city
           td= cities.state
           td= cities.county
           td= cities.county_fips
           td= cities.preferred
+  .pb-2.mt-2.mb-4.border-bottom
+  h3 Fistclass mail
+  br
+  | Letter ID: #{uspsLetter.id}
+  br
+  | Will be mailed using: #{uspsLetter.mail_type}
+  br
+  | With expected delivery date of: #{uspsLetter.expected_delivery_date}
+  #pdfviewer(style='display:none')
+    object(width='600', height='850', type='application/pdf', data=uspsLetter.url)
+
+  //Lob's back end has a few second delay from when they generate the letter to when it is availalble
+  //Without this delay some of the PDF fetches result in 404s
+  script(type='text/javascript').
+    window.onload = function ()
+    {
+    setTimeout(function(){
+    $("#pdfviewer").show();
+    }, 3000);
+    };
