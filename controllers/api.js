@@ -30,7 +30,7 @@ exports.getApi = (req, res) => {
  * Foursquare API example.
  */
 exports.getFoursquare = async (req, res, next) => {
-  const token = req.user.tokens.find(token => token.kind === 'foursquare');
+  const token = await req.user.tokens.find(token => token.kind === 'foursquare');
   let trendingVenues;
   let venueDetail;
   let userCheckins;
