@@ -531,13 +531,9 @@ exports.getInstagram = async (req, res, next) => {
     const userSearchAsync = promisify(ig.user_search);
     const userAsync = promisify(ig.user);
     const userSelfMediaRecentAsync = promisify(ig.user_self_media_recent);
-    const searchByUsername = await userSearchAsync('richellemead');
-    const searchByUserId = await userAsync('175948269');
     const myRecentMedia = await userSelfMediaRecentAsync();
     res.render('api/instagram', {
       title: 'Instagram API',
-      usernames: searchByUsername,
-      userById: searchByUserId,
       myRecentMedia
     });
   } catch (error) {

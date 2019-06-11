@@ -182,7 +182,7 @@ app.get('/api/chart', apiController.getChart);
 /**
  * OAuth authentication routes. (Sign in)
  */
-app.get('/auth/instagram', passport.authenticate('instagram'));
+app.get('/auth/instagram', passport.authenticate('instagram', { scope: ['basic', 'public_content'] }));
 app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });

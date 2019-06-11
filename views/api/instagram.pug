@@ -17,34 +17,6 @@ block content
       | API Endpoints
 
   br
-  p.lead Username Search for
-    strong  richellemead
-  table.table.table-hover.table-bordered
-    thead
-      tr
-        th Picture
-        th Username
-        th Full Name
-        th Bio
-    tbody
-      for user in usernames
-        tr
-          td
-            img(src=user.profile_picture, width='75', height='75')
-          td= user.username
-          td= user.full_name
-          td= user.bio
-
-  hr
-  p.lead User Search for ID
-    strong  175948269
-
-  .media
-    a.float-left(href='http://instagram.com/' + userById.username)
-      img.thumbnail(src=userById.profile_picture, width='110', height='110')
-    .media-body
-      h4= userById.full_name
-      p= userById.bio
 
   hr
   p.lead
