@@ -8,7 +8,7 @@ If you are done with your hackathon and thinking about launching your project in
 - Add [sitemap.xml](https://en.wikipedia.org/wiki/Sitemaps) and [robots.txt](https://moz.com/learn/seo/robotstxt)
 - Update Google Analytics ID
 - Add Facebook App/Pixel ID
-- Add Winston Logging, and replace console.log statements with Winston; have a process for monitoring errors to identify bugs or other issues after lunch.
+- Add Winston Logging, and replace console.log statements with Winston; have a process for monitoring errors to identify bugs or other issues after launch.
 - SEO and Social Media Improvements
 - Create a deployment pipeline with a pre-prod/integration test stage.
 - (optional) Add email verification *Some experimental data has shown that bogus email addresses are not a significant problem in many cases*
