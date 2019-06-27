@@ -382,7 +382,7 @@ passport.use(new LinkedInStrategy({
       if (existingUser) {
         return done(null, existingUser);
       }
-      User.findOne({ email: profile._json.emailAddress }, (err, existingEmailUser) => {
+      User.findOne({ email: profile.emails[0].value }, (err, existingEmailUser) => {
         if (err) { return done(err); }
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
@@ -391,7 +391,7 @@ passport.use(new LinkedInStrategy({
           const user = new User();
           user.linkedin = profile.id;
           user.tokens.push({ kind: 'linkedin', accessToken });
-          user.email = console.log(profile.emails[0].value);
+          user.email = profile.emails[0].value;
           user.profile.name = profile.displayName;
           user.profile.picture = user.profile.picture || profile.photos[3].value;
           user.save((err) => {
