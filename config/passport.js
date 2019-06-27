@@ -351,8 +351,8 @@ passport.use(new GoogleStrategy({
 passport.use(new LinkedInStrategy({
   clientID: process.env.LINKEDIN_ID,
   clientSecret: process.env.LINKEDIN_SECRET,
-  callbackURL: process.env.LINKEDIN_CALLBACK_URL,
-  scope: ['r_basicprofile', 'r_emailaddress'],
+  callbackURL: `${process.env.BASE_URL}/auth/linkedin/callback`,
+  scope: ['r_liteprofile', 'r_emailaddress'],
   passReqToCallback: true
 }, (req, accessToken, refreshToken, profile, done) => {
   if (req.user) {
@@ -367,9 +367,7 @@ passport.use(new LinkedInStrategy({
           user.linkedin = profile.id;
           user.tokens.push({ kind: 'linkedin', accessToken });
           user.profile.name = user.profile.name || profile.displayName;
-          user.profile.location = user.profile.location || profile._json.location.name;
-          user.profile.picture = user.profile.picture || profile._json.pictureUrl;
-          user.profile.website = user.profile.website || profile._json.publicProfileUrl;
+          user.profile.picture = user.profile.picture || profile.photos[3].value;
           user.save((err) => {
             if (err) { return done(err); }
             req.flash('info', { msg: 'LinkedIn account has been linked.' });
@@ -393,11 +391,9 @@ passport.use(new LinkedInStrategy({
           const user = new User();
           user.linkedin = profile.id;
           user.tokens.push({ kind: 'linkedin', accessToken });
-          user.email = profile._json.emailAddress;
+          user.email = console.log(profile.emails[0].value);
           user.profile.name = profile.displayName;
-          user.profile.location = profile._json.location.name;
-          user.profile.picture = profile._json.pictureUrl;
-          user.profile.website = profile._json.publicProfileUrl;
+          user.profile.picture = user.profile.picture || profile.photos[3].value;
           user.save((err) => {
             done(err, user);
           });
