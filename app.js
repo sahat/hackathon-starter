@@ -15,7 +15,6 @@ const flash = require('express-flash');
 const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
@@ -74,7 +73,6 @@ app.use(sass({
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressValidator());
 app.use(session({
   resave: true,
   saveUninitialized: true,

@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const _ = require('lodash');
+const validator = require('validator');
 const User = require('../models/User');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
@@ -25,16 +26,15 @@ exports.getLogin = (req, res) => {
  * Sign in using email and password.
  */
 exports.postLogin = (req, res, next) => {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password cannot be blank').notEmpty();
-  req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
+  const validationErrors = [];
+  if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
+  if (validator.isEmpty(req.body.password)) validationErrors.push({ msg: 'Password cannot be blank.' });
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
     return res.redirect('/login');
   }
+  req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
 
   passport.authenticate('local', (err, user, info) => {
     if (err) { return next(err); }
@@ -81,17 +81,16 @@ exports.getSignup = (req, res) => {
  * Create a new local account.
  */
 exports.postSignup = (req, res, next) => {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-  req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
+  const validationErrors = [];
+  if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
+  if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
+  if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' });
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
     return res.redirect('/signup');
   }
+  req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
 
   const user = new User({
     email: req.body.email,
@@ -131,15 +130,14 @@ exports.getAccount = (req, res) => {
  * Update profile information.
  */
 exports.postUpdateProfile = (req, res, next) => {
-  req.assert('email', 'Please enter a valid email address.').isEmail();
-  req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
+  const validationErrors = [];
+  if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
     return res.redirect('/account');
   }
+  req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
 
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
@@ -167,13 +165,12 @@ exports.postUpdateProfile = (req, res, next) => {
  * Update current password.
  */
 exports.postUpdatePassword = (req, res, next) => {
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  const validationErrors = [];
+  if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
+  if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' });
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
     return res.redirect('/account');
   }
 
@@ -262,13 +259,12 @@ exports.getReset = (req, res, next) => {
  * Process the reset password request.
  */
 exports.postReset = (req, res, next) => {
-  req.assert('password', 'Password must be at least 4 characters long.').len(4);
-  req.assert('confirm', 'Passwords must match.').equals(req.body.password);
+  const validationErrors = [];
+  if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
+  if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' });
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
     return res.redirect('back');
   }
 
@@ -359,15 +355,14 @@ exports.getForgot = (req, res) => {
  * Create a random token, then the send user an email with a reset link.
  */
 exports.postForgot = (req, res, next) => {
-  req.assert('email', 'Please enter a valid email address.').isEmail();
-  req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
+  const validationErrors = [];
+  if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
     return res.redirect('/forgot');
   }
+  req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
 
   const createRandomToken = randomBytesAsync(16)
     .then(buf => buf.toString('hex'));

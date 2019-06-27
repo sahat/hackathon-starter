@@ -417,7 +417,6 @@ List of Packages
 | express-flash                   | Provides flash messages for Express.                                    |
 | express-session                 | Simple session middleware for Express.                                  |
 | express-status-monitor          | Reports real-time server metrics for Express.                           |
-| express-validator               | Easy form validation for Express.                                       |
 | fbgraph                         | Facebook Graph API library.                                             |
 | instagram-node                  | Instagram API library.                                                  |
 | lastfm                          | Last.fm API library.                                                    |
@@ -454,7 +453,7 @@ List of Packages
 | tumblr.js                       | Tumblr API library.                                                     |
 | twilio                          | Twilio API library.                                                     |
 | twit                            | Twitter API library.                                                    |
-| validator                       | Used in conjunction with express-validator in **controllers/api.js**.   |
+| validator                       | A library of string validators and sanitizers.                          |
 
 Useful Tools and Resources
 --------------------------
