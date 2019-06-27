@@ -429,7 +429,6 @@ List of Packages
 | morgan                          | HTTP request logger middleware for node.js.                             |
 | multer                          | Node.js middleware for handling `multipart/form-data`.                  |
 | node-foursquare                 | Foursquare API library.                                                 |
-| node-linkedin                   | LinkedIn API library.                                                   |
 | node-sass                       | Node.js bindings to libsass.                                            |
 | node-sass-middleware            | Sass middleware compiler.                                               |
 | nyc                             | Coverage test.                                                          |
@@ -446,7 +445,7 @@ List of Packages
 | passport-snapchat               | Sign-in with Snapchat plugin.                                           |
 | passport-twitter                | Sign-in with Twitter plugin.                                            |
 | paypal-rest-sdk                 | PayPal APIs library.                                                    |
-| pug (jade)                      | Template engine for Express.                                            |
+| pug                             | Template engine for Express.                                            |
 | request                         | Simplified HTTP request library.                                        |
 | sinon                           | Test spies, stubs and mocks for JavaScript.                             |
 | sinon-mongoose                  | Extend Sinon stubs for Mongoose methods to test chained methods easily. |
