@@ -44,6 +44,7 @@ The following is a list of various codes that you may not potential be using and
 - views/account/profile.pug
   - Link/unlink buttons for Instagram, Github, LinkedIn, steam
 - Removed readme, changelog, this guide, docker related files if not using them
+- Create a domain whitelist for your app in Here's developer portal if you are using the Here's map API.
 
 ### Search Engine Optimization (SEO)
 Note that SEO only applies to the pages that will be publicly visible with no authentication.  Note that some of the following fields need to be added to the HTML header section similar to the page [title](https://github.com/sahat/hackathon-starter/blob/master/views/layout.pug#L9)

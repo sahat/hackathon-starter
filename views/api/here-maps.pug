@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fas.fa-map-marked
+      | HERE Maps API
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://developer.here.com', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | HERE Developer Portal
+    a.btn.btn-primary(href='https://developer.here.com/documentation/map-image/topics/resource-map.html', target='_blank').w-100
+      i.fas.fa-laptop.fa-sm
+      | Image Map Parameters
+
+  br
+  .pb-2.mt-2.mb-4
+    h3 Map using Here Image Map Service
+  div(style='display:flex; justify-content: center;')
+    img(src= imageMapURL)

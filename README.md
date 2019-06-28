@@ -346,6 +346,15 @@ The same goes for other providers.
 
 <hr>
 
+<img src="https://brandlive.here.com/sites/default/files/styles/large_breakpoint/public/logo_0.png" width="90">
+
+- Go to <a href="https://developer.here.com" target="_blank">https://developer.here.com</a>
+- Sign up and create a Freemium project
+- Create JAVASCRIPT/REST credentials. Copy and paste the APP_ID and APP into `.env` file.
+- Note that these credentials are available on the client side, and you need to create a domain whitelist for your app credentials when you are publicly launching the app.
+
+<hr>
+
 <img src="https://s3.amazonaws.com/ahoy-assets.twilio.com/global/images/wordmark.svg" width="200">
 
 - Go to <a href="https://www.twilio.com/try-twilio" target="_blank">https://www.twilio.com/try-twilio</a>
