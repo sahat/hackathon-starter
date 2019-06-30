@@ -136,7 +136,7 @@ describe('User Model', () => {
   });
 
   it('should generate gravatar with email', () => {
-    const UserMock = sinon.mock(new User({ email: 'test@gmail.com'}));
+    const UserMock = sinon.mock(new User({ email: 'test@gmail.com' }));
     const user = UserMock.object;
     const md5 = '1aedb8d9dc4751e229a335e371db8058';
 
