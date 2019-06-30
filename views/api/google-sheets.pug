@@ -1,0 +1,48 @@
+extends ../layout
+
+block content
+
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-google(style='color: #1B4A7D').fa-sm
+      | Google Sheets API
+  h3
+    | API References
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://github.com/googleapis/google-api-nodejs-client#google-apis-nodejs-client', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Getting Started
+    a.btn.btn-primary(href='https://console.developers.google.com/apis/dashboard', target='_blank').w-100
+      i.fas.fa-laptop.fa-sm
+      | API Console
+    a.btn.btn-primary(href='https://www.freecodecamp.org/news/cjn-google-sheets-as-json-endpoint', target='_blank').w-100
+      i.fas.fa-book.fa-sm
+      | Exposing your Google Sheets
+
+  br
+  h3
+    | Examples
+  p
+  | View data from a Google Spreadsheet at
+  a(href='https://docs.google.com/spreadsheets/d/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/', target='_blank')
+    |  URL
+  p
+  | Get JSON endpoint from a Google Spreadsheet at
+  a(href='https://spreadsheets.google.com/feeds/cells/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/1/public/full?alt=json', target='_blank')
+    |  URL
+  | - auth tokens required if the spreadsheet is not public
+  br
+  .pb-2.mt-2.mb-4.border-bottom
+    h4
+      | Values in Google Sheets
+
+  - if (values.length)
+    table(style='width:100%', border='1')
+      tr
+        -for (var i = 0; i < values.length; i++)
+          tr
+          -for (var j = 0; j < values[i].length; j++)
+            - if (i == 0)
+              td(style='font-weight:bold')= values[i][j]
+            - else
+              td= values[i][j]
