@@ -765,3 +765,30 @@ exports.getGoogleDrive = (req, res) => {
     });
   });
 };
+
+exports.getGoogleSheets = (req, res) => {
+  const token = req.user.tokens.find(token => token.kind === 'google');
+  const authObj = new google.auth.OAuth2({
+    access_type: 'offline'
+  });
+  authObj.setCredentials({
+    access_token: token.accessToken
+  });
+
+  const sheets = google.sheets({
+    version: 'v4',
+    auth: authObj
+  });
+
+  sheets.spreadsheets.values.get({
+    spreadsheetId: '12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s',
+    range: 'Class Data!A1:F',
+  }, (err, response) => {
+    if (err) return console.log(`The API returned an error: ${err}`);
+    console.log(response.data.values);
+    res.render('api/google-sheets', {
+      title: 'Google Sheets API',
+      values: response.data.values,
+    });
+  });
+};
