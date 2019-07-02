@@ -13,6 +13,9 @@ const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
 const axios = require('axios');
 const { google } = require('googleapis');
+const Quickbooks = require('node-quickbooks');
+
+Quickbooks.setOauthVersion('2.0');
 
 /**
  * GET /api
@@ -136,6 +139,20 @@ exports.getGithub = async (req, res, next) => {
 exports.getAviary = (req, res) => {
   res.render('api/aviary', {
     title: 'Aviary API'
+  });
+};
+
+exports.getQuickbooks = (req, res) => {
+  const token = req.user.tokens.find(token => token.kind === 'quickbooks');
+
+  const qbo = new Quickbooks(process.env.QUICKBOOKS_CLIENT_ID, process.env.QUICKBOOKS_CLIENT_SECRET,
+    token.accessToken, false, req.user.quickbooks, true, false, null, '2.0', token.refreshToken);
+
+  qbo.findCustomers((_, customers) => {
+    res.render('api/quickbooks', {
+      title: 'Quickbooks API',
+      customers: customers.QueryResponse.Customer
+    });
   });
 };
 

@@ -176,6 +176,7 @@ app.get('/api/here-maps', apiController.getHereMaps);
 app.get('/api/google-maps', apiController.getGoogleMaps);
 app.get('/api/google/drive', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getGoogleDrive);
 app.get('/api/chart', apiController.getChart);
+app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getQuickbooks);
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -227,6 +228,10 @@ app.get('/auth/steam/callback', passport.authorize('openid', { failureRedirect: 
 app.get('/auth/pinterest', passport.authorize('pinterest', { scope: 'read_public write_public' }));
 app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRedirect: '/login' }), (req, res) => {
   res.redirect('/api/pinterest');
+});
+app.get('/auth/quickbooks', passport.authorize('quickbooks', { scope: ['com.intuit.quickbooks.accounting'], state: 'SOME STATE' }));
+app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo);
 });
 
 /**
