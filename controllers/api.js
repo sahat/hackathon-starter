@@ -132,16 +132,6 @@ exports.getGithub = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/aviary
- * Aviary image processing example.
- */
-exports.getAviary = (req, res) => {
-  res.render('api/aviary', {
-    title: 'Aviary API'
-  });
-};
-
 exports.getQuickbooks = (req, res) => {
   const token = req.user.tokens.find(token => token.kind === 'quickbooks');
 
