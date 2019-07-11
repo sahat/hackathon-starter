@@ -109,9 +109,9 @@ Prerequisites
  - <img src="http://i1-news.softpedia-static.com/images/extra/LINUX/small/slw218news1.png" height="17">&nbsp;**Fedora**: `sudo dnf groupinstall "Development Tools"`
  - <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE:** `sudo zypper install --type pattern devel_basis`
 
-**Note:** If you are new to Node or Express, I recommend to watch
-[Node.js and Express 101](https://www.youtube.com/watch?v=BN0JlMZCtNU)
-screencast by Alex Ford that teaches Node and Express from scratch. Alternatively,
+**Note:** If you are new to Node or Express, you may find
+[Node.js & Express From Scratch series](https://www.youtube.com/watch?v=Ad2ngx6CT0M&list=PLillGF-RfqbYRpji8t4SxUkMxfowG4Kqp&index=3)
+helpful for learning the basics of Node and Express. Alternatively,
 here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
 
 Getting Started
