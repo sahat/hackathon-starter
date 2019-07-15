@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fas.fa-file-invoice-dollar
+      | Quickbooks API
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://developer.intuit.com', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | Intuit Developer Portal
+    a.btn.btn-primary(href='https://github.com/mcohen01/node-quickbooks#public-api', target='_blank').w-100
+      i.fas.fa-laptop.fa-sm
+      | node-quickbooks
+
+  br
+  .pb-2.mt-2.mb-4
+    h3 Customers and Balances
+
+  table.table.table-bordered.table-hover
+    thead
+      tr
+        th Customer
+        th Balance
+    tbody
+      for customer in customers
+        tr
+          td= customer.DisplayName
+          td= customer.Balance

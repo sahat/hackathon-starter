@@ -15,7 +15,54 @@ block content
       | Image Map Parameters
 
   br
-  .pb-2.mt-2.mb-4
+  .pb-2.mt-2
     h3 Map using Here Image Map Service
   div(style='display:flex; justify-content: center;')
+    | This non-interactive map renders without the use of any client-side scripts:
+  div(style='display:flex; justify-content: center;')
     img(src= imageMapURL)
+
+  br
+  .pb-2.mt-2.mt-4.border-top
+    h3 Map using Here Interactive Map Service
+  div(style='display:flex; justify-content: center;')
+    | The client-side scripts are used for rendering this map:
+  div(style='display:flex; justify-content: center;')
+    #map(style='width: 100vw; height: 50vh')
+
+  div(style='display:flex; justify-content: center;')
+    | Straight line distance between the Fremont Troll and Seattle Art Museum is&nbsp
+    #directLineDistance
+    | &nbspmiles.
+
+  script(src='https://js.api.here.com/v3/3.0/mapsjs-core.js', type='text/javascript', charset='utf-8')
+  script(src='https://js.api.here.com/v3/3.0/mapsjs-service.js', type='text/javascript', charset='utf-8')
+  script(src='https://js.api.here.com/v3/3.0/mapsjs-mapevents.js', type='text/javascript', charset='utf-8')
+  script.
+    const platform = new H.service.Platform({
+    useHTTPS: true,
+    "app_id": "#{app_id}",
+    "app_code": "#{app_code}"
+    });
+    const map = new H.Map(document.getElementById("map"), platform.createDefaultLayers().normal.map, { zoom: 12, center: { lat: 47.6573676, lng: -122.3126527 }});
+    const mapEvents = new H.mapevents.MapEvents(map);
+    // at this point the map is rendered, lets add some markers
+    const behavior = new H.mapevents.Behavior(mapEvents);
+    const marker1 = new H.map.Marker({ lat: 47.6516216, lng: -122.3498897 });
+    const marker2 = new H.map.Marker({ lat: 47.6123335, lng: -122.3314332 });
+    const marker3 = new H.map.Marker({ lat: 47.6162956, lng: -122.3555097 });
+    const marker4 = new H.map.Marker({ lat: 47.6205099, lng: -122.3514661 });
+
+    const lineString = new H.geo.LineString();
+    lineString.pushPoint(marker1.getPosition());
+    lineString.pushPoint(marker2.getPosition());
+    lineString.pushPoint(marker3.getPosition());
+    lineString.pushPoint(marker4.getPosition());
+
+    const polygon = new H.map.Polygon(lineString, { style: { strokeColor: "black", lineWidth: 2, fillColor: "rgba(255, 0, 255, 0.5)" } });
+    const circle = new H.map.Circle(marker4.getPosition(), 1500, {style: { strokeColor: 'rgba(0,128,0, 0.6)', lineWidth: 1, fillColor: 'rgba(0, 128, 0, 0.3)' }});
+    map.addObjects([marker1, marker2, marker3, marker4, polygon, circle]);
+    // At this point we have rendered all of the markers, the polygon and the circle that were set in the prior lines
+
+    const distance = (marker1.getPosition().distance(marker2.getPosition())/ 1609.344).toFixed(2);
+    directLineDistance.innerHTML=distance

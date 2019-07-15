@@ -12,6 +12,7 @@ const { Strategy: OpenIDStrategy } = require('passport-openid');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
 const _ = require('lodash');
+const moment = require('moment');
 
 const User = require('../models/User');
 
@@ -574,6 +575,34 @@ passport.use('pinterest', new OAuth2Strategy({
   User.findById(req.user._id, (err, user) => {
     if (err) { return done(err); }
     user.tokens.push({ kind: 'pinterest', accessToken });
+    user.save((err) => {
+      done(err, user);
+    });
+  });
+}));
+
+/**
+ * Intuit/QuickBooks API OAuth.
+ */
+passport.use('quickbooks', new OAuth2Strategy({
+  authorizationURL: 'https://appcenter.intuit.com/connect/oauth2',
+  tokenURL: 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
+  clientID: process.env.QUICKBOOKS_CLIENT_ID,
+  clientSecret: process.env.QUICKBOOKS_CLIENT_SECRET,
+  callbackURL: `${process.env.BASE_URL}/auth/quickbooks/callback`,
+  passReqToCallback: true
+},
+(res, accessToken, refreshToken, params, profile, done) => {
+  User.findById(res.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({
+      kind: 'quickbooks',
+      accessToken,
+      accessTokenExpires: moment().add(params.expires_in, 'seconds'),
+      refreshToken,
+      refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds')
+    });
+    user.quickbooks = res.query.realmId;
     user.save((err) => {
       done(err, user);
     });
