@@ -88,6 +88,7 @@ app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
   if (req.path === '/api/upload') {
+    // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
     next();
   } else {
     lusca.csrf()(req, res, next);
@@ -148,7 +149,6 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.get('/api', apiController.getApi);
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
-app.get('/api/aviary', apiController.getAviary);
 app.get('/api/steam', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getSteam);
 app.get('/api/stripe', apiController.getStripe);
 app.post('/api/stripe', apiController.postStripe);
@@ -168,8 +168,8 @@ app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
 app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 app.get('/api/lob', apiController.getLob);
-app.get('/api/upload', apiController.getFileUpload);
-app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
+app.get('/api/upload', lusca({ csrf: true }), apiController.getFileUpload);
+app.post('/api/upload', upload.single('myFile'), lusca({ csrf: true }), apiController.postFileUpload);
 app.get('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getPinterest);
 app.post('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postPinterest);
 app.get('/api/here-maps', apiController.getHereMaps);
@@ -177,6 +177,7 @@ app.get('/api/google-maps', apiController.getGoogleMaps);
 app.get('/api/google/drive', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getGoogleDrive);
 app.get('/api/chart', apiController.getChart);
 app.get('/api/google/sheets', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getGoogleSheets);
+app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getQuickbooks);
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -228,6 +229,10 @@ app.get('/auth/steam/callback', passport.authorize('openid', { failureRedirect: 
 app.get('/auth/pinterest', passport.authorize('pinterest', { scope: 'read_public write_public' }));
 app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRedirect: '/login' }), (req, res) => {
   res.redirect('/api/pinterest');
+});
+app.get('/auth/quickbooks', passport.authorize('quickbooks', { scope: ['com.intuit.quickbooks.accounting'], state: 'SOME STATE' }));
+app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo);
 });
 
 /**

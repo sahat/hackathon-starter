@@ -13,6 +13,9 @@ const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
 const axios = require('axios');
 const { google } = require('googleapis');
+const Quickbooks = require('node-quickbooks');
+
+Quickbooks.setOauthVersion('2.0');
 
 /**
  * GET /api
@@ -129,13 +132,17 @@ exports.getGithub = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/aviary
- * Aviary image processing example.
- */
-exports.getAviary = (req, res) => {
-  res.render('api/aviary', {
-    title: 'Aviary API'
+exports.getQuickbooks = (req, res) => {
+  const token = req.user.tokens.find(token => token.kind === 'quickbooks');
+
+  const qbo = new Quickbooks(process.env.QUICKBOOKS_CLIENT_ID, process.env.QUICKBOOKS_CLIENT_SECRET,
+    token.accessToken, false, req.user.quickbooks, true, false, null, '2.0', token.refreshToken);
+
+  qbo.findCustomers((_, customers) => {
+    res.render('api/quickbooks', {
+      title: 'Quickbooks API',
+      customers: customers.QueryResponse.Customer
+    });
   });
 };
 
@@ -719,7 +726,7 @@ exports.postPinterest = (req, res, next) => {
 exports.getHereMaps = (req, res) => {
   const imageMapURL = `https://image.maps.api.here.com/mia/1.6/mapview?\
 app_id=${process.env.HERE_APP_ID}&app_code=${process.env.HERE_APP_CODE}&\
-poix0=47.6516216,-122.3498897;white;black;15;Troll&\
+poix0=47.6516216,-122.3498897;white;black;15;Fremont Troll&\
 poix1=47.6123335,-122.3314332;white;black;15;Seattle Art Museum&\
 poix2=47.6162956,-122.3555097;white;black;15;Olympic Sculpture Park&\
 poix3=47.6205099,-122.3514661;white;black;15;Space Needle&\
@@ -729,6 +736,8 @@ vt=1&&z=13&\
 h=500&w=800&`;
 
   res.render('api/here-maps', {
+    app_id: process.env.HERE_APP_ID,
+    app_code: process.env.HERE_APP_CODE,
     title: 'Here Maps API',
     imageMapURL
   });
