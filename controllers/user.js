@@ -239,6 +239,13 @@ exports.getReset = (req, res, next) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
+  const validationErrors = [];
+  if (!validator.isHexadecimal(req.params.token)) validationErrors.push({ msg: 'Invalid Token.  Please retry.' });
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
+    return res.redirect('/forgot');
+  }
+
   User
     .findOne({ passwordResetToken: req.params.token })
     .where('passwordResetExpires').gt(Date.now())
@@ -262,6 +269,7 @@ exports.postReset = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
   if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' });
+  if (!validator.isHexadecimal(req.params.token)) validationErrors.push({ msg: 'Invalid Token.  Please retry.' });
 
   if (validationErrors.length) {
     req.flash('errors', validationErrors);
