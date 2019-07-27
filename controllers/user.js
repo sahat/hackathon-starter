@@ -268,7 +268,7 @@ exports.getReset = (req, res, next) => {
 exports.postReset = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
-  if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' });
+  if (req.body.password !== req.body.confirm) validationErrors.push({ msg: 'Passwords do not match' });
   if (!validator.isHexadecimal(req.params.token)) validationErrors.push({ msg: 'Invalid Token.  Please retry.' });
 
   if (validationErrors.length) {
