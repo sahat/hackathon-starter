@@ -438,6 +438,7 @@ List of Packages
 | lob                             | Lob API library.                                                        |
 | lodash                          | A utility library for working with arrays, numbers, objects, strings.   |
 | lusca                           | CSRF middleware.                                                        |
+| mailchecker                     | Verifies that an email address is valid and not a disposable address.   |
 | mocha                           | Test framework.                                                         |
 | moment                          | Parse, validate, compute dates and times.                               |
 | mongoose                        | MongoDB ODM.                                                            |

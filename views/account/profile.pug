@@ -10,6 +10,14 @@ block content
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
       .col-md-7
         input.form-control(type='email', name='email', id='email', value=user.email, autocomplete='email')
+      .offset-sm-3.col-md-7.pl-3
+        if user.emailVerified
+          .text-success.font-italic
+            | Verified
+        else
+          .text-danger.font-italic
+            | Unverified: &nbsp;
+            a(href='/account/verify') Send verification email
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='name') Name
       .col-md-7

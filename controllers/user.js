@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const passport = require('passport');
 const _ = require('lodash');
 const validator = require('validator');
+const mailChecker = require('mailchecker');
 const User = require('../models/User');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
@@ -141,6 +142,7 @@ exports.postUpdateProfile = (req, res, next) => {
 
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
+    if (user.email !== req.body.email) user.emailVerified = false;
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
     user.profile.gender = req.body.gender || '';
@@ -259,6 +261,126 @@ exports.getReset = (req, res, next) => {
         title: 'Password Reset'
       });
     });
+};
+
+/**
+ * GET /account/verify/:token
+ * Verify email address
+ */
+exports.getVerifyEmailToken = (req, res, next) => {
+  if (req.user.emailVerified) {
+    req.flash('info', { msg: 'The email address has been verified.' });
+    return res.redirect('/account');
+  }
+
+  const validationErrors = [];
+  if (req.params.token && (!validator.isHexadecimal(req.params.token))) validationErrors.push({ msg: 'Invalid Token.  Please retry.' });
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
+    return res.redirect('/account');
+  }
+
+  if (req.params.token === req.user.emailVerificationToken) {
+    User
+      .findOne({ email: req.user.email })
+      .then((user) => {
+        if (!user) {
+          req.flash('errors', { msg: 'There was an error in loading your profile.' });
+          return res.redirect('back');
+        }
+        user.emailVerificationToken = '';
+        user.emailVerified = true;
+        user = user.save();
+        req.flash('info', { msg: 'Thank you for verifying your email address.' });
+        return res.redirect('/account');
+      })
+      .catch((error) => {
+        console.log('Error saving the user profile to the database after email verification', error);
+        req.flash('error', { msg: 'There was an error when updating your profile.  Please try again later.' });
+        return res.redirect('/account');
+      });
+  }
+};
+
+/**
+ * GET /account/verify
+ * Verify email address
+ */
+exports.getVerifyEmail = (req, res, next) => {
+  if (req.user.emailVerified) {
+    req.flash('info', { msg: 'The email address has been verified.' });
+    return res.redirect('/account');
+  }
+
+  if (!mailChecker.isValid(req.user.email)) {
+    req.flash('errors', { msg: 'The email address is invalid or disposable and can not be verified.  Please update your email address and try again.' });
+    return res.redirect('/account');
+  }
+
+  const createRandomToken = randomBytesAsync(16)
+    .then(buf => buf.toString('hex'));
+
+  const setRandomToken = (token) => {
+    User
+      .findOne({ email: req.user.email })
+      .then((user) => {
+        user.emailVerificationToken = token;
+        user = user.save();
+      });
+    return token;
+  };
+
+  const sendVerifyEmail = (token) => {
+    let transporter = nodemailer.createTransport({
+      service: 'SendGrid',
+      auth: {
+        user: process.env.SENDGRID_USER,
+        pass: process.env.SENDGRID_PASSWORD
+      }
+    });
+    const mailOptions = {
+      to: req.user.email,
+      from: 'hackathon@starter.com',
+      subject: 'Please verify your email address on Hackathon Starter',
+      text: `Thank you for registering with hackathon-starter.\n\n
+        This verify your email address please click on the following link, or paste this into your browser:\n\n
+        http://${req.headers.host}/account/verify/${token}\n\n
+        \n\n
+        Thank you!`
+    };
+    return transporter.sendMail(mailOptions)
+      .then(() => {
+        req.flash('info', { msg: `An e-mail has been sent to ${req.user.email} with further instructions.` });
+      })
+      .catch((err) => {
+        if (err.message === 'self signed certificate in certificate chain') {
+          console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
+          transporter = nodemailer.createTransport({
+            service: 'SendGrid',
+            auth: {
+              user: process.env.SENDGRID_USER,
+              pass: process.env.SENDGRID_PASSWORD
+            },
+            tls: {
+              rejectUnauthorized: false
+            }
+          });
+          return transporter.sendMail(mailOptions)
+            .then(() => {
+              req.flash('info', { msg: `An e-mail has been sent to ${req.user.email} with further instructions.` });
+            });
+        }
+        console.log('ERROR: Could not send verifyEmail email after security downgrade.\n', err);
+        req.flash('errors', { msg: 'Error sending the email verification message. Please try again shortly.' });
+        return err;
+      });
+  };
+
+  createRandomToken
+    .then(setRandomToken)
+    .then(sendVerifyEmail)
+    .then(() => res.redirect('/account'))
+    .catch(next);
 };
 
 /**
