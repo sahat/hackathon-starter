@@ -459,6 +459,7 @@ List of Packages
 | passport-local                  | Sign-in with Username and Password plugin.                              |
 | passport-openid                 | Sign-in with OpenId plugin.                                             |
 | passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.      |
+| passport-oauth2-refresh         | A library to refresh OAuth 2.0 access tokens using refresh tokens.      |
 | passport-snapchat               | Sign-in with Snapchat plugin.                                           |
 | passport-twitter                | Sign-in with Twitter plugin.                                            |
 | paypal-rest-sdk                 | PayPal APIs library.                                                    |
