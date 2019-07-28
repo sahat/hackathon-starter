@@ -1,6 +1,29 @@
 # Changelog
 ---------
 
+### 5.2.0 (July 28, 2019)
+- Added API example: Google Drive (thanks to @tanaydin)
+- Added Google Sheets API example (thanks to @clarkngo)
+- Added HERE Maps API example
+- Added support for Intuit Quickbooks API
+- Improved Lob.com API example
+- Added support for email verification
+- Added support for refreshing OAuth tokens
+- Fixed bug when users attempt to login by email for accounts that are created with a sign in provider
+- Fixed bug in the password reset
+- Added CSRF check to the File Upload API example -- security improvement -- breaking change
+- Added validation check to password reset token -- security improvement
+- Fixed missing await in the Foursquare API example
+- Fixed Google Oauth2 profile picture (thanks to @tanaydin)
+- Removed deprecated Instagram API calls -- breaking change
+- Upgrade to login by LinkedIn v2, remove LinkedIn API example -- breaking change
+- Removed express-validator in favor of validator.js -- breaking change
+- Removed Aviary API example since the service has been shutdown
+- Added additional unit tests for the user model (thanks to @Tolsee)
+- Updated Steam's logo
+- Updated dependencies
+- Updated documentation (thanks in part to @TheMissingNTLDR, @Coteh)
+
 ### 5.1.4 (May 14, 2019)
 - Migrate from requestjs to axios (thanks to @FX-Wood)
 - Enable page templates to add items to the HTML head element
