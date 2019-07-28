@@ -395,7 +395,7 @@ Project Structure
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
 | .eslintrc                          | Rules for eslint linter.                                     |
 | .gitignore                         | Folder and files ignored by git.                             |
-| .travis.yml                        | Configuration files for continue integration.                |
+| .travis.yml                        | Configuration files for continuous integration.              |
 | app.js                             | The main application file.                                   |
 | docker-compose.yml                 | Docker compose configuration file.                           |
 | Dockerfile                         | Docker configuration file.                                   |
