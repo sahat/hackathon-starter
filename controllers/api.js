@@ -14,6 +14,7 @@ const ig = require('instagram-node').instagram();
 const axios = require('axios');
 const { google } = require('googleapis');
 const Quickbooks = require('node-quickbooks');
+const validator = require('validator');
 
 Quickbooks.setOauthVersion('2.0');
 
@@ -281,12 +282,11 @@ exports.getTwitter = async (req, res, next) => {
  * Post a tweet.
  */
 exports.postTwitter = (req, res, next) => {
-  req.assert('tweet', 'Tweet cannot be empty').notEmpty();
+  const validationErrors = [];
+  if (validator.isEmpty(req.body.tweet)) validationErrors.push({ msg: 'Tweet cannot be empty' });
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
     return res.redirect('/api/twitter');
   }
 
@@ -430,13 +430,12 @@ exports.getTwilio = (req, res) => {
  * Send a text message using Twilio.
  */
 exports.postTwilio = (req, res, next) => {
-  req.assert('number', 'Phone number is required.').notEmpty();
-  req.assert('message', 'Message cannot be blank.').notEmpty();
+  const validationErrors = [];
+  if (validator.isEmpty(req.body.number)) validationErrors.push({ msg: 'Phone number is required.' });
+  if (validator.isEmpty(req.body.message)) validationErrors.push({ msg: 'Message cannot be blank.' });
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
     return res.redirect('/api/twilio');
   }
 
@@ -693,14 +692,13 @@ exports.getPinterest = (req, res, next) => {
  * Create a pin.
  */
 exports.postPinterest = (req, res, next) => {
-  req.assert('board', 'Board is required.').notEmpty();
-  req.assert('note', 'Note cannot be blank.').notEmpty();
-  req.assert('image_url', 'Image URL cannot be blank.').notEmpty();
+  const validationErrors = [];
+  if (validator.isEmpty(req.body.board)) validationErrors.push({ msg: 'Board is required.' });
+  if (validator.isEmpty(req.body.note)) validationErrors.push({ msg: 'Note cannot be blank.' });
+  if (validator.isEmpty(req.body.image_url)) validationErrors.push({ msg: 'Image URL cannot be blank.' });
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
     return res.redirect('/api/pinterest');
   }
 
