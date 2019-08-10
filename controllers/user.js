@@ -209,7 +209,7 @@ exports.getOauthUnlink = (req, res, next) => {
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
     user[provider.toLowerCase()] = undefined;
-    const tokensWithoutProviderToUnlink = user.tokens.filter(token =>
+    const tokensWithoutProviderToUnlink = user.tokens.filter((token) =>
       token.kind !== provider.toLowerCase());
     // Some auth providers do not provide an email address in the user profile.
     // As a result, we need to verify that unlinking the provider is safe by ensuring
@@ -318,7 +318,7 @@ exports.getVerifyEmail = (req, res, next) => {
   }
 
   const createRandomToken = randomBytesAsync(16)
-    .then(buf => buf.toString('hex'));
+    .then((buf) => buf.toString('hex'));
 
   const setRandomToken = (token) => {
     User
@@ -464,7 +464,7 @@ exports.postReset = (req, res, next) => {
   resetPassword()
     .then(sendResetPasswordEmail)
     .then(() => { if (!res.finished) res.redirect('/'); })
-    .catch(err => next(err));
+    .catch((err) => next(err));
 };
 
 /**
@@ -495,9 +495,9 @@ exports.postForgot = (req, res, next) => {
   req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
 
   const createRandomToken = randomBytesAsync(16)
-    .then(buf => buf.toString('hex'));
+    .then((buf) => buf.toString('hex'));
 
-  const setRandomToken = token =>
+  const setRandomToken = (token) =>
     User
       .findOne({ email: req.body.email })
       .then((user) => {

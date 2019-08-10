@@ -1,6 +1,6 @@
 {
   "name": "hackathon-starter",
-  "version": "5.1.4",
+  "version": "5.2.0",
   "description": "A boilerplate for Node.js web applications",
   "repository": {
     "type": "git",
@@ -48,7 +48,7 @@
     "lusca": "^1.6.1",
     "mailchecker": "^3.2.35",
     "moment": "^2.24.0",
-    "mongoose": "^5.6.8",
+    "mongoose": "^5.6.9",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "node-quickbooks": "^2.0.32",
@@ -71,7 +71,7 @@
     "popper.js": "^1.15.0",
     "pug": "^2.0.4",
     "request": "^2.88.0",
-    "stripe": "^7.6.0",
+    "stripe": "^7.7.0",
     "tumblr.js": "^2.0.2",
     "twilio": "^3.33.3",
     "twit": "^2.2.11",
@@ -80,12 +80,12 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^6.1.0",
-    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-chai-friendly": "^0.4.1",
     "eslint-plugin-import": "^2.18.2",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
-    "sinon": "^7.3.2",
+    "sinon": "^7.4.1",
     "sinon-mongoose": "^2.3.0",
     "supertest": "^4.0.2"
   },

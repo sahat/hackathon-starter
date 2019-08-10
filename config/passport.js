@@ -87,7 +87,6 @@ passport.use(new SnapchatStrategy({
           user.snapchat = profile.id;
           user.tokens.push({ kind: 'snapchat', accessToken });
           user.profile.name = user.profile.name || profile.displayName;
-          user.profile.gender = user.profile.gender;
           user.profile.picture = user.profile.picture || profile.bitmoji.avatarUrl;
           user.save((err) => {
             req.flash('info', { msg: 'Snapchat account has been linked.' });
@@ -612,7 +611,7 @@ const quickbooksStrategyConfig = new OAuth2Strategy({
   User.findById(res.user._id, (err, user) => {
     if (err) { return done(err); }
     user.quickbooks = res.query.realmId;
-    if (user.tokens.filter(vendor => (vendor.kind === 'quickbooks'))[0]) {
+    if (user.tokens.filter((vendor) => (vendor.kind === 'quickbooks'))[0]) {
       user.tokens.some((tokenObject) => {
         if (tokenObject.kind === 'quickbooks') {
           tokenObject.accessToken = accessToken;
@@ -656,7 +655,7 @@ exports.isAuthenticated = (req, res, next) => {
  */
 exports.isAuthorized = (req, res, next) => {
   const provider = req.path.split('/')[2];
-  const token = req.user.tokens.find(token => token.kind === provider);
+  const token = req.user.tokens.find((token) => token.kind === provider);
   if (token) {
     // Is there an access token expiration and access token expired?
     // Yes: Is there a refresh token?

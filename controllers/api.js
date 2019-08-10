@@ -33,7 +33,7 @@ exports.getApi = (req, res) => {
  * Foursquare API example.
  */
 exports.getFoursquare = async (req, res, next) => {
-  const token = await req.user.tokens.find(token => token.kind === 'foursquare');
+  const token = await req.user.tokens.find((token) => token.kind === 'foursquare');
   let trendingVenues;
   let venueDetail;
   let userCheckins;
@@ -63,7 +63,7 @@ exports.getFoursquare = async (req, res, next) => {
  * Tumblr API example.
  */
 exports.getTumblr = (req, res, next) => {
-  const token = req.user.tokens.find(token => token.kind === 'tumblr');
+  const token = req.user.tokens.find((token) => token.kind === 'tumblr');
   const client = tumblr.createClient({
     consumer_key: process.env.TUMBLR_KEY,
     consumer_secret: process.env.TUMBLR_SECRET,
@@ -85,7 +85,7 @@ exports.getTumblr = (req, res, next) => {
  * Facebook API example.
  */
 exports.getFacebook = (req, res, next) => {
-  const token = req.user.tokens.find(token => token.kind === 'facebook');
+  const token = req.user.tokens.find((token) => token.kind === 'facebook');
   graph.setAccessToken(token.accessToken);
   graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, profile) => {
     if (err) { return next(err); }
@@ -113,7 +113,7 @@ exports.getScraping = (req, res, next) => {
         links
       });
     })
-    .catch(error => next(error));
+    .catch((error) => next(error));
 };
 
 /**
@@ -134,7 +134,7 @@ exports.getGithub = async (req, res, next) => {
 };
 
 exports.getQuickbooks = (req, res) => {
-  const token = req.user.tokens.find(token => token.kind === 'quickbooks');
+  const token = req.user.tokens.find((token) => token.kind === 'quickbooks');
 
   const qbo = new Quickbooks(process.env.QUICKBOOKS_CLIENT_ID, process.env.QUICKBOOKS_CLIENT_SECRET,
     token.accessToken, false, req.user.quickbooks, true, false, null, '2.0', token.refreshToken);
@@ -255,7 +255,7 @@ exports.getLastfm = async (req, res, next) => {
  * Twitter API example.
  */
 exports.getTwitter = async (req, res, next) => {
-  const token = req.user.tokens.find(token => token.kind === 'twitter');
+  const token = req.user.tokens.find((token) => token.kind === 'twitter');
   const T = new Twit({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
@@ -290,7 +290,7 @@ exports.postTwitter = (req, res, next) => {
     return res.redirect('/api/twitter');
   }
 
-  const token = req.user.tokens.find(token => token.kind === 'twitter');
+  const token = req.user.tokens.find((token) => token.kind === 'twitter');
   const T = new Twit({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
@@ -514,7 +514,7 @@ exports.getChart = async (req, res, next) => {
  * Instagram API example.
  */
 exports.getInstagram = async (req, res, next) => {
-  const token = req.user.tokens.find(token => token.kind === 'instagram');
+  const token = req.user.tokens.find((token) => token.kind === 'instagram');
   ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
   ig.use({ access_token: token.accessToken });
   try {
@@ -624,8 +624,8 @@ exports.getLob = async (req, res, next) => {
   };
 
   const lookupZip = () => lob.usZipLookups.lookup({ zip_code: '94107' })
-    .then(zipdetails => (zipdetails))
-    .catch(error => Promise.reject(new Error(`Could not get zip code details: ${error}`)));
+    .then((zipdetails) => (zipdetails))
+    .catch((error) => Promise.reject(new Error(`Could not get zip code details: ${error}`)));
 
   const createAndMailLetter = () => lob.letters.create({
     description: 'My First Class Letter',
@@ -638,8 +638,8 @@ exports.getLob = async (req, res, next) => {
           </div></div></div></body></html>`,
     color: false
   })
-    .then(letter => (letter))
-    .catch(error => Promise.reject(new Error(`Could not create and send letter: ${error}`)));
+    .then((letter) => (letter))
+    .catch((error) => Promise.reject(new Error(`Could not create and send letter: ${error}`)));
 
   try {
     const uspsLetter = await createAndMailLetter();
@@ -675,7 +675,7 @@ exports.postFileUpload = (req, res) => {
  * Pinterest API example.
  */
 exports.getPinterest = (req, res, next) => {
-  const token = req.user.tokens.find(token => token.kind === 'pinterest');
+  const token = req.user.tokens.find((token) => token.kind === 'pinterest');
   axios.get(`https://api.pinterest.com/v1/me/boards?access_token=${token.accessToken}`)
     .then((response) => {
       res.render('api/pinterest', {
@@ -702,7 +702,7 @@ exports.postPinterest = (req, res, next) => {
     return res.redirect('/api/pinterest');
   }
 
-  const token = req.user.tokens.find(token => token.kind === 'pinterest');
+  const token = req.user.tokens.find((token) => token.kind === 'pinterest');
   const formData = {
     board: req.body.board,
     note: req.body.note,
@@ -749,7 +749,7 @@ exports.getGoogleMaps = (req, res) => {
 };
 
 exports.getGoogleDrive = (req, res) => {
-  const token = req.user.tokens.find(token => token.kind === 'google');
+  const token = req.user.tokens.find((token) => token.kind === 'google');
   const authObj = new google.auth.OAuth2({
     access_type: 'offline'
   });
@@ -774,7 +774,7 @@ exports.getGoogleDrive = (req, res) => {
 };
 
 exports.getGoogleSheets = (req, res) => {
-  const token = req.user.tokens.find(token => token.kind === 'google');
+  const token = req.user.tokens.find((token) => token.kind === 'google');
   const authObj = new google.auth.OAuth2({
     access_type: 'offline'
   });
