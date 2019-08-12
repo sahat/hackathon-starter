@@ -62,7 +62,7 @@ exports.logout = (req, res) => {
     req.user = null;
     res.redirect('/');
   }); */
-  req.flash("success", { msg: 'Logged Out Successfully!' });
+  req.flash('success', { msg: 'Logged Out Successfully!' });
   res.redirect('/');
 };
 
