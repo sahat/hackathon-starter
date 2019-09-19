@@ -31,9 +31,7 @@
                 img(src=user.gravatar(60))
               span= user.profile.name || user.email || user.id
               i.caret
-            ul.dropdown-menu
-              li.dropdown-item
-                a(href='/account') My Account
-              li.divider.dropdown-item
-              li.dropdown-item
-                a(href='/logout') Logout
+            div.dropdown-menu
+              a.dropdown-item(href='/account') My Account
+              div.dropdown-divider
+              a.dropdown-item(href='/logout') Logout
