@@ -36,6 +36,18 @@ block content
         .form-check.form-check-inline
           input(type='radio', class='form-check-input' checked=user.profile.gender == 'other', name='gender', value='other', data-toggle='radio')
           label.form-check-label Other
+
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right Visibility
+      .col-sm-6
+        .form-check.form-check-inline
+          input(type='radio', class='form-check-input' checked=user.private == true, name='private', value='true', data-toggle='radio')
+          label.form-check-label Private
+
+        .form-check.form-check-inline
+          input(type='radio', class='form-check-input' checked=user.private == false, name='private', value='false', data-toggle='radio')
+          label.form-check-label Public
+
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='location') Location
       .col-md-7

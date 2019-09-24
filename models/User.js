@@ -27,7 +27,9 @@ const userSchema = new mongoose.Schema({
     location: String,
     website: String,
     picture: String
-  }
+  },
+  private: { type: Boolean, default: false }
+
 }, { timestamps: true });
 
 /**

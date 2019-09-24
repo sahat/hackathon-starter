@@ -1,0 +1,22 @@
+.card
+  .row.no-gutters
+    .col-md-4
+      img.card-img-top(
+        src=currentUser.profile.picture || currentUser.gravatar(60)
+        )
+    .col-md-8
+      .card-body
+        h5.card-title #{(currentUser.profile.name ||currentUser.email).toUpperCase()}
+        .row
+          .card-text.col-md-4 Email:
+          .card-text.col-md-8 #{currentUser.email}
+
+        if profileKeys
+          each key in profileKeys
+            .row
+              .card-text.col-md-4 #{key}: 
+              .card-text.col-md-8 #{currentUser.profile[key]}
+        
+
+              
+              

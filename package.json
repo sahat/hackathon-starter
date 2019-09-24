@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "postinstall": "npm rebuild node-sass",
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "test": "nyc mocha --timeout=10000 --exit",
     "lint": "eslint \"**/*.js\""
   },
@@ -55,6 +55,7 @@
     "node-sass": "^4.12.0",
     "node-sass-middleware": "^0.11.0",
     "nodemailer": "^6.3.0",
+    "nodemon": "^1.19.2",
     "passport": "^0.4.0",
     "passport-facebook": "^3.0.0",
     "passport-github": "^1.1.0",

@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  .row
+    .col-sm
+      h3 #{title}
+      table
+        tbody
+          each user in users
+            tr
+              td 
+                a.btn.btn-block.btn-outline-secondary(
+                  data-toggle="tooltip" 
+                  title=`View ${user.profile.name ? `${user.profile.name}'s `:''}Profile`
+                  href=`/members/${user._id}` 
+                  ) #{user.profile.name || user.email}
+             
+    .col-sm
+      if currentUser
+        include ../partials/memberProfile.pug
+      
