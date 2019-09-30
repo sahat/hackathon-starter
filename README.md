@@ -112,7 +112,8 @@ Prerequisites
 **Note:** If you are new to Node or Express, you may find
 [Node.js & Express From Scratch series](https://www.youtube.com/watch?v=Ad2ngx6CT0M&list=PLillGF-RfqbYRpji8t4SxUkMxfowG4Kqp&index=3)
 helpful for learning the basics of Node and Express. Alternatively,
-here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
+
+is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
 
 Getting Started
 ---------------
@@ -343,7 +344,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://brandlive.here.com/sites/default/files/styles/large_breakpoint/public/logo_0.png" width="90">
+<img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/HERE_logo.svg" width="90">
 
 - Go to <a href="https://developer.here.com" target="_blank">https://developer.here.com</a>
 - Sign up and create a Freemium project
