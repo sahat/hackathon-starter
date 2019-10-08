@@ -20,7 +20,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@ladjs/bootstrap-social": "^7.0.2",
-    "@octokit/rest": "^16.30.1",
+    "@octokit/rest": "^16.32.0",
     "axios": "^0.19.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
@@ -37,7 +37,7 @@
     "express-flash": "^0.0.2",
     "express-handlebars": "^3.1.0",
     "express-session": "^1.16.2",
-    "express-status-monitor": "^1.2.6",
+    "express-status-monitor": "^1.2.7",
     "fbgraph": "^1.4.4",
     "googleapis": "^43.0.0",
     "instagram-node": "^0.5.8",
@@ -48,7 +48,7 @@
     "lusca": "^1.6.1",
     "mailchecker": "^3.2.35",
     "moment": "^2.24.0",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.3",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "node-quickbooks": "^2.0.33",
@@ -73,13 +73,13 @@
     "request": "^2.88.0",
     "stripe": "^7.9.1",
     "tumblr.js": "^2.0.2",
-    "twilio": "^3.35.0",
+    "twilio": "^3.35.1",
     "twit": "^2.2.11",
     "validator": "^11.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^6.5.0",
+    "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-chai-friendly": "^0.4.1",
     "eslint-plugin-import": "^2.18.2",
@@ -87,7 +87,7 @@
     "nyc": "^14.1.1",
     "sinon": "^7.5.0",
     "sinon-mongoose": "^2.3.0",
-    "supertest": "^4.0.2"
+    "supertest": "^5.0.0-0"
   },
   "engines": {
     "node": ">=8.16.1",
