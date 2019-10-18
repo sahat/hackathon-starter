@@ -46,7 +46,7 @@
     "lob": "^6.0.6",
     "lodash": "^4.17.15",
     "lusca": "^1.6.1",
-    "mailchecker": "^3.3.0",
+    "mailchecker": "^3.3.1",
     "moment": "^2.24.0",
     "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
