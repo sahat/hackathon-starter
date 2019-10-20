@@ -112,8 +112,7 @@ Prerequisites
 **Note:** If you are new to Node or Express, you may find
 [Node.js & Express From Scratch series](https://www.youtube.com/watch?v=Ad2ngx6CT0M&list=PLillGF-RfqbYRpji8t4SxUkMxfowG4Kqp&index=3)
 helpful for learning the basics of Node and Express. Alternatively,
-
-is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
+here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
 
 Getting Started
 ---------------
@@ -985,13 +984,14 @@ $(document).ready(function() {
   let socket = io.connect(window.location.href);
   socket.on('greet', function (data) {
     console.log(data);
-    socket.emit('respond', { message: 'Hello to you too, Mr.Server!' });
+    socket.emit('respond', { message: 'Hey there, server!' });
   });
 
 });
 ```
 
 And we are done!
+
 Cheatsheets
 -----------
 
@@ -1439,7 +1439,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
     ```
 
-**Done**, now go to the staging domain(`<host>.mybluemix.net`.) and see your app running.
+**Done**, now go to the staging domain (`<host>.mybluemix.net`) and see your app running.
 
 [Cloud Foundry Commands](https://console.ng.bluemix.net/docs/cli/reference/bluemix_cli/index.html)
 [More Bluemix samples](https://ibm-bluemix.github.io/)
