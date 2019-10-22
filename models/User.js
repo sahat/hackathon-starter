@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
 
   snapchat: String,
   facebook: String,
+  slack: String,
   twitter: String,
   google: String,
   github: String,

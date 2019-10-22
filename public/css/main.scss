@@ -157,3 +157,13 @@ textarea {
     background-color: #f1ef00;
   }
 }
+
+.btn-slack {
+  background-color: #007a5a;
+  color: #fff;
+
+  &:hover, &:active {
+    background-color: #037053;
+    color: #fff;
+  }
+}

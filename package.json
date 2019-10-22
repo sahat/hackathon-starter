@@ -65,6 +65,7 @@
     "passport-oauth": "^1.0.0",
     "passport-oauth2-refresh": "^1.1.0",
     "passport-openid": "^0.4.0",
+    "passport-slack": "0.0.7",
     "passport-snapchat": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.8.1",

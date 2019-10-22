@@ -4,6 +4,7 @@ const axios = require('axios');
 const { Strategy: InstagramStrategy } = require('passport-instagram');
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: FacebookStrategy } = require('passport-facebook');
+const { Strategy: SlackStrategy } = require('passport-slack');
 const { Strategy: SnapchatStrategy } = require('passport-snapchat');
 const { Strategy: TwitterStrategy } = require('passport-twitter');
 const { Strategy: GitHubStrategy } = require('passport-github');
@@ -168,6 +169,62 @@ passport.use(new FacebookStrategy({
           user.profile.gender = profile._json.gender;
           user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';
+          user.save((err) => {
+            done(err, user);
+          });
+        }
+      });
+    });
+  }
+}));
+
+/**
+ * Sign in with Slack.
+ */
+passport.use(new SlackStrategy({
+  clientID: process.env.SLACK_ID,
+  clientSecret: process.env.SLACK_SECRET,
+  callbackURL: '/auth/slack/callback',
+  passReqToCallback: true
+}, (req, accessToken, refreshToken, profile, done) => {
+  if (req.user) {
+    User.findOne({ slack: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser) {
+        req.flash('errors', { msg: 'There is already a Slack account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        done(err);
+      } else {
+        User.findById(req.user.id, (err, user) => {
+          if (err) { return done(err); }
+          user.slack = profile.id;
+          user.tokens.push({ kind: 'slack', accessToken });
+          user.profile.name = user.profile.name || profile.displayName;
+          user.profile.picture = user.profile.picture || profile.user.image_512;
+          user.save((err) => {
+            req.flash('info', { msg: 'Slack account has been linked.' });
+            done(err, user);
+          });
+        });
+      }
+    });
+  } else {
+    User.findOne({ slack: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      User.findOne({ email: profile.email }, (err, existingEmailUser) => {
+        if (err) { return done(err); }
+        if (existingEmailUser) {
+          req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.' });
+          done(err);
+        } else {
+          const user = new User();
+          user.slack = profile.id;
+          user.tokens.push({ kind: 'slack', accessToken });
+          user.email = profile.user.email;
+          user.profile.name = profile.displayName;
+          user.profile.picture = profile.user.image_512;
           user.save((err) => {
             done(err, user);
           });
@@ -484,15 +541,15 @@ passport.use('tumblr', new OAuthStrategy({
   callbackURL: '/auth/tumblr/callback',
   passReqToCallback: true
 },
-(req, token, tokenSecret, profile, done) => {
-  User.findById(req.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
-    user.save((err) => {
-      done(err, user);
+  (req, token, tokenSecret, profile, done) => {
+    User.findById(req.user._id, (err, user) => {
+      if (err) { return done(err); }
+      user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
+      user.save((err) => {
+        done(err, user);
+      });
     });
-  });
-}));
+  }));
 
 /**
  * Foursquare API OAuth.
@@ -505,15 +562,15 @@ passport.use('foursquare', new OAuth2Strategy({
   callbackURL: process.env.FOURSQUARE_REDIRECT_URL,
   passReqToCallback: true
 },
-(req, accessToken, refreshToken, profile, done) => {
-  User.findById(req.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.tokens.push({ kind: 'foursquare', accessToken });
-    user.save((err) => {
-      done(err, user);
+  (req, accessToken, refreshToken, profile, done) => {
+    User.findById(req.user._id, (err, user) => {
+      if (err) { return done(err); }
+      user.tokens.push({ kind: 'foursquare', accessToken });
+      user.save((err) => {
+        done(err, user);
+      });
     });
-  });
-}));
+  }));
 
 /**
  * Steam API OpenID.
@@ -586,15 +643,15 @@ passport.use('pinterest', new OAuth2Strategy({
   callbackURL: process.env.PINTEREST_REDIRECT_URL,
   passReqToCallback: true
 },
-(req, accessToken, refreshToken, profile, done) => {
-  User.findById(req.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.tokens.push({ kind: 'pinterest', accessToken });
-    user.save((err) => {
-      done(err, user);
+  (req, accessToken, refreshToken, profile, done) => {
+    User.findById(req.user._id, (err, user) => {
+      if (err) { return done(err); }
+      user.tokens.push({ kind: 'pinterest', accessToken });
+      user.save((err) => {
+        done(err, user);
+      });
     });
-  });
-}));
+  }));
 
 /**
  * Intuit/QuickBooks API OAuth.
@@ -607,36 +664,36 @@ const quickbooksStrategyConfig = new OAuth2Strategy({
   callbackURL: `${process.env.BASE_URL}/auth/quickbooks/callback`,
   passReqToCallback: true
 },
-(res, accessToken, refreshToken, params, profile, done) => {
-  User.findById(res.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.quickbooks = res.query.realmId;
-    if (user.tokens.filter((vendor) => (vendor.kind === 'quickbooks'))[0]) {
-      user.tokens.some((tokenObject) => {
-        if (tokenObject.kind === 'quickbooks') {
-          tokenObject.accessToken = accessToken;
-          tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
-          tokenObject.refreshToken = refreshToken;
-          tokenObject.refreshTokenExpires = moment().add(params.x_refresh_token_expires_in, 'seconds').format();
-          if (params.expires_in) tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
-          return true;
-        }
-        return false;
-      });
-      user.markModified('tokens');
-      user.save((err) => { done(err, user); });
-    } else {
-      user.tokens.push({
-        kind: 'quickbooks',
-        accessToken,
-        accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
-        refreshToken,
-        refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds').format()
-      });
-      user.save((err) => { done(err, user); });
-    }
+  (res, accessToken, refreshToken, params, profile, done) => {
+    User.findById(res.user._id, (err, user) => {
+      if (err) { return done(err); }
+      user.quickbooks = res.query.realmId;
+      if (user.tokens.filter((vendor) => (vendor.kind === 'quickbooks'))[0]) {
+        user.tokens.some((tokenObject) => {
+          if (tokenObject.kind === 'quickbooks') {
+            tokenObject.accessToken = accessToken;
+            tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
+            tokenObject.refreshToken = refreshToken;
+            tokenObject.refreshTokenExpires = moment().add(params.x_refresh_token_expires_in, 'seconds').format();
+            if (params.expires_in) tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
+            return true;
+          }
+          return false;
+        });
+        user.markModified('tokens');
+        user.save((err) => { done(err, user); });
+      } else {
+        user.tokens.push({
+          kind: 'quickbooks',
+          accessToken,
+          accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+          refreshToken,
+          refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds').format()
+        });
+        user.save((err) => { done(err, user); });
+      }
+    });
   });
-});
 passport.use('quickbooks', quickbooksStrategyConfig);
 refresh.use('quickbooks', quickbooksStrategyConfig);
 

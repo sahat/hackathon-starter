@@ -199,7 +199,7 @@ The same goes for other providers.
 - Find the **Redirect URLs** section, click the **+ Add** button, and enter `http://localhost:8080/auth/snapchat/callback`
 - Find the **Development Environment** section. Click the **Generate** button next to the *Confidential OAuth2 Client* heading within it.
 - Copy and paste the generated *Private Key* and *OAuth2 Client ID* keys into `.env`
-- **Note:** *OAuth2 Client ID* is **SNAPCHAT_ID**, *Private Key* is **SNAPCHAT_SECRET** in `.env`
+- **Note:** *CLIENT ID FOR CONFIDENTIAL OAUTH2 FLOW* is **SNAPCHAT_ID**, *CLIENT SECRET FOR CONFIDENTIAL OAUTH2 FLOW* is **SNAPCHAT_SECRET** in `.env`
 - To prepare the app for submission, fill out the rest of the required fields: *Category*, *Description*, *Privacy Policy Url*, and *App Icon*
 
 **Note:** For production use, don't forget to:
