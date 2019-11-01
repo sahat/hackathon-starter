@@ -541,15 +541,15 @@ passport.use('tumblr', new OAuthStrategy({
   callbackURL: '/auth/tumblr/callback',
   passReqToCallback: true
 },
-  (req, token, tokenSecret, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
-      user.save((err) => {
-        done(err, user);
-      });
+(req, token, tokenSecret, profile, done) => {
+  User.findById(req.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
+    user.save((err) => {
+      done(err, user);
     });
-  }));
+  });
+}));
 
 /**
  * Foursquare API OAuth.
@@ -562,15 +562,15 @@ passport.use('foursquare', new OAuth2Strategy({
   callbackURL: process.env.FOURSQUARE_REDIRECT_URL,
   passReqToCallback: true
 },
-  (req, accessToken, refreshToken, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.tokens.push({ kind: 'foursquare', accessToken });
-      user.save((err) => {
-        done(err, user);
-      });
+(req, accessToken, refreshToken, profile, done) => {
+  User.findById(req.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({ kind: 'foursquare', accessToken });
+    user.save((err) => {
+      done(err, user);
     });
-  }));
+  });
+}));
 
 /**
  * Steam API OpenID.
@@ -643,15 +643,15 @@ passport.use('pinterest', new OAuth2Strategy({
   callbackURL: process.env.PINTEREST_REDIRECT_URL,
   passReqToCallback: true
 },
-  (req, accessToken, refreshToken, profile, done) => {
-    User.findById(req.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.tokens.push({ kind: 'pinterest', accessToken });
-      user.save((err) => {
-        done(err, user);
-      });
+(req, accessToken, refreshToken, profile, done) => {
+  User.findById(req.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.tokens.push({ kind: 'pinterest', accessToken });
+    user.save((err) => {
+      done(err, user);
     });
-  }));
+  });
+}));
 
 /**
  * Intuit/QuickBooks API OAuth.
@@ -664,36 +664,36 @@ const quickbooksStrategyConfig = new OAuth2Strategy({
   callbackURL: `${process.env.BASE_URL}/auth/quickbooks/callback`,
   passReqToCallback: true
 },
-  (res, accessToken, refreshToken, params, profile, done) => {
-    User.findById(res.user._id, (err, user) => {
-      if (err) { return done(err); }
-      user.quickbooks = res.query.realmId;
-      if (user.tokens.filter((vendor) => (vendor.kind === 'quickbooks'))[0]) {
-        user.tokens.some((tokenObject) => {
-          if (tokenObject.kind === 'quickbooks') {
-            tokenObject.accessToken = accessToken;
-            tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
-            tokenObject.refreshToken = refreshToken;
-            tokenObject.refreshTokenExpires = moment().add(params.x_refresh_token_expires_in, 'seconds').format();
-            if (params.expires_in) tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
-            return true;
-          }
-          return false;
-        });
-        user.markModified('tokens');
-        user.save((err) => { done(err, user); });
-      } else {
-        user.tokens.push({
-          kind: 'quickbooks',
-          accessToken,
-          accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
-          refreshToken,
-          refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds').format()
-        });
-        user.save((err) => { done(err, user); });
-      }
-    });
+(res, accessToken, refreshToken, params, profile, done) => {
+  User.findById(res.user._id, (err, user) => {
+    if (err) { return done(err); }
+    user.quickbooks = res.query.realmId;
+    if (user.tokens.filter((vendor) => (vendor.kind === 'quickbooks'))[0]) {
+      user.tokens.some((tokenObject) => {
+        if (tokenObject.kind === 'quickbooks') {
+          tokenObject.accessToken = accessToken;
+          tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
+          tokenObject.refreshToken = refreshToken;
+          tokenObject.refreshTokenExpires = moment().add(params.x_refresh_token_expires_in, 'seconds').format();
+          if (params.expires_in) tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
+          return true;
+        }
+        return false;
+      });
+      user.markModified('tokens');
+      user.save((err) => { done(err, user); });
+    } else {
+      user.tokens.push({
+        kind: 'quickbooks',
+        accessToken,
+        accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+        refreshToken,
+        refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds').format()
+      });
+      user.save((err) => { done(err, user); });
+    }
   });
+});
 passport.use('quickbooks', quickbooksStrategyConfig);
 refresh.use('quickbooks', quickbooksStrategyConfig);
 
