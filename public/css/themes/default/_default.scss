@@ -77,6 +77,14 @@
   .navbar-toggler:hover {
     background: rgb(221, 221, 221);
   }
+
+  // backward default theme compatibility
+  // for background color to achieve correctly
+  // themed navigation bar in Bootswatch in other
+  // style themes
+  &.bg-light {
+    background-color: #ffffff !important;
+  }
 }
 
 .navbar-toggler-icon {
