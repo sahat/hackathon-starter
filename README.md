@@ -35,10 +35,6 @@ if for example you are only interested in **Sign in with Google** authentication
 > **“Small world with Sahat's project. We were using his hackathon starter for our hackathon this past weekend and got some prizes. Really handy repo!”**<br>
 > — Interview candidate for one of the companies I used to work with.
 
-<h4 align="center">Modern Theme</h4>
-
-![](https://lh6.googleusercontent.com/-KQTmCFNK6MM/U7OZpznjDuI/AAAAAAAAERc/h3jR27Uy1lE/w1366-h1006-no/Screenshot+2014-07-02+01.32.22.png)
-
 <h4 align="center">Flatly Bootstrap Theme</h4>
 
 ![](https://lh5.googleusercontent.com/-oJ-7bSYisRY/U1a-WhK_LoI/AAAAAAAAECM/a04fVYgefzw/w1474-h1098-no/Screen+Shot+2014-04-22+at+3.08.33+PM.png)
