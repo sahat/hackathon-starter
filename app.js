@@ -51,7 +51,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.connect(process.env.MONGODB_URI);
-mongoose.connection.on('error', err => {
+mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.',
     chalk.red('✗'));
@@ -113,8 +113,7 @@ app.use((req, res, next) => {
   ) {
     req.session.returnTo = req.originalUrl;
   } else if (
-    req.user
-    && (req.path === '/account' || req.path.match(/^\/api/))
+    req.user && (req.path === '/account' || req.path.match(/^\/api/))
   ) {
     req.session.returnTo = req.originalUrl;
   }
@@ -163,7 +162,9 @@ app.get('/account/verify',
 app.get('/account/verify/:token',
   passportConfig.isAuthenticated,
   userController.getVerifyEmailToken);
-app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
+app.get('/account',
+  passportConfig.isAuthenticated,
+  userController.getAccount);
 app.post('/account/profile',
   passportConfig.isAuthenticated,
   userController.postUpdateProfile);
