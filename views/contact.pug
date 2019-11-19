@@ -10,15 +10,15 @@ block content
       .form-group.row
         label(class='col-md-2 col-form-label font-weight-bold', for='name') Name
         .col-md-8
-          input.form-control(type='text', name='name', id='name', autocomplete='name', autofocus=true)
+          input.form-control(type='text', name='name', id='name', autocomplete='name', autofocus, required)
       .form-group.row
         label(class='col-md-2 col-form-label font-weight-bold', for='email') Email
         .col-md-8
-          input.form-control(type='text', name='email', id='email', autocomplete='email')
+          input.form-control(type='email', name='email', id='email', autocomplete='email', required)
     .form-group.row
       label(class='col-md-2 col-form-label font-weight-bold', for='message') Please describe the issue or your suggestion
       .col-md-8
-        textarea.form-control(name='message', id='message', rows='7', autofocus=(!unknownUser).toString())
+        textarea.form-control(name='message', id='message', rows='7', autofocus=(!unknownUser).toString(), required)
     .form-group
       .offset-md-2.col-md-8.p-1
         button.btn.btn-primary(type='submit')
