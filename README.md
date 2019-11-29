@@ -234,7 +234,7 @@ The same goes for other providers.
 
 - Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
 - Select **Developer settings** from the sidebar
-- Then inside click on **Register new application**
+- Then click on **OAuth Apps** and then on **Register new application**
 - Enter *Application Name* and *Homepage URL*
 - For *Authorization Callback URL*: http://localhost:8080/auth/github/callback
 - Click **Register application**
