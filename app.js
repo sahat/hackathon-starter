@@ -6,7 +6,6 @@ const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const lusca = require('lusca');
 const dotenv = require('dotenv');
@@ -251,6 +250,8 @@ if (process.env.NODE_ENV === 'development') {
 /**
  * Start Express server.
  */
-app.listen(app.get('port'), () => appStarted( app.get('port'), app.get('env')));
+
+app.listen(app.get('port'), () => appStarted(app.get('port'), app.get('env')));
+
 
 module.exports = app;
