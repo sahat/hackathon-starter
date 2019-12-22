@@ -70,6 +70,7 @@
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.8.1",
     "popper.js": "^1.16.0",
+    "ip": "1.1.5",
     "pug": "^2.0.4",
     "request": "^2.88.0",
     "stripe": "^7.14.0",
