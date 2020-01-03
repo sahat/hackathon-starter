@@ -79,6 +79,21 @@ textarea {
   right: 0;
 }
 
+// button raised definition
+// this button uses gradient for the background
+$btn-raised-color: rgb(51, 51, 51);
+$btn-raised-background: #f8f8f8;
+$btn-raised-border: rgb(204, 204, 204);
+$enable-gradients: true;
+
+.btn-raised {
+  @include button-variant(
+    $btn-raised-background,
+    $btn-raised-border,
+    $btn-raised-color
+  )
+}
+
 /*
 * Solves Bootstrap 4 issue
 * https://github.com/twbs/bootstrap/issues/25654
@@ -156,19 +171,4 @@ textarea {
   &:hover, &:active {
     background-color: #f1ef00;
   }
-}
-
-// button raised definition
-// this button uses gradient for the background
-$btn-raised-color: rgb(51, 51, 51);
-$btn-raised-background: #f8f8f8;
-$btn-raised-border: rgb(204, 204, 204);
-$enable-gradients: true;
-
-.btn-raised {
-  @include button-variant(
-    $btn-raised-background,
-    $btn-raised-border,
-    $btn-raised-color
-  )
 }
