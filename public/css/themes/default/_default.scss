@@ -77,6 +77,10 @@
   .navbar-toggler:hover {
     background: rgb(221, 221, 221);
   }
+
+  &.bg-light {
+    background-color: #ffffff !important;
+  }
 }
 
 .navbar-toggler-icon {
