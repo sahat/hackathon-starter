@@ -1,6 +1,5 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-require('sinon-mongoose');
 
 const User = require('../models/User');
 

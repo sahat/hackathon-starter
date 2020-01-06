@@ -37,7 +37,7 @@
     "express-flash": "^0.0.2",
     "express-handlebars": "^3.1.0",
     "express-session": "^1.17.0",
-    "express-status-monitor": "RafalWilinski/express-status-monitor",
+    "express-status-monitor": "^1.2.8",
     "fbgraph": "^1.4.4",
     "googleapis": "^46.0.0",
     "instagram-node": "^0.5.8",
@@ -83,10 +83,9 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-chai-friendly": "^0.5.0",
     "eslint-plugin-import": "^2.19.1",
-    "mocha": "^6.2.2",
+    "mocha": "^7.0.0",
     "nyc": "^15.0.0",
-    "sinon": "^7.5.0",
-    "sinon-mongoose": "^2.3.0",
+    "sinon": "^8.0.4",
     "supertest": "^5.0.0-0"
   },
   "engines": {

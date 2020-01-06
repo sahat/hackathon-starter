@@ -466,7 +466,6 @@ List of Packages
 | pug                             | Template engine for Express.                                            |
 | request                         | Simplified HTTP request library.                                        |
 | sinon                           | Test spies, stubs and mocks for JavaScript.                             |
-| sinon-mongoose                  | Extend Sinon stubs for Mongoose methods to test chained methods easily. |
 | stripe                          | Offical Stripe API library.                                             |
 | supertest                       | HTTP assertion library.                                                 |
 | tumblr.js                       | Tumblr API library.                                                     |
