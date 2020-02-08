@@ -209,7 +209,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="http://www.doit.ba/img/facebook.jpg" width="200">
+<img src="https://en.facebookbrand.com/wp-content/uploads/2019/04/f_logo_RGB-Hex-Blue_512.png" width="90">
 
 - Visit <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a>
 - Click **My Apps**, then select **Add a New App* from the dropdown menu
@@ -274,7 +274,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://stripe.com/img/about/logos/logos/black@2x.png" width="200">
+<img src="https://stripe.com/img/about/logos/logos/black@2x.png" width="180">
 
 - <a href="https://stripe.com/" target="_blank">Sign up</a> or log into your <a href="https://manage.stripe.com" target="_blank">dashboard</a>
 - Click on your profile and click on Account Settings
@@ -283,7 +283,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://pixabay.com/static/uploads/photo/2015/05/26/09/37/paypal-784404_960_720.png" width="200">
+<img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" width="150">
 
 - Visit <a href="https://developer.paypal.com" target="_blank">PayPal Developer</a>
 - Log in to your PayPal account
