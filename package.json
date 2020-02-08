@@ -18,11 +18,11 @@
     "lint": "eslint \"**/*.js\""
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.12.0",
+    "@fortawesome/fontawesome-free": "^5.12.1",
     "@ladjs/bootstrap-social": "^7.0.2",
-    "@octokit/rest": "^16.38.1",
+    "@octokit/rest": "^16.43.1",
     "axios": "^0.19.2",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^3.0.8",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
     "chalk": "^3.0.0",
@@ -48,7 +48,7 @@
     "lusca": "^1.6.1",
     "mailchecker": "^3.3.4",
     "moment": "^2.24.0",
-    "mongoose": "^5.8.9",
+    "mongoose": "^5.8.11",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "node-quickbooks": "^2.0.33",
@@ -57,7 +57,7 @@
     "nodemailer": "^6.4.2",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
-    "passport-github": "^1.1.0",
+    "passport-github2": "^0.1.11",
     "passport-google-oauth": "^2.0.0",
     "passport-instagram": "^1.0.0",
     "passport-linkedin-oauth2": "^2.0.0",
@@ -68,28 +68,28 @@
     "passport-snapchat": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.8.1",
-    "popper.js": "^1.16.0",
+    "popper.js": "^1.16.1",
     "pug": "^2.0.4",
     "request": "^2.88.0",
-    "stripe": "^8.4.1",
+    "stripe": "^8.14.0",
     "tumblr.js": "^2.0.2",
-    "twilio": "^3.39.3",
+    "twilio": "^3.39.4",
     "twit": "^2.2.11",
-    "validator": "^12.1.0"
+    "validator": "^12.2.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-chai-friendly": "^0.5.0",
-    "eslint-plugin-import": "^2.20.0",
-    "mocha": "^7.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "mocha": "^7.0.1",
     "nyc": "^15.0.0",
     "sinon": "^8.1.1",
     "supertest": "^5.0.0-0"
   },
   "engines": {
-    "node": ">=10.18.0",
+    "node": ">=10.19.0",
     "npm": ">=6.13.4"
   }
 }
