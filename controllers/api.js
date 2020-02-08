@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const graph = require('fbgraph');
 const { LastFmNode } = require('lastfm');
 const tumblr = require('tumblr.js');
-const GitHub = require('@octokit/rest');
+const { Octokit } = require('@octokit/rest');
 const Twit = require('twit');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
@@ -121,7 +121,7 @@ exports.getScraping = (req, res, next) => {
  * GitHub API Example.
  */
 exports.getGithub = async (req, res, next) => {
-  const github = new GitHub();
+  const github = new Octokit();
   try {
     const { data: repo } = await github.repos.get({ owner: 'sahat', repo: 'hackathon-starter' });
     res.render('api/github', {
