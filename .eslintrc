@@ -18,6 +18,6 @@
     "no-plusplus": 0,
     "no-unused-expressions": 0,
     "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
-    "chai-friendly/no-unused-expressions": 2
+    "chai-friendly/no-unused-expressions": 4
   }
 }

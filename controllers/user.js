@@ -274,7 +274,7 @@ exports.getVerifyEmailToken = (req, res, next) => {
   }
 
   const validationErrors = [];
-  if (req.params.token && (!validator.isHexadecimal(req.params.token))) validationErrors.push({ msg: 'Invalid Token.  Please retry.' });
+  if (req.params.token && (!validator.isHexadecimal(req.params.token))) validationErrors.push({ msg: 'Invalid Token. Please retry.' });
   if (validationErrors.length) {
     req.flash('errors', validationErrors);
     return res.redirect('/account');
