@@ -70,7 +70,6 @@
     "paypal-rest-sdk": "^1.8.1",
     "popper.js": "^1.16.1",
     "pug": "^2.0.4",
-    "sinon": "^9.0.0",
     "stripe": "^8.22.0",
     "tumblr.js": "^2.0.2",
     "twilio": "^3.39.5",
@@ -85,6 +84,7 @@
     "eslint-plugin-import": "^2.20.1",
     "mocha": "^7.1.0",
     "nyc": "^15.0.0",
+    "sinon": "^9.0.0",
     "supertest": "^5.0.0-0"
   },
   "engines": {
