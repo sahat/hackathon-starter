@@ -31,7 +31,6 @@ The following is a list of various codes that you may not potential be using and
   - OAuth routes for Instagram, Github, LinkedIn (kept Facebook, Twitter, and Google)
   - All OAuth authorization routes
 - passport.js all references and functions related to:
-  - request ( require('request') )
   - Instagram, Github, LinkedIn, OpenID, OAuth, OAuth2
 - model/User.js
   - key pairs for Github, Instagram, LinkedIn, Steam
