@@ -299,6 +299,9 @@ exports.getVerifyEmailToken = (req, res, next) => {
         req.flash('error', { msg: 'There was an error when updating your profile.  Please try again later.' });
         return res.redirect('/account');
       });
+  } else {
+    req.flash('errors', { msg: 'The verification link was invalid, or is for a different account.' });
+    return res.redirect('/account');
   }
 };
 
