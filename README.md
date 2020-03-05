@@ -475,6 +475,7 @@ List of Packages
 | passport-oauth2-refresh         | A library to refresh OAuth 2.0 access tokens using refresh tokens.      |
 | passport-snapchat               | Sign-in with Snapchat plugin.                                           |
 | passport-twitter                | Sign-in with Twitter plugin.                                            |
+| passport-twitch-new             | Sign-in with Twitch plugin.                                             |
 | paypal-rest-sdk                 | PayPal APIs library.                                                    |
 | pug                             | Template engine for Express.                                            |
 | sinon                           | Test spies, stubs and mocks for JavaScript.                             |
