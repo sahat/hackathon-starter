@@ -483,7 +483,6 @@ const twitchStrategyConfig = new TwitchStrategy({
   scope: ['user_read', 'chat:read', 'chat:edit', 'whispers:read', 'whispers:edit', 'user:read:email'],
   passReqToCallback: true
 }, (req, accessToken, refreshToken, params, profile, done) => {
-  console.log({ accessToken, refreshToken, params, profile });
   if (req.user) {
     User.findOne({ twitch: profile.id }, (err, existingUser) => {
       if (err) { return done(err); }
