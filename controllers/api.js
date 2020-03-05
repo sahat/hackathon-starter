@@ -451,6 +451,39 @@ exports.postTwilio = (req, res, next) => {
 };
 
 /**
+ * Get /api/twitch
+ */
+exports.getTwitch = async (req, res, next) => {
+  const token = req.user.tokens.find((token) => token.kind === 'twitch');
+  const twitchID = req.user.twitch;
+
+  const getUser = (userID) => {
+    return axios.get(`https://api.twitch.tv/helix/users?id=${userID}`, { headers: {'Authorization': `Bearer ${token.accessToken}` }})
+      .then(({ data }) => data)
+      .catch((err) => Promise.reject(new Error(`There was an error while getting user data ${err}`)));
+  };
+  const getFollowers = () => {
+    return axios.get(`https://api.twitch.tv/helix/users/follows?to_id=${twitchID}`, { headers: {'Authorization': `Bearer ${token.accessToken}` }})
+      .then(({ data }) => data)
+      .catch((err) => Promise.reject(new Error(`There was an error while getting followers ${err}`)));
+  };
+
+  try {
+    const yourTwitchUser = await getUser(twitchID);
+    const otherTwitchUser = await getUser(44322889);
+    const twitchFollowers = await getFollowers();
+    res.render('api/twitch', {
+      title: 'Twitch API',
+      yourTwitchUserData: yourTwitchUser.data[0],
+      otherTwitchUserData: otherTwitchUser.data[0],
+      twitchFollowers,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  * GET /api/clockwork
  * Clockwork SMS API example.
  */

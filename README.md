@@ -326,6 +326,19 @@ The same goes for other providers.
 - Copy and paste *Key* into `.env` file
 
 <hr>
+<img src="https://www.freepnglogos.com/uploads/twitch-logo-image-hd-31.png" height="90">
+
+- Visit the <a href="https://dev.twitch.tv/dashboard/apps" target="_blank">Twitch developer dashboard</a>
+- If prompted, authorize the dashboard to access your twitch account
+- In the Console, click on Register Your Application
+- Enter the name of your application
+- Use OAuth Redirect URLs enter `http://localhost:8080/auth/twitch/callback`
+- Set Category to Website Integration and press the Create button
+- After the applicaiton has been created, click on the Manage button
+- Copy and paste *Client ID* into `.env`
+- If there is no Client Secret displayed, click on New Secret button and then copy and paste the *Client secret* into `.env`
+
+<hr>
 
 <img src="https://sendgrid.com/brand/sg-logo-300.png" width="200">
 

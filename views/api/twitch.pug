@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-steam-square.fa-sm
+      | Twitch API
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary(href='https://dev.twitch.tv/docs/api', target='_blank').w-100
+      i.far.fa-check-square.fa-sm
+      | API Overview
+
+  br
+  h3 Your Public Profile Information
+  .row
+    .col-sm-2
+      img(src=yourTwitchUserData.profile_image_url, width='92', height='92')
+    .col-sm-8
+      span.lead Name: #{yourTwitchUserData.display_name}
+      div Twitch ID: #{yourTwitchUserData.login}
+      div Description: #{yourTwitchUserData.description}
+      div View Count: #{yourTwitchUserData.view_count}
+      div Broadcaster Type: #{yourTwitchUserData.broadcaster_type}
+      div Follower Count: #{twitchFollowers.total}
+
+  br
+  br
+  h3 Public Profile Information - Example
+  .row
+    .col-sm-2
+      img(src=otherTwitchUserData.profile_image_url, width='92', height='92')
+    .col-sm-8
+      span.lead Name: #{otherTwitchUserData.display_name}
+      div Twitch ID: #{otherTwitchUserData.login}
+      div Description: #{otherTwitchUserData.description}
+      div View Count: #{otherTwitchUserData.view_count}
+      div Broadcaster Type: #{otherTwitchUserData.broadcaster_type}

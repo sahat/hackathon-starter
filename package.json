@@ -66,6 +66,7 @@
     "passport-oauth2-refresh": "^1.1.0",
     "passport-openid": "^0.4.0",
     "passport-snapchat": "^1.0.0",
+    "passport-twitch-new": "^0.0.1",
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.8.1",
     "popper.js": "^1.16.1",

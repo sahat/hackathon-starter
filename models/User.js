@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   instagram: String,
   linkedin: String,
   steam: String,
+  twitch: String,
   quickbooks: String,
   tokens: Array,
 

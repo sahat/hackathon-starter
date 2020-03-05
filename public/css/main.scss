@@ -172,3 +172,13 @@ $enable-gradients: true;
     background-color: #f1ef00;
   }
 }
+
+// Basic Twitch Button CSS
+.btn-twitch {
+  background-color: #6441a5;
+  color: #FFF !important;
+
+  &:hover, &:active {
+    background-color: #503484;
+  }
+}

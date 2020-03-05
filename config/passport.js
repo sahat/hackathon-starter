@@ -6,6 +6,7 @@ const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: FacebookStrategy } = require('passport-facebook');
 const { Strategy: SnapchatStrategy } = require('passport-snapchat');
 const { Strategy: TwitterStrategy } = require('passport-twitter');
+const { Strategy: TwitchStrategy } = require('passport-twitch-new');
 const { Strategy: GitHubStrategy } = require('passport-github2');
 const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
 const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
@@ -471,6 +472,78 @@ passport.use(new InstagramStrategy({
     });
   }
 }));
+
+/**
+ * Twitch API OAuth.
+ */
+const twitchStrategyConfig = new TwitchStrategy({
+  clientID: process.env.TWITCH_CLIENT_ID,
+  clientSecret: process.env.TWITCH_CLIENT_SECRET,
+  callbackURL: `${process.env.BASE_URL}/auth/twitch/callback`,
+  scope: ['user_read', 'chat:read', 'chat:edit', 'whispers:read', 'whispers:edit', 'user:read:email'],
+  passReqToCallback: true
+}, (req, accessToken, refreshToken, params, profile, done) => {
+  console.log({ accessToken, refreshToken, params, profile });
+  if (req.user) {
+    User.findOne({ twitch: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser && (existingUser.id !== req.user.id)) {
+        req.flash('errors', { msg: 'There is already a Twitch account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        done(err);
+      } else {
+        User.findById(req.user.id, (err, user) => {
+          if (err) { return done(err); }
+          user.twitch = profile.id;
+          user.tokens.push({
+            kind: 'twitch',
+            accessToken,
+            accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+            refreshToken,
+          });
+          user.profile.name = user.profile.name || profile.display_name;
+          user.profile.email = user.profile.gender || profile.email;
+          user.profile.picture = user.profile.picture || profile.profile_image_url;
+          user.save((err) => {
+            req.flash('info', { msg: 'Twitch account has been linked.' });
+            done(err, user);
+          });
+        });
+      }
+    });
+  } else {
+    User.findOne({ twitch: profile.id }, (err, existingUser) => {
+      if (err) { return done(err); }
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      User.findOne({ email: profile.email }, (err, existingEmailUser) => {
+        if (err) { return done(err); }
+        if (existingEmailUser) {
+          req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Twtich manually from Account Settings.' });
+          done(err);
+        } else {
+          const user = new User();
+          user.email = profile.email;
+          user.twitch = profile.id;
+          user.tokens.push({
+            kind: 'twitch',
+            accessToken,
+            accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+            refreshToken,
+          });
+          user.profile.name = profile.display_name;
+          user.profile.email = profile.email;
+          user.profile.picture = profile.profile_image_url;
+          user.save((err) => {
+            done(err, user);
+          });
+        }
+      });
+    });
+  }
+});
+passport.use('twitch', twitchStrategyConfig);
+refresh.use('twitch', twitchStrategyConfig);
 
 /**
  * Tumblr API OAuth.
