@@ -246,6 +246,14 @@ app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureR
 /**
  * Error Handler.
  */
+
+// 404 Not Found Middleware
+app.use((req, res, next) => {
+  res.status(404)
+    .type('text')
+    .send('Not Found');
+});
+
 if (process.env.NODE_ENV === 'development') {
   // only use in development
   app.use(errorHandler());
