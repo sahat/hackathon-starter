@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  .page-header
+    h3 All Books
+
+  table#plants.table-sm.table-striped
+    thead
+      tr
+        th(scope='col') #
+        th(scope='col') Scientific Name
+        th(scope='col') Created at
+    tbody
+    for plant in plants
+      tr
+        th(scope='row') 1
+          td= plant.scientificName
+          td= plant.commonName
+          td= plant

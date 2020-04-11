@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  table#plants.table-sm.table-striped
+    thead
+      tr
+        th(scope='col') #
+        th(scope='col') Scientific Name
+        th(scope='col') Created at
+    tbody
+    for plant in plants
+      tr
+        th(scope='row') 1
+          td= plant.scientificName
+          td= plant.commonName
+          td= plant
+
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 New Plant
+  form(id='plant-form', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='scientificName') Scientific Name
+      .col-md-7
+        input.form-control(type='scientificName', name='scientificName', id='scientificName', placeholder='Cooksonia pertoni', autofocus, required)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='commonName') Common Name
+      .col-md-7
+        input.form-control(type='commonName', name='commonName', id='commonName', placeholder='Peters anum')
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='notes') Notes
+      .col-md-7
+        input.form-control(type='textarea', name='notes', id='notes',rows='3')
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='botanicPhoto') Photo Link
+      .col-md-7
+        input.form-control(type='url', name='botanicPhoto', id='botanicPhoto', placeholder='http://www.illinoiswildflowers.info/wetland/photos/lizard_tail3.jpg')
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='weed') Weed?
+      .col-sm-1
+        botanicPhoto
+        input.form-control(type='checkbox', name='weed', id='weed', placeholder='Peters anum')
+    .form-group.offset-sm-3.col-md-7.pl-2
+      button.btn.btn-success(type='submit')
+        i.fas.fa-plus.fa-sm
+        | Submit

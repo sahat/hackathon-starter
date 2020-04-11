@@ -1,5 +1,5 @@
 /**
- * Module dependencies.
+ * mod dependencies.
  */
 const express = require('express');
 const compression = require('compression');
@@ -34,6 +34,9 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
+
+const plantController = require('./controllers/plant');
+const modController = require('./controllers/mod');
 
 /**
  * API keys and Passport configuration.
@@ -143,6 +146,21 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
+app.route('/plants')
+  .get(plantController.getPlants)
+
+app.route('/plantsadmin')
+  .all(passportConfig.isAuthenticated)
+  .get(plantController.getPlantsAdmin)
+  .post(plantController.postPlantsAdmin)
+
+app.route('/module')
+  .all(passportConfig.isAuthenticated)
+  .get(modController.getMod)
+  .post(modController.postMod)
+
+app.post('/module/delete/:id',passportConfig.isAuthenticated, modController.postDeleteMod)
+app.post('/module/update',passportConfig.isAuthenticated, modController.postUpdateMod)
 /**
  * API examples routes.
  */

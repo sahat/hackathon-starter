@@ -1,0 +1,79 @@
+extends layout
+
+block content
+  .page-header
+    h3 New Module
+
+  table#plants.table-striped
+    thead
+      tr
+        th(scope='col') 
+        th(scope='col') X
+        th(scope='col') Y
+        th(scope='col') Model
+        th(scope='col') Shape
+        th(scope='col') Notes
+        th(scope='col') edit
+        th(scope='col') delete
+
+    tbody
+    for mod in mods
+      tr
+        th(scope='row')
+          td= mod.x
+          td= mod.y
+          td= mod.model
+          td= mod.shape 
+          td= mod.notes
+          td
+            button.btn.btn-outline-warning(type='button' name='edit' value=mod._id)
+              i.fas.fa-edit.fa-sm
+          td
+            //- button.btn.btn-outline-danger(type='button' name='delete' value=mod._id)
+            //-   i.fas.fa-trash-alt.fa-sm
+            form(action='/module/delete/'+ mod.id, method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
+              .form-group
+                input(type='hidden', name='_csrf', value=_csrf)
+                button.btn.btn-outline-danger(type='submit')
+                  i.fas.fa-trash-alt
+
+  button.btn.btn-primary(type='button' data-toggle='modal' data-target='#newmod')
+    | New Module
+
+  #newmod.modal.fade(tabindex='-1' role='dialog' aria-labelledby='newmod' aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#exampleModalLongTitle.modal-title Module Control
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true') &times;
+        .modal-body
+          form(id='mod-form', method='POST')
+              input(type='hidden', name='_csrf', value=_csrf)
+              .form-group
+                label(for='x') Module X coordinate (along the seawall)
+                input.form-control(type='number' placeholder='143' id='x' name='x')
+              .form-group
+                label(for='y') Module Y coordinate (distance from the seawall)
+                input.form-control(type='number' placeholder='2' id='y' name='y')
+              .form-group
+                label(for='model') Model
+                select.form-control(id='model' name='model')
+                  option 3-d
+                  option 4-d
+                  option 5-d
+                  option fwm dock 20 footer
+                  option fwm dock 24 footer
+              .form-group
+                label(for='shape') Shape and size
+                select.form-control(id='shape' name='shape')
+                  option R3
+                  option R2.3
+                  option T3
+                  option T2.3
+              .form-group
+                label(for='notes') Notes
+                textarea.form-control(rows='3' id='notes' name='notes')
+              button.btn.btn-success(type='submit')
+                i.fas.fa-plus.fa-sm
+                | Submit
