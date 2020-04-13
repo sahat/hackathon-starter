@@ -8,13 +8,25 @@ const PlantObservation = require('../models/PlantObservation.js');
 const Mod = require('../models/Mod.js');
 
 exports.getMod = (req, res) => {
+  Plant.find((err, plant) => {
   Mod.find((err, docs) => {
-    res.render('modules', { mods: docs });
+    res.render('modules', { mods: docs , plants: plant});
   });
+});
+
 };
 
 
 exports.postMod = (req, res, next) => {
+
+var plantLocations = req.body.individualPlants;
+ip = JSON.parse(plantLocations)
+var plant1 = req.body.plant1;
+var plant2 = req.body.plant2;
+var plant3 = req.body.plant3;
+console.log(req.body, 'etuhe', Object.values(ip), plant1,plant2,plant3)
+
+
 
 const mod = new Mod({
   x: req.body.x,
@@ -23,9 +35,34 @@ const mod = new Mod({
   shape: req.body.shape,
   notes: req.body.notes
 });
-mod.save((err) => {
+
+
+mod.save((err, newmod) => {
   if (err) { return next(err); }
-  req.flash('success', { msg: 'Module added' });
+    for ( x in ip) {
+    data = ip[x]
+    if (data.color == 'orange') {
+      p = plant1
+    }
+    if (data.color == 'red') {
+      p = plant2
+    }
+    if (data.color == 'yellow') {
+      p=plant3
+    }
+    console.log(ip[x]);
+
+    const plantPlacement = new IndividualPlant({
+      plant: p,
+      x: data.location.n,
+      y: data.location.i,
+      module: newmod.id,
+    })
+    plantPlacement.save((err) => {
+      if (err) { return next(err); }
+      });
+    }
+  req.flash('success', { msg: 'Module added',plantLocations, plant1,plant2,plant3 });
     res.redirect('/module');
 
 });

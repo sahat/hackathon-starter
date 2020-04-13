@@ -18,6 +18,7 @@
     "@fortawesome/fontawesome-free": "^5.6.3",
     "@ladjs/bootstrap-social": "^7.0.2",
     "@octokit/rest": "^16.13.3",
+    "@svgdotjs/svg.js": "^3.0.16",
     "axios": "^0.18.1",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.3",
