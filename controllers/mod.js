@@ -10,7 +10,9 @@ const Mod = require('../models/Mod.js');
 exports.getMod = (req, res) => {
   Plant.find((err, plant) => {
   Mod.find((err, docs) => {
-    res.render('modules', { mods: docs , plants: plant});
+    IndividualPlant.find((err, individualPlant) =>{
+    res.render('modules', { mods: docs , plants: plant, plantedPlants: individualPlant });
+  });
   });
 });
 
@@ -24,6 +26,9 @@ ip = JSON.parse(plantLocations)
 var plant1 = req.body.plant1;
 var plant2 = req.body.plant2;
 var plant3 = req.body.plant3;
+var plant4 = req.body.plant4;
+var plant5 = req.body.plant5;
+
 console.log(req.body, 'etuhe', Object.values(ip), plant1,plant2,plant3)
 
 
@@ -33,6 +38,7 @@ const mod = new Mod({
   y: req.body.y,
   model: req.body.model,
   shape: req.body.shape,
+  orientation: req.body.orientation,
   notes: req.body.notes
 });
 
@@ -49,6 +55,12 @@ mod.save((err, newmod) => {
     }
     if (data.color == 'yellow') {
       p=plant3
+    }
+    if (data.color == 'yellow') {
+      p=plant4
+    }
+    if (data.color == 'yellow') {
+      p=plant5
     }
     console.log(ip[x]);
 

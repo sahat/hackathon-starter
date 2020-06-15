@@ -1,7 +1,19 @@
 extends layout
 
 block content
-
+  table#plants.table-sm.table-striped
+    thead
+      tr
+        th(scope='col') #
+        th(scope='col') Scientific Name
+        th(scope='col') Created at
+    tbody
+    for plant in plants
+      tr
+        th(scope='row') 1
+          td= plant.scientificName
+          td= plant.commonName
+          td= plant
 
   .pb-2.mt-2.mb-4.border-bottom
     h3 New Plant
@@ -32,13 +44,3 @@ block content
       button.btn.btn-success(type='submit')
         i.fas.fa-plus.fa-sm
         | Submit
-    table#plants(data-toggle='table').table-sm.table-striped.table-bordered
-      thead
-        tr
-          th(scope='col') Scientific Name
-          th(scope='col') Created at
-      tbody
-      for plant in plants
-        tr
-          th(scope='row')=plant.scientificName
-            td= plant.commonName

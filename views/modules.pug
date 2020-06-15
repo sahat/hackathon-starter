@@ -35,10 +35,10 @@ block content
 
   button.btn.btn-primary(type='button' data-toggle='modal' data-target='#newmod')
     | New Module
+  //#map(style='opacity: 0.95;')
 
-
-
-
+  .media
+    #modMap.container.overflow-auto(data-mods=mods data-plantedPlants= plantedPlants)
   #newmod.modal.fade(tabindex='-1' role='dialog' aria-labelledby='newmod' aria-hidden='true')
     .modal-dialog.modal-xl(role='document')
       .modal-content
@@ -49,56 +49,103 @@ block content
         .modal-body
           form(id='mod-form', method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
-              .form-group
-                label(for='x') Module X coordinate (along the seawall)
-                input.form-control(type='number' placeholder='143' id='x' name='x')
-              .form-group
-                label(for='y') Module Y coordinate (distance from the seawall)
-                input.form-control(type='number' placeholder='2' id='y' name='y')
-              .form-group
-                label(for='model') Model
-                select.form-control(id='model' name='model')
-                  option 3-d
-                  option 4-d
-                  option 5-d
-                  option fwm dock 20 footer
-                  option fwm dock 24 footer
-              .form-group
-                label(for='shape') Shape and size
-                select.form-control(id='shape' name='shape')
-                  option R3
-                  option R2.3
-                  option T3
-                  option T2.3
+              .row.col-sm
+                .form-group.col-sm
+                  label(for='x') Module X coordinate (along the seawall)
+                  input.form-control(type='number' id='x' name='x')
+                .form-group.col-sm
+                  label(for='y') Module Y coordinate (distance from the seawall)
+                  input.form-control(type='number' id='y' name='y')
+                .form-group.col-sm
+                  label(for='locationCode') Side of Seawall
+                  input.form-control( placeholder='E' id='locationCode' name='locationCode')
+              .row.col-sm
+                .form-group.col-sm
+                  label(for='model') Model
+                  select.form-control(id='model' name='model')
+                    option 3-d
+                    option 4-d
+                    option 5-d
+                    option fwm dock 20 footer
+                    option fwm dock 24 footer
+                .form-group.col-sm
+                  label(for='shape') Shape and size
+                  select.form-control(id='shape' name='shape')
+                    option R3
+                    option R2.3
+                    option T3
+                    option T2.3
+                .form-group.col-sm
+                  label(for='orientation') Angled Orientation
+                  select.form-control(id='orientation' name='orientation')
+                    option Flat
+                    option Ascend
+                    option Decend
               .form-group
                 label(for='notes') Notes
                 textarea.form-control(rows='3' id='notes' name='notes')
               input(type='hidden' name='individualPlants' id='individualPlants' )
               .row
-                #circle_1.col-lg-10
+                #circle_1.col-lg-1
+              //- .input-group.lg-1
+              //-   .row
+              //-     .input-group-prepend
+              //-       button.btn.btn-outline-secondary(type='radio' name='p1') 1
+              //-     select#inputGroupSelect03.custom-select(aria-label='Example select with button addon')
+              //-       option(selected='') Choose...
+              //-         for plant in plants
+              //-           option(value=plant._id)=plant.scientificName
+              //-   .row
+              //-     .input-group-prepend
+              //-       button.btn.btn-outline-secondary(type='radio' name='p2') 2
+              //-     select#inputGroupSelect03.custom-select(aria-label='Example select with button addon')
+              //-       option(selected='') Choose...
+              //-         for plant in plants
+              //-           option(value=plant._id)=plant.scientificName
+              //-   .row
+              //-     .input-group-prepend
+              //-       button.btn.btn-outline-secondary(type='radio' name='p3') 3
+              //-     select#inputGroupSelect03.custom-select(aria-label='Example select with button addon')
+              //-       option(selected='') Choose...
+              //-         for plant in plants
+              //-           option(value=plant._id)=plant.scientificName                                          
               .row
-                .form-group
-                  #selector1.col-lg-3
-                    select#plant1.custom-select.form-control(name='plant1')
+                .form-group.col-sm
+                  #selector1(data-selction='1')
+                    select#plant1.custom-select.form-control.active(name='plant1')
                       option(selected='') Choose...
                         for plant in plants
                           option(value=plant._id)=plant.scientificName
-                .form-group
-                  #selector2.col-lg-3
+                .form-group.col-sm
+                  #selector2(data-selction='2')
                     select#plant2.custom-select.form-control(name='plant2')
                       option(selected='') Choose...
                       for plant in plants
                         option(value=plant._id)=plant.scientificName
-                .form-group
-                  #selector3.col-lg-3
+                .form-group.col-sm
+                  #selector3(data-selction='3')
                     select#plant3.custom-select.form-control(name='plant3')
                       option(selected='') Choose...
                       for plant in plants
                         option(value=plant._id)=plant.scientificName
-                button.btn.btn-success( type='submit' )
-                  i.fas.fa-plus.fa-sm
-                  | Submit                  
-          
+                .form-group.col-sm
+                  #selector4(data-selction='4')
+                    select#plant4.custom-select.form-control(name='plant4')
+                      option(selected='') Choose...
+                      for plant in plants
+                        option(value=plant._id)=plant.scientificName
+                .form-group.col-sm
+                  #selector5(data-selction='5')
+                    select#plant5.custom-select.form-control(name='plant5')
+                      option(selected='') Choose...
+                      for plant in plants
+                        option(value=plant._id)=plant.scientificName
+              button.btn.btn-success( type='submit' )
+                i.fas.fa-plus.fa-sm
+                | Submit
+    //- .page-footer
+    //-   script.
+    //-     draw_circle();
               
               //- svg(viewbox='0 0 100 100' xmlns='http://www.w3.org/2000/svg')
               //-   // Using g to inherit presentation attributes

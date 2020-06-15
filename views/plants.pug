@@ -4,16 +4,15 @@ block content
   .page-header
     h3 All Books
 
-  table#plants.table-sm.table-striped
+  table#plants.table-sm.table-striped.table-bordered
     thead
       tr
-        th(scope='col') #
         th(scope='col') Scientific Name
-        th(scope='col') Created at
+        th(scope='col') Common Name
+        th(scope='col') Image
     tbody
     for plant in plants
       tr
-        th(scope='row') 1
-          td= plant.scientificName
+        th(scope='row')= plant.scientificName
           td= plant.commonName
           td= plant

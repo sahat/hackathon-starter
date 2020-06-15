@@ -26,26 +26,10 @@ block content
       p
         a.btn.btn-raised(href='#', role='button') View details »
   .row
-    #circle_1.col-lg-10
-  .row
-      #selector1.col-lg-2
-        select#inlineFormCustomSelect.custom-select
-          option(selected='') Choose...
-          option(value='1') One
-          option(value='2') Two
-          option(value='3') Three
-      #selector2.col-lg-2
-        select#inlineFormCustomSelect.custom-select
-          option(selected='') Choose...
-          option(value='1') One
-          option(value='2') Two
-          option(value='3') Three
-      #selector3.col-lg-2
-        select#inlineFormCustomSelect.custom-select
-          option(selected='') Choose...
-          option(value='1') One
-          option(value='2') Two
-          option(value='3') Three
-
+    #modmap.col-lg-10
+    for mod in mods
+      console.log(mod.x)
+      script.
+        draw_map(mod.x,mod.y);
       
   
