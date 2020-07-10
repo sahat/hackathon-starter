@@ -508,7 +508,6 @@ exports.postClockwork = (req, res, next) => {
   });
 };
 
-
 /**
  * GET /api/chart
  * Chart example.
