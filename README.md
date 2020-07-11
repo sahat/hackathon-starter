@@ -1297,17 +1297,17 @@ create an account with **MongoDB Atlas** and then pick one of the *4* providers 
 Again, there are plenty of other choices, and you are not limited to just the ones
 listed below.
 
-### 1-Step Deployment with Heroku
+### Deployment to Heroku
 
 <img src="https://upload.wikimedia.org/wikipedia/en/a/a9/Heroku_logo.png" width="200">
 
 - Download and install [Heroku Toolbelt](https://toolbelt.heroku.com/)
 - In a terminal, run `heroku login` and enter your Heroku credentials
 - From *your app* directory run `heroku create`
-- Run `heroku addons:create mongolab`.  This will set up the mLab add-on and configure the `MONGODB_URI` environment variable in your Heroku app for you.
-- Lastly, do `git push heroku master`.  Done!
+- Use the command `heroku config:set KEY=val` to set the different environment variables (KEY=val) for your application (i.e.  `heroku config:set BASE_URL=[heroku App Name].herokuapp.com` or `heroku config:set MONGODB_URI=mongodb://dbuser:<password>@cluster0-shard-00-00-sdf32.mongodb.net:27017,cluster0-shard-00-01-sdf32.mongodb.net:27017/<dbname>?ssl=true&retryWrites=true&w=majority` (see Hosted MongoDB Atlas below), etc.)  Make sure to set the environment variables for SENDGRID_USER, SENDGRID_PASSWORD, and any other API that you are using as well.
+- Lastly, do `git push heroku master`.
 
-**Note:** To install Heroku add-ons your account must be verified.
+Please note that you may also use the [Herko Dashboard](https://dashboard.heroku.com) to set or modify the configurations for your application.
 
 ---
 
