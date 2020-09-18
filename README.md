@@ -432,7 +432,6 @@ List of Packages
 | chai                            | BDD/TDD assertion library.                                              |
 | chalk                           | Terminal string styling done right.                                     |
 | cheerio                         | Scrape web pages using jQuery-style syntax.                             |
-| clockwork                       | Clockwork SMS API library.                                              |
 | compression                     | Node.js compression middleware.                                         |
 | connect-mongo                   | MongoDB session store for Express.                                      |
 | dotenv                          | Loads environment variables from .env file.                             |
