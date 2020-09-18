@@ -1,5 +1,8 @@
 extends layout
 
+block head
+  script(src='https://www.google.com/recaptcha/api.js' async='' defer='')
+
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h3 Contact Form
@@ -21,6 +24,8 @@ block content
         textarea.form-control(name='message', id='message', rows='7', autofocus=(!unknownUser).toString(), required)
     .form-group
       .offset-md-2.col-md-8.p-1
+        .g-recaptcha(data-sitekey=sitekey)
+        br
         button.btn.btn-primary(type='submit')
           i.far.fa-envelope.fa-sm
           | Send

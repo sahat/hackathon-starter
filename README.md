@@ -159,6 +159,17 @@ to obtain appropriate credentials: Client ID, Client Secret, API Key, or
 Username & Password. You will need to go through each provider to generate new
 credentials.
 
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/200px-RecaptchaLogo.svg.png" width="200">
+
+- Visit <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin Console</a>
+- Enter your application's name as the **Label**
+- Chose **reCAPTCHA v2**, **"I'm not a robot" Checkbox**
+- Enter *localhost* as the domain.  You can have other domains added in addition to *localhost*
+- Accept the terms and submit the form
+- Copy the *Site Key* and the *Secret key* into `.env`.  These keys will be accessible under Settings, reCAPTCHA keys drop down if you need them again later.
+
+<hr>
+
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" width="200">
 
 - Visit <a href="https://cloud.google.com/console/project" target="_blank">Google Cloud Console</a>
