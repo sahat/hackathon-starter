@@ -89,14 +89,6 @@ describe('GET /api/lob', () => {
   });
 });
 
-describe('GET /api/clockwork', () => {
-  it('should return 200 OK', (done) => {
-    request(app)
-      .get('/api/clockwork')
-      .expect(200, done);
-  });
-});
-
 describe('GET /api/upload', () => {
   it('should return 200 OK', (done) => {
     request(app)
