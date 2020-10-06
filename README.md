@@ -37,15 +37,15 @@ if for example you are only interested in **Sign in with Google** authentication
 
 <h4 align="center">Modern Theme</h4>
 
-![](https://i.imgur.com/IuA7QsV.jpg)
+![](https://i.imgur.com/LM1Ea3b.png)
 
 <h4 align="center">Flatly Bootstrap Theme</h4>
 
-![](https://i.imgur.com/6XM9Tst.jpg)
+![](https://i.imgur.com/iIkqvV2.png)
 
 <h4 align="center">API Examples</h4>
 
-![](https://i.imgur.com/6wSlkaz.jpg)
+![](https://i.imgur.com/p6uHC5Y.png)
 
 Table of Contents
 -----------------
