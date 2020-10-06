@@ -159,7 +159,7 @@ to obtain appropriate credentials: Client ID, Client Secret, API Key, or
 Username & Password. You will need to go through each provider to generate new
 credentials.
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/200px-RecaptchaLogo.svg.png" width="200">
+<img src="https://i.imgur.com/SZGvNWJ.png" width="200">
 
 - Visit <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin Console</a>
 - Enter your application's name as the **Label**
@@ -170,7 +170,7 @@ credentials.
 
 <hr>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" width="200">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" width="170">
 
 - Visit <a href="https://cloud.google.com/console/project" target="_blank">Google Cloud Console</a>
 - Click on the **Create Project** button
@@ -241,7 +241,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" width="110">
+<img src="https://i.imgur.com/sP0Pq4b.png" width="110">
 
 - Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
 - Select **Developer settings** from the sidebar
@@ -267,7 +267,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" width="200">
+<img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" width="170">
 
 - Sign in at <a href="https://developer.linkedin.com/" target="_blank">LinkedIn Developer Network</a>
 - From the account name dropdown menu select **API Keys**
@@ -285,7 +285,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://stripe.com/img/about/logos/logos/black@2x.png" width="180">
+<img src="https://stripe.com/img/about/logos/logos/black@2x.png" width="120">
 
 - <a href="https://stripe.com/" target="_blank">Sign up</a> or log into your <a href="https://manage.stripe.com" target="_blank">dashboard</a>
 - Click on your profile and click on Account Settings
@@ -294,7 +294,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" width="150">
+<img src="https://i.imgur.com/Vc5JTUn.png" width="120">
 
 - Visit <a href="https://developer.paypal.com" target="_blank">PayPal Developer</a>
 - Log in to your PayPal account
@@ -306,7 +306,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="http://33.media.tumblr.com/ffaf0075be879b3ab0b87f0b8bcc6814/tumblr_inline_n965bkOymr1qzxhga.png" width="200">
+<img src="https://i.imgur.com/KJa73qc.png" width="150">
 
 - Go to <a href="https://developer.foursquare.com" target="_blank">Foursquare for Developers</a>
 - Click on **My Apps** in the top menu
@@ -318,7 +318,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="http://img4.wikia.nocookie.net/__cb20130520163346/logopedia/images/8/8d/Tumblr_logo_by_x_1337_x-d5ikwpp.png" width="200">
+<img src="https://i.imgur.com/BNG9fPC.png" width="200">
 
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
@@ -329,7 +329,7 @@ The same goes for other providers.
 
 <hr>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Steam_logo.svg" width="200">
+<img src="https://i.imgur.com/OQr10XA.png" width="115">
 
 - Go to <a href="http://steamcommunity.com/dev/apikey" target="_blank">http://steamcommunity.com/dev/apikey</a>
 - Sign in with your existing Steam account
@@ -588,7 +588,7 @@ mongoose.connection.on('error', (err) => {
 ```
 You need to have a MongoDB server running before launching `app.js`. You can
 download MongoDB [here](https://www.mongodb.com/download-center/community), or install it via a package manager.
-<img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">
+<img src="https://i.imgur.com/FFLBo1W.png" height="15">
 Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
 **Tip:** If you are always connected to the internet, you could just use
@@ -1350,7 +1350,8 @@ Please note that you may also use the [Herko Dashboard](https://dashboard.heroku
 
 ### OpenShift
 
-<img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
+<img src="https://i.imgur.com/BHsIf8O.png" width="200">
+
 **NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you the new process, please feel free to help us update this page*
 
 - First, install this Ruby gem: `sudo gem install rhc` :gem:
