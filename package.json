@@ -73,7 +73,7 @@
     "stripe": "^8.96.0",
     "tumblr.js": "^3.0.0",
     "twilio": "^3.49.2",
-    "twit": "^2.2.11",
+    "twitter-lite": "^0.14.0",
     "validator": "^13.1.1"
   },
   "devDependencies": {

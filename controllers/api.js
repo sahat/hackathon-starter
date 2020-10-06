@@ -4,7 +4,7 @@ const graph = require('fbgraph');
 const { LastFmNode } = require('lastfm');
 const tumblr = require('tumblr.js');
 const { Octokit } = require('@octokit/rest');
-const Twit = require('twit');
+const twitter = require('twitter-lite');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const paypal = require('paypal-rest-sdk');
@@ -255,7 +255,7 @@ exports.getLastfm = async (req, res, next) => {
  */
 exports.getTwitter = async (req, res, next) => {
   const token = req.user.tokens.find((token) => token.kind === 'twitter');
-  const T = new Twit({
+  const T = new twitter({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
     access_token: token.accessToken,
@@ -290,7 +290,7 @@ exports.postTwitter = (req, res, next) => {
   }
 
   const token = req.user.tokens.find((token) => token.kind === 'twitter');
-  const T = new Twit({
+  const T = new twitter({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
     access_token: token.accessToken,
