@@ -74,7 +74,9 @@
     "tumblr.js": "^3.0.0",
     "twilio": "^3.49.4",
     "twit": "^2.2.11",
-    "validator": "^13.1.17"
+    "validator": "^13.1.17",
+    "shortid": "2.2.15",
+    "node-fetch": "2.6.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
