@@ -232,7 +232,7 @@ exports.getLastfm = async (req, res, next) => {
       console.error(err);
       // see error code list: https://www.last.fm/api/errorcodes
       switch (err.error) {
-      // potentially handle each code uniquely
+        // potentially handle each code uniquely
         case 10: // Invalid API key
           res.render('api/lastfm', {
             error: err
@@ -258,11 +258,11 @@ exports.getTwitter = async (req, res, next) => {
   const T = new twitter({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
-    access_token: token.accessToken,
+    access_token_key: token.accessToken,
     access_token_secret: token.tokenSecret
   });
   try {
-    const { data: { statuses: tweets } } = await T.get('search/tweets', {
+    const { statuses: tweets } = await T.get('search/tweets', {
       q: 'nodejs since:2013-01-01',
       geocode: '40.71448,-74.00598,5mi',
       count: 10
@@ -280,7 +280,7 @@ exports.getTwitter = async (req, res, next) => {
  * POST /api/twitter
  * Post a tweet.
  */
-exports.postTwitter = (req, res, next) => {
+exports.postTwitter = async (req, res, next) => {
   const validationErrors = [];
   if (validator.isEmpty(req.body.tweet)) validationErrors.push({ msg: 'Tweet cannot be empty' });
 
@@ -293,14 +293,17 @@ exports.postTwitter = (req, res, next) => {
   const T = new twitter({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
-    access_token: token.accessToken,
+    access_token_key: token.accessToken,
     access_token_secret: token.tokenSecret
   });
-  T.post('statuses/update', { status: req.body.tweet }, (err) => {
-    if (err) { return next(err); }
+  try {
+    await T.post('statuses/update', { status: req.body.tweet });
     req.flash('success', { msg: 'Your tweet has been posted.' });
     res.redirect('/api/twitter');
-  });
+  } catch (error) {
+    next(error);
+  }
+
 };
 
 /**
@@ -318,7 +321,7 @@ exports.getSteam = async (req, res, next) => {
     url.search = urlParams.toString();
     return url.toString();
   };
-    // get the list of the recently played games, pick the most recent one and get its achievements
+  // get the list of the recently played games, pick the most recent one and get its achievements
   const getPlayerAchievements = () => {
     const recentGamesURL = makeURL('http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', params);
     return axios.get(recentGamesURL)
