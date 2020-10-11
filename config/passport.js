@@ -14,7 +14,9 @@ const { Strategy: OpenIDStrategy } = require('passport-openid');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
 const _ = require('lodash');
-const moment = require('moment');
+const add = require('date-fns/add');
+const format = require('date-fns/format');
+const isBefore = require('date-fns/isBefore');
 
 const User = require('../models/User');
 
@@ -314,7 +316,7 @@ const googleStrategyConfig = new GoogleStrategy({
           user.tokens.push({
             kind: 'google',
             accessToken,
-            accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+            accessTokenExpires: format(add(new Date(), { seconds: params.expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx"),
             refreshToken,
           });
           user.profile.name = user.profile.name || profile.displayName;
@@ -345,7 +347,7 @@ const googleStrategyConfig = new GoogleStrategy({
           user.tokens.push({
             kind: 'google',
             accessToken,
-            accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+            accessTokenExpires: format(add(new Date(), { seconds: params.expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx"),
             refreshToken,
           });
           user.profile.name = profile.displayName;
@@ -496,7 +498,7 @@ const twitchStrategyConfig = new TwitchStrategy({
           user.tokens.push({
             kind: 'twitch',
             accessToken,
-            accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+            accessTokenExpires: format(add(new Date(), { seconds: params.expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx"),
             refreshToken,
           });
           user.profile.name = user.profile.name || profile.display_name;
@@ -527,7 +529,7 @@ const twitchStrategyConfig = new TwitchStrategy({
           user.tokens.push({
             kind: 'twitch',
             accessToken,
-            accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+            accessTokenExpires: format(add(new Date(), { seconds: params.expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx"),
             refreshToken,
           });
           user.profile.name = profile.display_name;
@@ -687,10 +689,10 @@ const quickbooksStrategyConfig = new OAuth2Strategy({
       user.tokens.some((tokenObject) => {
         if (tokenObject.kind === 'quickbooks') {
           tokenObject.accessToken = accessToken;
-          tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
+          tokenObject.accessTokenExpires = format(add(new Date(), { seconds: params.expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx");
           tokenObject.refreshToken = refreshToken;
-          tokenObject.refreshTokenExpires = moment().add(params.x_refresh_token_expires_in, 'seconds').format();
-          if (params.expires_in) tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
+          tokenObject.refreshTokenExpires = format(add(new Date(), { seconds: params.x_refresh_token_expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx");
+          if (params.expires_in) tokenObject.accessTokenExpires = format(add(new Date(), { seconds: params.expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx");
           return true;
         }
         return false;
@@ -701,9 +703,9 @@ const quickbooksStrategyConfig = new OAuth2Strategy({
       user.tokens.push({
         kind: 'quickbooks',
         accessToken,
-        accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+        accessTokenExpires: format(add(new Date(), { seconds: params.expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx"),
         refreshToken,
-        refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds').format()
+        refreshTokenExpires: format(add(new Date(), { seconds: params.x_refresh_token_expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx")
       });
       user.save((err) => { done(err, user); });
     }
@@ -736,9 +738,11 @@ exports.isAuthorized = (req, res, next) => {
     //       No, Quickbooks and Google- refresh token and save, and then go to next();
     //    No:  Treat it like we got nothing, redirect to res.redirect(`/auth/${provider}`);
     // No: we are good, go to next():
-    if (token.accessTokenExpires && moment(token.accessTokenExpires).isBefore(moment().subtract(1, 'minutes'))) {
+    if (token.accessTokenExpires
+        && isBefore(new Date(token.accessTokenExpires), add(new Date(), { minutes: -1 }))) {
       if (token.refreshToken) {
-        if (token.refreshTokenExpires && moment(token.refreshTokenExpires).isBefore(moment().subtract(1, 'minutes'))) {
+        if (token.refreshTokenExpires
+          && isBefore(new Date(token.refreshTokenExpires), add(new Date(), { minutes: -1 }))) {
           res.redirect(`/auth/${provider}`);
         } else {
           refresh.requestNewAccessToken(`${provider}`, token.refreshToken, (err, accessToken, refreshToken, params) => {
@@ -746,7 +750,7 @@ exports.isAuthorized = (req, res, next) => {
               user.tokens.some((tokenObject) => {
                 if (tokenObject.kind === provider) {
                   tokenObject.accessToken = accessToken;
-                  if (params.expires_in) tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
+                  if (params.expires_in) tokenObject.accessTokenExpires = format(add(new Date(), { seconds: params.expires_in }), "yyyy-MM-dd'T'HH:mm:ssxxx");
                   return true;
                 }
                 return false;
