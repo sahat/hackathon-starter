@@ -81,6 +81,14 @@ describe('GET /api/scraping', () => {
   });
 });
 
+describe('GET /api/paypal', () => {
+  it('should return 200 OK', (done) => {
+    request(app)
+      .get('/api/paypal')
+      .expect(200, done);
+  });
+});
+
 describe('GET /api/lob', () => {
   it('should return 200 OK', (done) => {
     request(app)
