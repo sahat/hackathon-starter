@@ -1,6 +1,5 @@
 const { promisify } = require('util');
 const cheerio = require('cheerio');
-const graph = require('fbgraph');
 const { LastFmNode } = require('lastfm');
 const tumblr = require('tumblr.js');
 const { Octokit } = require('@octokit/rest');
@@ -8,6 +7,7 @@ const Twitter = require('twitter-lite');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const paypal = require('paypal-rest-sdk');
+const crypto = require('crypto');
 const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
 const axios = require('axios');
@@ -85,14 +85,16 @@ exports.getTumblr = (req, res, next) => {
  */
 exports.getFacebook = (req, res, next) => {
   const token = req.user.tokens.find((token) => token.kind === 'facebook');
-  graph.setAccessToken(token.accessToken);
-  graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, profile) => {
-    if (err) { return next(err); }
-    res.render('api/facebook', {
-      title: 'Facebook API',
-      profile
-    });
-  });
+  const secret = process.env.FACEBOOK_SECRET;
+  const appsecretProof = crypto.createHmac('sha256', secret).update(token.accessToken).digest('hex');
+  axios.get(`https://graph.facebook.com/${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone&access_token=${token.accessToken}&appsecret_proof=${appsecretProof}`)
+    .then((response) => {
+      res.render('api/facebook', {
+        title: 'Facebook API',
+        profile: response.data
+      });
+    })
+    .catch((error) => next(error.response));
 };
 
 /**
