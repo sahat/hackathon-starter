@@ -493,7 +493,7 @@ List of Packages
 | supertest                       | HTTP assertion library.                                                 |
 | tumblr.js                       | Tumblr API library.                                                     |
 | twilio                          | Twilio API library.                                                     |
-| twit                            | Twitter API library.                                                    |
+| twitter-lite                    | Twitter API library.                                                    |
 | validator                       | A library of string validators and sanitizers.                          |
 
 Useful Tools and Resources
