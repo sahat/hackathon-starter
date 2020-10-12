@@ -455,7 +455,6 @@ List of Packages
 | express-flash                   | Provides flash messages for Express.                                    |
 | express-session                 | Simple session middleware for Express.                                  |
 | express-status-monitor          | Reports real-time server metrics for Express.                           |
-| fbgraph                         | Facebook Graph API library.                                             |
 | instagram-node                  | Instagram API library.                                                  |
 | lastfm                          | Last.fm API library.                                                    |
 | lob                             | Lob API library.                                                        |
