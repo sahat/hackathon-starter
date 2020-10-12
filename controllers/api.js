@@ -458,13 +458,14 @@ exports.postTwilio = (req, res, next) => {
 exports.getTwitch = async (req, res, next) => {
   const token = req.user.tokens.find((token) => token.kind === 'twitch');
   const twitchID = req.user.twitch;
+  const twitchClientID = process.env.TWITCH_CLIENT_ID;
 
   const getUser = (userID) =>
-    axios.get(`https://api.twitch.tv/helix/users?id=${userID}`, { headers: { Authorization: `Bearer ${token.accessToken}` } })
+    axios.get(`https://api.twitch.tv/helix/users?id=${userID}`, { headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID } })
       .then(({ data }) => data)
       .catch((err) => Promise.reject(new Error(`There was an error while getting user data ${err}`)));
   const getFollowers = () =>
-    axios.get(`https://api.twitch.tv/helix/users/follows?to_id=${twitchID}`, { headers: { Authorization: `Bearer ${token.accessToken}` } })
+    axios.get(`https://api.twitch.tv/helix/users/follows?to_id=${twitchID}`, { headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID } })
       .then(({ data }) => data)
       .catch((err) => Promise.reject(new Error(`There was an error while getting followers ${err}`)));
 
