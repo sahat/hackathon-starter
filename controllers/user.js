@@ -9,7 +9,9 @@ const User = require('../models/User');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
-/** Helper Function to Send Mail **/
+/**
+ * Helper Function to Send Mail.
+ */
 const sendMail = (settings) => {
   const transporterSettings = {
     service: 'SendGrid',
@@ -17,33 +19,33 @@ const sendMail = (settings) => {
       user: process.env.SENDGRID_USER,
       pass: process.env.SENDGRID_PASSWORD
     }
-  }
+  };
   let transporter = nodemailer.createTransport(transporterSettings);
-  
+
   return transporter.sendMail(settings.mailOptions)
-  .then(() => {
-    req.flash(settings.successfulType, { msg: settings.successfulMsg });
-  })
-  .catch((err) => {
-    if (err.message === 'self signed certificate in certificate chain') {
-      console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-      transporter = nodemailer.createTransport({
-        ...transporterSettings,
-        tls: {
-          rejectUnauthorized: false
-        }
-      });
-      return transporter.sendMail(settings.mailOptions)
-        .then(() => {
-          req.flash(settings.successfulType, { msg: settings.successfulMsg });
+    .then(() => {
+      settings.req.flash(settings.successfulType, { msg: settings.successfulMsg });
+    })
+    .catch((err) => {
+      if (err.message === 'self signed certificate in certificate chain') {
+        console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
+        transporter = nodemailer.createTransport({
+          ...transporterSettings,
+          tls: {
+            rejectUnauthorized: false
+          }
         });
-    }
-    console.log(settings.loggingError, err);
-    req.flash(settings.errorType, { msg: settings.errorMsg });
-    return err;
-  });
- }
- 
+        return transporter.sendMail(settings.mailOptions)
+          .then(() => {
+            settings.req.flash(settings.successfulType, { msg: settings.successfulMsg });
+          });
+      }
+      console.log(settings.loggingError, err);
+      settings.req.flash(settings.errorType, { msg: settings.errorMsg });
+      return err;
+    });
+};
+
 /**
  * GET /login
  * Login page.
@@ -385,9 +387,10 @@ exports.getVerifyEmail = (req, res, next) => {
       loggingError: 'ERROR: Could not send verifyEmail email after security downgrade.\n',
       errorType: 'errors',
       errorMsg: 'Error sending the email verification message. Please try again shortly.',
-      mailOptions
-    }
-    return sendMail(mailSettings)
+      mailOptions,
+      req
+    };
+    return sendMail(mailSettings);
   };
 
   createRandomToken
@@ -446,9 +449,10 @@ exports.postReset = (req, res, next) => {
       loggingError: 'ERROR: Could not send password reset confirmation email after security downgrade.\n',
       errorType: 'warning',
       errorMsg: 'Your password has been changed, however we were unable to send you a confirmation email. We will be looking into it shortly.',
-      mailOptions
-    }
-    return sendMail(mailSettings)
+      mailOptions,
+      req
+    };
+    return sendMail(mailSettings);
   };
 
   resetPassword()
@@ -519,9 +523,10 @@ exports.postForgot = (req, res, next) => {
       loggingError: 'ERROR: Could not send forgot password email after security downgrade.\n',
       errorType: 'errors',
       errorMsg: 'Error sending the password reset message. Please try again shortly.',
-      mailOptions
-    }
-    return sendMail(mailSettings)
+      mailOptions,
+      req
+    };
+    return sendMail(mailSettings);
   };
 
   createRandomToken
