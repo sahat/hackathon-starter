@@ -1,5 +1,5 @@
 ![](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg)
-Hackathon Starter
+Hackathon Starter --
 =======================
 
 [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![devDependencies Status](https://david-dm.org/sahat/hackathon-starter/dev-status.svg)](https://david-dm.org/sahat/hackathon-starter?type=dev) [![Build Status](https://travis-ci.org/sahat/hackathon-starter.svg?branch=master)](https://travis-ci.org/sahat/hackathon-starter) [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -21,7 +21,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 without being too specific. In the worst case, you can use this as a learning guide for your projects,
 if for example you are only interested in **Sign in with Google** authentication and nothing else.
 
-### Testimonials
+### Testimonials --
 
 > [**“Nice! That README alone is already gold!”**](https://www.producthunt.com/tech/hackathon-starter#comment-224732)<br>
 > — Adrian Le Bas
@@ -47,7 +47,7 @@ if for example you are only interested in **Sign in with Google** authentication
 
 ![](https://lh5.googleusercontent.com/-BJD2wK8CvC8/VLodBsyL-NI/AAAAAAAAEx0/SafE6o_qq_I/w1818-h1186-no/Screenshot%2B2015-01-17%2B00.25.49.png)
 
-Table of Contents
+Table of Contents --
 -----------------
 
 - [Features](#features)
@@ -74,7 +74,7 @@ Table of Contents
 - [Contributing](#contributing)
 - [License](#license)
 
-Features
+Features --
 --------
 
 - **Local Authentication** using Email and Password
@@ -97,7 +97,7 @@ Features
 - CSRF protection
 - **API Examples**: Facebook, Foursquare, Last.fm, Tumblr, Twitter, Stripe, LinkedIn and more.
 
-Prerequisites
+Prerequisites --
 -------------
 
 - [MongoDB](https://www.mongodb.com/download-center/community)
@@ -114,7 +114,7 @@ Prerequisites
 helpful for learning the basics of Node and Express. Alternatively,
 here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
 
-Getting Started
+Getting Started --
 ---------------
 
 The easiest way to get started is to clone the repository:
@@ -151,7 +151,7 @@ save you a lot of time in the long run, because you won't need to manually
 restart the server each time you make a small change in code. To install, run
 `sudo npm install -g nodemon`.
 
-Obtaining API Keys
+Obtaining API Keys --
 ------------------
 
 To use any of the included APIs or OAuth authentication methods, you will need
@@ -392,7 +392,7 @@ The same goes for other providers.
 - Create a new app by going to your Dashboard using the My Apps option in the top nav bar or by going to <a href="https://developer.intuit.com/app/developer/myapps" target="_blank">https://developer.intuit.com/app/developer/myapps</a>
 - In your App, under Development, Keys & OAuth (right nav), find the Client ID and Client Secret for your `.env` file
 
-Project Structure
+Project Structure --
 -----------------
 
 | Name                               | Description                                                  |
@@ -432,7 +432,7 @@ having a nested folder structure, if that makes things easier for you.
 Just don't forget to update `extends ../layout`  and corresponding
 `res.render()` paths in controllers.
 
-List of Packages
+List of Packages --
 ----------------
 
 | Package                         | Description                                                             |
@@ -495,7 +495,7 @@ List of Packages
 | twitter-lite                    | Twitter API library.                                                    |
 | validator                       | A library of string validators and sanitizers.                          |
 
-Useful Tools and Resources
+Useful Tools and Resources --
 --------------------------
 - [JavaScripting](http://www.javascripting.com/) - The Database of JavaScript Libraries
 - [JS Recipes](http://sahatyalkabov.com/jsrecipes/) - JavaScript tutorials for backend and frontend development.
@@ -503,7 +503,7 @@ Useful Tools and Resources
 - [JavascriptOO](http://www.javascriptoo.com/) - A directory of JavaScript libraries with examples, CDN links, statistics, and videos.
 - [Favicon Generator](http://realfavicongenerator.net/) - Generate favicons for PC, Android, iOS, Windows 8.
 
-Recommended Design Resources
+Recommended Design Resources -- 
 ----------------------------
 - [Code Guide](http://codeguide.co/) - Standards for developing flexible, durable, and sustainable HTML and CSS.
 - [Bootsnipp](http://bootsnipp.com/) - Code snippets for Bootstrap.
@@ -518,7 +518,7 @@ Recommended Design Resources
 - [Trianglify](https://github.com/qrohlf/trianglify) - SVG low-poly background pattern generator.
 
 
-Recommended Node.js Libraries
+Recommended Node.js Libraries --
 -----------------------------
 
 - [Nodemon](https://github.com/remy/nodemon) - Automatically restart Node.js server on code changes.
@@ -529,7 +529,7 @@ Recommended Node.js Libraries
 - [node-taglib](https://github.com/nikhilm/node-taglib) - Library for reading the meta-data of several popular audio formats.
 - [sharp](https://github.com/lovell/sharp) - Node.js module for resizing JPEG, PNG, WebP and TIFF images.
 
-Recommended Client-side Libraries
+Recommended Client-side Libraries --
 ---------------------------------
 
 - [Framework7](http://www.idangero.us/framework7/) - Full Featured HTML Framework For Building iOS7 Apps.
@@ -546,7 +546,7 @@ Recommended Client-side Libraries
 - [drop.js](http://github.hubspot.com/drop/docs/welcome/) -  Powerful Javascript and CSS library for creating dropdowns and other floating displays.
 - [scrollReveal.js](https://github.com/jlmakes/scrollReveal.js) - Declarative on-scroll reveal animations.
 
-Pro Tips
+Pro Tips --
 --------
 
 - Use [async.parallel()](https://github.com/caolan/async#parallel) when you need to run multiple
@@ -556,7 +556,7 @@ function from Lodash. For example, this is how you would retrieve a
 Twitter token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`,
 where 1st parameter is an array, and a 2nd parameter is an object to search for.
 
-FAQ
+FAQ --
 ---
 
 ### Why do I get `403 Error: Forbidden` when submitting a form?
@@ -623,7 +623,7 @@ REST API server.
 ### How do I switch SendGrid for another email delivery service, like Mailgun or SparkPost?
 Inside the `nodemailer.createTransport` method arguments, change the service from `'Sendgrid'` to some other email service. Also, be sure to update both username and password below that. See the [list of all supported services](https://github.com/nodemailer/nodemailer-wellknown#supported-services) by Nodemailer.
 
-How It Works (mini guides)
+How It Works (mini guides) --
 --------------------------
 
 This section is intended for giving you a detailed explanation of
@@ -631,7 +631,7 @@ how a particular functionality works. Maybe you are just curious about
 how it works, or perhaps you are lost and confused while reading the code,
 I hope it provides some guidance to you.
 
-### Custom HTML and CSS Design 101
+### Custom HTML and CSS Design 101 --
 
 [HTML5 UP](http://html5up.net/) has many beautiful templates that you can download for free.
 
@@ -1013,12 +1013,12 @@ $(document).ready(function() {
 
 And we are done!
 
-Cheatsheets
+Cheatsheets --
 -----------
 
 ### <img src="https://frontendmasters.com/assets/es6-logo.png" height="34" align="top"> ES6 Cheatsheet
 
-#### Declarations
+#### Declarations --
 
 Declares a read-only named constant.
 
@@ -1031,7 +1031,7 @@ Declares a block scope local variable.
 let index = 0;
 ```
 
-#### Template Strings
+#### Template Strings --
 
 Using the **\`${}\`** syntax, strings can embed expressions.
 
@@ -1042,7 +1042,7 @@ const age = 3;
 console.log(`My cat is named ${name} and is ${age} years old.`);
 ```
 
-#### Modules
+#### Modules --
 
 To import functions, objects or primitives exported from an external module. These are the most common types of importing.
 
@@ -1068,7 +1068,7 @@ module.exports.name = 'yourName';
 module.exports = myFunctionOrClass;
 ```
 
-#### Spread Operator
+#### Spread Operator --
 
 The spread operator allows an expression to be expanded in places where multiple arguments (for function calls) or multiple elements (for array literals) are expected.
 
@@ -1079,7 +1079,7 @@ myFunction(...iterableObject);
 <ChildComponent {...this.props} />
 ```
 
-#### Promises
+#### Promises --
 
 A Promise is used in asynchronous computations to represent an operation that hasn't completed yet, but is expected in the future.
 
@@ -1105,7 +1105,7 @@ The `Promise.all(iterable)` method returns a promise that resolves when all of t
 Promise.all([p1, p2, p3]).then(function(values) { console.log(values) });
 ```
 
-#### Arrow Functions
+#### Arrow Functions --
 
 Arrow function expression. Shorter syntax & lexically binds the `this` value. Arrow functions are anonymous.
 
@@ -1123,7 +1123,7 @@ const arr = [1, 2, 3, 4, 5];
 const squares = arr.map(x => x * x);
 ```
 
-#### Classes
+#### Classes --
 
 The class declaration creates a new class using prototype-based inheritance.
 
@@ -1157,7 +1157,7 @@ Math.floor(Date.now() / 1000);
 moment().unix();
 ```
 
-#### Add 30 minutes to a Date object
+#### Add 30 minutes to a Date object --
 
 ```js
 var now = new Date();
@@ -1168,7 +1168,7 @@ now.setMinutes(now.getMinutes() + 30);
 moment().add(30, 'minutes');
 ```
 
-#### Date Formatting
+#### Date Formatting --
 
 ```js
 // DD-MM-YYYY
@@ -1210,7 +1210,7 @@ console.log(hours + ':' + minutes + ' ' + amPm); // 1:43 am
 console.log(moment(new Date(), 'hh:mm A'));
 ```
 
-#### Next week Date object
+#### Next week Date object --
 
 ```js
 var today = new Date();
@@ -1221,7 +1221,7 @@ var nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
 moment().add(7, 'days');
 ```
 
-#### Yesterday Date object
+#### Yesterday Date object --
 
 ```js
 var today = new Date();
@@ -1234,7 +1234,7 @@ moment().add(-1, 'days');
 
 :top: <sub>[**back to top**](#table-of-contents)</sub>
 
-### Mongoose Cheatsheet
+### Mongoose Cheatsheet --
 
 #### Find all users:
 ```js
@@ -1275,7 +1275,7 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 ```
 :top: <sub>[**back to top**](#table-of-contents)</sub>
 
-Docker
+Docker --
 ----------
 
 You will need docker and docker-compose installed to build the application.
@@ -1298,7 +1298,7 @@ docker-compose up web
 To view the app, find your docker IP address + port 8080 ( this will typically be http://localhost:8080/ ).  To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.
 
 
-Deployment
+Deployment --
 ----------
 
 Once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not the only choices, but they are my top picks. From my experience, the easiest way to get started is with **Heroku**. It will automatically restart your Node.js process when it crashes, has zero-downtime deployments and supports custom domains on free accounts. Additionally, you can
@@ -1306,7 +1306,7 @@ create an account with **MongoDB Atlas** and then pick one of the *4* providers 
 Again, there are plenty of other choices, and you are not limited to just the ones
 listed below.
 
-### Deployment to Heroku
+### Deployment to Heroku --
 
 <img src="https://upload.wikimedia.org/wikipedia/en/a/a9/Heroku_logo.png" width="200">
 
@@ -1320,7 +1320,7 @@ Please note that you may also use the [Herko Dashboard](https://dashboard.heroku
 
 ---
 
-### Hosted MongoDB Atlas
+### Hosted MongoDB Atlas --
 
 <img src="https://www.mongodb.com/assets/images/global/MongoDB_Logo_Dark.svg" width="200">
 
@@ -1347,7 +1347,7 @@ Please note that you may also use the [Herko Dashboard](https://dashboard.heroku
 
 ---
 
-### OpenShift
+### OpenShift --
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
 **NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you the new process, please feel free to help us update this page*
@@ -1388,7 +1388,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 ---
 
-### Azure
+### Azure --
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
 **NOTE** *Beyond the initial 12 month trial of Azure, the platform does not seem to offer a free tier for hosting NodeJS apps.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
@@ -1410,7 +1410,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 ---
 
-## IBM Bluemix Cloud Platform
+## IBM Bluemix Cloud Platform --
 
 **NOTE** *At this point it appears that Bluemix's free tier to host NodeJS apps is limited to 30 days.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
 
@@ -1449,7 +1449,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
   ```
 
 
-1. Push the application
+1. Push the application --
 
     ```
     $ cf push
@@ -1467,11 +1467,11 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 [Simple ToDo app in a programming language of your choice](https://github.com/IBM-Bluemix/todo-apps)
 
 
-### IBM Watson
+### IBM Watson --
 Be sure to check out the full list of Watson services to forwarder enhance your application functionality with a little effort. Watson services are easy to get going; it is simply a RESTful API call. Here is an example of a [Watson Toner Analyzer](https://tone-analyzer-demo.mybluemix.net/) to understand the emotional context of a piece of text that you send to Watson.
 
 
-#### Watson catalog of services
+#### Watson catalog of services --
 
 **<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> [Conversation](https://www.ibm.com/watson/services/conversation/)** -     Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.
 
@@ -1500,7 +1500,7 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 ---
 
-###  Google Cloud Platform
+###  Google Cloud Platform --
 <img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=64" width="64">
 
 - [Download and install Node.js](https://nodejs.org/)
@@ -1524,17 +1524,17 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 - [Monitor your deployed app](https://console.cloud.google.com/appengine) in the Cloud Console
 - [View the logs](https://console.cloud.google.com/logs/viewer) for your app in the Cloud Console
 
-Production
+Production --
 ---------
  If you are starting with this boilerplate to build an application for prod deployment, or if after your hackathon you would like to get your project hardened for production use, see [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md).
 
-Changelog
+Changelog --
 ---------
 
 You can find the changelog for the project in: [CHANGELOG.md](https://github.com/sahat/hackathon-starter/blob/master/CHANGELOG.md)
 
 
-Contributing
+Contributing --
 ------------
 
 If something is unclear, confusing, or needs to be refactored, please let me know.
@@ -1545,7 +1545,7 @@ submitting a pull request. This project uses
 few minor exceptions. If you are submitting a pull request that involves
 Pug templates, please make sure you are using *spaces*, not tabs.
 
-License
+License --
 -------
 
 The MIT License (MIT)
