@@ -9,6 +9,7 @@ html
     title #{title} - Hackathon Starter
     link(rel='shortcut icon', href='/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css')
     block head
 
   body
@@ -24,6 +25,23 @@ html
     script(src='/js/lib/popper.min.js')
     script(src='/js/lib/bootstrap.min.js')
     script(src='/js/main.js')
+    script(src='https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js')
+
+    script(type="text/javascript").
+      window.cookieconsent.initialise({
+        "palette": {
+          "popup": {
+            "background": "#f8f9fa"
+          },
+          "button": {
+            "background": "#343a40"
+          }
+        },
+        "position": "bottom-right",
+        "content": {
+          "href": "/privacy-policy.html"
+        }
+      });
 
     // Google Analytics: change UA-XXXXX-X to be your site's ID
     script.
