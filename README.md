@@ -355,7 +355,7 @@ The same goes for other providers.
 
 - Go to <a href="https://sendgrid.com/user/signup" target="_blank">https://sendgrid.com/user/signup</a>
 - Sign up and **confirm** your account via the *activation email*
-- Then enter your SendGrid *Username* and *Password* into `.env` file
+- Then enter your SendGrid *Username* and *Password* into `.env` file for SMTP emails, or enter your API key to send emails using the SendGrid API.
 
 <hr>
 

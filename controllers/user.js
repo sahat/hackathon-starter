@@ -1,6 +1,7 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
 const passport = require('passport');
 const _ = require('lodash');
 const validator = require('validator');
@@ -334,13 +335,8 @@ exports.getVerifyEmail = (req, res, next) => {
   };
 
   const sendVerifyEmail = (token) => {
-    let transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    });
+    let transportConfig = createTransportConfig();
+    let transporter = nodemailer.createTransport(transportConfig);
     const mailOptions = {
       to: req.user.email,
       from: 'hackathon@starter.com',
@@ -358,16 +354,9 @@ exports.getVerifyEmail = (req, res, next) => {
       .catch((err) => {
         if (err.message === 'self signed certificate in certificate chain') {
           console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-          transporter = nodemailer.createTransport({
-            service: 'SendGrid',
-            auth: {
-              user: process.env.SENDGRID_USER,
-              pass: process.env.SENDGRID_PASSWORD
-            },
-            tls: {
-              rejectUnauthorized: false
-            }
-          });
+          transportConfig.tls = transportConfig.tls || {}
+          transportConfig.tls.rejectUnauthorized = false
+          transporter = nodemailer.createTransport(transportConfig);
           return transporter.sendMail(mailOptions)
             .then(() => {
               req.flash('info', { msg: `An e-mail has been sent to ${req.user.email} with further instructions.` });
@@ -423,13 +412,8 @@ exports.postReset = (req, res, next) => {
 
   const sendResetPasswordEmail = (user) => {
     if (!user) { return; }
-    let transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    });
+    let transportConfig = createTransportConfig();
+    let transporter = nodemailer.createTransport(transportConfig);
     const mailOptions = {
       to: user.email,
       from: 'hackathon@starter.com',
@@ -443,16 +427,9 @@ exports.postReset = (req, res, next) => {
       .catch((err) => {
         if (err.message === 'self signed certificate in certificate chain') {
           console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-          transporter = nodemailer.createTransport({
-            service: 'SendGrid',
-            auth: {
-              user: process.env.SENDGRID_USER,
-              pass: process.env.SENDGRID_PASSWORD
-            },
-            tls: {
-              rejectUnauthorized: false
-            }
-          });
+          transportConfig.tls = transportConfig.tls || {}
+          transportConfig.tls.rejectUnauthorized = false
+          transporter = nodemailer.createTransport(transportConfig);
           return transporter.sendMail(mailOptions)
             .then(() => {
               req.flash('success', { msg: 'Success! Your password has been changed.' });
@@ -517,13 +494,8 @@ exports.postForgot = (req, res, next) => {
   const sendForgotPasswordEmail = (user) => {
     if (!user) { return; }
     const token = user.passwordResetToken;
-    let transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    });
+    let transportConfig = createTransportConfig();
+    let transporter = nodemailer.createTransport(transportConfig);
     const mailOptions = {
       to: user.email,
       from: 'hackathon@starter.com',
@@ -540,16 +512,9 @@ exports.postForgot = (req, res, next) => {
       .catch((err) => {
         if (err.message === 'self signed certificate in certificate chain') {
           console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-          transporter = nodemailer.createTransport({
-            service: 'SendGrid',
-            auth: {
-              user: process.env.SENDGRID_USER,
-              pass: process.env.SENDGRID_PASSWORD
-            },
-            tls: {
-              rejectUnauthorized: false
-            }
-          });
+          transportConfig.tls = transportConfig.tls || {}
+          transportConfig.tls.rejectUnauthorized = false
+          transporter = nodemailer.createTransport(transportConfig)
           return transporter.sendMail(mailOptions)
             .then(() => {
               req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
@@ -567,3 +532,23 @@ exports.postForgot = (req, res, next) => {
     .then(() => res.redirect('/forgot'))
     .catch(next);
 };
+
+
+function createTransportConfig() {
+  let transportConfig
+  if (process.env.SENDGRID_API_KEY) {
+    transportConfig = nodemailerSendgrid({
+      apiKey: process.env.SENDGRID_API_KEY
+    })
+  } else {
+    transportConfig = {
+      service: 'SendGrid',
+      auth: {
+        user: process.env.SENDGRID_USER,
+        pass: process.env.SENDGRID_PASSWORD
+      }
+    }
+  }
+
+  return transportConfig
+}
