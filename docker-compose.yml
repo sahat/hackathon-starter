@@ -2,6 +2,8 @@ version: '3'
 services:
   mongo:
     image: mongo:3.6
+    ports:
+     - "27017:27017"
   web:
     build: .
     ports:
