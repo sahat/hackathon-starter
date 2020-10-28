@@ -1,13 +1,13 @@
 const { promisify } = require('util');
 const cheerio = require('cheerio');
-const graph = require('fbgraph');
 const { LastFmNode } = require('lastfm');
 const tumblr = require('tumblr.js');
 const { Octokit } = require('@octokit/rest');
-const Twit = require('twit');
+const Twitter = require('twitter-lite');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const paypal = require('paypal-rest-sdk');
+const crypto = require('crypto');
 const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
 const axios = require('axios');
@@ -85,14 +85,16 @@ exports.getTumblr = (req, res, next) => {
  */
 exports.getFacebook = (req, res, next) => {
   const token = req.user.tokens.find((token) => token.kind === 'facebook');
-  graph.setAccessToken(token.accessToken);
-  graph.get(`${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err, profile) => {
-    if (err) { return next(err); }
-    res.render('api/facebook', {
-      title: 'Facebook API',
-      profile
-    });
-  });
+  const secret = process.env.FACEBOOK_SECRET;
+  const appsecretProof = crypto.createHmac('sha256', secret).update(token.accessToken).digest('hex');
+  axios.get(`https://graph.facebook.com/${req.user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone&access_token=${token.accessToken}&appsecret_proof=${appsecretProof}`)
+    .then((response) => {
+      res.render('api/facebook', {
+        title: 'Facebook API',
+        profile: response.data
+      });
+    })
+    .catch((error) => next(error.response));
 };
 
 /**
@@ -232,7 +234,7 @@ exports.getLastfm = async (req, res, next) => {
       console.error(err);
       // see error code list: https://www.last.fm/api/errorcodes
       switch (err.error) {
-      // potentially handle each code uniquely
+        // potentially handle each code uniquely
         case 10: // Invalid API key
           res.render('api/lastfm', {
             error: err
@@ -255,14 +257,14 @@ exports.getLastfm = async (req, res, next) => {
  */
 exports.getTwitter = async (req, res, next) => {
   const token = req.user.tokens.find((token) => token.kind === 'twitter');
-  const T = new Twit({
+  const T = new Twitter({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
-    access_token: token.accessToken,
+    access_token_key: token.accessToken,
     access_token_secret: token.tokenSecret
   });
   try {
-    const { data: { statuses: tweets } } = await T.get('search/tweets', {
+    const { statuses: tweets } = await T.get('search/tweets', {
       q: 'nodejs since:2013-01-01',
       geocode: '40.71448,-74.00598,5mi',
       count: 10
@@ -280,7 +282,7 @@ exports.getTwitter = async (req, res, next) => {
  * POST /api/twitter
  * Post a tweet.
  */
-exports.postTwitter = (req, res, next) => {
+exports.postTwitter = async (req, res, next) => {
   const validationErrors = [];
   if (validator.isEmpty(req.body.tweet)) validationErrors.push({ msg: 'Tweet cannot be empty' });
 
@@ -290,17 +292,19 @@ exports.postTwitter = (req, res, next) => {
   }
 
   const token = req.user.tokens.find((token) => token.kind === 'twitter');
-  const T = new Twit({
+  const T = new Twitter({
     consumer_key: process.env.TWITTER_KEY,
     consumer_secret: process.env.TWITTER_SECRET,
-    access_token: token.accessToken,
+    access_token_key: token.accessToken,
     access_token_secret: token.tokenSecret
   });
-  T.post('statuses/update', { status: req.body.tweet }, (err) => {
-    if (err) { return next(err); }
+  try {
+    await T.post('statuses/update', { status: req.body.tweet });
     req.flash('success', { msg: 'Your tweet has been posted.' });
     res.redirect('/api/twitter');
-  });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -318,7 +322,7 @@ exports.getSteam = async (req, res, next) => {
     url.search = urlParams.toString();
     return url.toString();
   };
-    // get the list of the recently played games, pick the most recent one and get its achievements
+  // get the list of the recently played games, pick the most recent one and get its achievements
   const getPlayerAchievements = () => {
     const recentGamesURL = makeURL('http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/', params);
     return axios.get(recentGamesURL)
@@ -455,13 +459,14 @@ exports.postTwilio = (req, res, next) => {
 exports.getTwitch = async (req, res, next) => {
   const token = req.user.tokens.find((token) => token.kind === 'twitch');
   const twitchID = req.user.twitch;
+  const twitchClientID = process.env.TWITCH_CLIENT_ID;
 
   const getUser = (userID) =>
-    axios.get(`https://api.twitch.tv/helix/users?id=${userID}`, { headers: { Authorization: `Bearer ${token.accessToken}` } })
+    axios.get(`https://api.twitch.tv/helix/users?id=${userID}`, { headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID } })
       .then(({ data }) => data)
       .catch((err) => Promise.reject(new Error(`There was an error while getting user data ${err}`)));
   const getFollowers = () =>
-    axios.get(`https://api.twitch.tv/helix/users/follows?to_id=${twitchID}`, { headers: { Authorization: `Bearer ${token.accessToken}` } })
+    axios.get(`https://api.twitch.tv/helix/users/follows?to_id=${twitchID}`, { headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID } })
       .then(({ data }) => data)
       .catch((err) => Promise.reject(new Error(`There was an error while getting followers ${err}`)));
 
