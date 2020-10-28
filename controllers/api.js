@@ -57,6 +57,19 @@ exports.getFoursquare = async (req, res, next) => {
     });
 };
 
+exports.getInstagram = async (req, res, next) => {
+  const token = await req.user.tokens.find((token) => token.kind === 'instagram')
+  let userID = "31754123700"
+    axios.get(`https://graph.instagram.com/${userID}/media?access_token=${token.access-token}`) 
+      .then(res, {
+        data:'',
+        paging: {}
+      })
+
+  
+
+}
+
 /**
  * GET /api/tumblr
  * Tumblr API example.
@@ -520,21 +533,21 @@ exports.getChart = async (req, res, next) => {
  * GET /api/instagram
  * Instagram API example.
  */
-exports.getInstagram = async (req, res, next) => {
-  const token = req.user.tokens.find((token) => token.kind === 'instagram');
-  ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
-  ig.use({ access_token: token.accessToken });
-  try {
-    const userSelfMediaRecentAsync = promisify(ig.user_self_media_recent);
-    const myRecentMedia = await userSelfMediaRecentAsync();
-    res.render('api/instagram', {
-      title: 'Instagram API',
-      myRecentMedia
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+// exports.getInstagram = async (req, res, next) => {
+//   const token = req.user.tokens.find((token) => token.kind === 'instagram');
+//   ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
+//   ig.use({ access_token: token.accessToken });
+//   try {
+//     const userSelfMediaRecentAsync = promisify(ig.user_self_media_recent);
+//     const myRecentMedia = await userSelfMediaRecentAsync();
+//     res.render('api/instagram', {
+//       title: 'Instagram API',
+//       myRecentMedia
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 /**
  * GET /api/paypal
