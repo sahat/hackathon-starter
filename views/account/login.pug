@@ -2,6 +2,19 @@ extends ../layout
 
 block content
   .pb-2.mt-2.mb-4.border-bottom
+    h3 Sign in with Magic Link
+  form(method='POST', action='/lomagic')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
+      .col-md-7
+        input.form-control(type='email', name='email', id='magic-email', placeholder='Email', autofocus, autocomplete='email', required)
+    .form-group
+      .offset-md-3.col-md-7.pl-2
+        button.col-md-3.btn.btn-primary(type='submit')
+          i.far.fa-user.fa-sm
+          | Login
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Sign in
   form(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
