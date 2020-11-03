@@ -25,5 +25,5 @@ block content
   .row
     for image in myRecentMedia
       .col-xs-3
-        a.thumbnail(href=image.link)
-          img(src=image.images.standard_resolution.url, height='320px')
+        a.thumbnail(href=image.permalink)
+          img(src=image.media_url, height='320px')

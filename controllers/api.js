@@ -58,17 +58,16 @@ exports.getFoursquare = async (req, res, next) => {
 };
 
 exports.getInstagram = async (req, res, next) => {
-  const token = await req.user.tokens.find((token) => token.kind === 'instagram')
-  let userID = "31754123700"
-    axios.get(`https://graph.instagram.com/${userID}/media?access_token=${token.access-token}`) 
-      .then(res, {
-        data:'',
-        paging: {}
-      })
-
-  
-
-}
+  const token = await req.user.tokens.find((token) => token.kind === 'instagram');
+  axios.get(`https://graph.instagram.com/me/media?fields=media_url,permalink&access_token=${token.accessToken}`)
+    .then((response) => {
+      res.render('api/instagram', { 
+        title: 'Instagram API',
+        myRecentMedia: response.data
+      });
+    })
+    .catch((error) => next(error.response));
+};
 
 /**
  * GET /api/tumblr
