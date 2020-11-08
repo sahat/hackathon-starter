@@ -1,4 +1,3 @@
-const { promisify } = require('util');
 const cheerio = require('cheerio');
 const { LastFmNode } = require('lastfm');
 const tumblr = require('tumblr.js');
@@ -9,7 +8,6 @@ const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKE
 const paypal = require('paypal-rest-sdk');
 const crypto = require('crypto');
 const lob = require('lob')(process.env.LOB_KEY);
-const ig = require('instagram-node').instagram();
 const axios = require('axios');
 const { google } = require('googleapis');
 const Quickbooks = require('node-quickbooks');
@@ -55,18 +53,6 @@ exports.getFoursquare = async (req, res, next) => {
     .catch((error) => {
       next(error);
     });
-};
-
-exports.getInstagram = async (req, res, next) => {
-  const token = await req.user.tokens.find((token) => token.kind === 'instagram');
-  axios.get(`https://graph.instagram.com/me/media?fields=media_url,permalink&access_token=${token.accessToken}`)
-    .then((response) => {
-      res.render('api/instagram', { 
-        title: 'Instagram API',
-        myRecentMedia: response.data
-      });
-    })
-    .catch((error) => next(error.response));
 };
 
 /**
@@ -532,21 +518,17 @@ exports.getChart = async (req, res, next) => {
  * GET /api/instagram
  * Instagram API example.
  */
-// exports.getInstagram = async (req, res, next) => {
-//   const token = req.user.tokens.find((token) => token.kind === 'instagram');
-//   ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
-//   ig.use({ access_token: token.accessToken });
-//   try {
-//     const userSelfMediaRecentAsync = promisify(ig.user_self_media_recent);
-//     const myRecentMedia = await userSelfMediaRecentAsync();
-//     res.render('api/instagram', {
-//       title: 'Instagram API',
-//       myRecentMedia
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+exports.getInstagram = async (req, res, next) => {
+  const token = await req.user.tokens.find((token) => token.kind === 'instagram');
+  axios.get(`https://graph.instagram.com/me/media?fields=media_url,permalink&access_token=${token.accessToken}`)
+    .then((response) => {
+      res.render('api/instagram', {
+        title: 'Instagram API',
+        myRecentMedia: response.data
+      });
+    })
+    .catch((error) => next(error.response));
+};
 
 /**
  * GET /api/paypal

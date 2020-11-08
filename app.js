@@ -225,7 +225,7 @@ app.get('/auth/foursquare/callback', passport.authorize('foursquare', { failureR
   res.redirect('/api/foursquare');
 });
 app.get('/auth/instagram', passport.authorize('instagram'));
-app.get('/auth/instagram/callback', passport.authorize('instagram', { failureRedirect: '/api'}), (req, res) => {
+app.get('/auth/instagram/callback', passport.authorize('instagram', { failureRedirect: '/api' }), (req, res) => {
   res.redirect('/api/instagram');
 });
 app.get('/auth/tumblr', passport.authorize('tumblr'));
