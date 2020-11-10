@@ -255,6 +255,13 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 /**
+ * 404 page
+ */
+app.get('*',(req,res)=>{
+  res.render('404')
+})
+
+/**
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
