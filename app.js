@@ -2,6 +2,7 @@
  * Module dependencies.
  */
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -43,6 +44,20 @@ const passportConfig = require('./config/passport');
  * Create Express server.
  */
 const app = express();
+
+/** 
+ * rate-limiters for /login and /signup POST requests
+ */
+const loginLimiter = rateLimit({
+  // block IP for 15 minutes after 20 requests
+  windowMs: 15 * 60 * 1000,
+  max: 20
+});
+const signupLimiter = rateLimit({
+  // block IP for 1 hour after 5 requests
+  windowMs: 60 * 60 * 1000,
+  max: 5
+});
 
 /**
  * Connect to MongoDB.
@@ -128,14 +143,14 @@ app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawes
  */
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
-app.post('/login', userController.postLogin);
+app.post('/login', loginLimiter, userController.postLogin);
 app.get('/logout', userController.logout);
 app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
 app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
 app.get('/signup', userController.getSignup);
-app.post('/signup', userController.postSignup);
+app.post('/signup', signupLimiter, userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/account/verify', passportConfig.isAuthenticated, userController.getVerifyEmail);
