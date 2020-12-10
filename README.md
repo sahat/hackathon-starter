@@ -1329,7 +1329,7 @@ Please note that you may also use the [Herko Dashboard](https://dashboard.heroku
 - Fill in your information then hit **Get started free**
 - You will be redirected to Create New Cluster page.
 - Select a **Cloud Provider and Region** (such as AWS and a free tier region)
-- Select cluster Tier to **Free Shared Clusters**
+- Select cluster Tier to Free forever **Shared** Cluster
 - Give Cluster a name (default: Cluster0)
 - Click on green **:zap:Create Cluster button**
 - Now, to access your database you need to create a DB user. To create a new MongoDB user, from the **Clusters view**, select the **Security tab**
@@ -1338,7 +1338,7 @@ Please note that you may also use the [Herko Dashboard](https://dashboard.heroku
 - Next, you will need to create an IP address whitelist and obtain the connection URI.  In the Clusters view, under the cluster details (i.e. SANDBOX - Cluster0), click on the **CONNECT** button.
 - Under section **(1) Check the IP Whitelist**, click on **ALLOW ACCESS FROM ANYWHERE**. The form will add a field with `0.0.0.0/0`.  Click **SAVE** to save the `0.0.0.0/0` whitelist.
 - Under section **(2) Choose a connection method**, click on **Connect Your Application**
-- In the new screen, select **Node.js** as Driver and version **2.2.12 or later**. _*WARNING*_: Do not pick 3.0 or later since connect-mongo can't handle mongodb+srv:// connection strings.
+- In the new screen, select **Node.js** as Driver and version **3.6 or later**.
 - Finally, copy the URI connection string and replace the URI in MONGODB_URI of `.env.example` with this URI string.  Make sure to replace the <PASSWORD> with the db User password that you created under the Security tab.
 - Note that after some of the steps in the Atlas UI, you may see a banner stating `We are deploying your changes`.  You will need to wait for the deployment to finish before using the DB in your application.
 
