@@ -163,7 +163,7 @@ credentials.
 
 - Visit <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin Console</a>
 - Enter your application's name as the **Label**
-- Chose **reCAPTCHA v2**, **"I'm not a robot" Checkbox**
+- Choose **reCAPTCHA v2**, **"I'm not a robot" Checkbox**
 - Enter *localhost* as the domain.  You can have other domains added in addition to *localhost*
 - Accept the terms and submit the form
 - Copy the *Site Key* and the *Secret key* into `.env`.  These keys will be accessible under Settings, reCAPTCHA keys drop down if you need them again later.
@@ -353,9 +353,13 @@ The same goes for other providers.
 
 <img src="https://sendgrid.com/brand/sg-logo-300.png" width="200">
 
+You can use SendGrid for sending emails.  The developer tier allows you to send 100 free emails per day.  As an Alternative to SendGrid, you may also choose to use an SMTP service provider.  If using SendGrid:
 - Go to <a href="https://sendgrid.com/user/signup" target="_blank">https://sendgrid.com/user/signup</a>
 - Sign up and **confirm** your account via the *activation email*
-- Then enter your SendGrid *Username* and *Password* into `.env` file
+- Then enter your SendGrid *API Key* into `.env` file as SENDGRID_API_KEY
+
+If using an SMTP service provider instead of SendGrid:
+- Set SMTP_USER and SMTP_PASSWORD in `.env`, and remove SENDGRID_API_KEY
 
 <hr>
 
