@@ -1,6 +1,7 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
 const passport = require('passport');
 const _ = require('lodash');
 const validator = require('validator');
@@ -13,14 +14,20 @@ const randomBytesAsync = promisify(crypto.randomBytes);
  * Helper Function to Send Mail.
  */
 const sendMail = (settings) => {
-  const transporterSettings = {
-    service: 'SendGrid',
-    auth: {
-      user: process.env.SENDGRID_USER,
-      pass: process.env.SENDGRID_PASSWORD
-    }
-  };
-  let transporter = nodemailer.createTransport(transporterSettings);
+  let transportConfig;
+  if (process.env.SENDGRID_API_KEY) {
+    transportConfig = nodemailerSendgrid({
+      apiKey: process.env.SENDGRID_API_KEY
+    });
+  } else {
+    transportConfig = {
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD
+      }
+    };
+  }
+  let transporter = nodemailer.createTransport(transportConfig);
 
   return transporter.sendMail(settings.mailOptions)
     .then(() => {
@@ -29,12 +36,9 @@ const sendMail = (settings) => {
     .catch((err) => {
       if (err.message === 'self signed certificate in certificate chain') {
         console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-        transporter = nodemailer.createTransport({
-          ...transporterSettings,
-          tls: {
-            rejectUnauthorized: false
-          }
-        });
+        transportConfig.tls = transportConfig.tls || {};
+        transportConfig.tls.rejectUnauthorized = false;
+        transporter = nodemailer.createTransport(transportConfig);
         return transporter.sendMail(settings.mailOptions)
           .then(() => {
             settings.req.flash(settings.successfulType, { msg: settings.successfulMsg });
@@ -519,7 +523,7 @@ exports.postForgot = (req, res, next) => {
     };
     const mailSettings = {
       successfulType: 'info',
-      successfulMsg: `An e-mail has been sent to ${req.user.email} with further instructions.`,
+      successfulMsg: `An e-mail has been sent to ${user.email} with further instructions.`,
       loggingError: 'ERROR: Could not send forgot password email after security downgrade.\n',
       errorType: 'errors',
       errorMsg: 'Error sending the password reset message. Please try again shortly.',

@@ -1,6 +1,7 @@
 const axios = require('axios');
 const validator = require('validator');
 const nodemailer = require('nodemailer');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
 
 /**
  * GET /contact
@@ -57,13 +58,22 @@ exports.postContact = async (req, res) => {
       fromEmail = req.user.email;
     }
 
-    let transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    });
+    let transportConfig;
+    if (process.env.SENDGRID_API_KEY) {
+      transportConfig = nodemailerSendgrid({
+        apiKey: process.env.SENDGRID_API_KEY
+      });
+    } else {
+      transportConfig = {
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD
+        }
+      };
+    }
+
+    let transporter = nodemailer.createTransport(transportConfig);
+
     const mailOptions = {
       to: process.env.SITE_CONTACT_EMAIL,
       from: `${fromName} <${fromEmail}>`,
@@ -79,16 +89,9 @@ exports.postContact = async (req, res) => {
       .catch((err) => {
         if (err.message === 'self signed certificate in certificate chain') {
           console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-          transporter = nodemailer.createTransport({
-            service: 'SendGrid',
-            auth: {
-              user: process.env.SENDGRID_USER,
-              pass: process.env.SENDGRID_PASSWORD
-            },
-            tls: {
-              rejectUnauthorized: false
-            }
-          });
+          transportConfig.tls = transportConfig.tls || {};
+          transportConfig.tls.rejectUnauthorized = false;
+          transporter = nodemailer.createTransport(transportConfig);
           return transporter.sendMail(mailOptions);
         }
         console.log('ERROR: Could not send contact email after security downgrade.\n', err);
