@@ -10,6 +10,43 @@ const User = require('../models/User');
 const randomBytesAsync = promisify(crypto.randomBytes);
 
 /**
+ * Helper Function to Send Mail.
+ */
+const sendMail = (settings) => {
+  const transporterSettings = {
+    service: 'SendGrid',
+    auth: {
+      user: process.env.SENDGRID_USER,
+      pass: process.env.SENDGRID_PASSWORD
+    }
+  };
+  let transporter = nodemailer.createTransport(transporterSettings);
+
+  return transporter.sendMail(settings.mailOptions)
+    .then(() => {
+      settings.req.flash(settings.successfulType, { msg: settings.successfulMsg });
+    })
+    .catch((err) => {
+      if (err.message === 'self signed certificate in certificate chain') {
+        console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
+        transporter = nodemailer.createTransport({
+          ...transporterSettings,
+          tls: {
+            rejectUnauthorized: false
+          }
+        });
+        return transporter.sendMail(settings.mailOptions)
+          .then(() => {
+            settings.req.flash(settings.successfulType, { msg: settings.successfulMsg });
+          });
+      }
+      console.log(settings.loggingError, err);
+      settings.req.flash(settings.errorType, { msg: settings.errorMsg });
+      return err;
+    });
+};
+
+/**
  * GET /login
  * Login page.
  */
@@ -334,13 +371,6 @@ exports.getVerifyEmail = (req, res, next) => {
   };
 
   const sendVerifyEmail = (token) => {
-    let transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    });
     const mailOptions = {
       to: req.user.email,
       from: 'hackathon@starter.com',
@@ -351,32 +381,16 @@ exports.getVerifyEmail = (req, res, next) => {
         \n\n
         Thank you!`
     };
-    return transporter.sendMail(mailOptions)
-      .then(() => {
-        req.flash('info', { msg: `An e-mail has been sent to ${req.user.email} with further instructions.` });
-      })
-      .catch((err) => {
-        if (err.message === 'self signed certificate in certificate chain') {
-          console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-          transporter = nodemailer.createTransport({
-            service: 'SendGrid',
-            auth: {
-              user: process.env.SENDGRID_USER,
-              pass: process.env.SENDGRID_PASSWORD
-            },
-            tls: {
-              rejectUnauthorized: false
-            }
-          });
-          return transporter.sendMail(mailOptions)
-            .then(() => {
-              req.flash('info', { msg: `An e-mail has been sent to ${req.user.email} with further instructions.` });
-            });
-        }
-        console.log('ERROR: Could not send verifyEmail email after security downgrade.\n', err);
-        req.flash('errors', { msg: 'Error sending the email verification message. Please try again shortly.' });
-        return err;
-      });
+    const mailSettings = {
+      successfulType: 'info',
+      successfulMsg: `An e-mail has been sent to ${req.user.email} with further instructions.`,
+      loggingError: 'ERROR: Could not send verifyEmail email after security downgrade.\n',
+      errorType: 'errors',
+      errorMsg: 'Error sending the email verification message. Please try again shortly.',
+      mailOptions,
+      req
+    };
+    return sendMail(mailSettings);
   };
 
   createRandomToken
@@ -423,45 +437,22 @@ exports.postReset = (req, res, next) => {
 
   const sendResetPasswordEmail = (user) => {
     if (!user) { return; }
-    let transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    });
     const mailOptions = {
       to: user.email,
       from: 'hackathon@starter.com',
       subject: 'Your Hackathon Starter password has been changed',
       text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
     };
-    return transporter.sendMail(mailOptions)
-      .then(() => {
-        req.flash('success', { msg: 'Success! Your password has been changed.' });
-      })
-      .catch((err) => {
-        if (err.message === 'self signed certificate in certificate chain') {
-          console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-          transporter = nodemailer.createTransport({
-            service: 'SendGrid',
-            auth: {
-              user: process.env.SENDGRID_USER,
-              pass: process.env.SENDGRID_PASSWORD
-            },
-            tls: {
-              rejectUnauthorized: false
-            }
-          });
-          return transporter.sendMail(mailOptions)
-            .then(() => {
-              req.flash('success', { msg: 'Success! Your password has been changed.' });
-            });
-        }
-        console.log('ERROR: Could not send password reset confirmation email after security downgrade.\n', err);
-        req.flash('warning', { msg: 'Your password has been changed, however we were unable to send you a confirmation email. We will be looking into it shortly.' });
-        return err;
-      });
+    const mailSettings = {
+      successfulType: 'success',
+      successfulMsg: 'Success! Your password has been changed.',
+      loggingError: 'ERROR: Could not send password reset confirmation email after security downgrade.\n',
+      errorType: 'warning',
+      errorMsg: 'Your password has been changed, however we were unable to send you a confirmation email. We will be looking into it shortly.',
+      mailOptions,
+      req
+    };
+    return sendMail(mailSettings);
   };
 
   resetPassword()
@@ -517,13 +508,6 @@ exports.postForgot = (req, res, next) => {
   const sendForgotPasswordEmail = (user) => {
     if (!user) { return; }
     const token = user.passwordResetToken;
-    let transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    });
     const mailOptions = {
       to: user.email,
       from: 'hackathon@starter.com',
@@ -533,32 +517,16 @@ exports.postForgot = (req, res, next) => {
         http://${req.headers.host}/reset/${token}\n\n
         If you did not request this, please ignore this email and your password will remain unchanged.\n`
     };
-    return transporter.sendMail(mailOptions)
-      .then(() => {
-        req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
-      })
-      .catch((err) => {
-        if (err.message === 'self signed certificate in certificate chain') {
-          console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-          transporter = nodemailer.createTransport({
-            service: 'SendGrid',
-            auth: {
-              user: process.env.SENDGRID_USER,
-              pass: process.env.SENDGRID_PASSWORD
-            },
-            tls: {
-              rejectUnauthorized: false
-            }
-          });
-          return transporter.sendMail(mailOptions)
-            .then(() => {
-              req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
-            });
-        }
-        console.log('ERROR: Could not send forgot password email after security downgrade.\n', err);
-        req.flash('errors', { msg: 'Error sending the password reset message. Please try again shortly.' });
-        return err;
-      });
+    const mailSettings = {
+      successfulType: 'info',
+      successfulMsg: `An e-mail has been sent to ${req.user.email} with further instructions.`,
+      loggingError: 'ERROR: Could not send forgot password email after security downgrade.\n',
+      errorType: 'errors',
+      errorMsg: 'Error sending the password reset message. Please try again shortly.',
+      mailOptions,
+      req
+    };
+    return sendMail(mailSettings);
   };
 
   createRandomToken
