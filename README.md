@@ -458,7 +458,6 @@ List of Packages
 | express                         | Node.js web framework.                                                  |
 | express-flash                   | Provides flash messages for Express.                                    |
 | express-session                 | Simple session middleware for Express.                                  |
-| express-status-monitor          | Reports real-time server metrics for Express.                           |
 | instagram-node                  | Instagram API library.                                                  |
 | lastfm                          | Last.fm API library.                                                    |
 | lob                             | Lob API library.                                                        |

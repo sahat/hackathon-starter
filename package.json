@@ -36,7 +36,6 @@
     "express-flash": "^0.0.2",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
-    "express-status-monitor": "^1.3.3",
     "googleapis": "^66.0.0",
     "instagram-node": "^0.5.8",
     "jquery": "^3.5.1",
