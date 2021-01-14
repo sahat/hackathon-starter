@@ -1,6 +1,6 @@
 {
   "name": "hackathon-starter",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "description": "A boilerplate for Node.js web applications",
   "repository": {
     "type": "git",
@@ -18,10 +18,10 @@
     "lint": "eslint \"**/*.js\""
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "@ladjs/bootstrap-social": "^7.0.2",
     "@octokit/rest": "^18.0.12",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.3",
@@ -36,22 +36,22 @@
     "express-flash": "^0.0.2",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
-    "googleapis": "^66.0.0",
+    "googleapis": "^67.0.0",
     "instagram-node": "^0.5.8",
     "jquery": "^3.5.1",
     "lastfm": "^0.9.3",
     "lob": "^6.1.1",
     "lodash": "^4.17.20",
     "lusca": "^1.6.1",
-    "mailchecker": "^4.0.1",
+    "mailchecker": "^4.0.3",
     "moment": "^2.29.1",
-    "mongoose": "^5.11.6",
+    "mongoose": "^5.11.11",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "node-quickbooks": "^2.0.37",
     "node-sass": "^5.0.0",
     "node-sass-middleware": "^0.11.0",
-    "nodemailer": "^6.4.16",
+    "nodemailer": "^6.4.17",
     "nodemailer-sendgrid": "^1.0.3",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
@@ -69,7 +69,7 @@
     "paypal-rest-sdk": "^1.8.1",
     "popper.js": "^1.16.1",
     "pug": "^3.0.0",
-    "stripe": "^8.127.0",
+    "stripe": "^8.130.0",
     "tumblr.js": "^3.0.0",
     "twilio": "^3.54.0",
     "twitter-lite": "^0.14.0",
@@ -77,17 +77,17 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^7.15.0",
+    "eslint": "^7.17.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-chai-friendly": "^0.6.0",
     "eslint-plugin-import": "^2.22.1",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
-    "sinon": "^9.2.1",
+    "sinon": "^9.2.3",
     "supertest": "^6.0.1"
   },
   "engines": {
-    "node": ">=10.22.1",
-    "npm": ">=6.14.6"
+    "node": ">=10.23.1",
+    "npm": ">=6.14.10"
   }
 }
