@@ -1353,7 +1353,7 @@ Please note that you may also use the [Herko Dashboard](https://dashboard.heroku
 ### OpenShift
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
-**NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you the new process, please feel free to help us update this page*
+**NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you know the new process, please feel free to help us update this page*
 
 - First, install this Ruby gem: `sudo gem install rhc` :gem:
 - Run `rhc login` and enter your OpenShift credentials
