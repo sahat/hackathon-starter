@@ -12,7 +12,7 @@ A boilerplate for **Node.js** web applications.
 
 If you have attended any hackathons in the past, then you know how much time it takes to
 get a project started: decide on what to build, pick a programming language, pick a web framework,
-pick a CSS framework. A while later, you might have an initial project up on GitHub and only then
+pick a CSS framework. A while later, you might have an initial project up on GitHub, and only then
 can other team members start contributing. Or how about doing something as simple as *Sign in with Facebook*
 authentication? You can spend hours on it if you are not familiar with how OAuth 2.0 works.
 
@@ -95,7 +95,7 @@ Features
  - Link multiple OAuth strategies to one account
  - Delete Account
 - CSRF protection
-- **API Examples**: Facebook, Foursquare, Last.fm, Tumblr, Twitter, Stripe, LinkedIn and more.
+- **API Examples**: Facebook, Foursquare, Last.fm, Tumblr, Twitter, Stripe, LinkedIn, and more.
 
 Prerequisites
 -------------
@@ -133,7 +133,7 @@ npm install
 node app.js
 ```
 
-**Warning:** If you want to use some API that need https to work (for example Pinterest or facebook),
+**Warning:** If you want to use some API that needs HTTPS to work (for example Pinterest or Facebook),
 you will need to download [ngrok](https://ngrok.com/).
 You must start ngrok after starting the project.
 
@@ -237,7 +237,7 @@ The same goes for other providers.
 - Click on the *Settings* tab in the left nav under Facebook Login
 - Enter `http://localhost:8080/auth/facebook/callback` under Valid OAuth redirect URIs
 
-**Note:** After a successful sign in with Facebook, a user will be redirected back to the home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
+**Note:** After a successful sign-in with Facebook, a user will be redirected back to the home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
 <hr>
 
@@ -345,9 +345,9 @@ The same goes for other providers.
 - Enter the name of your application
 - Use OAuth Redirect URLs enter `http://localhost:8080/auth/twitch/callback`
 - Set Category to Website Integration and press the Create button
-- After the applicaiton has been created, click on the Manage button
+- After the application has been created, click on the Manage button
 - Copy and paste *Client ID* into `.env`
-- If there is no Client Secret displayed, click on New Secret button and then copy and paste the *Client secret* into `.env`
+- If there is no Client Secret displayed, click on the New Secret button and then copy and paste the *Client secret* into `.env`
 
 <hr>
 
@@ -376,7 +376,7 @@ If using an SMTP service provider instead of SendGrid:
 - Go to <a href="https://developer.here.com" target="_blank">https://developer.here.com</a>
 - Sign up and create a Freemium project
 - Create JAVASCRIPT/REST credentials. Copy and paste the APP_ID and APP into `.env` file.
-- Note that these credentials are available on the client side, and you need to create a domain whitelist for your app credentials when you are publicly launching the app.
+- Note that these credentials are available on the client-side, and you need to create a domain whitelist for your app credentials when you are publicly launching the app.
 
 <hr>
 
@@ -392,7 +392,7 @@ If using an SMTP service provider instead of SendGrid:
 <img src="https://www.intuit.com/content/dam/intuit/intuitcom/company/images/logo-intuit-quickbooks-preferred.png" width="200">
 
 - Go to <a href="https://developer.intuit.com/app/developer/qbo/docs/get-started" target="_blank">https://developer.intuit.com/app/developer/qbo/docs/get-started</a>
-- Use the Sign Up option in the upper right corner of the screen (nav bar) to get a free developer account and a sandbox company.
+- Use the Sign Up option in the upper right corner of the screen (navbar) to get a free developer account and a sandbox company.
 - Create a new app by going to your Dashboard using the My Apps option in the top nav bar or by going to <a href="https://developer.intuit.com/app/developer/myapps" target="_blank">https://developer.intuit.com/app/developer/myapps</a>
 - In your App, under Development, Keys & OAuth (right nav), find the Client ID and Client Secret for your `.env` file
 
@@ -430,9 +430,9 @@ Project Structure
 | package.json                       | NPM dependencies.                                            |
 | package-lock.json                  | Contains exact versions of NPM dependencies in package.json. |
 
-**Note:** There is no preference how you name or structure your views.
+**Note:** There is no preference for how you name or structure your views.
 You could place all your templates in a top-level `views` directory without
-having a nested folder structure, if that makes things easier for you.
+having a nested folder structure if that makes things easier for you.
 Just don't forget to update `extends ../layout`  and corresponding
 `res.render()` paths in controllers.
 
@@ -571,8 +571,8 @@ as part of the CSRF protection.
 input(type='hidden', name='_csrf', value=_csrf)
 ```
 
-**Note:** It is now possible to whitelist certain URLs. In other words you can
-specify a list of routes that should bypass CSRF verification check.
+**Note:** It is now possible to whitelist certain URLs. In other words, you can
+specify a list of routes that should bypass the CSRF verification check.
 
 **Note 2:** To whitelist dynamic URLs use regular expression tests inside the
 CSRF middleware to see if `req.originalUrl` matches your desired pattern.
@@ -601,20 +601,20 @@ in `.env` file.
 ### I get an error when I deploy my app, why?
 Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB` is
 set to `localhost`, it will only work on your machine as long as MongoDB is
-running. When you deploy to Heroku, OpenShift or some other provider, you will not have MongoDB
+running. When you deploy to Heroku, OpenShift, or some other provider, you will not have MongoDB
 running on `localhost`. You need to create an account with [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 or [Compose](https://www.compose.io/), then create a free tier database.
-See [Deployment](#deployment) for more information on how to setup an account
+See [Deployment](#deployment) for more information on how to set up an account
 and a new database step-by-step with MongoDB Atlas.
 
 ### Why Pug (Jade) instead of Handlebars?
-When I first started this project I didn't have any experience with Handlebars. Since then I have worked on Ember.js apps and got myself familiar with the Handlebars syntax. While it is true Handlebars is easier, because it looks like good old HTML, I have no regrets picking Jade over Handlebars. First off, it's the default template engine in Express, so someone who has built Express apps in the past already knows it. Secondly, I find `extends` and `block` to be indispensable, which as far as I know, Handlebars does not have out of the box. And lastly, subjectively speaking, Jade looks much cleaner and shorter than Handlebars, or any non-HAML style for that matter.
+When I first started this project I didn't have any experience with Handlebars. Since then I have worked on Ember.js apps and got myself familiar with the Handlebars syntax. While it is true Handlebars is easier, because it looks like good old HTML, I have no regrets picking Jade over Handlebars. First off, it's the default template engine in Express, so someone who has built Express apps in the past already knows it. Secondly, I find `extends` and `block` to be indispensable, which as far as I know, Handlebars do not have out of the box. And lastly, subjectively speaking, Jade looks much cleaner and shorter than Handlebars, or any non-HAML style for that matter.
 
 ### Why do you have all routes defined in app.js?
 For the sake of simplicity. While there might be a better approach,
 such as passing `app` context to each controller as outlined in this
 [blog](http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/),
-I find such style to be confusing for beginners.
+I find such a style to be confusing for beginners.
 It took me a long time to grasp the concept of `exports` and `module.exports`,
 let alone having a global `app` reference in other files.
 That to me is backward thinking.
@@ -638,11 +638,11 @@ I hope it provides some guidance to you.
 
 [HTML5 UP](http://html5up.net/) has many beautiful templates that you can download for free.
 
-When you download the ZIP file, it will come with *index.html*, *images*, *css* and *js* folders. So, how do you
-integrate it with Hackathon Starter? Hackathon Starter uses Bootstrap CSS framework, but these templates do not.
+When you download the ZIP file, it will come with *index.html*, *images*, *CSS* and *js* folders. So, how do you
+integrate it with Hackathon Starter? Hackathon Starter uses the Bootstrap CSS framework, but these templates do not.
 Trying to use both CSS files at the same time will likely result in undesired effects.
 
-**Note:** Using the custom templates approach, you should understand that you cannot reuse any of the views I have created: layout, home page, api browser, login, signup, account management, contact. Those views were built using Bootstrap grid and styles. You will have to manually update the grid using a different syntax provided in the template. **Having said that, you can mix and match if you want to do so: Use Bootstrap for main app interface, and a custom template for a landing page.**
+**Note:** Using the custom templates approach, you should understand that you cannot reuse any of the views I have created: layout, the home page, API browser, login, signup, account management, contact. Those views were built using Bootstrap grid and styles. You will have to manually update the grid using a different syntax provided in the template. **Having said that, you can mix and match if you want to do so: Use Bootstrap for the main app interface, and a custom template for a landing page.**
 
 Let's start from the beginning. For this example I will use [Escape Velocity](http://html5up.net/escape-velocity/) template:
 ![Alt](http://html5up.net/uploads/images/escape-velocity.jpg)
@@ -686,7 +686,7 @@ This is a rather lengthy process, and templates you get from elsewhere might hav
 
 ### How do flash messages work in this project?
 Flash messages allow you to display a message at the end of the request and access
-it on next request and only next request. For instance, on a failed login attempt, you would
+it on the next request and only the next request. For instance, on a failed login attempt, you would
 display an alert with some error message, but as soon as you refresh that page or visit a different
 page and come back to the login page, that error message will be gone. It is only displayed once.
 This project uses *express-flash* module for flash messages. And that
@@ -826,7 +826,7 @@ app.route('/api/twitter')
   .post(apiController.postTwitter)
 ```
 
-Use whichever style that makes sense to you. Either one is acceptable. I think that chaining HTTP verbs on `app.route` is a very clean and elegant approach, but on the other hand, I can no longer see all my routes at a glance when you have one route per line.
+Use whichever style makes sense to you. Either one is acceptable. I think that chaining HTTP verbs on `app.route` is a very clean and elegant approach, but on the other hand, I can no longer see all my routes at a glance when you have one route per line.
 
 **Step 2.** Create a new schema and a model `Book.js` inside the *models* directory.
 ```js
@@ -891,7 +891,7 @@ If you are the only developer, then it's okay. But as I said, once it gets up to
 
 That's all there is to it. Express.js is super simple to use.
 Most of the time you will be dealing with other APIs to do the real work:
-[Mongoose](http://mongoosejs.com/docs/guide.html) for querying database, socket.io for sending and receiving messages over websockets,
+[Mongoose](http://mongoosejs.com/docs/guide.html) for querying database, socket.io for sending and receiving messages over WebSockets,
 sending emails via [Nodemailer](http://nodemailer.com/), form validation using [express-validator](https://github.com/ctavan/express-validator) library,
 parsing websites using [Cheerio](https://github.com/cheeriojs/cheerio), etc.
 
@@ -905,14 +905,14 @@ principles of the Hackathon Starter:
 > I also tried to make it as generic and reusable as possible to cover most use cases of
 > hackathon web apps, **without being too specific**.
 
-When I need to use socket.io, I **really** need it, but most of the time - I don't. But more importantly, websockets support is still experimental on most hosting providers. As of October 2013,
-Heroku supports websockets, but not until you opt-in by running this command:
+When I need to use socket.io, I **really** need it, but most of the time - I don't. But more importantly, WebSockets support is still experimental on most hosting providers. As of October 2013,
+Heroku supports WebSockets, but not until you opt-in by running this command:
 
 ```js
-heroku labs:enable websockets -a myapp
+Heroku labs:enable websockets -a myapp
 ```
 
-And what if you are deploying to OpenShift? They do support websockets, but it is currently in a
+And what if you are deploying to OpenShift? They do support WebSockets, but it is currently in a
 preview state. So, for OpenShift you would need to change the socket.io connect URI to the following:
 
 ```js
@@ -923,8 +923,8 @@ Wait, why is it on port 8000? Who knows, and if I didn't run across this [blog p
 I wouldn't even know I had to use port 8000.
 
 I am really glad that Heroku and OpenShift at least
-have a websockets support, because many other PaaS providers still do not support it.
-Due to the aforementioned issues with websockets, I cannot include socket.io as part of the Hackathon Starter. *For now...*
+have WebSockets support because many other PaaS providers still do not support it.
+Due to the aforementioned issues with WebSockets, I cannot include socket.io as part of the Hackathon Starter. *For now...*
 If you need to use socket.io in your app, please continue reading.
 
 First, you need to install socket.io:
@@ -1047,7 +1047,7 @@ console.log(`My cat is named ${name} and is ${age} years old.`);
 
 #### Modules
 
-To import functions, objects or primitives exported from an external module. These are the most common types of importing.
+To import functions, objects, or primitives exported from an external module. These are the most common types of importing.
 
 ```js
 const name = require('module-name');
@@ -1057,7 +1057,7 @@ const name = require('module-name');
 const { foo, bar } = require('module-name');
 ```
 
-To export functions, objects or primitives from a given file or module.
+To export functions, objects, or primitives from a given file or module.
 
 ```js
 module.exports = { myFunction };
@@ -1084,7 +1084,7 @@ myFunction(...iterableObject);
 
 #### Promises
 
-A Promise is used in asynchronous computations to represent an operation that hasn't completed yet, but is expected in the future.
+A Promise is used in asynchronous computations to represent an operation that hasn't completed yet but is expected in the future.
 
 ```js
 var p = new Promise(function(resolve, reject) { });
@@ -1304,7 +1304,7 @@ To view the app, find your docker IP address + port 8080 ( this will typically b
 Deployment
 ----------
 
-Once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not the only choices, but they are my top picks. From my experience, the easiest way to get started is with **Heroku**. It will automatically restart your Node.js process when it crashes, has zero-downtime deployments and supports custom domains on free accounts. Additionally, you can
+Once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not the only choices, but they are my top picks. From my experience, the easiest way to get started is with **Heroku**. It will automatically restart your Node.js process when it crashes, has zero-downtime deployments, and supports custom domains on free accounts. Additionally, you can
 create an account with **MongoDB Atlas** and then pick one of the *4* providers below.
 Again, there are plenty of other choices, and you are not limited to just the ones
 listed below.
@@ -1560,3 +1560,5 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
