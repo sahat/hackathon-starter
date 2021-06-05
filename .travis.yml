@@ -12,3 +12,20 @@ install:
 script:
   - npm run lint
   - npm test
+
+# safelist
+branches:
+  only:
+  - main
+  - docker
+
+sudo: required language: node_js
+node_js:
+    - "stable"
+    
+services: 
+    - docker
+
+before_install: 
+    - docker build -t hackathon-starter -f Dockerfile .script:     
+    - docker run -e CI=true mbaoma/hackathon-starter npm run test -- --coverage
