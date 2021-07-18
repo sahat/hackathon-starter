@@ -1,12 +1,11 @@
 const request = require('supertest');
 
 const { MongoMemoryServer } = require('mongodb-memory-server');
+
 (async () => {
-console.log("Running MongoMemoryServer");
 const mongoServer = await MongoMemoryServer.create();
 const mockMongoDBUri = await mongoServer.getUri();
 process.env.MONGODB_URI=mockMongoDBUri;
-console.log(`Setting up {process.env.MONGODB_URI}`);
 
 const app = require('../app.js');
 
