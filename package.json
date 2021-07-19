@@ -82,6 +82,7 @@
     "eslint-plugin-chai-friendly": "^0.6.0",
     "eslint-plugin-import": "^2.22.1",
     "mocha": "^8.2.1",
+    "mongodb-memory-server": "^7.2.1",
     "nyc": "^15.1.0",
     "sinon": "^9.2.3",
     "supertest": "^6.0.1"
