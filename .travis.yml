@@ -6,15 +6,15 @@ node_js:
 services: mongodb  
 cache:  
   directories:
-  - "node_modules"
+   - "node_modules"
 install:
   - npm install
 script:
   - npm run lint
   - npm test
 deploy:
- - provider: script
- skip_cleanup: true
- script: chmod +x ./deploy.sh && ./deploy.sh
- on:
-    branch: master
+  - provider: script
+    skip_cleanup: true
+    script: chmod +x ./deploy.sh && ./deploy.sh
+    on:
+      branch: master
