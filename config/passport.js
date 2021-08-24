@@ -423,55 +423,55 @@ passport.use(new LinkedInStrategy({
 /**
  * Sign in with Instagram.
  */
-passport.use(new InstagramStrategy({
-  clientID: process.env.INSTAGRAM_ID,
-  clientSecret: process.env.INSTAGRAM_SECRET,
-  callbackURL: '/auth/instagram/callback',
-  passReqToCallback: true
-}, (req, accessToken, refreshToken, profile, done) => {
-  if (req.user) {
-    User.findOne({ instagram: profile.id }, (err, existingUser) => {
-      if (err) { return done(err); }
-      if (existingUser) {
-        req.flash('errors', { msg: 'There is already an Instagram account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
-        done(err);
-      } else {
-        User.findById(req.user.id, (err, user) => {
-          if (err) { return done(err); }
-          user.instagram = profile.id;
-          user.tokens.push({ kind: 'instagram', accessToken });
-          user.profile.name = user.profile.name || profile.displayName;
-          user.profile.picture = user.profile.picture || profile._json.data.profile_picture;
-          user.profile.website = user.profile.website || profile._json.data.website;
-          user.save((err) => {
-            req.flash('info', { msg: 'Instagram account has been linked.' });
-            done(err, user);
-          });
-        });
-      }
-    });
-  } else {
-    User.findOne({ instagram: profile.id }, (err, existingUser) => {
-      if (err) { return done(err); }
-      if (existingUser) {
-        return done(null, existingUser);
-      }
-      const user = new User();
-      user.instagram = profile.id;
-      user.tokens.push({ kind: 'instagram', accessToken });
-      user.profile.name = profile.displayName;
-      // Similar to Twitter API, assigns a temporary e-mail address
-      // to get on with the registration process. It can be changed later
-      // to a valid e-mail address in Profile Management.
-      user.email = `${profile.username}@instagram.com`;
-      user.profile.website = profile._json.data.website;
-      user.profile.picture = profile._json.data.profile_picture;
-      user.save((err) => {
-        done(err, user);
-      });
-    });
-  }
-}));
+// passport.use(new InstagramStrategy({
+//   clientID: process.env.INSTAGRAM_ID,
+//   clientSecret: process.env.INSTAGRAM_SECRET,
+//   callbackURL: '/auth/instagram/callback',
+//   passReqToCallback: true
+// }, (req, accessToken, refreshToken, profile, done) => {
+//   if (req.user) {
+//     User.findOne({ instagram: profile.id }, (err, existingUser) => {
+//       if (err) { return done(err); }
+//       if (existingUser) {
+//         req.flash('errors', { msg: 'There is already an Instagram account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+//         done(err);
+//       } else {
+//         User.findById(req.user.id, (err, user) => {
+//           if (err) { return done(err); }
+//           user.instagram = profile.id;
+//           user.tokens.push({ kind: 'instagram', accessToken });
+//           user.profile.name = user.profile.name || profile.displayName;
+//           user.profile.picture = user.profile.picture || profile._json.data.profile_picture;
+//           user.profile.website = user.profile.website || profile._json.data.website;
+//           user.save((err) => {
+//             req.flash('info', { msg: 'Instagram account has been linked.' });
+//             done(err, user);
+//           });
+//         });
+//       }
+//     });
+//   } else {
+//     User.findOne({ instagram: profile.id }, (err, existingUser) => {
+//       if (err) { return done(err); }
+//       if (existingUser) {
+//         return done(null, existingUser);
+//       }
+//       const user = new User();
+//       user.instagram = profile.id;
+//       user.tokens.push({ kind: 'instagram', accessToken });
+//       user.profile.name = profile.displayName;
+//       // Similar to Twitter API, assigns a temporary e-mail address
+//       // to get on with the registration process. It can be changed later
+//       // to a valid e-mail address in Profile Management.
+//       user.email = `${profile.username}@instagram.com`;
+//       user.profile.website = profile._json.data.website;
+//       user.profile.picture = profile._json.data.profile_picture;
+//       user.save((err) => {
+//         done(err, user);
+//       });
+//     });
+//   }
+// }));
 
 /**
  * Twitch API OAuth.
@@ -556,15 +556,15 @@ passport.use('tumblr', new OAuthStrategy({
   callbackURL: '/auth/tumblr/callback',
   passReqToCallback: true
 },
-(req, token, tokenSecret, profile, done) => {
-  User.findById(req.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
-    user.save((err) => {
-      done(err, user);
+  (req, token, tokenSecret, profile, done) => {
+    User.findById(req.user._id, (err, user) => {
+      if (err) { return done(err); }
+      user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
+      user.save((err) => {
+        done(err, user);
+      });
     });
-  });
-}));
+  }));
 
 /**
  * Foursquare API OAuth.
@@ -577,15 +577,37 @@ passport.use('foursquare', new OAuth2Strategy({
   callbackURL: process.env.FOURSQUARE_REDIRECT_URL,
   passReqToCallback: true
 },
-(req, accessToken, refreshToken, profile, done) => {
-  User.findById(req.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.tokens.push({ kind: 'foursquare', accessToken });
-    user.save((err) => {
-      done(err, user);
+  (req, accessToken, refreshToken, profile, done) => {
+    User.findById(req.user._id, (err, user) => {
+      if (err) { return done(err); }
+      user.tokens.push({ kind: 'foursquare', accessToken });
+      user.save((err) => {
+        done(err, user);
+      });
     });
-  });
-}));
+  }));
+
+// Instagram API OAuth
+
+passport.use('instagram', new OAuth2Strategy({
+  authorizationURL: 'https://api.instagram.com/oauth/authorize',
+  tokenURL: 'https://api.instagram.com/oauth/access_token',
+  clientID: process.env.INSTAGRAM_ID,
+  clientSecret: process.env.INSTAGRAM_SECRET,
+  callbackURL: process.env.INSTAGRAM_REDIRECT_URL,
+  scope: 'user_profile user_media',
+  response_type: 'code',
+  passReqToCallback: true
+},
+  (req, accessToken, refreshToken, profile, done) => {
+    User.findById(req.user._id, (err, user) => {
+      if (err) { return done(err); }
+      user.tokens.push({ kind: 'instagram', accessToken });
+      user.save((err) => {
+        done(err, user);
+      });
+    });
+  }));
 
 /**
  * Steam API OpenID.
@@ -658,15 +680,15 @@ passport.use('pinterest', new OAuth2Strategy({
   callbackURL: process.env.PINTEREST_REDIRECT_URL,
   passReqToCallback: true
 },
-(req, accessToken, refreshToken, profile, done) => {
-  User.findById(req.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.tokens.push({ kind: 'pinterest', accessToken });
-    user.save((err) => {
-      done(err, user);
+  (req, accessToken, refreshToken, profile, done) => {
+    User.findById(req.user._id, (err, user) => {
+      if (err) { return done(err); }
+      user.tokens.push({ kind: 'pinterest', accessToken });
+      user.save((err) => {
+        done(err, user);
+      });
     });
-  });
-}));
+  }));
 
 /**
  * Intuit/QuickBooks API OAuth.
@@ -679,36 +701,36 @@ const quickbooksStrategyConfig = new OAuth2Strategy({
   callbackURL: `${process.env.BASE_URL}/auth/quickbooks/callback`,
   passReqToCallback: true
 },
-(res, accessToken, refreshToken, params, profile, done) => {
-  User.findById(res.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.quickbooks = res.query.realmId;
-    if (user.tokens.filter((vendor) => (vendor.kind === 'quickbooks'))[0]) {
-      user.tokens.some((tokenObject) => {
-        if (tokenObject.kind === 'quickbooks') {
-          tokenObject.accessToken = accessToken;
-          tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
-          tokenObject.refreshToken = refreshToken;
-          tokenObject.refreshTokenExpires = moment().add(params.x_refresh_token_expires_in, 'seconds').format();
-          if (params.expires_in) tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
-          return true;
-        }
-        return false;
-      });
-      user.markModified('tokens');
-      user.save((err) => { done(err, user); });
-    } else {
-      user.tokens.push({
-        kind: 'quickbooks',
-        accessToken,
-        accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
-        refreshToken,
-        refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds').format()
-      });
-      user.save((err) => { done(err, user); });
-    }
+  (res, accessToken, refreshToken, params, profile, done) => {
+    User.findById(res.user._id, (err, user) => {
+      if (err) { return done(err); }
+      user.quickbooks = res.query.realmId;
+      if (user.tokens.filter((vendor) => (vendor.kind === 'quickbooks'))[0]) {
+        user.tokens.some((tokenObject) => {
+          if (tokenObject.kind === 'quickbooks') {
+            tokenObject.accessToken = accessToken;
+            tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
+            tokenObject.refreshToken = refreshToken;
+            tokenObject.refreshTokenExpires = moment().add(params.x_refresh_token_expires_in, 'seconds').format();
+            if (params.expires_in) tokenObject.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
+            return true;
+          }
+          return false;
+        });
+        user.markModified('tokens');
+        user.save((err) => { done(err, user); });
+      } else {
+        user.tokens.push({
+          kind: 'quickbooks',
+          accessToken,
+          accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
+          refreshToken,
+          refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds').format()
+        });
+        user.save((err) => { done(err, user); });
+      }
+    });
   });
-});
 passport.use('quickbooks', quickbooksStrategyConfig);
 refresh.use('quickbooks', quickbooksStrategyConfig);
 

@@ -182,10 +182,10 @@ app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuth
 /**
  * OAuth authentication routes. (Sign in)
  */
-app.get('/auth/instagram', passport.authenticate('instagram', { scope: ['basic', 'public_content'] }));
-app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect(req.session.returnTo || '/');
-});
+// app.get('/auth/instagram', passport.authenticate('instagram', { scope: ['basic', 'public_content'] }));
+// app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), (req, res) => {
+//   res.redirect(req.session.returnTo || '/');
+// });
 app.get('/auth/snapchat', passport.authenticate('snapchat'));
 app.get('/auth/snapchat/callback', passport.authenticate('snapchat', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
@@ -221,6 +221,10 @@ app.get('/auth/twitch/callback', passport.authenticate('twitch', { failureRedire
 app.get('/auth/foursquare', passport.authorize('foursquare'));
 app.get('/auth/foursquare/callback', passport.authorize('foursquare', { failureRedirect: '/api' }), (req, res) => {
   res.redirect('/api/foursquare');
+});
+app.get('/auth/instagram', passport.authorize('instagram'));
+app.get('/auth/instagram/callback', passport.authorize('instagram', { failureRedirect: '/api' }), (req, res) => {
+  res.redirect('/api/instagram');
 });
 app.get('/auth/tumblr', passport.authorize('tumblr'));
 app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect: '/api' }), (req, res) => {
