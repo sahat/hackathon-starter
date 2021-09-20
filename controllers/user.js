@@ -122,11 +122,18 @@ exports.getSignup = (req, res) => {
  * POST /signup
  * Create a new local account.
  */
-exports.postSignup = (req, res, next) => {
+
+exports.postSignup = async (req, res, next) => {
   const validationErrors = [];
-  if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
-  if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
-  if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' });
+  if (!validator.isEmail(req.body.email)) { 
+      validationErrors.push({ msg: 'Please enter a valid email address.' }); 
+    }
+  if (!validator.isLength(req.body.password, { min: 8 })) {
+      validationErrors.push({ msg: 'Password must be at least 8 characters long' });
+    }
+  if (req.body.password !== req.body.confirmPassword) {
+      validationErrors.push({ msg: 'Passwords do not match' });
+    }
 
   if (validationErrors.length) {
     req.flash('errors', validationErrors);
@@ -139,23 +146,23 @@ exports.postSignup = (req, res, next) => {
     password: req.body.password
   });
 
-  User.findOne({ email: req.body.email }, (err, existingUser) => {
-    if (err) { return next(err); }
-    if (existingUser) {
+   const isRegistered = await User.findOne({ email: req.body.email })
+      if (isRegistered) {
       req.flash('errors', { msg: 'Account with that email address already exists.' });
       return res.redirect('/signup');
     }
-    user.save((err) => {
-      if (err) { return next(err); }
-      req.logIn(user, (err) => {
-        if (err) {
-          return next(err);
-        }
-        res.redirect('/');
-      });
-    });
-  });
-};
+     if(!isRegistered) {
+          user.save((err) => {
+            if (err) { return next(err); }
+            req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+            res.redirect('/');
+            });
+       });
+    };
+  };
 
 /**
  * GET /account
