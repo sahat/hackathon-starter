@@ -9,7 +9,7 @@
   "license": "MIT",
   "author": "Sahat Yalkabov",
   "contributors": [
-    "Yashar Fakhari (https://github.com/YasharF)"
+    "Yashar Fakhari (https://github.com/YasharF)",
   ],
   "scripts": {
     "postinstall": "npm rebuild node-sass",
