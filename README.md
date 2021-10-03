@@ -279,9 +279,9 @@ The same goes for other providers.
 - For **Default Application Permissions** make sure at least the following is checked:
  - `r_basicprofile`
 - Finish by clicking **Add Application** button
-- Copy and paste *API Key* and *Secret Key* keys into `.env` file
- - *API Key* is your **clientID**
- - *Secret Key* is your **clientSecret**
+- Copy and paste **API Key** and **Secret Key** keys into `.env` file
+ - **API Key** is your **clientID**
+ - **Secret Key** is your **clientSecret**
 
 <hr>
 
