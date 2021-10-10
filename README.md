@@ -419,14 +419,14 @@ Project Structure
 | **views/partials**/footer.pug      | Footer partial template.                                     |
 | **views**/layout.pug               | Base template.                                               |
 | **views**/home.pug                 | Home page template.                                          |
-| .dockerignore                      | Folder and files ignored by docker usage.                    |
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
+<<<<<<< HEAD
 | .eslintrc                          | Rules for eslint linter.                                     |
 | .gitignore                         | Folder and files ignored by git.                             |
 | .travis.yml                        | Configuration files for continuous integration.              |
+=======
+>>>>>>> parent of f9687d6 (add new files and update list package in readme.md)
 | app.js                             | The main application file.                                   |
-| docker-compose.yml                 | Docker compose configuration file.                           |
-| Dockerfile                         | Docker configuration file.                                   |
 | package.json                       | NPM dependencies.                                            |
 | package-lock.json                  | Contains exact versions of NPM dependencies in package.json. |
 
@@ -439,6 +439,7 @@ Just don't forget to update `extends ../layout`  and corresponding
 List of Packages
 ----------------
 
+<<<<<<< HEAD
 | Package                         | Description                                                             |
 | ------------------------------- | ------------------------------------------------------------------------|
 | @octokit/rest                   | GitHub API library.                                                     |
@@ -497,6 +498,57 @@ List of Packages
 | twilio                          | Twilio API library.                                                     |
 | twitter-lite                    | Twitter API library.                                                    |
 | validator                       | A library of string validators and sanitizers.                          |
+=======
+| Package                         | Description                                                           |
+| ------------------------------- | --------------------------------------------------------------------- |
+| @octokit/rest                   | GitHub API library.                                                   |
+| bcrypt-nodejs                   | Library for hashing and salting user passwords.                       |
+| body-parser                     | Express 4 middleware.                                                 |
+| chai                            | BDD/TDD assertion library.                                            |
+| cheerio                         | Scrape web pages using jQuery-style syntax.                           |
+| clockwork                       | Clockwork SMS API library.                                            |
+| compression                     | Express 4 middleware.                                                 |
+| connect-mongo                   | MongoDB session store for Express.                                    |
+| dotenv                          | Loads environment variables from .env file.                           |
+| errorhandler                    | Express 4 middleware.                                                 |
+| express                         | Node.js web framework.                                                |
+| express-session                 | Express 4 middleware.                                                 |
+| express-flash                   | Provides flash messages for Express.                                  |
+| express-status-monitor          | Reports real-time server metrics for Express.                         |
+| express-validator               | Easy form validation for Express.                                     |
+| fbgraph                         | Facebook Graph API library.                                           |
+| instagram-node                  | Instagram API library.                                                |
+| lastfm                          | Last.fm API library.                                                  |
+| lob                             | Lob API library                                                       |
+| lodash                          | Handy JavaScript utlities library.                                    |
+| lusca                           | CSRF middleware.                                                      |
+| mocha                           | Test framework.                                                       |
+| mongoose                        | MongoDB ODM.                                                          |
+| morgan                          | Express 4 middleware.                                                 |
+| node-foursquare                 | Foursquare API library.                                               |
+| node-linkedin                   | LinkedIn API library.                                                 |
+| node-sass-middleware            | Sass middleware compiler.                                                 |
+| nodemailer                      | Node.js library for sending emails.                                   |
+| passport                        | Simple and elegant authentication library for node.js                 |
+| passport-facebook               | Sign-in with Facebook plugin.                                         |
+| passport-github                 | Sign-in with GitHub plugin.                                           |
+| passport-google-oauth           | Sign-in with Google plugin.                                           |
+| passport-twitter                | Sign-in with Twitter plugin.                                          |
+| passport-instagram              | Sign-in with Instagram plugin.                                        |
+| passport-local                  | Sign-in with Username and Password plugin.                            |
+| passport-linkedin-oauth2        | Sign-in with LinkedIn plugin.                                         |
+| passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.    |
+| paypal-rest-sdk                 | PayPal APIs library.                                                  |
+| pug (jade)                      | Template engine for Express.                                          |
+| request                         | Simplified HTTP request library.                                      |
+| serve-favicon                   | Express 4 middleware offering favicon serving and caching.            |
+| stripe                          | Offical Stripe API library.                                           |
+| supertest                       | HTTP assertion library.                                               |
+| tumblr.js                       | Tumblr API library.                                                   |
+| twilio                          | Twilio API library.                                                   |
+| twit                            | Twitter API library.                                                  |
+| validator                       | Used in conjunction with express-validator in **controllers/api.js**. |
+>>>>>>> parent of f9687d6 (add new files and update list package in readme.md)
 
 Useful Tools and Resources
 --------------------------
