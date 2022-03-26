@@ -166,7 +166,7 @@ credentials.
 - Choose **reCAPTCHA v2**, **"I'm not a robot" Checkbox**
 - Enter *localhost* as the domain.  You can have other domains added in addition to *localhost*
 - Accept the terms and submit the form
-- Copy the *Site Key* and the *Secret key* into `.env`.  These keys will be accessible under Settings, reCAPTCHA keys drop down if you need them again later.
+- Copy the *Site Key* and the *Secret key* into `.env`.  These keys will be accessible under Settings, reCAPTCHA keys drop down if you need them again later
 
 <hr>
 
@@ -409,7 +409,7 @@ Project Structure
 | **models**/User.js                 | Mongoose schema and model for User.                          |
 | **public**/                        | Static assets (fonts, css, js, img).                         |
 | **public**/**js**/application.js   | Specify client-side JavaScript dependencies.                 |
-| **public**/**js**/main.js          | Place your client-side JavaScript here.                      |
+| **public**/**js**/app.js          | Place your client-side JavaScript here.                      |
 | **public**/**css**/main.scss       | Main stylesheet for your app.                                |
 | **public/css/themes**/default.scss | Some Bootstrap overrides to make it look prettier.           |
 | **views/account**/                 | Templates for *login, password reset, signup, profile*.      |
@@ -970,7 +970,7 @@ server.listen(app.get('port'), () => {
 At this point, we are done with the back-end.
 
 You now have a choice - to include your JavaScript code in Pug templates or have all your client-side
-JavaScript in a separate file - in `main.js`. I admit, when I first started with Node.js and JavaScript in general,
+JavaScript in a separate file - in `app.js`. I admit, when I first started with Node.js and JavaScript in general,
 I placed all JavaScript code inside templates because I have access to template variables passed in from Express
 right then and there. It's the easiest thing you can do, but also the least efficient and harder to maintain. Since then I
 almost never include inline JavaScript inside templates anymore.
@@ -999,7 +999,7 @@ have to have `socket.io.js` file anywhere in your project; it will be generated
 automatically at runtime.
 
 If you want to have JavaScript code separate from templates, move that inline
-script code into `main.js`, inside the `$(document).ready()` function:
+script code into `app.js`, inside the `$(document).ready()` function:
 
 ```js
 $(document).ready(function() {
@@ -1353,7 +1353,7 @@ Please note that you may also use the [Herko Dashboard](https://dashboard.heroku
 ### OpenShift
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
-**NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you the new process, please feel free to help us update this page*
+**NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you know the new process, please feel free to help us update this page*
 
 - First, install this Ruby gem: `sudo gem install rhc` :gem:
 - Run `rhc login` and enter your OpenShift credentials
@@ -1553,7 +1553,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2021 Sahat Yalkabov
+Copyright (c) 2014-2022 Sahat Yalkabov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
