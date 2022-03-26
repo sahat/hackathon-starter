@@ -76,13 +76,6 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "eslint": "^7.17.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-chai-friendly": "^0.6.0",
-    "eslint-plugin-import": "^2.22.1",
-    "mocha": "^8.2.1",
-    "mongodb-memory-server": "^8.4.1",
     "chai": "^4.3.6",
     "eslint": "^8.12.0",
     "eslint-config-airbnb-base": "^15.0.0",
