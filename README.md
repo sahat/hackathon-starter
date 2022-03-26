@@ -166,7 +166,7 @@ credentials.
 - Choose **reCAPTCHA v2**, **"I'm not a robot" Checkbox**
 - Enter *localhost* as the domain.  You can have other domains added in addition to *localhost*
 - Accept the terms and submit the form
-- Copy the *Site Key* and the *Secret key* into `.env`.  These keys will be accessible under Settings, reCAPTCHA keys drop down if you need them again later.
+- Copy the *Site Key* and the *Secret key* into `.env`.  These keys will be accessible under Settings, reCAPTCHA keys drop down if you need them again later
 
 <hr>
 
