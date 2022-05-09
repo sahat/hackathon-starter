@@ -385,7 +385,7 @@ If using an SMTP service provider instead of SendGrid:
 - Go to <a href="https://www.twilio.com/try-twilio" target="_blank">https://www.twilio.com/try-twilio</a>
 - Sign up for an account.
 - Once logged into the dashboard, expand the link 'show api credentials'
-- Copy your Account Sid and Auth Token
+- Copy your Account SID, Auth Token, and My Twilio phone number into the nev file, such as .env.example
 
 <hr>
 
