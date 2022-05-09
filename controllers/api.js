@@ -444,7 +444,7 @@ exports.postTwilio = (req, res, next) => {
 
   const message = {
     to: req.body.number,
-    from: '+13472235148',
+    from: process.env.TWILIO_PHONE_ASSIGNED,
     body: req.body.message
   };
   twilio.messages.create(message).then((sentMessage) => {
