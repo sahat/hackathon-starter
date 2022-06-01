@@ -4,12 +4,10 @@ node_js:
   - "12"
   - "14"
 services: mongodb  
-os: osx
+
 cache:  
   directories:
     - "node_modules"
 install:
   - npm install
 script:
-  - npm run lint
-  - npm test
