@@ -1,20 +1,14 @@
-language: node_js
+ language: node_js
 node_js:
-  - "8"
-  
+  - "10"
+  - "12"
+  - "14"
 services: mongodb  
-
 cache:  
   directories:
     - "node_modules"
 install:
-  - npm install --force
+  - npm install
 script:
-
-
-deploy:
-  - provider: script
-    skip_cleanup: true
-    script: chmod +x ./deploy.sh && ./deploy.sh
-    on:
-      branch: master
+  - npm run lint
+  - npm test
