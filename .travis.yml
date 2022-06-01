@@ -14,7 +14,7 @@ script:
   - npm test
 deploy:
   - provider: script
-    skip_cleanup: true
+    skip_cleanup: false
     script: chmod +x ./deploy.sh && ./deploy.sh
     on:
       branch: master
