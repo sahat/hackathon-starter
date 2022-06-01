@@ -11,6 +11,7 @@ cache:
 install:
   - npm install
 script:
+- commitlint-travis
 
 deploy:
   - provider: script
