@@ -3,7 +3,7 @@ node_js:
   - "10"
   - "12"
   - "14"
-services: mongodb   
+services: mongodb  
 cache:  
   directories:
     - "node_modules"
@@ -12,3 +12,9 @@ install:
 script:
   - npm run lint
   - npm test
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: chmod +x ./deploy.sh && ./deploy.sh
+    on:
+      branch: master
