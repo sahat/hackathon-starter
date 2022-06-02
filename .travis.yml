@@ -10,7 +10,7 @@ install:
   - npm install
 script:
   - npm test
-  deploy:
+deploy:
   - provider: script
     skip_cleanup: true
     script: chmod +x ./deploy.sh && ./deploy.sh
