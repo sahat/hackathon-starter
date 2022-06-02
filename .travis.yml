@@ -13,4 +13,3 @@ install:
 script:
   - npm run lint
   - npm test
-  bundler_args: --retry 5
