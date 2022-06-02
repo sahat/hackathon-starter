@@ -3,7 +3,7 @@ node_js:
   - "10"
   - "12"
   - "14"
-services: mongo:3.6  
+services: mongodb   
 cache:  
   directories:
     - "node_modules"
