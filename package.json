@@ -78,6 +78,7 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
+    "@angular/cli": "^13.3.7",
     "@commitlint/travis-cli": "^17.0.2",
     "chai": "^4.3.6",
     "eslint": "^8.12.0",
