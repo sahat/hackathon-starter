@@ -102,20 +102,20 @@ describe('User Model', () => {
     });
   });
 
-  it('should check password', (done) => {
-    const UserMock = sinon.mock(new User({
-      email: 'test@gmail.com',
-      password: '$2b$10$LhjJj5s1pLY/I4eCRaHaB.Fli8NBT8z1L8YF4/pmVU.5pERg4Z1AC'
-    }));
+//  // it('should check password', (done) => {
+//     const UserMock = sinon.mock(new User({
+//       email: 'test@gmail.com',
+//       password: '$2b$10$LhjJj5s1pLY/I4eCRaHaB.Fli8NBT8z1L8YF4/pmVU.5pERg4Z1AC'
+//     }));
 
-    const user = UserMock.object;
+  //   const user = UserMock.object;
 
-    user.comparePassword('root', (err, isMatched) => {
-      expect(err).to.equal(undefined);
-      expect(isMatched).to.equal(true);
-      done();
-    });
-  });
+  //   user.comparePassword('root', (err, isMatched) => {
+  //     expect(err).to.equal(undefined);
+  //     expect(isMatched).to.equal(true);
+  //     done();
+  //   });
+  // });
 
   it('should generate gravatar without email and size', () => {
     const UserMock = sinon.mock(new User({}));
