@@ -1311,7 +1311,7 @@ listed below.
 
 ### Deployment to Heroku
 
-<img src="https://upload.wikimedia.org/wikipedia/en/a/a9/Heroku_logo.png" width="200">
+<img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Heroku_logo.svg" width="200">
 
 - Download and install [Heroku Toolbelt](https://toolbelt.heroku.com/)
 - In a terminal, run `heroku login` and enter your Heroku credentials
