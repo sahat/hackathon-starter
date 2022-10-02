@@ -235,8 +235,7 @@ passport.use(new GitHubStrategy({
             });
           }
         });
-      }
-      else {
+      } else {
         User.findOne({ email: profile._json.email }, (err, existingEmailUser) => {
           if (err) { return done(err); }
           if (existingEmailUser) {

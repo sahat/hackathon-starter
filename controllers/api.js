@@ -137,8 +137,16 @@ exports.getGithub = async (req, res, next) => {
 exports.getQuickbooks = (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'quickbooks');
 
-  const qbo = new Quickbooks(process.env.QUICKBOOKS_CLIENT_ID, process.env.QUICKBOOKS_CLIENT_SECRET,
-    token.accessToken, false, req.user.quickbooks, true, false, null, '2.0', token.refreshToken);
+  const qbo = new Quickbooks(process.env.QUICKBOOKS_CLIENT_ID,
+    process.env.QUICKBOOKS_CLIENT_SECRET,
+    token.accessToken,
+    false,
+    req.user.quickbooks,
+    true,
+    false,
+    null,
+    '2.0',
+    token.refreshToken);
 
   qbo.findCustomers((_, customers) => {
     res.render('api/quickbooks', {
