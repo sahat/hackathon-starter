@@ -18,11 +18,11 @@ block content
     h3 Sign in
   form(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
-    .form-group.row
+    .form-group.row.mb-3
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
       .col-md-7
         input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus, autocomplete='email', required)
-    .form-group.row
+    .form-group.row.mb-3
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') Password
       .col-md-7
         input.form-control(type='password', name='password', id='password', placeholder='Password', autocomplete='current-password', required)
@@ -36,7 +36,7 @@ block content
       .offset-md-3.col-md-7.pl-2
         hr
     .form-group
-      .offset-md-3.col-md-7.pl-2
+      .offset-md-3.col-md-7.pl-2.d-grid.gap-2
         a.btn.btn-block.btn-google.btn-social(href='/auth/google')
           i.fab.fa-google-plus-g.fa-xs
           | Sign in with Google
