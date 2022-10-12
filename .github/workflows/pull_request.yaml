@@ -1,0 +1,33 @@
+name: Test
+
+on:
+push:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  validation_and_test:
+    name: Code Validation and Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          node-version: ${{matrix.node-version}}
+
+      - name: Install Code Dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests and Coverage
+        run: npm run test
