@@ -25,3 +25,71 @@
     background-color: #503484;
   }
 }
+// Basic Twitter Button CSS
+.btn-twitter {
+  background-color: #55acee;
+  color: #FFF !important;
+
+  &:hover, &:active {
+    background-color: #2795e9;
+  }
+}
+
+// Basic YouTube Button CSS
+.btn-youtube {
+  background-color: #cd201f;
+  color: #FFF !important;
+
+  &:hover, &:active {
+    background-color: #a0181b;
+  }
+}
+```
+
+## Custom Colors
+
+```scss
+// Change the default theme color
+$bootstrap-social-theme-color: #6441a5;
+
+// Change the default icon color
+$bootstrap-social-icon-color: #FFF;
+```
+
+## Usage
+
+I highly recommend using [`@ladjs/bootstrap-social`](https://github.com/ladjs/bootstrap-social) which provides the `BootstrapSocialComponent` (React component) and the `bootstrapSocial` (React hook).
+
+```js
+import { BootstrapSocialComponent, bootstrapSocial } from '@ladjs/bootstrap-social';
+import { bootstrapMedia, bootstrapMediaCss } from '@ladjs/bootstrap-media';
+import { bootstrapPagination, bootstrapPaginationCss } from '@ladjs/bootstrap-pagination';
+
+// The BootstrapSocialComponent takes a `services` prop, which is an array of
+// `{ href, label, iconClassName, iconPrefix, title }` objects.
+const services = [
+  {
+    href: 'https://twitter.com/ladjs',
+    label: 'Twitter',
+    iconClassName: 'fab fa-twitter'
+  },
+  {
+    href: 'https://www.youtube.com/channel/UC-fQwuJGtD5scXR5KjZuV2Q',
+    label: 'YouTube',
+    iconClassName: 'fab fa-youtube'
+  },
+  {
+    href: 'https://www.twitch.tv/ladjs',
+    label: 'Twitch',
+    iconClassName: 'fab fa-twitch'
+  },
+  {
+    href: 'https://snapchat.com/add/ladjs',
+    label: 'Snapchat',
+    iconClassName: 'fab fa-snapchat'
+  }
+];
+
+export const SocialButtons = () => (
+  <BootstrapSocialComponent services={services} />
+);
