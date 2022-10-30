@@ -12,6 +12,7 @@
     "Yashar Fakhari (https://github.com/YasharF)"
   ],
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "postinstall": "npm rebuild node-sass",
     "start": "node app.js",
     "test": "nyc mocha --timeout=10000 --exit",
@@ -89,5 +90,8 @@
   },
   "engines": {
     "node": ">=16"
+  },
+  "resolutions": {
+    "async": "3.2.4"
   }
 }
