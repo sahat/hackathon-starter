@@ -22,7 +22,15 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.config({ path: '.env.example' });
+const dotenvResult = dotenv.config({ path: '.env' });
+if (dotenvResult.error) {
+  console.error(dotenvResult.error);
+  if (dotenvResult.error.syscall === 'open' && dotenvResult.error.code === 'ENOENT') {
+    console.log(`❗You probably forgot to create a '.env' file.❗
+      Copy .env.example to .env`);
+  }
+  process.exit(1);
+}
 
 /**
  * Controllers (route handlers).
