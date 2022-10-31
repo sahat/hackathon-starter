@@ -30,7 +30,6 @@
     "cheerio": "^1.0.0-rc.10",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
-    "dotenv": "^16.0.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.3",
     "express-flash": "^0.0.2",
@@ -77,6 +76,7 @@
   },
   "devDependencies": {
     "chai": "^4.3.6",
+    "dotenv": "^16.0.3",
     "eslint": "^8.12.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-chai-friendly": "^0.7.2",

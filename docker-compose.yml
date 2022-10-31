@@ -5,14 +5,16 @@ services:
   web:
     build: .
     ports:
-     - "8080:8080"
+      - "8080:8080"
+    env_file:
+      - .env
     environment:
-     - MONGODB_URI=mongodb://mongo:27017/test 
+      - MONGODB_URI=mongodb://mongo:27017/test
     links:
-     - mongo 
-    depends_on: 
-     - mongo 
+      - mongo
+    depends_on:
+      - mongo
     volumes:
-     - .:/starter
-     - /starter/node_modules
-     
+      - .:/starter
+      - /starter/node_modules
+
