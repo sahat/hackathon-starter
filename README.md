@@ -117,7 +117,11 @@ here is another great tutorial for complete beginners - [Getting Started With No
 Getting Started
 ---------------
 
-The easiest way to get started is to clone the repository:
+## Requirements
+
+Install the [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) node version managemement tool.
+
+## Quick Start
 
 ```bash
 # Get the latest snapshot
@@ -125,6 +129,10 @@ git clone https://github.com/sahat/hackathon-starter.git myproject
 
 # Change directory
 cd myproject
+
+# Install Node and NPM with NVM
+nvm install
+nvm use
 
 # Install NPM dependencies
 npm install
