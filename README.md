@@ -1293,9 +1293,11 @@ After installing docker, start the application with the following commands :
 # To build the project for the first time or when you add dependencies
 docker-compose build web
 
-# To start the application (or to restart after making changes to the source code)
-docker-compose up web
+# To start the application
+docker-compose up
 
+# To restart after making changes to the source code
+docker-compose restart web
 ```
 
 To view the app, find your docker IP address + port 8080 ( this will typically be http://localhost:8080/ ).  To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.

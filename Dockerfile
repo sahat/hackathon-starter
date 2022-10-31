@@ -1,16 +1,13 @@
-FROM node:12-slim
+FROM node:16.18.0-alpine
+
+ENV NODE_ENV production
+EXPOSE 8080
 
 WORKDIR /starter
-ENV NODE_ENV development
-
-COPY package.json /starter/package.json
+COPY . /starter/
 
 RUN npm install pm2 -g
 RUN npm install --production
 
-COPY .env.example /starter/.env.example
-COPY . /starter
-
 CMD ["pm2-runtime","app.js"]
 
-EXPOSE 8080
