@@ -9,13 +9,30 @@ const logger = require('morgan');
 const errorHandler = require('errorhandler');
 const lusca = require('lusca');
 const dotenv = require('dotenv');
-const MongoStore = require('connect-mongo');
 const flash = require('express-flash');
 const path = require('path');
-const mongoose = require('mongoose');
 const passport = require('passport');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+const i18n = require('i18n');
+
+/**
+ * Configure Postgres
+ */
+const { Pool } = require('pg');
+const pgSession = require('connect-pg-simple')(session);
+
+/**
+ * Configure i18n.
+ */
+i18n.configure({
+  locales: ['en', 'fr'],
+  directory: __dirname + '/locales',
+  defaultLocale: 'en',
+  queryParameter: 'lang',
+  cookie: 'locale'
+});
+
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
@@ -28,6 +45,8 @@ dotenv.config({ path: '.env.example' });
  * Controllers (route handlers).
  */
 const homeController = require('./controllers/home');
+const onboardingController = require('./controllers/onboarding');
+const dashboardController = require('./controllers/dashboard');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
@@ -43,13 +62,24 @@ const passportConfig = require('./config/passport');
 const app = express();
 
 /**
- * Connect to MongoDB.
+ * Connect to PostgreSQL.
  */
-mongoose.connect(process.env.MONGODB_URI);
-mongoose.connection.on('error', (err) => {
-  console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.');
-  process.exit();
+const pool = new Pool({
+  connectionString: process.env.POSTGRESQL_URI,
+  ssl: false
+});
+pool.on('error', (err, client) => {
+  console.error('Unexpected error on idle client', err);
+  process.exit(-1);
+});
+
+// Exécuter une requête SQL pour créer la table "session"
+pool.query(
+  'CREATE TABLE IF NOT EXISTS session (sid varchar NOT NULL, sess json NOT NULL, expire timestamp(6) NOT NULL, PRIMARY KEY (sid))'
+).then(() => {
+  console.log('Table "session" créée avec succès');
+}).catch(err => {
+  console.error('Erreur lors de la création de la table "session" :', err);
 });
 
 /**
@@ -72,7 +102,10 @@ app.use(session({
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
   cookie: { maxAge: 1209600000 }, // Two weeks in milliseconds
-  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
+  store: new pgSession({
+    pool: pool,
+    tableName: 'session'
+  }),
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -89,6 +122,9 @@ app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.disable('x-powered-by');
 app.use((req, res, next) => {
+  const lang = req.query.lang || 'fr';
+  // console.log("lang:", lang);
+  i18n.setLocale(lang);
   res.locals.user = req.user;
   next();
 });
@@ -117,6 +153,8 @@ app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawes
  * Primary app routes.
  */
 app.get('/', homeController.index);
+app.get('/onboarding', passportConfig.isAuthenticated, onboardingController.getOnboarding);
+app.get('/dashboard', passportConfig.isAuthenticated, dashboardController.getDashboard);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -140,6 +178,7 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
  * API examples routes.
  */
 app.get('/api', apiController.getApi);
+app.get('/api/profile', passportConfig.isAuthenticated, apiController.getProfile);
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
 app.get('/api/steam', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getSteam);
@@ -238,7 +277,7 @@ if (process.env.NODE_ENV === 'development') {
   // only use in development
   app.use(errorHandler());
 } else {
-  app.use((err, req, res) => {
+  app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).send('Server Error');
   });

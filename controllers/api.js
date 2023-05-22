@@ -28,6 +28,20 @@ exports.getApi = (req, res) => {
 };
 
 /**
+ * GET /api/profile
+ * List connected user informations
+ */
+exports.getProfile = (req, res) => {
+  res.status(200).json({
+    message: `Bonjour, ${req.user.profile.name} !`,
+    user: {
+      name: req.user.profile.name,
+      email: req.user.email
+    }
+  });
+};
+
+/**
  * GET /api/foursquare
  * Foursquare API example.
  */

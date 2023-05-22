@@ -1,16 +1,19 @@
 extends ../layout
 
 block content
-  .pb-2.mt-2.mb-4.border-bottom
-    h3 Forgot Password
-  form(method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    p.pb-4 Enter your email address below and we will send you password reset instructions.
-    .form-group.row
-      label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
-      .col-md-7
-        input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus, autocomplete='email', required)
-    .form-group.offset-sm-3.col-md-7.pl-2
-      button.btn.btn-primary(type='submit')
-        i.fas.fa-key.fa-sm
-        | Reset Password
+  .container.py-4
+    .pb-2.mt-2.mb-4.border-bottom
+      h3.fw-normal Forgot Password
+    main.form-signin 
+      form(method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        p.pb-4 Enter your email address below and we will send you password reset instructions.
+        .form-floating
+          input#email.form-control(type='email' name='email' placeholder='Email' autofocus autocomplete='email' required)
+          label(for='email') Email
+        .form-group
+            .offset-md-3.col-md-7.pl-2
+            |  &nbsp;
+        button.w-100.btn.btn-lg.btn-secondary(type="submit")
+          i.fas.fa-key.fa-sm
+          | &nbsp;Reset Password

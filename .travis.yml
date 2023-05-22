@@ -3,6 +3,8 @@ node_js:
   - "10"
   - "12"
   - "14"
+  - "16"
+  - "18"
 services: mongodb  
 cache:  
   directories:

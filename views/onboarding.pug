@@ -1,0 +1,265 @@
+extends layout
+
+block content
+  main
+    //- include partials/flash
+    .container.col-xl-10.col-xxl-8.px-4.py-3
+      .row.align-items-center.g-lg-5.py-5#onboardingStepOne
+        .col-12.col-md-5.col-lg-7.text-center.text-lg-start
+          h1.display-4.fw-bold.lh-1.mb-3 👋 Hello, put your automations safe!
+          p.col-lg-10.fs-5
+            | To enable our system to save your Airtable automations, we need a Github Fine-grained Personal Access Token on a new repository. 
+            br
+            | You can find the documentation on how to create one 
+            a(href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token" target="_blank") here
+          
+            p
+              small.fst-italic Your Github PAT needs these permissions to work:
+            ul.list-group
+              li.list-group-item.py-0
+                span.d-flex.justify-content-between.my-2
+                  small.fw-bold Contents
+                  small.text-muted Read and write
+              li.list-group-item.py-0
+                span.d-flex.justify-content-between.my-2
+                  small.fw-bold Metadata
+                  small.text-muted Read-only
+              li.list-group-item.py-0
+                span.d-flex.justify-content-between.my-2
+                  small.fw-bold Workflows
+                  small.text-muted Read and write
+
+        //- Column with Github Repo URL and Github PAT inputs
+        .col-12.col-md-5.col-lg-5.mx-auto
+          form.p-3.p-md-5.border.rounded-3.bg-light#form
+            .form-floating.mb-3#repoForm
+              input#floatingInputRepo.form-control(type='url', placeholder='Enter your Github repo URL' required)
+              label(for='floatingInputRepo') Enter your Github repo URL
+            .form-floating.mb-3#patForm
+              input#floatingInputPat.form-control(type='text', placeholder='Enter your Github PAT' required)
+              label(for='floatingInputPat') Enter your Github PAT
+            button#submitBtn.w-100.btn.btn-lg.btn-primary(type='submit') Next
+            hr.my-4
+            small.text-muted By clicking Next, you agree to the 
+              a(href="#") terms of use.
+      
+      //- Column with Github Repo infos
+      .row.align-items-center.g-lg-5.py-5.d-none#onboardingStepTwo
+        .col-12.col-md-5.col-lg-7.text-center.text-lg-start
+          h1.display-4.fw-bold.lh-1.mb-3 🎉 Let's check that everything is correct!
+          p.col-lg-10.fs-5
+            | Check that the identified repo is the right one
+            br
+            | It's in this directory that we will save your Airtable automations.
+        .col-12.col-md-5.col-lg-5.mx-auto
+          .card.my-5.p-3.p-md-5.border.rounded-3.bg-light
+            .card-body
+              h6.card-subtitle.mb-2.muted-text Owner name
+              h5.card-title Repository name
+              p.card-text Repo description
+              //- Creation date small and text aligned right
+              .card-date.text-end.text-muted
+                small Creation date
+            button#finishBtn.w-100.btn.btn-lg.btn-primary(type='submit') Finish
+            //- Add link to return if repo is not the right one
+            a.btn.btn-link#changeRepoBtn(href="#") Change repo
+
+
+  script.
+    //- On click, check if the Github PAT is valid
+    const onboardingStepOne = document.getElementById('onboardingStepOne');
+    const onboardingStepTwo = document.getElementById('onboardingStepTwo');
+    const submitBtn = document.getElementById('submitBtn');
+    const finishBtn = document.getElementById('finishBtn');
+    const changeRepoBtn = document.getElementById('changeRepoBtn');
+    const form = document.getElementById('form');
+    const repoForm = document.getElementById('repoForm');
+    const patForm = document.getElementById('patForm');
+    const inputRepo = document.getElementById('floatingInputRepo');
+    const inputPat = document.getElementById('floatingInputPat');
+    const apiBaseUrl = 'https://api.github.com/repos/';
+    const spinnerIcon = '<i class="fas fa-spinner fa-spin"></i>'
+
+    submitBtn.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const token = inputPat.value;
+      const repoUrl = extractOwnerAndRepoFromGithubUrl(inputRepo.value);
+
+      submitBtn.innerHTML = spinnerIcon;
+
+      try {
+        const response = await fetch(`${apiBaseUrl}${repoUrl.owner}/${repoUrl.repo}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.ok) {
+          // handle success
+          console.log('Success', response);
+          const successMsg = document.createElement('div');
+          successMsg.classList.add('alert', 'alert-success');
+          successMsg.textContent = 'Your repository is valid!';
+          repoForm.parentElement.insertBefore(successMsg, repoForm);
+          
+          //- On attend 2 secondes
+          setTimeout(async () => {
+            //- On retire les animations précédentes
+            onboardingStepOne.classList.remove('animate__slideInLeft');
+            onboardingStepTwo.classList.remove('animate__slideOutRight');
+            
+            //- On cache le premier step et on affiche le second
+            onboardingStepOne.classList.add('animate__animated', 'animate__slideOutLeft');
+            onboardingStepTwo.classList.add('animate__animated', 'animate__slideInRight');
+
+            //- On attend la fin de l'animation
+            setTimeout(function() {
+              onboardingStepTwo.classList.remove('d-none');
+              onboardingStepOne.classList.add('d-none');
+            }, 800);
+            //- Response.body is a ReadableStream we need to convert to JSON
+            const data = await response.json();
+            console.log(data);
+            showGithubRepoInfos(data);
+          }, 1600);
+        } else {
+          // handle error
+          console.log('Error');
+          const errorMsg = document.createElement('div');
+          errorMsg.classList.add('alert', 'alert-danger');
+          errorMsg.textContent = 'Your repository is not valid!';
+          form.parentElement.insertBefore(errorMsg, form);
+          submitBtn.innerHTML = 'Retry';
+        }
+
+        //- form.classList.add('d-none');
+
+      } catch (error) {
+        console.log(error);
+        submitBtn.innerHTML = 'Retry';
+      }
+    });
+
+    changeRepoBtn.addEventListener('click', (event) => {
+      //- On retire le message flash
+      const flashMsg = document.querySelector('.alert');
+      flashMsg.remove();
+      //- On retire le spinner sur le bouton
+      submitBtn.innerHTML = 'Next';
+
+      //- On retire les animations précédentes
+      onboardingStepOne.classList.remove('animate__slideOutLeft');
+      onboardingStepTwo.classList.remove('animate__slideInRight');
+      //- On cache le second en slide out right step
+      onboardingStepTwo.classList.add('animate__slideOutRight');
+
+      //- On attend la fin de l'animation et on affiche le premier en slide in left
+      setTimeout(function() {
+        onboardingStepOne.classList.remove('d-none');
+        onboardingStepOne.classList.add('animate__slideInLeft');
+        onboardingStepTwo.classList.add('d-none');
+      }, 800);
+    });
+
+    //- If user see everything is ok, he can click on finish button, we save repo infos in the database and redirect him to the dashboard
+    finishBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      window.location.href = '/dashboard';
+
+      //- //- On envoie les infos du repo à l'API
+      //- const repoUrl = extractOwnerAndRepoFromGithubUrl(inputRepo.value);
+      //- const repoInfos = {
+      //-   owner: repoUrl.owner,
+      //-   repo: repoUrl.repo,
+      //- };
+      //- console.log(repoInfos);
+      //- //- On envoie les infos du repo à l'API
+      //- fetch('/api/v1/repo', {
+      //-   method: 'POST',
+      //-   headers: {
+      //-     'Content-Type': 'application/json'
+      //-   },
+      //-   body: JSON.stringify(repoInfos)
+      //- })
+      //- .then(response => response.json())
+      //- .then(data => {
+      //-   console.log('Success:', data);
+      //-   //- On redirige vers le dashboard
+      //-   window.location.href = '/dashboard';
+      //- })
+      //- .catch((error) => {
+      //-   console.error('Error:', error);
+      //- });
+    });
+
+    function extractOwnerAndRepoFromGithubUrl(url) {
+      const regex = /^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/?$/i;
+      const match = url.match(regex);
+
+      if (!match) {
+        return null; // L'URL n'est pas valide
+      }
+
+      const owner = match[1];
+      const repo = match[2];
+
+      return {
+        owner,
+        repo,
+      };
+    }
+
+    async function showGithubRepoInfos(data) {
+      
+      const repoName = document.querySelector('#onboardingStepTwo h5.card-title');
+      const ownerName = document.querySelector('#onboardingStepTwo h6.card-subtitle');
+      const repoDescription = document.querySelector('#onboardingStepTwo p.card-text');
+      const createdDate = document.querySelector('#onboardingStepTwo .card-date small');
+      const repoInfos = data
+
+      //- If repo is private we show lock icon, if not we show globe icon on the right of the repo owner name
+      if (repoInfos.private) {
+        ownerName.innerHTML = `${repoInfos.owner.login} <i class="fas fa-lock"></i>`;
+      } else {
+        ownerName.innerHTML = `${repoInfos.owner.login} <i class="fas fa-globe"></i>`;
+      }
+      repoName.textContent = repoInfos.name;
+      repoDescription.textContent = repoInfos.description;
+      createdDate.textContent = `Created on ${new Date(repoInfos.created_at).toLocaleDateString()}`;
+    }
+
+      //- // Open a new tab to airtable.com in var to manipulate it
+      //- const airtableTab = window.open('https://airtable.com/', '_blank');
+
+      //- // Check if the tab is loaded
+      //- const checkTab = setInterval(() => {
+      //-   if (airtableTab.document.readyState === 'complete') {
+      //-     clearInterval(checkTab);
+      //-     // Check if the user is connected to Airtable (if profile pic is found)
+      //-     const checkAirtableConnection = setInterval(() => {
+      //-       const loggedIn = airtableTab.document.querySelector("#id_e6e6ba3ea6da14ac1603184b1204d837 > div > div > div > div > img");
+      //-       if (loggedIn) {
+      //-         clearInterval(checkAirtableConnection);
+      //-         // The user is logged in, update the UI accordingly
+      //-         const title = document.querySelector("#onboarding h1");
+      //-         title.textContent = "Connection to Airtable successful! 🎉";
+      //-         const loader = document.querySelector("#onboarding .loader");
+      //-         loader.classList.add("d-none");
+      //-         setTimeout(() => {
+      //-           airtableTab.close();
+      //-           window.location.href = '/onboarding?airtable';
+      //-         }, 1000);
+      //-       } else {
+      //-         // The user is not logged in, show an error message
+      //-         const title = document.querySelector("#onboarding h1");
+      //-         title.textContent = "Unable to connect to Airtable 😕";
+      //-         const loader = document.querySelector("#onboarding .loader");
+      //-         loader.classList.add("d-none");
+      //-         const message = document.createElement("p");
+      //-         message.classList.add("text-danger");
+      //-         message.textContent = "Please log in to Airtable and try again.";
+      //-         document.querySelector("#onboarding").appendChild(message);
+      //-       }
+      //-     }, 1000);
+      //-   }
+      //- }, 1000);

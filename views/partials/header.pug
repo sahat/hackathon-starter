@@ -1,57 +1,67 @@
-//.navbar.navbar-light.fixed-top.navbar-expand-lg.bg-light
-//  .container
-//    a.navbar-brand(href='/')
-//      i.fas.fa-cube
-//      | Project name
-//    button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
-//      span.sr-only Toggle navigation
-//      span.navbar-toggler-icon
-//    .collapse.navbar-collapse
-//      ul.nav.navbar-nav
-//        li.nav-item(class=(title === 'Home') ? 'active' : undefined)
-//          a.nav-link(href='/') Home
-//        li.nav-item(class=(title === 'API Examples') ? 'active' : undefined)
-//          a.nav-link(href='/api') API Examples
-//        li.nav-item(class=(title === 'Contact') ? 'active' : undefined)
-//          a.nav-link(href='/contact') Contact
-//      ul.nav.navbar-nav.ml-auto
-//        if !user
-//          li.nav-item(class=(title === 'Login') ? 'active' : undefined)
-//            a.nav-link(href='/login') Login
-//          li.nav-item(class=(title === 'Create Account') ? 'active' : undefined)
-//            a.nav-link(href='/signup') Create Account
-//        else
-//          li.dropdown(class=(title === 'Account Management') ? 'active' : undefined).nav-item
-//            a.dropdown-toggle.nav-link(href='#', data-toggle='dropdown')
-//              if user.profile.picture
-//                img(src=user.profile.picture)
-//              else
-//                img(src=user.gravatar(60))
-//              span= user.profile.name || user.email || user.id
-//              i.caret
-//            div.dropdown-menu
-//              a.dropdown-item(href='/account') My Account
-//              div.dropdown-divider
-//              a.dropdown-item(href='/logout') Logout
-//
-//
-//
+nav.navbar.navbar-expand-lg.py-2.bg-light.navbar-light.fixed-top.border-bottom
+  .container.d-flex.flex-wrap
+    a.d-flex.align-items-center.mb-2.mb-lg-0.text-dark.text-decoration-none(href='/')
+        svg(d-block.mx-auto, xmlns='http://www.w3.org/2000/svg', width='24', height='24', fill='none', stroke='currentColor', stroke-linecap='round', stroke-linejoin='round', stroke-width='2', role='img', viewBox='0 0 24 24')
+          title paab
+          circle(cx='12', cy='12', r='10')
+          path(d='M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94')
+    button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarColor02' aria-controls='navbarColor02' aria-expanded='false' aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+    #navbarColor02.collapse.navbar-collapse
+      if !user
+        ul.navbar-nav.me-auto
+          li.nav-item
+            a.nav-link.link-dark.px-2.active(href='/', aria-current='page') Home
+          li.nav-item
+            a.nav-link.link-dark.px-2(href='#') Features
+          li.nav-item
+            a.nav-link.link-dark.px-2(href='#') Pricing
+          li.nav-item
+            a.nav-link.link-dark.px-2(href='#') FAQs
+          li.nav-item
+            a.nav-link.link-dark.px-2(href='#') About
+        ul.nav
+          form.d-flex
+            li.nav-item
+              a.nav-link.link-dark.px-2(href='/login') Login
+            li.nav-item
+              a.nav-link.link-dark.px-2(href='/signup') Create Account
+      else
+        ul.navbar-nav.me-auto
+          li.nav-item
+            a.nav-link.link-dark.px-2.active(href='/dashboard', aria-current='page') Dashboard
+          li.nav-item
+            a.nav-link.link-dark.px-2(href='#') Features
+          li.nav-item
+            a.nav-link.link-dark.px-2(href='#') Pricing
+          li.nav-item
+            a.nav-link.link-dark.px-2(href='#') FAQs
+          li.nav-item
+            a.nav-link.link-dark.px-2(href='#') About
+        ul.nav
+          form.d-flex
+            li.nav-item
+              a.nav-link.link-dark.px-2(href='/account') My Account
+            li.nav-item
+              a.nav-link.link-dark.px-2(href='/logout') Sign out
 
-nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-  .container
-    a.navbar-brand(href='/')
-      img.d-inline-block.align-text-top(src='/bootstrap-logo.svg' alt='' width='30' height='24')
-      |  Hackathon Starter
-    button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarColor01' aria-controls='navbarColor01' aria-expanded='false' aria-label='Toggle navigation')
-      span.navbar-toggler-icon
-    #navbarColor01.collapse.navbar-collapse
-      ul.navbar-nav.me-auto.mb-2.mb-lg-0
-        li.nav-item
-          a.nav-link(class=(title === 'Home') ? 'active' : '')(href='/') Home
-        li.nav-item
-          a.nav-link(class=(title === 'API Examples') ? 'active' : '')(href='/api') API Examples
-        li.nav-item
-          a.nav-link(class=(title === 'Contact') ? 'active' : '')(href='/contact') Contact
+
+
+//- nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+//-   .container
+//-     a.navbar-brand(href='/')
+//-       img.d-inline-block.align-text-top(src='/bootstrap-logo.svg' alt='' width='30' height='24')
+//-       |  paab
+//-     button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarColor01' aria-controls='navbarColor01' aria-expanded='false' aria-label='Toggle navigation')
+//-       span.navbar-toggler-icon
+//-     #navbarColor01.collapse.navbar-collapse
+//-       ul.navbar-nav.me-auto.mb-2.mb-lg-0
+//-         li.nav-item
+//-           a.nav-link(class=(title === 'Home') ? 'active' : '')(href='/') Home
+//-         li.nav-item
+//-           a.nav-link(class=(title === 'API Examples') ? 'active' : '')(href='/api') API Examples
+//-         li.nav-item
+//-           a.nav-link(class=(title === 'Contact') ? 'active' : '')(href='/contact') Contact
 
       form.d-flex
         if !user
