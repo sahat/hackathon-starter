@@ -2,7 +2,7 @@ extends layout
 
 block content
   main
-    //- include partials/flash
+    include partials/flash
     .container.col-xl-10.col-xxl-8.px-4.py-3
       .row.align-items-center.g-lg-5.py-5#onboardingStepOne
         .col-12.col-md-5.col-lg-7.text-center.text-lg-start
@@ -31,12 +31,13 @@ block content
 
         //- Column with Github Repo URL and Github PAT inputs
         .col-12.col-md-5.col-lg-5.mx-auto
-          form.p-3.p-md-5.border.rounded-3.bg-light#form
+          form.p-3.p-md-5.border.rounded-3.bg-light#form(method='POST' action='/onboarding')
+            input(type='hidden', name='_csrf', value=_csrf)
             .form-floating.mb-3#repoForm
-              input#floatingInputRepo.form-control(type='url', placeholder='Enter your Github repo URL' required)
+              input#floatingInputRepo.form-control(type='url', name="floatingInputRepo" placeholder='Enter your Github repo URL' required)
               label(for='floatingInputRepo') Enter your Github repo URL
             .form-floating.mb-3#patForm
-              input#floatingInputPat.form-control(type='text', placeholder='Enter your Github PAT' required)
+              input#floatingInputPat.form-control(type='text', name="floatingInputPat" placeholder='Enter your Github PAT' required)
               label(for='floatingInputPat') Enter your Github PAT
             button#submitBtn.w-100.btn.btn-lg.btn-primary(type='submit') Next
             hr.my-4
@@ -52,17 +53,19 @@ block content
             br
             | It's in this directory that we will save your Airtable automations.
         .col-12.col-md-5.col-lg-5.mx-auto
-          .card.my-5.p-3.p-md-5.border.rounded-3.bg-light
-            .card-body
-              h6.card-subtitle.mb-2.muted-text Owner name
-              h5.card-title Repository name
-              p.card-text Repo description
-              //- Creation date small and text aligned right
-              .card-date.text-end.text-muted
-                small Creation date
-            button#finishBtn.w-100.btn.btn-lg.btn-primary(type='submit') Finish
-            //- Add link to return if repo is not the right one
-            a.btn.btn-link#changeRepoBtn(href="#") Change repo
+          form#form(method='POST' action='/onboarding/nextstep')
+            input(type='hidden', name='_csrf', value=_csrf)
+            .card.my-5.p-3.p-md-5.border.rounded-3.bg-light
+              .card-body
+                h6.card-subtitle.mb-2.muted-text Owner name
+                h5.card-title Repository name
+                p.card-text Repo description
+                //- Creation date small and text aligned right
+                .card-date.text-end.text-muted
+                  small Creation date
+              button#finishBtn.w-100.btn.btn-lg.btn-primary(type='submit') Finish
+              //- Add link to return if repo is not the right one
+              a.btn.btn-link#changeRepoBtn(href="#") Change repo
 
 
   script.
@@ -80,65 +83,126 @@ block content
     const apiBaseUrl = 'https://api.github.com/repos/';
     const spinnerIcon = '<i class="fas fa-spinner fa-spin"></i>'
 
-    submitBtn.addEventListener('click', async (event) => {
-      event.preventDefault();
-      const token = inputPat.value;
-      const repoUrl = extractOwnerAndRepoFromGithubUrl(inputRepo.value);
+    //- When URL path is /onboarding/nextstep check if 'step' is in the query string
+    //- If yes, show step 2
+    //- If no, show step 1
+    //- If step 3, save repo infos in DB and redirect to /dashboard
+    const urlParams = new URLSearchParams(window.location.search);
+    const step = urlParams.get('step');
+    const repo = urlParams.get('repo');
+    const owner = urlParams.get('owner');
+    const description = urlParams.get('description');
+    const creationDate = urlParams.get('creationDate');
+    const isPrivateRepo = urlParams.get('private');
 
-      submitBtn.innerHTML = spinnerIcon;
+    if (step === '2') {
+      //- Show step 2
+      onboardingStepOne.classList.add('d-none');
+      onboardingStepTwo.classList.remove('d-none');
+      //- Fill repo infos
+      showGithubRepoInfos(repo, owner, description, creationDate, isPrivateRepo);
 
-      try {
-        const response = await fetch(`${apiBaseUrl}${repoUrl.owner}/${repoUrl.repo}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        if (response.ok) {
-          // handle success
-          console.log('Success', response);
-          const successMsg = document.createElement('div');
-          successMsg.classList.add('alert', 'alert-success');
-          successMsg.textContent = 'Your repository is valid!';
-          repoForm.parentElement.insertBefore(successMsg, repoForm);
+    } else {
+      //- Show step 1
+      onboardingStepOne.classList.remove('d-none');
+      onboardingStepTwo.classList.add('d-none');
+    }
+
+    //- submitBtn.addEventListener('click', async (event) => {
+    //-   event.preventDefault();
+    //-   const githubToken = inputPat.value;
+    //-   const githubRepoUrl = extractOwnerAndRepoFromGithubUrl(inputRepo.value);
+
+    //-   submitBtn.innerHTML = spinnerIcon;
+
+    //-   //- try {
+    //-   //-   const response = await fetch('/onboarding', {
+    //-   //-     method: 'POST',
+    //-   //-     headers: {
+    //-   //-       'Content-Type': 'application/json'
+    //-   //-     },
+    //-   //-     body: JSON.stringify({ githubToken, githubRepoUrl })
+    //-   //-   });
+    //-   //-   const data = await response.json();
+    //-   //-   console.log(data);
+    //-   //-   if (data.status === 'success') {
+    //-   //-     //- On retire les animations précédentes
+    //-   //-     onboardingStepOne.classList.remove('animate__slideInLeft');
+    //-   //-     //- On cache le premier en slide out left step
+    //-   //-     onboardingStepOne.classList.add('animate__slideOutLeft');
+    //-   //-     //- On attend la fin de l'animation et on affiche le second en slide in right
+    //-   //-     setTimeout(function() {
+    //-   //-       onboardingStepTwo.classList.remove('d-none');
+    //-   //-       onboardingStepTwo.classList.add('animate__slideInRight');
+    //-   //-       onboardingStepOne.classList.add('d-none');
+    //-   //-     }, 800);
+    //-   //-   } else {
+    //-   //-     //- On affiche un message d'erreur
+    //-   //-     const flashMsg = document.createElement('div');
+    //-   //-     flashMsg.classList.add('alert', 'alert-danger', 'alert-dismissible', 'fade', 'show');
+    //-   //-     flashMsg.setAttribute('role', 'alert');
+    //-   //-     flashMsg.innerHTML = data.message;
+    //-   //-     form.prepend(flashMsg);
+    //-   //-     submitBtn.innerHTML = 'Next';
+    //-   //-   }
+    //-   //- } catch (error) {
+    //-   //-   console.log(error);
+    //-   //- }
+    //- });
+
+    //- try {
+    //-     const response = await fetch(`${apiBaseUrl}${repoUrl.owner}/${repoUrl.repo}`, {
+    //-       method: 'GET',
+    //-       headers: {
+    //-         'Authorization': `Bearer ${token}`
+    //-       }
+    //-     });
+    //-     if (response.ok) {
+    //-       // handle success
+    //-       console.log('Success', response);
+    //-       const successMsg = document.createElement('div');
+    //-       successMsg.classList.add('alert', 'alert-success');
+    //-       successMsg.textContent = 'Your repository is valid!';
+    //-       repoForm.parentElement.insertBefore(successMsg, repoForm);
           
-          //- On attend 2 secondes
-          setTimeout(async () => {
-            //- On retire les animations précédentes
-            onboardingStepOne.classList.remove('animate__slideInLeft');
-            onboardingStepTwo.classList.remove('animate__slideOutRight');
+    //-       //- On attend 2 secondes
+    //-       setTimeout(async () => {
+    //-         //- On retire les animations précédentes
+    //-         onboardingStepOne.classList.remove('animate__slideInLeft');
+    //-         onboardingStepTwo.classList.remove('animate__slideOutRight');
             
-            //- On cache le premier step et on affiche le second
-            onboardingStepOne.classList.add('animate__animated', 'animate__slideOutLeft');
-            onboardingStepTwo.classList.add('animate__animated', 'animate__slideInRight');
+    //-         //- On cache le premier step et on affiche le second
+    //-         onboardingStepOne.classList.add('animate__animated', 'animate__slideOutLeft');
+    //-         onboardingStepTwo.classList.add('animate__animated', 'animate__slideInRight');
 
-            //- On attend la fin de l'animation
-            setTimeout(function() {
-              onboardingStepTwo.classList.remove('d-none');
-              onboardingStepOne.classList.add('d-none');
-            }, 800);
-            //- Response.body is a ReadableStream we need to convert to JSON
-            const data = await response.json();
-            console.log(data);
-            showGithubRepoInfos(data);
-          }, 1600);
-        } else {
-          // handle error
-          console.log('Error');
-          const errorMsg = document.createElement('div');
-          errorMsg.classList.add('alert', 'alert-danger');
-          errorMsg.textContent = 'Your repository is not valid!';
-          form.parentElement.insertBefore(errorMsg, form);
-          submitBtn.innerHTML = 'Retry';
-        }
+    //-         //- On attend la fin de l'animation
+    //-         setTimeout(function() {
+    //-           onboardingStepTwo.classList.remove('d-none');
+    //-           onboardingStepOne.classList.add('d-none');
+    //-         }, 800);
+    //-         //- Response.body is a ReadableStream we need to convert to JSON
+    //-         const data = await response.json();
+    //-         console.log(data);
+    //-         showGithubRepoInfos(data);
+    //-       }, 1600);
+    //-     } else {
+    //-       // handle error
+    //-       console.log('Error');
+    //-       const errorMsg = document.createElement('div');
+    //-       errorMsg.classList.add('alert', 'alert-danger');
+    //-       errorMsg.textContent = 'Your repository is not valid!';
+    //-       form.parentElement.insertBefore(errorMsg, form);
+    //-       submitBtn.innerHTML = 'Retry';
+    //-     }
 
-        //- form.classList.add('d-none');
+    //-     //- form.classList.add('d-none');
 
-      } catch (error) {
-        console.log(error);
-        submitBtn.innerHTML = 'Retry';
-      }
-    });
+    //-   } catch (error) {
+    //-     console.log(error);
+    //-     submitBtn.innerHTML = 'Retry';
+    //-   }
+    //- });
+      
 
     changeRepoBtn.addEventListener('click', (event) => {
       //- On retire le message flash
@@ -161,36 +225,36 @@ block content
       }, 800);
     });
 
-    //- If user see everything is ok, he can click on finish button, we save repo infos in the database and redirect him to the dashboard
-    finishBtn.addEventListener('click', (event) => {
-      event.preventDefault();
-      window.location.href = '/dashboard';
+    //- //- If user see everything is ok, he can click on finish button, we save repo infos in the database and redirect him to the dashboard
+    //- finishBtn.addEventListener('click', (event) => {
+    //-   event.preventDefault();
+    //-   window.location.href = '/dashboard';
 
-      //- //- On envoie les infos du repo à l'API
-      //- const repoUrl = extractOwnerAndRepoFromGithubUrl(inputRepo.value);
-      //- const repoInfos = {
-      //-   owner: repoUrl.owner,
-      //-   repo: repoUrl.repo,
-      //- };
-      //- console.log(repoInfos);
-      //- //- On envoie les infos du repo à l'API
-      //- fetch('/api/v1/repo', {
-      //-   method: 'POST',
-      //-   headers: {
-      //-     'Content-Type': 'application/json'
-      //-   },
-      //-   body: JSON.stringify(repoInfos)
-      //- })
-      //- .then(response => response.json())
-      //- .then(data => {
-      //-   console.log('Success:', data);
-      //-   //- On redirige vers le dashboard
-      //-   window.location.href = '/dashboard';
-      //- })
-      //- .catch((error) => {
-      //-   console.error('Error:', error);
-      //- });
-    });
+    //-   //- //- On envoie les infos du repo à l'API
+    //-   //- const repoUrl = extractOwnerAndRepoFromGithubUrl(inputRepo.value);
+    //-   //- const repoInfos = {
+    //-   //-   owner: repoUrl.owner,
+    //-   //-   repo: repoUrl.repo,
+    //-   //- };
+    //-   //- console.log(repoInfos);
+    //-   //- //- On envoie les infos du repo à l'API
+    //-   //- fetch('/api/v1/repo', {
+    //-   //-   method: 'POST',
+    //-   //-   headers: {
+    //-   //-     'Content-Type': 'application/json'
+    //-   //-   },
+    //-   //-   body: JSON.stringify(repoInfos)
+    //-   //- })
+    //-   //- .then(response => response.json())
+    //-   //- .then(data => {
+    //-   //-   console.log('Success:', data);
+    //-   //-   //- On redirige vers le dashboard
+    //-   //-   window.location.href = '/dashboard';
+    //-   //- })
+    //-   //- .catch((error) => {
+    //-   //-   console.error('Error:', error);
+    //-   //- });
+    //- });
 
     function extractOwnerAndRepoFromGithubUrl(url) {
       const regex = /^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/?$/i;
@@ -209,23 +273,22 @@ block content
       };
     }
 
-    async function showGithubRepoInfos(data) {
+    async function showGithubRepoInfos(repo, owner, description, creationDate, isPrivate) {
       
-      const repoName = document.querySelector('#onboardingStepTwo h5.card-title');
-      const ownerName = document.querySelector('#onboardingStepTwo h6.card-subtitle');
-      const repoDescription = document.querySelector('#onboardingStepTwo p.card-text');
-      const createdDate = document.querySelector('#onboardingStepTwo .card-date small');
-      const repoInfos = data
+      const repoNameField = document.querySelector('#onboardingStepTwo h5.card-title');
+      const ownerNameField = document.querySelector('#onboardingStepTwo h6.card-subtitle');
+      const repoDescriptionField = document.querySelector('#onboardingStepTwo p.card-text');
+      const createdDateField = document.querySelector('#onboardingStepTwo .card-date small');
 
       //- If repo is private we show lock icon, if not we show globe icon on the right of the repo owner name
-      if (repoInfos.private) {
-        ownerName.innerHTML = `${repoInfos.owner.login} <i class="fas fa-lock"></i>`;
+      if (isPrivate) {
+        ownerNameField.innerHTML = `${owner} <i class="fas fa-lock"></i>`;
       } else {
-        ownerName.innerHTML = `${repoInfos.owner.login} <i class="fas fa-globe"></i>`;
+        ownerNameField.innerHTML = `${owner} <i class="fas fa-globe"></i>`;
       }
-      repoName.textContent = repoInfos.name;
-      repoDescription.textContent = repoInfos.description;
-      createdDate.textContent = `Created on ${new Date(repoInfos.created_at).toLocaleDateString()}`;
+      repoNameField.textContent = repo;
+      repoDescriptionField.textContent = description;
+      createdDateField.textContent = `Created on ${new Date(creationDate).toLocaleDateString()}`;
     }
 
       //- // Open a new tab to airtable.com in var to manipulate it

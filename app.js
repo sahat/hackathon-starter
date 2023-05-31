@@ -154,6 +154,9 @@ app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawes
  */
 app.get('/', homeController.index);
 app.get('/onboarding', passportConfig.isAuthenticated, onboardingController.getOnboarding);
+app.post('/onboarding', passportConfig.isAuthenticated, onboardingController.postOnboarding);
+app.get('/onboarding/:nextstep', passportConfig.isAuthenticated, onboardingController.getOnboardingNextStep);
+app.post('/onboarding/:nextstep', passportConfig.isAuthenticated, onboardingController.postOnboardingNextStep);
 app.get('/dashboard', passportConfig.isAuthenticated, dashboardController.getDashboard);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);

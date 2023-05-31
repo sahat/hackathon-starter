@@ -21,8 +21,32 @@ const User = sequelize.define('User', {
   github: Sequelize.STRING,
   tokens: Sequelize.ARRAY(Sequelize.TEXT),
   profile: {
-    type: Sequelize.JSONB
-  }
+    type: Sequelize.JSONB,
+    defaultValue: {},
+    allowNull: false,
+    get() {
+      return this.getDataValue('profile') || {};
+    },
+    set(value) {
+      this.setDataValue('profile', value);
+    },
+  },
+  onboardingStatus: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+  },
+  settings: {
+    type: Sequelize.JSONB,
+    defaultValue: {},
+    allowNull: false,
+    get() {
+      return this.getDataValue('settings') || {};
+    },
+    set(value) {
+      this.setDataValue('settings', value);
+    },
+  },
 }, {
   timestamps: true,
   hooks: {
@@ -32,6 +56,45 @@ const User = sequelize.define('User', {
     }
   }
 });
+
+User.prototype.getOnboardingStatus = function () {
+  return this.onboardingStatus || false;
+};
+
+User.prototype.setOnboardingStatus = function (status) {
+  this.onboardingStatus = status;
+};
+
+User.prototype.getSettings = function () {
+  return this.settings || {};
+};
+
+User.prototype.setSettings = function (settings) {
+  console.log('this.settings', this.settings);
+  console.log('settings', settings);
+  this.settings = settings;
+};
+
+User.prototype.enableGithub = function (username, token) {
+  const settings = this.getSettings();
+  settings.github = {
+    enabled: true,
+    username,
+    token,
+  };
+  this.setSettings(settings);
+};
+
+User.prototype.disableGithub = function () {
+  const settings = this.getSettings();
+  settings.github = {
+    enabled: false,
+    username: '',
+    token: '',
+  };
+  this.setSettings(settings);
+};
+
 
 // Synchronisation de la base de données avec le modèle
 sequelize.sync()

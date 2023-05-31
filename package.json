@@ -88,6 +88,7 @@
     "mocha": "^9.2.2",
     "mongodb-memory-server": "^8.4.1",
     "nyc": "^15.1.0",
+    "sequelize-cli": "^6.6.0",
     "sinon": "^13.0.1",
     "supertest": "^6.2.2"
   },
