@@ -1,65 +1,115 @@
+const Sequelize = require('sequelize');
 const bcrypt = require('@node-rs/bcrypt');
 const crypto = require('crypto');
-const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
-  password: String,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  emailVerificationToken: String,
-  emailVerified: Boolean,
+const sequelize = new Sequelize(process.env.POSTGRESQL_URI);
 
-  snapchat: String,
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  steam: String,
-  twitch: String,
-  quickbooks: String,
-  tokens: Array,
-
+const User = sequelize.define('User', {
+  email: {
+    type: Sequelize.STRING,
+    unique: true,
+    allowNull: false
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  passwordResetToken: Sequelize.STRING,
+  passwordResetExpires: Sequelize.DATE,
+  emailVerificationToken: Sequelize.STRING,
+  emailVerified: Sequelize.BOOLEAN,
+  github: Sequelize.STRING,
+  tokens: Sequelize.ARRAY(Sequelize.TEXT),
   profile: {
-    name: String,
-    gender: String,
-    location: String,
-    website: String,
-    picture: String
-  }
-}, { timestamps: true });
-
-/**
- * Password hash middleware.
- */
-userSchema.pre('save', async function save(next) {
-  const user = this;
-  if (!user.isModified('password')) { return next(); }
-  try {
-    user.password = await bcrypt.hash(user.password, 10);
-    next();
-  } catch (err) {
-    next(err);
+    type: Sequelize.JSONB,
+    defaultValue: {},
+    allowNull: false,
+    get() {
+      return this.getDataValue('profile') || {};
+    },
+    set(value) {
+      this.setDataValue('profile', value);
+    },
+  },
+  onboardingStatus: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+  },
+  settings: {
+    type: Sequelize.JSONB,
+    defaultValue: {},
+    allowNull: false,
+    get() {
+      return this.getDataValue('settings') || {};
+    },
+    set(value) {
+      this.setDataValue('settings', value);
+    },
+  },
+}, {
+  timestamps: true,
+  hooks: {
+    beforeCreate: async (user) => {
+      const hashedPassword = await bcrypt.hash(user.password, 10);
+      user.password = hashedPassword;
+    }
   }
 });
 
-/**
- * Helper method for validating user's password.
- */
-userSchema.methods.comparePassword = async function comparePassword(candidatePassword, cb) {
-  try {
-    cb(null, await bcrypt.verify(candidatePassword, this.password));
-  } catch (err) {
-    cb(err);
-  }
+User.prototype.getOnboardingStatus = function () {
+  return this.onboardingStatus || false;
 };
 
-/**
- * Helper method for getting user's gravatar.
- */
-userSchema.methods.gravatar = function gravatar(size) {
+User.prototype.setOnboardingStatus = function (status) {
+  this.onboardingStatus = status;
+};
+
+User.prototype.getSettings = function () {
+  return this.settings || {};
+};
+
+User.prototype.setSettings = function (settings) {
+  console.log('this.settings', this.settings);
+  console.log('settings', settings);
+  this.settings = settings;
+};
+
+User.prototype.enableGithub = function (username, token) {
+  const settings = this.getSettings();
+  settings.github = {
+    enabled: true,
+    username,
+    token,
+  };
+  this.setSettings(settings);
+};
+
+User.prototype.disableGithub = function () {
+  const settings = this.getSettings();
+  settings.github = {
+    enabled: false,
+    username: '',
+    token: '',
+  };
+  this.setSettings(settings);
+};
+
+
+// Synchronisation de la base de données avec le modèle
+sequelize.sync()
+  .then(() => {
+    console.log('Tables synchronisées');
+  })
+  .catch((error) => {
+    console.error('Erreur lors de la synchronisation de la base de données:', error);
+  });
+
+User.prototype.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+User.prototype.gravatar = function gravatar(size) {
   if (!size) {
     size = 200;
   }
@@ -69,7 +119,5 @@ userSchema.methods.gravatar = function gravatar(size) {
   const md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
-
-const User = mongoose.model('User', userSchema);
 
 module.exports = User;

@@ -50,3 +50,10 @@ Thumbs.db
 .Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
+
+.env
+.env.example
+
+migrations
+models/index.js
+config/config.json

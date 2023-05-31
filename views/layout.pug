@@ -10,15 +10,15 @@ html.h-100
     //link(rel='stylesheet', href='/css/bootstrap.min.css')
     link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css')
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css")
     block head
 
   body.d-flex.flex-column.h-100
     include partials/header
 
-    .flex-shrink-0
-      .container.mt-3
-        include partials/flash
-        block content
+    .flex-shrink-0(style='padding-top: 56px;')
+      //- .container-fluid.mt-3
+      block content
 
     include partials/footer
 

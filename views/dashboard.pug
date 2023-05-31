@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  .container.py-4
+    //- we create a dashboard to show the user's automations and use bootstrap to style it like AdminLTE
+    main
+      include partials/flash
+      //- Add 4 metrics cards
+      .container
+        .row
+          .col-lg-3.col-6
+            .small-box.bg-info
+              .inner
+                h3= automations ? automations.length : 0
+                p Automations
+              .icon
+                i.fa.fa-cogs
+              a(href='/automations' class='small-box-footer') More info 
+                i.fa.fa-arrow-circle-right
+          .col-lg-3.col-6
+            .small-box.bg-success
+              .inner
+                h3= devices ? devices.length : 0
+                p Devices
+              .icon
+                i.fa.fa-plug
+              a(href='/devices' class='small-box-footer') More info
+                i.fa.fa-arrow-circle-right
+          .col-lg-3.col-6
+            .small-box.bg-warning
+              .inner
+                h3= users ? users.length : 0
+                p Users
+              .icon
+                i.fa.fa-users
+              a(href='/users' class='small-box-footer') More info
+                i.fa.fa-arrow-circle-right
+          .col-lg-3.col-6
+            .small-box.bg-danger
+              .inner
+                h3= rooms ? rooms.length : 0
+                p Rooms
+              .icon
+                i.fa.fa-home
+              a(href='/rooms' class='small-box-footer') More info
+                i.fa.fa-arrow-circle-right
