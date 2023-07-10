@@ -782,7 +782,7 @@ exports.getGoogleSheets = (req, res) => {
     auth: authObj
   });
 
-  const url = 'https://docs.google.com/spreadsheets/d/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/edit#gid=0';
+  const url = 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit#gid=0';
   const re = /spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
   const id = url.match(re)[1];
 
