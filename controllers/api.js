@@ -490,7 +490,7 @@ exports.getTwitch = async (req, res, next) => {
  * Chart example.
  */
 exports.getChart = async (req, res, next) => {
-  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=compact&apikey=${process.env.ALPHA_VANTAGE_KEY}`;
+  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=compact&apikey=${process.env.ALPHA_VANTAGE_KEY}`;
   axios.get(url)
     .then((response) => {
       const arr = response.data['Time Series (Daily)'];
