@@ -46,12 +46,12 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
       span.navbar-toggler-icon
     #navbarColor01.collapse.navbar-collapse
       ul.navbar-nav.me-auto.mb-2.mb-lg-0
+      li.nav-item
+          a.nav-link(class=(title === 'Home') ? 'active' : '', href='/') Home
         li.nav-item
-          a.nav-link(class=(title === 'Home') ? 'active' : '')(href='/') Home
+          a.nav-link(class=(title === 'API Examples') ? 'active' : '', href='/api') API Examples
         li.nav-item
-          a.nav-link(class=(title === 'API Examples') ? 'active' : '')(href='/api') API Examples
-        li.nav-item
-          a.nav-link(class=(title === 'Contact') ? 'active' : '')(href='/contact') Contact
+          a.nav-link(class=(title === 'Contact') ? 'active' : '', href='/contact') Contact
 
       form.d-flex
         if !user
