@@ -1,0 +1,55 @@
+diff --git a/node_modules/passport/lib/sessionmanager.js b/node_modules/passport/lib/sessionmanager.js
+index 81b59b1..17807c4
+--- a/node_modules/passport/lib/sessionmanager.js
++++ b/node_modules/passport/lib/sessionmanager.js
+@@ -7,6 +7,15 @@ function SessionManager(options, serializeUser) {
+   }
+   options = options || {};
+   
++  this._delegate = options.delegate || {
++    regenerate: function(req, cb){
++      cb();
++    },
++    save: function(req, cb){
++      cb();
++    }
++  };
++
+   this._key = options.key || 'passport';
+   this._serializeUser = serializeUser;
+ }
+@@ -25,7 +34,7 @@ SessionManager.prototype.logIn = function(req, user, options, cb) {
+   
+   // regenerate the session, which is good practice to help
+   // guard against forms of session fixation
+-  req.session.regenerate(function(err) {
++  this._delegate.regenerate(req, function(err) {
+     if (err) {
+       return cb(err);
+     }
+@@ -44,7 +53,7 @@ SessionManager.prototype.logIn = function(req, user, options, cb) {
+       req.session[self._key].user = obj;
+       // save the session before redirection to ensure page
+       // load does not happen before session is saved
+-      req.session.save(function(err) {
++      self._delegate.save(req, function(err) {
+         if (err) {
+           return cb(err);
+         }
+@@ -73,14 +82,14 @@ SessionManager.prototype.logOut = function(req, options, cb) {
+   }
+   var prevSession = req.session;
+   
+-  req.session.save(function(err) {
++  this._delegate.save(req, function(err) {
+     if (err) {
+       return cb(err)
+     }
+   
+     // regenerate the session, which is good practice to help
+     // guard against forms of session fixation
+-    req.session.regenerate(function(err) {
++    self._delegate.regenerate(req, function(err) {
+       if (err) {
+         return cb(err);
+       }

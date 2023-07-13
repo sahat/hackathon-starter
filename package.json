@@ -12,7 +12,7 @@
     "Yashar Fakhari (https://github.com/YasharF)"
   ],
   "scripts": {
-    "postinstall": "npm rebuild node-sass",
+    "postinstall": "patch-package && npm rebuild node-sass",
     "start": "node app.js",
     "test": "nyc mocha --timeout=10000 --exit",
     "lint": "eslint \"**/*.js\"",
@@ -76,6 +76,7 @@
     "passport-snapchat": "^1.0.0",
     "passport-twitch-new": "^0.0.2",
     "passport-twitter": "^1.0.4",
+    "patch-package": "^7.0.2",
     "paypal-rest-sdk": "^1.8.1",
     "pug": "^3.0.2",
     "stripe": "^12.12.0",
