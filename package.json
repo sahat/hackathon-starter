@@ -15,8 +15,16 @@
     "postinstall": "npm rebuild node-sass",
     "start": "node app.js",
     "test": "nyc mocha --timeout=10000 --exit",
-    "lint": "eslint \"**/*.js\""
+    "lint": "eslint \"**/*.js\"",
+    "prepare": "husky install",
+    "lintStage": "node_modules/.bin/lint-staged"
   },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint -- --fix"
+    ]
+  },
+  "pre-commit": "lint-staged",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.0",
     "@ladjs/bootstrap-social": "^7.0.2",
@@ -82,6 +90,8 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-chai-friendly": "^0.7.2",
     "eslint-plugin-import": "^2.27.5",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "mocha": "^10.2.0",
     "mongodb-memory-server": "^8.4.1",
     "nyc": "^15.1.0",
