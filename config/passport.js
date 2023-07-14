@@ -10,7 +10,7 @@ const { Strategy: TwitchStrategy } = require('passport-twitch-new');
 const { Strategy: GitHubStrategy } = require('passport-github2');
 const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
 const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
-const { Strategy: OpenIDStrategy } = require('passport-openid');
+const { SteamOpenIdStrategy } = require('passport-steam-openid');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
 const _ = require('lodash');
@@ -612,14 +612,12 @@ passport.use('foursquare', new OAuth2Strategy({
 /**
  * Steam API OpenID.
  */
-passport.use(new OpenIDStrategy({
+passport.use(new SteamOpenIdStrategy({
   apiKey: process.env.STEAM_KEY,
-  providerURL: 'http://steamcommunity.com/openid',
   returnURL: `${process.env.BASE_URL}/auth/steam/callback`,
-  realm: `${process.env.BASE_URL}/`,
-  stateless: true,
-  passReqToCallback: true,
-}, (req, identifier, done) => {
+  profile: true,
+}, (req, identifier, profile, done) => {
+  console.log(profile);
   const steamId = identifier.match(/\d+$/)[0];
   const profileURL = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_KEY}&steamids=${steamId}`;
 

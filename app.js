@@ -218,8 +218,8 @@ app.get('/auth/tumblr', passport.authorize('tumblr'));
 app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect: '/api' }), (req, res) => {
   res.redirect('/api/tumblr');
 });
-app.get('/auth/steam', passport.authorize('openid', { state: 'SOME STATE' }));
-app.get('/auth/steam/callback', passport.authorize('openid', { failureRedirect: '/api' }), (req, res) => {
+app.get('/auth/steam', passport.authorize('steam-openid', { state: 'SOME STATE' }));
+app.get('/auth/steam/callback', passport.authorize('steam-openid', { failureRedirect: '/api' }), (req, res) => {
   res.redirect(req.session.returnTo);
 });
 app.get('/auth/pinterest', passport.authorize('pinterest', { scope: 'read_public write_public' }));
