@@ -1,7 +1,6 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-const nodemailerSendgrid = require('nodemailer-sendgrid');
 const passport = require('passport');
 const _ = require('lodash');
 const validator = require('validator');
@@ -14,19 +13,16 @@ const randomBytesAsync = promisify(crypto.randomBytes);
  * Helper Function to Send Mail.
  */
 const sendMail = (settings) => {
-  let transportConfig;
-  if (process.env.SENDGRID_API_KEY) {
-    transportConfig = nodemailerSendgrid({
-      apiKey: process.env.SENDGRID_API_KEY
-    });
-  } else {
-    transportConfig = {
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD
-      }
-    };
-  }
+  const transportConfig = {
+    host: process.env.SMTP_HOST,
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD
+    }
+  };
+
   let transporter = nodemailer.createTransport(transportConfig);
 
   return transporter.sendMail(settings.mailOptions)
@@ -379,7 +375,7 @@ exports.getVerifyEmail = (req, res, next) => {
   const sendVerifyEmail = (token) => {
     const mailOptions = {
       to: req.user.email,
-      from: 'hackathon@starter.com',
+      from: process.env.SITE_CONTACT_EMAIL,
       subject: 'Please verify your email address on Hackathon Starter',
       text: `Thank you for registering with hackathon-starter.\n\n
         This verify your email address please click on the following link, or paste this into your browser:\n\n
@@ -445,7 +441,7 @@ exports.postReset = (req, res, next) => {
     if (!user) { return; }
     const mailOptions = {
       to: user.email,
-      from: 'hackathon@starter.com',
+      from: process.env.SITE_CONTACT_EMAIL,
       subject: 'Your Hackathon Starter password has been changed',
       text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
     };
@@ -516,7 +512,7 @@ exports.postForgot = (req, res, next) => {
     const token = user.passwordResetToken;
     const mailOptions = {
       to: user.email,
-      from: 'hackathon@starter.com',
+      from: process.env.SITE_CONTACT_EMAIL,
       subject: 'Reset your password on Hackathon Starter',
       text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n

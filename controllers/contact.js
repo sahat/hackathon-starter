@@ -1,7 +1,6 @@
 const axios = require('axios');
 const validator = require('validator');
 const nodemailer = require('nodemailer');
-const nodemailerSendgrid = require('nodemailer-sendgrid');
 
 /**
  * GET /contact
@@ -58,19 +57,15 @@ exports.postContact = async (req, res) => {
       fromEmail = req.user.email;
     }
 
-    let transportConfig;
-    if (process.env.SENDGRID_API_KEY) {
-      transportConfig = nodemailerSendgrid({
-        apiKey: process.env.SENDGRID_API_KEY
-      });
-    } else {
-      transportConfig = {
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASSWORD
-        }
-      };
-    }
+    const transportConfig = {
+      host: process.env.SMTP_HOST,
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD
+      }
+    };
 
     let transporter = nodemailer.createTransport(transportConfig);
 
