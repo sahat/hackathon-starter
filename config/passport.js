@@ -617,7 +617,6 @@ passport.use(new SteamOpenIdStrategy({
   returnURL: `${process.env.BASE_URL}/auth/steam/callback`,
   profile: true,
 }, (req, identifier, profile, done) => {
-  console.log(profile);
   const steamId = identifier.match(/\d+$/)[0];
   const profileURL = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_KEY}&steamids=${steamId}`;
 
