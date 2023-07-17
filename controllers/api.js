@@ -11,7 +11,8 @@ const crypto = require('crypto');
 const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
 const axios = require('axios');
-const { google } = require('googleapis');
+const googledrive = require('@googleapis/drive');
+const googlesheets = require('@googleapis/sheets');
 const Quickbooks = require('node-quickbooks');
 const validator = require('validator');
 
@@ -744,14 +745,13 @@ exports.getGoogleMaps = (req, res) => {
 
 exports.getGoogleDrive = (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'google');
-  const authObj = new google.auth.OAuth2({
+  const authObj = new googledrive.auth.OAuth2({
     access_type: 'offline'
   });
   authObj.setCredentials({
     access_token: token.accessToken
   });
-
-  const drive = google.drive({
+  const drive = googledrive.drive({
     version: 'v3',
     auth: authObj
   });
@@ -769,14 +769,14 @@ exports.getGoogleDrive = (req, res) => {
 
 exports.getGoogleSheets = (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'google');
-  const authObj = new google.auth.OAuth2({
+  const authObj = new googlesheets.auth.OAuth2({
     access_type: 'offline'
   });
   authObj.setCredentials({
     access_token: token.accessToken
   });
 
-  const sheets = google.sheets({
+  const sheets = googlesheets.sheets({
     version: 'v4',
     auth: authObj
   });

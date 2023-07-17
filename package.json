@@ -27,6 +27,8 @@
   "pre-commit": "lint-staged",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.0",
+    "@googleapis/drive": "^8.0.0",
+    "@googleapis/sheets": "^5.0.1",
     "@ladjs/bootstrap-social": "^7.0.2",
     "@node-rs/bcrypt": "^1.7.1",
     "@octokit/rest": "^20.0.01",
@@ -46,7 +48,6 @@
     "express-flash": "^0.0.2",
     "express-handlebars": "^7.0.7",
     "express-session": "^1.17.3",
-    "googleapis": "^122.0.0",
     "instagram-node": "^0.5.8",
     "jquery": "^3.7.0",
     "lastfm": "^0.9.4",
