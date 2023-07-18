@@ -74,7 +74,6 @@
     "passport-oauth2-refresh": "^2.2.0",
     "passport-snapchat": "^1.0.0",
     "passport-steam-openid": "^1.0.1",
-    "passport-twitch-new": "^0.0.2",
     "passport-twitter": "^1.0.4",
     "patch-package": "^7.0.2",
     "paypal-rest-sdk": "^1.8.1",
@@ -82,6 +81,7 @@
     "stripe": "^12.12.0",
     "tumblr.js": "^3.0.0",
     "twilio": "^4.13.0",
+    "twitch-passport": "^1.0.6",
     "twitter-lite": "^1.1.0",
     "validator": "^13.9.0"
   },
