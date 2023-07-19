@@ -12,10 +12,7 @@ const ig = require('instagram-node').instagram();
 const axios = require('axios');
 const googledrive = require('@googleapis/drive');
 const googlesheets = require('@googleapis/sheets');
-const Quickbooks = require('node-quickbooks');
 const validator = require('validator');
-
-Quickbooks.setOauthVersion('2.0');
 
 /**
  * GET /api
@@ -136,13 +133,34 @@ exports.getGithub = async (req, res, next) => {
 
 exports.getQuickbooks = (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'quickbooks');
+  const realmId = req.user.quickbooks;
+  const quickbooksAPIMinorVersion = 65;
+  const AccountingBaseUrl = 'https://sandbox-quickbooks.api.intuit.com';
 
-  const qbo = new Quickbooks(process.env.QUICKBOOKS_CLIENT_ID, process.env.QUICKBOOKS_CLIENT_SECRET, token.accessToken, false, req.user.quickbooks, true, false, null, '2.0', token.refreshToken);
+  const query = 'select * from Customer';
+  const url = `${AccountingBaseUrl}/v3/company/${realmId}/query?query=${query}&minorversion=${quickbooksAPIMinorVersion}`;
+  /* eslint-disable */
+  // Example urls not supported by the current pug view. See Intuit's API explorer for more info.
+  // const url = `${AccountingBaseUrl}/v3/company/${realmId}/companyinfo/${realmId}?minorversion=${quickbooksAPIMinorVersion}`;
+  // const url = `${AccountingBaseUrl}/v3/company/${realmId}/reports/CustomerBalance?minorversion=${quickbooksAPIMinorVersion}`;
+  /* eslint-enable */
 
-  qbo.findCustomers((_, customers) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: `Bearer ${token.accessToken}`
+  };
+
+  const options = {
+    url,
+    method: 'GET',
+    headers
+  };
+
+  axios(options).then((customers) => {
     res.render('api/quickbooks', {
       title: 'Quickbooks API',
-      customers: customers.QueryResponse.Customer
+      customers: customers.data.QueryResponse.Customer
     });
   });
 };

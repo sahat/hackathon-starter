@@ -59,7 +59,6 @@
     "mongoose": "^6.11.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "node-quickbooks": "^2.0.43",
     "node-sass": "^9.0.0",
     "node-sass-middleware": "^1.0.1",
     "nodemailer": "^6.9.3",
