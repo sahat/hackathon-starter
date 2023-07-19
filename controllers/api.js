@@ -7,12 +7,14 @@ const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const paypal = require('paypal-rest-sdk');
 const crypto = require('crypto');
-const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
 const axios = require('axios');
 const googledrive = require('@googleapis/drive');
 const googlesheets = require('@googleapis/sheets');
 const validator = require('validator');
+const {
+  Configuration: LobConfiguration, LetterEditable, LettersApi, ZipEditable, ZipLookupsApi
+} = require('@lob/lob-typescript-sdk');
 
 /**
  * GET /api
@@ -572,6 +574,10 @@ exports.getPayPalCancel = (req, res) => {
  * Lob API example.
  */
 exports.getLob = async (req, res, next) => {
+  const config = new LobConfiguration({
+    username: process.env.LOB_KEY,
+  });
+
   let recipientName;
   if (req.user) { recipientName = req.user.profile.name; } else { recipientName = 'John Doe'; }
   const addressTo = {
@@ -583,20 +589,18 @@ exports.getLob = async (req, res, next) => {
   };
   const addressFrom = {
     name: 'Hackathon Starter',
-    address_line1: '123 Test Street',
-    address_line2: 'Unit 200',
-    address_city: 'Chicago',
-    address_state: 'IL',
-    address_zip: '60012',
+    address_line1: '305 Harrison St',
+    address_city: 'Seattle',
+    address_state: 'WA',
+    address_zip: '98109',
     address_country: 'US'
   };
 
-  const lookupZip = () => lob.usZipLookups.lookup({ zip_code: '94107' })
-    .then((zipdetails) => (zipdetails))
-    .catch((error) => Promise.reject(new Error(`Could not get zip code details: ${error}`)));
+  const zipData = new ZipEditable({
+    zip_code: addressTo.address_zip
+  });
 
-  const createAndMailLetter = () => lob.letters.create({
-    description: 'My First Class Letter',
+  const letterData = new LetterEditable({
     to: addressTo,
     from: addressFrom,
     // file: minified version of https://github.com/lob/lob-node/blob/master/examples/html/letter.html with slight changes as an example
@@ -605,13 +609,11 @@ exports.getLob = async (req, res, next) => {
           Hello ${addressTo.name}, <p> We would like to welcome you to the community! Thanks for being a part of the team! <p><p> Cheer,<br>${addressFrom.name}
           </div></div></div></body></html>`,
     color: false
-  })
-    .then((letter) => (letter))
-    .catch((error) => Promise.reject(new Error(`Could not create and send letter: ${error}`)));
+  });
 
   try {
-    const uspsLetter = await createAndMailLetter();
-    const zipDetails = await lookupZip();
+    const uspsLetter = await new LettersApi(config).create(letterData);
+    const zipDetails = await new ZipLookupsApi(config).lookup(zipData);
     res.render('api/lob', {
       title: 'Lob API',
       zipDetails,
