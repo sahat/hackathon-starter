@@ -1,7 +1,6 @@
 const { promisify } = require('util');
 const cheerio = require('cheerio');
 const { LastFmNode } = require('lastfm');
-const tumblr = require('tumblr.js');
 const { Octokit } = require('@octokit/rest');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
@@ -61,21 +60,25 @@ exports.getFoursquare = async (req, res, next) => {
  * Tumblr API example.
  */
 exports.getTumblr = (req, res, next) => {
-  const token = req.user.tokens.find((token) => token.kind === 'tumblr');
-  const client = tumblr.createClient({
-    consumer_key: process.env.TUMBLR_KEY,
-    consumer_secret: process.env.TUMBLR_SECRET,
-    token: token.accessToken,
-    token_secret: token.tokenSecret
-  });
-  client.blogPosts('mmosdotcom-blog.tumblr.com', { type: 'photo' }, (err, data) => {
-    if (err) { return next(err); }
-    res.render('api/tumblr', {
-      title: 'Tumblr API',
-      blog: data.blog,
-      photoset: data.posts[0].photos
+  // const token = req.user.tokens.find((token) => token.kind === 'tumblr'); //unused
+  const appkey = process.env.TUMBLR_KEY;
+  // const appsecret = process.env.TUMBLR_SECRET; //unused in this example
+  // const accessToken = token.accessToken; //unused in this example
+  // const tokenSecret = token.tokenSecret; //unused in this example
+
+  const blogId = 'mmosdotcom-blog.tumblr.com';
+  const postType = 'photo';
+  axios.get(`https://api.tumblr.com/v2/blog/${blogId}/posts/${postType}?api_key=${appkey}`)
+    .then((response) => {
+      res.render('api/tumblr', {
+        title: 'Tumblr API',
+        blog: response.data.response.blog,
+        photoset: response.data.response.posts[0].photos
+      });
+    })
+    .catch((error) => {
+      next(error);
     });
-  });
 };
 
 /**
