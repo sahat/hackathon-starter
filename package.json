@@ -12,11 +12,12 @@
     "Yashar Fakhari (https://github.com/YasharF)"
   ],
   "scripts": {
-    "postinstall": "patch-package && npm rebuild node-sass",
-    "start": "node app.js",
+    "postinstall": "patch-package && npm run scss",
+    "start": "npm run scss && node app.js",
     "test": "nyc mocha --timeout=10000 --exit",
     "lint": "eslint \"**/*.js\"",
     "prepare": "husky install",
+    "scss": "sass --no-source-map --load-path=./ --update ./public/css:./public/css",
     "lintStage": "node_modules/.bin/lint-staged"
   },
   "lint-staged": {
@@ -59,8 +60,6 @@
     "mongoose": "^6.11.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "node-sass": "^9.0.0",
-    "node-sass-middleware": "^1.0.1",
     "nodemailer": "^6.9.3",
     "passport": "^0.6.0",
     "passport-facebook": "^3.0.0",
@@ -76,6 +75,7 @@
     "patch-package": "^7.0.2",
     "paypal-rest-sdk": "^1.8.1",
     "pug": "^3.0.2",
+    "sass": "^1.64.0",
     "stripe": "^12.12.0",
     "tumblr.js": "^3.0.0",
     "twilio": "^4.13.0",
