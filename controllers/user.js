@@ -83,6 +83,7 @@ exports.postLogin = (req, res, next) => {
     req.logIn(user, (err) => {
       if (err) { return next(err); }
       req.flash('success', { msg: 'Success! You are logged in.' });
+      console.log('req.sessionStore:', req.sessionStore);
       res.redirect(req.session.returnTo || '/');
     });
   })(req, res, next);
@@ -95,11 +96,11 @@ exports.postLogin = (req, res, next) => {
 exports.logout = (req, res) => {
   req.logout((err) => {
     if (err) console.log('Error : Failed to logout.', err);
-  });
-  req.session.destroy((err) => {
-    if (err) console.log('Error : Failed to destroy the session during logout.', err);
-    req.user = null;
-    res.redirect('/');
+    req.session.destroy((err) => {
+      if (err) console.log('Error : Failed to destroy the session during logout.', err);
+      req.user = null;
+      res.redirect('/');
+    });
   });
 };
 
@@ -233,9 +234,14 @@ exports.postUpdatePassword = (req, res, next) => {
 exports.postDeleteAccount = (req, res, next) => {
   User.deleteOne({ _id: req.user.id }, (err) => {
     if (err) { return next(err); }
-    req.logout();
-    req.flash('info', { msg: 'Your account has been deleted.' });
-    res.redirect('/');
+    req.logout((err) => {
+      if (err) console.log('Error : Failed to logout.', err);
+      req.session.destroy((err) => {
+        if (err) console.log('Error : Failed to destroy the session during account deletion.', err);
+        req.user = null;
+        res.redirect('/');
+      });
+    });
   });
 };
 
