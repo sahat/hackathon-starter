@@ -1,6 +1,5 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-
 const User = require('../models/User');
 
 describe('User Model', () => {
@@ -89,11 +88,11 @@ describe('User Model', () => {
     };
 
     userMock
-      .expects('remove')
+      .expects('deleteOne')
       .withArgs({ email: 'test@gmail.com' })
       .yields(null, expectedResult);
 
-    User.remove({ email: 'test@gmail.com' }, (err, result) => {
+    User.deleteOne({ email: 'test@gmail.com' }, (err, result) => {
       userMock.verify();
       userMock.restore();
       expect(err).to.be.null;
@@ -102,19 +101,16 @@ describe('User Model', () => {
     });
   });
 
-  it('should check password', (done) => {
+  it('should check password', async () => {
     const UserMock = sinon.mock(new User({
       email: 'test@gmail.com',
-      password: '$2b$10$LhjJj5s1pLY/I4eCRaHaB.Fli8NBT8z1L8YF4/pmVU.5pERg4Z1AC'
+      password: '$2y$10$ux4O8y0CCilFQ5JS66namekb9Hbr1AN7kwEDn2ej6e6AYw3BPqAVa'
     }));
 
     const user = UserMock.object;
-
-    user.comparePassword('root', (err, isMatched) => {
-      expect(err).to.equal(undefined);
-      expect(isMatched).to.equal(true);
-      done();
-    });
+    const comparePasscbSpy = sinon.spy();
+    await user.comparePassword('root1234', comparePasscbSpy);
+    expect(comparePasscbSpy.calledOnceWithExactly(null, true)).to.be.true;
   });
 
   it('should generate gravatar without email and size', () => {
