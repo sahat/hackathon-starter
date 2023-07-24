@@ -584,7 +584,7 @@ exports.getLob = async (req, res, next) => {
   let recipientName;
   if (req.user) { recipientName = req.user.profile.name; } else { recipientName = 'John Doe'; }
   const addressTo = {
-    name: recipientName,
+    name: recipientName || 'Developer',
     address_line1: '123 Main Street',
     address_city: 'New York',
     address_state: 'NY',
@@ -604,6 +604,7 @@ exports.getLob = async (req, res, next) => {
   });
 
   const letterData = new LetterEditable({
+    use_type: 'operational',
     to: addressTo,
     from: addressFrom,
     // file: minified version of https://github.com/lob/lob-node/blob/master/examples/html/letter.html with slight changes as an example
