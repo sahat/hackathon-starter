@@ -22,6 +22,7 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
 dotenv.config({ path: '.env.example' });
+const secureCookieTransfer = (process.env.BASE_URL.slice(0, 5) === 'https');
 
 /**
  * Controllers (route handlers).
@@ -63,11 +64,16 @@ app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('trust proxy', secureCookieTransfer);
 app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 1209600000 }, // Two weeks in milliseconds
+  name: 'startercookie', // change the cookie name for additional security in production
+  cookie: {
+    maxAge: 1209600000, // Two weeks in milliseconds
+    secure: secureCookieTransfer
+  },
   store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
 }));
 app.use(passport.initialize());
