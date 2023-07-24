@@ -2,7 +2,7 @@
 Hackathon Starter
 =======================
 
-**Live Demo**: https://hackathon-starter.walcony.com
+**Live Demo**: TBD
 
 Jump to [What's new?](https://github.com/sahat/hackathon-starter/blob/master/CHANGELOG.md)
 
