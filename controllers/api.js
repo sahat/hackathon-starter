@@ -519,8 +519,8 @@ exports.getPayPal = (req, res, next) => {
       payment_method: 'paypal'
     },
     redirect_urls: {
-      return_url: process.env.PAYPAL_RETURN_URL,
-      cancel_url: process.env.PAYPAL_CANCEL_URL
+      return_url: `${process.env.BASE_URL}/api/paypal/success`,
+      cancel_url: `${process.env.BASE_URL}/api/paypal/cancel`
     },
     transactions: [{
       description: 'Hackathon Starter',
