@@ -90,6 +90,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "mocha": "^10.2.0",
+    "mongodb-memory-server": "^8.4.1",
     "nyc": "^15.1.0",
     "sinon": "^15.2.0",
     "supertest": "^6.3.3"
