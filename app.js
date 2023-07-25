@@ -234,6 +234,12 @@ app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureR
 /**
  * Error Handler.
  */
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  res.status(404).send('Page Not Found');
+});
+
 if (process.env.NODE_ENV === 'development') {
   // only use in development
   app.use(errorHandler());
