@@ -15,6 +15,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const multer = require('multer');
+const rateLimit = require('express-rate-limit');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
@@ -22,7 +23,25 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
 dotenv.config({ path: '.env.example' });
-const secureCookieTransfer = (process.env.BASE_URL.slice(0, 5) === 'https');
+
+/**
+ * Set config values
+ */
+const secureTransfer = (process.env.BASE_URL.slice(0, 5) === 'https');
+
+// Consider adding a proxy such as cloudflare for production.
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+// This logic for numberOfProxies works for local testing, ngrok use, single host deployments
+// behind cloudflare, etc. You may need to change it for more complex network settings.
+// See readme.md for more info.
+let numberOfProxies;
+if (secureTransfer) numberOfProxies = 1; else numberOfProxies = 0;
 
 /**
  * Controllers (route handlers).
@@ -60,11 +79,12 @@ app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.set('trust proxy', numberOfProxies);
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.set('trust proxy', secureCookieTransfer);
+app.use(limiter);
 app.use(session({
   resave: true,
   saveUninitialized: true,
@@ -72,7 +92,7 @@ app.use(session({
   name: 'startercookie', // change the cookie name for additional security in production
   cookie: {
     maxAge: 1209600000, // Two weeks in milliseconds
-    secure: secureCookieTransfer
+    secure: secureTransfer
   },
   store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
 }));

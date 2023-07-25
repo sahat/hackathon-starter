@@ -49,6 +49,7 @@
     "express": "^4.18.2",
     "express-flash": "^0.0.2",
     "express-handlebars": "^7.0.7",
+    "express-rate-limit": "^6.8.0",
     "express-session": "^1.17.3",
     "instagram-node": "^0.5.8",
     "jquery": "^3.7.0",
