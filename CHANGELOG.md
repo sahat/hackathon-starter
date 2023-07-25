@@ -20,6 +20,7 @@
 - Added Github Actions: NodeJS CI check unit test and lint
 - Upgrade nodejs for docker
 - Removed express-handlebars npm package as it was not used and is not that popular compared to pug (breaking change)
+- Updated documentation
 
 - Mongoose 7 upgrade (breaking change)
 - Upgraded to popper2
