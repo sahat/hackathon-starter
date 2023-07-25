@@ -4,13 +4,13 @@
 ### 8.0.0 (July 26, 2023)
 
 - Security: Renamed the cookie and set secure attribute for cookie transmission when https is present
-- Security: Migrated off  all deprecated, vulunerable or unmaintained packages
+- Security: Migrated off all deprecated, vulnerable or unmaintained packages
 - Security: Added express rate limiter
-- Added additional sanitization and validation for external inputs. Lusca provides input protection. The additional sanitization and validation is to add another layer of protection.
-- Added patch-package for patching depedndencies
-- Added patch for passportjs to handle logout failures
+- Added additional sanitization and validation for external inputs. Lusca provides input protection. The additional sanitization and validation are to add another layer of protection.
+- Added patch-package for temporary patching dependencies
+- Temporary patch for passportjs to handle logout failures
 - Temporary patch for passport-oauth2: better auth failure reporting
-- Added handler for 404(page not found) to avoid 500 erros when a route is not found
+- Added handler for 404(page not found) to avoid 500 errors when a route is not found
 - Fixed unhandled error during logout
 - Fixed pug tags with multiple attributes (thanks to @soundz77)
 - Added Lint-stage and Husky to lint all commits
@@ -31,13 +31,13 @@
 - Migrated off nodemailer-sendgrid (breaking change)
 - Migrated off passport-twitter and twitter-lite (breaking change)
 - Migrated off node-quickbooks (breaking change)
-- Updated depdencies
+- Updated dependencies
 - Removed travis.yml
 
 API example changes:
-- Improbed the Chartjs+AlphaVantage to handle API failures
+- Improved the Chartjs+AlphaVantage to handle API failures
 - Fix minor formatting issues and missing images
-- Tumpler - Fixed the Tumblr example and moved off of tumblrjs (breaking change)
+- Tumblr - Fixed the Tumblr example and moved off tumblrjs (breaking change)
 - Removed the twitter API example as the APIs are actively changing and mostly not free (breaking change)
 - Added missing parameters for the Lob's new API requirements
 - Improved the Last.fm API example as the artist image is no longer vended by last.fm
