@@ -4,7 +4,7 @@
 ### 8.0.0 (July 26, 2023)
 
 - Security: Renamed the cookie and set secure attribute for cookie transmission when https is present
-- Security: Migrated off all deprecated, vulnerable or unmaintained packages
+- Security: Migrated off known deprecated, vulnerable or unmaintained dependencies
 - Security: Added express rate limiter
 - Added additional sanitization and validation for external inputs. Lusca provides input protection. The additional sanitization and validation are to add another layer of protection.
 - Added patch-package for temporary patching dependencies
@@ -22,7 +22,7 @@
 - Removed express-handlebars npm package as it was not used and is not that popular compared to pug (breaking change)
 - Updated documentation
 
-- Mongoose 7 upgrade (breaking change)
+- Upgraded to mongoose 7 (breaking change)
 - Upgraded to popper2
 - Migrated from googleapis npm package to @googleapis/drive and @googleapis/sheets to reduce size and improve performance (breaking change)
 - Migrated from passport-twitch-new to twitch-passport (breaking change)
