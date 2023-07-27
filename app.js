@@ -27,7 +27,7 @@ dotenv.config({ path: '.env.example' });
 /**
  * Set config values
  */
-const secureTransfer = (process.env.BASE_URL.slice(0, 5) === 'https');
+const secureTransfer = (process.env.BASE_URL.startsWith('https'));
 
 // Consider adding a proxy such as cloudflare for production.
 const limiter = rateLimit({
@@ -60,7 +60,7 @@ const passportConfig = require('./config/passport');
  * Create Express server.
  */
 const app = express();
-console.log('Run this app using "npm start" to include sass/scss/css builds.');
+console.log('Run this app using "npm start" to include sass/scss/css builds.\n');
 
 /**
  * Connect to MongoDB.
@@ -274,8 +274,18 @@ if (process.env.NODE_ENV === 'development') {
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log(`App is running on http://localhost:${app.get('port')} in ${app.get('env')} mode`);
-  console.log('Press CTRL-C to stop');
+  const { BASE_URL } = process.env;
+  const colonIndex = BASE_URL.lastIndexOf(':');
+  const port = parseInt(BASE_URL.slice(colonIndex + 1), 10);
+
+  if (!BASE_URL.startsWith('http://localhost')) {
+    console.log(`The BASE_URL env variable is set to ${BASE_URL}. If you directly test the application through http://localhost:${app.get('port')} instead of the BASE_URL, it may cause a CSRF mismatch or an Oauth authentication failur. To avoid the issues, change the BASE_URL or configure your proxy to match it.\n`);
+  } else if (app.get('port') !== port) {
+    console.warn(`WARNING: The BASE_URL environment variable and the App have a port mismatch. If you plan to view the app in your browser using the localhost address, you may need to adjust one of the ports to make them match. BASE_URL: ${BASE_URL}\n`);
+  }
+
+  console.log(`App is running on http://localhost:${app.get('port')} in ${app.get('env')} mode.`);
+  console.log('Press CTRL-C to stop.');
 });
 
 module.exports = app;
