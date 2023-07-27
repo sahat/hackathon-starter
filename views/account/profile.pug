@@ -10,7 +10,7 @@ block content
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
       .col-md-7
         input.form-control(type='email', name='email', id='email', value=user.email, autocomplete='email', required)
-      .offset-sm-3.col-md-7.pl-3
+      .offset-sm-3.col-md-7.pl-3.mb-2
         if user.emailVerified
           .text-success.font-italic
             | Verified
@@ -20,11 +20,11 @@ block content
             a(href='/account/verify') Send verification email
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='name') Name
-      .col-md-7
+      .col-md-7.mt-2
         input.form-control(type='text', name='name', id='name', value=user.profile.name, autocomplete='name')
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right Gender
-      .col-sm-6
+      .col-sm-6.mt-2
         .form-check.form-check-inline
           input(type='radio', class='form-check-input' checked=user.profile.gender == 'male', name='gender', value='male', data-toggle='radio')
           label.form-check-label Male
@@ -38,20 +38,20 @@ block content
           label.form-check-label Other
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='location') Location
-      .col-md-7
+      .col-md-7.mb-2
         input.form-control(type='text', name='location', id='location', value=user.profile.location, autocomplete)
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='website') Website
-      .col-md-7
+      .col-md-7.mb-2
         input.form-control(type='text', name='website', id='website', value=user.profile.website, autocomplete='url')
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right Gravatar
-      .col-sm-4
+      .col-sm-4.mb-2
         img(src=user.gravatar(), class='profile', width='100', height='100')
     .form-group
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn.btn-primary(type='submit')
-          i.fas.fa-pencil-alt.fa-sm
+          i.fas.fa-pencil-alt.fa-sm.iconpadding
           | Update Profile
 
   .pb-2.mt-2.mb-4.border-bottom
@@ -61,16 +61,16 @@ block content
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') New Password
-      .col-md-7
+      .col-md-7.mb-2
         input.form-control(type='password', name='password', id='password', autocomplete='new-password', minlength='8', required)
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='confirmPassword') Confirm Password
-      .col-md-7
+      .col-md-7.mb-2
         input.form-control(type='password', name='confirmPassword', id='confirmPassword', autocomplete='new-password', minlength='8', required)
     .form-group
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn-primary(type='submit')
-          i.fas.fa-lock.fa-sm
+          i.fas.fa-lock.fa-sm.iconpadding
           | Change Password
 
   .pb-2.mt-2.mb-4.border-bottom
@@ -82,7 +82,7 @@ block content
       input(type='hidden', name='_csrf', value=_csrf)
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn-danger(type='submit')
-          i.fas.fa-trash-alt.fa-sm
+          i.fas.fa-trash-alt.fa-sm.iconpadding
           | Delete my account
 
   .pb-2.mt-2.mb-4.border-bottom
