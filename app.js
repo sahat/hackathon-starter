@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+const path = require('path');
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
@@ -11,7 +12,6 @@ const lusca = require('lusca');
 const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo');
 const flash = require('express-flash');
-const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const multer = require('multer');
