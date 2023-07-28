@@ -26,6 +26,36 @@
   }
 }
 
+.btn-twitter {
+  &:hover, &:active {
+    color: #FFF !important;
+  }
+}
+
+.btn-twitter {
+  color: #FFF !important;
+
+  &:hover, &:active {
+    color: #FFF !important;
+    background-color: #0f97ea;
+  }
+}
+
+.btn-google {
+  &:hover, &:active {
+    color: #FFF !important;
+  }
+}
+
+.btn-google {
+  color: #FFF !important;
+
+  &:hover, &:active {
+    color: #FFF !important;
+    background-color: #d93b27;
+  }
+}
+
 // Add a space after fontawesome icons
 .iconpadding{
   padding-right: 6px!important;
