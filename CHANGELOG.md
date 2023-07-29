@@ -1,7 +1,7 @@
 # Changelog
 ---------
 
-### 8.0.0 (July 26, 2023)
+### 8.0.0 (July 28, 2023)
 
 - Security: Renamed the cookie and set secure attribute for cookie transmission when https is present
 - Security: Migrated off known deprecated, vulnerable or unmaintained dependencies
@@ -10,6 +10,7 @@
 - Added patch-package for temporary patching dependencies
 - Temporary patch for passportjs to handle logout failures
 - Temporary patch for passport-oauth2: better auth failure reporting
+- Removed broken Instagram oauth support as Meta no longer supports it
 - Added handler for 404(page not found) to avoid 500 errors when a route is not found
 - Fixed unhandled error during logout
 - Fixed pug tags with multiple attributes (thanks to @soundz77)
@@ -17,9 +18,11 @@
 - Fix req.logout for passport 0.6
 - Fix broken unit test
 - Update default gravatar
+- Visual UI improvements
 - Added Github Actions: NodeJS CI check unit test and lint
 - Upgrade nodejs for docker
 - Removed express-handlebars npm package as it was not used and is not that popular compared to pug (breaking change)
+- Removed chalk  npm package as it was not used (breaking change)
 - Updated documentation
 
 - Upgraded to mongoose 7 (breaking change)
@@ -36,10 +39,11 @@
 - Removed travis.yml
 
 API example changes:
+- Removed the twitter API example as the APIs are actively changing and mostly not free (breaking change)
+- Removed the Instagram API example as it was broken and Meta has significantly reduced the API scope and availablity for devs
 - Improved the Chartjs+AlphaVantage to handle API failures
 - Fix minor formatting issues and missing images
 - Tumblr - Fixed the Tumblr example and moved off tumblrjs (breaking change)
-- Removed the twitter API example as the APIs are actively changing and mostly not free (breaking change)
 - Added missing parameters for the Lob's new API requirements
 - Improved the Last.fm API example as the artist image is no longer vended by last.fm
 
