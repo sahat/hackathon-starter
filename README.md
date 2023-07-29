@@ -2,22 +2,16 @@
 Hackathon Starter
 =======================
 
-**Live Demo**: [Link](https://hackathon-starter-1.ydftech.com/) (on a slow but free hosting service)
+**Live Demo**: [Link](https://hackathon-starter-1.ydftech.com/)
 
 Jump to [What's new?](https://github.com/sahat/hackathon-starter/blob/master/CHANGELOG.md)
 
 A boilerplate for **Node.js** web applications.
 
-If you have attended any hackathons in the past, then you know how much time it takes to
-get a project started: decide on what to build, pick a programming language, pick a web framework,
-pick a CSS framework. A while later, you might have an initial project up on GitHub, and only then
-can other team members start contributing. Or how about doing something as simple as *Sign in with Facebook*
-authentication? You can spend hours on it if you are not familiar with how OAuth 2.0 works.
+If you have attended any hackathons in the past, then you know how much time it takes to get a project started: decide on what to build, pick a programming language, pick a web framework, pick a CSS framework. A while later, you might have an initial project up on GitHub, and only then can other team members start contributing. Or how about doing something as simple as *Sign in with Facebook* authentication? You can spend hours on it if you are not familiar with how OAuth 2.0 works.
 
 When I started this project, my primary focus was on **simplicity** and **ease of use**.
-I also tried to make it as **generic** and **reusable** as possible to cover most use cases of hackathon web apps,
-without being too specific. In the worst case, you can use this as a learning guide for your projects,
-if for example you are only interested in **Sign in with Google** authentication and nothing else.
+I also tried to make it as **generic** and **reusable** as possible to cover most use cases of hackathon web apps, without being too specific. In the worst case, you can use this as a learning guide for your projects, if for example you are only interested in **Sign in with Google** authentication and nothing else.
 
 ### Testimonials
 
@@ -74,48 +68,54 @@ Table of Contents
 
 Features
 --------
-
-- **Local Authentication** using Email and Password
-- **OAuth 1.0a Authentication** via Twitter
-- **OAuth 2.0 Authentication** via Facebook, Google, GitHub, LinkedIn, Instagram
+- Login
+	- **Local Authentication** using Email and Password
+	- **OAuth 2.0 Authentication:** Sign in with Google, Facebook, Twitter, LinkedIn, Twitch, Github, Snapchat
+- **User Profile and Account Management**
+	 - Gravatar
+	 - Profile Details
+	 - Change Password
+	 - Forgot Password
+	 - Reset Password
+	 - Verify Email
+	 - Link multiple OAuth strategies to one account
+	 - Delete Account
+- Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
+- File upload
+- **API Examples**
+	- Facebook, Foursquare, Tumblr, Pinterest, Github, Steam, Quickbooks, Paypal, Stripe, Twilio (text messaging), Lob (USPS Mail), HERE Maps, Google Maps, Google Drive, Google Sheets, Alpha Vantage (stocks and finance info) with ChartJS, Last.fm, New York Times, Web Scraping, 
 - Flash notifications
+- - reCaPTCHA and rate limit protection
+- CSRF protection
 - MVC Project Structure
 - Node.js clusters support
+- HTTPS Proxy support (via ngrok, Cloudflare, etc.)
 - Sass stylesheets (auto-compiled via middleware)
-- Bootstrap 4 + Extra Themes
-- Contact Form (powered by Mailgun, Sendgrid or Mandrill)
-- **Account Management**
- - Gravatar
- - Profile Details
- - Change Password
- - Forgot Password
- - Reset Password
- - Link multiple OAuth strategies to one account
- - Delete Account
-- CSRF protection
-- **API Examples**: Facebook, Foursquare, Last.fm, Tumblr, Twitter, Stripe, LinkedIn, and more.
+- Bootstrap 5
+- "Go to production" checklist
+
 
 Prerequisites
 -------------
 
-- [MongoDB](https://www.mongodb.com/download-center/community)
-- [Node.js 10+](http://nodejs.org)
+- MongoDB (local install OR hosted)
+  - Local Install: [MongoDB](https://www.mongodb.com/download-center/community)
+  - Hosted: No need to install, see the MongoDB Atlas section
+
+- [Node.js 18+](http://nodejs.org)
 - Command Line Tools
- - <img src="http://deluge-torrent.org/images/apple-logo.gif" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
- - <img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">&nbsp;**Windows:** [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs) OR [Visual Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
- - <img src="https://lh5.googleusercontent.com/-2YS1ceHWyys/AAAAAAAAAAI/AAAAAAAAAAc/0LCb_tsTvmU/s46-c-k/photo.jpg" height="17">&nbsp;**Ubuntu** / <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Logo_Linux_Mint.png" height="17">&nbsp;**Linux Mint:** `sudo apt-get install build-essential`
- - <img src="http://i1-news.softpedia-static.com/images/extra/LINUX/small/slw218news1.png" height="17">&nbsp;**Fedora**: `sudo dnf groupinstall "Development Tools"`
+ - <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Apple_logo_grey.svg" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
+ - <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg" height="17">&nbsp;**Windows:** [Visual Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://docs.microsoft.com/en-us/windows/wsl/install-win10) OR [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
+ - <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/UbuntuCoF.svg/512px-UbuntuCoF.svg.png?20120210072525" height="17">&nbsp;**Ubuntu** / <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Linux_Mint_logo_without_wordmark.svg" height="17">&nbsp;**Linux Mint:** `sudo apt-get install build-essential`
+ - <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg" height="17">&nbsp;**Fedora**: `sudo dnf groupinstall "Development Tools"`
  - <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE:** `sudo zypper install --type pattern devel_basis`
 
-**Note:** If you are new to Node or Express, you may find
-[Node.js & Express From Scratch series](https://www.youtube.com/watch?v=Ad2ngx6CT0M&list=PLillGF-RfqbYRpji8t4SxUkMxfowG4Kqp&index=3)
-helpful for learning the basics of Node and Express. Alternatively,
-here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
+**Note:** If you are new to Node or Express, you may find [Node.js & Express From Scratch series](https://www.youtube.com/watch?v=Ad2ngx6CT0M&list=PLillGF-RfqbYRpji8t4SxUkMxfowG4Kqp&index=3) helpful for learning the basics of Node and Express. Alternatively, here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](https://www.freecodecamp.org/news/build-a-restful-api-using-node-express-and-mongodb/).
 
 Getting Started
 ---------------
 
-The easiest way to get started is to clone the repository:
+**Step 1:** The easiest way to get started is to clone the repository:
 
 ```bash
 # Get the latest snapshot
@@ -131,31 +131,63 @@ npm install
 node app.js
 ```
 
-**Warning:** If you want to use some API that needs HTTPS to work (for example Pinterest or Facebook),
-you will need to download [ngrok](https://ngrok.com/).
-You must start ngrok after starting the project.
+**Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon). It watches for any changes in your  node.js app and automatically restarts the server. Once installed, instead of `node app.js` use `nodemon app.js`. It will
+save you a lot of time in the long run, because you won't need to manually restart the server each time you make a small change in code. To install, run `sudo npm install -g nodemon`.
 
-```bash
-# start ngrok to intercept the data exchanged on port 8080
-./ngrok http 8080
-```
+**Step 2:** Obtain API Keys and change configs if needed
+After completing step 1 and locally installing MongoDB, you should be able to access the application through a web browser and use local user accounts. However, certain functions like API integrations may not function correctly until you obtain specific keys from service providers. The keys provided in the project serve as placeholders, and you can retain them for features you are not currently utilizing. To incorporate the acquired keys into the application, you have two options:
+   
+1.  Set environment variables in your console session: Alternatively, you can set the keys as environment variables directly through the command prompt. For instance, in bash, you can use the `export` command like this: `export FACEBOOK_SECRET=xxxxxx`. This method is considered a better practice as it reduces the risk of accidentally including your secrets in a code repository.
+2. Replace the keys in the `.env.example` file: Open the `.env.example` file and update the placeholder keys with the newly acquired ones. This method has the risk of accidental checking-in of your secrets to code repos.
+    
+*What to get and configure:*
 
-Next, you must use the https URL defined by ngrok, for example, `https://hackaton.ngrok.io`
+- SMTP
+	- For user workflows for reset password and verify email
+	- For contact form processing
+- reCAPTCHA
+	- For contact form submission
+- OAuth for social logins (Sign in with / Login with)
+	- Depending on your application need, obtain keys from Google, Facebook, Twitter, LinkedIn, Twitch, GitHub, Snapchat.  You don't have to obtain valid keys for any provider that you don't need. Just remove the buttons and links in the login and account pug views before your demo.
+- API keys for service providers in the API Examples if you are planning to use them.
 
-**Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon).
-It watches for any changes in your  node.js app and automatically restarts the
-server. Once installed, instead of `node app.js` use `nodemon app.js`. It will
-save you a lot of time in the long run, because you won't need to manually
-restart the server each time you make a small change in code. To install, run
-`sudo npm install -g nodemon`.
+- MongoDB Atlas
+	- If you are using MongoDB Atlas instead of a local db, set the MONGODB_URI to your db URI (including your db user/password).
 
-Obtaining API Keys
-------------------
+- Email address
+	- Set SITE_CONTACT_EMAIL as your incoming email address for messages sent to you thru the contact form.
+	- Set TRANSACTION_EMAIL as the "From" address for emails sent to users thru the lost password or email verification emails to users.  You may set this to the same address as SITE_CONTACT_EMAIL.
 
-To use any of the included APIs or OAuth authentication methods, you will need
-to obtain appropriate credentials: Client ID, Client Secret, API Key, or
-Username & Password. You will need to go through each provider to generate new
-credentials.
+- ngrok and HTTPS
+	If you want to use some API that needs HTTPS to work (for example Pinterest or Facebook),
+	you will need to download [ngrok](https://ngrok.com/). Start ngrok, set your BASE_URL to the forwarding address  (i.e  `https://3ccb-1234-abcd.ngrok-free.app` ), and use the forwarding address to access your application.  If you are using a proxy like ngrok, you may get a CSRF mismatch error if you try to access the app at `http://localhost:8080` instead of the https://...ngrok-free.app address.
+
+	After installing or downloading the standalone ngrok client you can start ngrok to intercept the data exchanged on port 8080 with `./ngrok http 8080` in Linux or `ngrok http 8080` in Windows.
+
+
+**Step 3:** Develop your application and customize the experience
+- Check out [How It Works](#how-it-works-mini-guides)
+
+**Step 4:** Optional - deploy to production
+See:
+- [Deployment](#deployment)
+-  [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md)
+
+# Obtaining API Keys
+You will need to obtain appropriate credentials (Client ID, Client Secret, API Key, or Username & Password) for API and service provides which you need.  See Step 2 in the Getting started section for more info.
+
+## SMTP
+
+Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_USER, SMTP_PASSWORD, and SMTP_HOST environment variables accordingly.  When picking the smtp host, keep in mind that the app is configured to use secure SMTP transmissions over port 465 out of the box.  You have the flexibility to select any provider that suits your needs or take advantage of one of the following providers, each offering a free tier for your convenience.
+
+| Provider | Free Tier | Website
+|--|--|--|
+| SendGrid | 100 emails/day for free | https://sendgrid.com
+| SMTP2Go | 1000 emails/month for free | https://www.smtp2go.com
+| Brevo | 300 emails/day for free | https://www.brevo.com
+
+<hr>
+
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/200px-RecaptchaLogo.svg.png" width="200">
 
@@ -183,16 +215,10 @@ credentials.
 - Fill out the required fields then click on **Save**
 - In the *Create Client ID* modal dialog:
  - **Application Type**: Web Application
- - **Authorized Javascript origins**: http://localhost:8080
- - **Authorized redirect URI**: http://localhost:8080/auth/google/callback
+ - **Authorized Javascript origins**: set to your BASE_URL value (i.e. `http://localhost:8080`, etc)
+ - **Authorized redirect URI**: set to your BASE_URL value followed by /auth/google/callback (i.e. `http://localhost:8080/auth/google/callback` )
 - Click on **Create Client ID** button
 - Copy and paste *Client ID* and *Client secret* keys into `.env`
-
-**Note:** When you ready to deploy to production don't forget to
-add your new URL to *Authorized Javascript origins* and *Authorized redirect URI*,
-e.g. `http://my-awesome-app.herokuapp.com` and
-`http://my-awesome-app.herokuapp.com/auth/google/callback` respectively.
-The same goes for other providers.
 
 <hr>
 
@@ -204,17 +230,12 @@ The same goes for other providers.
 - Enable the scopes that you will want to use in your app
 - Click on the **Continue** button
 - Find the **Kits** section and make sure that **Login Kit** is enabled
-- Find the **Redirect URLs** section, click the **+ Add** button, and enter `http://localhost:8080/auth/snapchat/callback`
+- Find the **Redirect URLs** section, click the **+ Add** button, and enter your BASE_URL value followed by /auth/snapchat/callback (i.e. `http://localhost:8080/auth/snapchat/callback` )
 - Find the **Development Environment** section. Click the **Generate** button next to the *Confidential OAuth2 Client* heading within it.
 - Copy and paste the generated *Private Key* and *OAuth2 Client ID* keys into `.env`
 - **Note:** *OAuth2 Client ID* is **SNAPCHAT_ID**, *Private Key* is **SNAPCHAT_SECRET** in `.env`
 - To prepare the app for submission, fill out the rest of the required fields: *Category*, *Description*, *Privacy Policy Url*, and *App Icon*
 
-**Note:** For production use, don't forget to:
-
-- generate a *Confidential OAuth2 Client* in the **Production Environment** and use the production *Private Key* and *OAuth2 Client ID*
-- add the production URL to **Redirect URLs** section, e.g. `http://my-awesome-app.herokuapp.com/auth/snapchat/callback`
-- submit the app for review and wait for approval
 
 <hr>
 
@@ -231,9 +252,9 @@ The same goes for other providers.
 - Enter `localhost` under *App Domains*
 - Choose a **Category** that best describes your app
 - Click on **+ Add Platform** and select **Website**
-- Enter `http://localhost:8080` under *Site URL*
+- Enter your BASE_URL value (i.e. `http://localhost:8080`, etc) under *Site URL*
 - Click on the *Settings* tab in the left nav under Facebook Login
-- Enter `http://localhost:8080/auth/facebook/callback` under Valid OAuth redirect URIs
+- Enter your BASE_URL value followed by /auth/facebook/callback (i.e. `http://localhost:8080/auth/facebook/callback` ) under Valid OAuth redirect URIs
 
 **Note:** After a successful sign-in with Facebook, a user will be redirected back to the home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
@@ -244,8 +265,8 @@ The same goes for other providers.
 - Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
 - Select **Developer settings** from the sidebar
 - Then click on **OAuth Apps** and then on **Register new application**
-- Enter *Application Name* and *Homepage URL*
-- For *Authorization Callback URL*: http://localhost:8080/auth/github/callback
+- Enter *Application Name* and *Homepage URL*. Enter your BASE_URL value (i.e. `http://localhost:8080`, etc) as the homepage URL.
+- For *Authorization Callback URL*: your BASE_URL value followed by /auth/github/callback (i.e. `http://localhost:8080/auth/github/callback` )
 - Click **Register application**
 - Now copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
@@ -255,8 +276,8 @@ The same goes for other providers.
 
 - Sign in at <a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com</a>
 - Click **Create a new application**
-- Enter your application name, website and description
-- For **Callback URL**: http://127.0.0.1:8080/auth/twitter/callback
+- Enter your application name, website and description. Set the website as your BASE_URL value (i.e. `http://localhost:8080`, etc).
+- For **Callback URL**: your BASE_URL value followed by /auth/twitter/callback (i.e. `http://localhost:8080/auth/twitter/callback` )
 - Go to **Settings** tab
 - Under *Application Type* select **Read and Write** access
 - Check the box **Allow this application to be used to Sign in with Twitter**
@@ -272,8 +293,8 @@ The same goes for other providers.
  - *It may ask you to sign in once again*
 - Click **+ Add New Application** button
 - Fill out all the *required* fields
- - **OAuth 2.0 Redirect URLs**: http://localhost:8080/auth/linkedin/callback
- - **JavaScript API Domains**: http://localhost:8080
+ - **OAuth 2.0 Redirect URLs**: your BASE_URL value followed by /auth/linkedin/callback (i.e. `http://localhost:8080/auth/linkedin/callback` )
+ - **JavaScript API Domains**: your BASE_URL value (i.e. `http://localhost:8080`, etc).
 - For **Default Application Permissions** make sure at least the following is checked:
  - `r_basicprofile`
 - Finish by clicking **Add Application** button
@@ -310,7 +331,7 @@ The same goes for other providers.
 - Click on **My Apps** in the top menu
 - Click the **Create A New App** button
 - Enter *App Name*, *Welcome page url*,
-- For **Redirect URI**: http://localhost:8080/auth/foursquare/callback
+- For **Redirect URI**: your BASE_URL value followed by /auth/foursquare/callback (i.e. `http://localhost:8080/auth/foursquare/callback` )
 - Click **Save Changes**
 - Copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
@@ -321,7 +342,7 @@ The same goes for other providers.
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
 - Fill in all the details
-- For **Default Callback URL**: `http://localhost:8080/auth/tumblr/callback`
+- For **Default Callback URL**: your BASE_URL value followed by /auth/tumblr/callback (i.e. `http://localhost:8080/auth/tumblr/callback` )
 - Click **✔Register**
 - Copy and paste *OAuth consumer key* and *OAuth consumer secret* keys into `.env` file
 
@@ -331,7 +352,7 @@ The same goes for other providers.
 
 - Go to <a href="http://steamcommunity.com/dev/apikey" target="_blank">http://steamcommunity.com/dev/apikey</a>
 - Sign in with your existing Steam account
-- Enter your *Domain Name*, then and click **Register**
+- Enter your *Domain Name* based on your BASE_URL, then and click **Register**
 - Copy and paste *Key* into `.env` file
 
 <hr>
@@ -341,31 +362,11 @@ The same goes for other providers.
 - If prompted, authorize the dashboard to access your twitch account
 - In the Console, click on Register Your Application
 - Enter the name of your application
-- Use OAuth Redirect URLs enter `http://localhost:8080/auth/twitch/callback`
+- Use OAuth Redirect URLs enter your BASE_URL value followed by /auth/twitch/callback (i.e. `http://localhost:8080/auth/twitch/callback` )
 - Set Category to Website Integration and press the Create button
 - After the application has been created, click on the Manage button
 - Copy and paste *Client ID* into `.env`
 - If there is no Client Secret displayed, click on the New Secret button and then copy and paste the *Client secret* into `.env`
-
-<hr>
-
-<img src="https://sendgrid.com/brand/sg-logo-300.png" width="200">
-
-You can use SendGrid for sending emails.  The developer tier allows you to send 100 free emails per day.  As an Alternative to SendGrid, you may also choose to use an SMTP service provider.  If using SendGrid:
-- Go to <a href="https://sendgrid.com/user/signup" target="_blank">https://sendgrid.com/user/signup</a>
-- Sign up and **confirm** your account via the *activation email*
-- Then enter your SendGrid *API Key* into `.env` file as SENDGRID_API_KEY
-
-If using an SMTP service provider instead of SendGrid:
-- Set SMTP_USER and SMTP_PASSWORD in `.env`, and remove SENDGRID_API_KEY
-
-<hr>
-
-<img src="https://raw.github.com/mailgun/media/master/Mailgun_Primary.png" width="200">
-
-- Go to <a href="http://www.mailgun.com" target="_blank">http://www.mailgun.com</a>
-- Sign up and add your *Domain Name*
-- From the domain overview, copy and paste the default SMTP *Login* and *Password* into `.env` file
 
 <hr>
 
@@ -407,9 +408,8 @@ Project Structure
 | **models**/User.js                 | Mongoose schema and model for User.                          |
 | **public**/                        | Static assets (fonts, css, js, img).                         |
 | **public**/**js**/application.js   | Specify client-side JavaScript dependencies.                 |
-| **public**/**js**/app.js          | Place your client-side JavaScript here.                      |
+| **public**/**js**/app.js          | Place your client-side JavaScript here.                       |
 | **public**/**css**/main.scss       | Main stylesheet for your app.                                |
-| **public/css/themes**/default.scss | Some Bootstrap overrides to make it look prettier.           |
 | **views/account**/                 | Templates for *login, password reset, signup, profile*.      |
 | **views/api**/                     | Templates for API Examples.                                  |
 | **views/partials**/flash.pug       | Error, info and success flash notifications.                 |
@@ -421,7 +421,6 @@ Project Structure
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
 | .eslintrc                          | Rules for eslint linter.                                     |
 | .gitignore                         | Folder and files ignored by git.                             |
-| .travis.yml                        | Configuration files for continuous integration.              |
 | app.js                             | The main application file.                                   |
 | docker-compose.yml                 | Docker compose configuration file.                           |
 | Dockerfile                         | Docker configuration file.                                   |
@@ -439,11 +438,19 @@ List of Packages
 
 | Package                         | Description                                                             |
 | ------------------------------- | ------------------------------------------------------------------------|
+| @fortawesome/fontawesome-free   | Symbol and Icon library.                                                |
+| @googleapis/drive               | Google Drive API integration library.                                   |
+| @googleapis/sheets              | Google Sheets API integration library.                                  |
+| @ladjs/bootstrap-social         | Social buttons library.                                                 |
+| @lob/lob-typescript-sdk         | Lob (USPS mailing / physical mailing service) library.                  |
+| @node-rs/bcrypt                 | Library for hashing and salting user passwords.                         |
 | @octokit/rest                   | GitHub API library.                                                     |
-| bcrypt                          | Library for hashing and salting user passwords.                         |
+| @passport-js/passport-twitter   | Twitter login support (OAuth 2).                                        |
+| @popperjs/core                  | Frontend js library for poppers and tooltips.                           |
+| axios                           | HTTP client.                                                            |
 | body-parser                     | Node.js body parsing middleware.                                        |
+| bootstrap                       | CSS Framework.                                                          |
 | chai                            | BDD/TDD assertion library.                                              |
-| chalk                           | Terminal string styling done right.                                     |
 | cheerio                         | Scrape web pages using jQuery-style syntax.                             |
 | compression                     | Node.js compression middleware.                                         |
 | connect-mongo                   | MongoDB session store for Express.                                      |
@@ -455,51 +462,48 @@ List of Packages
 | eslint-plugin-import            | ESLint plugin with rules that help validate proper imports.             |
 | express                         | Node.js web framework.                                                  |
 | express-flash                   | Provides flash messages for Express.                                    |
+| express-rate-limit              | Rate limiting middleware for abuse protection.                          |
 | express-session                 | Simple session middleware for Express.                                  |
-| instagram-node                  | Instagram API library.                                                  |
+| husky                           | Git hook manager to automate tasks with git.                            |
+| jquery                          | Front-end JS library to interact with HTML elements.                    |
 | lastfm                          | Last.fm API library.                                                    |
+| lint-stage                      | Utility to lint files staged by git.                                    |
 | lob                             | Lob API library.                                                        |
 | lodash                          | A utility library for working with arrays, numbers, objects, strings.   |
 | lusca                           | CSRF middleware.                                                        |
 | mailchecker                     | Verifies that an email address is valid and not a disposable address.   |
 | mocha                           | Test framework.                                                         |
 | moment                          | Parse, validate, compute dates and times.                               |
+| mongodbMemoryServer             | MongoDB in memory (for running tests without a running db).             |
 | mongoose                        | MongoDB ODM.                                                            |
 | morgan                          | HTTP request logger middleware for node.js.                             |
 | multer                          | Node.js middleware for handling `multipart/form-data`.                  |
-| node-foursquare                 | Foursquare API library.                                                 |
-| node-sass                       | Node.js bindings to libsass.                                            |
-| node-sass-middleware            | Sass middleware compiler.                                               |
-| nyc                             | Coverage test.                                                          |
 | nodemailer                      | Node.js library for sending emails.                                     |
-| node-quickbooks                 | Quickbooks API library.                                                 |
+| nyc                             | Coverage test.                                                          |
 | passport                        | Simple and elegant authentication library for node.js.                  |
 | passport-facebook               | Sign-in with Facebook plugin.                                           |
-| passport-github                 | Sign-in with GitHub plugin.                                             |
+| passport-github2                | Sign-in with GitHub plugin.                                             |
 | passport-google-oauth           | Sign-in with Google plugin.                                             |
-| passport-instagram              | Sign-in with Instagram plugin.                                          |
 | passport-linkedin-oauth2        | Sign-in with LinkedIn plugin.                                           |
 | passport-local                  | Sign-in with Username and Password plugin.                              |
-| passport-openid                 | Sign-in with OpenId plugin.                                             |
 | passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.      |
 | passport-oauth2-refresh         | A library to refresh OAuth 2.0 access tokens using refresh tokens.      |
 | passport-snapchat               | Sign-in with Snapchat plugin.                                           |
-| passport-twitter                | Sign-in with Twitter plugin.                                            |
-| passport-twitch-new             | Sign-in with Twitch plugin.                                             |
+| passport-steam-openid           | OpenID 2.0 Steam plugin.                                                |
+| patch-package                   | Fix broken node modules ahead of fixes by maintainers.                  |
 | paypal-rest-sdk                 | PayPal APIs library.                                                    |
 | pug                             | Template engine for Express.                                            |
+| sass                            | Sass compiler to generate CSS with superpowers                          |
 | sinon                           | Test spies, stubs and mocks for JavaScript.                             |
 | stripe                          | Offical Stripe API library.                                             |
 | supertest                       | HTTP assertion library.                                                 |
-| tumblr.js                       | Tumblr API library.                                                     |
 | twilio                          | Twilio API library.                                                     |
-| twitter-lite                    | Twitter API library.                                                    |
+| twitch-passport                 | Sign-in with Twitch plugin.                                             |
 | validator                       | A library of string validators and sanitizers.                          |
 
 Useful Tools and Resources
 --------------------------
 - [JavaScripting](http://www.javascripting.com/) - The Database of JavaScript Libraries
-- [JS Recipes](http://sahatyalkabov.com/jsrecipes/) - JavaScript tutorials for backend and frontend development.
 - [HTML to Pug converter](https://html-to-pug.com/) - HTML to PUG is a free online converter helping you to convert HTML files to pug syntax in real-time.
 - [JavascriptOO](http://www.javascriptoo.com/) - A directory of JavaScript libraries with examples, CDN links, statistics, and videos.
 - [Favicon Generator](http://realfavicongenerator.net/) - Generate favicons for PC, Android, iOS, Windows 8.
@@ -510,7 +514,7 @@ Recommended Design Resources
 - [Bootsnipp](http://bootsnipp.com/) - Code snippets for Bootstrap.
 - [Bootstrap Zero](https://www.bootstrapzero.com) - Free Bootstrap templates themes.
 - [Google Bootstrap](http://todc.github.io/todc-bootstrap/) - Google-styled theme for Bootstrap.
-- [Font Awesome Icons](http://fortawesome.github.io/Font-Awesome/icons/) - It's already part of the Hackathon Starter, so use this page as a reference.
+- [Font Awesome Icons](https://fontawesome.com) - It's already part of the Hackathon Starter, so use this page as a reference.
 - [Colors](http://clrs.cc) - A nicer color palette for the web.
 - [Creative Button Styles](http://tympanus.net/Development/CreativeButtons/) - awesome button styles.
 - [Creative Link Effects](http://tympanus.net/Development/CreativeLinkEffects/) - Beautiful link effects in CSS.
@@ -526,8 +530,6 @@ Recommended Node.js Libraries
 - [geoip-lite](https://github.com/bluesmoon/node-geoip) - Geolocation coordinates from IP address.
 - [Filesize.js](http://filesizejs.com/) - Pretty file sizes, e.g. `filesize(265318); // "265.32 kB"`.
 - [Numeral.js](http://numeraljs.com) - Library for formatting and manipulating numbers.
-- [Node Inspector](https://github.com/node-inspector/node-inspector) - Node.js debugger based on Chrome Developer Tools.
-- [node-taglib](https://github.com/nikhilm/node-taglib) - Library for reading the meta-data of several popular audio formats.
 - [sharp](https://github.com/lovell/sharp) - Node.js module for resizing JPEG, PNG, WebP and TIFF images.
 
 Recommended Client-side Libraries
@@ -538,11 +540,8 @@ Recommended Client-side Libraries
 - [NProgress.js](https://github.com/rstacruz/nprogress) - Slim progress bars like on YouTube and Medium.
 - [Hover](https://github.com/IanLunn/Hover) - Awesome CSS3 animations on mouse hover.
 - [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/) - Responsive jQuery Lightbox Plugin.
-- [jQuery Raty](http://wbotelhos.com/raty/) - Star Rating Plugin.
-- [Headroom.js](http://wicky.nillia.ms/headroom.js/) - Hide your header until you need it.
-- [X-editable](http://vitalets.github.io/x-editable/) - Edit form elements inline.
 - [Offline.js](http://github.hubspot.com/offline/docs/welcome/) - Detect when user's internet connection goes offline.
-- [Alertify.js](http://fabien-d.github.io/alertify.js/) - Sweet looking alerts and browser dialogs.
+- [Alertify.js](https://alertifyjs.com) - Sweet looking alerts and browser dialogs.
 - [selectize.js](http://selectize.github.io/selectize.js) - Styleable select elements and input tags.
 - [drop.js](http://github.hubspot.com/drop/docs/welcome/) -  Powerful Javascript and CSS library for creating dropdowns and other floating displays.
 - [scrollReveal.js](https://github.com/jlmakes/scrollReveal.js) - Declarative on-scroll reveal animations.
@@ -550,34 +549,24 @@ Recommended Client-side Libraries
 Pro Tips
 --------
 
-- Use [async.parallel()](https://github.com/caolan/async#parallel) when you need to run multiple
-asynchronous tasks, and then render a page, but only when all tasks are completed. For example, you might want to scrape three different websites for some data and render the results in a template after all three websites have been scraped.
-- Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find)
-function from Lodash. For example, this is how you would retrieve a
-Twitter token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`,
-where 1st parameter is an array, and a 2nd parameter is an object to search for.
+- Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find) function from Lodash. For example, this is how you would retrieve a Twitter token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`, where 1st parameter is an array, and a 2nd parameter is an object to search for.
 
 FAQ
 ---
 
 ### Why do I get `403 Error: Forbidden` when submitting a form?
-You need to add the following hidden input element to your form. This has been
-added in the [pull request #40](https://github.com/sahat/hackathon-starter/pull/40)
-as part of the CSRF protection.
+You need to add the following hidden input element to your form. This has been added in the [pull request #40](https://github.com/sahat/hackathon-starter/pull/40) as part of the CSRF protection.
 
 ```
 input(type='hidden', name='_csrf', value=_csrf)
 ```
 
-**Note:** It is now possible to whitelist certain URLs. In other words, you can
-specify a list of routes that should bypass the CSRF verification check.
+**Note:** It is now possible to whitelist certain URLs. In other words, you can specify a list of routes that should bypass the CSRF verification check.
 
-**Note 2:** To whitelist dynamic URLs use regular expression tests inside the
-CSRF middleware to see if `req.originalUrl` matches your desired pattern.
+**Note 2:** To whitelist dynamic URLs use regular expression tests inside the CSRF middleware to see if `req.originalUrl` matches your desired pattern.
 
 ### I am getting MongoDB Connection Error, how do I fix it?
-That's a custom error message defined in `app.js` to indicate that there was a
-problem connecting to MongoDB:
+That's a custom error message defined in `app.js` to indicate that there was a problem connecting to MongoDB:
 
 ```js
 mongoose.connection.on('error', (err) => {
@@ -586,58 +575,31 @@ mongoose.connection.on('error', (err) => {
   process.exit();
 });
 ```
-You need to have a MongoDB server running before launching `app.js`. You can
-download MongoDB [here](https://www.mongodb.com/download-center/community), or install it via a package manager.
-<img src="http://dc942d419843af05523b-ff74ae13537a01be6cfec5927837dcfe.r14.cf1.rackcdn.com/wp-content/uploads/windows-8-50x50.jpg" height="17">
+You need to have a MongoDB server running before launching `app.js`. You can download MongoDB [here](https://www.mongodb.com/download-center/community), or install it via a package manager.
 Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
 
-**Tip:** If you are always connected to the internet, you could just use
-[MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or [Compose](https://www.compose.io/) instead
-of downloading and installing MongoDB locally. You will only need to update database credentials
-in `.env` file.
+**Tip:** If you are always connected to the internet, you could just use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) instead of downloading and installing MongoDB locally. You will only need to update database credentials in `.env` file.
 
 ### I get an error when I deploy my app, why?
-Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB` is
-set to `localhost`, it will only work on your machine as long as MongoDB is
-running. When you deploy to Heroku, OpenShift, or some other provider, you will not have MongoDB
-running on `localhost`. You need to create an account with [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-or [Compose](https://www.compose.io/), then create a free tier database.
-See [Deployment](#deployment) for more information on how to set up an account
-and a new database step-by-step with MongoDB Atlas.
-
-### Why Pug (Jade) instead of Handlebars?
-When I first started this project I didn't have any experience with Handlebars. Since then I have worked on Ember.js apps and got myself familiar with the Handlebars syntax. While it is true Handlebars is easier, because it looks like good old HTML, I have no regrets picking Jade over Handlebars. First off, it's the default template engine in Express, so someone who has built Express apps in the past already knows it. Secondly, I find `extends` and `block` to be indispensable, which as far as I know, Handlebars do not have out of the box. And lastly, subjectively speaking, Jade looks much cleaner and shorter than Handlebars, or any non-HAML style for that matter.
+Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB` is set to `localhost`, it will only work on your machine as long as MongoDB is running. When you deploy to Render, OpenShift, or some other provider, you will not have MongoDB running on `localhost`. You need to create an account with [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), then create a free tier database.
+See [Deployment](#deployment) for more information on how to set up an account and a new database step-by-step with MongoDB Atlas.
 
 ### Why do you have all routes defined in app.js?
-For the sake of simplicity. While there might be a better approach,
-such as passing `app` context to each controller as outlined in this
-[blog](http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/),
-I find such a style to be confusing for beginners.
-It took me a long time to grasp the concept of `exports` and `module.exports`,
-let alone having a global `app` reference in other files.
-That to me is backward thinking.
-The `app.js` is the "heart of the app", it should be the one referencing
-models, routes, controllers, etc.
-When working solo on small projects, I prefer to have everything inside `app.js` as is the case with [this]((https://github.com/sahat/ember-sass-express-starter/blob/master/app.js))
-REST API server.
+For the sake of simplicity. While there might be a better approach, such as passing `app` context to each controller as outlined in this [blog](http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/), I find such a style to be confusing for beginners. It took me a long time to grasp the concept of `exports` and `module.exports`, let alone having a global `app` reference in other files. Tha to me is backward thinking.
+The `app.js` is the "heart of the app", it should be the one referencing models, routes, controllers, etc.
+When working solo on small projects, I prefer to have everything inside `app.js` as is the case with [this]((https://github.com/sahat/ember-sass-express-starter/blob/master/app.js)) REST API server.
 
-### How do I switch SendGrid for another email delivery service, like Mailgun or SparkPost?
-Inside the `nodemailer.createTransport` method arguments, change the service from `'Sendgrid'` to some other email service. Also, be sure to update both username and password below that. See the [list of all supported services](https://github.com/nodemailer/nodemailer-wellknown#supported-services) by Nodemailer.
 
 How It Works (mini guides)
 --------------------------
 
-This section is intended for giving you a detailed explanation of
-how a particular functionality works. Maybe you are just curious about
-how it works, or perhaps you are lost and confused while reading the code,
-I hope it provides some guidance to you.
+This section is intended for giving you a detailed explanation of how a particular functionality works. Maybe you are just curious about how it works, or perhaps you are lost and confused while reading the code, I hope it provides some guidance to you.
 
 ### Custom HTML and CSS Design 101
 
 [HTML5 UP](http://html5up.net/) has many beautiful templates that you can download for free.
 
-When you download the ZIP file, it will come with *index.html*, *images*, *CSS* and *js* folders. So, how do you
-integrate it with Hackathon Starter? Hackathon Starter uses the Bootstrap CSS framework, but these templates do not.
+When you download the ZIP file, it will come with *index.html*, *images*, *CSS* and *js* folders. So, how do you integrate it with Hackathon Starter? Hackathon Starter uses the Bootstrap CSS framework, but these templates do not.
 Trying to use both CSS files at the same time will likely result in undesired effects.
 
 **Note:** Using the custom templates approach, you should understand that you cannot reuse any of the views I have created: layout, the home page, API browser, login, signup, account management, contact. Those views were built using Bootstrap grid and styles. You will have to manually update the grid using a different syntax provided in the template. **Having said that, you can mix and match if you want to do so: Use Bootstrap for the main app interface, and a custom template for a landing page.**
@@ -670,7 +632,7 @@ And then create a route in `app.js`. I placed it right after the index controlle
 app.get('/escape-velocity', homeController.escapeVelocity);
 ```
 
-Restart the server (if you are not using **nodemon**); then you should see the new template at [http://localhost:8080/escape-velocity](http://localhost:8080/escape-velocity).
+Restart the server (if you are not using **nodemon**); then you should see the new template at `http://localhost:8080/escape-velocity`
 
 I will stop right here, but if you would like to use this template as more than just a single page, take a look at how these Pug templates work: `layout.pug` - base template, `index.pug` - home page, `partials/header.pug` - Bootstrap navbar, `partials/footer.pug` - sticky footer. You will have to manually break it apart into smaller pieces. Figure out which part of the template you want to keep the same on all pages - that's your new `layout.pug`.
 Then, each page that changes, be it `index.pug`, `about.pug`, `contact.pug`
@@ -683,16 +645,9 @@ This is a rather lengthy process, and templates you get from elsewhere might hav
 <hr>
 
 ### How do flash messages work in this project?
-Flash messages allow you to display a message at the end of the request and access
-it on the next request and only the next request. For instance, on a failed login attempt, you would
-display an alert with some error message, but as soon as you refresh that page or visit a different
-page and come back to the login page, that error message will be gone. It is only displayed once.
-This project uses *express-flash* module for flash messages. And that
-module is built on top of *connect-flash*, which is what I used in
-this project initially. With *express-flash* you don't have to
-explicitly send a flash message to every view inside `res.render()`.
-All flash messages are available in your views via `messages` object by default,
-thanks to *express-flash*.
+Flash messages allow you to display a message at the end of the request and access it on the next request and only the next request. For instance, on a failed login attempt, you would display an alert with some error message, but as soon as you refresh that page or visit a different page and come back to the login page, that error message will be gone. It is only displayed once.
+This project uses *express-flash* module for flash messages. And that module is built on top of *connect-flash*, which is what I used in this project initially. With *express-flash* you don't have to explicitly send a flash message to every view inside `res.render()`.
+All flash messages are available in your views via `messages` object by default, thanks to *express-flash*.
 
 Flash messages have a two-step process. You use `req.flash('errors', { msg: 'Error messages goes here' }`
 to create a flash message in your controllers, and then display them in your views:
@@ -702,13 +657,9 @@ if messages.errors
     for error in messages.errors
       div= error.msg
 ```
-In the first step, `'errors'` is the name of a flash message, which should match the
-name of the property on `messages` object in your views. You place alert messages
-inside `if message.errors` because you don't want to show them flash messages are present.
-The reason why you pass an error like `{ msg: 'Error message goes here' }` instead
-of just a string - `'Error message goes here'`, is for the sake of consistency.
-To clarify that, *express-validator* module which is used for validating and sanitizing user's input,
-returns all errors as an array of objects, where each object has a `msg` property with a message why an error has occurred. Here is a more general example of what express-validator returns when there are errors present:
+In the first step, `'errors'` is the name of a flash message, which should match the name of the property on `messages` object in your views. You place alert messages inside `if message.errors` because you don't want to show them flash messages are present.
+The reason why you pass an error like `{ msg: 'Error message goes here' }` instead of just a string - `'Error message goes here'`, is for the sake of consistency.
+To clarify that, *express-validator* module which is used for validating and sanitizing user's input, returns all errors as an array of objects, where each object has a `msg` property with a message why an error has occurred. Here is a more general example of what express-validator returns when there are errors present:
 
 ```js
 [
@@ -717,12 +668,7 @@ returns all errors as an array of objects, where each object has a `msg` propert
 ]
 ```
 
-To keep consistent with that style, you should pass all flash messages
-as `{ msg: 'My flash message' }` instead of a string. Otherwise, you will see an alert box
-without an error message. That is because in **partials/flash.pug** template it will try to output
-`error.msg` (i.e. `"My flash message".msg`), in other words, it will try to call a `msg` method on a *String* object,
-which will return *undefined*. Everything I just mentioned about errors, also applies
-to "info" and "success" flash messages, and you could even create a new one yourself, such as:
+To keep consistent with that style, you should pass all flash messages as `{ msg: 'My flash message' }` instead of a string. Otherwise, you will see an alert box without an error message. That is because in **partials/flash.pug** template it will try to output `error.msg` (i.e. `"My flash message".msg`), in other words, it will try to call a `msg` method on a *String* object, which will return *undefined*. Everything I just mentioned about errors, also applies to "info" and "success" flash messages, and you could even create a new one yourself, such as:
 
 **Data Usage Controller (Example)**
 ```
@@ -737,10 +683,7 @@ if messages.warning
       div= warning.msg
 ```
 
-`partials/flash.pug` is a partial template that contains how flash messages
-are formatted. Previously, flash
-messages were scattered throughout each view that used flash messages
-(contact, login, signup, profile), but now, thankfully it uses a *DRY* approach.
+`partials/flash.pug` is a partial template that contains how flash messages are formatted. Previously, flash messages were scattered throughout each view that used flash messages (contact, login, signup, profile), but now, thankfully it uses a *DRY* approach.
 
 The flash messages partial template is *included* in the `layout.pug`, along with footer and navigation.
 ```pug
@@ -754,17 +697,13 @@ body
     include partials/footer
 ```
 
-If you have any further questions about flash messages,
-please feel free to open an issue, and I will update this mini-guide accordingly,
-or send a pull request if you would like to include something that I missed.
+If you have any further questions about flash messages, please feel free to open an issue, and I will update this mini-guide accordingly, or send a pull request if you would like to include something that I missed.
 
 <hr>
 
 ### How do I create a new page?
 A more correct way to say this would be "How do I create a new route?" The main file `app.js` contains all the routes.
-Each route has a callback function associated with it. Sometimes you will see three or more arguments for a route. In a case like that, the first argument is still a URL string, while middle arguments
-are what's called middleware. Think of middleware as a door. If this door prevents you from
-continuing forward, you won't get to your callback function. One such example is a route that requires authentication.
+Each route has a callback function associated with it. Sometimes you will see three or more arguments for a route. In a case like that, the first argument is still a URL string, while middle arguments are what's called middleware. Think of middleware as a door. If this door prevents you from continuing forward, you won't get to your callback function. One such example is a route that requires authentication.
 
 ```js
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
@@ -882,47 +821,24 @@ app.get('/books',(req, res) => {
 ```
 
 Sure, it's simpler, but as soon as you pass 1000 lines of code in `app.js` it becomes a little challenging to navigate the file.
-I mean, the whole point of this boilerplate project was to separate concerns, so you could
-work with your teammates without running into *MERGE CONFLICTS*. Imagine you have four developers
-working on a single `app.js`, I promise you it won't be fun resolving merge conflicts all the time.
+I mean, the whole point of this boilerplate project was to separate concerns, so you could work with your teammates without running into *MERGE CONFLICTS*. Imagine you have four developers working on a single `app.js`, I promise you it won't be fun resolving merge conflicts all the time.
 If you are the only developer, then it's okay. But as I said, once it gets up to a certain LoC size, it becomes difficult to maintain everything in a single file.
 
 That's all there is to it. Express.js is super simple to use.
 Most of the time you will be dealing with other APIs to do the real work:
-[Mongoose](http://mongoosejs.com/docs/guide.html) for querying database, socket.io for sending and receiving messages over WebSockets,
-sending emails via [Nodemailer](http://nodemailer.com/), form validation using [express-validator](https://github.com/ctavan/express-validator) library,
-parsing websites using [Cheerio](https://github.com/cheeriojs/cheerio), etc.
+[Mongoose](http://mongoosejs.com/docs/guide.html) for querying database, socket.io for sending and receiving messages over WebSockets, sending emails via [Nodemailer](http://nodemailer.com/), form validation using [validator.js](https://github.com/validatorjs/validator.js) library, parsing websites using [Cheerio](https://github.com/cheeriojs/cheerio), etc.
 
 <hr>
 
 ### How do I use Socket.io with Hackathon Starter?
 [Dan Stroot](https://github.com/dstroot) submitted an excellent [pull request](https://github.com/dstroot/hackathon-starter/commit/0a632def1ce8da446709d92812423d337c977d75) that adds a real-time dashboard with socket.io.
-And as  much as I'd like to add it to the project, I think it violates one of the main
-principles of the Hackathon Starter:
+And as  much as I'd like to add it to the project, I think it violates one of the main principles of the Hackathon Starter:
 > When I started this project, my primary focus was on simplicity and ease of use.
 > I also tried to make it as generic and reusable as possible to cover most use cases of
 > hackathon web apps, **without being too specific**.
 
-When I need to use socket.io, I **really** need it, but most of the time - I don't. But more importantly, WebSockets support is still experimental on most hosting providers. As of October 2013,
-Heroku supports WebSockets, but not until you opt-in by running this command:
-
-```js
-Heroku labs:enable websockets -a myapp
-```
-
-And what if you are deploying to OpenShift? They do support WebSockets, but it is currently in a
-preview state. So, for OpenShift you would need to change the socket.io connect URI to the following:
-
-```js
-const socket = io.connect('http://yoursite-namespace.rhcloud.com:8000');
-```
-
-Wait, why is it on port 8000? Who knows, and if I didn't run across this [blog post](http://velin-georgiev-blog.appspot.com/blog/set-up-nodejs-express-socketio-application-using-websockets-on-openshift-by-red-hat/)
-I wouldn't even know I had to use port 8000.
-
-I am really glad that Heroku and OpenShift at least
-have WebSockets support because many other PaaS providers still do not support it.
-Due to the aforementioned issues with WebSockets, I cannot include socket.io as part of the Hackathon Starter. *For now...*
+When I need to use socket.io, I **really** need it, but most of the time - I don't. But more importantly, WebSockets support is still experimental on most hosting providers. 
+Due to past provider issues with WebSockets, I have not include socket.io as part of the Hackathon Starter. *For now...*
 If you need to use socket.io in your app, please continue reading.
 
 First, you need to install socket.io:
@@ -967,20 +883,11 @@ server.listen(app.get('port'), () => {
 
 At this point, we are done with the back-end.
 
-You now have a choice - to include your JavaScript code in Pug templates or have all your client-side
-JavaScript in a separate file - in `app.js`. I admit, when I first started with Node.js and JavaScript in general,
-I placed all JavaScript code inside templates because I have access to template variables passed in from Express
-right then and there. It's the easiest thing you can do, but also the least efficient and harder to maintain. Since then I
-almost never include inline JavaScript inside templates anymore.
+You now have a choice - to include your JavaScript code in Pug templates or have all your client-side JavaScript in a separate file - in `app.js`. I admit, when I first started with Node.js and JavaScript in general, I placed all JavaScript code inside templates because I have access to template variables passed in from Express right then and there. It's the easiest thing you can do, but also the least efficient and harder to maintain. Since then I almost never include inline JavaScript inside templates anymore.
 
-But it's also understandable if you want to take the easier road.
-Most of the time you don't even care about performance during hackathons, you just
-want to [*"get shit done"*](https://www.startupvitamins.com/media/products/13/aaron_levie_poster_black.jpg) before the time runs out.
-Well, either way, use whichever approach makes more sense to you. At the end of the day,
-it's **what** you build that matters, not **how** you build it.
+But it's also understandable if you want to take the easier road. Most of the time you don't even care about performance during hackathons, you just want to *"get shit done"* before the time runs out. Well, either way, use whichever approach makes more sense to you. At the end of the day, it's **what** you build that matters, not **how** you build it.
 
-If you want to stick all your JavaScript inside templates, then in `layout.pug` -
-your main template file, add this to `head` block.
+If you want to stick all your JavaScript inside templates, then in `layout.pug` - your main template file, add this to `head` block.
 
 ```pug
 script(src='/socket.io/socket.io.js')
@@ -992,12 +899,9 @@ script.
     });
 ```
 
-**Note:** Notice the path of the `socket.io.js`, you don't actually
-have to have `socket.io.js` file anywhere in your project; it will be generated
-automatically at runtime.
+**Note:** Notice the path of the `socket.io.js`, you don't actually have to have `socket.io.js` file anywhere in your project; it will be generated automatically at runtime.
 
-If you want to have JavaScript code separate from templates, move that inline
-script code into `app.js`, inside the `$(document).ready()` function:
+If you want to have JavaScript code separate from templates, move that inline script code into `app.js`, inside the `$(document).ready()` function:
 
 ```js
 $(document).ready(function() {
@@ -1264,10 +1168,7 @@ User
 ```
 
 #### Get the total count of a field from all documents:
-Let's suppose that each user has a `votes` field and you would like to count
-the total number of votes in your database across all users. One very
-inefficient way would be to loop through each document and manually accumulate
-the count. Or you could use [MongoDB Aggregation Framework](https://docs.mongodb.org/manual/core/aggregation-introduction/) instead:
+Let's suppose that each user has a `votes` field and you would like to count the total number of votes in your database across all users. One very inefficient way would be to loop through each document and manually accumulate the count. Or you could use [MongoDB Aggregation Framework](https://docs.mongodb.org/manual/core/aggregation-introduction/) instead:
 
 ```js
 User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votesCount)  => {
@@ -1296,28 +1197,24 @@ docker-compose up web
 
 ```
 
-To view the app, find your docker IP address + port 8080 ( this will typically be http://localhost:8080/ ).  To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.
+To view the app, find your docker IP address + port 8080 ( this will typically be `http://localhost:8080/` ).  To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.
 
 
 Deployment
 ----------
 
-Once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not the only choices, but they are my top picks. From my experience, the easiest way to get started is with **Heroku**. It will automatically restart your Node.js process when it crashes, has zero-downtime deployments, and supports custom domains on free accounts. Additionally, you can
-create an account with **MongoDB Atlas** and then pick one of the *4* providers below.
-Again, there are plenty of other choices, and you are not limited to just the ones
-listed below.
+Once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not the only choices, but they are my top picks.  Additionally, you can create an account with **MongoDB Atlas** and then pick one of the providers below. Again, there are plenty of other choices, and you are not limited to just the ones listed below.
 
-### Deployment to Heroku
+### Deployment to Render
 
-<img src="https://upload.wikimedia.org/wikipedia/en/a/a9/Heroku_logo.png" width="200">
+<img src="https://cdn.buttercms.com/p0IHcvwRSlOAEjBcTf0C" width="200">
 
-- Download and install [Heroku Toolbelt](https://toolbelt.heroku.com/)
-- In a terminal, run `heroku login` and enter your Heroku credentials
-- From *your app* directory run `heroku create`
-- Use the command `heroku config:set KEY=val` to set the different environment variables (KEY=val) for your application (i.e.  `heroku config:set BASE_URL=[heroku App Name].herokuapp.com` or `heroku config:set MONGODB_URI=mongodb://dbuser:<password>@cluster0-shard-00-00-sdf32.mongodb.net:27017,cluster0-shard-00-01-sdf32.mongodb.net:27017/<dbname>?ssl=true&retryWrites=true&w=majority` (see Hosted MongoDB Atlas below), etc.)  Make sure to set the environment variables for SENDGRID_USER, SENDGRID_PASSWORD, and any other API that you are using as well.
-- Lastly, do `git push heroku master`.
-
-Please note that you may also use the [Herko Dashboard](https://dashboard.heroku.com) to set or modify the configurations for your application.
+Render provides free nodejs hosting for repos on Github and Gitlab.
+- Sign up for a free Individual account at https://render.com
+- Link your Github account
+- Create a Web Service
+- Add your repo and add your environment variables under the Advanced settings.
+Note 1: The automated deployments may not work, and you may need to manually trigger deployments after your commits.
 
 ---
 
@@ -1344,14 +1241,12 @@ Please note that you may also use the [Herko Dashboard](https://dashboard.heroku
 - Note that after some of the steps in the Atlas UI, you may see a banner stating `We are deploying your changes`.  You will need to wait for the deployment to finish before using the DB in your application.
 
 
-**Note:** As an alternative to MongoDB Atlas, there is also [Compose](https://www.compose.io/).
-
 ---
 
 ### OpenShift
 
 <img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
-**NOTE** *These instructions might be out of date due to changes in OpenShift. Heroku is currently a good free alternative.  If you know the new process, please feel free to help us update this page*
+**NOTE** *These instructions might be out of date due to changes in OpenShift. Render is currently a good free alternative.  If you know the new process, please feel free to help us update this page*
 
 - First, install this Ruby gem: `sudo gem install rhc` :gem:
 - Run `rhc login` and enter your OpenShift credentials
@@ -1392,7 +1287,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 ### Azure
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
-**NOTE** *Beyond the initial 12 month trial of Azure, the platform does not seem to offer a free tier for hosting NodeJS apps.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
+**NOTE** *Beyond the initial 12 month trial of Azure, the platform does not seem to offer a free tier for hosting NodeJS apps.  If you are looking for a free tier service to host your app, Render might be a better choice at this point*
 
 - Login to [Windows Azure Management Portal](https://manage.windowsazure.com/)
 - Click the **+ NEW** button on the bottom left of the portal
@@ -1413,18 +1308,18 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 ## IBM Bluemix Cloud Platform
 
-**NOTE** *At this point it appears that Bluemix's free tier to host NodeJS apps is limited to 30 days.  If you are looking for a free tier service to host your app, Heroku might be a better choice at this point*
+**NOTE** *At this point it appears that Bluemix's free tier to host NodeJS apps is limited to 30 days.  If you are looking for a free tier service to host your app, Render might be a better choice at this point*
 
-1. Create a Bluemix Account
+ - Create a Bluemix Account
 
     [Sign up](https://console.ng.bluemix.net/registration/?target=%2Fdashboard%2Fapps) for Bluemix, or use an existing account.
 
-1. Download and install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) to push your applications to Bluemix.
+ - Download and install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) to push your applications to Bluemix.
 
-1. Create a `manifest.yml` file in the root of your application.
+ - Create a `manifest.yml` file in the root of your application.
   ```
   applications:
-  - name:      <your-app-name>
+ - name:      <your-app-name>
     host:      <your-app-host>
     memory:    128M
     services:
@@ -1434,12 +1329,12 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
   The host you use will determinate your application URL initially, e.g. `<host>.mybluemix.net`.
   The service name 'myMongo-db-name' is a declaration of your MongoDB service.  If you are using other services like Watson for example, then you would declare them the same way.
 
-1. Connect and login to Bluemix via the Cloud-foundry CLI
+ - Connect and login to Bluemix via the Cloud-foundry CLI
   ```
   $ cf login -a https://api.ng.bluemix.net
   ```
 
-1. Create a [MongoDB service](https://www.ng.bluemix.net/docs/#services/MongoDB/index.html#MongoDB)
+ - Create a [MongoDB service](https://www.ng.bluemix.net/docs/#services/MongoDB/index.html#MongoDB)
   ```
   $ cf create-service mongodb 100 [your-service-name]
   ```
@@ -1450,7 +1345,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
   ```
 
 
-1. Push the application
+ - Push the application
 
     ```
     $ cf push
@@ -1463,10 +1358,8 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 
 **Done**, now go to the staging domain (`<host>.mybluemix.net`) and see your app running.
 
-[Cloud Foundry Commands](https://console.ng.bluemix.net/docs/cli/reference/bluemix_cli/index.html)
-[More Bluemix samples](https://ibm-bluemix.github.io/)
-[Simple ToDo app in a programming language of your choice](https://github.com/IBM-Bluemix/todo-apps)
-
+ - [More Bluemix samples](https://ibm-bluemix.github.io/) 
+ - [Simple ToDo app in a programming language of your choice](https://github.com/IBM-Bluemix/todo-apps)
 
 ### IBM Watson
 Be sure to check out the full list of Watson services to forwarder enhance your application functionality with a little effort. Watson services are easy to get going; it is simply a RESTful API call. Here is an example of a [Watson Toner Analyzer](https://tone-analyzer-demo.mybluemix.net/) to understand the emotional context of a piece of text that you send to Watson.
@@ -1474,29 +1367,16 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 #### Watson catalog of services
 
-**<img src="https://wbi.mybluemix.net/icons/conversation.svg?version=2" width="25"> [Conversation](https://www.ibm.com/watson/services/conversation/)** -     Quickly build and deploy chatbots and virtual agents across a variety of channels, including mobile devices, messaging platforms, and even robots.
+**[Virtual Assistant](https://www.ibm.com/products/watson-assistant)** -    Deliver consistent and intelligent customer care across all channels and touchpoints with conversational AI.
 
-**<img src="https://wbi.mybluemix.net/icons/discovery.svg" width="25"> [Discovery](https://www.ibm.com/watson/services/discovery/)** - Unlock hidden value in data to find answers, monitor trends and surface patterns with the world’s most advanced cloud-native insight engine.
+**[Natural Language Understanding](https://www.ibm.com/products/natural-language-understanding)** - Analyze text to extract meta-data from content such as concepts, entities, keywords and more.
 
-**<img src="https://wbi.mybluemix.net/icons/language-translator.svg?version=4" width="20" width="25"> [Language Translator](https://www.ibm.com/watson/services/language-translator/)** - Translate text from one language to another.
+**[Discovery](https://www.ibm.com/products/watson-discovery)** - Accelerate business decisions and processes with an AI-powered intelligent document understanding and content analysis platform.
 
-**<img src="https://wbi.mybluemix.net/icons/natural-language-classifier.svg?version=2" width="25"> [Natural Language Classifier](https://www.ibm.com/watson/services/natural-language-classifier/)** - Interpret and classify natural language with confidence.
-
-**<img src="https://wbi.mybluemix.net/icons/natural-language-understanding.svg?version=2" width="25"> [Natural Language Understanding](https://www.ibm.com/watson/services/natural-language-understanding/)** - Analyze text to extract meta-data from content such as concepts, entities, keywords and more.
-
-**<img src="https://wbi.mybluemix.net/icons/personality-insights.svg?version=2" width="25"> [Personality Insights](https://www.ibm.com/watson/services/personality-insights/)** - Predict personality characteristics, needs and values through written text.
-
-**<img src="https://wbi.mybluemix.net/icons/speech-to-text.svg?version=2" width="25"> [Speech to Text](https://www.ibm.com/watson/services/speech-to-text/)** - Convert audio and voice into written text for quick understanding of content.
-
-**<img src="https://wbi.mybluemix.net/icons/text-to-speech.svg?version=2" width="25"> [Text to Speech](https://www.ibm.com/watson/services/text-to-speech/)** - Convert written text into natural sounding audio in a variety of languages and voices.
-
-**<img src="https://wbi.mybluemix.net/icons/tone-analyzer.svg?version=2" width="25"> [Tone Analyzer](https://www.ibm.com/watson/services/tone-analyzer/)** - Understand emotions, social tendencies and perceived writing style.
-
-**<img src="https://1.cms.s81c.com/sites/default/files/2019-02-21/1_VisualRecognitionHero.png" width="25"> [Visual Recognition](https://www.ibm.com/watson/services/visual-recognition/)** - Tag, classify and search visual content using machine learning.
+**[Orchestrate](https://www.ibm.com/products/watson-orchestrate)** - Hand off tedious tasks to Watson and never work the same way again.
 
 
-
-[Click here](https://www.ibm.com/watson/developercloud/services-catalog.html) for live demos of each Watson service.
+[List of Watson Services](https://www.ibm.com/watson#work-with-watson).
 
 
 ---
@@ -1539,12 +1419,7 @@ Contributing
 ------------
 
 If something is unclear, confusing, or needs to be refactored, please let me know.
-Pull requests are always welcome, but due to the opinionated nature of this
-project, I cannot accept every pull request. Please open an issue before
-submitting a pull request. This project uses
-[Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) with a
-few minor exceptions. If you are submitting a pull request that involves
-Pug templates, please make sure you are using *spaces*, not tabs.
+Pull requests are always welcome, but due to the opinionated nature of this project, I cannot accept every pull request. Please open an issue before submitting a pull request. This project uses [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) with a few minor exceptions. If you are submitting a pull request that involves Pug templates, please make sure you are using *spaces*, not tabs.
 
 License
 -------
@@ -1558,5 +1433,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
