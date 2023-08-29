@@ -3,30 +3,20 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fas.fa-map-marked
+      i.fas.fa-map-marked.iconpadding
       | HERE Maps API
 
   .btn-group.d-flex(role='group')
     a.btn.btn-primary(href='https://developer.here.com', target='_blank').w-100
-      i.far.fa-check-square.fa-sm
+      i.far.fa-check-square.fa-sm.iconpadding
       | HERE Developer Portal
     a.btn.btn-primary(href='https://developer.here.com/documentation/map-image/topics/resource-map.html', target='_blank').w-100
-      i.fas.fa-laptop.fa-sm
+      i.fas.fa-laptop.fa-sm.iconpadding
       | Image Map Parameters
 
   br
   .pb-2.mt-2
-    h3 Map using Here Image Map Service
-  div(style='display:flex; justify-content: center;')
-    | This non-interactive map renders without the use of any client-side scripts:
-  div(style='display:flex; justify-content: center;')
-    img(src= imageMapURL)
-
-  br
-  .pb-2.mt-2.mt-4.border-top
     h3 Map using Here Interactive Map Service
-  div(style='display:flex; justify-content: center;')
-    | The client-side scripts are used for rendering this map:
   div(style='display:flex; justify-content: center;')
     #map(style='width: 100vw; height: 50vh')
 

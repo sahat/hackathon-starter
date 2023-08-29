@@ -1,0 +1,16 @@
+diff --git a/node_modules/passport-oauth2/lib/strategy.js b/node_modules/passport-oauth2/lib/strategy.js
+index 8575b72..3cfd4d4
+--- a/node_modules/passport-oauth2/lib/strategy.js
++++ b/node_modules/passport-oauth2/lib/strategy.js
+@@ -174,7 +174,10 @@ OAuth2Strategy.prototype.authenticate = function(req, options) {
+ 
+       self._oauth2.getOAuthAccessToken(code, params,
+         function(err, accessToken, refreshToken, params) {
+-          if (err) { return self.error(self._createOAuthError('Failed to obtain access token', err)); }
++          if (err) {
++              console.warn("Failed to obtain access token: ", err);
++              return self.error(self._createOAuthError('Failed to obtain access token', err));
++            }
+           if (!accessToken) { return self.error(new Error('Failed to obtain access token')); }
+ 
+           self._loadUserProfile(accessToken, function(err, profile) {

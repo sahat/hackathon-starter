@@ -3,11 +3,11 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fab.fa-steam-square.fa-sm
+      i.fab.fa-steam-square.fa-sm.iconpadding
       | Steam Web API
   .btn-group.d-flex(role='group')
     a.btn.btn-primary(href='https://developer.valvesoftware.com/wiki/Steam_Web_API', target='_blank').w-100
-      i.far.fa-check-square.fa-sm
+      i.far.fa-check-square.fa-sm.iconpadding
       | API Overview
 
   br
@@ -45,4 +45,4 @@ block content
     br
     for game in ownedGames.games
       a(href='https://store.steampowered.com/app/' + game.appid)
-        img.thumbnail(src='https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_logo_url + '.jpg' width=92)
+        img.thumbnail(src='https://cdn.cloudflare.steamstatic.com/steam/apps/' + game.appid + '/header.jpg' width=92)

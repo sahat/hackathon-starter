@@ -1,20 +1,20 @@
 extends ../layout
 
 block head
-  script(src='/js/lib/Chart.min.js')
+  script(src='/js/lib/chart.umd.js')
 
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fas.fa-chart-bar.fa-sm(style='color: #FF6384').fa-sm
+      i.fas.fa-chart-bar.fa-sm(style='color: #FF6384').fa-sm.iconpadding
       | Chart.js and Alpha Vantage
 
   .btn-group.d-flex(role='group')
     a.btn.btn-primary(href='https://www.chartjs.org/docs', target='_blank').w-100
-      i.fas.fa-chart-bar.fa-sm
+      i.fas.fa-chart-bar.fa-sm.iconpadding
       | Chart.js Docs
     a.btn.btn-primary(href='https://www.alphavantage.co/documentation', target='_blank').w-100
-      i.fas.fa-money-check-alt.fa-sm
+      i.fas.fa-money-check-alt.fa-sm.iconpadding
       | Alpha Vantage Docs
   .container
     .mt-2.mb-4
@@ -22,6 +22,8 @@ block content
     | Alpha Vantage APIs are grouped into four categories: (1) Stock Time Series Data, (2) Physical and Digital/Crypto Currencies (e.g., Bitcoin), (3) Technical Indicators, and (4) Sector Performances. All APIs are realtime: the latest data points are derived from the current trading day.
     | ChartJS can render various chart types with different formatting.
     | This example plots the closing stock price of Microsoft for the last 100 days.
+    p
+    h6 #{dataType}
     .mt-2.mb-4
       div(style='width:90%; height:80%; margin: 0 auto;')
         canvas#chart

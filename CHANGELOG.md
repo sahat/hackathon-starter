@@ -1,6 +1,59 @@
 # Changelog
 ---------
 
+### 8.0.0 (July 28, 2023)
+
+- Security: Renamed the cookie and set secure attribute for cookie transmission when https is present
+- Security: Migrated off known deprecated, vulnerable or unmaintained dependencies
+- Security: Added express rate limiter
+- Added additional sanitization and validation for external inputs. Lusca provides input protection. The additional sanitization and validation are to add another layer of protection.
+- Added patch-package for temporary patching dependencies
+- Temporary patch for passportjs to handle logout failures
+- Temporary patch for passport-oauth2: better auth failure reporting
+- Removed broken Instagram oauth support as Meta no longer supports it
+- Added handler for 404(page not found) to avoid 500 errors when a route is not found
+- Fixed unhandled error during logout
+- Fixed pug tags with multiple attributes (thanks to @soundz77)
+- Added Lint-stage and Husky to lint all commits
+- Fix req.logout for passport 0.6
+- Fix broken unit test
+- Update default gravatar
+- Visual UI improvements
+- Added Github Actions: NodeJS CI check unit test and lint
+- Upgrade nodejs for docker
+- Removed express-handlebars npm package as it was not used and is not that popular compared to pug (breaking change)
+- Removed chalk  npm package as it was not used (breaking change)
+- Updated documentation
+
+- Upgraded to mongoose 7 (breaking change)
+- Upgraded to popper2
+- Migrated from googleapis npm package to @googleapis/drive and @googleapis/sheets to reduce size and improve performance (breaking change)
+- Migrated from passport-twitch-new to twitch-passport (breaking change)
+- Migrated from lob to @lob/lob-typescript-sdk (breaking change)
+- Migrated from deprecated node-sass to Dart Sass
+- Migrated off passport-openid (breaking change)
+- Migrated off nodemailer-sendgrid (breaking change)
+- Migrated off passport-twitter and twitter-lite (breaking change)
+- Migrated off node-quickbooks (breaking change)
+- Updated dependencies
+- Removed travis.yml
+
+API example changes:
+- Removed the twitter API example as the APIs are actively changing and mostly not free (breaking change)
+- Removed the Instagram API example as it was broken and Meta has significantly reduced the API scope and availablity for devs
+- Improved the Chartjs+AlphaVantage to handle API failures
+- Fix minor formatting issues and missing images
+- Tumblr - Fixed the Tumblr example and moved off tumblrjs (breaking change)
+- Added missing parameters for the Lob's new API requirements
+- Improved the Last.fm API example as the artist image is no longer vended by last.fm
+
+
+### 7.0.0 (Mar 26, 2022)
+- Dropped support for Node.js <16
+- Switched to Bootstrap 5
+- Removed older Bootstrap 4 themes
+- Updated dependencies
+
 ### 6.0.0 (January 2, 2020)
 - Dropped support for NodeJS 8.x, due to its EOL
 - Use HTML5 native client form validation (thanks to @peterblazejewicz)

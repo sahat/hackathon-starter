@@ -1,5 +1,5 @@
-const bcrypt = require('@node-rs/bcrypt');
 const crypto = require('crypto');
+const bcrypt = require('@node-rs/bcrypt');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
   twitter: String,
   google: String,
   github: String,
-  instagram: String,
   linkedin: String,
   steam: String,
   twitch: String,
@@ -64,7 +63,7 @@ userSchema.methods.gravatar = function gravatar(size) {
     size = 200;
   }
   if (!this.email) {
-    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
+    return `https://gravatar.com/avatar/00000000000000000000000000000000?s=${size}&d=retro`;
   }
   const md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;

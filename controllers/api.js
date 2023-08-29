@@ -1,21 +1,17 @@
-const { promisify } = require('util');
+const crypto = require('crypto');
 const cheerio = require('cheerio');
 const { LastFmNode } = require('lastfm');
-const tumblr = require('tumblr.js');
 const { Octokit } = require('@octokit/rest');
-const Twitter = require('twitter-lite');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const paypal = require('paypal-rest-sdk');
-const crypto = require('crypto');
-const lob = require('lob')(process.env.LOB_KEY);
-const ig = require('instagram-node').instagram();
 const axios = require('axios');
-const { google } = require('googleapis');
-const Quickbooks = require('node-quickbooks');
+const googledrive = require('@googleapis/drive');
+const googlesheets = require('@googleapis/sheets');
 const validator = require('validator');
-
-Quickbooks.setOauthVersion('2.0');
+const {
+  Configuration: LobConfiguration, LetterEditable, LettersApi, ZipEditable, ZipLookupsApi
+} = require('@lob/lob-typescript-sdk');
 
 /**
  * GET /api
@@ -62,21 +58,25 @@ exports.getFoursquare = async (req, res, next) => {
  * Tumblr API example.
  */
 exports.getTumblr = (req, res, next) => {
-  const token = req.user.tokens.find((token) => token.kind === 'tumblr');
-  const client = tumblr.createClient({
-    consumer_key: process.env.TUMBLR_KEY,
-    consumer_secret: process.env.TUMBLR_SECRET,
-    token: token.accessToken,
-    token_secret: token.tokenSecret
-  });
-  client.blogPosts('mmosdotcom.tumblr.com', { type: 'photo' }, (err, data) => {
-    if (err) { return next(err); }
-    res.render('api/tumblr', {
-      title: 'Tumblr API',
-      blog: data.blog,
-      photoset: data.posts[0].photos
+  // const token = req.user.tokens.find((token) => token.kind === 'tumblr'); //unused
+  const appkey = process.env.TUMBLR_KEY;
+  // const appsecret = process.env.TUMBLR_SECRET; //unused in this example
+  // const accessToken = token.accessToken; //unused in this example
+  // const tokenSecret = token.tokenSecret; //unused in this example
+
+  const blogId = 'mmosdotcom-blog.tumblr.com';
+  const postType = 'photo';
+  axios.get(`https://api.tumblr.com/v2/blog/${blogId}/posts/${postType}?api_key=${appkey}`)
+    .then((response) => {
+      res.render('api/tumblr', {
+        title: 'Tumblr API',
+        blog: response.data.response.blog,
+        photoset: response.data.response.posts[0].photos
+      });
+    })
+    .catch((error) => {
+      next(error);
     });
-  });
 };
 
 /**
@@ -136,14 +136,34 @@ exports.getGithub = async (req, res, next) => {
 
 exports.getQuickbooks = (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'quickbooks');
+  const realmId = req.user.quickbooks;
+  const quickbooksAPIMinorVersion = 65;
+  const AccountingBaseUrl = 'https://sandbox-quickbooks.api.intuit.com';
 
-  const qbo = new Quickbooks(process.env.QUICKBOOKS_CLIENT_ID, process.env.QUICKBOOKS_CLIENT_SECRET,
-    token.accessToken, false, req.user.quickbooks, true, false, null, '2.0', token.refreshToken);
+  const query = 'select * from Customer';
+  const url = `${AccountingBaseUrl}/v3/company/${realmId}/query?query=${query}&minorversion=${quickbooksAPIMinorVersion}`;
+  /* eslint-disable */
+  // Example urls not supported by the current pug view. See Intuit's API explorer for more info.
+  // const url = `${AccountingBaseUrl}/v3/company/${realmId}/companyinfo/${realmId}?minorversion=${quickbooksAPIMinorVersion}`;
+  // const url = `${AccountingBaseUrl}/v3/company/${realmId}/reports/CustomerBalance?minorversion=${quickbooksAPIMinorVersion}`;
+  /* eslint-enable */
 
-  qbo.findCustomers((_, customers) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: `Bearer ${token.accessToken}`
+  };
+
+  const options = {
+    url,
+    method: 'GET',
+    headers
+  };
+
+  axios(options).then((customers) => {
     res.render('api/quickbooks', {
       title: 'Quickbooks API',
-      customers: customers.QueryResponse.Customer
+      customers: customers.data.QueryResponse.Customer
     });
   });
 };
@@ -217,7 +237,6 @@ exports.getLastfm = async (req, res, next) => {
     const topAlbums = await getArtistTopAlbums();
     const artist = {
       name: artistInfo.name,
-      image: artistInfo.image ? artistInfo.image.slice(-1)[0]['#text'] : null,
       tags: artistInfo.tags ? artistInfo.tags.tag : [],
       bio: artistInfo.bio ? artistInfo.bio.summary : '',
       stats: artistInfo.stats,
@@ -230,80 +249,9 @@ exports.getLastfm = async (req, res, next) => {
       artist
     });
   } catch (err) {
-    if (err.error !== undefined) {
-      console.error(err);
-      // see error code list: https://www.last.fm/api/errorcodes
-      switch (err.error) {
-        // potentially handle each code uniquely
-        case 10: // Invalid API key
-          res.render('api/lastfm', {
-            error: err
-          });
-          break;
-        default:
-          res.render('api/lastfm', {
-            error: err
-          });
-      }
-    } else {
-      next(err);
-    }
-  }
-};
-
-/**
- * GET /api/twitter
- * Twitter API example.
- */
-exports.getTwitter = async (req, res, next) => {
-  const token = req.user.tokens.find((token) => token.kind === 'twitter');
-  const T = new Twitter({
-    consumer_key: process.env.TWITTER_KEY,
-    consumer_secret: process.env.TWITTER_SECRET,
-    access_token_key: token.accessToken,
-    access_token_secret: token.tokenSecret
-  });
-  try {
-    const { statuses: tweets } = await T.get('search/tweets', {
-      q: 'nodejs since:2013-01-01',
-      geocode: '40.71448,-74.00598,5mi',
-      count: 10
-    });
-    res.render('api/twitter', {
-      title: 'Twitter API',
-      tweets
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
- * POST /api/twitter
- * Post a tweet.
- */
-exports.postTwitter = async (req, res, next) => {
-  const validationErrors = [];
-  if (validator.isEmpty(req.body.tweet)) validationErrors.push({ msg: 'Tweet cannot be empty' });
-
-  if (validationErrors.length) {
-    req.flash('errors', validationErrors);
-    return res.redirect('/api/twitter');
-  }
-
-  const token = req.user.tokens.find((token) => token.kind === 'twitter');
-  const T = new Twitter({
-    consumer_key: process.env.TWITTER_KEY,
-    consumer_secret: process.env.TWITTER_SECRET,
-    access_token_key: token.accessToken,
-    access_token_secret: token.tokenSecret
-  });
-  try {
-    await T.post('statuses/update', { status: req.body.tweet });
-    req.flash('success', { msg: 'Your tweet has been posted.' });
-    res.redirect('/api/twitter');
-  } catch (error) {
-    next(error);
+    console.log('See error codes at: https://www.last.fm/api/errorcodes');
+    console.log(err);
+    next(err);
   }
 };
 
@@ -493,20 +441,52 @@ exports.getChart = async (req, res, next) => {
   const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=compact&apikey=${process.env.ALPHA_VANTAGE_KEY}`;
   axios.get(url)
     .then((response) => {
-      const arr = response.data['Time Series (Daily)'];
+      const stockdata = response.data['Time Series (Daily)'];
       let dates = [];
       let closing = []; // stock closing value
-      const keys = Object.getOwnPropertyNames(arr);
-      for (let i = 0; i < 100; i++) {
-        dates.push(keys[i]);
-        closing.push(arr[keys[i]]['4. close']);
+      let keys;
+      let dataType;
+      if (stockdata === undefined) {
+        dataType = 'Unable to get live data from Alpha Vantage. Using previously downloaded data:';
+        console.log(response.data);
+        dates = [
+          '2023-03-02', '2023-03-03', '2023-03-06', '2023-03-07', '2023-03-08', '2023-03-09', '2023-03-10', '2023-03-13', '2023-03-14', '2023-03-15',
+          '2023-03-16', '2023-03-17', '2023-03-20', '2023-03-21', '2023-03-22', '2023-03-23', '2023-03-24', '2023-03-27', '2023-03-28', '2023-03-29',
+          '2023-03-30', '2023-03-31', '2023-04-03', '2023-04-04', '2023-04-05', '2023-04-06', '2023-04-10', '2023-04-11', '2023-04-12', '2023-04-13',
+          '2023-04-14', '2023-04-17', '2023-04-18', '2023-04-19', '2023-04-20', '2023-04-21', '2023-04-24', '2023-04-25', '2023-04-26', '2023-04-27',
+          '2023-04-28', '2023-05-01', '2023-05-02', '2023-05-03', '2023-05-04', '2023-05-05', '2023-05-08', '2023-05-09', '2023-05-10', '2023-05-11',
+          '2023-05-12', '2023-05-15', '2023-05-16', '2023-05-17', '2023-05-18', '2023-05-19', '2023-05-22', '2023-05-23', '2023-05-24', '2023-05-25',
+          '2023-05-26', '2023-05-30', '2023-05-31', '2023-06-01', '2023-06-02', '2023-06-05', '2023-06-06', '2023-06-07', '2023-06-08', '2023-06-09',
+          '2023-06-12', '2023-06-13', '2023-06-14', '2023-06-15', '2023-06-16', '2023-06-20', '2023-06-21', '2023-06-22', '2023-06-23', '2023-06-26',
+          '2023-06-27', '2023-06-28', '2023-06-29', '2023-06-30', '2023-07-03', '2023-07-05', '2023-07-06', '2023-07-07', '2023-07-10', '2023-07-11',
+          '2023-07-12', '2023-07-13', '2023-07-14', '2023-07-17', '2023-07-18', '2023-07-19', '2023-07-20', '2023-07-21', '2023-07-24', '2023-07-25'
+        ];
+        closing = [
+          '251.1100', '255.2900', '256.8700', '254.1500', '253.7000', '252.3200', '248.5900', '253.9200', '260.7900', '265.4400', '276.2000', '279.4300',
+          '272.2300', '273.7800', '272.2900', '277.6600', '280.5700', '276.3800', '275.2300', '280.5100', '284.0500', '288.3000', '287.2300', '287.1800',
+          '284.3400', '291.6000', '289.3900', '282.8300', '283.4900', '289.8400', '286.1400', '288.8000', '288.3700', '288.4500', '286.1100', '285.7600',
+          '281.7700', '275.4200', '295.3700', '304.8300', '307.2600', '305.5600', '305.4100', '304.4000', '305.4100', '310.6500', '308.6500', '307.0000',
+          '312.3100', '310.1100', '308.9700', '309.4600', '311.7400', '314.0000', '318.5200', '318.3400', '321.1800', '315.2600', '313.8500', '325.9200',
+          '332.8900', '331.2100', '328.3900', '332.5800', '335.4000', '335.9400', '333.6800', '323.3800', '325.2600', '326.7900', '331.8500', '334.2900',
+          '337.3400', '348.1000', '342.3300', '338.0500', '333.5600', '339.7100', '335.0200', '328.6000', '334.5700', '335.8500', '335.0500', '340.5400',
+          '337.9900', '338.1500', '341.2700', '337.2200', '331.8300', '332.4700', '337.2000', '342.6600', '345.2400', '345.7300', '359.4900', '355.0800',
+          '346.8700', '343.7700', '345.1100', '350.9800'
+        ];
+      } else {
+        dataType = 'Using data from Alpha Vantage';
+        keys = Object.getOwnPropertyNames(stockdata);
+        for (let i = 0; i < 100; i++) {
+          dates.push(keys[i]);
+          closing.push(stockdata[keys[i]]['4. close']);
+        }
+        // reverse so dates appear from left to right
+        dates.reverse();
+        closing.reverse();
       }
-      // reverse so dates appear from left to right
-      dates.reverse();
-      closing.reverse();
       dates = JSON.stringify(dates);
       closing = JSON.stringify(closing);
       res.render('api/chart', {
+        dataType,
         title: 'Chart',
         dates,
         closing
@@ -514,26 +494,6 @@ exports.getChart = async (req, res, next) => {
     }).catch((err) => {
       next(err);
     });
-};
-
-/**
- * GET /api/instagram
- * Instagram API example.
- */
-exports.getInstagram = async (req, res, next) => {
-  const token = req.user.tokens.find((token) => token.kind === 'instagram');
-  ig.use({ client_id: process.env.INSTAGRAM_ID, client_secret: process.env.INSTAGRAM_SECRET });
-  ig.use({ access_token: token.accessToken });
-  try {
-    const userSelfMediaRecentAsync = promisify(ig.user_self_media_recent);
-    const myRecentMedia = await userSelfMediaRecentAsync();
-    res.render('api/instagram', {
-      title: 'Instagram API',
-      myRecentMedia
-    });
-  } catch (error) {
-    next(error);
-  }
 };
 
 /**
@@ -553,8 +513,8 @@ exports.getPayPal = (req, res, next) => {
       payment_method: 'paypal'
     },
     redirect_urls: {
-      return_url: process.env.PAYPAL_RETURN_URL,
-      cancel_url: process.env.PAYPAL_CANCEL_URL
+      return_url: `${process.env.BASE_URL}/api/paypal/success`,
+      cancel_url: `${process.env.BASE_URL}/api/paypal/cancel`
     },
     transactions: [{
       description: 'Hackathon Starter',
@@ -611,10 +571,14 @@ exports.getPayPalCancel = (req, res) => {
  * Lob API example.
  */
 exports.getLob = async (req, res, next) => {
+  const config = new LobConfiguration({
+    username: process.env.LOB_KEY,
+  });
+
   let recipientName;
   if (req.user) { recipientName = req.user.profile.name; } else { recipientName = 'John Doe'; }
   const addressTo = {
-    name: recipientName,
+    name: recipientName || 'Developer',
     address_line1: '123 Main Street',
     address_city: 'New York',
     address_state: 'NY',
@@ -622,20 +586,19 @@ exports.getLob = async (req, res, next) => {
   };
   const addressFrom = {
     name: 'Hackathon Starter',
-    address_line1: '123 Test Street',
-    address_line2: 'Unit 200',
-    address_city: 'Chicago',
-    address_state: 'IL',
-    address_zip: '60012',
+    address_line1: '305 Harrison St',
+    address_city: 'Seattle',
+    address_state: 'WA',
+    address_zip: '98109',
     address_country: 'US'
   };
 
-  const lookupZip = () => lob.usZipLookups.lookup({ zip_code: '94107' })
-    .then((zipdetails) => (zipdetails))
-    .catch((error) => Promise.reject(new Error(`Could not get zip code details: ${error}`)));
+  const zipData = new ZipEditable({
+    zip_code: addressTo.address_zip
+  });
 
-  const createAndMailLetter = () => lob.letters.create({
-    description: 'My First Class Letter',
+  const letterData = new LetterEditable({
+    use_type: 'operational',
     to: addressTo,
     from: addressFrom,
     // file: minified version of https://github.com/lob/lob-node/blob/master/examples/html/letter.html with slight changes as an example
@@ -644,13 +607,11 @@ exports.getLob = async (req, res, next) => {
           Hello ${addressTo.name}, <p> We would like to welcome you to the community! Thanks for being a part of the team! <p><p> Cheer,<br>${addressFrom.name}
           </div></div></div></body></html>`,
     color: false
-  })
-    .then((letter) => (letter))
-    .catch((error) => Promise.reject(new Error(`Could not create and send letter: ${error}`)));
+  });
 
   try {
-    const uspsLetter = await createAndMailLetter();
-    const zipDetails = await lookupZip();
+    const uspsLetter = await new LettersApi(config).create(letterData);
+    const zipDetails = await new ZipLookupsApi(config).lookup(zipData);
     res.render('api/lob', {
       title: 'Lob API',
       zipDetails,
@@ -729,22 +690,10 @@ exports.postPinterest = (req, res, next) => {
 };
 
 exports.getHereMaps = (req, res) => {
-  const imageMapURL = `https://image.maps.api.here.com/mia/1.6/mapview?\
-app_id=${process.env.HERE_APP_ID}&app_code=${process.env.HERE_APP_CODE}&\
-poix0=47.6516216,-122.3498897;white;black;15;Fremont Troll&\
-poix1=47.6123335,-122.3314332;white;black;15;Seattle Art Museum&\
-poix2=47.6162956,-122.3555097;white;black;15;Olympic Sculpture Park&\
-poix3=47.6205099,-122.3514661;white;black;15;Space Needle&\
-c=47.6176371,-122.3344637&\
-u=1500&\
-vt=1&&z=13&\
-h=500&w=800&`;
-
   res.render('api/here-maps', {
     app_id: process.env.HERE_APP_ID,
     app_code: process.env.HERE_APP_CODE,
-    title: 'Here Maps API',
-    imageMapURL
+    title: 'Here Maps API'
   });
 };
 
@@ -757,14 +706,13 @@ exports.getGoogleMaps = (req, res) => {
 
 exports.getGoogleDrive = (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'google');
-  const authObj = new google.auth.OAuth2({
+  const authObj = new googledrive.auth.OAuth2({
     access_type: 'offline'
   });
   authObj.setCredentials({
     access_token: token.accessToken
   });
-
-  const drive = google.drive({
+  const drive = googledrive.drive({
     version: 'v3',
     auth: authObj
   });
@@ -782,19 +730,19 @@ exports.getGoogleDrive = (req, res) => {
 
 exports.getGoogleSheets = (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'google');
-  const authObj = new google.auth.OAuth2({
+  const authObj = new googlesheets.auth.OAuth2({
     access_type: 'offline'
   });
   authObj.setCredentials({
     access_token: token.accessToken
   });
 
-  const sheets = google.sheets({
+  const sheets = googlesheets.sheets({
     version: 'v4',
     auth: authObj
   });
 
-  const url = 'https://docs.google.com/spreadsheets/d/12gm6fRAp0bC8TB2vh7sSPT3V75Ug99JaA9L0PqiWS2s/edit#gid=0';
+  const url = 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit#gid=0';
   const re = /spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
   const id = url.match(re)[1];
 
