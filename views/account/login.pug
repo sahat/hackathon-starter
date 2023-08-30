@@ -2,20 +2,6 @@ extends ../layout
 
 block content
   .pb-2.mt-2.mb-4.border-bottom
-    h3 Sign in with Magic Link
-  form(method='POST', action='/lomagic')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group.row.mb-3
-      label.col-md-3.col-form-label.font-weight-bold.text-right(for='magicLinkEmail') Email
-      .col-md-7
-        input.form-control(type='email', name='magicLinkEmail', id='magic-email', placeholder='Email', autofocus, autocomplete='email', required)
-    .form-group
-      .offset-md-3.col-md-7.pl-2
-        button.col-md-3.btn.btn-primary(type='submit')
-          i.far.fa-sm.fa-envelope.iconpadding
-          | Send Magic Link
-
-  .pb-2.mt-2.mb-4.border-bottom
     h3 Sign in
   form(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
@@ -33,6 +19,24 @@ block content
           i.far.fa-user.fa-sm.iconpadding
           | Login
         a.btn.btn-link(href='/forgot') Forgot your password?
+    .form-group
+      .offset-md-3.col-md-7.pl-2
+        .pt-2.pb-2 OR
+  form(method='POST', action='/login/magic-link')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.mb-3
+      .offset-md-3.col-md-7.pl-2
+        .help-block.text-muted.small
+          | We'll email you a link if an account is found for a password-less login.
+    .form-group.row.mb-3
+      label.col-md-3.col-form-label.font-weight-bold.text-right.hidden(for='magicLinkEmail') &nbsp;
+      .col-md-7
+        input.form-control(type='email', name='magicLinkEmail', id='magic-email', placeholder='Email', autofocus, autocomplete='email', required)
+    .form-group
+      .offset-md-3.col-md-7.pl-2
+        button.btn.btn-primary(type='submit')
+          i.far.fa-sm.fa-envelope.iconpadding
+          | Send Magic Link
     .form-group
       .offset-md-3.col-md-7.pl-2
         hr

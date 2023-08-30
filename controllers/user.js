@@ -156,7 +156,7 @@ exports.postSignup = async (req, res, next) => {
  * GET /account
  * Profile page.
  */
-exports.getAccount = (req, res) => {
+exports.getAccount = (_req, res) => {
   res.render('account/profile', {
     title: 'Account Management'
   });
@@ -311,7 +311,7 @@ exports.getReset = async (req, res, next) => {
  * GET /account/verify/:token
  * Verify email address
  */
-exports.getVerifyEmailToken = (req, res, next) => {
+exports.getVerifyEmailToken = (req, res) => {
   if (req.user.emailVerified) {
     req.flash('info', { msg: 'The email address has been verified.' });
     return res.redirect('/account');
@@ -408,10 +408,10 @@ exports.getVerifyEmail = (req, res, next) => {
 };
 
 /**
- * POST /lomagic
- * Send login email
+ * POST /login/magic-link
+ * Sends user a magic link
  */
-exports.postLoginMagic = (req, res, _next) => {
+exports.postLoginMagicLink = async (req, res, next) => {
   const { magicLinkEmail } = req.body;
   const validationErrors = [];
   if (!validator.isEmail(magicLinkEmail)) {
@@ -425,10 +425,103 @@ exports.postLoginMagic = (req, res, _next) => {
     return res.redirect('back');
   }
 
-  console.log(email);
+  try {
+    // sends the magic link email
+    const sendMagicLinkEmail = (user) => {
+      if (!user) {
+        return;
+      }
+      const token = user.magicLinkToken;
+      const mailOptions = {
+        to: user.email,
+        from: process.env.SITE_CONTACT_EMAIL,
+        subject: 'Password-less Login Link',
+        text: `You are receiving this email because you (or someone else) have requested a password-less link to login.\n\n
+          You can access your account securely by clicking on the following link:\n\n
+          http://${req.headers.host}/login/magic-link/${token}\n\n
+          If you did not request this, please ignore this email and your account will remain unchanged.\n`
+      };
+      // It is helpful to log the contents of the email in development
+      const isLocalhost = req.headers.host.includes('localhost');
+      if (isLocalhost) {
+        console.log(mailOptions.text);
+      }
+      const mailSettings = {
+        successfulType: 'info',
+        successfulMsg: 'If the email address you entered exists, you will receive a magic link shortly.',
+        loggingError: 'ERROR: Could not send magic link email after security downgrade.\n',
+        errorType: 'errors',
+        errorMsg: 'Error sending the magic link message. Please try again shortly.',
+        mailOptions,
+        req
+      };
+      return sendMail(mailSettings);
+    };
 
-  req.flash('errors', { msg: 'Not implemented yet' });
-  return res.redirect('/login');
+    const user = await User.findOne({ email });
+    if (user) {
+      const token = await (randomBytesAsync(16).then((buf) => buf.toString('hex')));
+      user.magicLinkToken = token;
+      user.magicLinkExpires = Date.now() + 300000; // expires in 5 minutes
+      await user.save();
+      await sendMagicLinkEmail(user);
+    }
+
+    return res.redirect('back');
+  } catch (err) {
+    return next(err);
+  }
+};
+
+/**
+ * GET /login/magic-link/:token
+ * Process token from magic link email and log user in
+ */
+exports.getLoginMagicLink = async (req, res, next) => {
+  const { token } = req.params;
+
+  if (req.isAuthenticated()) {
+    req.flash('info', { msg: 'You are already logged in.' });
+    return res.redirect('/');
+  }
+
+  const validationErrors = [];
+  if (!validator.isHexadecimal(token)) validationErrors.push({ msg: 'Invalid Token.  Please retry.' });
+
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
+    return res.redirect('back');
+  }
+
+  try {
+    const user = await User.findOne({
+      magicLinkToken: token,
+      magicLinkExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      req.flash('errors', { msg: 'Magic link is invalid or has expired.' });
+      return res.redirect('/login');
+    }
+
+    user.magicLinkToken = undefined;
+    user.magicLinkExpires = undefined;
+    if (!user.emailVerified) {
+      user.emailVerificationToken = '';
+      user.emailVerified = true;
+    }
+    await user.save();
+
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash('success', { msg: 'Success! You are logged in.' });
+      res.redirect(req.session.returnTo || '/');
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 /**

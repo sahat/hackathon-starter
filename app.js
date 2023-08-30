@@ -114,11 +114,12 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-app.use((req, res, next) => {
+app.use((req, _res, next) => {
   // After successful login, redirect back to the intended page
   if (!req.user
     && req.path !== '/login'
     && req.path !== '/signup'
+    && !req.path.startsWith('/login/magic-link')
     && !req.path.match(/^\/auth/)
     && !req.path.match(/\./)) {
     req.session.returnTo = req.originalUrl;
@@ -141,7 +142,8 @@ app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawes
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
-app.post('/lomagic', userController.postLoginMagic);
+app.post('/login/magic-link', userController.postLoginMagicLink);
+app.get('/login/magic-link/:token', userController.getLoginMagicLink);
 app.get('/logout', userController.logout);
 app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
