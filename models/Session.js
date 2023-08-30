@@ -7,12 +7,15 @@ const sessionSchema = new mongoose.Schema({
 
 sessionSchema.statics = {
   /**
-   * Removes all sessions for a given user
+   * Removes all valid sessions for a given user
    * @param {string} userId
    * @returns {Promise}
    */
   removeSessionByUserId(userId) {
-    return this.deleteMany({ session: { $regex: userId } });
+    return this.deleteMany({
+      expires: { $gt: new Date() },
+      session: { $regex: userId }
+    });
   }
 };
 
