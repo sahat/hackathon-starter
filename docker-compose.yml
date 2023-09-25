@@ -6,6 +6,7 @@ services:
     build: .
     ports:
      - "8080:8080"
+     - "27017:27017"
     environment:
      - MONGODB_URI=mongodb://mongo:27017/test 
     links:
