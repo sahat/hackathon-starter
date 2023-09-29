@@ -24,9 +24,6 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
  */
 dotenv.config({ path: '.env.example' });
 
-/**
- * Set config values
- */
 const secureTransfer = (process.env.BASE_URL.startsWith('https'));
 
 // Consider adding a proxy such as cloudflare for production.
