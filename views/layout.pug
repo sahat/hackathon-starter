@@ -51,3 +51,10 @@ html.h-100
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       ga('create', 'UA-XXXXX-X', 'auto');
       ga('send', 'pageview');
+    script.
+      document.getElementsByClassName('btn-outline-danger')[0].addEventListener('click',() => {
+         document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "")
+                               .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+          });
+      })
