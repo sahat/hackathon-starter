@@ -1,17 +1,19 @@
-const crypto = require('crypto');
-const cheerio = require('cheerio');
-const { LastFmNode } = require('lastfm');
-const { Octokit } = require('@octokit/rest');
-const stripe = require('stripe')(process.env.STRIPE_SKEY);
-const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
-const paypal = require('paypal-rest-sdk');
-const axios = require('axios');
-const googledrive = require('@googleapis/drive');
-const googlesheets = require('@googleapis/sheets');
-const validator = require('validator');
+// Import necessary modules
+const crypto = require('crypto'); // For cryptographic functionality
+const cheerio = require('cheerio'); // For web scraping
+const { LastFmNode } = require('lastfm'); // For Last.fm API
+const { Octokit } = require('@octokit/rest'); // For GitHub API
+const stripe = require('stripe')(process.env.STRIPE_SKEY); // For Stripe API
+const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN); // For Twilio API
+const paypal = require('paypal-rest-sdk'); // For PayPal API
+const axios = require('axios'); // For making HTTP requests
+const googledrive = require('@googleapis/drive'); // For Google Drive API
+const googlesheets = require('@googleapis/sheets'); // For Google Sheets API
+const validator = require('validator'); // For input validation
 const {
   Configuration: LobConfiguration, LetterEditable, LettersApi, ZipEditable, ZipLookupsApi
-} = require('@lob/lob-typescript-sdk');
+} = require('lob'); // For Lob API
+
 
 /**
  * GET /api
