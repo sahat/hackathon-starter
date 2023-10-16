@@ -1,0 +1,31 @@
+name: Bug 🐛
+description: Report a bug
+labels: [bug]
+title: "Bug: "
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      options:
+        - label: I searched if there's another issue like this?
+          required: true
+  - type: textarea
+    attributes:
+      label: Current Behavior
+      description: Describe what's happing with the code.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: Describe what's was supposed to happen with the code.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Any suggestions?
+      description: Do you have any suggestions to make it work?
+    validations:
+      required: false
