@@ -1,0 +1,29 @@
+name: Feature 📄
+description: Tell us what could we add to our project
+labels: [enhancement]
+title: "Feature: "
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      options:
+        - label: I searched if there's another issue like this?
+          required: true
+  - type: dropdown
+    attributes:
+      label: We need to add to
+      description: Choose what we add to
+      multiple: false
+      options:
+        - "Code"
+        - "Action"
+        - "Template"
+        - "Info"
+
+
+  - type: textarea
+    attributes:
+      label: Describe
+      description: Describe what could we add to the project
+    validations:
+      required: false
