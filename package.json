@@ -16,7 +16,7 @@
     "start": "npm run scss && node app.js",
     "test": "nyc mocha --timeout=60000 --exit",
     "lint": "eslint \"**/*.js\"",
-    "prepare": "husky install",
+    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi",
     "scss": "sass --no-source-map --load-path=./ --update ./public/css:./public/css",
     "lintStage": "node_modules/.bin/lint-staged"
   },
