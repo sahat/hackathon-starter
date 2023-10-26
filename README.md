@@ -337,7 +337,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="http://img4.wikia.nocookie.net/__cb20130520163346/logopedia/images/8/8d/Tumblr_logo_by_x_1337_x-d5ikwpp.png" width="200">
+<img src="https://i.imgur.com/oMKr69V.png" width="200">
 
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
@@ -394,6 +394,8 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 - Use the Sign Up option in the upper right corner of the screen (navbar) to get a free developer account and a sandbox company.
 - Create a new app by going to your Dashboard using the My Apps option in the top nav bar or by going to <a href="https://developer.intuit.com/app/developer/myapps" target="_blank">https://developer.intuit.com/app/developer/myapps</a>
 - In your App, under Development, Keys & OAuth (right nav), find the Client ID and Client Secret for your `.env` file
+
+<hr>
 
 Project Structure
 -----------------
