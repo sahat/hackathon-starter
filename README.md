@@ -1180,7 +1180,7 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 Docker
 ----------
 
-You will need docker and docker-compose installed to build the application.
+You will need to install docker and docker-compose on your system. If you are using WSL, you will need to install Docker Desktop on Windows and docker-compose on WSL.
 
 - [Docker installation](https://docs.docker.com/engine/installation/)
 
@@ -1189,8 +1189,11 @@ You will need docker and docker-compose installed to build the application.
 After installing docker, start the application with the following commands :
 
 ```
-# To build the project for the first time or when you add dependencies
+# To build the project while supressing most of the build messages
 docker-compose build web
+
+# To build the project without supressing the build messages or using cached data
+ docker-compose build --no-cache --progress=plain web
 
 # To start the application (or to restart after making changes to the source code)
 docker-compose up web
