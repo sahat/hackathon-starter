@@ -70,7 +70,7 @@ Features
 --------
 - Login
 	- **Local Authentication** using Email and Password
-	- **OAuth 2.0 Authentication:** Sign in with Google, Facebook, X (twitter), LinkedIn, Twitch, Github, Snapchat
+	- **OAuth 2.0 Authentication:** Sign in with Google, Facebook, X (Twitter), LinkedIn, Twitch, Github, Snapchat
 - **User Profile and Account Management**
 	 - Gravatar
 	 - Profile Details
@@ -148,7 +148,7 @@ After completing step 1 and locally installing MongoDB, you should be able to ac
 - reCAPTCHA
 	- For contact form submission
 - OAuth for social logins (Sign in with / Login with)
-	- Depending on your application need, obtain keys from Google, Facebook, X (twitter), LinkedIn, Twitch, GitHub, Snapchat.  You don't have to obtain valid keys for any provider that you don't need. Just remove the buttons and links in the login and account pug views before your demo.
+	- Depending on your application need, obtain keys from Google, Facebook, X (Twitter), LinkedIn, Twitch, GitHub, Snapchat.  You don't have to obtain valid keys for any provider that you don't need. Just remove the buttons and links in the login and account pug views before your demo.
 - API keys for service providers in the API Examples if you are planning to use them.
 
 - MongoDB Atlas
@@ -447,7 +447,7 @@ List of Packages
 | @lob/lob-typescript-sdk         | Lob (USPS mailing / physical mailing service) library.                  |
 | @node-rs/bcrypt                 | Library for hashing and salting user passwords.                         |
 | @octokit/rest                   | GitHub API library.                                                     |
-| @passport-js/passport-twitter   | X (twitter) login support (OAuth 2).                                        |
+| @passport-js/passport-twitter   | X (Twitter) login support (OAuth 2).                                        |
 | @popperjs/core                  | Frontend js library for poppers and tooltips.                           |
 | axios                           | HTTP client.                                                            |
 | body-parser                     | Node.js body parsing middleware.                                        |
@@ -551,7 +551,7 @@ Recommended Client-side Libraries
 Pro Tips
 --------
 
-- Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find) function from Lodash. For example, this is how you would retrieve a X (twitter) token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`, where 1st parameter is an array, and a 2nd parameter is an object to search for.
+- Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find) function from Lodash. For example, this is how you would retrieve a X (Twitter) token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`, where 1st parameter is an array, and a 2nd parameter is an object to search for.
 
 FAQ
 ---
