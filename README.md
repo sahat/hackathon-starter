@@ -272,7 +272,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/X_logo_2023.svg/180px-X_logo_2023.svg.png" width="90">
+<img src="https://i.imgur.com/gGVrJDt.png" width="90">
 
 - Sign in at <a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com</a>
 - Click **Create a new application**
@@ -447,7 +447,7 @@ List of Packages
 | @lob/lob-typescript-sdk         | Lob (USPS mailing / physical mailing service) library.                  |
 | @node-rs/bcrypt                 | Library for hashing and salting user passwords.                         |
 | @octokit/rest                   | GitHub API library.                                                     |
-| @passport-js/passport-twitter   | X (Twitter) login support (OAuth 2).                                        |
+| @passport-js/passport-twitter   | X (Twitter) login support (OAuth 2).                                    |
 | @popperjs/core                  | Frontend js library for poppers and tooltips.                           |
 | axios                           | HTTP client.                                                            |
 | body-parser                     | Node.js body parsing middleware.                                        |
@@ -551,7 +551,7 @@ Recommended Client-side Libraries
 Pro Tips
 --------
 
-- Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find) function from Lodash. For example, this is how you would retrieve a X (Twitter) token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`, where 1st parameter is an array, and a 2nd parameter is an object to search for.
+- Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find) function from Lodash. For example, this is how you would retrieve an X (Twitter) token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`, where 1st parameter is an array, and a 2nd parameter is an object to search for.
 
 FAQ
 ---
