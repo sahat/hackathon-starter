@@ -272,7 +272,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://i.imgur.com/gGVrJDt.png" width="90">
+<img src="https://i.imgur.com/Vlqfv7a.jpg" width="90">
 
 - Sign in at <a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com</a>
 - Click **Create a new application**
