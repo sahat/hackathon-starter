@@ -127,6 +127,9 @@ cd myproject
 # Install NPM dependencies
 npm install
 
+# Generate .env 
+chmod +x ./generateEnv.sh | ./generateEnv.sh
+
 # Then simply start your app
 node app.js
 ```
