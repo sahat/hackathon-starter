@@ -14,6 +14,7 @@
   "scripts": {
     "postinstall": "patch-package && npm run scss",
     "start": "npm run scss && node app.js",
+    "start:dev": "nodemon -r dotenv/config",
     "test": "nyc mocha --timeout=60000 --exit",
     "lint": "eslint \"**/*.js\"",
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi",
@@ -88,6 +89,7 @@
     "lint-staged": "^15.0.1",
     "mocha": "^10.2.0",
     "mongodb-memory-server": "^9.0.1",
+    "nodemon": "^3.0.1",
     "nyc": "^15.1.0",
     "sinon": "^16.1.0",
     "supertest": "^6.3.3"

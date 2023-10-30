@@ -1,0 +1,7 @@
+{
+  "watch": ["**/*.js", ".env"],
+  "ext": "js,.env",
+  "verbose": true,
+  "exec": "npm run scss && node app.js"
+}
+

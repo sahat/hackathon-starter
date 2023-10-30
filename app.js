@@ -24,6 +24,12 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
  */
 dotenv.config({ path: '.env.example' });
 
+if(process.env.NODE_ENV === 'development') {
+  console.log('The environment variables are:',process.env.MONGODB_URI);
+}
+
+
+
 /**
  * Set config values
  */
@@ -162,6 +168,7 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
  * API examples routes.
  */
 app.get('/api', apiController.getApi);
+
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
 app.get('/api/steam', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getSteam);
@@ -263,6 +270,9 @@ if (process.env.NODE_ENV === 'development') {
     console.error(err);
     res.status(500).send('Server Error');
   });
+  app.get('/env', (req, res) => {
+  res.send('<h1>Environment Variables</h1><pre>' + JSON.stringify(process.env, null, 2) + '</pre>');
+});
 }
 
 /**
