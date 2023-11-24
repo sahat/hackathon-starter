@@ -89,7 +89,7 @@ Features
 - CSRF protection
 - MVC Project Structure
 - Node.js clusters support
-- HTTPS Proxy support (via ngrok, Cloudflare, etc.)
+- HTTPS Proxy support (via tunnelmole, ngrok, Cloudflare, etc.)
 - Sass stylesheets (auto-compiled via middleware)
 - Bootstrap 5
 - "Go to production" checklist
@@ -158,8 +158,24 @@ After completing step 1 and locally installing MongoDB, you should be able to ac
 	- Set SITE_CONTACT_EMAIL as your incoming email address for messages sent to you thru the contact form.
 	- Set TRANSACTION_EMAIL as the "From" address for emails sent to users thru the lost password or email verification emails to users.  You may set this to the same address as SITE_CONTACT_EMAIL.
 
-- ngrok and HTTPS
-	If you want to use some API that needs HTTPS to work (for example Pinterest or Facebook),
+ - HTTPS and Tunnelmole - If you want to use some API that needs HTTPS to work (for example Pinterest or Facebook), you'll need a HTTPs URL.
+
+	Tunnelmole is an open source tunneling tool that allows you to expose local servers to the internet securely. You can find the source code and more information on its [GitHub page](https://github.com/robbie-cahill/tunnelmole-client). Use Tunnelmole to securely expose your local server, just as you would with other tunneling tools.
+
+	Installation:
+	- NPM:  `npm install -g tunnelmole`
+	- Linux: `curl -s https://tunnelmole.com/sh/install-linux.sh | sudo bash`
+	- Mac:  `curl -s https://tunnelmole.com/sh/install-mac.sh --output install-mac.sh && sudo bash install-mac.sh`
+	- Windows: Install with NPM, or if you don't have NodeJS installed, download the `exe` file for Windows [here](https://tunnelmole.com/downloads/tmole.exe) and put it somewhere in your PATH.
+
+	Usage:
+	```bash
+	➜  ~ tmole 8080
+	http://bvdo5f-ip-49-183-170-144.tunnelmole.net is forwarding to localhost:8080
+	https://bvdo5f-ip-49-183-170-144.tunnelmole.net is forwarding to localhost:8080
+	```
+Now set your BASE_URL to the HTTPS URL (in the above example, its `https://bvdo5f-ip-49-183-170-144.tunnelmole.net`)
+- HTTPS and ngrok - ngrok is a popular closed source tunneling tool which can also be used to generate a HTTPs URL.
 	you will need to download [ngrok](https://ngrok.com/). Start ngrok, set your BASE_URL to the forwarding address  (i.e  `https://3ccb-1234-abcd.ngrok-free.app` ), and use the forwarding address to access your application.  If you are using a proxy like ngrok, you may get a CSRF mismatch error if you try to access the app at `http://localhost:8080` instead of the https://...ngrok-free.app address.
 
 	After installing or downloading the standalone ngrok client you can start ngrok to intercept the data exchanged on port 8080 with `./ngrok http 8080` in Linux or `ngrok http 8080` in Windows.
