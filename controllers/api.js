@@ -517,7 +517,7 @@ exports.getPayPal = (req, res, next) => {
       cancel_url: `${process.env.BASE_URL}/api/paypal/cancel`
     },
     transactions: [{
-      description: 'Hackathon Starter',
+      description: 'Public Phone',
       amount: {
         currency: 'USD',
         total: '1.99'
@@ -585,7 +585,7 @@ exports.getLob = async (req, res, next) => {
     address_zip: '94107'
   };
   const addressFrom = {
-    name: 'Hackathon Starter',
+    name: 'Public Phone',
     address_line1: '305 Harrison St',
     address_city: 'Seattle',
     address_state: 'WA',

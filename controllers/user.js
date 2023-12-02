@@ -381,7 +381,7 @@ exports.getVerifyEmail = (req, res, next) => {
     const mailOptions = {
       to: req.user.email,
       from: process.env.SITE_CONTACT_EMAIL,
-      subject: 'Please verify your email address on Hackathon Starter',
+      subject: 'Please verify your email address on Public Phone',
       text: `Thank you for registering with hackathon-starter.\n\n
         This verify your email address please click on the following link, or paste this into your browser:\n\n
         http://${req.headers.host}/account/verify/${token}\n\n
@@ -447,7 +447,7 @@ exports.postReset = (req, res, next) => {
     const mailOptions = {
       to: user.email,
       from: process.env.SITE_CONTACT_EMAIL,
-      subject: 'Your Hackathon Starter password has been changed',
+      subject: 'Your Public Phone password has been changed',
       text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
     };
     const mailSettings = {
@@ -518,7 +518,7 @@ exports.postForgot = (req, res, next) => {
     const mailOptions = {
       to: user.email,
       from: process.env.SITE_CONTACT_EMAIL,
-      subject: 'Reset your password on Hackathon Starter',
+      subject: 'Reset your password on Public Phone',
       text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
         http://${req.headers.host}/reset/${token}\n\n

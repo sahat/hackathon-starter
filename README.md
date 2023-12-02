@@ -1,5 +1,5 @@
 ![](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg)
-Hackathon Starter
+Public Phone
 =======================
 
 **Live Demo**: [Link](https://hackathon-starter-1.ydftech.com/)
@@ -24,7 +24,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 > [**“I'm using it for a year now and many projects, it's an awesome boilerplate and the project is well maintained!”**](https://www.producthunt.com/tech/hackathon-starter#comment-228610)<br>
 > — Kevin Granger
 
-> **“Small world with Sahat's project. We were using his hackathon starter for our hackathon this past weekend and got some prizes. Really handy repo!”**<br>
+> **“Small world with Sahat's project. We were using his Public Phone for our hackathon this past weekend and got some prizes. Really handy repo!”**<br>
 > — Interview candidate for one of the companies I used to work with.
 
 <h4 align="center">Modern Theme</h4>
@@ -231,7 +231,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 - Click on the **Continue** button
 - Find the **Kits** section and make sure that **Login Kit** is enabled
 - Find the **Redirect URLs** section, click the **+ Add** button, and enter your BASE_URL value followed by /auth/snapchat/callback (i.e. `http://localhost:8080/auth/snapchat/callback` )
-- Find the **Development Environment** section. Click the **Generate** button next to the *Confidential OAuth2 Client* heading within it.
+- Find the **Development Environment** section. Click the **Generate** button next to the *Confidential OAuth2 Client* Public Phone within it.
 - Copy and paste the generated *Private Key* and *OAuth2 Client ID* keys into `.env`
 - **Note:** *OAuth2 Client ID* is **SNAPCHAT_ID**, *Private Key* is **SNAPCHAT_SECRET** in `.env`
 - To prepare the app for submission, fill out the rest of the required fields: *Category*, *Description*, *Privacy Policy Url*, and *App Icon*
@@ -516,7 +516,7 @@ Recommended Design Resources
 - [Bootsnipp](http://bootsnipp.com/) - Code snippets for Bootstrap.
 - [Bootstrap Zero](https://www.bootstrapzero.com) - Free Bootstrap templates themes.
 - [Google Bootstrap](http://todc.github.io/todc-bootstrap/) - Google-styled theme for Bootstrap.
-- [Font Awesome Icons](https://fontawesome.com) - It's already part of the Hackathon Starter, so use this page as a reference.
+- [Font Awesome Icons](https://fontawesome.com) - It's already part of the Public Phone, so use this page as a reference.
 - [Colors](http://clrs.cc) - A nicer color palette for the web.
 - [Creative Button Styles](http://tympanus.net/Development/CreativeButtons/) - awesome button styles.
 - [Creative Link Effects](http://tympanus.net/Development/CreativeLinkEffects/) - Beautiful link effects in CSS.
@@ -601,7 +601,7 @@ This section is intended for giving you a detailed explanation of how a particul
 
 [HTML5 UP](http://html5up.net/) has many beautiful templates that you can download for free.
 
-When you download the ZIP file, it will come with *index.html*, *images*, *CSS* and *js* folders. So, how do you integrate it with Hackathon Starter? Hackathon Starter uses the Bootstrap CSS framework, but these templates do not.
+When you download the ZIP file, it will come with *index.html*, *images*, *CSS* and *js* folders. So, how do you integrate it with Public Phone? Public Phone uses the Bootstrap CSS framework, but these templates do not.
 Trying to use both CSS files at the same time will likely result in undesired effects.
 
 **Note:** Using the custom templates approach, you should understand that you cannot reuse any of the views I have created: layout, the home page, API browser, login, signup, account management, contact. Those views were built using Bootstrap grid and styles. You will have to manually update the grid using a different syntax provided in the template. **Having said that, you can mix and match if you want to do so: Use Bootstrap for the main app interface, and a custom template for a landing page.**
@@ -640,9 +640,9 @@ I will stop right here, but if you would like to use this template as more than 
 Then, each page that changes, be it `index.pug`, `about.pug`, `contact.pug`
 will be embedded in your new `layout.pug` via `block content`. Use existing templates as a reference.
 
-This is a rather lengthy process, and templates you get from elsewhere might have yet another grid system. That's why I chose *Bootstrap* for the Hackathon Starter.
+This is a rather lengthy process, and templates you get from elsewhere might have yet another grid system. That's why I chose *Bootstrap* for the Public Phone.
  Many people are already familiar with *Bootstrap*, plus it's easy to get started with it if you have never used *Bootstrap*.
- You can also buy many beautifully designed *Bootstrap* themes at [Themeforest](http://themeforest.net/), and use them as a drop-in replacement for Hackathon Starter. However, if you would like to go with a completely custom HTML/CSS design, this should help you to get started!
+ You can also buy many beautifully designed *Bootstrap* themes at [Themeforest](http://themeforest.net/), and use them as a drop-in replacement for Public Phone. However, if you would like to go with a completely custom HTML/CSS design, this should help you to get started!
 
 <hr>
 
@@ -832,15 +832,15 @@ Most of the time you will be dealing with other APIs to do the real work:
 
 <hr>
 
-### How do I use Socket.io with Hackathon Starter?
+### How do I use Socket.io with Public Phone?
 [Dan Stroot](https://github.com/dstroot) submitted an excellent [pull request](https://github.com/dstroot/hackathon-starter/commit/0a632def1ce8da446709d92812423d337c977d75) that adds a real-time dashboard with socket.io.
-And as  much as I'd like to add it to the project, I think it violates one of the main principles of the Hackathon Starter:
+And as  much as I'd like to add it to the project, I think it violates one of the main principles of the Public Phone:
 > When I started this project, my primary focus was on simplicity and ease of use.
 > I also tried to make it as generic and reusable as possible to cover most use cases of
 > hackathon web apps, **without being too specific**.
 
 When I need to use socket.io, I **really** need it, but most of the time - I don't. But more importantly, WebSockets support is still experimental on most hosting providers. 
-Due to past provider issues with WebSockets, I have not include socket.io as part of the Hackathon Starter. *For now...*
+Due to past provider issues with WebSockets, I have not include socket.io as part of the Public Phone. *For now...*
 If you need to use socket.io in your app, please continue reading.
 
 First, you need to install socket.io:
@@ -1284,7 +1284,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 ```
 
 - Finally, you can now push your code to OpenShift by running `git push -f openshift master`
- - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. **Do not** run `git pull` as it will create unnecessary merge conflicts.
+ - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Public Phone* project repository. **Do not** run `git pull` as it will create unnecessary merge conflicts.
 - And you are done!
 
 ---
@@ -1304,7 +1304,7 @@ Add this to `package.json`, after *name* and *version*. This is necessary becaus
 - Select **Local Git repository** from the list, and then click the arrow
 - To enable Git publishing, Azure will ask you to create a user name and password
 - Once the Git repository is ready, you will be presented with a **GIT URL**
-- Inside your *Hackathon Starter* directory, run `git remote add azure [Azure Git URL]`
+- Inside your *Public Phone* directory, run `git remote add azure [Azure Git URL]`
 - To push your changes run `git push azure master`
  - **Note:** *You will be prompted for the password you created earlier*
 - On **Deployments** tab of your Windows Azure Web App, you will see the deployment history
