@@ -196,7 +196,7 @@ API example changes:
 - Migrated from GitHub npm package to @octokit/rest to address the related deprecation warning. See https://git.io/vNB11
 - Dependency update and upgrades
 - Updated left over port 3000 to the current default of port of 8080
-- Removed bitgo.pug since bitgo has not been supported by hackathon-starter since v4.1.0
+- Removed bitgo.pug since bitgo has not been supported by public-phone since v4.1.0
 - Removed bitgo from api/index view (@JonLim)
 - Fixed unsecure external content by switching them to https
 - New address for the Live Demo site

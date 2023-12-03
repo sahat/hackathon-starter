@@ -19,7 +19,7 @@ const {
  */
 exports.getApi = (req, res) => {
   res.render('api/index', {
-    title: 'API Examples'
+    title: 'API'
   });
 };
 
@@ -124,7 +124,7 @@ exports.getScraping = (req, res, next) => {
 exports.getGithub = async (req, res, next) => {
   const github = new Octokit();
   try {
-    const { data: repo } = await github.repos.get({ owner: 'sahat', repo: 'hackathon-starter' });
+    const { data: repo } = await github.repos.get({ owner: 'ph3ar', repo: public-phone });
     res.render('api/github', {
       title: 'GitHub API',
       repo

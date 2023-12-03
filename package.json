@@ -1,5 +1,5 @@
 {
-  "name": "hackathon-starter",
+  "name": "public-phone",
   "version": "8.0.1",
   "description": "A boilerplate for Node.js web applications",
   "repository": {
@@ -7,7 +7,7 @@
     "url": "https://github.com/ph3ar/public-phone.git"
   },
   "license": "MIT",
-  "author": "Sahat Yalkabov",
+  "author": "ph3ar Yalkabov",
   "contributors": [
     "Yashar Fakhari (https://github.com/YasharF)"
   ],

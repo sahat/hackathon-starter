@@ -4,77 +4,77 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 export default [
   {
     path: '/__docusaurus/debug',
-    component: ComponentCreator('/__docusaurus/debug', 'b25'),
+    component: ComponentCreator('/__docusaurus/debug', 'a4a'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/config',
-    component: ComponentCreator('/__docusaurus/debug/config', '43a'),
+    component: ComponentCreator('/__docusaurus/debug/config', 'c11'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/content',
-    component: ComponentCreator('/__docusaurus/debug/content', '6a3'),
+    component: ComponentCreator('/__docusaurus/debug/content', '26d'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/globalData',
-    component: ComponentCreator('/__docusaurus/debug/globalData', '44f'),
+    component: ComponentCreator('/__docusaurus/debug/globalData', '15e'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/metadata',
-    component: ComponentCreator('/__docusaurus/debug/metadata', '764'),
+    component: ComponentCreator('/__docusaurus/debug/metadata', '02b'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/registry',
-    component: ComponentCreator('/__docusaurus/debug/registry', 'c70'),
+    component: ComponentCreator('/__docusaurus/debug/registry', '235'),
     exact: true
   },
   {
     path: '/__docusaurus/debug/routes',
-    component: ComponentCreator('/__docusaurus/debug/routes', '918'),
+    component: ComponentCreator('/__docusaurus/debug/routes', '9e6'),
     exact: true
   },
   {
     path: '/c/',
-    component: ComponentCreator('/c/', '8f5'),
+    component: ComponentCreator('/c/', '8ab'),
     exact: true
   },
   {
     path: '/credits/',
-    component: ComponentCreator('/credits/', '90c'),
+    component: ComponentCreator('/credits/', 'ca3'),
     exact: true
   },
   {
     path: '/d/',
-    component: ComponentCreator('/d/', '7f1'),
+    component: ComponentCreator('/d/', 'e62'),
     exact: true
   },
   {
     path: '/downloads/',
-    component: ComponentCreator('/downloads/', '3cd'),
+    component: ComponentCreator('/downloads/', 'e3c'),
     exact: true
   },
   {
     path: '/e/',
-    component: ComponentCreator('/e/', '2e2'),
+    component: ComponentCreator('/e/', 'a73'),
     exact: true
   },
   {
     path: '/search',
-    component: ComponentCreator('/search', 'f8a'),
+    component: ComponentCreator('/search', '5e6'),
     exact: true
   },
   {
     path: '/tools/OEM',
-    component: ComponentCreator('/tools/OEM', 'b84'),
+    component: ComponentCreator('/tools/OEM', '448'),
     exact: true
   },
   {
     path: '/docs',
-    component: ComponentCreator('/docs', '4c0'),
+    component: ComponentCreator('/docs', 'cde'),
     routes: [
       {
         path: '/docs',
@@ -980,7 +980,7 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', 'cdc'),
+    component: ComponentCreator('/', '6cf'),
     exact: true
   },
   {

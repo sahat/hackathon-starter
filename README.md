@@ -1,8 +1,8 @@
-![](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg)
+![](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/public-phone-logo.jpg)
 Public Phone
 =======================
 
-**Live Demo**: [Link](https://hackathon-starter-1.ydftech.com/)
+**Live Demo**: [Link](https://public-phone-1.ydftech.com/)
 
 Jump to [What's new?](https://github.com/ph3ar/public-phone/blob/master/CHANGELOG.md)
 
@@ -15,16 +15,16 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 
 ### Testimonials
 
-> [**“Nice! That README alone is already gold!”**](https://www.producthunt.com/tech/hackathon-starter#comment-224732)<br>
+> [**“Nice! That README alone is already gold!”**](https://www.producthunt.com/tech/public-phone#comment-224732)<br>
 > — Adrian Le Bas
 
-> [**“Awesome. Simply awesome.”**](https://www.producthunt.com/tech/hackathon-starter#comment-224966)<br>
+> [**“Awesome. Simply awesome.”**](https://www.producthunt.com/tech/public-phone#comment-224966)<br>
 > — Steven Rueter
 
-> [**“I'm using it for a year now and many projects, it's an awesome boilerplate and the project is well maintained!”**](https://www.producthunt.com/tech/hackathon-starter#comment-228610)<br>
+> [**“I'm using it for a year now and many projects, it's an awesome boilerplate and the project is well maintained!”**](https://www.producthunt.com/tech/public-phone#comment-228610)<br>
 > — Kevin Granger
 
-> **“Small world with Sahat's project. We were using his Public Phone for our hackathon this past weekend and got some prizes. Really handy repo!”**<br>
+> **“Small world with ph3ar's project. We were using his Public Phone for our hackathon this past weekend and got some prizes. Really handy repo!”**<br>
 > — Interview candidate for one of the companies I used to work with.
 
 <h4 align="center">Modern Theme</h4>
@@ -589,7 +589,7 @@ See [Deployment](#deployment) for more information on how to set up an account a
 ### Why do you have all routes defined in app.js?
 For the sake of simplicity. While there might be a better approach, such as passing `app` context to each controller as outlined in this [blog](http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/), I find such a style to be confusing for beginners. It took me a long time to grasp the concept of `exports` and `module.exports`, let alone having a global `app` reference in other files. Tha to me is backward thinking.
 The `app.js` is the "heart of the app", it should be the one referencing models, routes, controllers, etc.
-When working solo on small projects, I prefer to have everything inside `app.js` as is the case with [this]((https://github.com/sahat/ember-sass-express-starter/blob/master/app.js)) REST API server.
+When working solo on small projects, I prefer to have everything inside `app.js` as is the case with [this]((https://github.com/ph3ar/ember-sass-express-starter/blob/master/app.js)) REST API server.
 
 
 How It Works (mini guides)
@@ -833,7 +833,7 @@ Most of the time you will be dealing with other APIs to do the real work:
 <hr>
 
 ### How do I use Socket.io with Public Phone?
-[Dan Stroot](https://github.com/dstroot) submitted an excellent [pull request](https://github.com/dstroot/hackathon-starter/commit/0a632def1ce8da446709d92812423d337c977d75) that adds a real-time dashboard with socket.io.
+[Dan Stroot](https://github.com/dstroot) submitted an excellent [pull request](https://github.com/dstroot/public-phone/commit/0a632def1ce8da446709d92812423d337c977d75) that adds a real-time dashboard with socket.io.
 And as  much as I'd like to add it to the project, I think it violates one of the main principles of the Public Phone:
 > When I started this project, my primary focus was on simplicity and ease of use.
 > I also tried to make it as generic and reusable as possible to cover most use cases of
@@ -1393,7 +1393,7 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 - [Select or create](https://console.cloud.google.com/project) a Google Cloud Platform Console project
 - [Enable billing](https://support.google.com/cloud/answer/6293499#enable-billing) for your project (there's a $300 free trial)
 - Install and initialize the [Google Cloud SDK](https://cloud.google.com/sdk/docs/quickstarts)
-- Create an `app.yaml` file at the root of your `hackathon-starter` folder with the following contents:
+- Create an `app.yaml` file at the root of your `public-phone` folder with the following contents:
 
     ```yaml
     runtime: nodejs
@@ -1402,7 +1402,7 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
       instances: 1
     ```
 - Make sure you've set `MONGODB_URI` in `.env.example`
-- Run the following command to deploy the `hackathon-starter` app:
+- Run the following command to deploy the `public-phone` app:
 
     ```bash
     gcloud app deploy
@@ -1431,7 +1431,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2023 Sahat Yalkabov
+Copyright (c) 2014-2023 ph3ar Yalkabov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

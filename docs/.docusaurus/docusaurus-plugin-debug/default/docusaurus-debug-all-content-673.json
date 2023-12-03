@@ -15,9 +15,9 @@
           "editUrlLocalized": "https://github.com/meshtastic/meshtastic/edit/master/i18n/en/docusaurus-plugin-content-docs/current",
           "isLast": true,
           "routePriority": -1,
-          "sidebarFilePath": "/app/docs/sidebars.js",
-          "contentPath": "/app/docs/docs",
-          "contentPathLocalized": "/app/docs/i18n/en/docusaurus-plugin-content-docs/current",
+          "sidebarFilePath": "/Users/michaelbarbine/Documents/Github/ph3ar-hackathon-starter/docs/sidebars.js",
+          "contentPath": "/Users/michaelbarbine/Documents/Github/ph3ar-hackathon-starter/docs/docs",
+          "contentPathLocalized": "/Users/michaelbarbine/Documents/Github/ph3ar-hackathon-starter/docs/i18n/en/docusaurus-plugin-content-docs/current",
           "docs": [
             {
               "id": "about/contributing",
@@ -5128,11 +5128,6 @@
         "source": "@site/src/pages/index.tsx"
       },
       {
-        "type": "jsx",
-        "permalink": "/credits/",
-        "source": "@site/src/pages/credits/index.tsx"
-      },
-      {
         "type": "mdx",
         "permalink": "/c/",
         "source": "@site/src/pages/c/index.md",
@@ -5146,6 +5141,11 @@
         "unlisted": false
       },
       {
+        "type": "jsx",
+        "permalink": "/credits/",
+        "source": "@site/src/pages/credits/index.tsx"
+      },
+      {
         "type": "mdx",
         "permalink": "/d/",
         "source": "@site/src/pages/d/index.md",
@@ -5157,11 +5157,6 @@
           "sidebar_label": "d"
         },
         "unlisted": false
-      },
-      {
-        "type": "jsx",
-        "permalink": "/tools/OEM",
-        "source": "@site/src/pages/tools/OEM.tsx"
       },
       {
         "type": "jsx",
@@ -5180,6 +5175,11 @@
           "sidebar_label": "e"
         },
         "unlisted": false
+      },
+      {
+        "type": "jsx",
+        "permalink": "/tools/OEM",
+        "source": "@site/src/pages/tools/OEM.tsx"
       }
     ]
   },
