@@ -5,58 +5,63 @@
 @import "node_modules/@fortawesome/fontawesome-free/scss/regular";
 @import "node_modules/@fortawesome/fontawesome-free/scss/solid";
 
+// Define color variables
+$snapchat-yellow: #fffc00;
+$snapchat-yellow-dark: #f1ef00;
+$twitch-purple: #6441a5;
+$twitch-purple-dark: #503484;
+$twitter-blue: #0f97ea;
+$google-red: #d93b27;
+$white: #FFF;
+
+// Placeholder for common white text style
+%white-text {
+  color: $white !important;
+
+  &:hover, &:active {
+    color: $white !important;
+  }
+}
 
 // Basic Snapchat Button CSS
 .btn-snapchat {
-  background-color: #fffc00;
-  color: #000 !important;
+  background-color: $snapchat-yellow;
+  color: $black !important;
 
   &:hover, &:active {
-    background-color: #f1ef00;
+    background-color: $snapchat-yellow-dark;
   }
 }
 
 // Basic Twitch Button CSS
 .btn-twitch {
-  background-color: #6441a5;
-  color: #FFF !important;
+  background-color: $twitch-purple;
+  @extend %white-text;
 
   &:hover, &:active {
-    background-color: #503484;
+    background-color: $twitch-purple-dark;
   }
 }
 
+// Basic Twitter Button CSS
 .btn-twitter {
+  @extend %white-text;
+
   &:hover, &:active {
-    color: #FFF !important;
+    background-color: $twitter-blue;
   }
 }
 
-.btn-twitter {
-  color: #FFF !important;
-
-  &:hover, &:active {
-    color: #FFF !important;
-    background-color: #0f97ea;
-  }
-}
-
+// Basic Google Button CSS
 .btn-google {
-  &:hover, &:active {
-    color: #FFF !important;
-  }
-}
-
-.btn-google {
-  color: #FFF !important;
+  @extend %white-text;
 
   &:hover, &:active {
-    color: #FFF !important;
-    background-color: #d93b27;
+    background-color: $google-red;
   }
 }
 
 // Add a space after fontawesome icons
-.iconpadding{
-  padding-right: 6px!important;
+.iconpadding {
+  padding-right: 6px !important;
 }
