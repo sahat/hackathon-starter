@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  .bbs-signup-wrapper.pb-2.mt-2.mb-4
+    h3.bbs-signup-title Sign up
+
+    form#signup-form.bbs-form(method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+
+      .bbs-form-group.mb-3
+        label.bbs-label(for='email') Email
+        input.bbs-input(type='email', name='email', id='email', placeholder='Email', autofocus, autocomplete='email', required)
+
+      .bbs-form-group.mb-3
+        label.bbs-label(for='password') Password
+        input.bbs-input(type='password', name='password', id='password', placeholder='Password', autocomplete='new-password', minlength='8', required)
+
+      .bbs-form-group.mb-3
+        label.bbs-label(for='confirmPassword') Confirm Password
+        input.bbs-input(type='password', name='confirmPassword', id='confirmPassword', placeholder='Confirm Password', autocomplete='new-password', minlength='8', required)
+
+      .bbs-form-group
+        button.bbs-btn(type='submit')
+          i.fas.fa-user-plus.fa-sm
+          | Signup

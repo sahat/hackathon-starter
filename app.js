@@ -16,7 +16,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const multer = require('multer');
 const rateLimit = require('express-rate-limit');
-
+const jitsiController = require('./controllers/jitsi'); // Add this line
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 /**
@@ -157,6 +157,7 @@ app.post('/account/profile', passportConfig.isAuthenticated, userController.post
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.get('/jitsi', passportConfig.isAuthenticated, jitsiController.getJitsi);
 
 /**
  * API examples routes.

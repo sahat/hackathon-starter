@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Start Jitsi Meeting
+  div#jitsiMeetContainer
+
+  script(src='https://meet.jit.si/external_api.js')
+  script.
+    const domain = 'meet.jit.si';
+    const options = {
+      roomName: 'PublicPhoneMeeting' + Math.random().toString(36).substr(2, 5),
+      width: '100%',
+      height: 700,
+      parentNode: document.getElementById('jitsiMeetContainer'),
+    };
+    const api = new JitsiMeetExternalAPI(domain, options);
