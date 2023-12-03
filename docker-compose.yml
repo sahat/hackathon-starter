@@ -32,7 +32,7 @@ services:
     working_dir: /app/docs
     volumes:
       - ./docs:/app/docs
-    command: sh -c "pnpm install && pnpm start"
+    command: sh -c "cd docs && npm install && npm start"
     ports:
       - "3000:3000"
     depends_on:

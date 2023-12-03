@@ -264,13 +264,13 @@ export default {
       "@docusaurus/preset-classic",
       {
         "docs": {
-          "sidebarPath": "/Users/michaelbarbine/Documents/Github/ph3ar-hackathon-starter/docs/sidebars.js",
+          "sidebarPath": "/app/docs/sidebars.js",
           "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/",
           "breadcrumbs": false,
           "showLastUpdateAuthor": true
         },
         "theme": {
-          "customCss": "/Users/michaelbarbine/Documents/Github/ph3ar-hackathon-starter/docs/src/css/custom.css"
+          "customCss": "/app/docs/src/css/custom.css"
         }
       }
     ]

@@ -1,15 +1,15 @@
 {
   "name": "public-phone",
   "version": "8.0.1",
-  "description": "A boilerplate for Node.js web applications",
+  "description": "The Public Phone",
   "repository": {
     "type": "git",
     "url": "https://github.com/ph3ar/public-phone.git"
   },
   "license": "MIT",
-  "author": "ph3ar Yalkabov",
+  "author": "ph3ar",
   "contributors": [
-    "Yashar Fakhari (https://github.com/YasharF)"
+    "BigNerdLoLz https://github.com/mbarbine)"
   ],
   "scripts": {
     "postinstall": "patch-package && npm run scss",

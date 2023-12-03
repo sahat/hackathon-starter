@@ -7,6 +7,9 @@ lib-cov
 *.pid
 *.gz
 *.swp
+.env.example
+**/.env.example
+*.env*
 
 pids
 logs
@@ -18,9 +21,13 @@ tmp
 
 #Build
 public/css/main.css
+
+
+
 .nyc_output/*
 
 # API keys and secrets
+.env.example
 .env
 
 # Dependency directory
