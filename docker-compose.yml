@@ -29,7 +29,7 @@ services:
 
   docusaurus:
     image: node:latest
-    working_dir: /app/docs
+    working_dir: /app
     volumes:
       - ./docs:/app/docs
     command: sh -c "cd docs && npm install && npm start"

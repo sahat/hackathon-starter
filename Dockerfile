@@ -11,7 +11,7 @@ RUN npm install pnpm -g
 RUN if [ "$NODE_ENV" = "production" ]; then \
     npm install --omit=dev; \
     else \
-    npm install && cd docs && npm install \
+    npm install; \
     fi
 
 CMD ["pm2-runtime","app.js"]
