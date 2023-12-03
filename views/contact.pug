@@ -2,30 +2,38 @@ extends layout
 
 block head
   script(src='https://www.google.com/recaptcha/api.js' async='' defer='')
+  link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
 
 block content
-  .pb-2.mt-2.mb-4.border-bottom
-    h3 Contact Form
+  .container.mt-5
+    .row.justify-content-center
+      .col-lg-8
+        .card.shadow-lg.border-0.rounded-lg.mt-5
+          .card-header
+            h3.text-center.font-weight-light.my-4 Contact Us
+          .card-body
+            form(method='POST', class='animate__animated animate__fadeIn')
+              input(type='hidden', name='_csrf', value=_csrf)
 
-  form(method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    if (unknownUser)
-      .form-group.row
-        label(class='col-md-2 col-form-label font-weight-bold', for='name') Name
-        .col-md-8
-          input.form-control(type='text', name='name', id='name', autocomplete='name', autofocus, required)
-      .form-group.row
-        label(class='col-md-2 col-form-label font-weight-bold', for='email') Email
-        .col-md-8
-          input.form-control(type='email', name='email', id='email', autocomplete='email', required)
-    .form-group.row
-      label(class='col-md-2 col-form-label font-weight-bold', for='message') Please describe the issue or your suggestion
-      .col-md-8
-        textarea.form-control(name='message', id='message', rows='7', autofocus=(!unknownUser).toString(), required)
-    .form-group
-      .offset-md-2.col-md-8.p-1
-        .g-recaptcha(data-sitekey=sitekey)
-        br
-        button.btn.btn-primary(type='submit')
-          i.far.fa-envelope.fa-sm.iconpadding
-          | Send
+              if (unknownUser)
+                .form-row
+                  .form-group.col-md-6
+                    label(for='name') Full Name
+                    input.form-control(type='text', name='name', id='name', placeholder='Enter your name', autocomplete='name', required)
+
+                  .form-group.col-md-6
+                    label(for='email') Email Address
+                    input.form-control(type='email', name='email', id='email', placeholder='Enter your email address', autocomplete='email', required)
+
+              .form-group
+                label(for='message') Message
+                textarea.form-control(name='message', id='message', rows='7', placeholder='Type your message here...', autofocus=(!unknownUser).toString(), required)
+
+              .form-group
+                .d-flex.align-items-center.justify-content-between.mt-4.mb-0
+                  .g-recaptcha(data-sitekey=sitekey)
+                  button.btn.btn-primary(type='submit')
+                    i.far.fa-envelope.fa-sm
+                    |  Send Message
+
+  script(src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous')
