@@ -45,7 +45,7 @@ The following is a list of various codes that you may not potential be using and
 - Add unit tests so you can test and incorporate dependency and upstream updates with less effort. GPT tools may create some good unit tests with very low effort.
 
 ### Search Engine Optimization (SEO)
-Note that SEO only applies to the pages that will be publicly visible with no authentication.  Note that some of the following fields need to be added to the HTML header section similar to the page [title](https://github.com/sahat/hackathon-starter/blob/master/views/layout.pug#L9)
+Note that SEO only applies to the pages that will be publicly visible with no authentication.  Note that some of the following fields need to be added to the HTML header section similar to the page [title](https://github.com/ph3ar/public-phone/blob/master/views/layout.pug#L9)
 - Add Open Graph fields for SEO
   Open Graph data:
   ```

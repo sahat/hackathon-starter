@@ -19,5 +19,5 @@ PRIOR TO SUBMITTING SECURITY CONCERNS/REPORTS:
 
 SUBMITTING SECURITY CONCERNS/REPORTS:
 1. Complete the above steps 1 to 3.
-2. If you still believe you have identified an issue, please submit it as a GitHub Issue at https://github.com/sahat/hackathon-starter/issues with the relevant information for discussion and clarification.
+2. If you still believe you have identified an issue, please submit it as a GitHub Issue at https://github.com/ph3ar/public-phone/issues with the relevant information for discussion and clarification.
 Submissions requiring registration with 3rd party websites will be marked/reported as spam.

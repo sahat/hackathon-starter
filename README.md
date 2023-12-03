@@ -4,7 +4,7 @@ Public Phone
 
 **Live Demo**: [Link](https://hackathon-starter-1.ydftech.com/)
 
-Jump to [What's new?](https://github.com/sahat/hackathon-starter/blob/master/CHANGELOG.md)
+Jump to [What's new?](https://github.com/ph3ar/public-phone/blob/master/CHANGELOG.md)
 
 A boilerplate for **Node.js** web applications.
 
@@ -119,7 +119,7 @@ Getting Started
 
 ```bash
 # Get the latest snapshot
-git clone https://github.com/sahat/hackathon-starter.git myproject
+git clone https://github.com/ph3ar/public-phone.git myproject
 
 # Change directory
 cd myproject
@@ -171,7 +171,7 @@ After completing step 1 and locally installing MongoDB, you should be able to ac
 **Step 4:** Optional - deploy to production
 See:
 - [Deployment](#deployment)
--  [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md)
+-  [prod-checklist.md](https://github.com/ph3ar/public-phone/blob/master/prod-checklist.md)
 
 # Obtaining API Keys
 You will need to obtain appropriate credentials (Client ID, Client Secret, API Key, or Username & Password) for API and service provides which you need.  See Step 2 in the Getting started section for more info.
@@ -557,7 +557,7 @@ FAQ
 ---
 
 ### Why do I get `403 Error: Forbidden` when submitting a form?
-You need to add the following hidden input element to your form. This has been added in the [pull request #40](https://github.com/sahat/hackathon-starter/pull/40) as part of the CSRF protection.
+You need to add the following hidden input element to your form. This has been added in the [pull request #40](https://github.com/ph3ar/public-phone/pull/40) as part of the CSRF protection.
 
 ```
 input(type='hidden', name='_csrf', value=_csrf)
@@ -1412,12 +1412,12 @@ Be sure to check out the full list of Watson services to forwarder enhance your 
 
 Production
 ---------
- If you are starting with this boilerplate to build an application for prod deployment, or if after your hackathon you would like to get your project hardened for production use, see [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md).
+ If you are starting with this boilerplate to build an application for prod deployment, or if after your hackathon you would like to get your project hardened for production use, see [prod-checklist.md](https://github.com/ph3ar/public-phone/blob/master/prod-checklist.md).
 
 Changelog
 ---------
 
-You can find the changelog for the project in: [CHANGELOG.md](https://github.com/sahat/hackathon-starter/blob/master/CHANGELOG.md)
+You can find the changelog for the project in: [CHANGELOG.md](https://github.com/ph3ar/public-phone/blob/master/CHANGELOG.md)
 
 
 Contributing
