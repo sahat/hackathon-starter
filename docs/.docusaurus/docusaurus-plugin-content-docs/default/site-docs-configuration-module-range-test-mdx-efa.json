@@ -1,0 +1,29 @@
+{
+  "id": "configuration/module/range-test",
+  "title": "Range Test Module Configuration",
+  "description": "This module allows you to test the range of your Meshtastic nodes. It requires at least two nodes, a sender and a receiver. The receiving node saves the messages along with the GPS coordinates at which they were received into a .csv file. This .csv file can then be integrated into Google Earth, Google Maps - My Maps, or any other program capable of processing .csv files. This can enable you to visualize your mesh.",
+  "source": "@site/docs/configuration/module/range-test.mdx",
+  "sourceDirName": "configuration/module",
+  "slug": "/configuration/module/range-test",
+  "permalink": "/docs/configuration/module/range-test",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/module/range-test.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "range-test",
+    "title": "Range Test Module Configuration",
+    "sidebar_label": "Range Test"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Neighbor Info",
+    "permalink": "/docs/configuration/module/neighbor-info"
+  },
+  "next": {
+    "title": "Remote Hardware",
+    "permalink": "/docs/configuration/module/remote-hardware"
+  }
+}

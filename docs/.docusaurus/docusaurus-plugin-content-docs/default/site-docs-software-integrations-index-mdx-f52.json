@@ -1,0 +1,31 @@
+{
+  "id": "software/integrations/index",
+  "title": "Meshtastic Integrations",
+  "description": "The Meshtastic ecosystem is highly extensible and allows easy integration with a number of existing software products and projects.",
+  "source": "@site/docs/software/integrations/index.mdx",
+  "sourceDirName": "software/integrations",
+  "slug": "/software/integrations",
+  "permalink": "/docs/software/integrations",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/integrations/index.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 11,
+  "frontMatter": {
+    "title": "Meshtastic Integrations",
+    "slug": "/software/integrations",
+    "sidebar_label": "Integrations",
+    "sidebar_position": 11
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Meshtastic Web API",
+    "permalink": "/docs/software/community/meshtastic-web-api"
+  },
+  "next": {
+    "title": "CalTopo / SARTopo",
+    "permalink": "/docs/software/integrations/integrations-caltopo"
+  }
+}

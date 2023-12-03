@@ -1,0 +1,15 @@
+{
+  "title": "Firmware",
+  "slug": "/development/firmware",
+  "permalink": "/docs/development/firmware",
+  "navigation": {
+    "previous": {
+      "title": "Error Codes",
+      "permalink": "/docs/development/device/error-codes"
+    },
+    "next": {
+      "title": "Building Firmware",
+      "permalink": "/docs/development/firmware/build"
+    }
+  }
+}

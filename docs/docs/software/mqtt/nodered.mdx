@@ -1,0 +1,945 @@
+---
+id: nodered
+title: Node-RED
+sidebar_label: Node-RED
+sidebar_position: 3
+---
+
+### Using MQTT with Node-RED
+
+Below is a valid JSON envelope for information sent by MQTT to a device for broadcast onto the mesh.
+
+```json
+{
+  "sender":"whatever you want to be the SENDER",
+  "type":"sendtext",
+  "payload": text or a json object go here
+}
+```
+
+Node-RED is a free cross-platform programming tool for wiring together hardware, APIs, and online services developed originally by IBM for IOT. It is widely used for home automation by many non-professional programmers and runs well on Pi's. Node-RED has many plug-in modules written by the community. I will use this platform as a practical example on how to interface with the MQTT features of Meshtastic. Everything can be done from GUI's without using command line.
+
+Step one: use http://client.meshtastic.org/ , the python CLI, or an Apple or Android app to connect to your device and adjust these settings.
+Enable and enter network SSID/PSK. Settings--> Radio Config--> Network; Save.
+Set MQTT server address. Settings--> Module Config--> MQTT config; Verify Encryption Enabled is OFF. Turn JSON Output Enabled ON. Save.
+Go to Channel Editor and set Uplink and Downlink enabled to True. Save. 
+
+Step two: if you don't want to depend on JSON decoding on the device, you can decode the protobuf messages off-device. To do that you will need to get the .proto files from https://github.com/meshtastic/protobufs. They function as a schema and are required for decoding in Node-RED. Save the files where the node-RED application can access them and note the file path of the "mqtt.proto" file.
+
+Step three: install Node-RED plug-ins to your node-RED application for an embedded MQTT server and a protobuf decoder.
+https://flows.nodered.org/node/node-red-contrib-aedes
+https://flows.nodered.org/node/node-red-contrib-protobuf
+
+Drag, drop, and wire the nodes like this. For this example, I ran node-RED on a Windows machine. Note that file paths might be specified differently on different platforms. MQTT server wild cards are usually the same. A "+" is a single level wildcard for a specific topic level. A "#" is a multiple level wildcard that can be used at the end of a topic filter. The debug messages shown are what happens when the inject button sends a JSON message with a topic designed to be picked up by the specified Meshtastic device and then having it rebroadcast the message.
+
+[<img src="/documents/mqtt/NodeRedTwo.jpg" style={{zoom:'50%'}} />](/documents/mqtt/NodeRedTwo.jpg)
+[<img src="/documents/mqtt/NodeRedThree.jpg" style={{zoom:'50%'}} />](/documents/mqtt/NodeRedThree.jpg)
+[<img src="/documents/mqtt/NR_nodes.jpg" style={{zoom:'50%'}} />](/documents/mqtt/NR_nodes.jpg)
+
+The aedes broker must be set up on the same flow as the other nodes. By activating the Publish debug node, you can see all the published messages.
+[<img src="/documents/mqtt/Broker1.jpg" style={{zoom:'50%'}} />](/documents/mqtt/Broker1.jpg)
+Receiving a json mqtt message is very simple.
+[<img src="/documents/mqtt/Consume.jpg" style={{zoom:'50%'}} />](/documents/mqtt/Consume.jpg)
+Injecting a json message to be sent by a device is also very simple. You do need the correct envelope.
+[<img src="/documents/mqtt/Inject.jpg" style={{zoom:'50%'}} />](/documents/mqtt/Inject.jpg)
+Forwarding a text message from one device, through a broker, to another broker/device/channel would look like this.
+[<img src="/documents/mqtt/Forward.jpg" style={{zoom:'50%'}} />](/documents/mqtt/Forward.jpg)
+If you want to decode text and position messages without json, it gets complicated:
+[<img src="/documents/mqtt/DecodeNewest.jpg" style={{zoom:'50%'}} />](/documents/mqtt/DecodeNewest.jpg)
+If you are interested in my flow for this it is here:
+
+```json
+[
+  {
+    "id": "10fe1b2e9cb3feb2",
+    "type": "decode",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "decode Protobuf",
+    "protofile": "a0d4288141f6a629",
+    "protoType": "ServiceEnvelope",
+    "x": 295.5,
+    "y": 285,
+    "wires": [["d3e396cf4f0a9608", "d08865b41a69d85d", "6f592d47b6a2eac4"]]
+  },
+  {
+    "id": "40c9ee66fe7a34cb",
+    "type": "function",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "function get the message as string from TEXT_MESSAGE_APP",
+    "func": "msg.payload = msg.payload.packet.decoded.payload;\n\nlet bufferObj = Buffer.from(msg.payload, \"base64\");\nlet decodedString = bufferObj.toString(\"utf8\");\nmsg.payload = decodedString;\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 410.5,
+    "y": 450,
+    "wires": [["553374591214eaca"]]
+  },
+  {
+    "id": "553374591214eaca",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "text message out",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 762.5,
+    "y": 449,
+    "wires": []
+  },
+  {
+    "id": "c6afbb9f1665b162",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "channelId",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 785.5,
+    "y": 257,
+    "wires": []
+  },
+  {
+    "id": "607ef387d5701985",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "gatewayId",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 792.5,
+    "y": 293,
+    "wires": []
+  },
+  {
+    "id": "d3e396cf4f0a9608",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "entire payload",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 296.5,
+    "y": 247,
+    "wires": []
+  },
+  {
+    "id": "2339b328bb9bb1d8",
+    "type": "comment",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "Decode all cleartext text and position messages sent by Meshtastic devices into JSON without relying on JSON conversion on the device.",
+    "info": "",
+    "x": 515.5,
+    "y": 214,
+    "wires": []
+  },
+  {
+    "id": "408d796d997bb832",
+    "type": "function",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "function get the nested payload as base64",
+    "func": "msg.payload = msg.payload.packet.decoded.payload;\n\nlet bufferObj = Buffer.from(msg.payload, \"base64\");\n//let decodedString = bufferObj.toString(\"hex\");\nmsg.payload = bufferObj;\nmsg.topic=\"\";\n//if you don't zero out the protubufTopic it will try to\n//decode it as part of the mqtt service envelope instead\n//of two-stage decoding\nmsg.protobufType=null;\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 349,
+    "y": 552,
+    "wires": [["9435a3c605efedb4", "1ed6f96c8214d7b3"]]
+  },
+  {
+    "id": "61995c9f8e8266b3",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "portnum",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 784.5,
+    "y": 330,
+    "wires": []
+  },
+  {
+    "id": "9435a3c605efedb4",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "nested payload",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 281.5,
+    "y": 603,
+    "wires": []
+  },
+  {
+    "id": "b832775d386f7ac9",
+    "type": "mqtt in",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "topic": "msh/+/c/#",
+    "qos": "2",
+    "datatype": "buffer",
+    "broker": "37cadac381653b1e",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 117.5,
+    "y": 286,
+    "wires": [["10fe1b2e9cb3feb2"]]
+  },
+  {
+    "id": "d08865b41a69d85d",
+    "type": "switch",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "switch manual decoding nested message based on portum",
+    "property": "payload.packet.decoded.portnum",
+    "propertyType": "msg",
+    "rules": [
+      { "t": "eq", "v": "TEXT_MESSAGE_APP", "vt": "str" },
+      { "t": "eq", "v": "POSITION_APP", "vt": "str" }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 2,
+    "x": 281.5,
+    "y": 505,
+    "wires": [["40c9ee66fe7a34cb"], ["408d796d997bb832"]]
+  },
+  {
+    "id": "8abb1bb458af2c4f",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "gatewayId",
+        "pt": "flow",
+        "to": "payload",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 1021.5,
+    "y": 288,
+    "wires": [[]]
+  },
+  {
+    "id": "1ced0be28eeef0d3",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "latitude",
+        "pt": "flow",
+        "to": "payload",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 1026.5,
+    "y": 407,
+    "wires": [[]]
+  },
+  {
+    "id": "313fd3cfe6d91850",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "longitude",
+        "pt": "flow",
+        "to": "payload",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 1036.5,
+    "y": 450,
+    "wires": [["d02e53cdfb565da6"]]
+  },
+  {
+    "id": "33dd43e3c05f826c",
+    "type": "geofence",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "geofence",
+    "mode": "circle",
+    "inside": "true",
+    "rad": 69174.91569647488,
+    "points": [],
+    "centre": {
+      "latitude": 40.16287050252407,
+      "longitude": -86.60385131835938
+    },
+    "floor": "",
+    "ceiling": "",
+    "worldmap": true,
+    "outputs": 2,
+    "x": 1202.5,
+    "y": 595,
+    "wires": [[], ["4d01eb8f1b31f039"]]
+  },
+  {
+    "id": "d02e53cdfb565da6",
+    "type": "function",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "trigger function to send a mapping point",
+    "func": "let lat = parseFloat(flow.get(\"latitude\"));\nlet lon = parseFloat(flow.get(\"longitude\"));\nlat=lat * 0.0000001;\nlon=lon * 0.0000001;\nlet name = flow.get(\"from\")\n\nmsg={\"payload\":{\"name\":name,\n \"lat\":lat,\n  \"lon\":lon,\n   \"action\":\"send\",\n   \"icon\": \"car\",\n   \"label\":name\n   }}\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1181.5,
+    "y": 520,
+    "wires": [["33dd43e3c05f826c", "4d01eb8f1b31f039"]]
+  },
+  {
+    "id": "4d01eb8f1b31f039",
+    "type": "worldmap",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "lat": "40",
+    "lon": "-86",
+    "zoom": "7",
+    "layer": "OSMG",
+    "cluster": "",
+    "maxage": "",
+    "usermenu": "show",
+    "layers": "show",
+    "panit": "false",
+    "panlock": "false",
+    "zoomlock": "false",
+    "hiderightclick": "false",
+    "coords": "none",
+    "showgrid": "false",
+    "showruler": "false",
+    "allowFileDrop": "false",
+    "path": "/worldmap",
+    "overlist": "DR,CO,RA,DN,HM",
+    "maplist": "OSMG,OSMC,EsriC,EsriS,EsriT,EsriDG,UKOS",
+    "mapname": "",
+    "mapurl": "",
+    "mapopt": "",
+    "mapwms": false,
+    "x": 1206.5,
+    "y": 675,
+    "wires": []
+  },
+  {
+    "id": "1ed6f96c8214d7b3",
+    "type": "decode",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "decode Position Protobuf",
+    "protofile": "dbab6472b07929a0",
+    "protoType": "Position",
+    "x": 667.5,
+    "y": 548,
+    "wires": [["db1933ba36503bd9", "dad9f487318f21d9"]]
+  },
+  {
+    "id": "db1933ba36503bd9",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "Position decoded",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 673.5,
+    "y": 607,
+    "wires": []
+  },
+  {
+    "id": "dad9f487318f21d9",
+    "type": "function",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "Split",
+    "func": "var lat = { payload: msg.payload.latitudeI };\nvar lon = { payload: msg.payload.longitudeI };\nvar alt = { payload: msg.payload.altitude };\nvar tm = { payload: msg.payload.time };\n\nreturn [lat,lon,alt,tm];",
+    "outputs": 4,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 875.5,
+    "y": 549,
+    "wires": [
+      ["1ced0be28eeef0d3", "8bb97f802662976c"],
+      ["313fd3cfe6d91850", "c8e135f3e542bb1b"],
+      ["602fb2020680280c"],
+      ["ed424ae3d45dd2ac"]
+    ]
+  },
+  {
+    "id": "8bb97f802662976c",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "lat",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1017.5,
+    "y": 583,
+    "wires": []
+  },
+  {
+    "id": "c8e135f3e542bb1b",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "lon",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1018.5,
+    "y": 618,
+    "wires": []
+  },
+  {
+    "id": "602fb2020680280c",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "alt",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1017.5,
+    "y": 654,
+    "wires": []
+  },
+  {
+    "id": "ed424ae3d45dd2ac",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "time",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1018.5,
+    "y": 688,
+    "wires": []
+  },
+  {
+    "id": "6f592d47b6a2eac4",
+    "type": "function",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "Split Decoded 1",
+    "func": "var channelId = { payload: msg.payload.channelId};\nvar gatewayId = { payload: msg.payload.gatewayId};\nvar portnum = { payload: msg.payload.packet.decoded.portnum};\nvar fr= {payload: \"!\" + msg.payload.packet.from.toString(16)};\nvar to = {payload:\"!\"+ msg.payload.packet.to.toString(16)};\n\nreturn [channelId, gatewayId, portnum, fr, to ];",
+    "outputs": 5,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 577.5,
+    "y": 294,
+    "wires": [
+      ["c6afbb9f1665b162"],
+      ["607ef387d5701985", "8abb1bb458af2c4f"],
+      ["61995c9f8e8266b3"],
+      ["fd881fac22422773", "a389f9875da672ec"],
+      ["cf066ad415df30ae"]
+    ]
+  },
+  {
+    "id": "fd881fac22422773",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "from",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 772.5,
+    "y": 365,
+    "wires": []
+  },
+  {
+    "id": "cf066ad415df30ae",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "to",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 771.5,
+    "y": 399,
+    "wires": []
+  },
+  {
+    "id": "a389f9875da672ec",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "set flow.from",
+    "rules": [
+      { "t": "set", "p": "from", "pt": "flow", "to": "payload", "tot": "msg" }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 1012.5,
+    "y": 364,
+    "wires": [[]]
+  },
+  {
+    "id": "a0d4288141f6a629",
+    "type": "protobuf-file",
+    "protopath": "E:\\Meshtastic-protobufs-master\\mqtt.proto",
+    "watchFile": true,
+    "keepCase": false
+  },
+  {
+    "id": "37cadac381653b1e",
+    "type": "mqtt-broker",
+    "name": "",
+    "broker": "192.168.2.45",
+    "port": "1883",
+    "clientid": "",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthPayload": "",
+    "birthMsg": {},
+    "closeTopic": "",
+    "closeQos": "0",
+    "closePayload": "",
+    "closeMsg": {},
+    "willTopic": "",
+    "willQos": "0",
+    "willPayload": "",
+    "willMsg": {},
+    "userProps": "",
+    "sessionExpiry": ""
+  },
+  {
+    "id": "dbab6472b07929a0",
+    "type": "protobuf-file",
+    "protopath": "E:\\Meshtastic-protobufs-master\\mesh.proto",
+    "watchFile": true,
+    "keepCase": false
+  }
+]
+```
+
+(documents/mqtt/Flow.txt)
+
+Node-red can rapidly (minutes vs days) put together some pretty impressive output when paired with meshtastic. Here is the output of that flow geofencing and mapping via mqtt data.
+[<img src="/documents/mqtt/Mapping.jpg" style={{zoom:'50%'}} />](/documents/mqtt/Mapping.jpg)
+
+Advanced use, such as encoding Position and sending it to a device via MQTT without using JSON can get a little complicated. An example of how it can be done is below.
+[<img src="/documents/mqtt/EncodingPosition.jpg" style={{zoom:'50%'}} />](/documents/mqtt/EncodingPosition.jpg)
+The flow is:
+
+```json
+[
+  {
+    "id": "32ca608d9e7c5236",
+    "type": "inject",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "props": [{ "p": "payload" }, { "p": "topic", "vt": "str" }],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 96.5,
+    "y": 1952,
+    "wires": [["2b536512e8c7aef2"]]
+  },
+  {
+    "id": "20bbd2d1408b8dc5",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "channelId_outbound",
+        "pt": "flow",
+        "to": "LongFast",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 772,
+    "y": 2027,
+    "wires": [[]]
+  },
+  {
+    "id": "c6cb373157be01d6",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "gatewayId_outbound",
+        "pt": "flow",
+        "to": "\"!55c7312c\"",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 772,
+    "y": 2066,
+    "wires": [[]]
+  },
+  {
+    "id": "24199ec7eaf89c1a",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "portnum_outbound",
+        "pt": "flow",
+        "to": "3",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 774,
+    "y": 2106,
+    "wires": [[]]
+  },
+  {
+    "id": "de38ad5ef343623a",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "from_outbound",
+        "pt": "flow",
+        "to": "1439117612",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 781,
+    "y": 2146,
+    "wires": [[]]
+  },
+  {
+    "id": "d435e8abe0852f93",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "to_outbound",
+        "pt": "flow",
+        "to": "4294967295",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 790,
+    "y": 2188,
+    "wires": [[]]
+  },
+  {
+    "id": "1f8d172708898860",
+    "type": "function",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "Assemble Position protobuf",
+    "func": "msg.protobufType=null;\nmsg.payload =\n{\n    \"packet\": {\n        \"from\": flow.get(\"from_outbound\"),\n        \"to\": flow.get(\"to_outbound\"),   \n        \"decoded\":{\n            //how ENUMS are handled here\n            //portnum is decoded as string but encoded as number\n            //in the encode/decode node-red nodes based on protobuf.js\n            \"portnum\": flow.get(\"portnum_outbound\"),\n            \"payload\": msg.payload         \n        }         \n    },\n\n    \"channelId\": flow.get(\"channelId_outbound\"),\n    \"gatewayId\": flow.get(\"gatewayId_outbound\"),\n};\nreturn msg;\n//info on how to get json data into protobuf \"bytes\" field\n//https://github.com/protobufjs/protobuf.js/wiki/Changes-in-ProtoBuf.js-3.8",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1086,
+    "y": 2019,
+    "wires": [["b8ccf1cfe8bf40a3"]]
+  },
+  {
+    "id": "b8ccf1cfe8bf40a3",
+    "type": "encode",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "protofile": "a0d4288141f6a629",
+    "protoType": "ServiceEnvelope",
+    "x": 1287,
+    "y": 2020,
+    "wires": [["dbc78f035c9c2b56", "a002c148f3a06bac"]]
+  },
+  {
+    "id": "03a7e69ca6d471fe",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "show hex string",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1319,
+    "y": 2180,
+    "wires": []
+  },
+  {
+    "id": "dbc78f035c9c2b56",
+    "type": "function",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "dump payload as hex string",
+    "func": "var hex=Buffer.from(msg.payload,\"hex\");\nmsg.payload=hex.toString(\"hex\");\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1096,
+    "y": 2178,
+    "wires": [["03a7e69ca6d471fe"]]
+  },
+  {
+    "id": "2b536512e8c7aef2",
+    "type": "function",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "Inject lat lon alt",
+    "func": "msg.payload={\n    \"latitudeI\": 399600000,\n        \"longitudeI\": -862600000,\n            \"altitude\": 100\n}\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 277.5,
+    "y": 1953,
+    "wires": [["9443a9a980e54c75"]]
+  },
+  {
+    "id": "9443a9a980e54c75",
+    "type": "encode",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "encode Position as protobuf",
+    "protofile": "dbab6472b07929a0",
+    "protoType": "Position",
+    "x": 506,
+    "y": 1953,
+    "wires": [["5c36d3a7f4dca14e"]]
+  },
+  {
+    "id": "5c36d3a7f4dca14e",
+    "type": "change",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "nested_outbound",
+        "pt": "flow",
+        "to": "payload",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 776,
+    "y": 1952,
+    "wires": [
+      [
+        "20bbd2d1408b8dc5",
+        "c6cb373157be01d6",
+        "24199ec7eaf89c1a",
+        "de38ad5ef343623a",
+        "d435e8abe0852f93",
+        "04d0c4a5f3485c6f"
+      ]
+    ]
+  },
+  {
+    "id": "04d0c4a5f3485c6f",
+    "type": "function",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "dump payload as base64 string",
+    "func": "var hex=Buffer.from(msg.payload,\"base64\");\nmsg.payload=hex.toString(\"base64\");\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1082,
+    "y": 1952,
+    "wires": [["1f8d172708898860"]]
+  },
+  {
+    "id": "a002c148f3a06bac",
+    "type": "decode",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "test decode Protobuf",
+    "protofile": "a0d4288141f6a629",
+    "protoType": "ServiceEnvelope",
+    "x": 1249,
+    "y": 1860,
+    "wires": [["4b6fc79398d05782"]]
+  },
+  {
+    "id": "4b6fc79398d05782",
+    "type": "debug",
+    "z": "23dbb1ee.bc2e8e",
+    "name": "test entire payload",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1458,
+    "y": 1859,
+    "wires": []
+  },
+  {
+    "id": "a0d4288141f6a629",
+    "type": "protobuf-file",
+    "protopath": "E:\\Meshtastic-protobufs-master\\mqtt.proto",
+    "watchFile": true,
+    "keepCase": false
+  },
+  {
+    "id": "dbab6472b07929a0",
+    "type": "protobuf-file",
+    "protopath": "E:\\Meshtastic-protobufs-master\\mesh.proto",
+    "watchFile": true,
+    "keepCase": false
+  }
+]
+```
+
+Sending a position to a device for broadcast to the mesh is much easier with JSON. This introduces a new MQTT Service Envelope type: "sendposition". A valid MQTT envelope and message to broadcast lat, lon, altitude looks like this.
+
+```json
+{
+  "sender": "someSender",
+  "type": "sendposition",
+  "payload": {
+    "latitude_i": 399600000,
+    "longitude_i": -862600000,
+    "altitude": 100,
+    "time": 1670201543
+  }
+}
+```
+
+An example of doing this in node-red:
+[<img src="/documents/mqtt/PosJSON.jpg" style={{zoom:'50%'}} />](/documents/mqtt/PosJSON.jpg)

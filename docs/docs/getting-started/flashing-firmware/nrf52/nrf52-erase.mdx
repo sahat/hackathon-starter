@@ -1,0 +1,33 @@
+---
+id: nrf52-erase
+title: Flash nRF52 Factory Erase
+sidebar_label: Factory Erase nRF52
+sidebar_position: 3
+---
+
+import Link from "@docusaurus/Link";
+
+Meshtastic uses the [littlefs](https://github.com/littlefs-project/littlefs) library to store configuration, logs, and other data in the internal flash of nRF52 devices. Updating the firmware does _not_ erase this additional data, which can cause issues when the format and location of data changes between releases.
+
+To reset the flash storage on your nRF52 board:
+
+Download and unzip the latest firmware from [Meshtastic Downloads](https://meshtastic.org/downloads).
+
+1. Connect your device to your computer with a USB data cable.
+2. Double click the reset button on your device (this will put it into bootloader mode)
+3. Notice a new drive will be mounted on your computer (Windows, Mac, or Linux)
+4. Open this drive and you should see three files: `CURRENT.UF2`, `INDEX.HTM`, and `INFO_UF2.TXT`
+5. Copy the included file named `Meshtastic_nRF52_factory_erase.uf2` onto the virtual disk device. The device should reboot.
+6. Connect to the device via serial console using the [Meshtastic CLI `--noproto`](/docs/software/python/cli/#--noproto) mode or a standalone serial client like `minicom`.
+7. Press any key, you should see the message: `Formatting... Done`.
+
+Once the device has been erased, you can proceed to install the latest Meshtastic firmware on a clean storage filesystem by clicking the link below.
+
+<div className="indexCtasBody">
+  <Link
+    className={"button button--outline button--lg cta--button"}
+    to={"/docs/getting-started/flashing-firmware/nrf52/"}
+  >
+    Flash nRF52 Firmware
+  </Link>
+</div>

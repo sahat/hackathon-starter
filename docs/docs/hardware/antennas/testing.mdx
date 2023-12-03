@@ -1,0 +1,92 @@
+---
+id: antenna-testing
+title: Antenna Testing
+sidebar_label: Testing
+sidebar_position: 1
+---
+
+Testing of antennas can be both simple and complex. At its simplest, testing involves sending messages from different locations and seeing which ones are received, and then comparing the results against other antennas. At the complex end, this can be using expensive test chambers and equipment to measure the signal strength, gain, and radiation patterns. However, it seems that a reasonable job can be done with cheaper methods.
+
+If you have sufficient range with your existing aerial, skip this section. If you don't, consider either getting more nodes and / or replace the stock aerial with one tuned (to your region transmitter's frequency):
+
+- A quarter wave _tuned_ stubby aerial (\<10cm for fit-in-pocket) should have a real-world range of a couple of km without significant obstacles (buildings / hills).
+- Aerial criteria: 50 Ohm, appropriate connector (usually SMA male or U.FL), low VSWR (\<2) (at tuning frequency - see its datasheet), gain > 0 dBi .
+- Caution, avoid suppliers who:
+  - don't state the aerial's tuned frequency and its specific purpose (LoRa network)
+  - claim huge gain figures on omni-directional aerials
+  - don't provide boringly professional datasheets
+
+If you want more range, directionality, or specificity read on.
+
+## General guidance
+
+The Meshtastic system is designed to be simple and intuitive to use. However, its LoRa radios rely on point-to-point communications, unit-to-unit, aerial-to-aerial; quite different to the near ubiquitous radio coverage of today's cellphone & Wifi connections.
+
+Some understanding of the factors affecting radio communications will help achieve substantially better service and faster transmission over a greater range with your devices. Here, we'll attempt to provide a top-level set of guidance for use and aerial selection, how to test the aerials, a set of resources for further research, and plenty of opportunity for going deeper.
+
+The Meshtastic devices (of various flavors) lend themselves to experimentation, not only because you can replace their aerials, but also because of their mesh operation. All nodes will, without alteration, relay communications from any other members of the mesh around obstacles and over greater distances. The cost of aerial investment should be weighed against investment in additional low-cost nodes.
+
+:::caution
+While the LoRa devices we are using for Meshtastic are relatively low power radios, care should be taken _not_ to operate any radio transmission device without an aerial or with a poorly matched aerial. Radio signals transmitted without an antenna can reflect back and damage the device.
+:::
+
+The information collected here is by no means definitive, and necessarily abbreviated (it's a huge topic).
+
+## Range Testing
+
+As mentioned, while stating the obvious, the simplest way of performing a test is:
+
+- Walk around with a radio sending messages,
+- For each message, note location and whether 'ACK' ticks are received,
+- Also, note reported signal strengths,
+- Change aerials, repeat, and evaluate results.
+
+:::note
+The [range test module](/docs/configuration/module/range-test) has been designed for exactly this purpose. It allows one node to transmit a frequent message, and another node to record which messages were received. This data is saved and can be imported to applications such as Google Earth.
+:::
+
+On the topic of testing - performing your own testing and providing feedback is the lifeblood of Meshtastic and open source projects.
+
+## Signal Strength Testing
+
+Real world testing is also discussed by Andreas Spiess (the 'guy with the Swiss accent') in his [tutorial](https://www.youtube.com/watch?v=J3PBL9oLPX8). He has written [code](https://github.com/SensorsIot/Antenna-Tester) for testing antennas using two Lora32 V1 boards to compare how different antennas behave. Lilygo have also made code available for testing the RSSI on the [LORA32](https://github.com/LilyGO/TTGO-LORA32) [boards](https://github.com/Xinyuan-LilyGO/TTGO-LoRa-Series) and the [T-Beam](https://github.com/LilyGO/TTGO-T-Beam).
+
+Here are a [couple](https://medium.com/home-wireless/testing-lora-antennas-at-915mhz-6d6b41ac8f1d) of [excellent](https://medium.com/home-wireless/testing-and-reviewing-lora-antennas-5b37dfa594a3) aerial comparisons. Their utility goes beyond the specific aerials tested, giving insight into:
+
+- Aerial types & their characteristics,
+- Testing approaches.
+
+## Antenna Matching & Vector Network Analyzers
+
+One of the first things to ensure, is that the antenna you have is tuned to the frequency that you are using. A lot of cheap antennas come labeled with an incorrect working frequency, and this will immediately reduce the emitted signal strength. A Vector Network Analyzer (VNA) can be used to ensure that the antenna is appropriately matched to the transmission circuit, ensuring that it is operating at the correct impedance, and has a low level of power reflected back from the antenna to the transmitter at the desired transmission frequency.
+
+Andreas Spiess also gives a great explanation of [how to use Vector Network Analyzers](https://www.youtube.com/watch?v=ZpKoLvqOWyc) to correctly tune your antennas, as well as a more [in depth tutorial of how to use VNAs](https://www.youtube.com/watch?v=_pjcEKQY_Tk). It is important to remember however, that VNAs can only tell you if the antenna is well-matched, not how well it is transmitting. A 50 ohm resistor across the transmitter output would show as ideally matched, but it would be useless at transmitting a signal. There are a number of VNAs now available for less than $100, making this no longer out of reach for most hobbyists, unlike expensive spectrum analyzers.
+
+## Non-aerial Factors Affecting Transmission
+
+Unless you're using your devices in a vacuum, with clear line of sight between aerials the following will have an effect:
+
+- Weather (temperature, humidity, and air pressure),
+- Transmission power, bandwidth, spreading factor, and other associated channel factors,
+- Number of nodes within reach of the mesh (affects retries consequent duty cycle hit),
+- Absorption by materials (with varying degrees attenuation, by material and depth),
+- Reflection off surfaces (and channeling through material tunnels, including warm / cold air tunnels commonly present in the atmosphere),
+- Diffraction around obstacles (over forests and around corners).
+- Fresnel Zone - A football shape between antennas that must be clear of obstructions or else the signal is attenuated.
+
+### Environmental Factors
+
+For a bit of light reading on environmental research:
+
+- [RF attenuation in vegetation](https://web.archive.org/web/20201216041455/https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.833-9-201609-I!!PDF-E.pdf) (yes really); if you wander through the woods wondering how your RF is bouncing off leaves dependent on their variety, and wind speed … well you do, now.
+- [RF attenuation with various building materials](https://www.ofcom.org.uk/__data/assets/pdf_file/0016/84022/building_materials_and_propagation.pdf).
+- This one by ITU again is very detailed in its [analysis of the drivers of attenuation](https://web.archive.org/web/20211005174833/https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.2040-1-201507-I!!PDF-E.pdf) (I wasn’t aware that all EMF radiation exhibits reflection / transmission characteristics akin to light hitting a material boundary. So, depending on the angle of incidence, material and the EMF wavelength, it will be reflected and / or transmitted through).
+- These RF bands are also made more [noisy by adjacent LTE](https://www.ofcom.org.uk/__data/assets/pdf_file/0023/55922/lte-coexistence.pdf)
+
+In summary - wavelengths in Europe fair well in plain sight, curve over not-so-tall obstacles (including trees), and they reflect off surfaces at low angles of incidence. They go through humans without much attenuation; but not brick, stone, or anything with more attenuation than glass / Kevlar. Oh, and don’t sit under an LTE tower and expect it to be plain sailing. RF emissions at adjacent frequencies can interfere at a high enough power.
+
+## Discussion
+
+To comment on / join in antenna range [Meshtastic discourse](https://meshtastic.discourse.group/t/antenna-improved-range/227/35?u=sens8tion)
+
+There, you will also find reference to Meshtastic range achievements and aerial recommendations. (Note we've stopped short of making specific supplier aerial recommendations in this wiki.)

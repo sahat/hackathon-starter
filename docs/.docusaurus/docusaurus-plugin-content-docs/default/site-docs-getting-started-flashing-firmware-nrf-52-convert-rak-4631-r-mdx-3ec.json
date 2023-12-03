@@ -1,0 +1,31 @@
+{
+  "id": "getting-started/flashing-firmware/nrf52/convert-rak4631r",
+  "title": "Convert RAK4631-R to RAK4631",
+  "description": "The only difference between the RAK4631-R (RUI3) and the RAK4631 (Arduino) is the bootloader it is shipped with - the hardware is the same.",
+  "source": "@site/docs/getting-started/flashing-firmware/nrf52/convert-rak4631r.mdx",
+  "sourceDirName": "getting-started/flashing-firmware/nrf52",
+  "slug": "/getting-started/flashing-firmware/nrf52/convert-rak4631r",
+  "permalink": "/docs/getting-started/flashing-firmware/nrf52/convert-rak4631r",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/getting-started/flashing-firmware/nrf52/convert-rak4631r.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "convert-rak4631r",
+    "title": "Convert RAK4631-R to RAK4631",
+    "sidebar_label": "Convert RAK4631-R",
+    "sidebar_position": 4
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Factory Erase nRF52",
+    "permalink": "/docs/getting-started/flashing-firmware/nrf52/nrf52-erase"
+  },
+  "next": {
+    "title": "Initial Configuration",
+    "permalink": "/docs/getting-started/initial-config"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "hardware/devices/rak/buttons",
+  "title": "Hardware Buttons",
+  "description": "Functionality",
+  "source": "@site/docs/hardware/devices/rak/buttons.mdx",
+  "sourceDirName": "hardware/devices/rak",
+  "slug": "/hardware/devices/rak/buttons",
+  "permalink": "/docs/hardware/devices/rak/buttons",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/devices/rak/buttons.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "buttons",
+    "title": "Hardware Buttons",
+    "sidebar_label": "Buttons",
+    "sidebar_position": 3
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Screens",
+    "permalink": "/docs/hardware/devices/rak/screens"
+  },
+  "next": {
+    "title": "Enclosures",
+    "permalink": "/docs/hardware/devices/rak/enclosures"
+  }
+}

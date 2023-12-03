@@ -1,0 +1,68 @@
+---
+id: docs
+title: Maintaining Documentation
+slug: /development/docs
+sidebar_label: Docs
+sidebar_position: 9
+---
+
+Meshtastic documentation is an important ingredient to the overall project. We want users to hit the ground running with the information they need right at their finger tips. This section will discuss the documentation software stack, file organization, and style guides.
+
+## Software Stack
+
+All of our documentation resides on GitHub. Instructions for setting up your GitHub account are located [here](/docs/development/reference/github).
+
+Our documentation is powered by [Docusaurus](https://docusaurus.io) — a documentation platform built on React that utilizes markdown files. Because markdown files are easy to edit, most content changes should be fairly simple.
+
+Another component that we use is [Vercel](https://vercel.com) — a platform for front-end frameworks and static sites. Instructions for setting up your instance of Vercel are located [here](/docs/development/documentation/publish#publish-to-vercel).
+
+## Documentation Organization
+
+|         Section          |        File Path        |                                                                                                          Description                                                                                                          |
+| :----------------------: | :---------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|     About Meshtastic     |      `docs/about`       |                             A high level explanation of Meshtastic plus everything relating to the Meshtastic mesh.  This includes radio settings, mesh algorithm and encryption.                                             |
+|     Getting Started      |  `docs/getting-started` |                                                                         Instructions on how to get the Meshtastic firmware onto a users device.                                                                               |
+|      Device Settings     |     `docs/settings`     | Details for both the device and module configurations. Details each user setting and offers explanations on their functionalities in addition to guiding the user on how to configure the device using the various clients available (Android, CLI, iOS, Web).|
+|     Hardware Details     |     `docs/hardware`     |                         Any hardware related content such as officially supported radios and their peripherals such as 3d printed cases, antennas, buttons, chime, rotary encoders, and screens.                              |
+|   Meshtastic Software    |     `docs/software`     |                                      An overview of the current software used in conjunction with Meshtastic to include officially supported client and community applications.                                               |
+| Contribute to Meshtastic |    `docs/developers`    |                                           Details of the necessary information needed for developers to start contributing to the development of the Meshtastic project.                                                      |
+|          Legal           |      `docs/legal`       | Any legal information. Most changes here will be handled by developers actually working on the projects that require any legal disclosures. Examples include: the Meshtastic trademark, terms of service, and privacy policy. |
+
+## Quick Start
+
+Assuming you have the [prerequisites installed](/docs/development/documentation/local-dev#prerequisites), running a local instance of Docusaurus takes three steps:
+
+1.  Fork/Clone the [meshtastic/meshtastic](https://github.com/meshtastic/meshtastic) repository and navigate to the root directory of the project.
+
+    ```shell title="Clone the project"
+    git clone https://github.com/meshtastic/meshtastic.git
+    ```
+
+    ```shell title="Clone fork of the project"
+    git clone https://github.com/[username]/meshtastic.git
+    ```
+
+    ```shell title="Change Directory"
+    cd ~/Meshtastic
+    ```
+
+2.  Install Dependencies
+
+    ```shell title="Install dependencies using Yarn"
+    yarn install
+    ```
+
+3.  Run Docusaurus
+
+    ```shell title="Run node.js server"
+    yarn start
+    ```
+
+:::tip
+Before submitting a pull request, it's helpful to run the following command to ensure there are no broken links or errors:
+
+```shell title="Build Project"
+yarn build
+```
+
+:::

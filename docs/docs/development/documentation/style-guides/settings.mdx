@@ -1,0 +1,111 @@
+---
+id: config-pages
+title: Config Pages
+sidebar_label: Config Pages
+---
+
+## Overview
+
+Setting pages should focus solely on settings and configuring the device. Hardware is often a related topic, however these pages should not attempt to explain attaching hardware. Mention that hardware is required and link to the appropriate page(s).
+
+## Layout
+
+### Overview
+
+This section should describe the group of settings and what they do for the device.
+
+### Settings
+
+This section starts with an alphabetized table of settings, available values, and default values.
+
+Available values should be listed with tick marks `` surrounding the value.
+
+| Value Type |           Example           |
+| :--------: | :-------------------------: |
+|  Boolean   |       `true`, `false`       |
+|    List    | `apple`, `banana`, `orange` |
+|   Range    |          `0`-`100`          |
+
+After the table each setting is described in brief detail. If the available options for a setting need additional explanation, a table should be used to describe each available option.
+
+### Details
+
+If additional details are needed, this optional section can explain that. These would include prerequisites, links to hardware guides, etc.
+
+### Examples
+
+This optional section can have examples of configurations needed where multiple settings are required to be set up for a specific use case.
+
+## Example Template
+
+```markdown title="Template for Settings Pages"
+---
+id: unique-id
+title: Title for Page
+sidebar_label: Label for Sidebar
+---
+
+<!--- Allows client-specific tabs to be used --->
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Overview
+
+<!--- Add overview text to describe this group of settings --->
+
+## Settings
+
+<!--- Table of settings in alphabetical order --->
+
+|         Setting         |      Acceptable Values      | Default |
+| :---------------------: | :-------------------------: | :-----: |  
+| my_setting_with_options | `apple`, `banana`, `orange` | `apple` |
+
+<!--- H3 for each setting above (alphabetized) --->
+
+### my_setting_with_options
+
+<!--- description for what the setting does --->
+
+<!--- if the setting has many options, insert a table describing what those variables do --->
+
+|  Value   |          Description           |
+| :------: | :----------------------------: |  
+| `apple`  | Description of apple (default) |
+| `banana` |     Description of banana      |
+| `orange` |     Description of orange      |
+
+<!--- Client tabs that were imported above --->
+
+<Tabs
+groupId="settings"
+defaultValue="cli"
+values={[
+{label: 'CLI', value: 'cli'},
+{label: 'Android', value: 'android'},
+{label: 'iOS', value: 'iOS'},
+{label: 'Web', value: 'web'},
+]}>
+<TabItem value="cli">
+CLI content here
+</TabItem>
+<TabItem value="android">
+Android content here
+</TabItem>
+<TabItem value="iOS">
+iOS content here
+</TabItem>
+<TabItem value="web">
+Web content here
+</TabItem>
+</Tabs>
+
+## Details
+
+<!--- Additional details about the settings IF NEEDED otherwise delete this h2 header --->
+
+## Examples
+
+<!--- Meant for examples where multiple settings are configured at the same time (WiFi type/SSID/password in a single command). If not needed, delete this h2 header --->
+```

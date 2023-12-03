@@ -1,0 +1,14 @@
+---
+id: peripherals
+title: Supported Peripherals
+sidebar_label: Peripherals
+sidebar_position: 1
+---
+
+## I<sup>2</sup>C peripherals
+
+I<sup>2</sup>C peripherals like OLED Displays (e.g. SSD1306 or SH1106) and keyboards (e.g. CardKB) can be connected to GPIO pins 4 (SDA) and 5 (SCL), which will be recognized on boot. Note that for keyboard input, the [Canned Message Module](/docs/configuration/module/canned-message) has to be enabled and the [input source](/docs/configuration/module/canned-message#input-source) should be specified.
+
+## External device using Serial Module
+
+For connecting an external device via the [Serial Module](/docs/configuration/module/serial), it's recommended to use GPIO pins 8 (`serial.txd`) and 9 (`serial.rxd`).

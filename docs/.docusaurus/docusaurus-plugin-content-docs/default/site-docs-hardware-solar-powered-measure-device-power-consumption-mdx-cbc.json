@@ -1,0 +1,31 @@
+{
+  "id": "hardware/solar-powered/measure-power-consumption",
+  "title": "How To Measure Meshtastic Device Power Consumption",
+  "description": "Before you can calculate what size solar panel and battery bank are required you need to determine how much power your device consumes. This is an essential and first step in building a solar powered anything.",
+  "source": "@site/docs/hardware/solar-powered/measure-device-power-consumption.mdx",
+  "sourceDirName": "hardware/solar-powered",
+  "slug": "/hardware/solar-powered/measure-power-consumption",
+  "permalink": "/docs/hardware/solar-powered/measure-power-consumption",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/solar-powered/measure-device-power-consumption.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "measure-power-consumption",
+    "title": "How To Measure Meshtastic Device Power Consumption",
+    "sidebar_label": "Measure Power Consumption",
+    "sidebar_position": 1
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Solar Powered",
+    "permalink": "/docs/solar-powered"
+  },
+  "next": {
+    "title": "Software",
+    "permalink": "/docs/software"
+  }
+}

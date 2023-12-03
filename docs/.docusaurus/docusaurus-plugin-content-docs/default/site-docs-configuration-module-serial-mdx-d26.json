@@ -1,0 +1,29 @@
+{
+  "id": "configuration/module/serial",
+  "title": "Serial Module Configuration",
+  "description": "The serial module config options are: Enabled, Echo, Mode, Receive GPIO, Transmit GPIO, Baud Rate, Timeout, and Override Console Serial Port. Serial Module config uses an admin message sending a ConfigModule.Serial protobuf.",
+  "source": "@site/docs/configuration/module/serial.mdx",
+  "sourceDirName": "configuration/module",
+  "slug": "/configuration/module/serial",
+  "permalink": "/docs/configuration/module/serial",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/module/serial.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "serial",
+    "title": "Serial Module Configuration",
+    "sidebar_label": "Serial"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Remote Hardware",
+    "permalink": "/docs/configuration/module/remote-hardware"
+  },
+  "next": {
+    "title": "Store & Forward",
+    "permalink": "/docs/configuration/module/store-and-forward-module"
+  }
+}

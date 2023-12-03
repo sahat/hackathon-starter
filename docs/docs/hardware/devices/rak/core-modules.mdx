@@ -1,0 +1,163 @@
+---
+id: core-module
+title: RAK WisBlock Core Modules
+sidebar_label: Core Modules
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+## WisBlock Core
+
+<Tabs
+groupId="rakcore"
+defaultValue="RAK4631"
+values={[
+{label: 'RAK4631', value: 'RAK4631'},
+{label: 'RAK11200', value: 'RAK11200'},
+{label: 'RAK11310', value: 'RAK11310'}
+]}>
+
+<TabItem value="RAK4631">
+
+## RAK4631 - nRF52
+
+:::info
+Please be aware of the difference between the RAK4631 (Arduino bootloader) and the RAK4631-R (RUI3 bootloader). Meshtastic requires the Arduino bootloader. If you have a RAK4631-R, please see the [instructions for converting the bootloader](/docs/getting-started/flashing-firmware/nrf52/convert-rak4631r).
+:::
+
+- RAK4631
+  - **MCU**
+    - nRF52840
+      - Bluetooth BLE 5.0
+      - Very low power consumption
+  - **LoRa Transceiver:**
+    - SX1262
+  - **Frequency Options:**
+    - 433 MHz
+    - 470 MHz
+    - 799 MHz
+    - 865 MHz
+    - 868 MHz
+    - 915 MHz
+    - 920 MHz
+    - 923 MHz
+  - **Connectors:**
+    - U.FL/IPEX antenna connector for LoRa
+
+### RAK4631 Resources
+
+- Firmware file: `firmware-rak4631-X.X.X.xxxxxxx.uf2`
+- Further information on the RAK4631 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/#product-description).
+- US Distributor - Purchase link: [Rokland - US915 Mhz](https://store.rokland.com/products/rak-wireless-rak4631-nordic-nrf52840-ble-core-module-for-lorawan-with-lora-sx1262)
+- Purchase Link: [RAK Wireless Store](https://store.rakwireless.com/products/rak4631-lpwan-node?variant=37505443856582)
+- Purchase Link: [RAK Wireless Aliexpress](https://www.aliexpress.us/item/3256801470104151.html)
+
+<img
+  alt="RAK4631 Core Module"
+  src="/img/hardware/rak4631.png"
+  style={{ zoom: "50%" }}
+/>
+
+
+### GPIO
+
+:::caution Note
+There is no usable GPIO pin on any RAK base board except the 'big' baseboard RAK19001 without adding a RAK13002 IO module or a third party IO sensor breakout.
+:::
+
+The RAK4631 uses symbolic labels for its I/O Pins on the module and baseboard silk screens. The following table shows the mapping of the RAK4631 GPIO pins to the corresponding Arduino pins and the MCU Port numbers.
+
+| RAK Pin | nRF52840 Pin | Arduino GPIO | Remark                                                                                                |
+| ------- | ------------ | ------------ | ----------------------------------------------------------------------------------------------------- |
+| IO1     | P0.17        | 17           | used to toggle power to peripheral modules using 3v3_S power rail, not available for user application |
+| IO2     | P1.02        | 34           | used to power all peripheral modules, not available for user application                              |
+| IO3     | P0.21        | 21           |
+| IO4     | P0.04        | 4            |
+| IO5     | P0.09        | 9            | The 'User Button' is mapped here.                                                                     |
+| IO6     | P0.10        | 10           |
+| IO7     | P0.28        | 28           |
+| SW1     | P0.01        | 1            |
+| A0      | P0.04/AIN2   | A2           |
+| A1      | P0.31/AIN7   | A7           |
+| SPI_CS  | P0.26        | 26           |
+
+When configuring GPIO pins in your device settings, the Arduino GPIO numbers should be used.
+
+```shell title="Example"
+meshtastic --set external_notification.output 10
+```
+
+This will use IO6 on a RAK4631
+
+</TabItem>
+<TabItem value="RAK11200">
+
+## RAK11200 - ESP32
+
+:::info
+Only supported on the RAK5005-O / RAK19007 and the RAK19001 base boards.
+:::
+
+The RAK11200 does not contain a LoRa transceiver, and thus needs to be added separately in the form of the [RAK13300 LPWAN module](https://store.rakwireless.com/products/rak13300-wisblock-lpwan). This occupies the IO Port of the base board.
+
+- RAK11200
+  - **MCU:**
+    - ESP32-WROVER
+      - Bluetooth 4.2
+      - WiFi 802.11 b/g/n
+      - High power consumption (relative to nRF52)
+
+### RAK11200 Resources
+
+- Firmware file: `firmware-rak11200-X.X.X.xxxxxxx.bin`
+- Further information on the RAK11200 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK11200/Overview/#product-description).
+- Purchase Link: [RAK Wireless Store](https://store.rakwireless.com/products/wiscore-esp32-module-rak11200)
+- Purchase Link: [RAK Wireless Aliexpress](https://www.aliexpress.us/item/3256802312474717.html)
+
+<img
+  alt="RAK4631 5005 11200"
+  src="/img/hardware/rak11200.jpg"
+  style={{ zoom: "50%" }}
+/>
+
+</TabItem>
+
+<TabItem value="RAK11310">
+
+## RAK11310 - RP2040
+
+:::info
+
+**Please note, this core module does NOT include BLE/WiFi.**
+
+:::
+
+  - **MCU:**
+    - Raspberry Pi RP2040
+      - Dual M0+ Core
+      - 133MHz CPU Clock
+  - **LoRa Transceiver:**
+    - SX1262
+  - **Frequency Options:**
+    - 433 MHz
+    - 470 MHz
+    - 864 MHz
+    - 865 MHz
+    - 868 MHz
+    - 915 MHz
+    - 920 MHz
+    - 923 MHz
+  - **Connectors:**
+    - U.FL/IPEX antenna connector for LoRa
+
+### RAK11310 Resources
+
+- Firmware file: `firmware-rak11310-X.X.X.xxxxxxx.uf2`
+- Further information on the RAK11310 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK11310/Overview/#product-description).
+- Purchase Link: [RAK Wireless Store](https://store.rakwireless.com/products/rak11310-wisblock-lpwan-module)
+- Purchase Link: [RAK Wireless Aliexpress](https://www.aliexpress.us/item/3256803225175784.html)
+
+</TabItem>
+</Tabs>

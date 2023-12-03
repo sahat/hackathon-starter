@@ -1,0 +1,32 @@
+{
+  "id": "software/python-cli/usage",
+  "title": "Using the Meshtastic CLI",
+  "description": "This section covers using the \"meshtastic\" command line executable, which displays packets sent over the network as JSON and lets you see serial debugging information from the Meshtastic devices.",
+  "source": "@site/docs/software/python-cli/usage.mdx",
+  "sourceDirName": "software/python-cli",
+  "slug": "/software/python/cli/usage",
+  "permalink": "/docs/software/python/cli/usage",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/python-cli/usage.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "usage",
+    "title": "Using the Meshtastic CLI",
+    "sidebar_label": "Usage",
+    "slug": "/software/python/cli/usage",
+    "sidebar_position": 2
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/docs/software/python/cli/installation"
+  },
+  "next": {
+    "title": "MQTT",
+    "permalink": "/docs/software/mqtt/"
+  }
+}

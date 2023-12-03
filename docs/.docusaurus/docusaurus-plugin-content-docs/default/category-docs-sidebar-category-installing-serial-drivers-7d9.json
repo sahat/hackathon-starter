@@ -1,0 +1,15 @@
+{
+  "title": "Installing Serial Drivers",
+  "slug": "/getting-started/serial-drivers",
+  "permalink": "/docs/getting-started/serial-drivers",
+  "navigation": {
+    "previous": {
+      "title": "Getting Started",
+      "permalink": "/docs/getting-started"
+    },
+    "next": {
+      "title": "ESP32 Drivers",
+      "permalink": "/docs/getting-started/serial-drivers/esp32"
+    }
+  }
+}

@@ -1,0 +1,91 @@
+---
+id: nrf52
+title: nRF52 Serial Drivers
+sidebar_label: nRF52 Drivers
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Link from "@docusaurus/Link";
+
+## Install nRF52 USB to Serial Drivers
+
+:::caution
+
+nRF52 devices typically do not require serial drivers. They use the UF2 bootloader which makes the devices appear as flash drives.  Do _NOT_ download the USB device drivers unless required to install UF2 support.
+
+:::
+
+<Tabs
+groupId="operating-system"
+defaultValue="windows"
+values={[
+{label: 'Linux', value: 'linux'},
+{label: 'macOS', value: 'macos'},
+{label: 'Windows', value: 'windows'},
+]}>
+
+<TabItem value="linux">
+
+- [CH34x Driver - Linux Download](http://www.wch-ic.com/downloads/CH341SER_LINUX_ZIP.html)
+
+</TabItem>
+
+<TabItem value="macos">
+
+
+:::info
+
+With the latest versions of MacOS, the USB Serial driver is built-in. If you downloaded/installed any already, please remove them.
+
+:::
+
+### Remove the CH34x USB Driver (macOS)
+
+If you have already downloaded/installed the macOS WCH-IC CH340/CH341
+("CH341SER_MAC") drivers via the CH34x_Install_V1.5.pkg, you will have to
+Uninstall the kernel extension:
+
+1. Unplug your device
+2. Open the Terminal and run:
+3. `sudo rm -rf /Library/Extensions/usbserial.kext`
+4. Reboot
+
+
+### Install the CH34x Driver
+
+- [CH34x Driver- macOS Download](https://github.com/WCHSoftGroup/ch34xser_macos)
+
+
+
+</TabItem>
+
+<TabItem value="windows">
+
+- [CH34x Driver - Windows Download](http://www.wch-ic.com/downloads/CH341SER_EXE.html)
+
+</TabItem>
+
+</Tabs>
+
+:::important
+
+After installing the driver, make sure to reboot your computer to finish the installation process.
+
+You can also [test your serial driver installation](/docs/getting-started/serial-drivers/test-serial-driver-installation) at this step if required.
+
+:::
+
+### Flash Firmware
+
+After installing the serial drivers, you can now flash the Meshtastic firmware onto your device. To proceed, select the appropriate device type for your device.
+
+<div className="indexCtasBody">
+  <Link
+    className={"button button--outline button--lg cta--button"}
+    to={"/docs/getting-started/flashing-firmware/nrf52/"}
+  >
+    Flash nRF52 Firmware
+  </Link>
+</div>

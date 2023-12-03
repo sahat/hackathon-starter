@@ -1,0 +1,29 @@
+{
+  "id": "configuration/radio/power",
+  "title": "Power Configuration",
+  "description": "Power settings are advanced configuration, most users should choose a role under Device Config to manage power for their device and shouldn't ever need to adjust these settings.",
+  "source": "@site/docs/configuration/radio/power.mdx",
+  "sourceDirName": "configuration/radio",
+  "slug": "/configuration/radio/power",
+  "permalink": "/docs/configuration/radio/power",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/radio/power.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "power",
+    "title": "Power Configuration",
+    "sidebar_label": "Power"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Position",
+    "permalink": "/docs/configuration/radio/position"
+  },
+  "next": {
+    "title": "User",
+    "permalink": "/docs/configuration/radio/user"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "configuration/radio/position",
+  "title": "Position Configuration",
+  "description": "The position config options are: GPS Enabled, GPS Update Interval, GPS Attempt Time, Fixed Position, Smart Broadcast, Smart Broadcast Minimum Distance, Smart Broadcast Minimum Interval, Broadcast Interval, Position Packet Flags, and GPS RX/TX Pins. Position config uses an admin message sending a Config.Position protobuf.",
+  "source": "@site/docs/configuration/radio/position.mdx",
+  "sourceDirName": "configuration/radio",
+  "slug": "/configuration/radio/position",
+  "permalink": "/docs/configuration/radio/position",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/radio/position.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "position",
+    "title": "Position Configuration",
+    "sidebar_label": "Position"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Network",
+    "permalink": "/docs/configuration/radio/network"
+  },
+  "next": {
+    "title": "Power",
+    "permalink": "/docs/configuration/radio/power"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "hardware/devices/tbeam/enclosures",
+  "title": "Enclosures",
+  "description": "Created by tropho/TonyG",
+  "source": "@site/docs/hardware/devices/tbeam/enclosures.mdx",
+  "sourceDirName": "hardware/devices/tbeam",
+  "slug": "/hardware/devices/tbeam/enclosures",
+  "permalink": "/docs/hardware/devices/tbeam/enclosures",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/devices/tbeam/enclosures.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "enclosures",
+    "title": "Enclosures",
+    "sidebar_label": "Enclosures",
+    "sidebar_position": 3
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Buttons",
+    "permalink": "/docs/hardware/devices/tbeam/buttons"
+  },
+  "next": {
+    "title": "LILYGO® T-Echo",
+    "permalink": "/docs/hardware/devices/techo/"
+  }
+}

@@ -1,0 +1,56 @@
+---
+id: web-client
+title: Web Client Overview
+sidebar_label: Web Client
+sidebar_position: 3
+---
+
+Meshtastic Web is a Meshtastic client that runs directly in your browser.
+There are three ways of accessing the app:
+
+1. Served directly from an ESP32 based node via [meshtastic.local](http://meshtastic.local) or the device's IP Address.
+2. A hosted version located at [client.meshtastic.org](https://client.meshtastic.org).
+3. Hosting it yourself.
+
+![WebUI](/img/webUI.png)
+
+## Compatibility
+
+The application will work in all major browsers, but specific functionality is limited in some cases. For the best experience we recommend using a Chromium based browser such as [Google Chrome](https://www.google.com/chrome) or [Microsoft Edge](https://www.microsoft.com/en-us/edge).
+
+### HTTP
+
+This method of connecting is limited to esp32 devices.
+
+:::caution
+
+When using the [hosted](https://client.meshtastic.org) version of the application, all traffic must be served over HTTPS.
+Meshtastic nodes generate self-signed certificates, and you must inform your browser that you wish to trust the aforementioned certificate.
+This can be done by first accessing your node directly via your browser: `https://NODE_IP_ADDRESS/` replacing `NODE_IP_ADDRESS` with the IP address of your node.
+This can be found on the screen of the device, via your router's DHCP lease page or serial console.
+
+:::
+
+You can accessing your device over HTTP after you set up your [Network Connection](/docs/configuration/radio/network)
+
+### Bluetooth
+
+Bluetooth support is governed by the availability of the [Web Bluetooth API](https://web.dev/bluetooth) as illustrated below. Support is primarily available in Chromium based browsers.
+
+![Web Bluetooth compatibility matrix](https://caniuse.bitsofco.de/image/web-bluetooth.png)
+
+### Serial (USB)
+
+The method with the least platform support, which uses the [Web Serial API](https://web.dev/serial), allows us to connect directly to a Meshtastic node over USB and access it from directly within your browser.
+
+![Web Serial compatibility matrix](https://caniuse.bitsofco.de/image/web-serial.png)
+
+## Updating
+
+The web interface is included in firmware releases. When a new firmware version is released, the latest WebUI will be automatically bundled.
+
+## Self Hosting
+
+The source code for the WebUI can be found on our [GitHub](https://github.com/meshtastic/web)
+
+Instructions for building and running the project can be found in the repo's readme.

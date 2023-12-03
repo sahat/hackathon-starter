@@ -1,0 +1,31 @@
+{
+  "id": "software/android/installation",
+  "title": "Android Application Installation",
+  "description": "Installation Methods",
+  "source": "@site/docs/software/android/installation.mdx",
+  "sourceDirName": "software/android",
+  "slug": "/software/android/installation",
+  "permalink": "/docs/software/android/installation",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/android/installation.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "installation",
+    "title": "Android Application Installation",
+    "sidebar_label": "Installation",
+    "sidebar_position": 1
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Android App",
+    "permalink": "/docs/category/android-app"
+  },
+  "next": {
+    "title": "Usage",
+    "permalink": "/docs/software/android/usage"
+  }
+}

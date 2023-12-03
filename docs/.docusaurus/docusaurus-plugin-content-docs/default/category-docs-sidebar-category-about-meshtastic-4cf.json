@@ -1,0 +1,11 @@
+{
+  "title": "About Meshtastic",
+  "slug": "/about",
+  "permalink": "/docs/about",
+  "navigation": {
+    "next": {
+      "title": "Introduction",
+      "permalink": "/docs/introduction"
+    }
+  }
+}

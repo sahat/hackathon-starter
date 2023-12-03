@@ -1,0 +1,32 @@
+{
+  "id": "configuration/module/module-config",
+  "title": "Module Configuration",
+  "description": "Modules are included in the firmware and allow users to extend the functionality of their mesh or device.",
+  "source": "@site/docs/configuration/module/index.mdx",
+  "sourceDirName": "configuration/module",
+  "slug": "/configuration/module",
+  "permalink": "/docs/configuration/module",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/module/index.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "module-config",
+    "title": "Module Configuration",
+    "sidebar_label": "Module Config",
+    "sidebar_position": 2,
+    "slug": "/configuration/module"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "User",
+    "permalink": "/docs/configuration/radio/user"
+  },
+  "next": {
+    "title": "Ambient Lighting",
+    "permalink": "/docs/configuration/module/ambient-lighting"
+  }
+}

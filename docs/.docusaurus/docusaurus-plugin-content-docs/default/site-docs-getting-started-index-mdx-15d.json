@@ -1,0 +1,32 @@
+{
+  "id": "getting-started/getting-started",
+  "title": "Getting Started",
+  "description": "Identify Hardware",
+  "source": "@site/docs/getting-started/index.mdx",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started",
+  "permalink": "/docs/getting-started",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/getting-started/index.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "getting-started",
+    "title": "Getting Started",
+    "sidebar_label": "Getting Started",
+    "slug": "/getting-started",
+    "sidebar_position": 2
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "FAQs",
+    "permalink": "/docs/faq"
+  },
+  "next": {
+    "title": "Install Serial Drivers",
+    "permalink": "/docs/getting-started/serial-drivers"
+  }
+}

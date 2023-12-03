@@ -1,0 +1,29 @@
+{
+  "id": "configuration/radio/channels",
+  "title": "Channel Configuration",
+  "description": "The Channels config options are: Index, Roles, and Settings. Channel config uses an admin message sending a Channel protobuf which also consists of a ChannelSettings protobuf.",
+  "source": "@site/docs/configuration/radio/channels.mdx",
+  "sourceDirName": "configuration/radio",
+  "slug": "/configuration/radio/channels",
+  "permalink": "/docs/configuration/radio/channels",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/radio/channels.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "channels",
+    "title": "Channel Configuration",
+    "sidebar_label": "Channels"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Bluetooth",
+    "permalink": "/docs/configuration/radio/bluetooth"
+  },
+  "next": {
+    "title": "Device",
+    "permalink": "/docs/configuration/radio/device"
+  }
+}

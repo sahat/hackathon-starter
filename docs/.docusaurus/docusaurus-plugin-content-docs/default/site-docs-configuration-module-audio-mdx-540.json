@@ -1,0 +1,29 @@
+{
+  "id": "configuration/module/audio",
+  "title": "Audio Module Configuration",
+  "description": "The audio module config options are: Codec2 Enabled, PTT GPIO, Audio Bitrate/Codec Mode, I2S Word Select, I2S Data IN, I2S Data OUT and I2S Clock. Audio Module config uses an admin message sending a ConfigModule.Audio protobuf.",
+  "source": "@site/docs/configuration/module/audio.mdx",
+  "sourceDirName": "configuration/module",
+  "slug": "/configuration/module/audio",
+  "permalink": "/docs/configuration/module/audio",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/module/audio.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "audio",
+    "title": "Audio Module Configuration",
+    "sidebar_label": "Audio"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Ambient Lighting",
+    "permalink": "/docs/configuration/module/ambient-lighting"
+  },
+  "next": {
+    "title": "Canned Message",
+    "permalink": "/docs/configuration/module/canned-message"
+  }
+}

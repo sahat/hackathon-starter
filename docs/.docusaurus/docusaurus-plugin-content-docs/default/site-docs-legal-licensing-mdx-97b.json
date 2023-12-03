@@ -1,0 +1,29 @@
+{
+  "id": "legal/licensing",
+  "title": "Licensing & Commercial Projects Usage",
+  "description": "You are hereby granted a two-year non-exclusive license to use the Meshtastic® logo and trademark on your product/project provided you adhere to the trademark guidelines. No fee is required for this usage, though if you wish keeping $1/unit set-aside so that it can eventually fund Meshtastic it would be appreciated.",
+  "source": "@site/docs/legal/licensing.mdx",
+  "sourceDirName": "legal",
+  "slug": "/legal/licensing",
+  "permalink": "/docs/legal/licensing",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/legal/licensing.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "licensing",
+    "title": "Licensing & Commercial Projects Usage",
+    "sidebar_label": "Licensing"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Legal",
+    "permalink": "/docs/legal"
+  },
+  "next": {
+    "title": "Privacy",
+    "permalink": "/docs/legal/privacy"
+  }
+}

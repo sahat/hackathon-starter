@@ -1,0 +1,116 @@
+---
+id: peripherals
+title: Supported Peripherals
+sidebar_label: Peripherals
+sidebar_position: 3
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+groupId="rakmodules"
+defaultValue="GPS"
+values={[
+{label: 'GPS Module', value: 'GPS'},
+{label: 'Buzzer', value: 'Buzzer'},
+{label: 'I/O Module', value: 'IO'},
+{label: 'Environmental Sensors', value:'Sensors'}
+]}>
+<TabItem value="GPS">
+
+To add a GPS to the RAK5005-O base board, you need the [RAK1910 GPS sensor](https://store.rakwireless.com/collections/wisblock-sensor/products/rak1910-max-7q-gnss-location-sensor). It is supported on slot A of the 5005 board via UART.
+
+- uBlox MAX-7Q GPS module
+- GPS and GLONASS satellite support
+
+Further information on the RAK1910 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1910/Overview/#product-description).
+
+US Distributor - Purchase link: [Rokland](https://store.rokland.com/products/rak-wireless-rak1910-wisblock-gnss-location-module)
+
+To add a GPS to the RAK19003 base board, you need the [RAK12500 GPS sensor](https://store.rakwireless.com/products/wisblock-gnss-location-module-rak12500). It is supported via I<sup>2</sup>C on slot B for firmware versions 1.49 and above.
+
+- uBlox Zoe-M8Q GNSS receiver
+- GPS, GLONASS, QZSS and BeiDou satellite support
+
+Further information on the RAK12500 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12500/Overview/#product-description).
+
+US Distributor - Purchase link: [Rokland](https://store.rokland.com/products/rak-wireless-rak12500-gnss-gps-location-module-u-blox-zoe-m8q)
+
+</TabItem>
+<TabItem value="Buzzer">
+
+The [RAK18001 Buzzer Module](https://store.rakwireless.com/products/wisblock-buzzer-module-rak18001) is currently being tested for integration with the External Notifications plugin. There is currently a known conflict with buzzer if the module is placed in Slot D, although other slots should work.
+
+Further information on the RAK18001 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK18001/Overview/#product-description).
+
+</TabItem>
+<TabItem value="IO">
+
+The [RAK13002 IO Module](https://store.rakwireless.com/collections/wisblock-interface/products/adapter-module-rak13002) can be used to, among other things, add a user button to the RAK base boards (excluding the RAK19003 Mini base board). It features a number of different interface options:
+
+- 2x I<sup>2</sup>C interfaces
+- 2x UART interfaces
+- 1x SPI interface
+- Upto 6x GPIOs
+- 2x ADC interfaces
+- 3.3v Power rails
+
+There is development activity in progress to get sensors such as this added to the Meshtastic Core.  
+Further information on the RAK13002 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK13002/Overview).
+
+</TabItem>
+<TabItem value="Sensors">
+<Tabs
+groupId="sensors"
+defaultValue="RAK1901"
+values={[
+{label: 'RAK1901', value: 'RAK1901'},
+{label: 'RAK1902', value: 'RAK1902'},
+{label: 'RAK1906', value: 'RAK1906'},
+]}>
+
+<TabItem value="RAK1901">
+
+The [RAK1901 Temperature and Humidity Sensor](https://store.rakwireless.com/products/rak1901-shtc3-temperature-humidity-sensor) is based on the Sensirion SHTC3 module and has the following features:
+
+- Temperature measurement (Range -40&deg;C to +125&deg;C)
+- Humidity measurement (Range 0% to 100%)
+- Lower power consumption
+
+Further information on the RAK1901 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1901/Overview/#product-description).
+
+US Distributor - Purchase link: [Rokland](https://store.rokland.com/products/rak-wireless-rak1901-temperature-and-humidity-sensor-sensirion-shtc3-pid-100001)
+
+</TabItem>
+
+<TabItem value="RAK1902">
+
+The [RAK1902 Barometric Pressure Sensor](https://store.rakwireless.com/products/rak1902-kps22hb-barometric-pressure-sensor) is based on the STMicroelectronics LPS22HB module and has the following features:
+
+- Barometer measurement (Range 260 to 1260 hPa)
+- Low power consumption of 3uA
+- Small form factor
+
+Further information on the RAK1902 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1902/Overview/#product-description).
+
+</TabItem>
+
+<TabItem value="RAK1906">
+
+The [RAK1906 Environment Sensor](https://store.rakwireless.com/products/rak1906-bme680-environment-sensor) is based on the Bosch BME680 module and has the following features:
+
+- Temperature measurement (Range -40&deg;C to +85&deg;C)
+- Humidity measurement (Range 0% to 100%)
+- Barometer measurement (Range 300 to 1100 hPa)
+- Air Quality measurement
+
+Further information on the RAK1906 can be found on the [RAK Documentation Center](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK1906/Overview/#product-description).
+
+</TabItem>
+
+</Tabs>
+
+</TabItem>
+
+</Tabs>

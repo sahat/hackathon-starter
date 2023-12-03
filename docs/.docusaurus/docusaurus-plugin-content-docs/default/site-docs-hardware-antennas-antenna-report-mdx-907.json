@@ -1,0 +1,31 @@
+{
+  "id": "hardware/antennas/antenna-reports",
+  "title": "LoRa Antenna Testing Reports",
+  "description": "RicInNewMexico",
+  "source": "@site/docs/hardware/antennas/antenna-report.mdx",
+  "sourceDirName": "hardware/antennas",
+  "slug": "/hardware/antennas/antenna-reports",
+  "permalink": "/docs/hardware/antennas/antenna-reports",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/antennas/antenna-report.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "antenna-reports",
+    "title": "LoRa Antenna Testing Reports",
+    "sidebar_label": "Testing Reports",
+    "sidebar_position": 2
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Testing",
+    "permalink": "/docs/hardware/antennas/antenna-testing"
+  },
+  "next": {
+    "title": "LoRa Antennas",
+    "permalink": "/docs/hardware/antennas/lora-antenna"
+  }
+}

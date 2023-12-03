@@ -1,0 +1,32 @@
+{
+  "id": "getting-started/initial-config",
+  "title": "Initial Configuration",
+  "description": "Supported Clients per Connection Type",
+  "source": "@site/docs/getting-started/initial-config.mdx",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/initial-config",
+  "permalink": "/docs/getting-started/initial-config",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/getting-started/initial-config.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "initial-config",
+    "title": "Initial Configuration",
+    "sidebar_label": "Initial Configuration",
+    "slug": "/getting-started/initial-config",
+    "sidebar_position": 4
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Convert RAK4631-R",
+    "permalink": "/docs/getting-started/flashing-firmware/nrf52/convert-rak4631r"
+  },
+  "next": {
+    "title": "Configuration",
+    "permalink": "/docs/configuration"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "legal/trademark",
+  "title": "Trademark Rules & Brand Guidelines",
+  "description": "Meshtastic® is a registered trademark of Meshtastic LLC. Meshtastic software components are released under various licenses, see GitHub for details. No warranty is provided - use at your own risk.",
+  "source": "@site/docs/legal/trademark.mdx",
+  "sourceDirName": "legal",
+  "slug": "/legal/trademark",
+  "permalink": "/docs/legal/trademark",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/legal/trademark.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "trademark",
+    "title": "Trademark Rules & Brand Guidelines",
+    "sidebar_label": "Trademark"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Trademark Grants",
+    "permalink": "/docs/legal/trademark-grants"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "getting-started/serial-drivers/esp32",
+  "title": "ESP32 Serial Drivers",
+  "description": "Install ESP32 USB to Serial Drivers",
+  "source": "@site/docs/getting-started/serial-drivers/serial-drivers-esp32.mdx",
+  "sourceDirName": "getting-started/serial-drivers",
+  "slug": "/getting-started/serial-drivers/esp32",
+  "permalink": "/docs/getting-started/serial-drivers/esp32",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/getting-started/serial-drivers/serial-drivers-esp32.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "esp32",
+    "title": "ESP32 Serial Drivers",
+    "sidebar_label": "ESP32 Drivers",
+    "sidebar_position": 1
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Install Serial Drivers",
+    "permalink": "/docs/getting-started/serial-drivers"
+  },
+  "next": {
+    "title": "nRF52 Drivers",
+    "permalink": "/docs/getting-started/serial-drivers/nrf52"
+  }
+}

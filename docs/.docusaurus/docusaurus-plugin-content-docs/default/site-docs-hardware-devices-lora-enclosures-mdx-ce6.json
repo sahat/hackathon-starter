@@ -1,0 +1,31 @@
+{
+  "id": "hardware/devices/lora/enclosures",
+  "title": "Enclosures",
+  "description": "Created by tropho/TonyG",
+  "source": "@site/docs/hardware/devices/lora/enclosures.mdx",
+  "sourceDirName": "hardware/devices/lora",
+  "slug": "/hardware/devices/lora/enclosures",
+  "permalink": "/docs/hardware/devices/lora/enclosures",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/devices/lora/enclosures.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "enclosures",
+    "title": "Enclosures",
+    "sidebar_label": "Enclosures",
+    "sidebar_position": 3
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Buttons",
+    "permalink": "/docs/hardware/devices/lora/buttons"
+  },
+  "next": {
+    "title": "GPIO",
+    "permalink": "/docs/hardware/devices/lora/gpio"
+  }
+}

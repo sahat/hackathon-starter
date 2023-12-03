@@ -1,0 +1,120 @@
+---
+id: initial-config
+title: Initial Configuration
+sidebar_label: Initial Configuration
+slug: /getting-started/initial-config
+sidebar_position: 4
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import LoRaRegions from "../blocks/_lora-regions.mdx";
+import Link from "@docusaurus/Link";
+
+## Supported Clients per Connection Type
+
+Depending on your connection, some configuration options are not fully supported. Find out which client is best for your type of connection.
+
+<Tabs
+groupId="settings"
+defaultValue="ble"
+values={[
+{label: 'Serial', value: 'serial'},
+{label: 'Bluetooth', value: 'ble'},
+{label: 'Network', value: 'network'},
+]}>
+<TabItem value="serial">
+
+- [Python CLI](/docs/software/python/cli/)
+- [Web Client](https://client.meshtastic.org)
+- [Android App](/docs/category/android-app)
+
+</TabItem>
+<TabItem value="ble">
+
+- [Android App](/docs/category/android-app)
+- [Web Client](https://client.meshtastic.org)
+- [iOS/iPadOS/macOS App](/docs/category/apple-apps)
+
+</TabItem>
+<TabItem value="network">
+
+:::info
+Connecting over network is only supported on ESP32 devices.
+:::
+
+- [Web Client](https://client.meshtastic.org)
+- [Android App](/docs/category/android-app)
+- [iOS App](/docs/category/apple-apps)
+- [Python CLI](/docs/software/python/cli/)
+
+</TabItem>
+</Tabs>
+
+## Set Regional Settings
+
+In order to start communicating over the mesh, you must set your region. This setting controls which frequency range your device uses and should be set according to your regional location.
+
+<Tabs
+groupId="settings"
+defaultValue="apple"
+values={[
+{label: 'Android', value: 'android'},
+{label: 'Apple', value: 'apple'},
+{label: 'CLI', value: 'cli'},
+{label: 'Web', value: 'web'},
+]}>
+<TabItem value="android">
+
+1. Follow the [installation](/docs/software/android/installation) and [usage](/docs/software/python/cli/usage) instructions for [Meshtastic Android](/docs/category/android-app).
+2. Open the app, connect to the device from your phone over USB Serial or Bluetooth.
+3. Once paired, Click "UNSET" next to the device name.
+4. Select the region from the list according to your regional location.
+
+</TabItem>
+<TabItem value="apple">
+
+:::info
+Configuration of Region, Modem Preset and Hop Limit is available on iOS, iPadOS and macOS at Settings > Radio Configuration > LoRa.
+:::
+
+</TabItem>
+<TabItem value="cli">
+
+1. Install [Meshtastic PythonCLI](/docs/software/python/cli/installation)
+   ```sh
+   pip3 install --upgrade pytap2
+   pip3 install --upgrade meshtastic
+   ```
+2. Run the following command, replacing `<REGION-CODE>` with the region code listed above according to your regional location.
+   ```sh
+   meshtastic --set lora.region <REGION-CODE>
+   ```
+
+</TabItem>
+<TabItem value="web">
+
+1. Open the Meshtastic Web interface: [client.meshtastic.org](https://client.meshtastic.org)
+2. Navigate to the **LoRa** menu.
+3. Under **Regional Settings**, set your **Region** according to your regional location.
+4. Click **Save**.
+
+</TabItem>
+</Tabs>
+
+### Region Codes
+
+<LoRaRegions />
+
+## Continue Configuration
+
+Now that you have set the LoRa region on your device, you can continue with configuring any additional configs to suit your needs.
+
+<div className="indexCtasBody">
+  <Link
+    className={"button button--outline button--lg cta--button"}
+    to={"/docs/configuration/"}
+  >
+    Device Configuration
+  </Link>
+</div>

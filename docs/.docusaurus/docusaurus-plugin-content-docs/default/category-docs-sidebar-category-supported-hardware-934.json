@@ -1,0 +1,15 @@
+{
+  "title": "Supported Hardware",
+  "slug": "hardware",
+  "permalink": "/docs/hardware",
+  "navigation": {
+    "previous": {
+      "title": "Tips",
+      "permalink": "/docs/configuration/tips"
+    },
+    "next": {
+      "title": "Devices",
+      "permalink": "/docs/supported-hardware"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "software/apple/installation",
+  "title": "Apple Application Installation",
+  "description": "Download on the App Store",
+  "source": "@site/docs/software/apple/installation.mdx",
+  "sourceDirName": "software/apple",
+  "slug": "/software/apple/installation",
+  "permalink": "/docs/software/apple/installation",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/apple/installation.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "installation",
+    "title": "Apple Application Installation",
+    "description": "Download on the App Store",
+    "sidebar_label": "Installation"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Apple Apps",
+    "permalink": "/docs/category/apple-apps"
+  },
+  "next": {
+    "title": "Usage",
+    "permalink": "/docs/software/apple/usage"
+  }
+}

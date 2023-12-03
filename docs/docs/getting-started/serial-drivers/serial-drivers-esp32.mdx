@@ -1,0 +1,70 @@
+---
+id: esp32
+title: ESP32 Serial Drivers
+sidebar_label: ESP32 Drivers
+sidebar_position: 1
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Link from "@docusaurus/Link";
+
+## Install ESP32 USB to Serial Drivers
+
+You may need to install a driver from Silicon Labs for the [CP210X USB to UART bridge](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
+
+Some newer boards may require the CH9102 (CH340/CH341) Driver.
+
+<Tabs
+groupId="operating-system"
+defaultValue="windows"
+values={[
+{label: 'Linux', value: 'linux'},
+{label: 'macOS', value: 'macos'},
+{label: 'Windows', value: 'windows'},
+]}>
+
+<TabItem value="linux">
+
+- [CP210X USB to UART bridge - Download](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
+- [CH9102 Driver - Linux Download](http://www.wch-ic.com/downloads/CH341SER_LINUX_ZIP.html)
+
+</TabItem>
+
+<TabItem value="macos">
+
+- [CP210X USB to UART bridge - Download](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
+- [CH9102 Driver - MacOS Download](https://github.com/WCHSoftGroup/ch34xser_macos)
+
+</TabItem>
+
+<TabItem value="windows">
+
+- [CP210X USB to UART bridge - Download](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
+- [CH9102 Driver - Windows Download](http://www.wch.cn/downloads/CH343SER_ZIP.html)
+- [CH9102 Driver - Windows Download (Direct Download for Windows 7)](https://github.com/Xinyuan-LilyGO/CH9102_Driver)
+
+</TabItem>
+
+</Tabs>
+
+:::important
+
+After installing the driver, make sure to reboot your computer to finish the installation process.
+
+You can also [test your serial driver installation](/docs/getting-started/serial-drivers/test-serial-driver-installation) at this step if required.
+
+:::
+
+### Flash Firmware
+
+After installing the serial drivers, you can now flash the Meshtastic firmware onto your device. To proceed, select the appropriate device type for your device.
+
+<div className="indexCtasBody">
+  <Link
+    className={"button button--outline button--lg cta--button"}
+    to={"/docs/getting-started/flashing-firmware/esp32/"}
+  >
+    Flash ESP32 Firmware
+  </Link>
+</div>

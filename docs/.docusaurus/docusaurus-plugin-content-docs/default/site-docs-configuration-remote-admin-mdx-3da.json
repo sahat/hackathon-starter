@@ -1,0 +1,31 @@
+{
+  "id": "configuration/remote-admin",
+  "title": "Remote Node Administration",
+  "description": "This is an advanced feature that few users should need. Keep in mind that it is possible (if you are not careful) to assign settings to a remote node that cause it to completely drop off of your mesh. We advise network admins have a test node to test settings with before applying changes to a remote node to prevent this.",
+  "source": "@site/docs/configuration/remote-admin.mdx",
+  "sourceDirName": "configuration",
+  "slug": "/configuration/remote-admin",
+  "permalink": "/docs/configuration/remote-admin",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/remote-admin.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "remote-admin",
+    "title": "Remote Node Administration",
+    "sidebar_label": "Remote Nodes",
+    "sidebar_position": 3
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Traceroute",
+    "permalink": "/docs/configuration/module/traceroute"
+  },
+  "next": {
+    "title": "Tips",
+    "permalink": "/docs/configuration/tips"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Software",
+  "slug": "/software",
+  "permalink": "/docs/software",
+  "navigation": {
+    "previous": {
+      "title": "Measure Power Consumption",
+      "permalink": "/docs/hardware/solar-powered/measure-power-consumption"
+    },
+    "next": {
+      "title": "Android App",
+      "permalink": "/docs/category/android-app"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "hardware/devices/rak/screens",
+  "title": "Screens",
+  "description": "There are currently two different screens supported by the RAK WisBlock system:",
+  "source": "@site/docs/hardware/devices/rak/screens.mdx",
+  "sourceDirName": "hardware/devices/rak",
+  "slug": "/hardware/devices/rak/screens",
+  "permalink": "/docs/hardware/devices/rak/screens",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/devices/rak/screens.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "screens",
+    "title": "Screens",
+    "sidebar_label": "Screens",
+    "sidebar_position": 2
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Core Modules",
+    "permalink": "/docs/hardware/devices/rak/core-module"
+  },
+  "next": {
+    "title": "Buttons",
+    "permalink": "/docs/hardware/devices/rak/buttons"
+  }
+}

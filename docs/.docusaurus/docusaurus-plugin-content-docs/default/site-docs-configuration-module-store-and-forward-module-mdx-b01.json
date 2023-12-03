@@ -1,0 +1,29 @@
+{
+  "id": "configuration/module/store-and-forward-module",
+  "title": "Store & Forward Module Settings",
+  "description": "Currently only available for ESP32 based devices with external PSRAM like the tbeam. Requires the device to be set as a ROUTER or ROUTER_CLIENT.",
+  "source": "@site/docs/configuration/module/store-and-forward-module.mdx",
+  "sourceDirName": "configuration/module",
+  "slug": "/configuration/module/store-and-forward-module",
+  "permalink": "/docs/configuration/module/store-and-forward-module",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/module/store-and-forward-module.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "store-and-forward-module",
+    "title": "Store & Forward Module Settings",
+    "sidebar_label": "Store & Forward"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Serial",
+    "permalink": "/docs/configuration/module/serial"
+  },
+  "next": {
+    "title": "Telemetry",
+    "permalink": "/docs/configuration/module/telemetry"
+  }
+}

@@ -1,0 +1,50 @@
+---
+id: mosquitto
+title: Mosquitto
+sidebar_label: Mosquitto
+sidebar_position: 1
+---
+
+### Using mosquitto on a mac
+
+1. install mqtt server
+
+   ```sh
+   brew install mosquitto
+   ```
+
+2. start the mqtt server
+
+   ```sh
+   brew services restart mosquitto
+   ```
+
+3. Do a quick test of server, start a subscriber on a topic:
+
+   Note: this will wait until you press control-c (publish a message, see below)
+
+   ```sh
+   mosquitto_sub -t test/hello
+   ```
+
+4. In another window, publish a message to that topic:
+
+   ```sh
+   mosquitto_pub -h localhost -q 0 -t test/hello -m 'yo!'
+   ```
+
+5. For Meshtastic to be able to access that server, two settings need to be changed in the
+   `/usr/local/etc/mosquitto/mosquitto.conf` file:
+
+   ```shell
+   listener 1883 0.0.0.0
+   allow_anonymous true
+   ```
+
+6. Restart the service:
+
+   ```shell
+   brew services restart mosquitto
+   ```
+
+7. If you are using the mac firewall, you will need to go into: System Preferences > Security & Privacy > Firewall > Firewall Options and add it.

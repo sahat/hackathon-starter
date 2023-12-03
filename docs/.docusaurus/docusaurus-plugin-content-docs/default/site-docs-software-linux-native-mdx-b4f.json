@@ -1,0 +1,31 @@
+{
+  "id": "software/linux-native",
+  "title": "Linux Native Application",
+  "description": "The device software can also run on a native Linux machine thanks to the Portduino framework.",
+  "source": "@site/docs/software/linux-native.mdx",
+  "sourceDirName": "software",
+  "slug": "/software/linux-native",
+  "permalink": "/docs/software/linux-native",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/linux-native.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 9,
+  "frontMatter": {
+    "id": "linux-native",
+    "title": "Linux Native Application",
+    "sidebar_label": "Linux Native",
+    "sidebar_position": 9
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Adafruit IO",
+    "permalink": "/docs/software/mqtt/adafruit-io"
+  },
+  "next": {
+    "title": "Community Apps",
+    "permalink": "/docs/software/community"
+  }
+}

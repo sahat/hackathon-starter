@@ -1,0 +1,98 @@
+---
+id: module-api
+title: Module API
+sidebar_label: Module API
+sidebar_position: 3
+---
+
+The purpose of this tutorial is for writing new core modules that can be run on a device. In most cases, it is best to start with utilizing the serial module rather than creating a new one. However, if you're interested in creating a new core functionality from scratch, then building a module would be appropriate.
+
+## Key concepts
+
+All modules should be sub-classes of MeshModule. By inheriting from this class and creating an instance of your new module - your module will be automatically registered to receive packets.
+
+Messages are sent to particular port numbers (similar to UDP networking). Your new module should eventually pick its own port number (see below). For development use, you can simply use `PRIVATE_APP` (which is the default).
+
+Packets can be sent and received as either:
+
+1. Raw binary structures
+2. [Protobufs](https://developers.google.com/protocol-buffers).
+
+## Class hierarchy
+
+You will typically want to inherit from either SinglePortModule (if you are just sending/receiving raw bytes) or ProtobufModule (if you are sending/receiving protobufs). You'll implement your own handleReceived/handleReceivedProtobuf - probably based on the example code.
+
+The relevant bits of the class hierarchy are as follows:
+
+### First Level: MeshModule
+
+- [src/mesh/MeshModule.h](http://github.com/meshtastic/firmware/tree/master/src/mesh/MeshModule.h) - you probably don't want to use this base-class directly.
+
+### Second Level: SinglePortModule
+
+- [src/mesh/SinglePortModule.h](http://github.com/meshtastic/firmware/tree/master/src/mesh/SinglePortModule.h) - for modules that send/receive from a single port number (the normal case).
+
+### Third Level: ProtobufModule
+
+- [src/mesh/ProtobufModule.h](http://github.com/meshtastic/firmware/tree/master/src/mesh/ProtobufModule.h) - for modules that send/receive a single particular Protobuf type. Inherit from this if you are using protocol buffers in your module.
+
+## Startup Operations
+
+If your module needs to perform any operations at startup you can override and implement the `setup()` method to run your code.
+
+If you need to send a packet you can call `service.sendToMesh` with code like this (from the examples):
+
+```cpp
+MeshPacket *p = allocReply();
+p->to = dest;
+
+service.sendToMesh(p);
+```
+
+## Example Modules
+
+A number of [key services](http://github.com/meshtastic/firmware/tree/master/src/modules) are implemented using the Module API, These modules are as follows:
+
+- [TextMessageModule](http://github.com/meshtastic/firmware/tree/master/src/modules/TextMessageModule.h) - Receives text messages and displays them on the LCD screen/stores them in the local DB.
+
+- [NodeInfoModule](http://github.com/meshtastic/firmware/tree/master/src/modules/NodeInfoModule.h) - Receives/sends User information to other nodes so that usernames are available in the databases.
+
+- [RemoteHardwareModule](http://github.com/meshtastic/firmware/tree/master/src/modules/RemoteHardwareModule.h) - A module that provides easy remote access to device hardware (for things like turning GPIOs on or off). Intended to be a more extensive example and provide a useful feature of its own. See [remote-hardware](/docs/configuration/module/remote-hardware) for details.
+
+- [ReplyModule](http://github.com/meshtastic/firmware/tree/master/src/modules/ReplyModule.h) - A simple module that just replies to any packet it receives (provides a 'ping' service).
+
+## Getting started
+
+The easiest way to get started is:
+
+1. [Build the firmware](/docs/development/firmware/build) codebase.
+2. Copy the [ReplyModule](http://github.com/meshtastic/firmware/tree/master/src/modules/ReplyModule.cpp) as a template into `src/modules/`.
+   ```shell
+   cp src/modules/ReplyModule.* src/modules/YourModule.*
+   ```
+3. Change the port number from `PortNum_REPLY_APP` to `PortNum_PRIVATE_APP`.
+4. Edit the `setupModules()` function located at `modules/Modules.cpp` to add a call to create an instance of your module (see comment at head of that function).
+5. Rebuild with your new module and install on the device.
+6. Use the [Meshtastic Python CLI tool](https://github.com/meshtastic/Meshtastic-python) to send a packet to your board, for example:
+   - `meshtastic --dest 1234 --sendping` where _1234_ is another mesh node to send the ping to.
+
+## Threading
+
+It is very common that you would like your module to be invoked periodically.
+We use a crude/basic cooperative threading system to allow this on any of our supported platforms. Simply inherit from OSThread and implement `runOnce()`. See the OSThread [documentation](http://github.com/meshtastic/firmware/tree/master/src/concurrency/OSThread.h) for more details.
+
+## Sending messages
+
+If you would like to proactively send messages (rather than just responding to them), just call `service.sendToMesh()`. For an example of this, see [NodeInfoModule::sendOurNodeInfo(...)](http://github.com/meshtastic/firmware/tree/master/src/modules/NodeInfoModule.cpp).
+
+## Picking a port number
+
+See [Meshtastic Port Numbers](/docs/development/firmware/portnum)
+
+## How to add custom protocol buffers
+
+If you would like to use protocol buffers to define the structures you send over the mesh (recommended), here's how to do that.
+
+1. Create a new `.proto` file in the protos directory.
+2. Run `./bin/regen-protos.sh` to regenerate the C code for accessing the protocol buffers. If you don't have the required nanopb tool, follow the instructions printed by the script to get it.
+3. Done! You can now use your new protobuf just like any of the existing protobufs in Meshtastic.

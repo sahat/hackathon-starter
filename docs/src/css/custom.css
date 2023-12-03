@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #67ea94;
+  --ifm-color-primary-dark: rgb(33, 175, 144);
+  --ifm-color-primary-darker: rgb(31, 165, 136);
+  --ifm-color-primary-darkest: rgb(26, 136, 112);
+  --ifm-color-primary-light: rgb(70, 203, 174);
+  --ifm-color-primary-lighter: rgb(102, 212, 189);
+  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-list-item-margin: 0;
+  --ifm-code-font-size: 95%;
+  --ifm-z-index-fixed: 1;
+  --accent: #67ea94;
+  --base: #f3f4f6;
+  --primary: #ffffff;
+  --secondary: #e5e7eb;
+  --tertiary: #d1d5db;
+  --mute: #6b7280;
+  --primaryInv: #242526;
+  --secondaryInv: #18191a;
+  --tertiaryInv: #4c4e50;
+}
+
+[data-theme="dark"] {
+  --base: #38393b;
+  --primary: #242526;
+  --secondary: #18191a;
+  --tertiary: #4c4e50;
+  --mute: #9ca3af;
+  --primaryInv: #ffffff;
+  --secondaryInv: #e5e7eb;
+  --tertiaryInv: #d1d5db;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgb(72, 77, 91);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+.header-github-link:hover {
+  opacity: 0.6;
+}
+
+.header-github-link:before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  display: flex;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+html[data-theme="dark"] .header-github-link:before {
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
+    no-repeat;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(0.98);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.98);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.cta--button {
+  --ifm-button-border-color: var(--ifm-link-color);
+  color: var(--ifm-link-color);
+}
+
+.split-container {
+  display: flex;
+}
+.split-item {
+  flex: 1;
+}
+
+.indexCtasBody {
+  --ifm-button-size-multiplier: 1.6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.indexCtasBody a:last-of-type {
+  margin: 20px 36px;
+}
+
+.indexCtas {
+  --ifm-button-size-multiplier: 1.6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.indexCtas a {
+  color: var(--ifm-font-color-base-inverse);
+  --ifm-button-border-color: var(--ifm-font-color-base-inverse);
+}
+
+.indexCtas a:hover {
+  color: rgb(77, 77, 77);
+  --ifm-button-border-color: rgb(77, 77, 77);
+}
+
+.indexCtas a:last-of-type {
+  margin: 20px 36px;
+}
+
+.theme-doc-markdown {
+  max-width: none;
+}
+
+a + .navbar__link {
+  display: flex;
+  gap: 2px;
+}
+
+a + .navbar__link > svg {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+@layer base {
+  .markdown {
+    @apply prose prose-lg;
+  }
+  .markdown img {
+    @apply rounded-lg mx-auto;
+  }
+  [data-theme="dark"] .markdown {
+    @apply prose-invert;
+  }
+  [data-theme="dark"] .hideDark {
+    @apply hidden;
+  }
+  [data-theme="dark"] .hideLight {
+    @apply block;
+  }
+  .hideLight {
+    @apply hidden;
+  }
+  .hideDark {
+    @apply block;
+  }
+}
+
+.markdown :where(li):not(:where([class~="not-prose"] *)) {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.markdown
+  :where(ul ul, ul ol, ol ul, ol ol):not(:where([class~="not-prose"] *)) {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--ifm-heading-font-weight);
+}
+
+h1 {
+  font-size: var(--ifm-h1-font-size);
+}
+
+h2 {
+  font-size: var(--ifm-h2-font-size);
+}
+
+h3 {
+  font-size: var(--ifm-h3-font-size);
+}
+
+h4 {
+  font-size: var(--ifm-h4-font-size);
+}
+
+h5 {
+  font-size: var(--ifm-h5-font-size);
+}
+
+h6 {
+  font-size: var(--ifm-h6-font-size);
+}
+
+th,
+td {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}

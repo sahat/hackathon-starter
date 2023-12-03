@@ -1,0 +1,31 @@
+{
+  "id": "hardware/antennas/antenna-testing",
+  "title": "Antenna Testing",
+  "description": "Testing of antennas can be both simple and complex. At its simplest, testing involves sending messages from different locations and seeing which ones are received, and then comparing the results against other antennas. At the complex end, this can be using expensive test chambers and equipment to measure the signal strength, gain, and radiation patterns. However, it seems that a reasonable job can be done with cheaper methods.",
+  "source": "@site/docs/hardware/antennas/testing.mdx",
+  "sourceDirName": "hardware/antennas",
+  "slug": "/hardware/antennas/antenna-testing",
+  "permalink": "/docs/hardware/antennas/antenna-testing",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/antennas/testing.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "antenna-testing",
+    "title": "Antenna Testing",
+    "sidebar_label": "Testing",
+    "sidebar_position": 1
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Antennas",
+    "permalink": "/docs/hardware/antennas/"
+  },
+  "next": {
+    "title": "Testing Reports",
+    "permalink": "/docs/hardware/antennas/antenna-reports"
+  }
+}

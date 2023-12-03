@@ -1,0 +1,29 @@
+{
+  "id": "configuration/radio/user",
+  "title": "User Configuration",
+  "description": "The user config options are: Long Name, Short Name, and Is Licensed. User config uses an admin message sending a User protobuf.",
+  "source": "@site/docs/configuration/radio/user.mdx",
+  "sourceDirName": "configuration/radio",
+  "slug": "/configuration/radio/user",
+  "permalink": "/docs/configuration/radio/user",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/radio/user.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "user",
+    "title": "User Configuration",
+    "sidebar_label": "User"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Power",
+    "permalink": "/docs/configuration/radio/power"
+  },
+  "next": {
+    "title": "Module Config",
+    "permalink": "/docs/configuration/module"
+  }
+}

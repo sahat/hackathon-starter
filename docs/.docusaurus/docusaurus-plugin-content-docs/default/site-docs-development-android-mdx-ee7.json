@@ -1,0 +1,31 @@
+{
+  "id": "development/android",
+  "title": "Building the Android App",
+  "description": "Build instructions",
+  "source": "@site/docs/development/android.mdx",
+  "sourceDirName": "development",
+  "slug": "/development/android",
+  "permalink": "/docs/development/android",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/development/android.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "android",
+    "title": "Building the Android App",
+    "sidebar_label": "Android",
+    "sidebar_position": 1
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Development",
+    "permalink": "/docs/developers"
+  },
+  "next": {
+    "title": "Device",
+    "permalink": "/docs/development/device"
+  }
+}

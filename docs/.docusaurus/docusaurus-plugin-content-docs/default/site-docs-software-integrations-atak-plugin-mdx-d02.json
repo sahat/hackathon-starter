@@ -1,0 +1,31 @@
+{
+  "id": "software/integrations/integrations-atak-plugin",
+  "title": "ATAK Plugin",
+  "description": "Official Meshtastic ATAK Plugin",
+  "source": "@site/docs/software/integrations/atak-plugin.mdx",
+  "sourceDirName": "software/integrations",
+  "slug": "/software/integrations/integrations-atak-plugin",
+  "permalink": "/docs/software/integrations/integrations-atak-plugin",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/integrations/atak-plugin.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "integrations-atak-plugin",
+    "title": "ATAK Plugin",
+    "sidebar_label": "ATAK Plugin",
+    "sidebar_position": 2
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "CalTopo / SARTopo",
+    "permalink": "/docs/software/integrations/integrations-caltopo"
+  },
+  "next": {
+    "title": "Development",
+    "permalink": "/docs/developers"
+  }
+}

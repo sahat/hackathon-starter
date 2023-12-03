@@ -1,0 +1,31 @@
+{
+  "id": "about/contributing",
+  "title": "Community Guide",
+  "description": "Volunteer Based Development",
+  "source": "@site/docs/about/contributing.mdx",
+  "sourceDirName": "about",
+  "slug": "/contributing",
+  "permalink": "/docs/contributing",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/about/contributing.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "title": "Community Guide",
+    "sidebar_label": "Contributing",
+    "slug": "/contributing",
+    "sidebar_position": 3
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Range Tests",
+    "permalink": "/docs/overview/range-tests"
+  },
+  "next": {
+    "title": "FAQs",
+    "permalink": "/docs/faq"
+  }
+}

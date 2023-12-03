@@ -1,0 +1,50 @@
+---
+id: ota
+title: nRF52 OTA Firmware Updates
+sidebar_label: Over-The-Air
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+nRF52 devices from RAK are able to accept OTA firmware updates from a mobile device over bluetooth. The T-Echo bootloader does not have OTA support.
+
+<Tabs
+groupId="settings"
+defaultValue="apple"
+values={[
+{label: 'Android', value: 'android'},
+{label: 'Apple', value: 'apple'},
+]}>
+
+<TabItem value="android">
+
+:::info
+As of this writing, the current Android release of the nRF DFU app (v2.3.0) is not compatible with Meshtastic firmware updates. Please use the instructions below for updating via OTA with the nRF Connect App.
+:::
+
+OTA firmware updates are available for Android using an older release of the more advanced nRF Connect App __version 4.24.3__ which is available for download from the [Nordic Semiconductor GitHub page](https://github.com/NordicSemiconductor/Android-nRF-Connect/releases/tag/v4.24.3).
+
+1. Download the firmware release you wish to install from the [Meshtastic Download Page](/downloads) or [Meshtastic GitHub](https://github.com/meshtastic/firmware/releases).
+2. Unzip the firmware folder
+3. Open the nRF Connect App and select CONNECT on your device from the SCANNER tab
+4. Select the DFU icon from the top-right of the screen
+5. Select the correct device firmware file (will end with -ota.zip)
+6. The update will start automatically
+
+</TabItem>
+
+
+<TabItem value="apple">
+
+OTA firmware updates are available on iOS & iPadOS using the nRF Device Firmware Update App available through the [Apple App Store](https://apps.apple.com/us/app/nrf-device-firmware-update/id1624454660)
+
+1. Download the firmware release you wish to install from the [Meshtastic Download Page](/downloads), [Meshtastic GitHub](https://github.com/meshtastic/firmware/releases), or via the iOS or iPadOS app.
+2. Unzip the firmware folder
+3. Open the nRF DFU App and select the correct device firmware file (will end with -ota.zip)
+4. Connect to your device
+5. Upload the firmware
+
+</TabItem>
+</Tabs>

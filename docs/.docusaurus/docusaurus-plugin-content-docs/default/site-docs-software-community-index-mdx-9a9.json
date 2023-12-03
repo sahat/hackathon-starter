@@ -1,0 +1,31 @@
+{
+  "id": "software/community/index",
+  "title": "Community Apps",
+  "description": "The Meshtastic ecosystem is highly extensible, and a number of community projects have been made to fit different people's needs. If you wish to create your own application or module, please read the information in the developers section, and tell us about your project on the forum.",
+  "source": "@site/docs/software/community/index.mdx",
+  "sourceDirName": "software/community",
+  "slug": "/software/community",
+  "permalink": "/docs/software/community",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/community/index.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 10,
+  "frontMatter": {
+    "title": "Community Apps",
+    "slug": "/software/community",
+    "sidebar_label": "Community Apps",
+    "sidebar_position": 10
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Linux Native",
+    "permalink": "/docs/software/linux-native"
+  },
+  "next": {
+    "title": "ATAK Forwarder",
+    "permalink": "/docs/software/community/community-atak"
+  }
+}

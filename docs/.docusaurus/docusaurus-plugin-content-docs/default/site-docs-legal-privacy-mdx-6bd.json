@@ -1,0 +1,30 @@
+{
+  "id": "legal/privacy",
+  "title": "Meshtastic privacy policy",
+  "description": "We don't collect any personal identifying information. We never capture usernames, the contents of your texts, or your location data.",
+  "source": "@site/docs/legal/privacy.mdx",
+  "sourceDirName": "legal",
+  "slug": "/legal/privacy",
+  "permalink": "/docs/legal/privacy",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": null,
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "privacy",
+    "title": "Meshtastic privacy policy",
+    "sidebar_label": "Privacy",
+    "custom_edit_url": null
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Licensing",
+    "permalink": "/docs/legal/licensing"
+  },
+  "next": {
+    "title": "Trademark Grants",
+    "permalink": "/docs/legal/trademark-grants"
+  }
+}

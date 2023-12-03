@@ -1,0 +1,31 @@
+{
+  "id": "software/community/meshtastic-web-api",
+  "title": "Meshtastic Web API",
+  "description": "This is a community project maintained by @bmswens.",
+  "source": "@site/docs/software/community/meshtastic-web-api.mdx",
+  "sourceDirName": "software/community",
+  "slug": "/software/community/meshtastic-web-api",
+  "permalink": "/docs/software/community/meshtastic-web-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/community/meshtastic-web-api.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "meshtastic-web-api",
+    "title": "Meshtastic Web API",
+    "sidebar_label": "Meshtastic Web API",
+    "sidebar_position": 3
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Meshtasticator (Simulator)",
+    "permalink": "/docs/software/community/community-meshtasticator"
+  },
+  "next": {
+    "title": "Integrations",
+    "permalink": "/docs/software/integrations"
+  }
+}

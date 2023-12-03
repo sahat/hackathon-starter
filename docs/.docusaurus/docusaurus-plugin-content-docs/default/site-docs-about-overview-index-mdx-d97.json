@@ -1,0 +1,31 @@
+{
+  "id": "about/overview/index",
+  "title": "Overview",
+  "description": "How it works",
+  "source": "@site/docs/about/overview/index.mdx",
+  "sourceDirName": "about/overview",
+  "slug": "/overview",
+  "permalink": "/docs/overview",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/about/overview/index.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "title": "Overview",
+    "sidebar_label": "Overview",
+    "slug": "/overview",
+    "sidebar_position": 2
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Introduction",
+    "permalink": "/docs/introduction"
+  },
+  "next": {
+    "title": "Radio Settings",
+    "permalink": "/docs/overview/radio-settings"
+  }
+}

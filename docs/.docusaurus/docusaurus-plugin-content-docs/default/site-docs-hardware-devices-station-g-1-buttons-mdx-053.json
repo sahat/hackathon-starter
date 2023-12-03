@@ -1,0 +1,31 @@
+{
+  "id": "hardware/devices/station-g1/buttons",
+  "title": "Hardware Buttons",
+  "description": "Functionality",
+  "source": "@site/docs/hardware/devices/station-g1/buttons.mdx",
+  "sourceDirName": "hardware/devices/station-g1",
+  "slug": "/hardware/devices/station-g1/buttons",
+  "permalink": "/docs/hardware/devices/station-g1/buttons",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/devices/station-g1/buttons.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "buttons",
+    "title": "Hardware Buttons",
+    "sidebar_label": "Buttons",
+    "sidebar_position": 1
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Station G1",
+    "permalink": "/docs/hardware/devices/station-g1/"
+  },
+  "next": {
+    "title": "Nano Series",
+    "permalink": "/docs/hardware/devices/Nano Series/"
+  }
+}

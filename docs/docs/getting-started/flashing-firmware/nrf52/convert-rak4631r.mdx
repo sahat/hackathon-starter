@@ -1,0 +1,48 @@
+---
+id: convert-rak4631r
+title: Convert RAK4631-R to RAK4631
+sidebar_label: Convert RAK4631-R
+sidebar_position: 4
+---
+
+The only difference between the _RAK4631-R_ (RUI3) and the _RAK4631_ (Arduino) is the bootloader it is shipped with - the hardware is the same.
+
+Meshtastic requires the Arduino bootloader on RAK WisBlock nRF52-based boards. The process of converting the bootloader only needs to be performed once.
+
+Here are two ways to flash the bootloader:
+
+## USB Device Firmware Upgrade (DFU)
+
+1. Install [Python](https://www.python.org/downloads/)
+2. Install [adafruit-nrfutil](https://github.com/adafruit/Adafruit_nRF52_nrfutil)
+   ```shell
+   pip3 install adafruit-nrfutil
+   ```
+3. Download the required bootloader: [WisCore_RAK4631_Board_Bootloader.zip](https://github.com/RAKWireless/WisBlock/releases/download/0.4.2/WisCore_RAK4631_Board_Bootloader.zip)
+4. Connect your RAK device by USB.
+5. Flash the bootloader
+   ```shell
+   adafruit-nrfutil --verbose dfu serial --package ./WisCore_RAK4631_Board_Bootloader.zip  -p /dev/ttyACM0 -b 115200 --singlebank --touch 1200
+   ```
+   Note: The serial port name (`/dev/ttyACM0`) may differ depending on your operating system. Make sure to identify the correct port name for your setup.
+6. Continue with the normal [flashing instructions](/docs/getting-started/flashing-firmware/nrf52/drag-n-drop)
+
+## Debugger
+
+This conversion requires the use of either a [DAPLink](https://daplink.io/) or [J-Link](https://www.segger.com/products/debug-probes/j-link/). The most reasonably priced and available is the [RAKDAP1](https://store.rakwireless.com/products/daplink-tool).
+
+1. Install [Python](https://www.python.org/downloads/)
+2. Install [pyOCD](https://pyocd.io/)
+   ```shell
+   pip3 install pyocd
+   ```
+3. Download the required bootloader: [WisCore_RAK4631_Board_Bootloader.hex](https://github.com/RAKWireless/WisBlock/releases/download/0.4.2/WisCore_RAK4631_Board_Bootloader.hex)
+4. Connect the RAKDAP as follows:
+   [<img src="/img/rak4631-rakdap1.png" style={{zoom:'25%'}} />](/img/rak4631-rakdap1.png)
+5. Flash the bootloader
+   ```shell
+   pyocd flash -t nrf52840 .\WisCore_RAK4631_Board_Bootloader.hex
+   ```
+6. Continue with the normal [flashing instructions](/docs/getting-started/flashing-firmware/nrf52/drag-n-drop)
+
+Alternate methods of flashing are outlined [here](https://github.com/RAKWireless/WisBlock/tree/master/bootloader/RAK4630).

@@ -1,0 +1,31 @@
+{
+  "id": "software/mqtt/mqtt-python",
+  "title": "Python",
+  "description": "Sending/receiving messages on mosquitto server using python",
+  "source": "@site/docs/software/mqtt/python.mdx",
+  "sourceDirName": "software/mqtt",
+  "slug": "/software/mqtt/mqtt-python",
+  "permalink": "/docs/software/mqtt/mqtt-python",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/mqtt/python.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "mqtt-python",
+    "title": "Python",
+    "sidebar_label": "Python",
+    "sidebar_position": 2
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Mosquitto",
+    "permalink": "/docs/software/mqtt/mosquitto"
+  },
+  "next": {
+    "title": "Node-RED",
+    "permalink": "/docs/software/mqtt/nodered"
+  }
+}

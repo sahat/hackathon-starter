@@ -1,0 +1,196 @@
+---
+id: usage
+title: Android Application Usage
+sidebar_label: Usage
+sidebar_position: 2
+---
+
+## Introduction
+
+The Meshtastic Android app handles the communication and can show the location of everyone in your private group. Each member of your private mesh can see the location and distance of members and text messages sent to your group chat.
+
+[![No device connected](/img/android/android-settings-none-sm.png)](/img/android/android-settings-none.png)
+
+Open the app and you should see the Settings tab like the screen above. Notice the cloud with a slash through it in the upper right, showing no device connection. You can move through the tabs but nothing much will be visible until you connect to a radio device.
+
+## Connecting
+
+You will need a device with Meshtastic installed to go any further. See the [getting started](/docs/getting-started) section for information on how to do this.
+
+[![Search for devices](/img/android/android-settings-none-c.png)](/img/android/android-settings-none.png)
+
+To find devices to connect via Bluetooth click the "+" button on the bottom right corner.
+
+[![Device available to select](/img/android/android-settings-connect-sm.png)](/img/android/android-settings-connect.png)
+
+1. Select the device name, `Meshtastic_769d` in this example. (You will see devices within range, so make sure to get the right one.)
+2. Before you can connect for the first time, you need to "pair" the devices to allow communication between them. Some devices are pinless, others require entering a PIN shown on the device screen.
+   :::note
+   If the device was flashed without a screen connected, it will automatically default to a pairing PIN of '123456'. If it was booted with a screen once, the config is set to random pin. If you remove the screen afterwards, it stays like this.
+   Either set it to use the default pin manually, or factory reset it and it will revert to '123456' after the next boot.
+   :::
+3. This starts the communication with the device. The cloud icon on the status bar should change and show a check mark.
+
+[![Device connected](/img/android/android-settings-mike-c.png)](/img/android/android-settings-mike-c.png)
+
+The cloud icon at the top right corner indicates if you are connected to a device. This currently has three states:
+
+![Not connected](/img/android/android-cloud-cross.png) Cloud with a slash through it: No device connected to the application.
+
+![Connected](/img/android/android-cloud-tick.png) Cloud with a tick in it: Device connected to the application.
+
+![Sleeping](/img/android/android-cloud-up.png) Cloud with an up arrow in it: Device is connected, but currently sleeping or out of range.
+
+## Common tasks
+
+### Set your region
+
+In order to start communicating with your mesh, you must select a region. This setting controls which frequency range your device uses and should be set according to your location. See [Region Settings](https://meshtastic.org/docs/getting-started/initial-config#set-regional-settings) for a list of region codes and their meanings.
+- Tap on the "Region" dropdown in the top-right corner and make the appropriate selection.
+
+### Change your name
+
+Edit the "Your name", e.g. to be "Mike Bird". This is the name that other people will see, so make it unique within your group. The initials e.g. "MB" should also be unique and will be used to identify you in the message history and on the device screens.  Initials, or "short name", can be customized in the Radio configuration - User settings.  The four characters displayed after your initials cannot be changed. These are the last four hex digits of the device MAC address.  Devices with unset names will display these four characters as the device short name.
+
+[![Changing device name](/img/android/android-settings-mike-sm.png)](/img/android/android-settings-mike.png)
+
+### Setup a channel
+
+If you have been sent a QR code or link for Meshtastic, then skip ahead to [Join a Channel](#join-a-channel). Devices have a default channel preconfigured, shown as `#LongFast-I (Long range / Fast)`. It is OK to use this channel if you want your node to be visible to all Meshtastic users (within range) who are using the default channel.
+
+You can also create a new Channel and share the details with your group. The group is private and only those who have the details can join the group and see the messages. You will need to do this once initially, and then only when you want to change or make a new mesh network group.
+
+The Channel tab allows you to create a new private mesh. This screen is initially locked so that you don't change it accidentally. Press the lock symbol, and you will be able to edit. First, select the Channel options, as shown here, and chose the most appropriate option:
+
+[![Changing channel settings](/img/android/android-change-channel-sm.png)](/img/android/android-change-channel.png)
+
+Here we selected `Long Range / Fast`, and then made a Channel Name using the keyboard. This identifies your group, here "Owl Team".
+
+[![Changing channel name](/img/android/android-channel-owl-sm.png)](/img/android/android-channel-owl.png)
+
+You will see a warning because changing the Channel will break communications with your group, i.e. if you change your settings without sharing the new details with the group.
+
+[![Do you want to change the channel?](/img/android/android-new-channel-sm.png)](/img/android/android-new-channel.png)
+
+The app will generate a new QR code on the screen.  This encodes the channel details and a random 256-bit key for sharing with the new group. You can share the QR code with other Meshtastic users, or use the Share button and share the link via chat message, SMS, or email. The link is a very long code, for example: https://www.meshtastic.org/d/#CgUYAyIBAQ
+
+### Join a channel
+
+1. If another user shares a QR code, you will be able to scan it directly with your camera using the `Scan` button.
+
+   [![Open with Meshtastic](/img/android/android-open-with-c.png)](/img/android/android-open-with.png)
+
+2. If the channel is shared from a file or link using the `Share` button, you can click on the file or link and you need to choose "Open with Meshtastic".
+
+:::info If a QR or URL opens a webpage instead of the APP or "Open with Meshtastic" is not an option:
+1. Go to Android Settings > Apps > Default apps > Meshtastic > Opening links
+2. Make sure you have in "links/web address": www.meshtastic.org
+3. If you see the option "Open the supported links", make sure it is enabled.
+:::
+
+[![Accept new channel](/img/android/android-accept-channel-c.png)](/img/android/android-accept-channel.png)
+
+Proceed and you should see a message like "Do you want to switch to the 'Owl Team' channel?".
+Accept this, and the app will change to this new channel. You will lose any current channel setting!
+
+:::note
+Setting the same Name and Options directly doesn't work as there are other radio settings (like the unique pre-shared key) encoded in the QR code or link.
+:::
+
+You can test changing channels with the QR code shown below.
+
+![Meshtastic Default Channel](/img/android/default-channel.png)
+
+### Send a message
+
+[![Messages](/img/android/android-messages-sm.png)](/img/android/android-messages.png)
+
+The message window operates like most messaging apps. Note that your primary channel i.e. `LongFast` contact is always shown and works as a group chat. Other contacts are for direct messaging, or private group chats.
+
+- Long press contacts or messages for options, like delete.
+- Press a node from the Nodes tab to send Direct Messages.
+
+With LoRa (or any radio) there is some uncertainty that the message has been received, so there is a confirmation built-in to the protocol. There are small icons shown to the right of the messages you send:
+
+- Cloud with an up arrow: the message is queued in the app, waiting to be handed to the device.
+- Cloud only: the device received the message from the app, and it has been sent and transmitted via LoRa.
+- Cloud with a check mark: received at least one node's acknowledgement response. Confirmations could be from any one device.
+- Person with a check mark - The intended recipient node of your direct message acknowledged the message.
+- Cloud crossed out: the initial sender did not receive any confirmation within a certain timeout.
+
+By default there is no long-term store-and-forward of messages, so messages not received during transmission are lost.
+
+### View your network
+
+[![Local Meshtastic network](/img/android/android-nodes-sm.png)](/img/android/android-nodes.png)
+
+The network list shows all the users (devices) that have connected to the same Channel. For each entry, it shows the last time they were active, their location and distance (when available), and their last known power status. In the example above, Monkey is the local user, Rabbit was last heard from 10 minutes ago and is 50m away, and Panda was last heard 11 minutes ago and 5m away.
+
+- Tap on a node from the list to start Direct Messaging, request a position update, request a [traceroute](/docs/configuration/module/traceroute) or add it to your [Ignore Incoming Array](/docs/configuration/radio/lora#ignore-incoming-array).
+- If you have an [Admin Channel](/docs/configuration/remote-admin) enabled on your devices, tapping on the node will also display an option to remotely configure the node.
+
+### View the map
+
+[![Meshtastic Map View](/img/android/android-map-sm.png)](/img/android/android-map.png)
+
+The Map tab will show a local map with an icon for each active mesh node that has a known position. The users names are shown above the icon.
+
+
+[![Map Layers](/img/android/android-map-layers-c.png)](/img/android/android-map-layers.png)
+
+- Clicking the layers icon in the top-right will allow you to select the map type.
+
+### Offline maps
+
+[![Download offline maps](/img/android/android-map-download-c.png)](/img/android/android-map-download.png)
+
+- Some map types allow downloading for offline use.  If offline maps are available for your selected map type, a download icon will appear in the bottom-right corner of the map.  Tap this icon and choose the option to Download Region, then select the area you wish to download.
+
+## Configuration options
+
+[![Meshtastic configuration options](/img/android/android-settings-options-c.png)](/img/android/android-settings-options.png)
+
+Pressing the three vertical dots in the top right corner shows the configuration menu.
+
+### Debug Panel
+
+[![Debug page](/img/android/android-debug-sm.png)](/img/android/android-debug.png)
+
+The debug panel allows you to see all packets sent between the application and the device. This can be useful for debugging purposes.
+
+### Radio Configuration
+
+[![Meshtastic configuration options](/img/android/android-radio-configuration-c.png)](/img/android/android-radio-configuration.png)
+
+Radio Configuration opens a list of all radio and module configuration settings.
+- See [Radio Config](/docs/configuration/radio) for radio settings.
+- See [Module Config](/docs/configuration/module) for module settings.
+- At the end of this list are buttons for Reboot, Shutdown, Factory reset, and NodeDB reset.
+
+### Export rangetest.csv
+
+Allows you to save all your network's position data with GPS coordinates into a .csv (comma separated value) file on your phone. This file can be imported into the spreadsheet application of your choice for easy viewing. This feature is similar but independent from the device [range test module](/docs/configuration/module/range-test), and results may differ.
+
+### Theme
+
+[![Meshtastic theme](/img/android/android-settings-theme-c.png)](/img/android/android-settings-theme.png)
+
+Allows you to change between light and dark themes, or to select the system default.
+
+### Language
+
+Allows you to select a language for the application's user interface.
+
+### Show Introduction
+
+Opens the introduction slideshow.
+
+### Quick chat options
+
+[![Quick Chat](/img/android/android-quick-chat-sm.png)](/img/android/android-quick-chat.png)
+
+Brings up an editor to create and edit quick response messages. These will appear as buttons in the chat window.  Messages have the option to send instantly, or be appended to your message and sent manually.
+
+### About
+
+Displays the current app version.

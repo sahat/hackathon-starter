@@ -1,0 +1,31 @@
+{
+  "id": "software/web-client",
+  "title": "Web Client Overview",
+  "description": "Meshtastic Web is a Meshtastic client that runs directly in your browser.",
+  "source": "@site/docs/software/web-client.mdx",
+  "sourceDirName": "software",
+  "slug": "/software/web-client",
+  "permalink": "/docs/software/web-client",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/web-client.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "web-client",
+    "title": "Web Client Overview",
+    "sidebar_label": "Web Client",
+    "sidebar_position": 3
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Usage",
+    "permalink": "/docs/software/apple/usage"
+  },
+  "next": {
+    "title": "Python CLI",
+    "permalink": "/docs/software/python/cli"
+  }
+}

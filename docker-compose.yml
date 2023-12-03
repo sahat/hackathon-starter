@@ -1,14 +1,42 @@
 version: '3.8'
+
 services:
   mongo:
     image: mongo
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: publicphone
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
   web:
     build: .
     ports:
-     - "8080:8080"
+      - "8080:8080"
     environment:
-     - MONGODB_URI=mongodb://mongo:27017/test
+      - MONGODB_URI=mongodb://mongo:27017/test
+      - POSTGRES_URI=postgresql://admin:admin@postgres:5432/your_db_name
     links:
-     - mongo
+      - mongo
+      - postgres
     depends_on:
-     - mongo
+      - mongo
+      - postgres
+
+  docusaurus:
+    image: node:latest
+    working_dir: /app/docs
+    volumes:
+      - ./docs:/app/docs
+    command: sh -c "npm install && npm start"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - web
+
+volumes:
+  postgres-data:

@@ -1,0 +1,7 @@
+label: Flash Firmware
+collapsible: true # make the category collapsible
+position: 2
+link:
+  type: generated-index
+  title: Flashing Firmware
+  slug: /getting-started/flashing-firmware

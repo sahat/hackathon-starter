@@ -1,0 +1,1926 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "banner": null,
+  "badge": false,
+  "noIndex": false,
+  "className": "docs-version-current",
+  "isLast": true,
+  "docsSidebars": {
+    "Sidebar": [
+      {
+        "type": "category",
+        "label": "About",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "link",
+            "label": "Introduction",
+            "href": "/docs/introduction",
+            "docId": "about/introduction",
+            "unlisted": false
+          },
+          {
+            "type": "category",
+            "label": "Overview",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Radio Settings",
+                "href": "/docs/overview/radio-settings",
+                "docId": "about/overview/radio-settings",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Mesh Algorithm",
+                "href": "/docs/overview/mesh-algo",
+                "docId": "about/overview/mesh-algo",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Encryption",
+                "href": "/docs/overview/encryption",
+                "docId": "about/overview/encryption",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Range Tests",
+                "href": "/docs/overview/range-tests",
+                "docId": "about/overview/range-tests",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/overview"
+          },
+          {
+            "type": "link",
+            "label": "Contributing",
+            "href": "/docs/contributing",
+            "docId": "about/contributing",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "FAQs",
+            "href": "/docs/faq",
+            "docId": "about/faq",
+            "unlisted": false
+          }
+        ],
+        "href": "/docs/about"
+      },
+      {
+        "type": "category",
+        "label": "Getting Started",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "category",
+            "label": "Install Serial Drivers",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "ESP32 Drivers",
+                "href": "/docs/getting-started/serial-drivers/esp32",
+                "docId": "getting-started/serial-drivers/esp32",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "nRF52 Drivers",
+                "href": "/docs/getting-started/serial-drivers/nrf52",
+                "docId": "getting-started/serial-drivers/nrf52",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Test Serial Driver Installation",
+                "href": "/docs/getting-started/serial-drivers/test-serial-driver-installation",
+                "docId": "getting-started/serial-drivers/test-serial-driver-installation",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/getting-started/serial-drivers"
+          },
+          {
+            "type": "category",
+            "label": "Flash Firmware",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "category",
+                "label": "ESP32 Device",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Web Flasher (recommended)",
+                    "href": "/docs/getting-started/flashing-firmware/esp32/web-flasher",
+                    "docId": "getting-started/flashing-firmware/esp32/web-flasher",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "CLI Script (Advanced Users)",
+                    "href": "/docs/getting-started/flashing-firmware/esp32/cli-script",
+                    "docId": "getting-started/flashing-firmware/esp32/cli-script",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "External Serial Adapter (Advanced Users)",
+                    "href": "/docs/getting-started/flashing-firmware/esp32/external-serial-adapter",
+                    "docId": "getting-started/flashing-firmware/esp32/external-serial-adapter",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/getting-started/flashing-firmware/esp32/"
+              },
+              {
+                "type": "category",
+                "label": "nRF52 Device",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Drag & Drop (recommended)",
+                    "href": "/docs/getting-started/flashing-firmware/nrf52/drag-n-drop",
+                    "docId": "getting-started/flashing-firmware/nrf52/drag-n-drop",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Over-The-Air",
+                    "href": "/docs/getting-started/flashing-firmware/nrf52/ota",
+                    "docId": "getting-started/flashing-firmware/nrf52/ota",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Factory Erase nRF52",
+                    "href": "/docs/getting-started/flashing-firmware/nrf52/nrf52-erase",
+                    "docId": "getting-started/flashing-firmware/nrf52/nrf52-erase",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Convert RAK4631-R",
+                    "href": "/docs/getting-started/flashing-firmware/nrf52/convert-rak4631r",
+                    "docId": "getting-started/flashing-firmware/nrf52/convert-rak4631r",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/getting-started/flashing-firmware/nrf52/"
+              }
+            ],
+            "href": "/docs/getting-started/flashing-firmware"
+          },
+          {
+            "type": "link",
+            "label": "Initial Configuration",
+            "href": "/docs/getting-started/initial-config",
+            "docId": "getting-started/initial-config",
+            "unlisted": false
+          }
+        ],
+        "href": "/docs/getting-started"
+      },
+      {
+        "type": "category",
+        "label": "Configuration",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "category",
+            "label": "Radio Config",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Bluetooth",
+                "href": "/docs/configuration/radio/bluetooth",
+                "docId": "configuration/radio/bluetooth",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Channels",
+                "href": "/docs/configuration/radio/channels",
+                "docId": "configuration/radio/channels",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Device",
+                "href": "/docs/configuration/radio/device",
+                "docId": "configuration/radio/device",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Display",
+                "href": "/docs/configuration/radio/display",
+                "docId": "configuration/radio/display",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "LoRa",
+                "href": "/docs/configuration/radio/lora",
+                "docId": "configuration/radio/lora",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Network",
+                "href": "/docs/configuration/radio/network",
+                "docId": "configuration/radio/network",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Position",
+                "href": "/docs/configuration/radio/position",
+                "docId": "configuration/radio/position",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Power",
+                "href": "/docs/configuration/radio/power",
+                "docId": "configuration/radio/power",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "User",
+                "href": "/docs/configuration/radio/user",
+                "docId": "configuration/radio/user",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/configuration/radio/"
+          },
+          {
+            "type": "category",
+            "label": "Module Config",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Ambient Lighting",
+                "href": "/docs/configuration/module/ambient-lighting",
+                "docId": "configuration/module/ambient-lighting",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Audio",
+                "href": "/docs/configuration/module/audio",
+                "docId": "configuration/module/audio",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Canned Message",
+                "href": "/docs/configuration/module/canned-message",
+                "docId": "configuration/module/canned-message",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Detection Sensor",
+                "href": "/docs/configuration/module/detection-sensor",
+                "docId": "configuration/module/detection-sensor",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "External Notification",
+                "href": "/docs/configuration/module/external-notification",
+                "docId": "configuration/module/external-notification",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "MQTT",
+                "href": "/docs/configuration/module/mqtt",
+                "docId": "configuration/module/mqtt",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Neighbor Info",
+                "href": "/docs/configuration/module/neighbor-info",
+                "docId": "configuration/module/neighbor-info",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Range Test",
+                "href": "/docs/configuration/module/range-test",
+                "docId": "configuration/module/range-test",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Remote Hardware",
+                "href": "/docs/configuration/module/remote-hardware",
+                "docId": "configuration/module/remote-hardware",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Serial",
+                "href": "/docs/configuration/module/serial",
+                "docId": "configuration/module/serial",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Store & Forward",
+                "href": "/docs/configuration/module/store-and-forward-module",
+                "docId": "configuration/module/store-and-forward-module",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Telemetry",
+                "href": "/docs/configuration/module/telemetry",
+                "docId": "configuration/module/telemetry",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Traceroute",
+                "href": "/docs/configuration/module/traceroute",
+                "docId": "configuration/module/traceroute",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/configuration/module"
+          },
+          {
+            "type": "link",
+            "label": "Remote Nodes",
+            "href": "/docs/configuration/remote-admin",
+            "docId": "configuration/remote-admin",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Tips",
+            "href": "/docs/configuration/tips",
+            "docId": "configuration/tips",
+            "unlisted": false
+          }
+        ],
+        "href": "/docs/configuration"
+      },
+      {
+        "type": "category",
+        "label": "Hardware",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "category",
+            "label": "Devices",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "category",
+                "label": "RAK WisBlock",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Base Boards",
+                    "href": "/docs/hardware/devices/rak/base-board",
+                    "docId": "hardware/devices/rak/base-board",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Core Modules",
+                    "href": "/docs/hardware/devices/rak/core-module",
+                    "docId": "hardware/devices/rak/core-module",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Screens",
+                    "href": "/docs/hardware/devices/rak/screens",
+                    "docId": "hardware/devices/rak/screens",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Buttons",
+                    "href": "/docs/hardware/devices/rak/buttons",
+                    "docId": "hardware/devices/rak/buttons",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Enclosures",
+                    "href": "/docs/hardware/devices/rak/enclosures",
+                    "docId": "hardware/devices/rak/enclosures",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Peripherals",
+                    "href": "/docs/hardware/devices/rak/peripherals",
+                    "docId": "hardware/devices/rak/peripherals",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/hardware/devices/rak/"
+              },
+              {
+                "type": "category",
+                "label": "LILYGO® T-Beam",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Screens",
+                    "href": "/docs/hardware/devices/tbeam/screens",
+                    "docId": "hardware/devices/tbeam/screens",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Buttons",
+                    "href": "/docs/hardware/devices/tbeam/buttons",
+                    "docId": "hardware/devices/tbeam/buttons",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Enclosures",
+                    "href": "/docs/hardware/devices/tbeam/enclosures",
+                    "docId": "hardware/devices/tbeam/enclosures",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/hardware/devices/tbeam/"
+              },
+              {
+                "type": "category",
+                "label": "LILYGO® T-Echo",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Buttons",
+                    "href": "/docs/hardware/devices/techo/buttons",
+                    "docId": "hardware/devices/techo/buttons",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Enclosures",
+                    "href": "/docs/hardware/devices/techo/enclosures",
+                    "docId": "hardware/devices/techo/enclosures",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/hardware/devices/techo/"
+              },
+              {
+                "type": "category",
+                "label": "LILYGO® Lora",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Buttons",
+                    "href": "/docs/hardware/devices/lora/buttons",
+                    "docId": "hardware/devices/lora/buttons",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Enclosures",
+                    "href": "/docs/hardware/devices/lora/enclosures",
+                    "docId": "hardware/devices/lora/enclosures",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "GPIO",
+                    "href": "/docs/hardware/devices/lora/gpio",
+                    "docId": "hardware/devices/lora/gpio",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/hardware/devices/lora/"
+              },
+              {
+                "type": "category",
+                "label": "HELTEC® LoRa 32",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Buttons",
+                    "href": "/docs/hardware/devices/heltec/buttons",
+                    "docId": "hardware/devices/heltec/buttons",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Enclosures",
+                    "href": "/docs/hardware/devices/heltec/enclosures",
+                    "docId": "hardware/devices/heltec/enclosures",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/hardware/devices/heltec/"
+              },
+              {
+                "type": "category",
+                "label": "Station G1",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Buttons",
+                    "href": "/docs/hardware/devices/station-g1/buttons",
+                    "docId": "hardware/devices/station-g1/buttons",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/hardware/devices/station-g1/"
+              },
+              {
+                "type": "category",
+                "label": "Nano Series",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Buttons",
+                    "href": "/docs/hardware/devices/Nano Series/buttons",
+                    "docId": "hardware/devices/Nano Series/buttons",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/hardware/devices/Nano Series/"
+              },
+              {
+                "type": "category",
+                "label": "Raspberry Pi Pico",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Peripherals",
+                    "href": "/docs/hardware/devices/raspberry-pi/peripherals",
+                    "docId": "hardware/devices/raspberry-pi/peripherals",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/hardware/devices/raspberry-pi/"
+              }
+            ],
+            "href": "/docs/supported-hardware"
+          },
+          {
+            "type": "category",
+            "label": "Antennas",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Testing",
+                "href": "/docs/hardware/antennas/antenna-testing",
+                "docId": "hardware/antennas/antenna-testing",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Testing Reports",
+                "href": "/docs/hardware/antennas/antenna-reports",
+                "docId": "hardware/antennas/antenna-reports",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "LoRa Antennas",
+                "href": "/docs/hardware/antennas/lora-antenna",
+                "docId": "hardware/antennas/lora-antenna",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Resources",
+                "href": "/docs/hardware/antennas/resources",
+                "docId": "hardware/antennas/resources",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/hardware/antennas/"
+          },
+          {
+            "type": "category",
+            "label": "Solar Powered",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Measure Power Consumption",
+                "href": "/docs/hardware/solar-powered/measure-power-consumption",
+                "docId": "hardware/solar-powered/measure-power-consumption",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/solar-powered"
+          }
+        ],
+        "href": "/docs/hardware"
+      },
+      {
+        "type": "category",
+        "label": "Software",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "category",
+            "label": "Android App",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Installation",
+                "href": "/docs/software/android/installation",
+                "docId": "software/android/installation",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Usage",
+                "href": "/docs/software/android/usage",
+                "docId": "software/android/usage",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/category/android-app"
+          },
+          {
+            "type": "category",
+            "label": "Apple Apps",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Installation",
+                "href": "/docs/software/apple/installation",
+                "docId": "software/apple/installation",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Usage",
+                "href": "/docs/software/apple/usage",
+                "docId": "software/apple/usage",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/category/apple-apps"
+          },
+          {
+            "type": "link",
+            "label": "Web Client",
+            "href": "/docs/software/web-client",
+            "docId": "software/web-client",
+            "unlisted": false
+          },
+          {
+            "type": "category",
+            "label": "Python CLI",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Installation",
+                "href": "/docs/software/python/cli/installation",
+                "docId": "software/python-cli/installation",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Usage",
+                "href": "/docs/software/python/cli/usage",
+                "docId": "software/python-cli/usage",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/software/python/cli"
+          },
+          {
+            "type": "category",
+            "label": "MQTT",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Mosquitto",
+                "href": "/docs/software/mqtt/mosquitto",
+                "docId": "software/mqtt/mosquitto",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Python",
+                "href": "/docs/software/mqtt/mqtt-python",
+                "docId": "software/mqtt/mqtt-python",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Node-RED",
+                "href": "/docs/software/mqtt/nodered",
+                "docId": "software/mqtt/nodered",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Home Assistant",
+                "href": "/docs/software/mqtt/home-assistant",
+                "docId": "software/mqtt/home-assistant",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Adafruit IO",
+                "href": "/docs/software/mqtt/adafruit-io",
+                "docId": "software/mqtt/adafruit-io",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/software/mqtt/"
+          },
+          {
+            "type": "link",
+            "label": "Linux Native",
+            "href": "/docs/software/linux-native",
+            "docId": "software/linux-native",
+            "unlisted": false
+          },
+          {
+            "type": "category",
+            "label": "Community Apps",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "ATAK Forwarder",
+                "href": "/docs/software/community/community-atak",
+                "docId": "software/community/community-atak",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Meshtasticator (Simulator)",
+                "href": "/docs/software/community/community-meshtasticator",
+                "docId": "software/community/community-meshtasticator",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Meshtastic Web API",
+                "href": "/docs/software/community/meshtastic-web-api",
+                "docId": "software/community/meshtastic-web-api",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/software/community"
+          },
+          {
+            "type": "category",
+            "label": "Integrations",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "CalTopo / SARTopo",
+                "href": "/docs/software/integrations/integrations-caltopo",
+                "docId": "software/integrations/integrations-caltopo",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "ATAK Plugin",
+                "href": "/docs/software/integrations/integrations-atak-plugin",
+                "docId": "software/integrations/integrations-atak-plugin",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/software/integrations"
+          }
+        ],
+        "href": "/docs/software"
+      },
+      {
+        "type": "category",
+        "label": "Development",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "link",
+            "label": "Android",
+            "href": "/docs/development/android",
+            "docId": "development/android",
+            "unlisted": false
+          },
+          {
+            "type": "category",
+            "label": "Device",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Client API",
+                "href": "/docs/development/device/client-api",
+                "docId": "development/device/client-api",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "HTTP API",
+                "href": "/docs/development/device/http-api",
+                "docId": "development/device/http-api",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Module API",
+                "href": "/docs/development/device/module-api",
+                "docId": "development/device/module-api",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Error Codes",
+                "href": "/docs/development/device/error-codes",
+                "docId": "development/device/error-codes",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/development/device"
+          },
+          {
+            "type": "category",
+            "label": "Firmware",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Building Firmware",
+                "href": "/docs/development/firmware/build",
+                "docId": "development/firmware/build",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "OLED Localization",
+                "href": "/docs/development/firmware/oled-guide",
+                "docId": "development/firmware/oled-guide",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Port Numbers",
+                "href": "/docs/development/firmware/portnum",
+                "docId": "development/firmware/portnum",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Stacktraces",
+                "href": "/docs/development/firmware/stacktraces",
+                "docId": "development/firmware/stacktraces",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/development/firmware"
+          },
+          {
+            "type": "link",
+            "label": "Web Client",
+            "href": "/docs/development/web/",
+            "docId": "development/web/web-interface",
+            "unlisted": false
+          },
+          {
+            "type": "category",
+            "label": "Python",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Building",
+                "href": "/docs/development/python/building",
+                "docId": "development/python/building",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Python Library",
+                "href": "/docs/development/python/library",
+                "docId": "development/python/library",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/development/python/"
+          },
+          {
+            "type": "category",
+            "label": "Javascript",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Connecting",
+                "href": "/docs/development/js/connecting",
+                "docId": "development/js/connecting",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Events",
+                "href": "/docs/development/js/events",
+                "docId": "development/js/events",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "HTTP API",
+                "href": "/docs/development/js/http-api",
+                "docId": "development/js/http-api",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/development/js"
+          },
+          {
+            "type": "category",
+            "label": "Docs",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "category",
+                "label": "Style Guides",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Markdown Features",
+                    "href": "/docs/development/documentation/style-guides/markdown",
+                    "docId": "development/documentation/style-guides/markdown",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Config Pages",
+                    "href": "/docs/development/documentation/style-guides/config-pages",
+                    "docId": "development/documentation/style-guides/config-pages",
+                    "unlisted": false
+                  }
+                ],
+                "href": "/docs/development/docs/style-guide"
+              },
+              {
+                "type": "link",
+                "label": "Local Development",
+                "href": "/docs/development/documentation/local-dev",
+                "docId": "development/documentation/local-dev",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Publish",
+                "href": "/docs/development/documentation/publish",
+                "docId": "development/documentation/publish",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/development/docs"
+          },
+          {
+            "type": "category",
+            "label": "Reference Material",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "LoRa Datasheet",
+                "href": "/docs/development/reference/lora-design",
+                "docId": "development/reference/lora-design",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "GitHub",
+                "href": "/docs/development/reference/github",
+                "docId": "development/reference/github",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Protobufs",
+                "href": "/docs/development/reference/protobufs",
+                "docId": "development/reference/protobufs",
+                "unlisted": false
+              }
+            ],
+            "href": "/docs/development/reference"
+          }
+        ],
+        "href": "/docs/developers"
+      },
+      {
+        "type": "category",
+        "label": "Legal",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "link",
+            "label": "Licensing",
+            "href": "/docs/legal/licensing",
+            "docId": "legal/licensing",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Privacy",
+            "href": "/docs/legal/privacy",
+            "docId": "legal/privacy",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Trademark Grants",
+            "href": "/docs/legal/trademark-grants",
+            "docId": "legal/trademark-grants",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Trademark",
+            "href": "/docs/legal/trademark",
+            "docId": "legal/trademark",
+            "unlisted": false
+          }
+        ],
+        "href": "/docs/legal"
+      }
+    ]
+  },
+  "docs": {
+    "about/contributing": {
+      "id": "about/contributing",
+      "title": "Community Guide",
+      "description": "Volunteer Based Development",
+      "sidebar": "Sidebar"
+    },
+    "about/faq": {
+      "id": "about/faq",
+      "title": "FAQs",
+      "description": "Overview",
+      "sidebar": "Sidebar"
+    },
+    "about/introduction": {
+      "id": "about/introduction",
+      "title": "Introduction",
+      "description": "Meshtastic® is a project that enables you to use inexpensive LoRa radios as a long range off-grid communication platform in areas without existing or reliable communications infrastructure. This project is 100% community driven and open source!",
+      "sidebar": "Sidebar"
+    },
+    "about/overview/encryption": {
+      "id": "about/overview/encryption",
+      "title": "Meshtastic Encryption",
+      "description": "Cryptography is tricky, so we've tried to 'simply' apply standard crypto solutions to our implementation. However, the project developers are not cryptography experts.",
+      "sidebar": "Sidebar"
+    },
+    "about/overview/index": {
+      "id": "about/overview/index",
+      "title": "Overview",
+      "description": "How it works",
+      "sidebar": "Sidebar"
+    },
+    "about/overview/mesh-algo": {
+      "id": "about/overview/mesh-algo",
+      "title": "Mesh Broadcast Algorithm",
+      "description": "Current Algorithm",
+      "sidebar": "Sidebar"
+    },
+    "about/overview/radio-settings": {
+      "id": "about/overview/radio-settings",
+      "title": "Radio Settings",
+      "description": "Meshtastic is not LoRaWAN, Helium or TTN (TheThingsNetwork). Meshtastic uses the full spectrum frequency range designated to LoRa technology per region. This allows for several hundred possible frequency channels in the US region alone.",
+      "sidebar": "Sidebar"
+    },
+    "about/overview/range-tests": {
+      "id": "about/overview/range-tests",
+      "title": "Range Tests",
+      "description": "<Tabs",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/ambient-lighting": {
+      "id": "configuration/module/ambient-lighting",
+      "title": "Ambient Lighting Module Usage",
+      "description": "The Ambient Lighting Module has settings for control of onboard LEDs and allows users to adjust the brightness levels and respective color levels. Initially created for the RAK14001 RGB LED module using the NCP5623 with I2C. Config options are: LED State, Current, Red Level, Green Level, and Blue Level.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/audio": {
+      "id": "configuration/module/audio",
+      "title": "Audio Module Configuration",
+      "description": "The audio module config options are: Codec2 Enabled, PTT GPIO, Audio Bitrate/Codec Mode, I2S Word Select, I2S Data IN, I2S Data OUT and I2S Clock. Audio Module config uses an admin message sending a ConfigModule.Audio protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/canned-message": {
+      "id": "configuration/module/canned-message",
+      "title": "Canned Message Module Configuration",
+      "description": "The Canned Message Module will allow you to send messages to the mesh network from the device without using the phone app. You can predefine text messages to choose from.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/detection-sensor": {
+      "id": "configuration/module/detection-sensor",
+      "title": "Detection Sensor Module Usage",
+      "description": "The Detection Sensor module allows you to configure a GPIO pin to be monitored for a specified high/low status and send text alerts over the  Detection Sensor portnum when an event is detected. This is particularly useful for motion detection sensors, reed switches, and other open / closed state systems in which notifications over the mesh are desired.  Config options are: Enabled, Minimum Broadcast Interval, State Broadcast Interval, Send Bell, Name, Monitor Pin, Detection Triggered High, and Use Pull-up.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/external-notification": {
+      "id": "configuration/module/external-notification",
+      "title": "External Notification Module Configuration",
+      "description": "The External Notification Module will allow you to connect a buzzer, speaker, LED, or other device to notify you when a message has been received from the mesh network. You can enable up to 3 pins independently from each other.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/module-config": {
+      "id": "configuration/module/module-config",
+      "title": "Module Configuration",
+      "description": "Modules are included in the firmware and allow users to extend the functionality of their mesh or device.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/mqtt": {
+      "id": "configuration/module/mqtt",
+      "title": "MQTT Module Configuration",
+      "description": "If your device is connected to Internet via wifi or ethernet, you can enable it to forward packets along to an MQTT server. This allows users on the local mesh to communicate with users on the internet. One or more channels must also be enabled as uplink and/or downlink for packets to be transmitted from and/or to your mesh (See channels). Without these settings enabled, the node will still connect to the MQTT server but only send status messages.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/neighbor-info": {
+      "id": "configuration/module/neighbor-info",
+      "title": "Neighbor Info Module Usage",
+      "description": "The Neighbor Info Module is for sending information on each node's 0-hop neighbors to the mesh. Config options are: Enabled and Update Interval.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/range-test": {
+      "id": "configuration/module/range-test",
+      "title": "Range Test Module Configuration",
+      "description": "This module allows you to test the range of your Meshtastic nodes. It requires at least two nodes, a sender and a receiver. The receiving node saves the messages along with the GPS coordinates at which they were received into a .csv file. This .csv file can then be integrated into Google Earth, Google Maps - My Maps, or any other program capable of processing .csv files. This can enable you to visualize your mesh.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/remote-hardware": {
+      "id": "configuration/module/remote-hardware",
+      "title": "Remote Hardware Module Usage",
+      "description": "The Remote Hardware Module allows control of a GPIO pin on a remote node. Config options are: Enabled, Allow Undefined Pin Access, Available Pins",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/serial": {
+      "id": "configuration/module/serial",
+      "title": "Serial Module Configuration",
+      "description": "The serial module config options are: Enabled, Echo, Mode, Receive GPIO, Transmit GPIO, Baud Rate, Timeout, and Override Console Serial Port. Serial Module config uses an admin message sending a ConfigModule.Serial protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/store-and-forward-module": {
+      "id": "configuration/module/store-and-forward-module",
+      "title": "Store & Forward Module Settings",
+      "description": "Currently only available for ESP32 based devices with external PSRAM like the tbeam. Requires the device to be set as a ROUTER or ROUTER_CLIENT.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/telemetry": {
+      "id": "configuration/module/telemetry",
+      "title": "Telemetry Module Configuration",
+      "description": "The Telemetry Module provides three types of data over the mesh: Device metrics (Battery Level, Voltage, Channel Utilization and Airtime) from your Meshtastic device, Environment Metrics from attached I2C sensors, and Air Quality Metrics from attached I2C particle sensors.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/module/traceroute": {
+      "id": "configuration/module/traceroute",
+      "title": "Traceroute Module Usage",
+      "description": "Due to the limited bandwidth of LoRa, Meshtastic does not keep track of the nodes a message used to hop to the destination. However, from firmware 2.0.8 on, there is a Traceroute Module that can show you this.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/bluetooth": {
+      "id": "configuration/radio/bluetooth",
+      "title": "Bluetooth Settings",
+      "description": "The Bluetooth config options are: Enabled, Pairing Mode and Fixed PIN Value. Bluetooth config uses an admin message sending a Config.Bluetooth protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/channels": {
+      "id": "configuration/radio/channels",
+      "title": "Channel Configuration",
+      "description": "The Channels config options are: Index, Roles, and Settings. Channel config uses an admin message sending a Channel protobuf which also consists of a ChannelSettings protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/config": {
+      "id": "configuration/radio/config",
+      "title": "Radio Configuration",
+      "description": "There are several config sections in the Meshtastic firmware, these are broken out so they can be sent as small admin messages over the mesh.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/device": {
+      "id": "configuration/radio/device",
+      "title": "Device Configuration",
+      "description": "The device config options are: Role, Serial Output, and Debug Log. Device config uses an admin message sending a Config.Device protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/display": {
+      "id": "configuration/radio/display",
+      "title": "Display Configuration",
+      "description": "The display config options are: Screen On Duration, Auto Carousel Interval, Always Point North, GPS Format, Preferred Display Units, OLED Definition, Display Mode, Heading Bold, and Wake on Tap or Motion. Display config uses an admin message sending a Config.Display protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/lora": {
+      "id": "configuration/radio/lora",
+      "title": "LoRa Configuration",
+      "description": "The LoRa config options are: Region, Modem Preset, Max Hops, Transmit Power, Bandwidth, Spread Factor, Coding Rate, Frequency Offset, Transmit Enabled, Channel Number, Ignore Incoming Array, Override Duty Cycle Limit, SX126x RX Boosted Gain, and Override Frequency. LoRa config uses an admin message sending a Config.LoRa protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/network": {
+      "id": "configuration/radio/network",
+      "title": "Network Configuration",
+      "description": "The Network config options are: NTP Server, WiFi Enabled, WiFi SSID, WiFi PSK, Ethernet Enabled, IPv4 Networking Mode, and Static Address. Network config uses an admin message sending a Config.Network protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/position": {
+      "id": "configuration/radio/position",
+      "title": "Position Configuration",
+      "description": "The position config options are: GPS Enabled, GPS Update Interval, GPS Attempt Time, Fixed Position, Smart Broadcast, Smart Broadcast Minimum Distance, Smart Broadcast Minimum Interval, Broadcast Interval, Position Packet Flags, and GPS RX/TX Pins. Position config uses an admin message sending a Config.Position protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/power": {
+      "id": "configuration/radio/power",
+      "title": "Power Configuration",
+      "description": "Power settings are advanced configuration, most users should choose a role under Device Config to manage power for their device and shouldn't ever need to adjust these settings.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/radio/user": {
+      "id": "configuration/radio/user",
+      "title": "User Configuration",
+      "description": "The user config options are: Long Name, Short Name, and Is Licensed. User config uses an admin message sending a User protobuf.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/remote-admin": {
+      "id": "configuration/remote-admin",
+      "title": "Remote Node Administration",
+      "description": "This is an advanced feature that few users should need. Keep in mind that it is possible (if you are not careful) to assign settings to a remote node that cause it to completely drop off of your mesh. We advise network admins have a test node to test settings with before applying changes to a remote node to prevent this.",
+      "sidebar": "Sidebar"
+    },
+    "configuration/tips": {
+      "id": "configuration/tips",
+      "title": "Configuration Tips",
+      "description": "Common Settings & Solutions",
+      "sidebar": "Sidebar"
+    },
+    "development/android": {
+      "id": "development/android",
+      "title": "Building the Android App",
+      "description": "Build instructions",
+      "sidebar": "Sidebar"
+    },
+    "development/device/client-api": {
+      "id": "development/device/client-api",
+      "title": "Client API (Serial/TCP/BLE)",
+      "description": "This document describes the protocol for external API clients using our devices. If you are interested in running your own code on the device itself, see the module API documentation instead.",
+      "sidebar": "Sidebar"
+    },
+    "development/device/error-codes": {
+      "id": "development/device/error-codes",
+      "title": "Critical Error Codes",
+      "description": "The device might report these fault codes on the screen, but it will also be outputted on the device serial output. If you encounter a fault code, please post on the forum and we'll try to help.",
+      "sidebar": "Sidebar"
+    },
+    "development/device/http-api": {
+      "id": "development/device/http-api",
+      "title": "HTTP API",
+      "description": "This is a mini-spec on a HTTP API which can be used by browser based clients to interact with Meshtastic devices.",
+      "sidebar": "Sidebar"
+    },
+    "development/device/module-api": {
+      "id": "development/device/module-api",
+      "title": "Module API",
+      "description": "The purpose of this tutorial is for writing new core modules that can be run on a device. In most cases, it is best to start with utilizing the serial module rather than creating a new one. However, if you're interested in creating a new core functionality from scratch, then building a module would be appropriate.",
+      "sidebar": "Sidebar"
+    },
+    "development/documentation/docs": {
+      "id": "development/documentation/docs",
+      "title": "Maintaining Documentation",
+      "description": "Meshtastic documentation is an important ingredient to the overall project. We want users to hit the ground running with the information they need right at their finger tips. This section will discuss the documentation software stack, file organization, and style guides.",
+      "sidebar": "Sidebar"
+    },
+    "development/documentation/local-dev": {
+      "id": "development/documentation/local-dev",
+      "title": "Serving Docs Locally for Development",
+      "description": "Some things won't display properly like logos or protobufs page, this is not cause for concern.",
+      "sidebar": "Sidebar"
+    },
+    "development/documentation/publish": {
+      "id": "development/documentation/publish",
+      "title": "Publishing Meshtastic.org",
+      "description": "Publish Live",
+      "sidebar": "Sidebar"
+    },
+    "development/documentation/style-guides/config-pages": {
+      "id": "development/documentation/style-guides/config-pages",
+      "title": "Config Pages",
+      "description": "Overview",
+      "sidebar": "Sidebar"
+    },
+    "development/documentation/style-guides/markdown": {
+      "id": "development/documentation/style-guides/markdown",
+      "title": "Markdown Features",
+      "description": "Overview",
+      "sidebar": "Sidebar"
+    },
+    "development/firmware/build": {
+      "id": "development/firmware/build",
+      "title": "Building Meshtastic Firmware",
+      "description": "Meshtastic uses PlatformIO, a development environment that enables easy multi-platform development and centralized tooling.",
+      "sidebar": "Sidebar"
+    },
+    "development/firmware/oled-guide": {
+      "id": "development/firmware/oled-guide",
+      "title": "OLED Localization Guide",
+      "description": "1. Create an extended ASCII custom font. Use a glyph editor to create a new font file. The easiest way is to use the online glyph editor from the OLED library. (glyph editor source code)",
+      "sidebar": "Sidebar"
+    },
+    "development/firmware/portnum": {
+      "id": "development/firmware/portnum",
+      "title": "Meshtastic Port Numbers",
+      "description": "Any new app that runs on the device or via sister apps on phones/PCs should pick and use a unique \"portnum\" for their applications use.",
+      "sidebar": "Sidebar"
+    },
+    "development/firmware/stacktraces": {
+      "id": "development/firmware/stacktraces",
+      "title": "Stacktraces",
+      "description": "Decoding Stacktraces",
+      "sidebar": "Sidebar"
+    },
+    "development/js/connecting": {
+      "id": "development/js/connecting",
+      "title": "Connecting to a device",
+      "description": "",
+      "sidebar": "Sidebar"
+    },
+    "development/js/events": {
+      "id": "development/js/events",
+      "title": "Subscribing to device events",
+      "description": "Preface",
+      "sidebar": "Sidebar"
+    },
+    "development/js/http-api": {
+      "id": "development/js/http-api",
+      "title": "HTTP API",
+      "description": "Methods and types for using the device HTTP API are exported",
+      "sidebar": "Sidebar"
+    },
+    "development/js/js": {
+      "id": "development/js/js",
+      "title": "Getting Started with Meshtastic.js",
+      "description": "Full API documentation is available at js.meshtastic.org",
+      "sidebar": "Sidebar"
+    },
+    "development/python/building": {
+      "id": "development/python/building",
+      "title": "Building",
+      "description": "A python release consists of publishing the release to PyPi https//github.com/meshtastic/Meshtastic-python/releases.",
+      "sidebar": "Sidebar"
+    },
+    "development/python/library": {
+      "id": "development/python/library",
+      "title": "Using the Meshtastic Python Library",
+      "description": "An example using Python 3 code to send a message to the mesh, get and set a radio configuration preference:",
+      "sidebar": "Sidebar"
+    },
+    "development/python/python": {
+      "id": "development/python/python",
+      "title": "Meshtastic Python Development",
+      "description": "A note to developers of this lib",
+      "sidebar": "Sidebar"
+    },
+    "development/reference/github": {
+      "id": "development/reference/github",
+      "title": "GitHub",
+      "description": "Overview",
+      "sidebar": "Sidebar"
+    },
+    "development/reference/lora-design": {
+      "id": "development/reference/lora-design",
+      "title": "LoRa Design Guide",
+      "description": "- LoRa Design Guide Datasheet",
+      "sidebar": "Sidebar"
+    },
+    "development/reference/protobufs": {
+      "id": "development/reference/protobufs",
+      "title": "Protobufs",
+      "description": "Protobufs are used by Meshtastic software to send and receive data between App and Device and Device to Device.",
+      "sidebar": "Sidebar"
+    },
+    "development/web/web-interface": {
+      "id": "development/web/web-interface",
+      "title": "Web Client Development",
+      "description": "Overview",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/flashing-firmware/esp32/cli-script": {
+      "id": "getting-started/flashing-firmware/esp32/cli-script",
+      "title": "Flashing with the CLI",
+      "description": "Make sure not to power the radio on without first attaching the antenna! You could damage the radio chip!",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/flashing-firmware/esp32/external-serial-adapter": {
+      "id": "getting-started/flashing-firmware/esp32/external-serial-adapter",
+      "title": "Flashing with an External Serial Adapter",
+      "description": "This information will likely only be helpful if you've already attempted to go through the prerequisites and processes outlined in manually flashing",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/flashing-firmware/esp32/flashing-esp32-devices": {
+      "id": "getting-started/flashing-firmware/esp32/flashing-esp32-devices",
+      "title": "Flash ESP32 Devices",
+      "description": "The recommended method for firmware flashing is the Web-Based Installer.",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/flashing-firmware/esp32/web-flasher": {
+      "id": "getting-started/flashing-firmware/esp32/web-flasher",
+      "title": "Using Meshtastic Web Flasher",
+      "description": "Web Flasher",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/flashing-firmware/nrf52/convert-rak4631r": {
+      "id": "getting-started/flashing-firmware/nrf52/convert-rak4631r",
+      "title": "Convert RAK4631-R to RAK4631",
+      "description": "The only difference between the RAK4631-R (RUI3) and the RAK4631 (Arduino) is the bootloader it is shipped with - the hardware is the same.",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/flashing-firmware/nrf52/drag-n-drop": {
+      "id": "getting-started/flashing-firmware/nrf52/drag-n-drop",
+      "title": "Drag & Drop nRF52 Firmware Updates",
+      "description": "Flash Firmware",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/flashing-firmware/nrf52/flashing-nrf52-devices": {
+      "id": "getting-started/flashing-firmware/nrf52/flashing-nrf52-devices",
+      "title": "Flash nRF52 Devices",
+      "description": "Flashing Methods for nRF52 Devices",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/flashing-firmware/nrf52/nrf52-erase": {
+      "id": "getting-started/flashing-firmware/nrf52/nrf52-erase",
+      "title": "Flash nRF52 Factory Erase",
+      "description": "Meshtastic uses the littlefs library to store configuration, logs, and other data in the internal flash of nRF52 devices. Updating the firmware does not erase this additional data, which can cause issues when the format and location of data changes between releases.",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/flashing-firmware/nrf52/ota": {
+      "id": "getting-started/flashing-firmware/nrf52/ota",
+      "title": "nRF52 OTA Firmware Updates",
+      "description": "nRF52 devices from RAK are able to accept OTA firmware updates from a mobile device over bluetooth. The T-Echo bootloader does not have OTA support.",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/getting-started": {
+      "id": "getting-started/getting-started",
+      "title": "Getting Started",
+      "description": "Identify Hardware",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/initial-config": {
+      "id": "getting-started/initial-config",
+      "title": "Initial Configuration",
+      "description": "Supported Clients per Connection Type",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/serial-drivers/esp32": {
+      "id": "getting-started/serial-drivers/esp32",
+      "title": "ESP32 Serial Drivers",
+      "description": "Install ESP32 USB to Serial Drivers",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/serial-drivers/nrf52": {
+      "id": "getting-started/serial-drivers/nrf52",
+      "title": "nRF52 Serial Drivers",
+      "description": "Install nRF52 USB to Serial Drivers",
+      "sidebar": "Sidebar"
+    },
+    "getting-started/serial-drivers/test-serial-driver-installation": {
+      "id": "getting-started/serial-drivers/test-serial-driver-installation",
+      "title": "Test Serial Driver Installation",
+      "description": "Test Serial Driver Installation",
+      "sidebar": "Sidebar"
+    },
+    "hardware/antennas/antenna-reports": {
+      "id": "hardware/antennas/antenna-reports",
+      "title": "LoRa Antenna Testing Reports",
+      "description": "RicInNewMexico",
+      "sidebar": "Sidebar"
+    },
+    "hardware/antennas/antenna-testing": {
+      "id": "hardware/antennas/antenna-testing",
+      "title": "Antenna Testing",
+      "description": "Testing of antennas can be both simple and complex. At its simplest, testing involves sending messages from different locations and seeing which ones are received, and then comparing the results against other antennas. At the complex end, this can be using expensive test chambers and equipment to measure the signal strength, gain, and radiation patterns. However, it seems that a reasonable job can be done with cheaper methods.",
+      "sidebar": "Sidebar"
+    },
+    "hardware/antennas/antennas": {
+      "id": "hardware/antennas/antennas",
+      "title": "LoRa Antennas",
+      "description": "Pages",
+      "sidebar": "Sidebar"
+    },
+    "hardware/antennas/lora-antenna": {
+      "id": "hardware/antennas/lora-antenna",
+      "title": "LoRa Antenna Selection",
+      "description": "The stock antennas provided with the T-Beam and other boards usually come from 'mixed bags'. They may not have been designed or tuned for your given frequency range, and they may not be of a quality design.",
+      "sidebar": "Sidebar"
+    },
+    "hardware/antennas/resources": {
+      "id": "hardware/antennas/resources",
+      "title": "LoRa Antenna Resources",
+      "description": "More antenna information",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/heltec/buttons": {
+      "id": "hardware/devices/heltec/buttons",
+      "title": "Hardware Buttons",
+      "description": "Functionality",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/heltec/enclosures": {
+      "id": "hardware/devices/heltec/enclosures",
+      "title": "Enclosures",
+      "description": "Created by tropho/TonyG",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/heltec/heltec": {
+      "id": "hardware/devices/heltec/heltec",
+      "title": "HELTEC® LoRa 32",
+      "description": "<Tabs",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/lora/buttons": {
+      "id": "hardware/devices/lora/buttons",
+      "title": "Hardware Buttons",
+      "description": "Functionality",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/lora/enclosures": {
+      "id": "hardware/devices/lora/enclosures",
+      "title": "Enclosures",
+      "description": "Created by tropho/TonyG",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/lora/gpio": {
+      "id": "hardware/devices/lora/gpio",
+      "title": "GPIO",
+      "description": "GPIO IO12",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/lora/lora": {
+      "id": "hardware/devices/lora/lora",
+      "title": "LILYGO® TTGO Lora Devices",
+      "description": "Further information on the LILYGO® LoRa devices can be found on LILYGO®'s GitHub page.",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/Nano Series/buttons": {
+      "id": "hardware/devices/Nano Series/buttons",
+      "title": "Hardware Buttons",
+      "description": "Device",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/Nano Series/nano-series": {
+      "id": "hardware/devices/Nano Series/nano-series",
+      "title": "Nano Series",
+      "description": "The Nano Series, designed by Neil Hao from B&Q Consulting and powered by Meshtastic, are devices engineered to be a portable and durable solution for outdoor adventures such as hiking, piloting, skiing and more. They are designed to strike a balance between RF performance, size, ruggedness, and power efficiency — providing users with a reliable solution in various outdoor environments.",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/rak/base-board": {
+      "id": "hardware/devices/rak/base-board",
+      "title": "RAK WisBlock Base Boards",
+      "description": "WisBlock Base",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/rak/buttons": {
+      "id": "hardware/devices/rak/buttons",
+      "title": "Hardware Buttons",
+      "description": "Functionality",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/rak/core-module": {
+      "id": "hardware/devices/rak/core-module",
+      "title": "RAK WisBlock Core Modules",
+      "description": "WisBlock Core",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/rak/enclosures": {
+      "id": "hardware/devices/rak/enclosures",
+      "title": "Enclosures",
+      "description": "Created by KeithMon/Voltaic Enclosures",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/rak/peripherals": {
+      "id": "hardware/devices/rak/peripherals",
+      "title": "Supported Peripherals",
+      "description": "<Tabs",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/rak/screens": {
+      "id": "hardware/devices/rak/screens",
+      "title": "Screens",
+      "description": "There are currently two different screens supported by the RAK WisBlock system:",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/rak/wisBlock": {
+      "id": "hardware/devices/rak/wisBlock",
+      "title": "RAK WisBlock Devices",
+      "description": "The RAK WisBlock is a modular hardware system that can be used to build Meshtastic devices.",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/raspberry-pi/peripherals": {
+      "id": "hardware/devices/raspberry-pi/peripherals",
+      "title": "Supported Peripherals",
+      "description": "I2C peripherals",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/raspberry-pi/raspberry-pi": {
+      "id": "hardware/devices/raspberry-pi/raspberry-pi",
+      "title": "Raspberry Pi Pico",
+      "description": "The Raspberry Pi Pico series is a range of tiny, fast, and versatile boards built using RP2040, the flagship microcontroller chip designed by Raspberry Pi in the UK.",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/station-g1/buttons": {
+      "id": "hardware/devices/station-g1/buttons",
+      "title": "Hardware Buttons",
+      "description": "Functionality",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/station-g1/station-g1": {
+      "id": "hardware/devices/station-g1/station-g1",
+      "title": "Station G1 device",
+      "description": "The Station G1 is the second dedicated hardware device to be designed from scratch purely for Meshtastic Licensed (HAM) Operation by Neil Hao. It has been designed to be small and compact with the inclusion of 35dBm high power PA.",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/tbeam/buttons": {
+      "id": "hardware/devices/tbeam/buttons",
+      "title": "Hardware Buttons",
+      "description": "Functionality",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/tbeam/enclosures": {
+      "id": "hardware/devices/tbeam/enclosures",
+      "title": "Enclosures",
+      "description": "Created by tropho/TonyG",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/tbeam/screens": {
+      "id": "hardware/devices/tbeam/screens",
+      "title": "Screens",
+      "description": "0.96 inch OLED I2C display",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/tbeam/tbeam": {
+      "id": "hardware/devices/tbeam/tbeam",
+      "title": "LILYGO® TTGO T-Beam Devices",
+      "description": "All T-beam models (with the exception of the S3-Core) have an 18650 size battery holder on the rear of the device. This is designed to the original specification of the 18650 and only fits unprotected flat top 18650 cells. Button top and protected cells are typically longer than 65mm, often approaching 70mm.",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/techo/buttons": {
+      "id": "hardware/devices/techo/buttons",
+      "title": "Hardware Buttons",
+      "description": "Functionality",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/techo/enclosures": {
+      "id": "hardware/devices/techo/enclosures",
+      "title": "Enclosures",
+      "description": "Created by BrianN",
+      "sidebar": "Sidebar"
+    },
+    "hardware/devices/techo/techo": {
+      "id": "hardware/devices/techo/techo",
+      "title": "LILYGO® TTGO T-Echo devices",
+      "description": "The T-Echo is the latest device to be release by LILYGO® supporting a low power consumption micro-controller.",
+      "sidebar": "Sidebar"
+    },
+    "hardware/solar-powered/measure-power-consumption": {
+      "id": "hardware/solar-powered/measure-power-consumption",
+      "title": "How To Measure Meshtastic Device Power Consumption",
+      "description": "Before you can calculate what size solar panel and battery bank are required you need to determine how much power your device consumes. This is an essential and first step in building a solar powered anything.",
+      "sidebar": "Sidebar"
+    },
+    "legal/index": {
+      "id": "legal/index",
+      "title": "Legal",
+      "description": "Disclaimers",
+      "sidebar": "Sidebar"
+    },
+    "legal/licensing": {
+      "id": "legal/licensing",
+      "title": "Licensing & Commercial Projects Usage",
+      "description": "You are hereby granted a two-year non-exclusive license to use the Meshtastic® logo and trademark on your product/project provided you adhere to the trademark guidelines. No fee is required for this usage, though if you wish keeping $1/unit set-aside so that it can eventually fund Meshtastic it would be appreciated.",
+      "sidebar": "Sidebar"
+    },
+    "legal/privacy": {
+      "id": "legal/privacy",
+      "title": "Meshtastic privacy policy",
+      "description": "We don't collect any personal identifying information. We never capture usernames, the contents of your texts, or your location data.",
+      "sidebar": "Sidebar"
+    },
+    "legal/trademark": {
+      "id": "legal/trademark",
+      "title": "Trademark Rules & Brand Guidelines",
+      "description": "Meshtastic® is a registered trademark of Meshtastic LLC. Meshtastic software components are released under various licenses, see GitHub for details. No warranty is provided - use at your own risk.",
+      "sidebar": "Sidebar"
+    },
+    "legal/trademark-grants": {
+      "id": "legal/trademark-grants",
+      "title": "Trademark Grants",
+      "description": "- Grant//meshtastic.pt",
+      "sidebar": "Sidebar"
+    },
+    "software/android/installation": {
+      "id": "software/android/installation",
+      "title": "Android Application Installation",
+      "description": "Installation Methods",
+      "sidebar": "Sidebar"
+    },
+    "software/android/usage": {
+      "id": "software/android/usage",
+      "title": "Android Application Usage",
+      "description": "Introduction",
+      "sidebar": "Sidebar"
+    },
+    "software/apple/installation": {
+      "id": "software/apple/installation",
+      "title": "Apple Application Installation",
+      "description": "Download on the App Store",
+      "sidebar": "Sidebar"
+    },
+    "software/apple/usage": {
+      "id": "software/apple/usage",
+      "title": "Apple Application Usage",
+      "description": "Offline Maps",
+      "sidebar": "Sidebar"
+    },
+    "software/community/community-atak": {
+      "id": "software/community/community-atak",
+      "title": "ATAK Forwarder",
+      "description": "This is a community project maintained by @paulmandal.",
+      "sidebar": "Sidebar"
+    },
+    "software/community/community-meshtasticator": {
+      "id": "software/community/community-meshtasticator",
+      "title": "Meshtasticator",
+      "description": "This is a community project maintained by @GUVWAF.",
+      "sidebar": "Sidebar"
+    },
+    "software/community/index": {
+      "id": "software/community/index",
+      "title": "Community Apps",
+      "description": "The Meshtastic ecosystem is highly extensible, and a number of community projects have been made to fit different people's needs. If you wish to create your own application or module, please read the information in the developers section, and tell us about your project on the forum.",
+      "sidebar": "Sidebar"
+    },
+    "software/community/meshtastic-web-api": {
+      "id": "software/community/meshtastic-web-api",
+      "title": "Meshtastic Web API",
+      "description": "This is a community project maintained by @bmswens.",
+      "sidebar": "Sidebar"
+    },
+    "software/integrations/index": {
+      "id": "software/integrations/index",
+      "title": "Meshtastic Integrations",
+      "description": "The Meshtastic ecosystem is highly extensible and allows easy integration with a number of existing software products and projects.",
+      "sidebar": "Sidebar"
+    },
+    "software/integrations/integrations-atak-plugin": {
+      "id": "software/integrations/integrations-atak-plugin",
+      "title": "ATAK Plugin",
+      "description": "Official Meshtastic ATAK Plugin",
+      "sidebar": "Sidebar"
+    },
+    "software/integrations/integrations-caltopo": {
+      "id": "software/integrations/integrations-caltopo",
+      "title": "CalTopo / SARTopo",
+      "description": "CalTopo / SARTopo",
+      "sidebar": "Sidebar"
+    },
+    "software/linux-native": {
+      "id": "software/linux-native",
+      "title": "Linux Native Application",
+      "description": "The device software can also run on a native Linux machine thanks to the Portduino framework.",
+      "sidebar": "Sidebar"
+    },
+    "software/mqtt/adafruit-io": {
+      "id": "software/mqtt/adafruit-io",
+      "title": "Adafruit IO",
+      "description": "Adafruit IO for Meshtastic",
+      "sidebar": "Sidebar"
+    },
+    "software/mqtt/home-assistant": {
+      "id": "software/mqtt/home-assistant",
+      "title": "Home Assistant",
+      "description": "Home Assistant Integrations for Meshtastic",
+      "sidebar": "Sidebar"
+    },
+    "software/mqtt/mosquitto": {
+      "id": "software/mqtt/mosquitto",
+      "title": "Mosquitto",
+      "description": "Using mosquitto on a mac",
+      "sidebar": "Sidebar"
+    },
+    "software/mqtt/mqtt": {
+      "id": "software/mqtt/mqtt",
+      "title": "MQTT",
+      "description": "Bridging networks",
+      "sidebar": "Sidebar"
+    },
+    "software/mqtt/mqtt-python": {
+      "id": "software/mqtt/mqtt-python",
+      "title": "Python",
+      "description": "Sending/receiving messages on mosquitto server using python",
+      "sidebar": "Sidebar"
+    },
+    "software/mqtt/nodered": {
+      "id": "software/mqtt/nodered",
+      "title": "Node-RED",
+      "description": "Using MQTT with Node-RED",
+      "sidebar": "Sidebar"
+    },
+    "software/python-cli/installation": {
+      "id": "software/python-cli/installation",
+      "title": "Meshtastic Python CLI installation",
+      "description": "This library provides a command line interface (CLI) for managing the user settings of Meshtastic nodes and provides an easy API for sending and receiving messages over mesh radios. Events are delivered using a publish-subscribe model, and you can subscribe to only the message types you are interested in.",
+      "sidebar": "Sidebar"
+    },
+    "software/python-cli/python-cli": {
+      "id": "software/python-cli/python-cli",
+      "title": "Meshtastic Python CLI Guide",
+      "description": "The python pip package installs a \"meshtastic\" command line executable, which displays packets sent over the network as JSON and lets you see serial debugging information from the meshtastic devices. This command is not run inside of python, you run it from your operating system shell prompt directly. If when you type \"meshtastic\" it doesn't find the command and you are using Windows: Check that the python \"scripts\" directory is in your path.",
+      "sidebar": "Sidebar"
+    },
+    "software/python-cli/usage": {
+      "id": "software/python-cli/usage",
+      "title": "Using the Meshtastic CLI",
+      "description": "This section covers using the \"meshtastic\" command line executable, which displays packets sent over the network as JSON and lets you see serial debugging information from the Meshtastic devices.",
+      "sidebar": "Sidebar"
+    },
+    "software/web-client": {
+      "id": "software/web-client",
+      "title": "Web Client Overview",
+      "description": "Meshtastic Web is a Meshtastic client that runs directly in your browser.",
+      "sidebar": "Sidebar"
+    }
+  }
+}

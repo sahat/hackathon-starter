@@ -1,0 +1,31 @@
+{
+  "id": "development/device/http-api",
+  "title": "HTTP API",
+  "description": "This is a mini-spec on a HTTP API which can be used by browser based clients to interact with Meshtastic devices.",
+  "source": "@site/docs/development/device/http-api.mdx",
+  "sourceDirName": "development/device",
+  "slug": "/development/device/http-api",
+  "permalink": "/docs/development/device/http-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/development/device/http-api.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "http-api",
+    "title": "HTTP API",
+    "sidebar_label": "HTTP API",
+    "sidebar_position": 2
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Client API",
+    "permalink": "/docs/development/device/client-api"
+  },
+  "next": {
+    "title": "Module API",
+    "permalink": "/docs/development/device/module-api"
+  }
+}

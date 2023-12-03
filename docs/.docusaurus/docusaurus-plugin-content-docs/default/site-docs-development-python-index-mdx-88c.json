@@ -1,0 +1,31 @@
+{
+  "id": "development/python/python",
+  "title": "Meshtastic Python Development",
+  "description": "A note to developers of this lib",
+  "source": "@site/docs/development/python/index.mdx",
+  "sourceDirName": "development/python",
+  "slug": "/development/python/",
+  "permalink": "/docs/development/python/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/development/python/index.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "id": "python",
+    "title": "Meshtastic Python Development",
+    "sidebar_position": 5,
+    "sidebar_label": "Python"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Web Client",
+    "permalink": "/docs/development/web/"
+  },
+  "next": {
+    "title": "Building",
+    "permalink": "/docs/development/python/building"
+  }
+}

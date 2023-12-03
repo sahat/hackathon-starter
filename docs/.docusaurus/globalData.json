@@ -1,0 +1,768 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "about/introduction",
+          "docs": [
+            {
+              "id": "about/contributing",
+              "path": "/docs/contributing",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "about/faq",
+              "path": "/docs/faq",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "about/introduction",
+              "path": "/docs/introduction",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "about/overview/encryption",
+              "path": "/docs/overview/encryption",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "about/overview/index",
+              "path": "/docs/overview",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "about/overview/mesh-algo",
+              "path": "/docs/overview/mesh-algo",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "about/overview/radio-settings",
+              "path": "/docs/overview/radio-settings",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "about/overview/range-tests",
+              "path": "/docs/overview/range-tests",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/ambient-lighting",
+              "path": "/docs/configuration/module/ambient-lighting",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/audio",
+              "path": "/docs/configuration/module/audio",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/canned-message",
+              "path": "/docs/configuration/module/canned-message",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/detection-sensor",
+              "path": "/docs/configuration/module/detection-sensor",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/external-notification",
+              "path": "/docs/configuration/module/external-notification",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/module-config",
+              "path": "/docs/configuration/module",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/mqtt",
+              "path": "/docs/configuration/module/mqtt",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/neighbor-info",
+              "path": "/docs/configuration/module/neighbor-info",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/range-test",
+              "path": "/docs/configuration/module/range-test",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/remote-hardware",
+              "path": "/docs/configuration/module/remote-hardware",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/serial",
+              "path": "/docs/configuration/module/serial",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/store-and-forward-module",
+              "path": "/docs/configuration/module/store-and-forward-module",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/telemetry",
+              "path": "/docs/configuration/module/telemetry",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/module/traceroute",
+              "path": "/docs/configuration/module/traceroute",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/bluetooth",
+              "path": "/docs/configuration/radio/bluetooth",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/channels",
+              "path": "/docs/configuration/radio/channels",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/config",
+              "path": "/docs/configuration/radio/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/device",
+              "path": "/docs/configuration/radio/device",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/display",
+              "path": "/docs/configuration/radio/display",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/lora",
+              "path": "/docs/configuration/radio/lora",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/network",
+              "path": "/docs/configuration/radio/network",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/position",
+              "path": "/docs/configuration/radio/position",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/power",
+              "path": "/docs/configuration/radio/power",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/radio/user",
+              "path": "/docs/configuration/radio/user",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/remote-admin",
+              "path": "/docs/configuration/remote-admin",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "configuration/tips",
+              "path": "/docs/configuration/tips",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/android",
+              "path": "/docs/development/android",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/device/client-api",
+              "path": "/docs/development/device/client-api",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/device/error-codes",
+              "path": "/docs/development/device/error-codes",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/device/http-api",
+              "path": "/docs/development/device/http-api",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/device/module-api",
+              "path": "/docs/development/device/module-api",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/documentation/docs",
+              "path": "/docs/development/docs",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/documentation/local-dev",
+              "path": "/docs/development/documentation/local-dev",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/documentation/publish",
+              "path": "/docs/development/documentation/publish",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/documentation/style-guides/config-pages",
+              "path": "/docs/development/documentation/style-guides/config-pages",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/documentation/style-guides/markdown",
+              "path": "/docs/development/documentation/style-guides/markdown",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/firmware/build",
+              "path": "/docs/development/firmware/build",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/firmware/oled-guide",
+              "path": "/docs/development/firmware/oled-guide",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/firmware/portnum",
+              "path": "/docs/development/firmware/portnum",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/firmware/stacktraces",
+              "path": "/docs/development/firmware/stacktraces",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/js/connecting",
+              "path": "/docs/development/js/connecting",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/js/events",
+              "path": "/docs/development/js/events",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/js/http-api",
+              "path": "/docs/development/js/http-api",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/js/js",
+              "path": "/docs/development/js",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/python/building",
+              "path": "/docs/development/python/building",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/python/library",
+              "path": "/docs/development/python/library",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/python/python",
+              "path": "/docs/development/python/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/reference/github",
+              "path": "/docs/development/reference/github",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/reference/lora-design",
+              "path": "/docs/development/reference/lora-design",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/reference/protobufs",
+              "path": "/docs/development/reference/protobufs",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "development/web/web-interface",
+              "path": "/docs/development/web/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/flashing-firmware/esp32/cli-script",
+              "path": "/docs/getting-started/flashing-firmware/esp32/cli-script",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/flashing-firmware/esp32/external-serial-adapter",
+              "path": "/docs/getting-started/flashing-firmware/esp32/external-serial-adapter",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/flashing-firmware/esp32/flashing-esp32-devices",
+              "path": "/docs/getting-started/flashing-firmware/esp32/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/flashing-firmware/esp32/web-flasher",
+              "path": "/docs/getting-started/flashing-firmware/esp32/web-flasher",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/flashing-firmware/nrf52/convert-rak4631r",
+              "path": "/docs/getting-started/flashing-firmware/nrf52/convert-rak4631r",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/flashing-firmware/nrf52/drag-n-drop",
+              "path": "/docs/getting-started/flashing-firmware/nrf52/drag-n-drop",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/flashing-firmware/nrf52/flashing-nrf52-devices",
+              "path": "/docs/getting-started/flashing-firmware/nrf52/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/flashing-firmware/nrf52/nrf52-erase",
+              "path": "/docs/getting-started/flashing-firmware/nrf52/nrf52-erase",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/flashing-firmware/nrf52/ota",
+              "path": "/docs/getting-started/flashing-firmware/nrf52/ota",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/getting-started",
+              "path": "/docs/getting-started",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/initial-config",
+              "path": "/docs/getting-started/initial-config",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/serial-drivers/esp32",
+              "path": "/docs/getting-started/serial-drivers/esp32",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/serial-drivers/nrf52",
+              "path": "/docs/getting-started/serial-drivers/nrf52",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "getting-started/serial-drivers/test-serial-driver-installation",
+              "path": "/docs/getting-started/serial-drivers/test-serial-driver-installation",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/antennas/antenna-reports",
+              "path": "/docs/hardware/antennas/antenna-reports",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/antennas/antenna-testing",
+              "path": "/docs/hardware/antennas/antenna-testing",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/antennas/antennas",
+              "path": "/docs/hardware/antennas/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/antennas/lora-antenna",
+              "path": "/docs/hardware/antennas/lora-antenna",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/antennas/resources",
+              "path": "/docs/hardware/antennas/resources",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/heltec/buttons",
+              "path": "/docs/hardware/devices/heltec/buttons",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/heltec/enclosures",
+              "path": "/docs/hardware/devices/heltec/enclosures",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/heltec/heltec",
+              "path": "/docs/hardware/devices/heltec/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/lora/buttons",
+              "path": "/docs/hardware/devices/lora/buttons",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/lora/enclosures",
+              "path": "/docs/hardware/devices/lora/enclosures",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/lora/gpio",
+              "path": "/docs/hardware/devices/lora/gpio",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/lora/lora",
+              "path": "/docs/hardware/devices/lora/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/Nano Series/buttons",
+              "path": "/docs/hardware/devices/Nano Series/buttons",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/Nano Series/nano-series",
+              "path": "/docs/hardware/devices/Nano Series/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/rak/base-board",
+              "path": "/docs/hardware/devices/rak/base-board",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/rak/buttons",
+              "path": "/docs/hardware/devices/rak/buttons",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/rak/core-module",
+              "path": "/docs/hardware/devices/rak/core-module",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/rak/enclosures",
+              "path": "/docs/hardware/devices/rak/enclosures",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/rak/peripherals",
+              "path": "/docs/hardware/devices/rak/peripherals",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/rak/screens",
+              "path": "/docs/hardware/devices/rak/screens",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/rak/wisBlock",
+              "path": "/docs/hardware/devices/rak/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/raspberry-pi/peripherals",
+              "path": "/docs/hardware/devices/raspberry-pi/peripherals",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/raspberry-pi/raspberry-pi",
+              "path": "/docs/hardware/devices/raspberry-pi/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/station-g1/buttons",
+              "path": "/docs/hardware/devices/station-g1/buttons",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/station-g1/station-g1",
+              "path": "/docs/hardware/devices/station-g1/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/tbeam/buttons",
+              "path": "/docs/hardware/devices/tbeam/buttons",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/tbeam/enclosures",
+              "path": "/docs/hardware/devices/tbeam/enclosures",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/tbeam/screens",
+              "path": "/docs/hardware/devices/tbeam/screens",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/tbeam/tbeam",
+              "path": "/docs/hardware/devices/tbeam/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/techo/buttons",
+              "path": "/docs/hardware/devices/techo/buttons",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/techo/enclosures",
+              "path": "/docs/hardware/devices/techo/enclosures",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/devices/techo/techo",
+              "path": "/docs/hardware/devices/techo/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware/solar-powered/measure-power-consumption",
+              "path": "/docs/hardware/solar-powered/measure-power-consumption",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "legal/index",
+              "path": "/docs/legal",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "legal/licensing",
+              "path": "/docs/legal/licensing",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "legal/privacy",
+              "path": "/docs/legal/privacy",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "legal/trademark",
+              "path": "/docs/legal/trademark",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "legal/trademark-grants",
+              "path": "/docs/legal/trademark-grants",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/android/installation",
+              "path": "/docs/software/android/installation",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/android/usage",
+              "path": "/docs/software/android/usage",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/apple/installation",
+              "path": "/docs/software/apple/installation",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/apple/usage",
+              "path": "/docs/software/apple/usage",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/community/community-atak",
+              "path": "/docs/software/community/community-atak",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/community/community-meshtasticator",
+              "path": "/docs/software/community/community-meshtasticator",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/community/index",
+              "path": "/docs/software/community",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/community/meshtastic-web-api",
+              "path": "/docs/software/community/meshtastic-web-api",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/integrations/index",
+              "path": "/docs/software/integrations",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/integrations/integrations-atak-plugin",
+              "path": "/docs/software/integrations/integrations-atak-plugin",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/integrations/integrations-caltopo",
+              "path": "/docs/software/integrations/integrations-caltopo",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/linux-native",
+              "path": "/docs/software/linux-native",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/mqtt/adafruit-io",
+              "path": "/docs/software/mqtt/adafruit-io",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/mqtt/home-assistant",
+              "path": "/docs/software/mqtt/home-assistant",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/mqtt/mosquitto",
+              "path": "/docs/software/mqtt/mosquitto",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/mqtt/mqtt",
+              "path": "/docs/software/mqtt/",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/mqtt/mqtt-python",
+              "path": "/docs/software/mqtt/mqtt-python",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/mqtt/nodered",
+              "path": "/docs/software/mqtt/nodered",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/python-cli/installation",
+              "path": "/docs/software/python/cli/installation",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/python-cli/python-cli",
+              "path": "/docs/software/python/cli",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/python-cli/usage",
+              "path": "/docs/software/python/cli/usage",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "software/web-client",
+              "path": "/docs/software/web-client",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/about",
+              "path": "/docs/about",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/getting-started/serial-drivers",
+              "path": "/docs/getting-started/serial-drivers",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/getting-started/flashing-firmware",
+              "path": "/docs/getting-started/flashing-firmware",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/configuration",
+              "path": "/docs/configuration",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "hardware",
+              "path": "/docs/hardware",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "supported-hardware",
+              "path": "/docs/supported-hardware",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "solar-powered",
+              "path": "/docs/solar-powered",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/software",
+              "path": "/docs/software",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/category/android-app",
+              "path": "/docs/category/android-app",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/category/apple-apps",
+              "path": "/docs/category/apple-apps",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/developers",
+              "path": "/docs/developers",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/development/device",
+              "path": "/docs/development/device",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/development/firmware",
+              "path": "/docs/development/firmware",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/development/docs/style-guide",
+              "path": "/docs/development/docs/style-guide",
+              "sidebar": "Sidebar"
+            },
+            {
+              "id": "/development/reference",
+              "path": "/docs/development/reference",
+              "sidebar": "Sidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "Sidebar": {
+              "link": {
+                "path": "/docs/about",
+                "label": "About"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": false
+    }
+  }
+}

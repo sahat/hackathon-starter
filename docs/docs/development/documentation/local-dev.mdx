@@ -1,0 +1,97 @@
+---
+id: local-dev
+title: Serving Docs Locally for Development
+sidebar_label: Local Development
+---
+
+:::note
+Some things won't display properly like logos or protobufs page, this is not cause for concern.
+:::
+
+## Prerequisites
+
+In order to set up your local environment, you will need to install:
+
+- [Node.js Runtime](https://nodejs.org)
+- [PNPM Package Manager](https://pnpm.io)
+
+## Getting Started
+
+### Fork the Meshtastic Repository
+
+Log into GitHub and create a fork of the [meshtastic/meshtastic](https://github.com/meshtastic/meshtastic) repository.
+
+### Clone your Meshtastic Repository fork
+
+:::note
+Replace `username` with your GitHub username.
+:::
+
+```shell title="Clone username/Meshtastic Repo"
+git clone https://github.com/username/meshtastic.git
+```
+
+### Change directory to Local copy
+
+```shell title="Change Directory"
+cd ~/meshtastic
+```
+
+### Install Dependencies
+
+```shell title="Install dependencies using Yarn"
+pnpm i
+```
+
+### Run Development Server
+
+```shell title="Run node.js server"
+pnpm start
+```
+
+:::tip
+Before submitting a pull request, it's helpful to run the following command to ensure there are no broken links or errors:
+
+```shell title="Build Project"
+pnpm build
+```
+
+:::
+
+## Update Local Repository
+
+### Verify Upstream Remote is Set
+
+```shell title="Check Remote and Upstream Repositories"
+git remote -v
+```
+
+If it's set, skip to [Align with meshtastic/meshtastic Master branch](#align-with-meshtasticmeshtastic-master-branch)
+
+#### Update/Set Upstream if it isn't configured properly
+
+If upstream exists, set the URL:
+
+```shell title="Update Upstream Repository"
+git remote set-url upstream https://github.com/meshtastic/meshtastic.git
+```
+
+If upstream doesn't exist, add the URL:
+
+```shell title="Add Upstream Repository"
+git remote add upstream https://github.com/meshtastic/meshtastic.git
+```
+
+### Align with meshtastic/meshtastic Master branch
+
+:::caution
+This will delete any unfinished work. Make sure that you've saved and committed any work you wish to push up to your fork.
+:::
+
+:::info
+The following command assumes the clone of your Meshtastic fork is in the home directory (`~/meshtastic`). Adjust the path to the correct path on your machine.
+:::
+
+```shell title="Rebase local Meshtastic to remote Meshtastic"
+cd ~/meshtastic ; git fetch upstream ; git checkout master ; git rebase upstream/master
+```

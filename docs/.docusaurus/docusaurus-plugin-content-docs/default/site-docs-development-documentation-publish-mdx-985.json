@@ -1,0 +1,29 @@
+{
+  "id": "development/documentation/publish",
+  "title": "Publishing Meshtastic.org",
+  "description": "Publish Live",
+  "source": "@site/docs/development/documentation/publish.mdx",
+  "sourceDirName": "development/documentation",
+  "slug": "/development/documentation/publish",
+  "permalink": "/docs/development/documentation/publish",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/development/documentation/publish.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "publish",
+    "title": "Publishing Meshtastic.org",
+    "sidebar_label": "Publish"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Local Development",
+    "permalink": "/docs/development/documentation/local-dev"
+  },
+  "next": {
+    "title": "Reference Material",
+    "permalink": "/docs/development/reference"
+  }
+}

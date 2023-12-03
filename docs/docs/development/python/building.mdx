@@ -1,0 +1,47 @@
+---
+id: building
+title: Building
+sidebar_label: Building
+---
+
+A python release consists of publishing the release to PyPi https://pypi.org/project/meshtastic/ as well as producing single-executable files that are downloadable from Github https://github.com/meshtastic/Meshtastic-python/releases.
+
+#### Pre-requisites
+
+No pre-requisites are needed locally to make a release. All builds are done via Github Actions currently.
+
+To test/validate, you will need to run:
+
+```shell
+pip3 install -r requirements.txt
+pip install .
+```
+
+#### Instructions
+
+- Update protobufs by running the "Update protobufs" workflow in Actions: https://github.com/meshtastic/Meshtastic-python/actions/workflows/update_protobufs.yml
+
+- run the "smoke1" test (optional):
+
+connect one device to the serial port and run:
+
+```shell
+pytest -m smoke1
+```
+
+- run unit tests: `pytest` (optional)
+
+- run bin/test-release.sh (optional)
+
+- Run the "Make Release" workflow in Actions: https://github.com/meshtastic/Meshtastic-python/actions/workflows/release.yml
+
+- After the "Make Release" is done, go into Releases: https://github.com/meshtastic/Meshtastic-python/releases There should be a draft. Add the title, update the "What's Changed" (Tip: Click on the "Auto-generate release notes" button.). Uncheck the "This is a pre-release" (if applicable).
+
+:::note
+You need permissions in the GitHub project to make a build
+:::
+
+#### Instructions - automated
+
+- Go to Actions / Make Release / Run Workflow https://github.com/meshtastic/Meshtastic-gui-installer/actions/workflows/release.yml
+- Draft & Publish release https://github.com/meshtastic/Meshtastic-gui-installer/releases

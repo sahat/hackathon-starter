@@ -1,0 +1,31 @@
+{
+  "id": "development/reference/lora-design",
+  "title": "LoRa Design Guide",
+  "description": "- LoRa Design Guide Datasheet",
+  "source": "@site/docs/development/reference/lora-design.mdx",
+  "sourceDirName": "development/reference",
+  "slug": "/development/reference/lora-design",
+  "permalink": "/docs/development/reference/lora-design",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/development/reference/lora-design.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "lora-design",
+    "title": "LoRa Design Guide",
+    "sidebar_label": "LoRa Datasheet",
+    "sidebar_position": 1
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Reference Material",
+    "permalink": "/docs/development/reference"
+  },
+  "next": {
+    "title": "GitHub",
+    "permalink": "/docs/development/reference/github"
+  }
+}

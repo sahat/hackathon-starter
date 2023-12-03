@@ -1,0 +1,31 @@
+{
+  "id": "hardware/devices/heltec/buttons",
+  "title": "Hardware Buttons",
+  "description": "Functionality",
+  "source": "@site/docs/hardware/devices/heltec/buttons.mdx",
+  "sourceDirName": "hardware/devices/heltec",
+  "slug": "/hardware/devices/heltec/buttons",
+  "permalink": "/docs/hardware/devices/heltec/buttons",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/devices/heltec/buttons.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "buttons",
+    "title": "Hardware Buttons",
+    "sidebar_label": "Buttons",
+    "sidebar_position": 1
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "HELTEC® LoRa 32",
+    "permalink": "/docs/hardware/devices/heltec/"
+  },
+  "next": {
+    "title": "Enclosures",
+    "permalink": "/docs/hardware/devices/heltec/enclosures"
+  }
+}

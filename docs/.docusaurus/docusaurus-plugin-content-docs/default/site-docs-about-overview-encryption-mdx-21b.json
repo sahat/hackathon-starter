@@ -1,0 +1,32 @@
+{
+  "id": "about/overview/encryption",
+  "title": "Meshtastic Encryption",
+  "description": "Cryptography is tricky, so we've tried to 'simply' apply standard crypto solutions to our implementation. However, the project developers are not cryptography experts.",
+  "source": "@site/docs/about/overview/encryption.mdx",
+  "sourceDirName": "about/overview",
+  "slug": "/overview/encryption",
+  "permalink": "/docs/overview/encryption",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/about/overview/encryption.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "encryption",
+    "title": "Meshtastic Encryption",
+    "sidebar_label": "Encryption",
+    "slug": "/overview/encryption",
+    "sidebar_position": 3
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Mesh Algorithm",
+    "permalink": "/docs/overview/mesh-algo"
+  },
+  "next": {
+    "title": "Range Tests",
+    "permalink": "/docs/overview/range-tests"
+  }
+}

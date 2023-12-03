@@ -1,0 +1,15 @@
+{
+  "title": "Device",
+  "slug": "/development/device",
+  "permalink": "/docs/development/device",
+  "navigation": {
+    "previous": {
+      "title": "Android",
+      "permalink": "/docs/development/android"
+    },
+    "next": {
+      "title": "Client API",
+      "permalink": "/docs/development/device/client-api"
+    }
+  }
+}

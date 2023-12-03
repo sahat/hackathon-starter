@@ -1,0 +1,15 @@
+{
+  "title": "Developers",
+  "slug": "/developers",
+  "permalink": "/docs/developers",
+  "navigation": {
+    "previous": {
+      "title": "ATAK Plugin",
+      "permalink": "/docs/software/integrations/integrations-atak-plugin"
+    },
+    "next": {
+      "title": "Android",
+      "permalink": "/docs/development/android"
+    }
+  }
+}

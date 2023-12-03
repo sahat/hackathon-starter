@@ -1,0 +1,29 @@
+{
+  "id": "development/firmware/portnum",
+  "title": "Meshtastic Port Numbers",
+  "description": "Any new app that runs on the device or via sister apps on phones/PCs should pick and use a unique \"portnum\" for their applications use.",
+  "source": "@site/docs/development/firmware/port-numbers.mdx",
+  "sourceDirName": "development/firmware",
+  "slug": "/development/firmware/portnum",
+  "permalink": "/docs/development/firmware/portnum",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/development/firmware/port-numbers.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "portnum",
+    "title": "Meshtastic Port Numbers",
+    "sidebar_label": "Port Numbers"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "OLED Localization",
+    "permalink": "/docs/development/firmware/oled-guide"
+  },
+  "next": {
+    "title": "Stacktraces",
+    "permalink": "/docs/development/firmware/stacktraces"
+  }
+}

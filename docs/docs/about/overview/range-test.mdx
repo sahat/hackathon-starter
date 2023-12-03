@@ -1,0 +1,123 @@
+---
+id: range-tests
+title: Range Tests
+slug: /overview/range-tests
+sidebar_label: Range Tests
+sidebar_position: 4
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+defaultValue="ground"
+values={[
+{label: 'Ground to Ground', value: 'ground'},
+{label: 'Ground to Air', value: 'air'},
+]}>
+
+<TabItem value="ground">
+
+## Current Ground Record: 254km
+
+- **Range:** 254km (158 miles)
+- **Record Holders:** _kboxlabs_
+- **Source:** [Meshtastic Discourse](https://meshtastic.discourse.group/t/practical-range-test-results/692/137)
+
+<h2 id="modem-settings-254">Modem Settings</h2>
+
+Default Long_Fast
+- **Frequency:** 915MHz
+- **Bandwidth:** 250
+- **Spread Factor:** 11
+- **Coding Rate:** 4/8
+
+<h2 id="node-a-254">Node A</h2>
+
+- **Device:** [RAK4631 Core](https://meshtastic.org/docs/hardware/devices/rak/core-module)  with [RAK 5005-O Base Board](https://meshtastic.org/docs/hardware/devices/rak/base-board)
+- **Firmware Version:** 2.1.17
+- **Antenna:** 902-928MHz 5.8 dBi Slinkdsco Outdoor 
+
+<h2 id="node-b-254">Node B</h2>
+
+- **Device:** [RAK4631 Core](https://meshtastic.org/docs/hardware/devices/rak/core-module)  with [RAK 19003 Mini Base Board](https://meshtastic.org/docs/hardware/devices/rak/base-board)
+- **Firmware Version:** 2.1.18
+- **Antenna:** Standard LoRa 915MHz 60mm 2dBi Omnidirectional
+
+<img src="/img/records/kboxlabs_sender.png" alt="Sending Node" />
+
+<img src="/img/records/kboxlabs_receiver.png" alt="Receiving Node" />
+
+<img src="/img/records/kboxlabs_map.png" alt="Geographic Locations" />
+
+
+## Previous Record 166km
+
+- **Range:** 166km (103 miles)
+- **Record Holder:** _PuzzledPancake_
+- **Source:** [Meshtastic Discourse](https://meshtastic.discourse.group/t/practical-range-test-results/692/44)
+
+<h2 id="modem-settings-166">Modem Settings</h2>
+
+- **Frequency:** 868MHz
+- **Bandwidth:** 125
+- **Spread Factor:** 12
+- **Coding Rate:** 4/8
+
+<h2 id="node-a-166">Node A</h2>
+
+- **Device:** [LILYGO TTGO T-Beam w/ SX1262](/docs/hardware/devices/tbeam)
+- **Firmware Version:** 1.2
+- **Antenna:** [868MHz 5dBi Antenna](https://ivent.co.nz/product/category/1000/868mhz%205dbi%20antenna%20193mm%20black%20sma%20%28m%29/38646)
+
+<h2 id="node-b-166">Node B</h2>
+
+- **Device:** [LILYGO TTGO T-Beam w/ SX1262](/docs/hardware/devices/tbeam)
+- **Firmware Version:** 1.2
+- **Antenna:** [868MHz Vertical 6dBi](https://ivent.co.nz/product/category/1000/868mhz%20vertical%206dbi%20antenna/38606)
+
+![Topographical Map](https://canada1.discourse-cdn.com/free1/uploads/meshtastic/optimized/2X/a/a0a26e4d40a5b9ccba9185eb70e2eaf66f0b0587_2_1380x888.jpeg)
+
+![Node A](https://canada1.discourse-cdn.com/free1/uploads/meshtastic/optimized/2X/9/99ec4bcc18b21f4e95ac1bcc0592b608c9c4f567_2_1332x1000.jpeg)
+
+![Node B](https://canada1.discourse-cdn.com/free1/uploads/meshtastic/optimized/2X/1/1c8bd5fc41f7bab925404b657a9c481882de9313_2_1332x1000.jpeg)
+
+<h2>Resources Used</h2>
+- http://www.heywhatsthat.com
+
+</TabItem>
+
+<TabItem value="air">
+
+## Current Air Record: 206km
+
+- **Range:** 206km (128 miles)
+- **Record Holders:** _StarWatcher, CVR, rook, kboxlabs_
+- **Source:** [Meshtastic Discourse](https://meshtastic.discourse.group/t/practical-range-test-results/692/130)
+
+<h2 id="modem-settings-206">Modem Settings</h2>
+
+Default Long_Fast
+- **Frequency:** 915MHz
+- **Bandwidth:** 250
+- **Spread Factor:** 11
+- **Coding Rate:** 4/8
+
+<h2 id="node-a-206">Node A</h2>
+
+- **Device:** [LILYGO TTGO T-Beam](/docs/hardware/devices/tbeam)
+- **Firmware Version:** 2.1.10
+- **Antenna:** Stock Antenna
+
+<h2 id="node-b-206">Node B</h2>
+
+- **Device:** [LILYGO TTGO T-Beam](/docs/hardware/devices/tbeam)
+- **Firmware Version:** 2.1.10 (modified to place GPS in flight mode)
+- **Antenna:** Stock Antenna
+
+<img src="/img/records/Devices-Balloon.png" alt="Nodes and Balloon" />
+
+<img src="/img/records/app-screenshots.png" alt="App Screenshots" />
+
+</TabItem>
+</Tabs>

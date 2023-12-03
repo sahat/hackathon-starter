@@ -1,0 +1,147 @@
+---
+id: usage
+title: Using the Meshtastic CLI
+sidebar_label: Usage
+slug: /software/python/cli/usage
+sidebar_position: 2
+---
+
+This section covers using the "meshtastic" command line executable, which displays packets sent over the network as JSON and lets you see serial debugging information from the Meshtastic devices.
+
+:::note
+The `meshtastic` command is not run within python but is a script run from your operating system shell prompt. When you type "meshtastic" and the prompt is unable to find the command in Windows, check that the python "scripts" directory [is in your path](https://datatofish.com/add-python-to-windows-path).
+:::
+
+## Getting a list of User Preferences
+
+You can get a list of user preferences by running '--get' with an invalid attribute such as 'all'.
+
+```shell
+meshtastic --get all
+```
+
+## Changing settings
+
+You can also use this tool to set any of the device parameters which are stored in persistent storage. For instance, here's how to set the device
+to keep the Bluetooth link alive for eight hours (any usage of the Bluetooth protocol from your phone will reset this timer)
+
+```shell title="Expected Output"
+# You should see a result similar to this:
+mydir$ meshtastic --set power.wait_bluetooth_secs 28800
+Connected to radio...
+Setting power.wait_bluetooth_secs to 28800
+Writing modified preferences to device...
+```
+
+Or to set a node at a fixed position and never power up the GPS.
+
+```shell
+meshtastic --setlat 25.2 --setlon -16.8 --setalt 120
+```
+
+Or to configure an ESP32 based board to join a Wifi network as a station:
+
+```shell
+meshtastic --set network.wifi_ssid mywifissid --set network.wifi_psk mywifipsw --set network.wifi_enabled 1
+```
+
+:::note
+For a full list of preferences which can be set (and their documentation) can be found in the [protobufs](https://buf.build/meshtastic/protobufs/docs/main:meshtastic#meshtastic.User).
+:::
+
+### Changing channel settings
+
+The channel settings can also be changed, either by using a standard (shareable) meshtastic URL or you can set a particular channel parameter (for advanced users).
+
+:::warning
+Meshtastic encodes the radio channel and PSK in the channel's URL. All nodes must connect to the channel again by using the URL provided after a change in this section by performing the `--info` switch.
+:::
+
+```shell
+meshtastic --ch-set name mychan --ch-index 1 --info
+```
+
+You can even set the channel preshared key to a particular AES128 or AES256 sequence.
+
+```shell
+meshtastic --ch-index 1 --ch-set psk 0x1a1a1a1a2b2b2b2b1a1a1a1a2b2b2b2b1a1a1a1a2b2b2b2b1a1a1a1a2b2b2b2b --info
+```
+
+Use `--ch-set psk none --ch-index 0` to turn off encryption.
+
+Use `--ch-set psk random --ch-index 0` to assign a new (high quality) random AES256 key to the primary channel (similar to what the Android app does when making new channels).
+
+Use `--ch-set psk default --ch-index 0` to restore the standard 'default' (minimally secure, because it is in the source code for anyone to read) AES128 key.
+
+All `ch-set` commands need to have the `ch-index` parameter specified:
+
+```shell
+meshtastic --ch-index 1 --ch-set name mychan --info
+```
+
+### Ham radio support
+
+Meshtastic is designed to be used without a radio operator license. If you do have a license you can set your operator ID and turn off encryption with:
+
+```shell title="Expected Output"
+# You should see a result similar to this:
+mydir$ meshtastic --set-ham KI1345
+Connected to radio
+Setting Ham ID to KI1345 and turning off encryption
+Writing modified channels to device
+```
+
+Toggling `set-ham` changes your device settings in the following ways.
+
+|   Setting    | `set-ham` Default |                               Normal Default                               |
+| :----------: | :---------------: | :------------------------------------------------------------------------: |
+| `IsLicensed` |      `true`       | See [User Config - IsLicensed](/docs/configuration/radio/user#is-licensed-ham) |
+|  `LongName`  |  _Your CallSign_  |     See [User Config - LongName](/docs/configuration/radio/user#long-name)     |
+| `ShortName`  |  _Abrv CallSign_  |    See [User Config - ShortName](/docs/configuration/radio/user#short-name)    |
+|    `PSK`     |       `""`        |         See [Channel Settings - PSK](#changing-the-preshared-key)          |
+
+## Changing the preshared key
+
+You can set the channel preshared key to a particular AES128 or AES256 sequence.
+
+```shell
+meshtastic --ch-set psk 0x1a1a1a1a2b2b2b2b1a1a1a1a2b2b2b2b1a1a1a1a2b2b2b2b1a1a1a1a2b2b2b2b --info
+```
+
+Use "--ch-set psk none" to turn off encryption.
+
+Use "--ch-set psk random" will assign a new (high quality) random AES256 key to the primary channel (similar to what the Android app does when making new channels).
+
+Use "--ch-set psk default" to restore the standard 'default' (minimally secure, because it is in the source code for anyone to read) AES128 key.
+
+All "ch-set" commands will default to the primary channel at index 0, but can be applied to other channels with the "ch-index" parameter.
+
+## FAQ/common problems
+
+This is a collection of common questions and answers from our friendly forum.
+
+### Permission denied: ‘/dev/ttyUSB0’
+
+As previously discussed on the [forum](https://meshtastic.discourse.group/t/question-on-permission-denied-dev-ttyusb0/590/3?u=geeksville)
+
+This indicates an OS permission problem for access by your user to the USB serial port. Typically this is fixed by the following.
+
+```shell
+sudo usermod -a -G dialout <username>
+```
+
+If adding your user to the dialout group does not work, you can use the following command to find out which group to add your user to.
+In this example (from Arch Linux) the group was "uucp"
+
+```shell
+❯ ls -al /dev/ttyACM0
+crw-rw---- 1 root uucp 166, 0 Jul 20 21:52 /dev/ttyACM0
+```
+
+### Mac OS Big Sur
+
+There is a problem with Big Sur and pyserial. The workaround is to install a newer version of pyserial:
+
+```shell
+pip3 install -U --pre pyserial
+```

@@ -1,0 +1,31 @@
+{
+  "id": "getting-started/flashing-firmware/esp32/external-serial-adapter",
+  "title": "Flashing with an External Serial Adapter",
+  "description": "This information will likely only be helpful if you've already attempted to go through the prerequisites and processes outlined in manually flashing",
+  "source": "@site/docs/getting-started/flashing-firmware/esp32/external-serial-adapter.mdx",
+  "sourceDirName": "getting-started/flashing-firmware/esp32",
+  "slug": "/getting-started/flashing-firmware/esp32/external-serial-adapter",
+  "permalink": "/docs/getting-started/flashing-firmware/esp32/external-serial-adapter",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/getting-started/flashing-firmware/esp32/external-serial-adapter.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "external-serial-adapter",
+    "title": "Flashing with an External Serial Adapter",
+    "sidebar_label": "External Serial Adapter (Advanced Users)",
+    "sidebar_position": 4
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "CLI Script (Advanced Users)",
+    "permalink": "/docs/getting-started/flashing-firmware/esp32/cli-script"
+  },
+  "next": {
+    "title": "nRF52 Device",
+    "permalink": "/docs/getting-started/flashing-firmware/nrf52/"
+  }
+}

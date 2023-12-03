@@ -1,0 +1,29 @@
+{
+  "id": "development/js/http-api",
+  "title": "HTTP API",
+  "description": "Methods and types for using the device HTTP API are exported",
+  "source": "@site/docs/development/js/http-api.mdx",
+  "sourceDirName": "development/js",
+  "slug": "/development/js/http-api",
+  "permalink": "/docs/development/js/http-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/development/js/http-api.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "http-api",
+    "title": "HTTP API",
+    "sidebar_label": "HTTP API"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Events",
+    "permalink": "/docs/development/js/events"
+  },
+  "next": {
+    "title": "Docs",
+    "permalink": "/docs/development/docs"
+  }
+}

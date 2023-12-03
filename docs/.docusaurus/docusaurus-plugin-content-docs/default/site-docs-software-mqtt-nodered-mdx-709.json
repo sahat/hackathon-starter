@@ -1,0 +1,31 @@
+{
+  "id": "software/mqtt/nodered",
+  "title": "Node-RED",
+  "description": "Using MQTT with Node-RED",
+  "source": "@site/docs/software/mqtt/nodered.mdx",
+  "sourceDirName": "software/mqtt",
+  "slug": "/software/mqtt/nodered",
+  "permalink": "/docs/software/mqtt/nodered",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/mqtt/nodered.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "nodered",
+    "title": "Node-RED",
+    "sidebar_label": "Node-RED",
+    "sidebar_position": 3
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Python",
+    "permalink": "/docs/software/mqtt/mqtt-python"
+  },
+  "next": {
+    "title": "Home Assistant",
+    "permalink": "/docs/software/mqtt/home-assistant"
+  }
+}

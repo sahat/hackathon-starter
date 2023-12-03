@@ -1,0 +1,29 @@
+{
+  "id": "configuration/module/external-notification",
+  "title": "External Notification Module Configuration",
+  "description": "The External Notification Module will allow you to connect a buzzer, speaker, LED, or other device to notify you when a message has been received from the mesh network. You can enable up to 3 pins independently from each other.",
+  "source": "@site/docs/configuration/module/external-notification.mdx",
+  "sourceDirName": "configuration/module",
+  "slug": "/configuration/module/external-notification",
+  "permalink": "/docs/configuration/module/external-notification",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/module/external-notification.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "external-notification",
+    "title": "External Notification Module Configuration",
+    "sidebar_label": "External Notification"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Detection Sensor",
+    "permalink": "/docs/configuration/module/detection-sensor"
+  },
+  "next": {
+    "title": "MQTT",
+    "permalink": "/docs/configuration/module/mqtt"
+  }
+}

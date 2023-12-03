@@ -1,0 +1,7 @@
+label: Development
+collapsible: true
+position: 7
+link:
+  type: generated-index
+  title: Developers
+  slug: /developers

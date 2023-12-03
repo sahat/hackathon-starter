@@ -1,0 +1,13 @@
+{
+  "type": "mdx",
+  "permalink": "/e/",
+  "source": "@site/src/pages/e/index.md",
+  "title": "Meshtastic Channel Settings",
+  "description": "QR Code Share Channel URL Should be opened in the appropriate app",
+  "frontMatter": {
+    "id": "e",
+    "title": "Meshtastic Channel Settings",
+    "sidebar_label": "e"
+  },
+  "unlisted": false
+}

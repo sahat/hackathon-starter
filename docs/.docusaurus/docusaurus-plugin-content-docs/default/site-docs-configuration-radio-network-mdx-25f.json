@@ -1,0 +1,29 @@
+{
+  "id": "configuration/radio/network",
+  "title": "Network Configuration",
+  "description": "The Network config options are: NTP Server, WiFi Enabled, WiFi SSID, WiFi PSK, Ethernet Enabled, IPv4 Networking Mode, and Static Address. Network config uses an admin message sending a Config.Network protobuf.",
+  "source": "@site/docs/configuration/radio/network.mdx",
+  "sourceDirName": "configuration/radio",
+  "slug": "/configuration/radio/network",
+  "permalink": "/docs/configuration/radio/network",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/radio/network.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "network",
+    "title": "Network Configuration",
+    "sidebar_label": "Network"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "LoRa",
+    "permalink": "/docs/configuration/radio/lora"
+  },
+  "next": {
+    "title": "Position",
+    "permalink": "/docs/configuration/radio/position"
+  }
+}

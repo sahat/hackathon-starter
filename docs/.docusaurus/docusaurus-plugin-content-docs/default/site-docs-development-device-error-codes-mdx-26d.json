@@ -1,0 +1,31 @@
+{
+  "id": "development/device/error-codes",
+  "title": "Critical Error Codes",
+  "description": "The device might report these fault codes on the screen, but it will also be outputted on the device serial output. If you encounter a fault code, please post on the forum and we'll try to help.",
+  "source": "@site/docs/development/device/error-codes.mdx",
+  "sourceDirName": "development/device",
+  "slug": "/development/device/error-codes",
+  "permalink": "/docs/development/device/error-codes",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/development/device/error-codes.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "error-codes",
+    "title": "Critical Error Codes",
+    "sidebar_label": "Error Codes",
+    "sidebar_position": 4
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Module API",
+    "permalink": "/docs/development/device/module-api"
+  },
+  "next": {
+    "title": "Firmware",
+    "permalink": "/docs/development/firmware"
+  }
+}

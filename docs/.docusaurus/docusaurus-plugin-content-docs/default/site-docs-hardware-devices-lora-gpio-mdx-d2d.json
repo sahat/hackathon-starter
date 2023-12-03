@@ -1,0 +1,31 @@
+{
+  "id": "hardware/devices/lora/gpio",
+  "title": "GPIO",
+  "description": "GPIO IO12",
+  "source": "@site/docs/hardware/devices/lora/gpio.mdx",
+  "sourceDirName": "hardware/devices/lora",
+  "slug": "/hardware/devices/lora/gpio",
+  "permalink": "/docs/hardware/devices/lora/gpio",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/devices/lora/gpio.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "gpio",
+    "title": "GPIO",
+    "sidebar_label": "GPIO",
+    "sidebar_position": 4
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Enclosures",
+    "permalink": "/docs/hardware/devices/lora/enclosures"
+  },
+  "next": {
+    "title": "HELTEC® LoRa 32",
+    "permalink": "/docs/hardware/devices/heltec/"
+  }
+}

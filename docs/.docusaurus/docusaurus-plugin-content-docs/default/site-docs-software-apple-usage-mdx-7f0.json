@@ -1,0 +1,29 @@
+{
+  "id": "software/apple/usage",
+  "title": "Apple Application Usage",
+  "description": "Offline Maps",
+  "source": "@site/docs/software/apple/usage.mdx",
+  "sourceDirName": "software/apple",
+  "slug": "/software/apple/usage",
+  "permalink": "/docs/software/apple/usage",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/software/apple/usage.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "usage",
+    "title": "Apple Application Usage",
+    "sidebar_label": "Usage"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/docs/software/apple/installation"
+  },
+  "next": {
+    "title": "Web Client",
+    "permalink": "/docs/software/web-client"
+  }
+}

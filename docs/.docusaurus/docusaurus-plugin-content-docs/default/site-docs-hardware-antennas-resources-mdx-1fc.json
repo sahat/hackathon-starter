@@ -1,0 +1,31 @@
+{
+  "id": "hardware/antennas/resources",
+  "title": "LoRa Antenna Resources",
+  "description": "More antenna information",
+  "source": "@site/docs/hardware/antennas/resources.mdx",
+  "sourceDirName": "hardware/antennas",
+  "slug": "/hardware/antennas/resources",
+  "permalink": "/docs/hardware/antennas/resources",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/antennas/resources.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "resources",
+    "title": "LoRa Antenna Resources",
+    "sidebar_label": "Resources",
+    "sidebar_position": 4
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "LoRa Antennas",
+    "permalink": "/docs/hardware/antennas/lora-antenna"
+  },
+  "next": {
+    "title": "Solar Powered",
+    "permalink": "/docs/solar-powered"
+  }
+}

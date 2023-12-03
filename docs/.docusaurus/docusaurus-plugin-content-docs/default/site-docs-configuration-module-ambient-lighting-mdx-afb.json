@@ -1,0 +1,29 @@
+{
+  "id": "configuration/module/ambient-lighting",
+  "title": "Ambient Lighting Module Usage",
+  "description": "The Ambient Lighting Module has settings for control of onboard LEDs and allows users to adjust the brightness levels and respective color levels. Initially created for the RAK14001 RGB LED module using the NCP5623 with I2C. Config options are: LED State, Current, Red Level, Green Level, and Blue Level.",
+  "source": "@site/docs/configuration/module/ambient-lighting.mdx",
+  "sourceDirName": "configuration/module",
+  "slug": "/configuration/module/ambient-lighting",
+  "permalink": "/docs/configuration/module/ambient-lighting",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/module/ambient-lighting.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "ambient-lighting",
+    "title": "Ambient Lighting Module Usage",
+    "sidebar_label": "Ambient Lighting"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Module Config",
+    "permalink": "/docs/configuration/module"
+  },
+  "next": {
+    "title": "Audio",
+    "permalink": "/docs/configuration/module/audio"
+  }
+}

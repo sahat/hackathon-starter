@@ -1,0 +1,15 @@
+{
+  "title": "Android App",
+  "slug": "/category/android-app",
+  "permalink": "/docs/category/android-app",
+  "navigation": {
+    "previous": {
+      "title": "Software",
+      "permalink": "/docs/software"
+    },
+    "next": {
+      "title": "Installation",
+      "permalink": "/docs/software/android/installation"
+    }
+  }
+}

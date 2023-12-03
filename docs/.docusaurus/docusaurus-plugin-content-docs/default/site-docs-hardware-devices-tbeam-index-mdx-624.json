@@ -1,0 +1,31 @@
+{
+  "id": "hardware/devices/tbeam/tbeam",
+  "title": "LILYGO® TTGO T-Beam Devices",
+  "description": "All T-beam models (with the exception of the S3-Core) have an 18650 size battery holder on the rear of the device. This is designed to the original specification of the 18650 and only fits unprotected flat top 18650 cells. Button top and protected cells are typically longer than 65mm, often approaching 70mm.",
+  "source": "@site/docs/hardware/devices/tbeam/index.mdx",
+  "sourceDirName": "hardware/devices/tbeam",
+  "slug": "/hardware/devices/tbeam/",
+  "permalink": "/docs/hardware/devices/tbeam/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/hardware/devices/tbeam/index.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "tbeam",
+    "title": "LILYGO® TTGO T-Beam Devices",
+    "sidebar_label": "LILYGO® T-Beam",
+    "sidebar_position": 2
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Peripherals",
+    "permalink": "/docs/hardware/devices/rak/peripherals"
+  },
+  "next": {
+    "title": "Screens",
+    "permalink": "/docs/hardware/devices/tbeam/screens"
+  }
+}

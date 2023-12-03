@@ -7,16 +7,16 @@ html.h-100
     meta(name='csrf-token', content=_csrf)
     title #{title} - Public Phone
     link(rel='shortcut icon', href='/favicon.png')
-    link(rel='stylesheet', href='/css/bbs-style.css')
+    //link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css')
-
     block head
 
-  body.d-flex.flex-column.h-100.bbs-body
+  body.d-flex.flex-column.h-100
     include partials/header
 
     .flex-shrink-0
-      .container.mt-3.bbs-container
+      .container.mt-3
         include partials/flash
         block content
 
@@ -43,6 +43,7 @@ html.h-100
         }
       });
 
+    // Google Analytics: change UA-XXXXX-X to be your site's ID
     script.
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

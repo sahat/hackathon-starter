@@ -1,0 +1,29 @@
+{
+  "id": "configuration/module/traceroute",
+  "title": "Traceroute Module Usage",
+  "description": "Due to the limited bandwidth of LoRa, Meshtastic does not keep track of the nodes a message used to hop to the destination. However, from firmware 2.0.8 on, there is a Traceroute Module that can show you this.",
+  "source": "@site/docs/configuration/module/traceroute.mdx",
+  "sourceDirName": "configuration/module",
+  "slug": "/configuration/module/traceroute",
+  "permalink": "/docs/configuration/module/traceroute",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/module/traceroute.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "traceroute",
+    "title": "Traceroute Module Usage",
+    "sidebar_label": "Traceroute"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Telemetry",
+    "permalink": "/docs/configuration/module/telemetry"
+  },
+  "next": {
+    "title": "Remote Nodes",
+    "permalink": "/docs/configuration/remote-admin"
+  }
+}

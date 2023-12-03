@@ -1,0 +1,29 @@
+{
+  "id": "configuration/radio/display",
+  "title": "Display Configuration",
+  "description": "The display config options are: Screen On Duration, Auto Carousel Interval, Always Point North, GPS Format, Preferred Display Units, OLED Definition, Display Mode, Heading Bold, and Wake on Tap or Motion. Display config uses an admin message sending a Config.Display protobuf.",
+  "source": "@site/docs/configuration/radio/display.mdx",
+  "sourceDirName": "configuration/radio",
+  "slug": "/configuration/radio/display",
+  "permalink": "/docs/configuration/radio/display",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/radio/display.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "display",
+    "title": "Display Configuration",
+    "sidebar_label": "Display"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Device",
+    "permalink": "/docs/configuration/radio/device"
+  },
+  "next": {
+    "title": "LoRa",
+    "permalink": "/docs/configuration/radio/lora"
+  }
+}

@@ -1,0 +1,39 @@
+---
+id: http-api
+title: HTTP API
+sidebar_label: HTTP API
+---
+
+:::info
+Methods and types for using the device [HTTP API](/docs/development/device/http-api) are exported
+:::
+
+```typescript
+import {
+  Client,
+  Types,
+  Protobuf,
+  SettingsManager
+} from "@meshtastic/meshtasticjs";
+
+/**
+ * Connection method
+ */
+
+const client = new Client();
+SettingsManager.setDebugMode(Protobuf.LogLevelEnum.DEBUG);
+
+const connection = client.createHTTPConnection();
+connection.connect("192.168.x.x");
+
+const restartDevice: Promise<void> = connection.restartDevice();
+const getStatistics: Promise<void | Types.WebSPIFFSResponse> =
+  connection.getStatistics();
+const getNetworks: Promise<void | Types.WebNetworkResponse> =
+  connection.getNetworks();
+const getSPIFFS: Promise<void | Types.WebSPIFFSResponse> =
+  connection.getSPIFFS();
+const deleteSPIFFS: Promise<void | Types.WebSPIFFSResponse> =
+  connection.deleteSPIFFS();
+const blinkLED: Promise<void | any> = connection.blinkLED();
+```

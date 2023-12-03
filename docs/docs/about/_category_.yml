@@ -1,0 +1,7 @@
+position: 1 # float position is supported
+label: About
+collapsible: true # make the category collapsible
+link:
+  type: generated-index
+  title: About Meshtastic
+  slug: /about

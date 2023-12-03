@@ -1,0 +1,31 @@
+{
+  "id": "configuration/radio/config",
+  "title": "Radio Configuration",
+  "description": "There are several config sections in the Meshtastic firmware, these are broken out so they can be sent as small admin messages over the mesh.",
+  "source": "@site/docs/configuration/radio/index.mdx",
+  "sourceDirName": "configuration/radio",
+  "slug": "/configuration/radio/",
+  "permalink": "/docs/configuration/radio/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/configuration/radio/index.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "config",
+    "title": "Radio Configuration",
+    "sidebar_label": "Radio Config",
+    "sidebar_position": 1
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Configuration",
+    "permalink": "/docs/configuration"
+  },
+  "next": {
+    "title": "Bluetooth",
+    "permalink": "/docs/configuration/radio/bluetooth"
+  }
+}

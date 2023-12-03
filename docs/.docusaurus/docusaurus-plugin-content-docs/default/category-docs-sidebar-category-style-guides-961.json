@@ -1,0 +1,15 @@
+{
+  "title": "Style Guides",
+  "slug": "/development/docs/style-guide",
+  "permalink": "/docs/development/docs/style-guide",
+  "navigation": {
+    "previous": {
+      "title": "Docs",
+      "permalink": "/docs/development/docs"
+    },
+    "next": {
+      "title": "Markdown Features",
+      "permalink": "/docs/development/documentation/style-guides/markdown"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "development/python/building",
+  "title": "Building",
+  "description": "A python release consists of publishing the release to PyPi https//github.com/meshtastic/Meshtastic-python/releases.",
+  "source": "@site/docs/development/python/building.mdx",
+  "sourceDirName": "development/python",
+  "slug": "/development/python/building",
+  "permalink": "/docs/development/python/building",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/development/python/building.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "frontMatter": {
+    "id": "building",
+    "title": "Building",
+    "sidebar_label": "Building"
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Python",
+    "permalink": "/docs/development/python/"
+  },
+  "next": {
+    "title": "Python Library",
+    "permalink": "/docs/development/python/library"
+  }
+}

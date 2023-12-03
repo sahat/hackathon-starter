@@ -1,0 +1,32 @@
+{
+  "id": "about/overview/range-tests",
+  "title": "Range Tests",
+  "description": "<Tabs",
+  "source": "@site/docs/about/overview/range-test.mdx",
+  "sourceDirName": "about/overview",
+  "slug": "/overview/range-tests",
+  "permalink": "/docs/overview/range-tests",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/meshtastic/meshtastic/edit/master/docs/about/overview/range-test.mdx",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "range-tests",
+    "title": "Range Tests",
+    "slug": "/overview/range-tests",
+    "sidebar_label": "Range Tests",
+    "sidebar_position": 4
+  },
+  "sidebar": "Sidebar",
+  "previous": {
+    "title": "Encryption",
+    "permalink": "/docs/overview/encryption"
+  },
+  "next": {
+    "title": "Contributing",
+    "permalink": "/docs/contributing"
+  }
+}
