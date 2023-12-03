@@ -382,7 +382,7 @@ exports.getVerifyEmail = (req, res, next) => {
       to: req.user.email,
       from: process.env.SITE_CONTACT_EMAIL,
       subject: 'Please verify your email address on Public Phone',
-      text: `Thank you for registering with hackathon-starter.\n\n
+      text: `Thank you for registering with Public Phone.\n\n
         This verify your email address please click on the following link, or paste this into your browser:\n\n
         http://${req.headers.host}/account/verify/${token}\n\n
         \n\n
