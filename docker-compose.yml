@@ -19,7 +19,7 @@ services:
       - "8080:8080"
     environment:
       - MONGODB_URI=mongodb://mongo:27017/test
-      - POSTGRES_URI=postgresql://admin:admin@postgres:5432/your_db_name
+      - POSTGRES_URI=postgresql://admin:admin@postgres:5432/publicphone
     links:
       - mongo
       - postgres
@@ -29,10 +29,10 @@ services:
 
   docusaurus:
     image: node:latest
-    working_dir: /app
+    working_dir: /app/docs
     volumes:
-      - ./docs:/app/docs
-    command: sh -c "cd docs && npm install && npm start"
+      - ./app/docs:/app/docs
+    command: sh -c "npm install && npm start"
     ports:
       - "3000:3000"
     depends_on:

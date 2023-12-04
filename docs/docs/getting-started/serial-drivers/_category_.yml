@@ -1,7 +1,0 @@
-label: Install Serial Drivers
-collapsible: true # make the category collapsible
-position: 1
-link:
-  type: generated-index
-  title: Installing Serial Drivers
-  slug: /getting-started/serial-drivers

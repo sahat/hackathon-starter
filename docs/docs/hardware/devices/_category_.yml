@@ -1,7 +1,0 @@
-label: Devices
-collapsible: true
-position: 1
-link:
-  type: generated-index
-  title: Supported Devices
-  slug: supported-hardware

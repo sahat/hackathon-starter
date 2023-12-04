@@ -1,7 +1,0 @@
-label: Firmware
-collapsible: true
-position: 1
-link:
-  type: generated-index
-  title: Firmware
-  slug: /development/firmware
