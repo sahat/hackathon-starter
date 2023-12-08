@@ -6,6 +6,7 @@ ENV NODE_ENV development
 COPY .env.example /app/.env.example
 COPY . /app
 
+RUN apt update && apt install python3 -y
 RUN npm install pm2 -g
 RUN if [ "$NODE_ENV" = "production" ]; then \
     npm install --omit=dev; \

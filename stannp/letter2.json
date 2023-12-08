@@ -1,0 +1,12 @@
+{
+"test":1,
+"country":"US",
+"pdf":"letter.pdf",
+"file":"letter.pdf",
+"duplex":1,
+"transactional":1,
+"addons":"FIRST_CLASS",
+"tags":"doflo",
+"ocr":1,
+"template":"314976"
+}
