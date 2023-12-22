@@ -1,0 +1,72 @@
+# General Settings
+
+#settings:
+#  default-executor: jmeter  # if you prefer using other executor by default - change this option
+#  artifacts-dir: ~/bzt-artifacts/%Y-%m-%d_%H-%M-%S.%f  # change the default place to store artifact files
+#  check-updates: true  # check for newer version of Taurus on startup
+#  check-interval: 1s  # interval for Taurus engine to check test status and do other actions
+#  proxy:  # custom proxy settings
+#    address: http://127.0.0.1:8080  # proxy server address
+#    username: user  # username and password used if authentication is configured on proxy server
+#    password: 12345
+
+---
+
+# CLI aliases - configure your "shortcuts" to apply config pieces
+
+#cli-aliases:  # user-defined config pieces to apply from command-line
+#  debug:  # this alias is called as '-debug' from command line
+#    settings:
+#      verbose: true
+#    modules:
+#      jmeter:
+#        gui: true
+#      console:
+#         disable: true
+
+---
+
+# BlazeMeter reporting settings
+
+#modules:
+#  blazemeter:
+#    token: <key id>:<key secret>  # API id and API secret joined with ':'
+#
+#    test: Test Name  # name for test to store reports
+#    project: Project Name  # name for project to store test, can be numeric project ID
+#    public-report: false  # set to true to create a public link to the report
+#
+#    browser-open: start  # auto-open the report in browser,
+#                         # can be "start", "end", "both", "none"
+#    send-interval: 30s   # send data each n-th second
+#    timeout: 5s  # connect and request timeout for BlazeMeter API
+#    artifact-upload-size-limit: 10  # limit max size of file (in megabytes)
+#                                   # that goes into zip for artifact upload, 10 by default
+#    check-interval: 5s  # interval which Taurus uses to query test status from BlazeMeter
+
+---
+
+# JMeter settings
+
+#modules:
+#  jmeter:
+#    properties:  # JMeter properties for every JMeter run
+#      prop_name: prop value
+#    system-properties:  # Java system properties
+#      sun.net.http.allowRestrictedHeaders: "true"
+#    memory-xmx: 4G  # allow JMeter to use up to 4G of memory
+#    path: ~/.bzt/jmeter-taurus/{version}/bin/jmeter  # path to local jmeter installation
+#    version: 3.2  # version to use
+#    plugins:  # plugins to install
+#    - jpgc-json=2.2
+#    - jmeter-ftp
+#    - jpgc-casutg
+
+---
+
+# Gatling settings
+
+#modules:
+#  gatling:
+#    properties:
+#      gatling.data.file.bufferSize: 256 # output buffer size, 256 bytes by default
