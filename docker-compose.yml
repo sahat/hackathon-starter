@@ -2,16 +2,57 @@ version: '3.8'
 
 services:
   mongo:
-    image: mongo
+    image: mongo:4.4
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   postgres:
-    image: postgres
+    image: postgres:16
+    ports:
+      - "5432:5432" # Expose PostgreSQL on port 5432 of the host machine
     environment:
       POSTGRES_DB: publicphone
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
+      GUACAMOLE_DB: guacamole_db
+      GUACAMOLE_USER: guacamole_user
+      GUACAMOLE_PASSWORD: admin
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./initdb/:/docker-entrypoint-initdb.d/ # Mount the directory containing initdb.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d publicphone"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  guacd:
+    image: guacamole/guacd
+    ports:
+      - "4822:4822"
+    restart: always
+
+  guacamole:
+    image: guacamole/guacamole
+    depends_on:
+      - guacd
+      - postgres
+      - mongo
+    environment:
+      GUACD_HOSTNAME: guacd
+      POSTGRES_HOSTNAME: postgres
+      POSTGRES_DATABASE: guacamole_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      GUAC_POSTGRES_URI: postgresql://guacadmin@postgres:5432/guacamole_db
+    ports:
+      - "8081:8080"
+    restart: always
 
   web:
     build: .
@@ -20,12 +61,16 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongo:27017/test
       - POSTGRES_URI=postgresql://admin:admin@postgres:5432/publicphone
-    links:
-      - mongo
-      - postgres
+      - GUAC_POSTGRES_URI=postgresql//guacadmin@postgres:5432/guacamole_db
     depends_on:
-      - mongo
-      - postgres
+      mongo:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres-data:
+  mongo-data:
+
+networks:
+  default:
