@@ -1,0 +1,15 @@
+{
+    "github": {
+      "token": "",
+      "enabled": false,
+      "username": "",
+      "repository": {
+        "name": "",
+        "owner": "",
+        "private": true,
+        "description": "",
+        "creationDate": ""
+      },
+      "savedAutomations": []
+    }
+  }

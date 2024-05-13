@@ -1,0 +1,20 @@
+{
+  "id": "wflugtX04ZSWmFMnm",
+  "version": 536,
+  "trigger": {
+    "id": "wtrmY17kfFwaww3QK",
+    "workflowTriggerTypeId": "wttCRON0000000000"
+  },
+  "graph": {
+    "id": "wgrKBWzziwKfvxCUx",
+    "entryWorkflowActionId": "wacRT6GdaesiRD7Pv",
+    "actionsById": {
+      "wacRT6GdaesiRD7Pv": {
+        "id": "wacRT6GdaesiRD7Pv",
+        "workflowActionTypeId": "watCUSTOMSCRIPT00",
+        "nextWorkflowActionId": null,
+        "description": null
+      }
+    }
+  }
+}

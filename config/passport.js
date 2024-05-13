@@ -1,6 +1,15 @@
 const passport = require('passport');
 const refresh = require('passport-oauth2-refresh');
 const axios = require('axios');
+const dotenv = require('dotenv');
+// include Airtable config file
+const airtable = require('../config/airtable');
+
+const crypto = require('crypto');
+const {URL} = require('url');
+const qs = require('qs');
+const bodyParser = require('body-parser');
+
 const { Strategy: InstagramStrategy } = require('passport-instagram');
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: FacebookStrategy } = require('passport-facebook');
@@ -11,12 +20,12 @@ const { Strategy: GitHubStrategy } = require('passport-github2');
 const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
 const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
 const { Strategy: OpenIDStrategy } = require('passport-openid');
-const { OAuthStrategy } = require('passport-oauth');
-const { OAuth2Strategy } = require('passport-oauth');
+const { Strategy: OAuth2Strategy } = require('passport-oauth2');
 const _ = require('lodash');
 const moment = require('moment');
 
 const User = require('../models/User');
+const { ref } = require('firebase/database');
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -572,108 +581,6 @@ const twitchStrategyConfig = new TwitchStrategy({
 passport.use('twitch', twitchStrategyConfig);
 refresh.use('twitch', twitchStrategyConfig);
 
-/**
- * Tumblr API OAuth.
- */
-passport.use('tumblr', new OAuthStrategy({
-  requestTokenURL: 'https://www.tumblr.com/oauth/request_token',
-  accessTokenURL: 'https://www.tumblr.com/oauth/access_token',
-  userAuthorizationURL: 'https://www.tumblr.com/oauth/authorize',
-  consumerKey: process.env.TUMBLR_KEY,
-  consumerSecret: process.env.TUMBLR_SECRET,
-  callbackURL: '/auth/tumblr/callback',
-  passReqToCallback: true
-},
-(req, token, tokenSecret, profile, done) => {
-  User.findById(req.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
-    user.save((err) => {
-      done(err, user);
-    });
-  });
-}));
-
-/**
- * Foursquare API OAuth.
- */
-passport.use('foursquare', new OAuth2Strategy({
-  authorizationURL: 'https://foursquare.com/oauth2/authorize',
-  tokenURL: 'https://foursquare.com/oauth2/access_token',
-  clientID: process.env.FOURSQUARE_ID,
-  clientSecret: process.env.FOURSQUARE_SECRET,
-  callbackURL: process.env.FOURSQUARE_REDIRECT_URL,
-  passReqToCallback: true
-},
-(req, accessToken, refreshToken, profile, done) => {
-  User.findById(req.user._id, (err, user) => {
-    if (err) { return done(err); }
-    user.tokens.push({ kind: 'foursquare', accessToken });
-    user.save((err) => {
-      done(err, user);
-    });
-  });
-}));
-
-/**
- * Steam API OpenID.
- */
-passport.use(new OpenIDStrategy({
-  apiKey: process.env.STEAM_KEY,
-  providerURL: 'http://steamcommunity.com/openid',
-  returnURL: `${process.env.BASE_URL}/auth/steam/callback`,
-  realm: `${process.env.BASE_URL}/`,
-  stateless: true,
-  passReqToCallback: true,
-}, (req, identifier, done) => {
-  const steamId = identifier.match(/\d+$/)[0];
-  const profileURL = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_KEY}&steamids=${steamId}`;
-
-  if (req.user) {
-    User.findOne({ steam: steamId }, (err, existingUser) => {
-      if (err) { return done(err); }
-      if (existingUser) {
-        req.flash('errors', { msg: 'There is already an account associated with the SteamID. Sign in with that account or delete it, then link it with your current account.' });
-        done(err);
-      } else {
-        User.findById(req.user.id, (err, user) => {
-          if (err) { return done(err); }
-          user.steam = steamId;
-          user.tokens.push({ kind: 'steam', accessToken: steamId });
-          axios.get(profileURL)
-            .then((res) => {
-              const profile = res.data.response.players[0];
-              user.profile.name = user.profile.name || profile.personaname;
-              user.profile.picture = user.profile.picture || profile.avatarmedium;
-              user.save((err) => {
-                done(err, user);
-              });
-            })
-            .catch((err) => {
-              user.save((err) => { done(err, user); });
-              done(err, null);
-            });
-        });
-      }
-    });
-  } else {
-    axios.get(profileURL)
-      .then(({ data }) => {
-        const profile = data.response.players[0];
-        const user = new User();
-        user.steam = steamId;
-        user.email = `${steamId}@steam.com`; // steam does not disclose emails, prevent duplicate keys
-        user.tokens.push({ kind: 'steam', accessToken: steamId });
-        user.profile.name = profile.personaname;
-        user.profile.picture = profile.avatarmedium;
-        user.save((err) => {
-          done(err, user);
-        });
-      }).catch((err) => {
-        done(err, null);
-      });
-  }
-}));
 
 /**
  * Pinterest API OAuth.
@@ -739,6 +646,106 @@ const quickbooksStrategyConfig = new OAuth2Strategy({
 });
 passport.use('quickbooks', quickbooksStrategyConfig);
 refresh.use('quickbooks', quickbooksStrategyConfig);
+
+/**
+ * Airtable API Oauth2
+ */
+
+const airtableStrategyConfig = new OAuth2Strategy({
+    authorizationURL: 'https://airtable.com/oauth2/v1/authorize', // Ajustez selon la doc d'Airtable
+    tokenURL: 'https://airtable.com/oauth2/v1/token', // Ajustez selon la doc d'Airtable
+    clientID: process.env.AIRTABLE_CLIENT_ID,
+    clientSecret: process.env.AIRTABLE_CLIENT_SECRET,
+    callbackURL: `${process.env.BASE_URL}/auth/airtable/callback`,
+    scope: process.env.AIRTABLE_SCOPE, // Ajustez selon la doc d'Airtable
+    passReqToCallback: true, // Pour passer la requête au callback
+    state: true,
+    pkce: true
+  }, (req, accessToken, refreshToken, params, profile, done) => {
+    
+    console.log('req query: ', req.query);
+    console.log('accessToken: ', accessToken)
+    console.log('refreshToken: ', refreshToken)
+    console.log('params: ', params)
+    
+    // Si params n'est pas vide, on a reçu un code d'autorisation
+    if (params) {
+      // On fait un appel à l'API d'Airtable pour récupérer les informations de l'utilisateur
+      axios.get('https://api.airtable.com/v0/meta/whoami', {
+        headers: {
+            "Authorization": "Bearer " + accessToken
+        }
+      })
+      .then((response) => {
+        // Retreive the user infos from the response
+        let airtableUser = response.data;
+        console.log('airtableUser: ', airtableUser);
+
+        const user = new User({
+          email: airtableUser.email,
+          password: null // Because we are using OAuth, we don't need a password
+        });
+        // On vérifie si l'utilisateur est déjà enregistré dans la base de données en le cherchant par son email avec 'where'
+        User.findOne({ where: { email: user.email } })
+          .then(existingUser => {
+            if (existingUser) {
+              // Si l'utilisateur existe déjà, on le connecte
+              console.log('User already exists');
+              done(null, existingUser);
+            }
+            user.save()
+              .then(() => {
+                req.logIn(user, (err) => {
+                  if (err) {
+                    return done(err);
+                  }
+                  console.log('User saved successfully');
+                  done(null, user);
+                });
+              })
+              .catch(err => done(err));
+          })
+          .catch(err => done(err));
+      })
+      .catch((error) => {
+        console.error('Error while fetching user infos from Airtable API: ', error);
+        done(error);
+      });
+    }
+  });
+  
+    // User.findById(req.user._id, (err, user) => {
+    //   if (err) { return done(err); }
+
+    //   // Logique pour mettre à jour ou ajouter le token d'Airtable à l'utilisateur
+    //   const existingToken = user.tokens.find(token => token.kind === 'airtable');
+      
+    //   if (existingToken) {
+    //     existingToken.accessToken = accessToken;
+    //     existingToken.accessTokenExpires = moment().add(params.expires_in, 'seconds').toDate();
+    //     existingToken.refreshToken = refreshToken;
+    //     existingToken.refreshTokenExpires = moment().add(params.x_refresh_token_expires_in, 'seconds').toDate();
+    //   } else {
+    //     user.tokens.push({
+    //       kind: 'airtable',
+    //       accessToken,
+    //       accessTokenExpires: moment().add(params.expires_in, 'seconds').toDate(),
+    //       refreshToken,
+    //       refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds').toDate()
+    //     });
+    //   }
+
+    //   user.save((err) => {
+    //     if (err) { return done(err); }
+    //     return done(null, user);
+    //   });
+    // });
+//   }
+// );
+
+passport.use('airtable', airtableStrategyConfig);
+refresh.use('airtable', airtableStrategyConfig);
+
 
 /**
  * Login Required middleware.

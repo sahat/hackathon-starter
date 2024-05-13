@@ -39,7 +39,7 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.config({ path: '.env.example' });
+dotenv.config({ path: '.env' });
 
 /**
  * Controllers (route handlers).
@@ -48,6 +48,7 @@ const homeController = require('./controllers/home');
 const onboardingController = require('./controllers/onboarding');
 const dashboardController = require('./controllers/dashboard');
 const userController = require('./controllers/user');
+const settingsController = require('./controllers/settings');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 
@@ -176,6 +177,8 @@ app.post('/account/profile', passportConfig.isAuthenticated, userController.post
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.get('/account/settings', passportConfig.isAuthenticated, settingsController.getSettings);
+app.post('/account/settings', passportConfig.isAuthenticated, settingsController.postSettings);
 
 /**
  * API examples routes.
@@ -246,6 +249,11 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 });
 app.get('/auth/twitch', passport.authenticate('twitch', {}));
 app.get('/auth/twitch/callback', passport.authenticate('twitch', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
+
+app.get('/auth/airtable', passport.authenticate('airtable', { scope: process.env.AIRTABLE_SCOPES }));
+app.get('/auth/airtable/callback', passport.authenticate('airtable', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 

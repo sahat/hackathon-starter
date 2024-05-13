@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "postinstall": "npm rebuild node-sass",
+    "dev": "nodemon app.js",
     "start": "node app.js",
     "test": "nyc mocha --timeout=10000 --exit",
     "lint": "eslint \"**/*.js\""
@@ -37,6 +38,7 @@
     "express-flash": "^0.0.2",
     "express-handlebars": "^6.0.3",
     "express-session": "^1.17.2",
+    "firebase": "^9.22.2",
     "googleapis": "^99.0.0",
     "i18n": "^0.15.1",
     "instagram-node": "^0.5.8",
@@ -51,7 +53,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "node-quickbooks": "^2.0.39",
-    "node-sass": "^7.0.1",
+    "node-sass": "^9.0.0",
     "node-sass-middleware": "^1.0.1",
     "nodemailer": "^6.7.3",
     "nodemailer-sendgrid": "^1.0.3",
@@ -63,6 +65,7 @@
     "passport-linkedin-oauth2": "^2.0.0",
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
+    "passport-oauth2": "^1.8.0",
     "passport-oauth2-refresh": "^2.1.0",
     "passport-openid": "^0.4.0",
     "passport-snapchat": "^1.0.0",

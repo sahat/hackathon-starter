@@ -1,8 +1,12 @@
 const Sequelize = require('sequelize');
 const bcrypt = require('@node-rs/bcrypt');
 const crypto = require('crypto');
+const path = require('path');
+const fs = require('fs');
 
 const sequelize = new Sequelize(process.env.POSTGRESQL_URI);
+
+const settingsModel = JSON.parse(fs.readFileSync(path.join(__dirname, './json/userSettingsModel.json')));
 
 const User = sequelize.define('User', {
   email: {
@@ -12,7 +16,7 @@ const User = sequelize.define('User', {
   },
   password: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   passwordResetToken: Sequelize.STRING,
   passwordResetExpires: Sequelize.DATE,
@@ -38,7 +42,7 @@ const User = sequelize.define('User', {
   },
   settings: {
     type: Sequelize.JSONB,
-    defaultValue: {},
+    defaultValue: settingsModel,
     allowNull: false,
     get() {
       return this.getDataValue('settings') || {};
@@ -51,8 +55,10 @@ const User = sequelize.define('User', {
   timestamps: true,
   hooks: {
     beforeCreate: async (user) => {
-      const hashedPassword = await bcrypt.hash(user.password, 10);
-      user.password = hashedPassword;
+      if (user.password) {
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+        user.password = hashedPassword;
+      }
     }
   }
 });
@@ -97,9 +103,9 @@ User.prototype.disableGithub = function () {
 
 
 // Synchronisation de la base de données avec le modèle
-sequelize.sync()
+User.sync()
   .then(() => {
-    console.log('Tables synchronisées');
+    console.log('Table User synchronisée');
   })
   .catch((error) => {
     console.error('Erreur lors de la synchronisation de la base de données:', error);
