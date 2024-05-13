@@ -1,0 +1,143 @@
+extends ../layout
+
+block content
+  .container.py-4
+    .pb-2.mt-2.mb-4.border-bottom
+      h3.fw-normal Settings
+    include ../partials/flash
+    main
+      form(action='/account/settings', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-floating.mb-3
+          //- We show a card to user with his/her Github integration status
+          #github-card
+            .card
+              .card-body
+                .row
+                  .col-md-3
+                    img(src='https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', width='100', height='100')
+                  .col-md-9
+                    h5.card-title
+                      | GitHub&nbsp;
+                      if settings.github.enabled
+                        span.badge.bg-success.text-white.ml-2 Connected
+                      else
+                        span.badge.bg-danger.text-white.ml-2 Not connected
+                    p.card-text
+                      | Username: &nbsp;
+                      if settings.github.enabled
+                        span.text-primary #{settings.github.username}
+                      else
+                        span.text-danger Not set
+                    p.card-text
+                      | You can update your GitHub PAT here.
+                    input.form-control(type='text', name='githubToken', id='githubToken', value='', autocomplete='off')
+
+        //-   input.form-control(type='email', name='email', id='email', value=user.email, autocomplete='email', required)
+        //-   label(for='email') Email
+        //-   .pl-3
+        //-     if user.emailVerified
+        //-       .text-success.font-italic
+        //-         | Verified
+        //-     else
+        //-       .text-danger.font-italic
+        //-         | Unverified: &nbsp;
+        //-         a(href='/account/verify') Send verification email
+        //- .form-floating.mb-3
+        //-   input.form-control(type='text', name='name', id='name', value=user.profile && user.profile.name ? user.profile.name : '', autocomplete='name')
+        //-   label(for='name') Name
+        //- .form-floating.mb-3
+        //-   input.form-control(type='text', name='location', id='location', value=user.profile && user.profile.location ? user.profile.location : '', autocomplete)
+        //-   label(for='location') Location
+        //- .form-floating.mb-3
+        //-   input.form-control(type='text', name='website', id='website', value=user.profile && user.profile.website ? user.profile.website : '', autocomplete='url')
+        //-   label.col-md-3.col-form-label.font-weight-bold.text-right(for='website') Website
+        //- .form-floating.mb-3
+        //-   img.rounded(src=user.gravatar(), class='profile', width='100', height='100')
+        .form-group
+          .pl-2
+            button.w-100.btn.btn-lg.btn-success(type="submit")
+              i.fas.fa-floppy-disk.fa-sm
+              | &nbsp;Save settings
+      //- .py-4
+      //- .pb-2.mt-2.mb-4.border-bottom
+      //-   h3.fw-normal Change Password
+      //- main
+      //-   form(action='/account/password', method='POST')
+      //-     input(type='hidden', name='_csrf', value=_csrf)
+      //-     .form-floating.mb-3
+      //-       input.form-control(type='password', name='password', id='password', autocomplete='new-password', minlength='8', required)
+      //-       label(for='password') New Password
+      //-     .form-floating.mb-3
+      //-       input.form-control(type='password', name='confirmPassword', id='confirmPassword', autocomplete='new-password', minlength='8', required)
+      //-       label(for='confirmPassword') Confirm Password
+      //-     .form-group
+      //-       .pl-2
+      //-        button.w-100.btn.btn-lg.btn-success(type="submit")
+      //-           i.fas.fa-lock.fa-sm
+      //-           | &nbsp;Change Password
+      //- .py-4
+      //- .pb-2.mt-2.mb-4.border-bottom
+      //-   h3.fw-normal Delete Account
+      //- main
+      //-   form(action='/account/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
+      //-     .form-floating.mb-3
+      //-       p.pl-2 You can delete your account, but keep in mind this action is irreversible.
+      //-       input(type='hidden', name='_csrf', value=_csrf)
+      //-       .pl-2
+      //-         button.w-100.btn.btn-lg.btn-danger(type="submit")
+      //-           i.fas.fa-trash-alt.fa-sm
+      //-           | &nbsp;Delete my account
+
+      //- .pb-2.mt-2.mb-4.border-bottom
+      //-   h3.fw-normal Linked Accounts
+      //- .form-group
+      //-   .offset-sm-3.col-md-7.pl-2
+      //-     if user.instagram
+      //-       p.mb-1: a.text-danger(href='/account/unlink/instagram') Unlink your Instagram account
+      //-     else
+      //-       p.mb-1: a(href='/auth/instagram') Link your Instagram account
+      //-   .offset-sm-3.col-md-7.pl-2
+      //-     if user.google
+      //-       p.mb-1: a.text-danger(href='/account/unlink/google') Unlink your Google account
+      //-     else
+      //-       p.mb-1: a(href='/auth/google') Link your Google account
+      //-   .offset-sm-3.col-md-7.pl-2
+      //-     if user.facebook
+      //-       p.mb-1: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
+      //-     else
+      //-       p.mb-1: a(href='/auth/facebook') Link your Facebook account
+      //-     if user.snapchat
+      //-       p.mb-1: a.text-danger(href='/account/unlink/snapchat') Unlink your Snapchat account
+      //-     else
+      //-       p.mb-1: a(href='/auth/snapchat') Link your Snapchat account
+      //-   .offset-sm-3.col-md-7.pl-2
+      //-     if user.twitter
+      //-       p.mb-1: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
+      //-     else
+      //-       p.mb-1: a(href='/auth/twitter') Link your Twitter account
+      //-   .offset-sm-3.col-md-7.pl-2
+      //-     if user.github
+      //-       p.mb-1: a.text-danger(href='/account/unlink/github') Unlink your GitHub account
+      //-     else
+      //-       p.mb-1: a(href='/auth/github') Link your GitHub account
+      //-   .offset-sm-3.col-md-7.pl-2
+      //-     if user.linkedin
+      //-       p.mb-1: a.text-danger(href='/account/unlink/linkedin') Unlink your LinkedIn account
+      //-     else
+      //-       p.mb-1: a(href='/auth/linkedin') Link your LinkedIn account
+      //-   .offset-sm-3.col-md-7.pl-2
+      //-     if user.steam
+      //-       p.mb-1: a.text-danger(href='/account/unlink/steam') Unlink your Steam account
+      //-     else
+      //-       p.mb-1: a(href='/auth/steam') Link your Steam account
+      //-   .offset-sm-3.col-md-7.pl-2
+      //-     if user.twitch
+      //-       p.mb-1: a.text-danger(href='/account/unlink/twitch') Unlink your Twitch account
+      //-     else
+      //-       p.mb-1: a(href='/auth/twitch') Link your Twitch account
+      //-   .offset-sm-3.col-md-7.pl-2
+      //-     if user.quickbooks
+      //-       p.mb-1: a.text-danger(href='/account/unlink/quickbooks') Unlink your QuickBooks account
+      //-     else
+      //-       p.mb-1: a(href='/auth/quickbooks') Link your QuickBooks account
