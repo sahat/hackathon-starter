@@ -106,103 +106,7 @@ block content
       //- Show step 1
       onboardingStepOne.classList.remove('d-none');
       onboardingStepTwo.classList.add('d-none');
-    }
-
-    //- submitBtn.addEventListener('click', async (event) => {
-    //-   event.preventDefault();
-    //-   const githubToken = inputPat.value;
-    //-   const githubRepoUrl = extractOwnerAndRepoFromGithubUrl(inputRepo.value);
-
-    //-   submitBtn.innerHTML = spinnerIcon;
-
-    //-   //- try {
-    //-   //-   const response = await fetch('/onboarding', {
-    //-   //-     method: 'POST',
-    //-   //-     headers: {
-    //-   //-       'Content-Type': 'application/json'
-    //-   //-     },
-    //-   //-     body: JSON.stringify({ githubToken, githubRepoUrl })
-    //-   //-   });
-    //-   //-   const data = await response.json();
-    //-   //-   console.log(data);
-    //-   //-   if (data.status === 'success') {
-    //-   //-     //- On retire les animations précédentes
-    //-   //-     onboardingStepOne.classList.remove('animate__slideInLeft');
-    //-   //-     //- On cache le premier en slide out left step
-    //-   //-     onboardingStepOne.classList.add('animate__slideOutLeft');
-    //-   //-     //- On attend la fin de l'animation et on affiche le second en slide in right
-    //-   //-     setTimeout(function() {
-    //-   //-       onboardingStepTwo.classList.remove('d-none');
-    //-   //-       onboardingStepTwo.classList.add('animate__slideInRight');
-    //-   //-       onboardingStepOne.classList.add('d-none');
-    //-   //-     }, 800);
-    //-   //-   } else {
-    //-   //-     //- On affiche un message d'erreur
-    //-   //-     const flashMsg = document.createElement('div');
-    //-   //-     flashMsg.classList.add('alert', 'alert-danger', 'alert-dismissible', 'fade', 'show');
-    //-   //-     flashMsg.setAttribute('role', 'alert');
-    //-   //-     flashMsg.innerHTML = data.message;
-    //-   //-     form.prepend(flashMsg);
-    //-   //-     submitBtn.innerHTML = 'Next';
-    //-   //-   }
-    //-   //- } catch (error) {
-    //-   //-   console.log(error);
-    //-   //- }
-    //- });
-
-    //- try {
-    //-     const response = await fetch(`${apiBaseUrl}${repoUrl.owner}/${repoUrl.repo}`, {
-    //-       method: 'GET',
-    //-       headers: {
-    //-         'Authorization': `Bearer ${token}`
-    //-       }
-    //-     });
-    //-     if (response.ok) {
-    //-       // handle success
-    //-       console.log('Success', response);
-    //-       const successMsg = document.createElement('div');
-    //-       successMsg.classList.add('alert', 'alert-success');
-    //-       successMsg.textContent = 'Your repository is valid!';
-    //-       repoForm.parentElement.insertBefore(successMsg, repoForm);
-          
-    //-       //- On attend 2 secondes
-    //-       setTimeout(async () => {
-    //-         //- On retire les animations précédentes
-    //-         onboardingStepOne.classList.remove('animate__slideInLeft');
-    //-         onboardingStepTwo.classList.remove('animate__slideOutRight');
-            
-    //-         //- On cache le premier step et on affiche le second
-    //-         onboardingStepOne.classList.add('animate__animated', 'animate__slideOutLeft');
-    //-         onboardingStepTwo.classList.add('animate__animated', 'animate__slideInRight');
-
-    //-         //- On attend la fin de l'animation
-    //-         setTimeout(function() {
-    //-           onboardingStepTwo.classList.remove('d-none');
-    //-           onboardingStepOne.classList.add('d-none');
-    //-         }, 800);
-    //-         //- Response.body is a ReadableStream we need to convert to JSON
-    //-         const data = await response.json();
-    //-         console.log(data);
-    //-         showGithubRepoInfos(data);
-    //-       }, 1600);
-    //-     } else {
-    //-       // handle error
-    //-       console.log('Error');
-    //-       const errorMsg = document.createElement('div');
-    //-       errorMsg.classList.add('alert', 'alert-danger');
-    //-       errorMsg.textContent = 'Your repository is not valid!';
-    //-       form.parentElement.insertBefore(errorMsg, form);
-    //-       submitBtn.innerHTML = 'Retry';
-    //-     }
-
-    //-     //- form.classList.add('d-none');
-
-    //-   } catch (error) {
-    //-     console.log(error);
-    //-     submitBtn.innerHTML = 'Retry';
-    //-   }
-    //- });
-      
+    }      
 
     changeRepoBtn.addEventListener('click', (event) => {
       //- On retire le message flash
@@ -224,37 +128,6 @@ block content
         onboardingStepTwo.classList.add('d-none');
       }, 800);
     });
-
-    //- //- If user see everything is ok, he can click on finish button, we save repo infos in the database and redirect him to the dashboard
-    //- finishBtn.addEventListener('click', (event) => {
-    //-   event.preventDefault();
-    //-   window.location.href = '/dashboard';
-
-    //-   //- //- On envoie les infos du repo à l'API
-    //-   //- const repoUrl = extractOwnerAndRepoFromGithubUrl(inputRepo.value);
-    //-   //- const repoInfos = {
-    //-   //-   owner: repoUrl.owner,
-    //-   //-   repo: repoUrl.repo,
-    //-   //- };
-    //-   //- console.log(repoInfos);
-    //-   //- //- On envoie les infos du repo à l'API
-    //-   //- fetch('/api/v1/repo', {
-    //-   //-   method: 'POST',
-    //-   //-   headers: {
-    //-   //-     'Content-Type': 'application/json'
-    //-   //-   },
-    //-   //-   body: JSON.stringify(repoInfos)
-    //-   //- })
-    //-   //- .then(response => response.json())
-    //-   //- .then(data => {
-    //-   //-   console.log('Success:', data);
-    //-   //-   //- On redirige vers le dashboard
-    //-   //-   window.location.href = '/dashboard';
-    //-   //- })
-    //-   //- .catch((error) => {
-    //-   //-   console.error('Error:', error);
-    //-   //- });
-    //- });
 
     function extractOwnerAndRepoFromGithubUrl(url) {
       const regex = /^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/?$/i;
@@ -290,39 +163,3 @@ block content
       repoDescriptionField.textContent = description;
       createdDateField.textContent = `Created on ${new Date(creationDate).toLocaleDateString()}`;
     }
-
-      //- // Open a new tab to airtable.com in var to manipulate it
-      //- const airtableTab = window.open('https://airtable.com/', '_blank');
-
-      //- // Check if the tab is loaded
-      //- const checkTab = setInterval(() => {
-      //-   if (airtableTab.document.readyState === 'complete') {
-      //-     clearInterval(checkTab);
-      //-     // Check if the user is connected to Airtable (if profile pic is found)
-      //-     const checkAirtableConnection = setInterval(() => {
-      //-       const loggedIn = airtableTab.document.querySelector("#id_e6e6ba3ea6da14ac1603184b1204d837 > div > div > div > div > img");
-      //-       if (loggedIn) {
-      //-         clearInterval(checkAirtableConnection);
-      //-         // The user is logged in, update the UI accordingly
-      //-         const title = document.querySelector("#onboarding h1");
-      //-         title.textContent = "Connection to Airtable successful! 🎉";
-      //-         const loader = document.querySelector("#onboarding .loader");
-      //-         loader.classList.add("d-none");
-      //-         setTimeout(() => {
-      //-           airtableTab.close();
-      //-           window.location.href = '/onboarding?airtable';
-      //-         }, 1000);
-      //-       } else {
-      //-         // The user is not logged in, show an error message
-      //-         const title = document.querySelector("#onboarding h1");
-      //-         title.textContent = "Unable to connect to Airtable 😕";
-      //-         const loader = document.querySelector("#onboarding .loader");
-      //-         loader.classList.add("d-none");
-      //-         const message = document.createElement("p");
-      //-         message.classList.add("text-danger");
-      //-         message.textContent = "Please log in to Airtable and try again.";
-      //-         document.querySelector("#onboarding").appendChild(message);
-      //-       }
-      //-     }, 1000);
-      //-   }
-      //- }, 1000);
