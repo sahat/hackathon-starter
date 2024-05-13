@@ -6,6 +6,14 @@ block content
       h3.fw-normal Sign in
     include ../partials/flash
     main.form-signin
+      //- form(action="/login/airtable", method="get") 
+      //-   button.w-100.btn.btn-lg.bg-white.border.shadow(type="submit")
+      //-     | &nbsp;Sign in with&nbsp;
+      //-     img(src="/airtable-logo-150.png", alt="airtable logo", width="100", height="27")
+      //- a.btn.btn-block.btn-google.btn-social(href='/auth/google')
+      //-     i.fab.fa-google.fa-xs
+      //-     | Sign in with Google
+      //- p.mt-3.text-center or
       form(method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-floating

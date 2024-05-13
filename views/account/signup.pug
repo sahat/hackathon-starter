@@ -5,6 +5,12 @@ block content
     .pb-2.mt-2.mb-4.border-bottom
       h3.fw-normal Sign up
     main.form-signin 
+      include ../partials/flash
+      //- form(action="/auth/airtable", method="get") 
+      //-   button.w-100.btn.btn-lg.bg-white.border.shadow(type="submit")
+      //-     | &nbsp;Sign up with&nbsp;
+      //-     img(src="/airtable-logo-150.png", alt="airtable logo", width="100", height="27")
+      //- p.mt-3.text-center or
       form(id='signup-form', method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-floating

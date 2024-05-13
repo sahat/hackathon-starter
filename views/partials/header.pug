@@ -1,73 +1,105 @@
-nav.navbar.navbar-expand-lg.py-2.bg-light.navbar-light.fixed-top.border-bottom
-  .container.d-flex.flex-wrap
-    a.d-flex.align-items-center.mb-2.mb-lg-0.text-dark.text-decoration-none(href='/')
-        svg(d-block.mx-auto, xmlns='http://www.w3.org/2000/svg', width='24', height='24', fill='none', stroke='currentColor', stroke-linecap='round', stroke-linejoin='round', stroke-width='2', role='img', viewBox='0 0 24 24')
-          title paab
-          circle(cx='12', cy='12', r='10')
-          path(d='M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94')
-    button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarColor02' aria-controls='navbarColor02' aria-expanded='false' aria-label='Toggle navigation')
-        span.navbar-toggler-icon
-    #navbarColor02.collapse.navbar-collapse
-      if !user
-        ul.navbar-nav.me-auto
-          li.nav-item
-            a.nav-link.link-dark.px-2.active(href='/', aria-current='page') Home
-          li.nav-item
-            a.nav-link.link-dark.px-2(href='#') Features
-          li.nav-item
-            a.nav-link.link-dark.px-2(href='#') Pricing
-          li.nav-item
-            a.nav-link.link-dark.px-2(href='#') FAQs
-          li.nav-item
-            a.nav-link.link-dark.px-2(href='#') About
-        ul.nav
-          form.d-flex
-            li.nav-item
-              a.nav-link.link-dark.px-2(href='/login') Login
-            li.nav-item
-              a.nav-link.link-dark.px-2(href='/signup') Create Account
-      else
-        ul.navbar-nav.me-auto
-          li.nav-item
-            a.nav-link.link-dark.px-2.active(href='/dashboard', aria-current='page') Dashboard
-          li.nav-item
-            a.nav-link.link-dark.px-2(href='#') Features
-          li.nav-item
-            a.nav-link.link-dark.px-2(href='#') Pricing
-          li.nav-item
-            a.nav-link.link-dark.px-2(href='#') FAQs
-          li.nav-item
-            a.nav-link.link-dark.px-2(href='#') About
-        ul.nav
-          form.d-flex
-            li.nav-item
-              a.nav-link.link-dark.px-2(href='/account') My Account
-            li.nav-item
-              a.nav-link.link-dark.px-2(href='/logout') Sign out
-
-
-
-//- nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+//- nav.navbar.navbar-expand-lg.py-2.bg-light.navbar-light.fixed-top.border-bottom
 //-   .container
-//-     a.navbar-brand(href='/')
-//-       img.d-inline-block.align-text-top(src='/bootstrap-logo.svg' alt='' width='30' height='24')
-//-       |  paab
-//-     button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarColor01' aria-controls='navbarColor01' aria-expanded='false' aria-label='Toggle navigation')
-//-       span.navbar-toggler-icon
-//-     #navbarColor01.collapse.navbar-collapse
-//-       ul.navbar-nav.me-auto.mb-2.mb-lg-0
-//-         li.nav-item
-//-           a.nav-link(class=(title === 'Home') ? 'active' : '')(href='/') Home
-//-         li.nav-item
-//-           a.nav-link(class=(title === 'API Examples') ? 'active' : '')(href='/api') API Examples
-//-         li.nav-item
-//-           a.nav-link(class=(title === 'Contact') ? 'active' : '')(href='/contact') Contact
-
-      form.d-flex
-        if !user
-          a.btn.btn-outline-light.me-2(href='/login') Login
-          a.btn.btn-primary(href='/signup') Create Account
-        else
-          a.btn.btn-primary.me-2(href='/account') My Account
-          a.btn.btn-outline-danger(href='/logout') Sign out
-
+//-     .d-flex.flex-wrap.align-items-center.justify-content-center.justify-content-lg-start
+//-       a.d-flex.align-items-center.mb-2.mb-lg-0.text-dark.text-decoration-none(href='/')
+//-         svg(d-block.mx-auto, xmlns='http://www.w3.org/2000/svg', width='24', height='24', fill='none', stroke='currentColor', stroke-linecap='round', stroke-linejoin='round', stroke-width='2', role='img', viewBox='0 0 24 24')
+//-           title paab
+//-           circle(cx='12', cy='12', r='10')
+//-           path(d='M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94')
+//-       button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarColor02' aria-controls='navbarColor02' aria-expanded='false' aria-label='Toggle navigation')
+//-         span.navbar-toggler-icon
+//-       #navbarColor02.collapse.navbar-collapse
+//-       if !user
+//-         ul.nav.col-12.col-lg-auto.me-lg-auto.mb-2.justify-content-center.mb-md-0
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2.active(href='/', aria-current='page') Home
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2(href='#') Features
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2(href='#') Pricing
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2(href='#') FAQs
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2(href='#') About
+//-         ul.nav
+//-           form.d-flex
+//-             li.nav-item
+//-               a.nav-link.link-dark.px-2(href='/login') Login
+//-             li.nav-item
+//-               a.nav-link.link-dark.px-2(href='/signup') Create Account
+//-       else
+//-         ul.nav.col-12.col-lg-auto.me-lg-auto.mb-2.justify-content-center.mb-md-0
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2.active(href='/dashboard', aria-current='page') Dashboard
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2(href='#') Features
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2(href='#') Pricing
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2(href='#') FAQs
+//-           li.nav-item
+//-             a.nav-link.link-dark.px-2(href='#') About
+//-         .dropdown.text-end
+//-           a#dropdownUser1.d-block.link-dark.text-decoration-none.dropdown-toggle(href='#', data-bs-toggle='dropdown', aria-expanded='false')
+//-             img.rounded-circle(src='https://github.com/mdo.png', alt='mdo', width='32', height='32')
+//-           ul.dropdown-menu.text-small(aria-labelledby='dropdownUser1', style='')
+//-             li
+//-               a.dropdown-item(href='/account') Account Settings
+//-             li
+//-               a.dropdown-item(href='/logout') Sign out
+//- .p-5 
+nav.navbar.navbar-expand-lg.navbar-light.bg-light.navbar-light.border-bottom.fixed-top.py-2
+  .container
+    a.navbar-brand(href='#')
+      svg(d-block.mx-auto, xmlns='http://www.w3.org/2000/svg', width='24', height='24', fill='none', stroke='currentColor', stroke-linecap='round', stroke-linejoin='round', stroke-width='2', role='img', viewBox='0 0 24 24')
+        title paab
+        circle(cx='12', cy='12', r='10')
+        path(d='M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94')
+    button.navbar-toggler.collapsed(type='button', data-bs-toggle='collapse', data-bs-target='#navbar-content')
+      span.navbar-toggler-icon
+    #navbar-content.collapse.navbar-collapse
+      if !user
+        ul.navbar-nav.mr-auto.mb-2.mb-lg-0
+          li.nav-item
+            a.nav-link.active(aria-current='page', href='/') Home
+          li.nav-item
+            a.nav-link.active(href='#') Features
+          li.nav-item
+            a.nav-link.active(href='#') Pricing
+          li.nav-item
+            a.nav-link.active(href='#') FAQs
+          li.nav-item
+            a.nav-link.active(href='#') About
+        .d-flex.ms-auto
+          ul.nav
+            form.d-flex
+              li.nav-item
+                a.nav-link.link-dark.px-2(href='/login') Login
+              li.nav-item
+                a.nav-link.link-dark.px-2(href='/signup') Create Account
+      else 
+        ul.navbar-nav.mr-auto.mb-2.mb-lg-0
+          li.nav-item
+            a.nav-link.active(aria-current='page', href='/dashboard') Dashboard
+          li.nav-item
+            a.nav-link.active(href='#') Features
+          li.nav-item
+            a.nav-link.active(href='#') Pricing
+          li.nav-item
+            a.nav-link.active(href='#') FAQs
+          li.nav-item
+            a.nav-link.active(href='#') About
+        .d-flex.ms-auto
+          ul.nav
+            li.nav-item.dropdown
+              a#dropdownUserProfile.nav-link.dropdown-toggle(href='#', data-bs-toggle='dropdown', data-bs-auto-close='outside')
+                img.rounded-circle(src=user.gravatar(), alt='Profile picture from Gravatar', width='32', height='32')
+              ul.dropdown-menu.shadow(aria-labelledby='dropdownUserProfile')
+                li
+                  a.dropdown-item(href='/account') Account
+                li
+                  a.dropdown-item(href='/account/settings') Settings
+                li
+                  hr.dropdown-divider
+                li
+                  a.dropdown-item(href='/logout') Log out
