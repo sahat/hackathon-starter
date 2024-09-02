@@ -54,4 +54,11 @@ jobs:
           docker tag myapp:latest ${{ secrets.USERNAME }}/myapp:latest
 
       - name: Push Docker image to DockerHub
-        run: docker push ${{ secrets.USERNAME }}/myapp:latest
+        run: |
+          docker push ${{ secrets.USERNAME }}/myapp:latest
+
+      - name: Deploy Docker container
+        run: |
+          docker stop myapp || true
+          docker rm myapp || true
+          docker run -d -p 3000:3000 --name myapp ${{ secrets.USERNAME }}/myapp:latest
