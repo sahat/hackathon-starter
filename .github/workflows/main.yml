@@ -30,9 +30,9 @@ jobs:
     - run: npm run build --if-present
     - run: npm test
 
-    deploy:
+  deploy:
     runs-on: ubuntu-latest
-    needs: build_and_test
+    needs: build
     if: github.ref == 'refs/heads/main' && success()
 
     steps:
