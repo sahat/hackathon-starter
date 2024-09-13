@@ -1,31 +1,36 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: Application CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "triet-elsa" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "triet-elsa" ]
 
+env: 
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME}}
 jobs:
-  build:
-
+  build_and_push_to_registry:
+    name: Build and push Docker image to Docker Hub
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm install
-    - run: npm run lint
-    - run: npm run test
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}          
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+            
+      - name: Get Current Date 
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
+      - name: Build Docker Image
+        run: docker build . --file Dockerfile --tag $DOCKERHUB_USERNAME/$REPOSITORY_NAME:${{ steps.date.outputs.date }}
+      - name: Push Docker Image to Docker Hub
+        run: docker push $DOCKERHUB_USERNAME/$REPOSITORY_NAME:${{ steps.date.outputs.date }}
