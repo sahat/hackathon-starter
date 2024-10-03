@@ -16,7 +16,7 @@
     "start": "npm run scss && node app.js",
     "test": "nyc mocha --timeout=60000 --exit",
     "lint": "eslint \"**/*.js\"",
-    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi",
+    "prepare": "cross-env NODE_ENV=development husky install",
     "scss": "sass --no-source-map --load-path=./ --update ./public/css:./public/css",
     "lintStage": "node_modules/.bin/lint-staged"
   },
@@ -80,12 +80,13 @@
   },
   "devDependencies": {
     "chai": "^4.3.10",
+    "cross-env": "^7.0.3",
     "eslint": "^8.51.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-chai-friendly": "^0.7.2",
     "eslint-plugin-import": "^2.28.1",
     "husky": "^8.0.3",
-    "lint-staged": "^15.0.1",
+    "lint-staged": "^15.2.10",
     "mocha": "^10.2.0",
     "mongodb-memory-server": "^9.0.1",
     "nyc": "^15.1.0",
