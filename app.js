@@ -32,7 +32,8 @@ const secureTransfer = (process.env.BASE_URL.startsWith('https'));
 // Consider adding a proxy such as cloudflare for production.
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  max: 500, 
+  message:"Too many request,please try again after 15 minutes",// Limit each IP to 500 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
@@ -65,18 +66,27 @@ console.log('Run this app using "npm start" to include sass/scss/css builds.\n')
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('MongoDB connected successfully');
+    })
+    .catch((err) => {
+        console.error(err);
+        console.log('%s MongoDB connection error. Please make sure MongoDB is running.');
+        process.exit(1); // Exit with error code
+    });
+
 mongoose.connection.on('error', (err) => {
-  console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.');
-  process.exit();
+    console.error(err);
+    console.log('%s MongoDB connection error. Please make sure MongoDB is running.');
+    process.exit(1);
 });
 
 /**
  * Express configuration.
  */
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
-app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
+app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.set('trust proxy', numberOfProxies);
@@ -100,9 +110,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
+  if (req.path.startsWith('/api')){
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
-    next();
+    return next();
   } else {
     lusca.csrf()(req, res, next);
   }
@@ -274,7 +284,7 @@ app.listen(app.get('port'), () => {
   const port = parseInt(BASE_URL.slice(colonIndex + 1), 10);
 
   if (!BASE_URL.startsWith('http://localhost')) {
-    console.log(`The BASE_URL env variable is set to ${BASE_URL}. If you directly test the application through http://localhost:${app.get('port')} instead of the BASE_URL, it may cause a CSRF mismatch or an Oauth authentication failur. To avoid the issues, change the BASE_URL or configure your proxy to match it.\n`);
+    console.log(`The BASE_URL env variable is set to ${BASE_URL}. If you directly test the application through http://localhost:${app.get('port')} instead of the BASE_URL, it may cause a CSRF mismatch or an Oauth authentication failure. To avoid the issues, change the BASE_URL or configure your proxy to match it.\n`);
   } else if (app.get('port') !== port) {
     console.warn(`WARNING: The BASE_URL environment variable and the App have a port mismatch. If you plan to view the app in your browser using the localhost address, you may need to adjust one of the ports to make them match. BASE_URL: ${BASE_URL}\n`);
   }

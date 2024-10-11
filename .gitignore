@@ -50,3 +50,6 @@ Thumbs.db
 .Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
+
+#The uploaded files 
+uploads/
