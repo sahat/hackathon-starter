@@ -1,27 +1,34 @@
 extends layout
 
 block content
-  h1 Hackathon Starter
-  p.lead A boilerplate for Node.js web applications.
+  h1 Welcome to Hackathon Starter
+  p.lead A boilerplate for Node.js web applications, now with updates for pipeline testing.
   hr
   .row
     .col-md-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+      h2 Updated Heading 1
+      p This section now contains updated content for testing purposes. Adjust as needed.
       p
-        a.btn.btn-primary(href='#', role='button') View details »
+        a.btn.btn-success(href='#', role='button') Explore Now »
     .col-md-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+      h2 Updated Heading 2
+      p Test the updates in this section to verify changes in the pipeline deployment.
       p
-        a.btn.btn-primary(href='#', role='button') View details »
+        a.btn.btn-warning(href='#', role='button') Try This »
     .col-md-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+      h2 Interactive Section
+      p Click the button below to confirm interactive functionality in the application.
       p
-        a.btn.btn-primary(href='#', role='button') View details »
+        button.btn.btn-primary#interactive-button Test Interaction »
     .col-md-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+      h2 Final Section
+      p This section demonstrates another modification to ensure deployment success.
       p
-        a.btn.btn-primary(href='#', role='button') View details »
+        a.btn.btn-danger(href='#', role='button') Finalize »
+
+script.
+  // JavaScript for interactivity testing
+  document.getElementById('interactive-button').addEventListener('click', () => {
+    alert('Interactive Test Successful!');
+  });
+

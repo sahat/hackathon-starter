@@ -7,56 +7,54 @@
 
 
 // Basic Snapchat Button CSS
+// Snapchat Button CSS
 .btn-snapchat {
-  background-color: #fffc00;
-  color: #000 !important;
+  background-color: #fffc00; // Bright yellow background
+  color: #000 !important;   // Black text color
 
   &:hover, &:active {
-    background-color: #f1ef00;
+    background-color: #e6e600; // Slightly darker yellow for hover effect
   }
 }
 
-// Basic Twitch Button CSS
+// Twitch Button CSS
 .btn-twitch {
-  background-color: #6441a5;
-  color: #FFF !important;
+  background-color: #6441a5; // Original Twitch purple
+  color: #FFF !important;    // White text color
 
   &:hover, &:active {
-    background-color: #503484;
+    background-color: #503484; // Darker purple for hover effect
   }
 }
 
+// Twitter Button CSS
 .btn-twitter {
+  color: #FFF !important;  // White text color by default
+
   &:hover, &:active {
-    color: #FFF !important;
+    background-color: #1da1f2; // Twitter brand color for hover effect
+    color: #FFF !important;   // Ensure text stays white
   }
 }
 
-.btn-twitter {
-  color: #FFF !important;
-
-  &:hover, &:active {
-    color: #FFF !important;
-    background-color: #0f97ea;
-  }
-}
-
+// Google Button CSS
 .btn-google {
+  color: #FFF !important;  // White text color by default
+
   &:hover, &:active {
-    color: #FFF !important;
+    background-color: #c23321; // Slightly darker Google red
+    color: #FFF !important;   // Ensure text stays white
   }
 }
 
-.btn-google {
-  color: #FFF !important;
-
-  &:hover, &:active {
-    color: #FFF !important;
-    background-color: #d93b27;
-  }
+// Add padding after fontawesome icons
+.iconpadding {
+  padding-right: 8px !important; // Increased spacing for better readability
 }
 
-// Add a space after fontawesome icons
-.iconpadding{
-  padding-right: 6px!important;
+// General Button Styles (Optional Enhancements)
+button {
+  border-radius: 4px; // Slightly rounded corners for all buttons
+  transition: background-color 0.3s ease, color 0.3s ease; // Smooth hover transitions
 }
+
