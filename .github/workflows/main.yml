@@ -1,0 +1,54 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Set up the SSH key from the `PEM_KEY` secret
+    - name: Set up SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.PEM_KEY }}" > ~/.ssh/devops-pipeline.pem
+        chmod 600 ~/.ssh/devops-pipeline.pem
+
+    # Install necessary dependencies
+    - name: Install Prerequisites
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y nodejs npm
+        # MongoDB installation
+        sudo apt-get install -y gnupg
+        wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/mongodb-archive-keyring.gpg] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+        sudo apt-get update
+        sudo apt-get install -y mongodb-org
+
+    # Deploy the application to the EC2 instance
+    - name: Deploy to EC2
+      run: |
+        ssh -i ~/.ssh/devops-pipeline.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+        sudo apt-get update
+        sudo apt-get install -y nodejs npm
+        # Install MongoDB by adding the official MongoDB repository
+        sudo apt-get install -y gnupg
+        wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/mongodb-archive-keyring.gpg] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+        sudo apt-get update
+        sudo apt-get install -y mongodb-org
+        cd /var/www/Ceramika
+        npm install
+        sudo systemctl restart nginx
+        EOF
