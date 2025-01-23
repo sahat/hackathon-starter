@@ -131,7 +131,7 @@ exports.postSignup = async (req, res, next) => {
   }
   req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
   try {
-    const existingUser = await User.findOne({ email: req.body.email });
+    const existingUser = await User.findOne({ email: { $eq: req.body.email } });
     if (existingUser) {
       req.flash('errors', { msg: 'Account with that email address already exists.' });
       return res.redirect('/signup');
@@ -369,7 +369,7 @@ exports.getVerifyEmail = (req, res, next) => {
 
   const setRandomToken = (token) => {
     User
-      .findOne({ email: req.user.email })
+      .findOne({ email: { $eq: req.user.email } })
       .then((user) => {
         user.emailVerificationToken = token;
         user = user.save();
@@ -383,7 +383,7 @@ exports.getVerifyEmail = (req, res, next) => {
       from: process.env.SITE_CONTACT_EMAIL,
       subject: 'Please verify your email address on Hackathon Starter',
       text: `Thank you for registering with hackathon-starter.\n\n
-        This verify your email address please click on the following link, or paste this into your browser:\n\n
+        To verify your email address, please click on the following link, or paste this into your browser:\n\n
         http://${req.headers.host}/account/verify/${token}\n\n
         \n\n
         Thank you!`
@@ -424,7 +424,7 @@ exports.postReset = (req, res, next) => {
 
   const resetPassword = () =>
     User
-      .findOne({ passwordResetToken: req.params.token })
+      .findOne({ passwordResetToken: { $eq: req.params.token } })
       .where('passwordResetExpires').gt(Date.now())
       .then((user) => {
         if (!user) {
@@ -500,7 +500,7 @@ exports.postForgot = (req, res, next) => {
 
   const setRandomToken = (token) =>
     User
-      .findOne({ email: req.body.email })
+      .findOne({ email: { $eq: req.body.email } })
       .then((user) => {
         if (!user) {
           req.flash('errors', { msg: 'Account with that email address does not exist.' });

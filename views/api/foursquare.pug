@@ -6,52 +6,55 @@ block content
       i.fab.fa-foursquare.fa-sm.iconpadding
       | Foursquare API
   
-  .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://developer.foursquare.com/start', target='_blank').w-100
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary(href='https://location.foursquare.com/developer', target='_blank').w-100
       i.far.fa-check-square.fa-sm.iconpadding
-      | Getting Started
-    a.btn.btn-primary(href='https://developer.foursquare.com/docs/explore', target='_blank').w-100
-      i.fas.fa-laptop.fa-sm.iconpadding
-      | API Console
-    a.btn.btn-primary(href='https://developer.foursquare.com/docs/', target='_blank').w-100
+      | Developer Info
+    a.btn.btn-primary(href='https://docs.foursquare.com/', target='_blank').w-100
       i.fas.fa-code-branch.fa-sm.iconpadding
-      | API Endpoints
+      | API Docs
   h3.text-primary Trending Venues
-  table.table.table-striped.table-bordered
-    thead
-      tr
-        th Name
-        th.d-xs.d-sm Category
-        th.d-xs Checkins
-        th Here Now
-    tbody
-      for venue in trendingVenues.venues
+  p Near longitude: -122.342148, latitude: 47.609657
+    table.table.table-striped.table-bordered
+      thead
         tr
-          td= venue.name
-          td.d-xs.d-sm #{venue.categories[0].name}
-          td.d-xs #{venue.stats.checkinsCount}
-          td= venue.hereNow.count
-  br
-  h3.text-primary Venue Detail
+          th.d-xs 
+          th Name
+          th.d-xs.d-sm Category
+          th.d-xs Address
+          th.d-xs Distance (meters)
+          th.d-xs Open Now ?
+      tbody
+        for venue in trendingVenues
+          tr
+            td.d-xs
+              if venue.categories && venue.categories.length > 0
+                img(src=venue.categories[0].icon.prefix + '32' + venue.categories[0].icon.suffix, alt=venue.categories[0].name, width='32', height='32')
+              else
+                | N/A
+            td= venue.name
+            td.d-xs.d-sm= (venue.categories && venue.categories.length > 0) ? venue.categories[0].name : 'N/A'
+            td.d-xs= venue.location.formatted_address || 'N/A'
+            td.d-xs= venue.distance
+            td.d-xs= venue.closed_bucket || 'Unknown'
+    br
+  h3.text-primary Venue Details
   p
-    img(src=venueDetail.venue.photos.groups[0].items[0].prefix + '150x150' + venueDetail.venue.photos.groups[0].items[0].suffix)
-
-  .badge.badge-primary #{venueDetail.venue.name} (#{venueDetail.venue.categories[0].shortName})
-  .badge.badge-success #{venueDetail.venue.location.address}, #{venueDetail.venue.location.city}, #{venueDetail.venue.location.state}
-  .badge.badge-warning #{venueDetail.venue.likes.count} likes, #{venueDetail.venue.rating} rating
-
-  h3.text-primary User Checkins
-  table.table.table-bordered.table-hover
-    thead
-      tr
-        th Name
-        th Location
-        th Category
-        th Checkins
-    tbody
-      for checkin in userCheckins.checkins.items
-        tr
-          td= checkin.venue.name
-          td #{checkin.venue.location.address}, #{checkin.venue.location.city}, #{checkin.venue.location.state}
-          td= checkin.venue.categories[0].shortName
-          td= checkin.venue.stats.checkinsCount
+    i
+      u #{venueDetail.name}
+    if venueDetail.categories && venueDetail.categories.length > 0
+      |  is a #{venueDetail.categories[0].name}
+    |  located at #{venueDetail.location.address || 'N/A'}, #{venueDetail.location.locality || 'N/A'}, #{venueDetail.location.region || 'N/A'}. (longitude: #{venueDetail.geocodes.main.longitude}, latitude: #{venueDetail.geocodes.main.latitude})
+    if venueDetail.related_places
+      if venueDetail.related_places.children && venueDetail.related_places.children.length > 0
+        p Related venues or businesses to #{venueDetail.name}, which are mostly in the same building or the immediate area are:
+        p(style='margin-left: 20px; white-space: pre-wrap;') #{venueDetail.related_places.children.map(place => place.name).join(', ')}
+  if venuePhotos && venuePhotos.length > 0
+    h4.text-secondary Photo Gallery
+    | #{venueDetail.name}
+    .row
+      each photo in venuePhotos
+        .col-md-4
+          img.img-thumbnail(src=photo.prefix + '400x400' + photo.suffix, alt=venueDetail.name, width='100%')
+  else
+    p No photos available.

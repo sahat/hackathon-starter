@@ -1,26 +1,40 @@
 extends ../layout
+
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
       i.fab.fa-paypal(style='color: #1B4A7D').fa-sm.iconpadding
       | PayPal API
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://developer.paypal.com/docs/integration/direct/make-your-first-call/', target='_blank').w-100
+    a.btn.btn-primary(href='https://developer.paypal.com/docs/checkout/', target='_blank').w-100
       i.far.fa-check-square.fa-sm.iconpadding
-      | Quickstart
-    a.btn.btn-primary(href='https://developer.paypal.com/docs/api/', target='_blank').w-100
+      | Checkout API
+    a.btn.btn-primary(href='https://developer.paypal.com/docs/api/orders/v2/', target='_blank').w-100
       i.fas.fa-code.fa-sm.iconpadding
-      | API Reference
+      | Payments API
   h3 Sample Payment
   if result
     if canceled
-      h3 Payment got canceled!
+      h4 Payment was canceled!
     if success
-      h3 Payment got executed successfully!
+      h4 Payment was executed successfully!
+    else
+      h4 There was an error processing the payment.
     a(href='/api/paypal')
-      button.btn.btn-primary New payment
+      button.btn.btn-primary New Payment
   else
     div
       p Redirects to PayPal and allows authorizing the sample payment.
+      h4 Purchase Details:
+      ul
+        li
+          strong Description:
+          |  #{purchaseInfo.description}
+        li
+          strong Currency:
+          |  #{purchaseInfo.amount.currency_code}
+        li
+          strong Amount:
+          |  #{purchaseInfo.amount.value}
       a(href=approvalUrl)
-        button.btn.btn-primary Authorize payment
+        button.btn.btn-primary Authorize Payment

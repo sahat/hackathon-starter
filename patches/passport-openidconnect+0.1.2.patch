@@ -1,0 +1,26 @@
+diff --git a/node_modules/passport-openidconnect/lib/profile.js b/node_modules/passport-openidconnect/lib/profile.js
+index eeabf4e..87b917a 100644
+--- a/node_modules/passport-openidconnect/lib/profile.js
++++ b/node_modules/passport-openidconnect/lib/profile.js
+@@ -16,7 +16,21 @@ exports.parse = function(json) {
+     if (json.given_name) { profile.name.givenName = json.given_name; }
+     if (json.middle_name) { profile.name.middleName = json.middle_name; }
+   }
++  if (json.nickname) { profile.nickname = json.nickname; };
++  if (json.preferred_username) { profile.preferred_username = json.preferred_username; };
++  if (json.profile) { profile.profile = json.profile; };
++  if (json.picture) { profile.photos = json.picture; }
++  if (json.picture) { profile.photos = json.picture; }
+   if (json.email) { profile.emails = [ { value: json.email } ]; }
++  if (json.email_verified) { profile.email_verified = json.email_verified; }
++  if (json.gender) { profile.gender = json.gender; };
++  if (json.birthdate) { profile.birthdate = json.birthdate; };
++  if (json.zoneinfo) { profile.zoneinfo = json.zoneinfo; };
++  if (json.locale) { profile.locale = json.locale; }
++  if (json.phone_number) { profile.phone_number = json.phone_number; };
++  if (json.phone_number_verified) { profile.phone_number_verified = json.phone_number_verified; };
++  if (json.address) { profile.address = json.address; };
++  if (json.updated_at) { profile.updated_at = json.updated_at; };
+   
+   return profile;
+ };

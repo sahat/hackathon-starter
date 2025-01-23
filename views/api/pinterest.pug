@@ -5,16 +5,16 @@ block content
     h2
       i.fab.fa-pinterest(style='color: #cb2027').fa-sm.iconpadding
       | Pinterest API
-  .btn-group.d-flex(role='group')
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary(href='https://developers.pinterest.com/', target='_blank').w-100
+      i.fab.fa-pinterest.fa-sm.iconpadding
+      | Developer Platform
     a.btn.btn-primary(href='https://developers.pinterest.com/docs/getting-started/introduction/', target='_blank').w-100
       i.far.fa-check-square.fa-sm.iconpadding
       | Getting Started
-    a.btn.btn-primary(href='https://developers.pinterest.com/tools/api-explorer/', target='_blank').w-100
-      i.fab.fa-pinterest.fa-sm.iconpadding
-      | API Explorer
-    a.btn.btn-primary(href='https://developers.pinterest.com/docs/api/overview/', target='_blank').w-100
+    a.btn.btn-primary(href='https://developers.pinterest.com/docs/api/v5/introduction', target='_blank').w-100
       i.fas.fa-code-branch.fa-sm.iconpadding
-      | API Overview
+      | API Refrence
 
   h3 Create a Pin    
   form(role='form', method='POST')
@@ -38,6 +38,7 @@ block content
         label.col-form-label.font-weight-bold Image URL
         .col-md-6
           input.form-control(name='image_url', placeholder='The link to the image that you want to Pin.')
+    .mb-4
     button.btn.btn-primary(type='submit')
         i.fab.fa-pinterest.fa-sm
         |  Pin It

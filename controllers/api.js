@@ -1,10 +1,13 @@
 const crypto = require('crypto');
 const cheerio = require('cheerio');
 const { LastFmNode } = require('lastfm');
+const { OAuth } = require('oauth');
+// Disable eslint rule for @octakit/rest until the following github issue is resolved
+// github npm package bug: https://github.com/octokit/rest.js/issues/446
+// eslint-disable-next-line import/no-unresolved
 const { Octokit } = require('@octokit/rest');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
-const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
-const paypal = require('paypal-rest-sdk');
+const twilioClient = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const axios = require('axios');
 const googledrive = require('@googleapis/drive');
 const googlesheets = require('@googleapis/sheets');
@@ -28,55 +31,72 @@ exports.getApi = (req, res) => {
  * Foursquare API example.
  */
 exports.getFoursquare = async (req, res, next) => {
-  const token = await req.user.tokens.find((token) => token.kind === 'foursquare');
-  let trendingVenues;
-  let venueDetail;
-  let userCheckins;
-  axios.all([
-    axios.get(`https://api.foursquare.com/v2/venues/trending?ll=40.7222756,-74.0022724&limit=50&oauth_token=${token.accessToken}&v=20140806`),
-    axios.get(`https://api.foursquare.com/v2/venues/49da74aef964a5208b5e1fe3?oauth_token=${token.accessToken}&v=20190113`),
-    axios.get(`https://api.foursquare.com/v2/users/self/checkins?oauth_token=${token.accessToken}&v=20190113`)
-  ])
-    .then(axios.spread((trendingVenuesRes, venueDetailRes, userCheckinsRes) => {
-      trendingVenues = trendingVenuesRes.data.response;
-      venueDetail = venueDetailRes.data.response;
-      userCheckins = userCheckinsRes.data.response;
-      res.render('api/foursquare', {
-        title: 'Foursquare API',
-        trendingVenues,
-        venueDetail,
-        userCheckins
-      });
-    }))
-    .catch((error) => {
-      next(error);
+  try {
+    const headers = {
+      Authorization: `${process.env.FOURSQUARE_APIKEY}`
+    };
+
+    const [trendingVenuesRes, venueDetailRes, venuePhotosRes] = await Promise.all([
+      axios.get('https://api.foursquare.com/v3/places/search?ll=47.609657,-122.342148&limit=10', { headers }),
+      axios.get('https://api.foursquare.com/v3/places/427ea800f964a520b1211fe3', { headers }),
+      axios.get('https://api.foursquare.com/v3/places/427ea800f964a520b1211fe3/photos', { headers })
+    ]);
+    const trendingVenues = trendingVenuesRes.data.results;
+    const venueDetail = venueDetailRes.data;
+    const venuePhotos = venuePhotosRes.data.slice(0, 9); // Limit the photos to 9
+    res.render('api/foursquare', {
+      title: 'Foursquare API (v3)',
+      trendingVenues,
+      venueDetail,
+      venuePhotos
     });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
  * GET /api/tumblr
- * Tumblr API example.
+ * Tumblr API example (Authenticated request using OAuth 1.0a).
  */
-exports.getTumblr = (req, res, next) => {
-  // const token = req.user.tokens.find((token) => token.kind === 'tumblr'); //unused
-  const appkey = process.env.TUMBLR_KEY;
-  // const appsecret = process.env.TUMBLR_SECRET; //unused in this example
-  // const accessToken = token.accessToken; //unused in this example
-  // const tokenSecret = token.tokenSecret; //unused in this example
+exports.getTumblr = async (req, res, next) => {
+  const token = req.user.tokens.find((token) => token.kind === 'tumblr');
+  if (!token) throw new Error('No Tumblr token found for user.');
 
-  const blogId = 'mmosdotcom-blog.tumblr.com';
-  const postType = 'photo';
-  axios.get(`https://api.tumblr.com/v2/blog/${blogId}/posts/${postType}?api_key=${appkey}`)
-    .then((response) => {
-      res.render('api/tumblr', {
-        title: 'Tumblr API',
-        blog: response.data.response.blog,
-        photoset: response.data.response.posts[0].photos
-      });
-    })
-    .catch((error) => {
-      next(error);
+  // Helper function to generate the OAuth 1.0a authHeader for Tumblr API.
+  // This function is not going to making any actual calls to
+  // tumblr's /request_token or /access_token endpoints.
+  function getTumblrAuthHeader(url, method) {
+    const oauth = new OAuth('https://www.tumblr.com/oauth/request_token',
+      'https://www.tumblr.com/oauth/access_token',
+      process.env.TUMBLR_KEY,
+      process.env.TUMBLR_SECRET,
+      '1.0A',
+      null,
+      'HMAC-SHA1');
+    return oauth.authHeader(url, token.accessToken, token.tokenSecret, method);
+  }
+
+  try {
+    // Fetch user info - requires OAuth
+    const userInfoURL = 'https://api.tumblr.com/v2/user/info';
+    const userUnfoResponse = await axios.get(userInfoURL,
+      { headers: { Authorization: getTumblrAuthHeader(userInfoURL, 'GET') } });
+
+    // Fetch blog posts (public API, doesn't require OAuth)
+    const blogId = 'peacecorps.tumblr.com';
+    const postType = 'photo';
+    const blogResponse = await axios.get(`https://api.tumblr.com/v2/blog/${blogId}/posts/${postType}?api_key=${process.env.TUMBLR_KEY}`);
+
+    res.render('api/tumblr', {
+      title: 'Tumblr API',
+      userInfo: userUnfoResponse.data.response.user,
+      blog: blogResponse.data.response.blog,
+      photoset: blogResponse.data.response.posts[0].photos,
     });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -122,12 +142,54 @@ exports.getScraping = (req, res, next) => {
  * GitHub API Example.
  */
 exports.getGithub = async (req, res, next) => {
-  const github = new Octokit();
+  const limit = 10;
+  let authFailure = 'NotFetched';
+  if (!req.user) {
+    authFailure = 'NotLoggedIn';
+  } else if (!req.user.tokens || !req.user.tokens.find((token) => token.kind === 'github')) {
+    authFailure = 'NotGitHubAuthorized';
+  }
+  const githubToken = (req.user && req.user.tokens && req.user.tokens.find((token) => token.kind === 'github')) ? req.user.tokens.find((token) => token.kind === 'github').accessToken : null;
+
+  let github;
+  let userInfo;
+  let userRepos;
+  let userEvents;
+  if (githubToken) {
+    github = new Octokit({ auth: req.user.tokens.find((token) => token.kind === 'github').accessToken });
+    try {
+      ({ data: userInfo } = await github.request('/user'));
+      ({ data: userRepos } = await github.repos.listForAuthenticatedUser({ per_page: limit }));
+      ({ data: userEvents } = await github.activity.listEventsForAuthenticatedUser({
+        username: userInfo.login,
+        per_page: limit
+      }));
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    // If the user is not logged in or doesn't have a Github account
+    // we can still get some data from the public APIs such as some public repo infos
+    github = new Octokit();
+  }
+
   try {
     const { data: repo } = await github.repos.get({ owner: 'sahat', repo: 'hackathon-starter' });
+    const { data: repoStargazers } = await github.activity.listStargazersForRepo({
+      owner: 'sahat',
+      repo: 'hackathon-starter',
+      per_page: limit
+    });
+
     res.render('api/github', {
       title: 'GitHub API',
-      repo
+      repo,
+      userInfo,
+      userRepos,
+      userEvents,
+      repoStargazers,
+      limit,
+      authFailure,
     });
   } catch (error) {
     next(error);
@@ -366,24 +428,44 @@ exports.postStripe = (req, res) => {
   });
 };
 
+// Twilio Sandbox numbers https://www.twilio.com/docs/iam/test-credentials
+const sandboxNumbers = ['+15005550001',
+  '+15005550002',
+  '+15005550003',
+  '+15005550004',
+  '+15005550006',
+  '+15005550007',
+  '+15005550008',
+  '+15005550009'];
+
 /**
  * GET /api/twilio
  * Twilio API example.
  */
 exports.getTwilio = (req, res) => {
+  const fromNumber = process.env.TWILIO_FROM_NUMBER;
+  const isSandbox = sandboxNumbers.includes(fromNumber);
+
   res.render('api/twilio', {
-    title: 'Twilio API'
+    title: 'Twilio API',
+    fromNumber,
+    isSandbox,
+    sandboxInfoUrl: 'https://www.twilio.com/docs/iam/test-credentials#test-sms-numbers', // Twilio sandbox info link
   });
 };
 
 /**
  * POST /api/twilio
- * Send a text message using Twilio.
+ * Send a text message (sandbox or live mode).
  */
-exports.postTwilio = (req, res, next) => {
+exports.postTwilio = async (req, res) => {
   const validationErrors = [];
-  if (validator.isEmpty(req.body.number)) validationErrors.push({ msg: 'Phone number is required.' });
-  if (validator.isEmpty(req.body.message)) validationErrors.push({ msg: 'Message cannot be blank.' });
+  if (!req.body.number || validator.isEmpty(req.body.number)) {
+    validationErrors.push({ msg: 'Phone number is required.' });
+  }
+  if (!req.body.message || validator.isEmpty(req.body.message)) {
+    validationErrors.push({ msg: 'Message cannot be blank.' });
+  }
 
   if (validationErrors.length) {
     req.flash('errors', validationErrors);
@@ -392,13 +474,40 @@ exports.postTwilio = (req, res, next) => {
 
   const message = {
     to: req.body.number,
-    from: '+13472235148',
-    body: req.body.message
+    from: process.env.TWILIO_FROM_NUMBER,
+    body: req.body.message,
   };
-  twilio.messages.create(message).then((sentMessage) => {
-    req.flash('success', { msg: `Text send to ${sentMessage.to}` });
-    res.redirect('/api/twilio');
-  }).catch(next);
+
+  try {
+    // Attempt to send the SMS using Twilio
+    const sentMessage = await twilioClient.messages.create(message);
+    req.flash('success', { msg: `Text sent successfully to ${sentMessage.to}` });
+    return res.redirect('/api/twilio');
+  } catch (error) {
+    // Log the raw error to the console for developers
+    console.error('Twilio API Error:', error);
+
+    // Map known error codes to user-friendly messages
+    const errorMessages = {
+      21212: 'The "From" phone number is invalid.',
+      21606: 'The "From" phone number is not owned by your account or is not SMS-capable.',
+      21611: 'The "From" phone number has an SMS message queue that is full.',
+      21211: 'The "To" phone number is invalid.',
+      21612: 'We cannot route a message to this number.',
+      21408: 'The "To" phone number is international, and we cannot send international messages at this time.',
+      21614: 'The "To" phone number is incapable of receiving SMS messages.',
+      21610: 'The "To" phone number has been unsubscribed and we can not send messages to it from your account.',
+    };
+
+    // Determine the user-friendly error message or send a generic error if not found in our list
+    const friendlyMessage = error.code && errorMessages[error.code]
+      ? errorMessages[error.code]
+      : 'An error occurred while sending the message. Please try again later.';
+
+    // Flash the user-friendly message
+    req.flash('errors', { msg: friendlyMessage });
+    return res.redirect('/api/twilio');
+  }
 };
 
 /**
@@ -410,23 +519,46 @@ exports.getTwitch = async (req, res, next) => {
   const twitchClientID = process.env.TWITCH_CLIENT_ID;
 
   const getUser = (userID) =>
-    axios.get(`https://api.twitch.tv/helix/users?id=${userID}`, { headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID } })
+    axios.get(`https://api.twitch.tv/helix/users?id=${userID}`, {
+      headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID }
+    })
       .then(({ data }) => data)
       .catch((err) => Promise.reject(new Error(`There was an error while getting user data ${err}`)));
-  const getFollowers = () =>
-    axios.get(`https://api.twitch.tv/helix/users/follows?to_id=${twitchID}`, { headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID } })
+
+  const getFollowers = (userID) =>
+    axios.get(`https://api.twitch.tv/helix/channels/followers?broadcaster_id=${userID}`, {
+      headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID }
+    })
       .then(({ data }) => data)
       .catch((err) => Promise.reject(new Error(`There was an error while getting followers ${err}`)));
 
+  const getStreams = (gameID) =>
+    axios.get(`https://api.twitch.tv/helix/streams?game_id=${gameID}`, {
+      headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID }
+    })
+      .then(({ data }) => data)
+      .catch((err) => Promise.reject(new Error(`There was an error while getting streams ${err}`)));
+
+  const getUserByLogin = (loginID) =>
+    axios.get(`https://api.twitch.tv/helix/users?login=${loginID}`, {
+      headers: { Authorization: `Bearer ${token.accessToken}`, 'Client-ID': twitchClientID }
+    })
+      .then(({ data }) => data)
+      .catch((err) => Promise.reject(new Error(`There was an error while getting user info by login ${err}`)));
+
   try {
     const yourTwitchUser = await getUser(twitchID);
-    const otherTwitchUser = await getUser(44322889);
-    const twitchFollowers = await getFollowers();
+    const twitchFollowers = await getFollowers(twitchID);
+    const streams = await getStreams('497057'); // lookup streams for Destiny 2, which is game_id 497057
+    const topStream = streams.data[0];
+    const topStreamerInfo = await getUserByLogin(topStream.user_login);
     res.render('api/twitch', {
       title: 'Twitch API',
-      yourTwitchUserData: yourTwitchUser.data[0],
-      otherTwitchUserData: otherTwitchUser.data[0],
-      twitchFollowers,
+      yourTwitchUserData: yourTwitchUser.data[0] || {},
+      otherTwitchUserData: {},
+      otherTwitchStreamStatus: streams.data[0] || {},
+      otherTwitchStreamerInfo: topStreamerInfo.data[0] || {},
+      twitchFollowers: twitchFollowers || {}
     });
   } catch (err) {
     next(err);
@@ -496,73 +628,105 @@ exports.getChart = async (req, res, next) => {
     });
 };
 
-/**
- * GET /api/paypal
- * PayPal SDK example.
- */
-exports.getPayPal = (req, res, next) => {
-  paypal.configure({
-    mode: 'sandbox',
-    client_id: process.env.PAYPAL_ID,
-    client_secret: process.env.PAYPAL_SECRET
-  });
-
-  const paymentDetails = {
-    intent: 'sale',
-    payer: {
-      payment_method: 'paypal'
-    },
-    redirect_urls: {
-      return_url: `${process.env.BASE_URL}/api/paypal/success`,
-      cancel_url: `${process.env.BASE_URL}/api/paypal/cancel`
-    },
-    transactions: [{
-      description: 'Hackathon Starter',
-      amount: {
-        currency: 'USD',
-        total: '1.99'
-      }
-    }]
-  };
-
-  paypal.payment.create(paymentDetails, (err, payment) => {
-    if (err) { return next(err); }
-    const { links, id } = payment;
-    req.session.paymentId = id;
-    for (let i = 0; i < links.length; i++) {
-      if (links[i].rel === 'approval_url') {
-        res.render('api/paypal', {
-          approvalUrl: links[i].href
-        });
-      }
+// Doing this outside of the route handler to avoid blocking the page load behind oauth.
+// For this example we are tring to have a pay botton that when pressed it would initiate a payment
+async function getPayPalAccessToken() {
+  const auth = Buffer.from(`${process.env.PAYPAL_ID}:${process.env.PAYPAL_SECRET}`).toString('base64');
+  const response = await axios.post('https://api.sandbox.paypal.com/v1/oauth2/token', 'grant_type=client_credentials', {
+    headers: {
+      Authorization: `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
     }
   });
+  return response.data.access_token;
+}
+
+// Constant for purchase information
+const purchaseInfo = {
+  description: 'Hackathon Starter',
+  amount: {
+    currency_code: 'USD',
+    value: '1.99'
+  }
+};
+
+/**
+ * GET /api/paypal
+ * PayPal API example without SDK.
+ */
+exports.getPayPal = async (req, res, next) => {
+  try {
+    const accessToken = await getPayPalAccessToken();
+    const paymentDetails = {
+      intent: 'CAPTURE',
+      purchase_units: [purchaseInfo],
+      application_context: {
+        brand_name: 'Hackathon Starter',
+        landing_page: 'BILLING',
+        user_action: 'PAY_NOW',
+        return_url: `${process.env.BASE_URL}/api/paypal/success`,
+        cancel_url: `${process.env.BASE_URL}/api/paypal/cancel`
+      }
+    };
+
+    const response = await axios.post('https://api.sandbox.paypal.com/v2/checkout/orders', paymentDetails, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const approvalUrl = response.data.links.find((link) => link.rel === 'approve').href;
+    req.session.orderId = response.data.id;
+    res.render('api/paypal', { approvalUrl, purchaseInfo, title: 'Paypal API' });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 };
 
 /**
  * GET /api/paypal/success
- * PayPal SDK example.
+ * PayPal API example without SDK.
  */
-exports.getPayPalSuccess = (req, res) => {
-  const { paymentId } = req.session;
-  const paymentDetails = { payer_id: req.query.PayerID };
-  paypal.payment.execute(paymentId, paymentDetails, (err) => {
+exports.getPayPalSuccess = async (req, res) => {
+  try {
+    const { orderId } = req.session;
+    const accessToken = await getPayPalAccessToken();
+    await axios.post(`https://api.sandbox.paypal.com/v2/checkout/orders/${orderId}/capture`, {}, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
     res.render('api/paypal', {
       result: true,
-      success: !err
+      success: true,
+      purchaseInfo
     });
-  });
+  } catch (err) {
+    console.error(err);
+    res.render('api/paypal', {
+      title: 'Paypal API - Success',
+      result: true,
+      success: false,
+      purchaseInfo
+    });
+  }
 };
 
 /**
  * GET /api/paypal/cancel
- * PayPal SDK example.
+ * PayPal API example without SDK.
  */
 exports.getPayPalCancel = (req, res) => {
-  req.session.paymentId = null;
+  req.session.orderId = null;
   res.render('api/paypal', {
+    title: 'Paypal API - Cancel',
     result: true,
-    canceled: true
+    canceled: true,
+    purchaseInfo
   });
 };
 
@@ -644,17 +808,20 @@ exports.postFileUpload = (req, res) => {
  */
 exports.getPinterest = (req, res, next) => {
   const token = req.user.tokens.find((token) => token.kind === 'pinterest');
-  axios.get(`https://api.pinterest.com/v1/me/boards?access_token=${token.accessToken}`)
+  const headers = { Authorization: `Bearer ${token.accessToken}` };
+
+  axios.get('https://api.pinterest.com/v5/boards', { headers })
     .then((response) => {
       res.render('api/pinterest', {
         title: 'Pinterest API',
-        boards: response.data.data
+        boards: response.data.items
       });
     })
     .catch((error) => {
       next(error);
     });
 };
+
 /**
  * POST /api/pinterest
  * Create a pin.
@@ -671,20 +838,24 @@ exports.postPinterest = (req, res, next) => {
   }
 
   const token = req.user.tokens.find((token) => token.kind === 'pinterest');
+  const headers = { Authorization: `Bearer ${token.accessToken}` };
   const formData = {
-    board: req.body.board,
-    note: req.body.note,
-    link: req.body.link,
-    image_url: req.body.image_url
+    board_id: req.body.board,
+    title: req.body.note,
+    media: {
+      media_type: 'image',
+      url: req.body.image_url
+    },
+    link: req.body.link
   };
 
-  axios.post(`https://api.pinterest.com/v1/pins/?access_token=${token.accessToken}`, formData)
+  axios.post('https://api.pinterest.com/v5/pins', formData, { headers })
     .then(() => {
       req.flash('success', { msg: 'Pin created' });
       res.redirect('/api/pinterest');
     })
     .catch((error) => {
-      req.flash('errors', { msg: error.response.data.message });
+      req.flash('errors', { msg: error.response.data.message || 'An error occurred.' });
       res.redirect('/api/pinterest');
     });
 };

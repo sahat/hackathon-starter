@@ -1,0 +1,21 @@
+diff --git a/node_modules/connect-flash/lib/flash.js b/node_modules/connect-flash/lib/flash.js
+index a278bc1..3870866 100644
+--- a/node_modules/connect-flash/lib/flash.js
++++ b/node_modules/connect-flash/lib/flash.js
+@@ -2,7 +2,6 @@
+  * Module dependencies.
+  */
+ var format = require('util').format;
+-var isArray = require('util').isArray;
+ 
+ 
+ /**
+@@ -64,7 +63,7 @@ function _flash(type, msg) {
+     if (arguments.length > 2 && format) {
+       var args = Array.prototype.slice.call(arguments, 1);
+       msg = format.apply(undefined, args);
+-    } else if (isArray(msg)) {
++    } else if (Array.isArray(msg)) {
+       msg.forEach(function(val){
+         (msgs[type] = msgs[type] || []).push(val);
+       });
