@@ -86,8 +86,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(limiter);
 app.use(session({
-  resave: true,
-  saveUninitialized: true,
+  resave: true, // Only save session if modified
+  saveUninitialized: false, // Do not save sessions until we have something to store
   secret: process.env.SESSION_SECRET,
   name: 'startercookie', // change the cookie name for additional security in production
   cookie: {
