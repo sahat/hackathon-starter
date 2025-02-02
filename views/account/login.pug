@@ -13,26 +13,26 @@ block content
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') Password
       .col-md-7
         input.form-control(type='password', name='password', id='password', placeholder='Password', autocomplete='current-password', required)
-    .form-group
-      .offset-md-3.col-md-7.pl-2
-        button.col-md-3.btn.btn-primary(type='submit')
+    .form-group.row
+      .col-md-7.offset-md-3
+        button.col-md-2.btn.btn-primary(type='submit')
           i.far.fa-user.fa-sm.iconpadding
           | Login
         a.btn.btn-link(href='/forgot') Forgot your password?
-    .form-group
-      .offset-md-3.col-md-7.pl-2
+    .form-group.row
+      .col-md-7.offset-md-3.d-grid.gap-2
         hr
-    .form-group
-      .offset-md-3.col-md-7.pl-2.d-grid.gap-2
+    .form-group.row
+      .col-md-3.offset-md-3.d-grid.gap-2
         a.btn.btn-block.btn-google.btn-social(href='/auth/google')
           i.fab.fa-google.fa-xs
           | Sign in with Google
         a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
           i.fab.fa-facebook-f.fa-sm
           | Sign in with Facebook
-        a.btn.btn-block.btn-twitter.btn-social(href='/auth/twitter')
-          i.fab.fa-twitter.fa-sm
-          | Sign in with Twitter
+        a.btn.btn-block.btn-twitter.btn-social(href='/auth/x')
+          i.fab.fa-x-twitter.fa-sm
+          | Sign in with X
         a.btn.btn-block.btn-linkedin.btn-social(href='/auth/linkedin')
           i.fab.fa-linkedin-in.fa-sm
           | Sign in with LinkedIn
@@ -42,6 +42,3 @@ block content
         a.btn.btn-block.btn-github.btn-social(href='/auth/github')
           i.fab.fa-github.fa-sm
           | Sign in with GitHub
-        a.btn.btn-block.btn-snapchat.btn-social(href='/auth/snapchat')
-          i.fab.fa-snapchat-ghost.fa-sm
-          | Sign in with Snapchat

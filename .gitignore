@@ -27,6 +27,9 @@ public/css/main.css
 node_modules
 bower_components
 
+# Uploads
+uploads
+
 # Editors
 .idea
 .vscode

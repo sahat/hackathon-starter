@@ -2,7 +2,7 @@
 Hackathon Starter
 =======================
 
-**Live Demo**: [Link](https://hackathon-starter-1.ydftech.com/)
+**Live Demo**: TD
 
 Jump to [What's new?](https://github.com/sahat/hackathon-starter/blob/master/CHANGELOG.md)
 
@@ -70,7 +70,8 @@ Features
 --------
 - Login
 	- **Local Authentication** using Email and Password
-	- **OAuth 2.0 Authentication:** Sign in with Google, Facebook, Twitter, LinkedIn, Twitch, Github, Snapchat
+  - **OAuth 2.0 Authentication:** Sign in with Google, Facebook, X (Twitter), Twitch, Github
+  - **OpenID Conenct:** Sign in with LinkedIn
 - **User Profile and Account Management**
 	 - Gravatar
 	 - Profile Details
@@ -83,14 +84,14 @@ Features
 - Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
 - File upload
 - **API Examples**
-	- Facebook, Foursquare, Tumblr, Pinterest, Github, Steam, Quickbooks, Paypal, Stripe, Twilio (text messaging), Lob (USPS Mail), HERE Maps, Google Maps, Google Drive, Google Sheets, Alpha Vantage (stocks and finance info) with ChartJS, Last.fm, New York Times, Web Scraping, 
+	- Facebook, Foursquare, Tumblr (OAuth 1.0a example), Pinterest, Github, Steam, Quickbooks, Paypal, Stripe, Twilio (text messaging), Lob (USPS Mail), HERE Maps, Google Maps, Google Drive, Google Sheets, Alpha Vantage (stocks and finance info) with ChartJS, Last.fm, New York Times, Web Scraping
 - Flash notifications
-- - reCaPTCHA and rate limit protection
+- reCaPTCHA and rate limit protection
 - CSRF protection
 - MVC Project Structure
 - Node.js clusters support
 - HTTPS Proxy support (via ngrok, Cloudflare, etc.)
-- Sass stylesheets (auto-compiled via middleware)
+- Sass stylesheets
 - Bootstrap 5
 - "Go to production" checklist
 
@@ -102,10 +103,10 @@ Prerequisites
   - Local Install: [MongoDB](https://www.mongodb.com/download-center/community)
   - Hosted: No need to install, see the MongoDB Atlas section
 
-- [Node.js 18+](http://nodejs.org)
+- [Node.js 22+](http://nodejs.org)
 - Command Line Tools
  - <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Apple_logo_grey.svg" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
- - <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg" height="17">&nbsp;**Windows:** [Visual Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://docs.microsoft.com/en-us/windows/wsl/install-win10) OR [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
+ - <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg" height="17">&nbsp;**Windows:** [Visual Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://learn.microsoft.com/en-us/windows/wsl/install) OR [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
  - <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/UbuntuCoF.svg/512px-UbuntuCoF.svg.png?20120210072525" height="17">&nbsp;**Ubuntu** / <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Linux_Mint_logo_without_wordmark.svg" height="17">&nbsp;**Linux Mint:** `sudo apt-get install build-essential`
  - <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg" height="17">&nbsp;**Fedora**: `sudo dnf groupinstall "Development Tools"`
  - <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE:** `sudo zypper install --type pattern devel_basis`
@@ -148,7 +149,7 @@ After completing step 1 and locally installing MongoDB, you should be able to ac
 - reCAPTCHA
 	- For contact form submission
 - OAuth for social logins (Sign in with / Login with)
-	- Depending on your application need, obtain keys from Google, Facebook, Twitter, LinkedIn, Twitch, GitHub, Snapchat.  You don't have to obtain valid keys for any provider that you don't need. Just remove the buttons and links in the login and account pug views before your demo.
+	- Depending on your application need, obtain keys from Google, Facebook, X (Twitter), LinkedIn, Twitch, GitHub.  You don't have to obtain valid keys for any provider that you don't need. Just remove the buttons and links in the login and account pug views before your demo.
 - API keys for service providers in the API Examples if you are planning to use them.
 
 - MongoDB Atlas
@@ -222,24 +223,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://seeklogo.com/images/S/snapchat-logo-F20CDB1199-seeklogo.com.png" height="90">
-
-- Visit <a href="https://kit.snapchat.com/portal" target="_blank">Snap Kit Developer Portal</a>
-- Click on the **+** button to create an app
-- Enter a name for your app
-- Enable the scopes that you will want to use in your app
-- Click on the **Continue** button
-- Find the **Kits** section and make sure that **Login Kit** is enabled
-- Find the **Redirect URLs** section, click the **+ Add** button, and enter your BASE_URL value followed by /auth/snapchat/callback (i.e. `http://localhost:8080/auth/snapchat/callback` )
-- Find the **Development Environment** section. Click the **Generate** button next to the *Confidential OAuth2 Client* heading within it.
-- Copy and paste the generated *Private Key* and *OAuth2 Client ID* keys into `.env`
-- **Note:** *OAuth2 Client ID* is **SNAPCHAT_ID**, *Private Key* is **SNAPCHAT_SECRET** in `.env`
-- To prepare the app for submission, fill out the rest of the required fields: *Category*, *Description*, *Privacy Policy Url*, and *App Icon*
-
-
-<hr>
-
-<img src="https://en.facebookbrand.com/wp-content/uploads/2019/04/f_logo_RGB-Hex-Blue_512.png" width="90">
+<img src="https://i.imgur.com/jULUCKF.png" width="90">
 
 - Visit <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a>
 - Click **My Apps**, then select **Add a New App* from the dropdown menu
@@ -260,7 +244,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" width="110">
+<img src="https://i.imgur.com/oUob1wG.png" width="90">
 
 - Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
 - Select **Developer settings** from the sidebar
@@ -272,16 +256,17 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://seeklogo.com/images/T/twitter-2012-positive-logo-916EDF1309-seeklogo.com.png" width="90">
+<img src="https://i.imgur.com/QMjwCk6.png" width="90">
 
-- Sign in at <a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com</a>
+- Sign in at <a href="https://developer.x.com/" target="_blank">https://developer.x.com/</a>
+- Start with the Free tier
 - Click **Create a new application**
 - Enter your application name, website and description. Set the website as your BASE_URL value (i.e. `http://localhost:8080`, etc).
-- For **Callback URL**: your BASE_URL value followed by /auth/twitter/callback (i.e. `http://localhost:8080/auth/twitter/callback` )
+- For **Callback URL**: your BASE_URL value followed by /auth/x/callback (i.e. `http://localhost:8080/auth/x/callback` )
 - Go to **Settings** tab
 - Under *Application Type* select **Read and Write** access
-- Check the box **Allow this application to be used to Sign in with Twitter**
-- Click **Update this Twitter's applications settings**
+- Check the box **Allow this application to be used to Sign in with X**
+- Click **Update this X's applications settings**
 - Copy and paste *Consumer Key* and *Consumer Secret* keys into `.env` file
 
 <hr>
@@ -313,7 +298,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" width="150">
+<img src="https://imgur.com/VpWnjp1.png" width="150">
 
 - Visit <a href="https://developer.paypal.com" target="_blank">PayPal Developer</a>
 - Log in to your PayPal account
@@ -325,9 +310,9 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="http://33.media.tumblr.com/ffaf0075be879b3ab0b87f0b8bcc6814/tumblr_inline_n965bkOymr1qzxhga.png" width="200">
+<img src="https://imgur.com/2P4UMvC.png" width="200">
 
-- Go to <a href="https://developer.foursquare.com" target="_blank">Foursquare for Developers</a>
+- Go to <a href="https://developer.foursquare.com" target="_blank">Foursquare for Developers</a> and log in
 - Click on **My Apps** in the top menu
 - Click the **Create A New App** button
 - Enter *App Name*, *Welcome page url*,
@@ -337,7 +322,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="http://img4.wikia.nocookie.net/__cb20130520163346/logopedia/images/8/8d/Tumblr_logo_by_x_1337_x-d5ikwpp.png" width="200">
+<img src="https://i.imgur.com/gUngyyW.png" width="200">
 
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
@@ -388,12 +373,14 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://www.intuit.com/content/dam/intuit/intuitcom/company/images/logo-intuit-quickbooks-preferred.png" width="200">
+<img src="https://i.imgur.com/Lw5Jb7A.png" width="200">
 
 - Go to <a href="https://developer.intuit.com/app/developer/qbo/docs/get-started" target="_blank">https://developer.intuit.com/app/developer/qbo/docs/get-started</a>
 - Use the Sign Up option in the upper right corner of the screen (navbar) to get a free developer account and a sandbox company.
 - Create a new app by going to your Dashboard using the My Apps option in the top nav bar or by going to <a href="https://developer.intuit.com/app/developer/myapps" target="_blank">https://developer.intuit.com/app/developer/myapps</a>
 - In your App, under Development, Keys & OAuth (right nav), find the Client ID and Client Secret for your `.env` file
+
+<hr>
 
 Project Structure
 -----------------
@@ -408,7 +395,7 @@ Project Structure
 | **models**/User.js                 | Mongoose schema and model for User.                          |
 | **public**/                        | Static assets (fonts, css, js, img).                         |
 | **public**/**js**/application.js   | Specify client-side JavaScript dependencies.                 |
-| **public**/**js**/app.js          | Place your client-side JavaScript here.                       |
+| **public**/**js**/app.js           | Place your client-side JavaScript here.                      |
 | **public**/**css**/main.scss       | Main stylesheet for your app.                                |
 | **views/account**/                 | Templates for *login, password reset, signup, profile*.      |
 | **views/api**/                     | Templates for API Examples.                                  |
@@ -419,7 +406,7 @@ Project Structure
 | **views**/home.pug                 | Home page template.                                          |
 | .dockerignore                      | Folder and files ignored by docker usage.                    |
 | .env.example                       | Your API keys, tokens, passwords and database URI.           |
-| .eslintrc                          | Rules for eslint linter.                                     |
+| eslint.config.mjs                  | Rules for eslint linter.                                     |
 | .gitignore                         | Folder and files ignored by git.                             |
 | app.js                             | The main application file.                                   |
 | docker-compose.yml                 | Docker compose configuration file.                           |
@@ -433,65 +420,55 @@ having a nested folder structure if that makes things easier for you.
 Just don't forget to update `extends ../layout`  and corresponding
 `res.render()` paths in controllers.
 
-List of Packages
-----------------
+List of Packages - Dependencies
+-------------------------------
+Required to run the project before your modifications
 
 | Package                         | Description                                                             |
 | ------------------------------- | ------------------------------------------------------------------------|
 | @fortawesome/fontawesome-free   | Symbol and Icon library.                                                |
 | @googleapis/drive               | Google Drive API integration library.                                   |
 | @googleapis/sheets              | Google Sheets API integration library.                                  |
-| @ladjs/bootstrap-social         | Social buttons library.                                                 |
 | @lob/lob-typescript-sdk         | Lob (USPS mailing / physical mailing service) library.                  |
+| @naandalist/patch-package       | Fix broken node modules ahead of fixes by maintainers.                  |
 | @node-rs/bcrypt                 | Library for hashing and salting user passwords.                         |
 | @octokit/rest                   | GitHub API library.                                                     |
-| @passport-js/passport-twitter   | Twitter login support (OAuth 2).                                        |
+| @passport-js/passport-twitter   | X (Twitter) login support (OAuth 2).                                    |
 | @popperjs/core                  | Frontend js library for poppers and tooltips.                           |
 | axios                           | HTTP client.                                                            |
 | body-parser                     | Node.js body parsing middleware.                                        |
 | bootstrap                       | CSS Framework.                                                          |
-| chai                            | BDD/TDD assertion library.                                              |
+| bootstrap-social                | Social buttons library.                                                 |
+| chart.js                        | Frontend js library for creating charts.                                |
 | cheerio                         | Scrape web pages using jQuery-style syntax.                             |
 | compression                     | Node.js compression middleware.                                         |
 | connect-mongo                   | MongoDB session store for Express.                                      |
 | dotenv                          | Loads environment variables from .env file.                             |
 | errorhandler                    | Development-only error handler middleware.                              |
-| eslint                          | Linter JavaScript.                                                      |
-| eslint-config-airbnb-base       | Configuration eslint by airbnb.                                         |
-| eslint-plugin-chai-friendly     | Makes eslint friendly towards Chai.js 'expect' and 'should' statements. |
-| eslint-plugin-import            | ESLint plugin with rules that help validate proper imports.             |
 | express                         | Node.js web framework.                                                  |
 | express-flash                   | Provides flash messages for Express.                                    |
 | express-rate-limit              | Rate limiting middleware for abuse protection.                          |
 | express-session                 | Simple session middleware for Express.                                  |
-| husky                           | Git hook manager to automate tasks with git.                            |
 | jquery                          | Front-end JS library to interact with HTML elements.                    |
 | lastfm                          | Last.fm API library.                                                    |
-| lint-stage                      | Utility to lint files staged by git.                                    |
-| lob                             | Lob API library.                                                        |
 | lodash                          | A utility library for working with arrays, numbers, objects, strings.   |
 | lusca                           | CSRF middleware.                                                        |
 | mailchecker                     | Verifies that an email address is valid and not a disposable address.   |
-| mocha                           | Test framework.                                                         |
 | moment                          | Parse, validate, compute dates and times.                               |
-| mongodbMemoryServer             | MongoDB in memory (for running tests without a running db).             |
 | mongoose                        | MongoDB ODM.                                                            |
 | morgan                          | HTTP request logger middleware for node.js.                             |
 | multer                          | Node.js middleware for handling `multipart/form-data`.                  |
 | nodemailer                      | Node.js library for sending emails.                                     |
-| nyc                             | Coverage test.                                                          |
+| oauth                           | OAuth API library without middleware constraints                        |
 | passport                        | Simple and elegant authentication library for node.js.                  |
 | passport-facebook               | Sign-in with Facebook plugin.                                           |
 | passport-github2                | Sign-in with GitHub plugin.                                             |
 | passport-google-oauth           | Sign-in with Google plugin.                                             |
-| passport-linkedin-oauth2        | Sign-in with LinkedIn plugin.                                           |
 | passport-local                  | Sign-in with Username and Password plugin.                              |
 | passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.      |
 | passport-oauth2-refresh         | A library to refresh OAuth 2.0 access tokens using refresh tokens.      |
-| passport-snapchat               | Sign-in with Snapchat plugin.                                           |
+| passport-openidconnect          | Sign-in with OpenID Connect                                             |
 | passport-steam-openid           | OpenID 2.0 Steam plugin.                                                |
-| patch-package                   | Fix broken node modules ahead of fixes by maintainers.                  |
-| paypal-rest-sdk                 | PayPal APIs library.                                                    |
 | pug                             | Template engine for Express.                                            |
 | sass                            | Sass compiler to generate CSS with superpowers                          |
 | sinon                           | Test spies, stubs and mocks for JavaScript.                             |
@@ -501,11 +478,33 @@ List of Packages
 | twitch-passport                 | Sign-in with Twitch plugin.                                             |
 | validator                       | A library of string validators and sanitizers.                          |
 
+List of Packages - Dev Dependencies
+-----------------------------------
+Required during code development for testing, Hygiene, code styleing, etc.
+
+| Package                         | Description                                                             |
+| ------------------------------- | ------------------------------------------------------------------------|
+| @eslint/compat                  | Compatibility utilities for ESLin (eslint v8 support in v9)             |
+| @eslint/eslintrc                | Support for legacy ESLintRC config file format for ESLint               |
+| @eslint/js                      | ESLint JavaScript language implementation.                              |
+| chai                            | BDD/TDD assertion library.                                              |
+| eslint-config-airbnb-base-ex... | Replacement for eslint-config-airbnb-base pending its upgrad to v9      |
+| eslint                          | Linter JavaScript.                                                      |
+| eslint-plugin-chai-friendly     | Makes eslint friendly towards Chai.js 'expect' and 'should' statements. |
+| eslint-plugin-import            | ESLint plugin with rules that help validate proper imports.             |
+| globals                         | ESLint global identifiers from different JavaScript environments        |
+| husky                           | Git hook manager to automate tasks with git.                            |
+| lint-stage                      | Utility to lint files staged by git.                                    |
+| mocha                           | Test framework.                                                         |
+| mongodb-memory-server           | In memory mongodb server for testing, so tests can be ran without a DB  |
+| nyc                             | Coverage test.                                                          |
+| sinon                           | Test spies, stubs and mocks for JavaScript.                             |
+| supertest                       | HTTP assertion library.                                                 |
+
 Useful Tools and Resources
 --------------------------
-- [JavaScripting](http://www.javascripting.com/) - The Database of JavaScript Libraries
+- [Microsoft Copilot](https://copilot.microsoft.com/) - Free AI Assistant that can help you with coding questions as well
 - [HTML to Pug converter](https://html-to-pug.com/) - HTML to PUG is a free online converter helping you to convert HTML files to pug syntax in real-time.
-- [JavascriptOO](http://www.javascriptoo.com/) - A directory of JavaScript libraries with examples, CDN links, statistics, and videos.
 - [Favicon Generator](http://realfavicongenerator.net/) - Generate favicons for PC, Android, iOS, Windows 8.
 
 Recommended Design Resources
@@ -535,7 +534,7 @@ Recommended Node.js Libraries
 Recommended Client-side Libraries
 ---------------------------------
 
-- [Framework7](http://www.idangero.us/framework7/) - Full Featured HTML Framework For Building iOS7 Apps.
+- [Framework7](https://framework7.io/) - Full Featured HTML Framework For Building iOS7 Apps.
 - [InstantClick](http://instantclick.io) - Makes your pages load instantly by pre-loading them on mouse hover.
 - [NProgress.js](https://github.com/rstacruz/nprogress) - Slim progress bars like on YouTube and Medium.
 - [Hover](https://github.com/IanLunn/Hover) - Awesome CSS3 animations on mouse hover.
@@ -549,7 +548,7 @@ Recommended Client-side Libraries
 Pro Tips
 --------
 
-- Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find) function from Lodash. For example, this is how you would retrieve a Twitter token from database: `var token = _.find(req.user.tokens, { kind: 'twitter' });`, where 1st parameter is an array, and a 2nd parameter is an object to search for.
+- Need to find a specific object inside an Array? Use [_.find](http://lodash.com/docs#find) function from Lodash. For example, this is how you would retrieve Twitch token from database: `const token = _.find(req.user.tokens, { kind: 'twitch' });`, where 1st parameter is an array, and a 2nd parameter is an object to search for.
 
 FAQ
 ---
@@ -571,17 +570,17 @@ That's a custom error message defined in `app.js` to indicate that there was a p
 ```js
 mongoose.connection.on('error', (err) => {
   console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
-  process.exit();
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.');
+  process.exit(1);
 });
 ```
-You need to have a MongoDB server running before launching `app.js`. You can download MongoDB [here](https://www.mongodb.com/download-center/community), or install it via a package manager.
-Windows users, read [Install MongoDB on Windows](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/).
+You need to have a MongoDB server running before launching `app.js`. You can download MongoDB [here](https://www.mongodb.com/try/download/community), or install it via a package manager.
+Windows users, read [Install MongoDB on Windows](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows//).
 
-**Tip:** If you are always connected to the internet, you could just use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) instead of downloading and installing MongoDB locally. You will only need to update database credentials in `.env` file.
+**Tip:** If you are always connected to the internet, you could just use [MongoDB Atlas](https://www.mongodb.com) instead of downloading and installing MongoDB locally. You will only need to update database credentials in `.env` file.
 
 ### I get an error when I deploy my app, why?
-Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB` is set to `localhost`, it will only work on your machine as long as MongoDB is running. When you deploy to Render, OpenShift, or some other provider, you will not have MongoDB running on `localhost`. You need to create an account with [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), then create a free tier database.
+Chances are you haven't changed the *Database URI* in `.env`. If `MONGODB` is set to `localhost`, it will only work on your machine as long as MongoDB is running. When you deploy to Render, OpenShift, or some other provider, you will not have MongoDB running on `localhost`. You need to create an account with [MongoDB Atlas](https://www.mongodb.com), then create a free tier database.
 See [Deployment](#deployment) for more information on how to set up an account and a new database step-by-step with MongoDB Atlas.
 
 ### Why do you have all routes defined in app.js?
@@ -640,7 +639,7 @@ will be embedded in your new `layout.pug` via `block content`. Use existing temp
 
 This is a rather lengthy process, and templates you get from elsewhere might have yet another grid system. That's why I chose *Bootstrap* for the Hackathon Starter.
  Many people are already familiar with *Bootstrap*, plus it's easy to get started with it if you have never used *Bootstrap*.
- You can also buy many beautifully designed *Bootstrap* themes at [Themeforest](http://themeforest.net/), and use them as a drop-in replacement for Hackathon Starter. However, if you would like to go with a completely custom HTML/CSS design, this should help you to get started!
+ You can also buy many beautifully designed *Bootstrap* themes at various vendors, and use them as a drop-in replacement for Hackathon Starter, just make sure they support the latest version of Bootstrap. However, if you would like to go with a completely custom HTML/CSS design, this should help you to get started!
 
 <hr>
 
@@ -756,11 +755,11 @@ app.route('/books')
 And here is how a route would look if it required an *authentication* and an *authorization* middleware:
 
 ```js
-app.route('/api/twitter')
+app.route('/api/twitch')
   .all(passportConfig.isAuthenticated)
   .all(passportConfig.isAuthorized)
-  .get(apiController.getTwitter)
-  .post(apiController.postTwitter)
+  .get(apiController.getTwitch)
+  .post(apiController.postTwitch)
 ```
 
 Use whichever style makes sense to you. Either one is acceptable. I think that chaining HTTP verbs on `app.route` is a very clean and elegant approach, but on the other hand, I can no longer see all my routes at a glance when you have one route per line.
@@ -1151,7 +1150,8 @@ User.find((err, users) => {
 #### Find a user by email:
 ```js
 let userEmail = 'example@gmail.com';
-User.findOne({ email: userEmail }, (err, user) => {
+User.findOne({ email: { $eq: email.toLowerCase() } })
+.then((user) => {
   console.log(user);
 });
 ```
@@ -1180,17 +1180,18 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 Docker
 ----------
 
-You will need docker and docker-compose installed to build the application.
+You will need to install docker and docker-compose on your system. If you are using WSL, you will need to install Docker Desktop on Windows and docker-compose on WSL.
 
 - [Docker installation](https://docs.docker.com/engine/installation/)
-
-- [Common problems setting up docker](https://docs.docker.com/toolbox/faqs/troubleshoot/)
 
 After installing docker, start the application with the following commands :
 
 ```
-# To build the project for the first time or when you add dependencies
+# To build the project while supressing most of the build messages
 docker-compose build web
+
+# To build the project without supressing the build messages or using cached data
+ docker-compose build --no-cache --progress=plain web
 
 # To start the application (or to restart after making changes to the source code)
 docker-compose up web
@@ -1203,28 +1204,32 @@ To view the app, find your docker IP address + port 8080 ( this will typically b
 Deployment
 ----------
 
-Once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not the only choices, but they are my top picks.  Additionally, you can create an account with **MongoDB Atlas** and then pick one of the providers below. Again, there are plenty of other choices, and you are not limited to just the ones listed below.
-
-### Deployment to Render
-
-<img src="https://cdn.buttercms.com/p0IHcvwRSlOAEjBcTf0C" width="200">
-
-Render provides free nodejs hosting for repos on Github and Gitlab.
-- Sign up for a free Individual account at https://render.com
-- Link your Github account
-- Create a Web Service
-- Add your repo and add your environment variables under the Advanced settings.
-Note 1: The automated deployments may not work, and you may need to manually trigger deployments after your commits.
+Using a local instance on your laptop with ngrok is a good solution for your demo during the hackathon, and you wouldn't necessorily need to deploy to a cloud platform.  If we wish to have your app run 24x7 for general audiance, once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not the only choices, but they we have seen experince using them.  Additionally, you can create an account with **MongoDB Atlas** and then pick one of the providers below. Again, there are plenty of other choices, and you are not limited to just the ones listed below.
 
 ---
+### AWS
 
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/512px-Amazon_Web_Services_Logo.svg.png" width="100">
+
+[AWS Free Tier](https://aws.amazon.com/free) provides 12 months of compute (EC2 Windows or Linux) for free.  AWS has up-to-date guides and instructions for setting up your host.
+
+
+---
+### Azure
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
+
+[Azure free services](https://azure.microsoft.com/en-in/pricing/free-services) provides 12 months VM (Windows or Linux) for free.
+
+
+---
 ### Hosted MongoDB Atlas
 
 <img src="https://www.mongodb.com/assets/images/global/MongoDB_Logo_Dark.svg" width="200">
 
-- Go to [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
-- Click the green **Get started free** button
-- Fill in your information then hit **Get started free**
+- Go to [https://www.mongodb.com/](https://www.mongodb.com/)
+- Click the green **Try free** button
+- Fill in your information then hit **Create your Atlas account**
 - You will be redirected to Create New Cluster page.
 - Select a **Cloud Provider and Region** (such as AWS and a free tier region)
 - Select cluster Tier to Free forever **Shared** Cluster
@@ -1240,170 +1245,6 @@ Note 1: The automated deployments may not work, and you may need to manually tri
 - Finally, copy the URI connection string and replace the URI in MONGODB_URI of `.env.example` with this URI string.  Make sure to replace the <PASSWORD> with the db User password that you created under the Security tab.
 - Note that after some of the steps in the Atlas UI, you may see a banner stating `We are deploying your changes`.  You will need to wait for the deployment to finish before using the DB in your application.
 
-
----
-
-### OpenShift
-
-<img src="http://www.opencloudconf.com/images/openshift_logo.png" width="200">
-**NOTE** *These instructions might be out of date due to changes in OpenShift. Render is currently a good free alternative.  If you know the new process, please feel free to help us update this page*
-
-- First, install this Ruby gem: `sudo gem install rhc` :gem:
-- Run `rhc login` and enter your OpenShift credentials
-- From your app directory run `rhc app create MyApp nodejs-0.10`
- - **Note:** *MyApp* is the name of your app (no spaces)
-- Once that is done, you will be provided with **URL**, **SSH** and **Git Remote** links
-- Visit provided **URL**, and you should see the *Welcome to your Node.js application on OpenShift* page
-- Copy and paste **Git Remote** into `git remote add openshift YOUR_GIT_REMOTE`
-- Before you push your app, you need to do a few modifications to your code
-
-Add these two lines to `app.js`, just place them anywhere before `app.listen()`:
-```js
-var IP_ADDRESS = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
-var PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-```
-
-Then change `app.listen()` to:
-```js
-app.listen(PORT, IP_ADDRESS,() => {
-  console.log(`Express server listening on port ${PORT} in ${app.settings.env} mode`);
-});
-```
-Add this to `package.json`, after *name* and *version*. This is necessary because, by default, OpenShift looks for `server.js` file. And by specifying `supervisor app.js` it will automatically restart the server when node.js process crashes.
-
-```js
-"main": "app.js",
-"scripts": {
-  "start": "supervisor app.js"
-},
-```
-
-- Finally, you can now push your code to OpenShift by running `git push -f openshift master`
- - **Note:** The first time you run this command, you have to pass `-f` (force) flag because OpenShift creates a dummy server with the welcome page when you create a new Node.js app. Passing `-f` flag will override everything with your *Hackathon Starter* project repository. **Do not** run `git pull` as it will create unnecessary merge conflicts.
-- And you are done!
-
----
-
-### Azure
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
-**NOTE** *Beyond the initial 12 month trial of Azure, the platform does not seem to offer a free tier for hosting NodeJS apps.  If you are looking for a free tier service to host your app, Render might be a better choice at this point*
-
-- Login to [Windows Azure Management Portal](https://manage.windowsazure.com/)
-- Click the **+ NEW** button on the bottom left of the portal
-- Click **COMPUTE**, then **WEB APP**, then **QUICK CREATE**
-- Enter a name for **URL** and select the datacenter **REGION** for your web site
-- Click on **CREATE WEB APP** button
-- Once the web site status changes to *Running*, click on the name of the web site to access the Dashboard
-- At the bottom right of the Quickstart page, select **Set up a deployment from source control**
-- Select **Local Git repository** from the list, and then click the arrow
-- To enable Git publishing, Azure will ask you to create a user name and password
-- Once the Git repository is ready, you will be presented with a **GIT URL**
-- Inside your *Hackathon Starter* directory, run `git remote add azure [Azure Git URL]`
-- To push your changes run `git push azure master`
- - **Note:** *You will be prompted for the password you created earlier*
-- On **Deployments** tab of your Windows Azure Web App, you will see the deployment history
-
----
-
-## IBM Bluemix Cloud Platform
-
-**NOTE** *At this point it appears that Bluemix's free tier to host NodeJS apps is limited to 30 days.  If you are looking for a free tier service to host your app, Render might be a better choice at this point*
-
- - Create a Bluemix Account
-
-    [Sign up](https://console.ng.bluemix.net/registration/?target=%2Fdashboard%2Fapps) for Bluemix, or use an existing account.
-
- - Download and install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) to push your applications to Bluemix.
-
- - Create a `manifest.yml` file in the root of your application.
-  ```
-  applications:
- - name:      <your-app-name>
-    host:      <your-app-host>
-    memory:    128M
-    services:
-    - myMongo-db-name
-  ```
-
-  The host you use will determinate your application URL initially, e.g. `<host>.mybluemix.net`.
-  The service name 'myMongo-db-name' is a declaration of your MongoDB service.  If you are using other services like Watson for example, then you would declare them the same way.
-
- - Connect and login to Bluemix via the Cloud-foundry CLI
-  ```
-  $ cf login -a https://api.ng.bluemix.net
-  ```
-
- - Create a [MongoDB service](https://www.ng.bluemix.net/docs/#services/MongoDB/index.html#MongoDB)
-  ```
-  $ cf create-service mongodb 100 [your-service-name]
-  ```
-  **Note:** this is a free and experiment verion of MongoDB instance.
-  Use the MongoDB by Compose instance for production applications:
-  ```
-  $ cf create-service compose-for-mongodb Standard [your-service-name]'
-  ```
-
-
- - Push the application
-
-    ```
-    $ cf push
-    ```
-    ```
-    $ cf env <your-app-name >
-    (To view the *environment variables* created for your application)
-
-    ```
-
-**Done**, now go to the staging domain (`<host>.mybluemix.net`) and see your app running.
-
- - [More Bluemix samples](https://ibm-bluemix.github.io/) 
- - [Simple ToDo app in a programming language of your choice](https://github.com/IBM-Bluemix/todo-apps)
-
-### IBM Watson
-Be sure to check out the full list of Watson services to forwarder enhance your application functionality with a little effort. Watson services are easy to get going; it is simply a RESTful API call. Here is an example of a [Watson Toner Analyzer](https://tone-analyzer-demo.mybluemix.net/) to understand the emotional context of a piece of text that you send to Watson.
-
-
-#### Watson catalog of services
-
-**[Virtual Assistant](https://www.ibm.com/products/watson-assistant)** -    Deliver consistent and intelligent customer care across all channels and touchpoints with conversational AI.
-
-**[Natural Language Understanding](https://www.ibm.com/products/natural-language-understanding)** - Analyze text to extract meta-data from content such as concepts, entities, keywords and more.
-
-**[Discovery](https://www.ibm.com/products/watson-discovery)** - Accelerate business decisions and processes with an AI-powered intelligent document understanding and content analysis platform.
-
-**[Orchestrate](https://www.ibm.com/products/watson-orchestrate)** - Hand off tedious tasks to Watson and never work the same way again.
-
-
-[List of Watson Services](https://www.ibm.com/watson#work-with-watson).
-
-
----
-
-###  Google Cloud Platform
-<img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=64" width="64">
-
-- [Download and install Node.js](https://nodejs.org/)
-- [Select or create](https://console.cloud.google.com/project) a Google Cloud Platform Console project
-- [Enable billing](https://support.google.com/cloud/answer/6293499#enable-billing) for your project (there's a $300 free trial)
-- Install and initialize the [Google Cloud SDK](https://cloud.google.com/sdk/docs/quickstarts)
-- Create an `app.yaml` file at the root of your `hackathon-starter` folder with the following contents:
-
-    ```yaml
-    runtime: nodejs
-    env: flex
-    manual_scaling:
-      instances: 1
-    ```
-- Make sure you've set `MONGODB_URI` in `.env.example`
-- Run the following command to deploy the `hackathon-starter` app:
-
-    ```bash
-    gcloud app deploy
-    ```
-- [Monitor your deployed app](https://console.cloud.google.com/appengine) in the Cloud Console
-- [View the logs](https://console.cloud.google.com/logs/viewer) for your app in the Cloud Console
 
 Production
 ---------
@@ -1426,7 +1267,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2023 Sahat Yalkabov
+Copyright (c) 2014-2025 Sahat Yalkabov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

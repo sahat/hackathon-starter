@@ -6,7 +6,7 @@ block content
       i.fas.fa-phone(style='color: #f00').fa-sm.iconpadding
       | Twilio API
 
-  .btn-group.d-flex(role='group')
+  .btn-group.mb-4.d-flex(role='group')
     a.btn.btn-primary(href='http://twilio.github.io/twilio-node/', target='_blank').w-100
       i.far.fa-check-square.fa-sm.iconpadding
       | Twilio Node
@@ -17,18 +17,66 @@ block content
       i.fas.fa-code-branch.fa-sm.iconpadding
       | REST API
 
-  br
+  if isSandbox
+    .alert.alert-warning(role='alert')
+      strong Warning:
+      |  The instance is configured to send SMS from a Twillio sandbox phone number:
+      b= ` ${fromNumber}`
+      | . No actual SMS will be sent.
+      p
+      i.fas.fa-hand-point-right.fa-sm.iconpadding
+      |  Tip: Ensure you are using Test credentials instead of Live credentials during development to avoid charges for using sandbox numbers as they are invalid for production use. See 
+      a(href='https://console.twilio.com/us1/account/keys-credentials/api-keys', target='_blank') Auth Tokens page of your Console
+      |  for both your Test and Live credentials.
+    .mt-4
+      .alert.alert-secondary
+        h6 Example Numbers to Text
+        p.mb-0
+          | You can enter a valid phone number or use one of Twilio's 
+          a(href='https://www.twilio.com/docs/iam/test-credentials#test-sms-capable-numbers', target='_blank') test phone numbers
+          |  for simulating errors during development. For example:
+        ul.mb-0
+          li 
+            |  To: (any valid sms capable US number - no text will be sent with a sandbox/test setup)
+          li 
+            |  To: +15005550006
+            |  : This phone number is valid for testing.
+          li 
+            |  To: +15005550001 
+            |  : This phone number is invalid.
+          li 
+            |  To: +15005550002
+            |  : Can not route SMS to this number.
+          li 
+            |  To: +15005550003
+            |  : Your account doesn't have the international permissions necessary to call this number.
+          li 
+            |  To: +15005550004
+            |  : This number is blocked for your account.
+          li 
+            |  To: +15005550009 
+            |  : This number is incapable of receiving SMS messages.
+  else
+    .alert.alert-info(role='alert')
+      | Texts will be sent from the sender number
+      b= ` ${fromNumber}`
+      | . This is live mode, and actual SMS will be sent.
 
   .row
-    .col-sm-6
+    .col-sm-6.mb-4
       form(role='form', method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
-        .form-group.mb-3
-          label.control-label Number to text
-          input.form-control(type='text', name='number', autofocus)
-        .form-group.mb-3
-          label.control-label Message
-          input.form-control(type='text', name='message')
-        button.btn.btn-primary(type='submit')
-          i.fas.fa-location-arrow.fa-sm
-          | Send
+        .form-group.row.mb-3
+          label(class='col-md-4 col-form-label font-weight-bold', for='number') Phone Number to text:
+          .col-md-6
+            input.form-control(type='text', name='number', placeholder='e.g., +1234567890')
+        .form-group.row.mb-3
+          label(class='col-md-4 col-form-label font-weight-bold', for='message') Message:
+          .col-md-6
+            input.form-control(type='text', name='message', placeholder='Your message here')
+        .form-group.row
+          .col-md-4
+          .col-md-6
+            button.btn.btn-primary(type='submit')
+              i.fas.fa-location-arrow.fa-sm.iconpadding
+              | Send Message

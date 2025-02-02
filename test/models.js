@@ -118,7 +118,8 @@ describe('User Model', () => {
     const user = UserMock.object;
 
     const gravatar = user.gravatar();
-    expect(gravatar.includes('gravatar.com')).to.equal(true);
+    const { host } = new URL(gravatar);
+    expect(host).to.equal('gravatar.com');
   });
 
   it('should generate gravatar with size', () => {

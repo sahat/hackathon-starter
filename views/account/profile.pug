@@ -45,9 +45,9 @@ block content
       .col-md-7.mb-2
         input.form-control(type='text', name='website', id='website', value=user.profile.website, autocomplete='url')
     .form-group.row
-      label.col-md-3.col-form-label.font-weight-bold.text-right Gravatar
+      label.col-md-3.col-form-label.font-weight-bold.text-right Profile Picture
       .col-sm-4.mb-2
-        img(src=user.gravatar(), class='profile', width='100', height='100')
+        img(src=(user.profile.picture ? user.profile.picture : user.gravatar()), class='profile', width='100', height='100')
     .form-group
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn.btn-primary(type='submit')
@@ -111,15 +111,11 @@ block content
         p.mb-1: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
       else
         p.mb-1: a(href='/auth/facebook') Link your Facebook account
-      if user.snapchat
-        p.mb-1: a.text-danger(href='/account/unlink/snapchat') Unlink your Snapchat account
-      else
-        p.mb-1: a(href='/auth/snapchat') Link your Snapchat account
     .offset-sm-3.col-md-7.pl-2
-      if user.twitter
-        p.mb-1: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
+      if user.x
+        p.mb-1: a.text-danger(href='/account/unlink/x') Unlink your X account
       else
-        p.mb-1: a(href='/auth/twitter') Link your Twitter account
+        p.mb-1: a(href='/auth/x') Link your X account
     .offset-sm-3.col-md-7.pl-2
       if user.github
         p.mb-1: a.text-danger(href='/account/unlink/github') Unlink your GitHub account
@@ -145,3 +141,13 @@ block content
         p.mb-1: a.text-danger(href='/account/unlink/quickbooks') Unlink your QuickBooks account
       else
         p.mb-1: a(href='/auth/quickbooks') Link your QuickBooks account
+    .offset-sm-3.col-md-7.pl-2
+      if user.pinterest
+        p.mb-1: a.text-danger(href='/account/unlink/pinterest') Unlink your Pinterest account
+      else
+        p.mb-1: a(href='/auth/pinterest') Link your Pinterest account
+    .offset-sm-3.col-md-7.pl-2
+      if user.tumblr
+        p.mb-1: a.text-danger(href='/account/unlink/tumblr') Unlink your Tumblr account
+      else
+        p.mb-1: a(href='/auth/tumblr') Link your Tumblr account

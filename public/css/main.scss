@@ -1,20 +1,10 @@
 @import "node_modules/bootstrap/scss/bootstrap";
-@import "node_modules/@ladjs/bootstrap-social/bootstrap-social.scss";
+@import "node_modules/bootstrap-social/bootstrap-social.scss";
 @import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
 @import "node_modules/@fortawesome/fontawesome-free/scss/brands";
 @import "node_modules/@fortawesome/fontawesome-free/scss/regular";
 @import "node_modules/@fortawesome/fontawesome-free/scss/solid";
 
-
-// Basic Snapchat Button CSS
-.btn-snapchat {
-  background-color: #fffc00;
-  color: #000 !important;
-
-  &:hover, &:active {
-    background-color: #f1ef00;
-  }
-}
 
 // Basic Twitch Button CSS
 .btn-twitch {

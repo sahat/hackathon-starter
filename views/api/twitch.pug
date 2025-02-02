@@ -3,7 +3,7 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fab.fa-steam-square.fa-sm.iconpadding
+      i.fab.fa-twitch.fa-sm.iconpadding
       | Twitch API
   .btn-group.d-flex(role='group')
     a.btn.btn-primary(href='https://dev.twitch.tv/docs/api', target='_blank').w-100
@@ -11,27 +11,51 @@ block content
       | API Overview
 
   br
-  h3 Your Public Profile Information
-  .row
-    .col-sm-2
-      img(src=yourTwitchUserData.profile_image_url, width='92', height='92')
-    .col-sm-8
-      span.lead Name: #{yourTwitchUserData.display_name}
-      div Twitch ID: #{yourTwitchUserData.login}
-      div Description: #{yourTwitchUserData.description}
-      div View Count: #{yourTwitchUserData.view_count}
-      div Broadcaster Type: #{yourTwitchUserData.broadcaster_type}
-      div Follower Count: #{twitchFollowers.total}
+  .card.text-white.bg-success.mb-4
+    .card-header
+      h6.panel-title.mb-0 Your Profile
+    .card-body.text-dark.bg-white
+      .row
+        .col-sm-2
+          img(src=yourTwitchUserData.profile_image_url, width='150', height='150')
+        .col-sm-8
+          span.lead Name: #{yourTwitchUserData.display_name}
+          div Twitch ID: #{yourTwitchUserData.login}
+          div Description: #{yourTwitchUserData.description}
+          div Broadcaster Type: #{yourTwitchUserData.broadcaster_type}
+          div Follower Count: #{twitchFollowers.total}
 
   br
-  br
-  h3 Public Profile Information - Example
-  .row
-    .col-sm-2
-      img(src=otherTwitchUserData.profile_image_url, width='92', height='92')
-    .col-sm-8
-      span.lead Name: #{otherTwitchUserData.display_name}
-      div Twitch ID: #{otherTwitchUserData.login}
-      div Description: #{otherTwitchUserData.description}
-      div View Count: #{otherTwitchUserData.view_count}
-      div Broadcaster Type: #{otherTwitchUserData.broadcaster_type}
+  .card.text-white.bg-primary.mb-4
+    .card-header
+      h6.panel-title.mb-0 Top Streamer Playing Destiny 2
+    .card-body.text-dark.bg-white
+      .row
+        .col-sm-2
+          img(src=otherTwitchStreamerInfo.profile_image_url, width='150', height='150')
+        .col-sm-8
+          span.lead Name: #{otherTwitchStreamStatus.user_name}
+          div Twitch ID: #{otherTwitchStreamStatus.user_login}
+          div Twitch member since: #{otherTwitchStreamerInfo.created_at}
+          div Description: #{otherTwitchStreamerInfo.description}
+          div Broadcaster Type: #{otherTwitchStreamerInfo.broadcaster_type}
+          div Game: #{otherTwitchStreamStatus.game_name}
+          div Language: #{otherTwitchStreamStatus.language}
+          div Mature Content: #{otherTwitchStreamStatus.is_mature ? 'Yes' : 'No'}
+          if otherTwitchStreamStatus.type === 'live'
+            br
+            span.status.text-success
+              i.fas.fa-circle.iconpadding
+              |  Currently Online
+            |  - viewers: #{otherTwitchStreamStatus.viewer_count} - Stream started: #{otherTwitchStreamStatus.started_at}
+            div Stream Title: #{otherTwitchStreamStatus.title}
+            div
+              span Stream tags:
+              each tag in otherTwitchStreamStatus.tags
+                span.badge.bg-primary.text-dark.mx-2= tag
+            br
+            img(src=otherTwitchStreamStatus.thumbnail_url.replace('{width}x{height}', '640x360'), width='640', height='360')
+          else
+            span.status.text-danger
+              i.fas.fa-circle
+              | Offline
