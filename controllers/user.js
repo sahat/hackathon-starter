@@ -6,6 +6,7 @@ const _ = require('lodash');
 const validator = require('validator');
 const mailChecker = require('mailchecker');
 const User = require('../models/User');
+const Session = require('../models/Session');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -541,4 +542,24 @@ exports.postForgot = (req, res, next) => {
     .then(sendForgotPasswordEmail)
     .then(() => res.redirect('/forgot'))
     .catch(next);
+};
+
+/**
+ * POST /account/logout-everywhere
+ * Logout current user from all devices
+ */
+exports.postLogoutEverywhere = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    await Session.removeSessionByUserId(userId);
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash('info', { msg: 'You have been logged out of all sessions.' });
+      res.redirect('/');
+    });
+  } catch (err) {
+    return next(err);
+  }
 };

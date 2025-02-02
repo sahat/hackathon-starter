@@ -74,6 +74,19 @@ block content
           | Change Password
 
   .pb-2.mt-2.mb-4.border-bottom
+    h3 Logout Everywhere
+
+  form(action='/account/logout-everywhere', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      p.offset-sm-3.col-md-7.pl-2 This will log you out of all devices and locations.
+
+      .offset-sm-3.col-md-7.pl-2
+        button.btn.btn-danger(type='submit')
+          i.fas.fa-sm.iconpadding.fa-sign-out-alt
+          | Logout everywhere
+
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Delete Account
 
   form(action='/account/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
