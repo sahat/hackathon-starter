@@ -83,7 +83,7 @@ block content
         | Please log in to access your GitHub profile information.
       else if authFailure === 'NotGitHubAuthorized'
         | You are logged in but have not linked your GitHub account. 
-        a(href='auth/github') Link your GitHub account
+        a(href='/auth/github') Link your GitHub account
         |  to access your GitHub profile information.
       else
         | Unable to fetch user information. Please ensure you are authenticated.
