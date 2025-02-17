@@ -13,6 +13,7 @@ exports.getContact = (req, res) => {
     title: 'Contact',
     sitekey: process.env.RECAPTCHA_SITE_KEY,
     unknownUser,
+    homeUrl: process.env.BASE_URL,
   });
 };
 

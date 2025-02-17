@@ -56,7 +56,8 @@ exports.getLogin = (req, res) => {
     return res.redirect('/');
   }
   res.render('account/login', {
-    title: 'Login'
+    title: 'Login',
+    homeUrl: process.env.BASE_URL,
   });
 };
 
@@ -113,7 +114,8 @@ exports.getSignup = (req, res) => {
     return res.redirect('/');
   }
   res.render('account/signup', {
-    title: 'Create Account'
+    title: 'Create Account',
+    homeUrl: process.env.BASE_URL,
   });
 };
 
@@ -159,7 +161,8 @@ exports.postSignup = async (req, res, next) => {
  */
 exports.getAccount = (req, res) => {
   res.render('account/profile', {
-    title: 'Account Management'
+    title: 'Account Management',
+    homeUrl: process.env.BASE_URL,
   });
 };
 
@@ -301,7 +304,8 @@ exports.getReset = async (req, res, next) => {
       return res.redirect('/forgot');
     }
     res.render('account/reset', {
-      title: 'Password Reset'
+      title: 'Password Reset',
+      homeUrl: process.env.BASE_URL,
     });
   } catch (err) {
     return next(err);
@@ -478,7 +482,8 @@ exports.getForgot = (req, res) => {
     return res.redirect('/');
   }
   res.render('account/forgot', {
-    title: 'Forgot Password'
+    title: 'Forgot Password',
+    homeUrl: process.env.BASE_URL,
   });
 };
 
