@@ -103,7 +103,8 @@ Prerequisites
   - Local Install: [MongoDB](https://www.mongodb.com/download-center/community)
   - Hosted: No need to install, see the MongoDB Atlas section
 
-- [Node.js 22+](http://nodejs.org)
+- [Node.js 22.12+](http://nodejs.org)
+  - Highly recommanded: Use/Upgrade your NodeJS to the latest NodeJS 22 LTS version.
 - Command Line Tools
  - <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Apple_logo_grey.svg" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
  - <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg" height="17">&nbsp;**Windows:** [Visual Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://learn.microsoft.com/en-us/windows/wsl/install) OR [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
@@ -129,7 +130,7 @@ cd myproject
 npm install
 
 # Then simply start your app
-node app.js
+npm start
 ```
 
 **Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon). It watches for any changes in your  node.js app and automatically restarts the server. Once installed, instead of `node app.js` use `nodemon app.js`. It will

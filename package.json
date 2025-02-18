@@ -30,7 +30,7 @@
     "@lob/lob-typescript-sdk": "^1.3.5",
     "@naandalist/patch-package": "^8.1.3",
     "@node-rs/bcrypt": "^1.10.7",
-    "@octokit/rest": "^21.1.0",
+    "@octokit/rest": "^21.1.1",
     "@passport-js/passport-twitter": "^1.0.9",
     "@popperjs/core": "^2.11.8",
     "axios": "^1.7.9",
@@ -39,7 +39,7 @@
     "bootstrap-social": "github:SeattleDevs/bootstrap-social",
     "chart.js": "^4.4.7",
     "cheerio": "^1.0.0",
-    "compression": "^1.7.5",
+    "compression": "^1.8.0",
     "connect-mongo": "^5.1.0",
     "dotenv": "^16.4.7",
     "errorhandler": "^1.5.1",
@@ -51,9 +51,9 @@
     "lastfm": "^0.9.4",
     "lodash": "^4.17.21",
     "lusca": "^1.7.0",
-    "mailchecker": "^6.0.15",
+    "mailchecker": "^6.0.16",
     "moment": "^2.30.1",
-    "mongoose": "^8.9.6",
+    "mongoose": "^8.10.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.10.0",
@@ -66,11 +66,11 @@
     "passport-oauth": "^1.0.0",
     "passport-oauth2-refresh": "^2.2.0",
     "passport-openidconnect": "^0.1.2",
-    "passport-steam-openid": "^1.1.4",
+    "passport-steam-openid": "^1.1.5",
     "pug": "^3.0.3",
-    "sass": "1.83.4",
+    "sass": "^1.85.0",
     "stripe": "^17.6.0",
-    "twilio": "^5.4.3",
+    "twilio": "^5.4.4",
     "twitch-passport": "^1.0.6",
     "validator": "^13.12.0"
   },
@@ -78,12 +78,12 @@
     "@eslint/compat": "^1.2.6",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
-    "chai": "^5.1.2",
-    "eslint": "^9.19.0",
+    "chai": "^5.2.0",
+    "eslint": "^9.20.1",
     "eslint-config-airbnb-base-extract": "github:SeattleDevs/eslint-config-airbnb-base-extract",
     "eslint-plugin-chai-friendly": "^1.0.1",
     "eslint-plugin-import": "^2.31.0",
-    "globals": "^15.14.0",
+    "globals": "^15.15.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "mocha": "^11.1.0",
@@ -103,6 +103,6 @@
     }
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12"
   }
 }
