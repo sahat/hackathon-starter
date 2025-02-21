@@ -6,11 +6,11 @@ ENV NODE_ENV development
 COPY .env.example /starter/.env.example
 COPY . /starter
 
-RUN npm install pm2 -g
-RUN if [ "$NODE_ENV" = "production" ]; then \
-    npm install --omit=dev; \
+RUN npm install -g pm2 && \
+    if [ "$NODE_ENV" = "production" ]; then \
+        npm install --omit=dev; \
     else \
-    npm install; \
+        npm install; \
     fi
 
 CMD ["pm2-runtime","app.js"]
