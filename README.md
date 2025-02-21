@@ -498,7 +498,7 @@ Required during code development for testing, Hygiene, code styleing, etc.
 | lint-stage                      | Utility to lint files staged by git.                                    |
 | mocha                           | Test framework.                                                         |
 | mongodb-memory-server           | In memory mongodb server for testing, so tests can be ran without a DB  |
-| nyc                             | Coverage test.                                                          |
+| c8                              | Coverage test.                                                          |
 | sinon                           | Test spies, stubs and mocks for JavaScript.                             |
 | supertest                       | HTTP assertion library.                                                 |
 
