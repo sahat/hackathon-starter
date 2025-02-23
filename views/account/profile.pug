@@ -4,7 +4,7 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h3 Profile Information
 
-  form(action='/account/profile', method='POST')
+  form(action='account/profile', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
@@ -17,7 +17,7 @@ block content
         else
           .text-danger.font-italic
             | Unverified: &nbsp;
-            a(href='/account/verify') Send verification email
+            a(href='account/verify') Send verification email
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='name') Name
       .col-md-7.mt-2
@@ -57,7 +57,7 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h3 Change Password
 
-  form(action='/account/password', method='POST')
+  form(action='account/password', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') New Password
@@ -76,7 +76,7 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h3 Logout Everywhere
 
-  form(action='/account/logout-everywhere', method='POST')
+  form(action='account/logout-everywhere', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
       p.offset-sm-3.col-md-7.pl-2 This will log you out of all devices and locations.
@@ -89,7 +89,7 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h3 Delete Account
 
-  form(action='/account/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
+  form(action='account/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
     .form-group
       p.offset-sm-3.col-md-7.pl-2 You can delete your account, but keep in mind this action is irreversible.
       input(type='hidden', name='_csrf', value=_csrf)
@@ -103,51 +103,51 @@ block content
   .form-group
     .offset-sm-3.col-md-7.pl-2
       if user.google
-        p.mb-1: a.text-danger(href='/account/unlink/google') Unlink your Google account
+        p.mb-1: a.text-danger(href='account/unlink/google') Unlink your Google account
       else
-        p.mb-1: a(href='/auth/google') Link your Google account
+        p.mb-1: a(href='auth/google') Link your Google account
     .offset-sm-3.col-md-7.pl-2
       if user.facebook
-        p.mb-1: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
+        p.mb-1: a.text-danger(href='account/unlink/facebook') Unlink your Facebook account
       else
-        p.mb-1: a(href='/auth/facebook') Link your Facebook account
+        p.mb-1: a(href='auth/facebook') Link your Facebook account
     .offset-sm-3.col-md-7.pl-2
       if user.x
-        p.mb-1: a.text-danger(href='/account/unlink/x') Unlink your X account
+        p.mb-1: a.text-danger(href='account/unlink/x') Unlink your X account
       else
-        p.mb-1: a(href='/auth/x') Link your X account
+        p.mb-1: a(href='auth/x') Link your X account
     .offset-sm-3.col-md-7.pl-2
       if user.github
-        p.mb-1: a.text-danger(href='/account/unlink/github') Unlink your GitHub account
+        p.mb-1: a.text-danger(href='account/unlink/github') Unlink your GitHub account
       else
-        p.mb-1: a(href='/auth/github') Link your GitHub account
+        p.mb-1: a(href='auth/github') Link your GitHub account
     .offset-sm-3.col-md-7.pl-2
       if user.linkedin
-        p.mb-1: a.text-danger(href='/account/unlink/linkedin') Unlink your LinkedIn account
+        p.mb-1: a.text-danger(href='account/unlink/linkedin') Unlink your LinkedIn account
       else
-        p.mb-1: a(href='/auth/linkedin') Link your LinkedIn account
+        p.mb-1: a(href='auth/linkedin') Link your LinkedIn account
     .offset-sm-3.col-md-7.pl-2
       if user.steam
-        p.mb-1: a.text-danger(href='/account/unlink/steam') Unlink your Steam account
+        p.mb-1: a.text-danger(href='account/unlink/steam') Unlink your Steam account
       else
-        p.mb-1: a(href='/auth/steam') Link your Steam account
+        p.mb-1: a(href='auth/steam') Link your Steam account
     .offset-sm-3.col-md-7.pl-2
       if user.twitch
-        p.mb-1: a.text-danger(href='/account/unlink/twitch') Unlink your Twitch account
+        p.mb-1: a.text-danger(href='account/unlink/twitch') Unlink your Twitch account
       else
-        p.mb-1: a(href='/auth/twitch') Link your Twitch account
+        p.mb-1: a(href='auth/twitch') Link your Twitch account
     .offset-sm-3.col-md-7.pl-2
       if user.quickbooks
-        p.mb-1: a.text-danger(href='/account/unlink/quickbooks') Unlink your QuickBooks account
+        p.mb-1: a.text-danger(href='account/unlink/quickbooks') Unlink your QuickBooks account
       else
-        p.mb-1: a(href='/auth/quickbooks') Link your QuickBooks account
+        p.mb-1: a(href='auth/quickbooks') Link your QuickBooks account
     .offset-sm-3.col-md-7.pl-2
       if user.pinterest
-        p.mb-1: a.text-danger(href='/account/unlink/pinterest') Unlink your Pinterest account
+        p.mb-1: a.text-danger(href='account/unlink/pinterest') Unlink your Pinterest account
       else
-        p.mb-1: a(href='/auth/pinterest') Link your Pinterest account
+        p.mb-1: a(href='auth/pinterest') Link your Pinterest account
     .offset-sm-3.col-md-7.pl-2
       if user.tumblr
-        p.mb-1: a.text-danger(href='/account/unlink/tumblr') Unlink your Tumblr account
+        p.mb-1: a.text-danger(href='account/unlink/tumblr') Unlink your Tumblr account
       else
-        p.mb-1: a(href='/auth/tumblr') Link your Tumblr account
+        p.mb-1: a(href='auth/tumblr') Link your Tumblr account

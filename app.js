@@ -261,6 +261,21 @@ app.use((req, res, next) => {
   res.status(404).send('Page Not Found');
 });
 
+/**
+ * Join base ref to path to form absolute url.
+ *  So when BASE_REF is https://host:port/mysite/
+ *  The path /login becomes https://host:port/mysite/login
+ */
+app.locals.baseRef = path => {
+  function addTrailingSlash(str) {
+    return str.endsWith('/') ? str : str + '/';
+  }
+  function removeLeadingSlash(str) {
+    return str.startsWith('/') ? str.slice(1) : str;
+  }
+  return `${addTrailingSlash(process.env.BASE_URL) + removeLeadingSlash(path)}`;
+};
+
 if (process.env.NODE_ENV === 'development') {
   // only use in development
   app.use(errorHandler());
