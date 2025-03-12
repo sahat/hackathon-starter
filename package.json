@@ -33,7 +33,7 @@
     "@octokit/rest": "^21.1.1",
     "@passport-js/passport-twitter": "^1.0.10",
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.8.1",
+    "axios": "^1.8.3",
     "body-parser": "^1.20.2",
     "bootstrap": "^5.3.3",
     "bootstrap-social": "github:SeattleDevs/bootstrap-social",
@@ -51,13 +51,13 @@
     "lastfm": "^0.9.4",
     "lodash": "^4.17.21",
     "lusca": "^1.7.0",
-    "mailchecker": "^6.0.16",
+    "mailchecker": "^6.0.17",
     "moment": "^2.30.1",
-    "mongoose": "^8.11.0",
+    "mongoose": "^8.12.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.10.0",
-    "oauth": "^0.10.0",
+    "oauth": "^0.10.2",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-github2": "^0.1.12",
@@ -70,7 +70,7 @@
     "pug": "^3.0.3",
     "sass": "^1.85.1",
     "stripe": "^17.7.0",
-    "twilio": "^5.4.5",
+    "twilio": "^5.5.0",
     "twitch-passport": "^1.0.6",
     "validator": "^13.12.0"
   },
@@ -80,27 +80,19 @@
     "@eslint/js": "^9.18.0",
     "c8": "^10.1.3",
     "chai": "^5.2.0",
-    "eslint": "^9.21.0",
+    "eslint": "^9.22.0",
     "eslint-config-airbnb-base-extract": "github:SeattleDevs/eslint-config-airbnb-base-extract",
     "eslint-plugin-chai-friendly": "^1.0.1",
     "eslint-plugin-import": "^2.31.0",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
+    "lint-staged": "^15.5.0",
     "mocha": "^11.1.0",
     "mongodb-memory-server": "^10.1.4",
     "sinon": "^19.0.2",
     "supertest": "^7.0.0"
   },
   "overrides": {
-    "node-fetch": {
-      "whatwg-url": "^14.x",
-      "gcp-metadata": "^6.x"
-    },
-    "mailchecker": {
-      "rimraf": "4.x",
-      "glob": "10.x"
-    },
     "@sinonjs/samsam": "github:SeattleDevs/samsam.git"
   },
   "engines": {
