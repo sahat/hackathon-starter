@@ -219,8 +219,8 @@ app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
-app.get('/auth/x', passport.authenticate('twitter'));
-app.get('/auth/x/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), (req, res) => {
+app.get('/auth/x', passport.authenticate('X'));
+app.get('/auth/x/callback', passport.authenticate('X', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/linkedin', passport.authenticate('linkedin'));

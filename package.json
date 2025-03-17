@@ -68,7 +68,7 @@
     "passport-openidconnect": "^0.1.2",
     "passport-steam-openid": "^1.1.5",
     "pug": "^3.0.3",
-    "sass": "^1.85.1",
+    "sass": "^1.86.0",
     "stripe": "^17.7.0",
     "twilio": "^5.5.0",
     "twitch-passport": "^1.0.6",
