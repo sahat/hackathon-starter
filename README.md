@@ -450,7 +450,6 @@ Required to run the project before your modifications
 | @passport-js/passport-twitter   | X (Twitter) login support (OAuth 2).                                    |
 | @popperjs/core                  | Frontend js library for poppers and tooltips.                           |
 | axios                           | HTTP client.                                                            |
-| body-parser                     | Node.js body parsing middleware.                                        |
 | bootstrap                       | CSS Framework.                                                          |
 | bootstrap-social                | Social buttons library.                                                 |
 | chart.js                        | Frontend js library for creating charts.                                |

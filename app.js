@@ -5,7 +5,6 @@ const path = require('path');
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
-const bodyParser = require('body-parser');
 const logger = require('morgan');
 const errorHandler = require('errorhandler');
 const lusca = require('lusca');
@@ -82,8 +81,8 @@ app.set('view engine', 'pug');
 app.set('trust proxy', numberOfProxies);
 app.use(compression());
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
 app.use(session({
   resave: true, // Only save session if modified
