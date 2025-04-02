@@ -191,18 +191,52 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 <hr>
 
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/200px-RecaptchaLogo.svg.png" width="200">
+<img src="https://i.imgur.com/jULUCKF.png" height="75">
 
-- Visit <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin Console</a>
-- Enter your application's name as the **Label**
-- Choose **reCAPTCHA v2**, **"I'm not a robot" Checkbox**
-- Enter *localhost* as the domain.  You can have other domains added in addition to *localhost*
-- Accept the terms and submit the form
-- Copy the *Site Key* and the *Secret key* into `.env`.  These keys will be accessible under Settings, reCAPTCHA keys drop down if you need them again later
+- Visit <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a>
+- Click **My Apps**, then select **Add a New App* from the dropdown menu
+- Enter a new name for your app
+- Click on the **Create App ID** button
+- Find the Facebook Login Product and click on **Facebook Login**
+- Instead of going through their Quickstart, click on **Settings** for your app in the top left corner
+- Copy and paste *App ID* and *App Secret* keys into `.env`
+- **Note:** *App ID* is **FACEBOOK_ID**, *App Secret* is **FACEBOOK_SECRET** in `.env`
+- Enter `localhost` under *App Domains*
+- Choose a **Category** that best describes your app
+- Click on **+ Add Platform** and select **Website**
+- Enter your BASE_URL value (i.e. `http://localhost:8080`, etc) under *Site URL*
+- Click on the *Settings* tab in the left nav under Facebook Login
+- Enter your BASE_URL value followed by /auth/facebook/callback (i.e. `http://localhost:8080/auth/facebook/callback` ) under Valid OAuth redirect URIs
+
+**Note:** After a successful sign-in with Facebook, a user will be redirected back to the home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
 
 <hr>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" width="200">
+<img src="https://imgur.com/2P4UMvC.png" height="75">
+
+- Go to <a href="https://developer.foursquare.com" target="_blank">Foursquare for Developers</a> and log in
+- Click on **My Apps** in the top menu
+- Click the **Create A New App** button
+- Enter *App Name*, *Welcome page url*,
+- For **Redirect URI**: your BASE_URL value followed by /auth/foursquare/callback (i.e. `http://localhost:8080/auth/foursquare/callback` )
+- Click **Save Changes**
+- Copy and paste *Client ID* and *Client Secret* keys into `.env` file
+
+<hr>
+
+<img src="https://i.imgur.com/oUob1wG.png" height="75">
+
+- Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
+- Select **Developer settings** from the sidebar
+- Then click on **OAuth Apps** and then on **Register new application**
+- Enter *Application Name* and *Homepage URL*. Enter your BASE_URL value (i.e. `http://localhost:8080`, etc) as the homepage URL.
+- For *Authorization Callback URL*: your BASE_URL value followed by /auth/github/callback (i.e. `http://localhost:8080/auth/github/callback` )
+- Click **Register application**
+- Now copy and paste *Client ID* and *Client Secret* keys into `.env` file
+
+<hr>
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" height="50">
 
 - Visit <a href="https://cloud.google.com/console/project" target="_blank">Google Cloud Console</a>
 - Click on the **Create Project** button
@@ -224,55 +258,25 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://i.imgur.com/jULUCKF.png" width="90">
+<img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/HERE_logo.svg" height="75">
 
-- Visit <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a>
-- Click **My Apps**, then select **Add a New App* from the dropdown menu
-- Enter a new name for your app
-- Click on the **Create App ID** button
-- Find the Facebook Login Product and click on **Facebook Login**
-- Instead of going through their Quickstart, click on **Settings** for your app in the top left corner
-- Copy and paste *App ID* and *App Secret* keys into `.env`
-- **Note:** *App ID* is **FACEBOOK_ID**, *App Secret* is **FACEBOOK_SECRET** in `.env`
-- Enter `localhost` under *App Domains*
-- Choose a **Category** that best describes your app
-- Click on **+ Add Platform** and select **Website**
-- Enter your BASE_URL value (i.e. `http://localhost:8080`, etc) under *Site URL*
-- Click on the *Settings* tab in the left nav under Facebook Login
-- Enter your BASE_URL value followed by /auth/facebook/callback (i.e. `http://localhost:8080/auth/facebook/callback` ) under Valid OAuth redirect URIs
-
-**Note:** After a successful sign-in with Facebook, a user will be redirected back to the home page with appended hash `#_=_` in the URL. It is *not* a bug. See this [Stack Overflow](https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url) discussion for ways to handle it.
+- Go to <a href="https://developer.here.com" target="_blank">https://developer.here.com</a>
+- Sign up and create a Freemium project
+- Create JAVASCRIPT/REST credentials. Copy and paste the APP_ID and APP into `.env` file.
+- Note that these credentials are available on the client-side, and you need to create a domain whitelist for your app credentials when you are publicly launching the app.
 
 <hr>
 
-<img src="https://i.imgur.com/oUob1wG.png" width="90">
+<img src="https://i.imgur.com/Lw5Jb7A.png" height="50">
 
-- Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
-- Select **Developer settings** from the sidebar
-- Then click on **OAuth Apps** and then on **Register new application**
-- Enter *Application Name* and *Homepage URL*. Enter your BASE_URL value (i.e. `http://localhost:8080`, etc) as the homepage URL.
-- For *Authorization Callback URL*: your BASE_URL value followed by /auth/github/callback (i.e. `http://localhost:8080/auth/github/callback` )
-- Click **Register application**
-- Now copy and paste *Client ID* and *Client Secret* keys into `.env` file
+- Go to <a href="https://developer.intuit.com/app/developer/qbo/docs/get-started" target="_blank">https://developer.intuit.com/app/developer/qbo/docs/get-started</a>
+- Use the Sign Up option in the upper right corner of the screen (navbar) to get a free developer account and a sandbox company.
+- Create a new app by going to your Dashboard using the My Apps option in the top nav bar or by going to <a href="https://developer.intuit.com/app/developer/myapps" target="_blank">https://developer.intuit.com/app/developer/myapps</a>
+- In your App, under Development, Keys & OAuth (right nav), find the Client ID and Client Secret for your `.env` file
 
 <hr>
 
-<img src="https://i.imgur.com/QMjwCk6.png" width="90">
-
-- Sign in at <a href="https://developer.x.com/" target="_blank">https://developer.x.com/</a>
-- Start with the Free tier
-- Click **Create a new application**
-- Enter your application name, website and description. Set the website as your BASE_URL value (i.e. `http://localhost:8080`, etc).
-- For **Callback URL**: your BASE_URL value followed by /auth/x/callback (i.e. `http://localhost:8080/auth/x/callback` )
-- Go to **Settings** tab
-- Under *Application Type* select **Read and Write** access
-- Check the box **Allow this application to be used to Sign in with X**
-- Click **Update this X's applications settings**
-- Copy and paste *Consumer Key* and *Consumer Secret* keys into `.env` file
-
-<hr>
-
-<img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" width="200">
+<img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" height="50">
 
 - Sign in at <a href="https://developer.linkedin.com/" target="_blank">LinkedIn Developer Network</a>
 - From the account name dropdown menu select **API Keys**
@@ -290,16 +294,16 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://stripe.com/img/about/logos/logos/black@2x.png" width="180">
+<img src="https://s3-us-west-2.amazonaws.com/public.lob.com/dashboard/navbar/lob-logo.svg" height="50">
 
-- <a href="https://stripe.com/" target="_blank">Sign up</a> or log into your <a href="https://manage.stripe.com" target="_blank">dashboard</a>
-- Click on your profile and click on Account Settings
-- Then click on **API Keys**
-- Copy the **Secret Key**. and add this into `.env` file
+- Visit <a href="https://dashboard.lob.com/register" target="_blank">Lob Dashboard</a>
+- Create an account
+- Once logged into the dashboard, go to Settings in the bottom left corner of the page. (If there is a bottom pop-up, you may need to close it to see the Settings option.)
+- Go to the API Keys tab and get your Secret API key for the Test Environment. No physical paper mail will be sent out if you use the Test key, but you can see the PDF of what would have been mailed from your app (with some limitations) through the dashboard. If you use the Live key, they will actually print a physical letter, put it in an envelope with postage, place it in a USPS mailbox, and bill you for it.
 
 <hr>
 
-<img src="https://imgur.com/VpWnjp1.png" width="150">
+<img src="https://imgur.com/VpWnjp1.png" height="75">
 
 - Visit <a href="https://developer.paypal.com" target="_blank">PayPal Developer</a>
 - Log in to your PayPal account
@@ -311,19 +315,37 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://imgur.com/2P4UMvC.png" width="200">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/200px-RecaptchaLogo.svg.png" height="75">
 
-- Go to <a href="https://developer.foursquare.com" target="_blank">Foursquare for Developers</a> and log in
-- Click on **My Apps** in the top menu
-- Click the **Create A New App** button
-- Enter *App Name*, *Welcome page url*,
-- For **Redirect URI**: your BASE_URL value followed by /auth/foursquare/callback (i.e. `http://localhost:8080/auth/foursquare/callback` )
-- Click **Save Changes**
-- Copy and paste *Client ID* and *Client Secret* keys into `.env` file
+- Visit <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin Console</a>
+- Enter your application's name as the **Label**
+- Choose **reCAPTCHA v2**, **"I'm not a robot" Checkbox**
+- Enter *localhost* as the domain.  You can have other domains added in addition to *localhost*
+- Accept the terms and submit the form
+- Copy the *Site Key* and the *Secret key* into `.env`.  These keys will be accessible under Settings, reCAPTCHA keys drop down if you need them again later
 
 <hr>
 
-<img src="https://i.imgur.com/gUngyyW.png" width="200">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Steam_logo.svg" height="75">
+
+- Go to <a href="http://steamcommunity.com/dev/apikey" target="_blank">http://steamcommunity.com/dev/apikey</a>
+- Sign in with your existing Steam account
+- Enter your *Domain Name* based on your BASE_URL, then and click **Register**
+- Copy and paste *Key* into `.env` file
+
+<hr>
+
+<img src="https://stripe.com/img/about/logos/logos/black@2x.png" height="75">
+
+- <a href="https://stripe.com/" target="_blank">Sign up</a> or log into your <a href="https://manage.stripe.com" target="_blank">dashboard</a>
+- Click on your profile and click on Account Settings
+- Then click on **API Keys**
+- Copy the **Secret Key**. and add this into `.env` file
+
+<hr>
+
+
+<img src="https://i.imgur.com/gUngyyW.png" height="50">
 
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
@@ -334,15 +356,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Steam_logo.svg" width="200">
-
-- Go to <a href="http://steamcommunity.com/dev/apikey" target="_blank">http://steamcommunity.com/dev/apikey</a>
-- Sign in with your existing Steam account
-- Enter your *Domain Name* based on your BASE_URL, then and click **Register**
-- Copy and paste *Key* into `.env` file
-
-<hr>
-<img src="https://www.freepnglogos.com/uploads/twitch-logo-image-hd-31.png" height="90">
+<img src="https://www.freepnglogos.com/uploads/twitch-logo-image-hd-31.png" height="75">
 
 - Visit the <a href="https://dev.twitch.tv/dashboard/apps" target="_blank">Twitch developer dashboard</a>
 - If prompted, authorize the dashboard to access your twitch account
@@ -356,16 +370,7 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/HERE_logo.svg" width="90">
-
-- Go to <a href="https://developer.here.com" target="_blank">https://developer.here.com</a>
-- Sign up and create a Freemium project
-- Create JAVASCRIPT/REST credentials. Copy and paste the APP_ID and APP into `.env` file.
-- Note that these credentials are available on the client-side, and you need to create a domain whitelist for your app credentials when you are publicly launching the app.
-
-<hr>
-
-<img src="https://s3.amazonaws.com/ahoy-assets.twilio.com/global/images/wordmark.svg" width="200">
+<img src="https://s3.amazonaws.com/ahoy-assets.twilio.com/global/images/wordmark.svg" height="75">
 
 - Go to <a href="https://www.twilio.com/try-twilio" target="_blank">https://www.twilio.com/try-twilio</a>
 - Sign up for an account.
@@ -374,12 +379,18 @@ Obtain SMTP credentials from a provider for transactional emails.  Set the SMTP_
 
 <hr>
 
-<img src="https://i.imgur.com/Lw5Jb7A.png" width="200">
+<img src="https://i.imgur.com/QMjwCk6.png" height="50">
 
-- Go to <a href="https://developer.intuit.com/app/developer/qbo/docs/get-started" target="_blank">https://developer.intuit.com/app/developer/qbo/docs/get-started</a>
-- Use the Sign Up option in the upper right corner of the screen (navbar) to get a free developer account and a sandbox company.
-- Create a new app by going to your Dashboard using the My Apps option in the top nav bar or by going to <a href="https://developer.intuit.com/app/developer/myapps" target="_blank">https://developer.intuit.com/app/developer/myapps</a>
-- In your App, under Development, Keys & OAuth (right nav), find the Client ID and Client Secret for your `.env` file
+- Sign in at <a href="https://developer.x.com/" target="_blank">https://developer.x.com/</a>
+- Start with the Free tier
+- Click **Create a new application**
+- Enter your application name, website and description. Set the website as your BASE_URL value (i.e. `http://localhost:8080`, etc).
+- For **Callback URL**: your BASE_URL value followed by /auth/x/callback (i.e. `http://localhost:8080/auth/x/callback` )
+- Go to **Settings** tab
+- Under *Application Type* select **Read and Write** access
+- Check the box **Allow this application to be used to Sign in with X**
+- Click **Update this X's applications settings**
+- Copy and paste *Consumer Key* and *Consumer Secret* keys into `.env` file
 
 <hr>
 
@@ -421,8 +432,10 @@ having a nested folder structure if that makes things easier for you.
 Just don't forget to update `extends ../layout`  and corresponding
 `res.render()` paths in controllers.
 
-List of Packages - Dependencies
--------------------------------
+List of Packages
+----------------
+
+**Dependencies**
 Required to run the project before your modifications
 
 | Package                         | Description                                                             |
@@ -479,8 +492,8 @@ Required to run the project before your modifications
 | twitch-passport                 | Sign-in with Twitch plugin.                                             |
 | validator                       | A library of string validators and sanitizers.                          |
 
-List of Packages - Dev Dependencies
------------------------------------
+
+**Dev Dependencies**
 Required during code development for testing, Hygiene, code styleing, etc.
 
 | Package                         | Description                                                             |
@@ -1205,7 +1218,7 @@ To view the app, find your docker IP address + port 8080 ( this will typically b
 Deployment
 ----------
 
-Using a local instance on your laptop with ngrok is a good solution for your demo during the hackathon, and you wouldn't necessorily need to deploy to a cloud platform.  If we wish to have your app run 24x7 for general audiance, once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. These are not the only choices, but they we have seen experince using them.  Additionally, you can create an account with **MongoDB Atlas** and then pick one of the providers below. Again, there are plenty of other choices, and you are not limited to just the ones listed below.
+Using a local instance on your laptop with ngrok is a good solution for your demo during the hackathon, and you wouldn't necessorily need to deploy to a cloud platform.  If we wish to have your app run 24x7 for general audiance, once you are ready to deploy your app, you will need to create an account with a cloud platform to host it.  There are a number of cloud service providers out there that you can research.  Service providers like AWS provide a free tier of service which can help you get started with just some minor costs (such as traffic overage if any, etc).
 
 ---
 ### AWS
@@ -1214,20 +1227,26 @@ Using a local instance on your laptop with ngrok is a good solution for your dem
 
 [AWS Free Tier](https://aws.amazon.com/free) provides 12 months of compute (EC2 Windows or Linux) for free.  AWS has up-to-date guides and instructions for setting up your host.
 
+| Service | Setup |
+|---------|-------------|
+| <img src="https://icon.icepanel.io/AWS/svg/Compute/EC2.svg" width="50"><br>**EC2 Instance** | EC2 is the compute server to host your application. You can run your application on your EC2 instance similar to how your run applications on your computer.<br><br>**Setup Steps:**<br>1. Create an AWS account and/or login to AWS console<br>2. In the search bar search for "EC2", and then pick EC2 from the services<br>3. Click on Launch an instance<br>4. Pick an OS image and Instance type. You can go with a free-tier one to try EC2 before upgrading to an instance that matches your traffic and application requiremnts<br>5. Under the Network settings, Create a security group, but remove checkboxes from Allow SSH, HTTPS, and HTTP. You will expose the proper ports later<br>6. You can go with the defaults for the remaining setting as long as they match with the free-tier if that is what you are choosing to use<br>7. Launch the instance, and wait for it to be provisioned |
+| <img src="https://icon.icepanel.io/AWS/svg/Networking-Content-Delivery/Virtual-Private-Cloud.svg" width="50"><br>**VPC / Security Group** | A security group controls the traffic that is allowed to reach and leave the resources that it is associated with. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br> |
+| <img src="https://icon.icepanel.io/AWS/svg/Developer-Tools/CodeDeploy.svg" width="50"><br>**CodeDeploy** | AWS CodeDeploy is a deployment service that automates application deployments to various compute platforms such as Amazon EC2 instances, on-premises instances, serverless AWS Lambda functions, and Amazon ECS services.  You can use it to have your instance auto-update from your git repo like github, bitbucket, etc.  Note that using the CodeDeploy service would require S3 storage usage as well. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br> |
+| <img src="https://icon.icepanel.io/AWS/svg/Compute/App-Runner.svg" width="50"><br>**App Runner** | If your application is stable and you expect surges of traffic, you can move from direct EC2 deployment to AWS App Runner which can scale the number of hosts that the application runs on up and down depending on the traffic to your host. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br> |
+| <img src="https://icon.icepanel.io/AWS/svg/Compute/Elastic-Beanstalk.svg" width="50"><br>**Elastic Beanstalk** | You can use an Elastic Beanstalk deployment instead of an EC2 deployment of your application. When using Elastic Beanstalk deployments you are just provided with a code execution environemnt and you are no longer required to maintain the OS for the server (i.e. Windows or Linux security patching, etc.)  <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br> |
+| <img src="https://icon.icepanel.io/AWS/svg/Containers/Elastic-Container-Service.svg" width="50"><br>**Elastic Container Service** | ECS is the fully managed AWS container service that enables you to run docker containers on EC2 instances. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br> |
+| <img src="https://icon.icepanel.io/AWS/svg/Compute/Fargate.svg" width="50"><br>**Fargate** | Fargate takes your container deployment to the next level by moving you to a serverlsss setup for running containers. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br> |
+| <img src="https://icon.icepanel.io/AWS/svg/Compute/Bottlerocket.svg" width="50"><br>**Bedrock** | Bedrock provides serverless access to use Foundational LLM models such as Llama, Amazon Titan, Amazon Nova, etc.  <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br> |
+| <img src="https://icon.icepanel.io/AWS/svg/Networking-Content-Delivery/CloudFront.svg" width="50"><br>**CloudFront** | You can use AWS CloudFront as the edge service that fronts client requests.  CloudFront can cache static content to reduce resource usage and speed up data delivery. It can also serve as an extra later of security because your application server isn't directly exposed to the internet trafic. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br> |
+| <img src="https://icon.icepanel.io/AWS/svg/Networking-Content-Delivery/CloudFront.svg" width="50"><br>**Simple Email Service** | You can use AWS SES just like an SMTP server. Don't try to setup an email server on your EC2 instance to send out email, use SES.  Note that SES stricktly enforces anti-spam rules, so don't send anything that a recipent may mark as spam as it will get reported back to AWS.  If **1%** of your emails get reported as spam by recipients AWS will suspend your SES service.  Also you should setup mail setting such as spf, DMARC and DKIM so others can't spoof your email address causing your domain to get tagged as a spam domain, since it may cause automated spam marking of your emails by email service providers such as gmail, yahoo, etc.<br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br> |
+
 
 ---
-### Azure
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Windows_Azure_logo.png" width="200">
-
-[Azure free services](https://azure.microsoft.com/en-in/pricing/free-services) provides 12 months VM (Windows or Linux) for free.
-
-
----
-### Hosted MongoDB Atlas
+### Hosted MongoDB Atlas (can be on AWS)
 
 <img src="https://www.mongodb.com/assets/images/global/MongoDB_Logo_Dark.svg" width="200">
 
+ You can create an account with **MongoDB Atlas** and then pick one of the providers below which could be AWS for the deployment.
 - Go to [https://www.mongodb.com/](https://www.mongodb.com/)
 - Click the green **Try free** button
 - Fill in your information then hit **Create your Atlas account**
