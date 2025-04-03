@@ -261,9 +261,9 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/HERE_logo.svg" height="75">
 
 - Go to <a href="https://developer.here.com" target="_blank">https://developer.here.com</a>
-- Sign up and create a Freemium project
-- Create JAVASCRIPT/REST credentials. Copy and paste the APP_ID and APP into `.env` file.
-- Note that these credentials are available on the client-side, and you need to create a domain whitelist for your app credentials when you are publicly launching the app.
+- Sign up for the Base plan. The Base plan require a credit card to start, but you get 30,000 map renders for free each month.
+- Create JAVASCRIPT/REST credentials. Copy and paste the API key into the `.env` file as HERE_API_KEY, or set it up as an environment variable.
+- **Set up Trusted Domain** - Your credentials will go to the client-side (browser of the users). You need to enable trusted domains and add your test domain address. Otherwise, others may be able to use your credentials on other websites, go through your quota, and potentially leave you with a bill.
 
 <hr>
 
@@ -667,7 +667,7 @@ to create a flash message in your controllers, and then display them in your vie
 ```pug
 if messages.errors
   .alert.alert-danger.fade.in
-    for error in messages.errors
+    each error in messages.errors
       div= error.msg
 ```
 
@@ -695,7 +695,7 @@ req.flash('warning', { msg: 'You have exceeded 90% of your data usage' });
 ```pug
 if messages.warning
   .alert.alert-warning.fade.in
-    for warning in messages.warning
+    each warning in messages.warning
       div= warning.msg
 ```
 
@@ -705,13 +705,13 @@ The flash messages partial template is _included_ in the `layout.pug`, along wit
 
 ```pug
 body
-    include partials/header
+  include partials/header
 
-    .container
-      include partials/flash
-      block content
+  .container
+    include partials/flash
+    block content
 
-    include partials/footer
+  include partials/footer
 ```
 
 If you have any further questions about flash messages, please feel free to open an issue, and I will update this mini-guide accordingly, or send a pull request if you would like to include something that I missed.
@@ -821,7 +821,7 @@ block content
     h3 All Books
 
   ul
-    for book in books
+    each book in books
       li= book.name
 ```
 
@@ -913,11 +913,11 @@ If you want to stick all your JavaScript inside templates, then in `layout.pug` 
 ```pug
 script(src='/socket.io/socket.io.js')
 script.
-    let socket = io.connect(window.location.href);
-    socket.on('greet', function (data) {
-      console.log(data);
-      socket.emit('respond', { message: 'Hey there, server!' });
-    });
+  let socket = io.connect(window.location.href);
+  socket.on('greet', function (data) {
+    console.log(data);
+    socket.emit('respond', { message: 'Hey there, server!' });
+  });
 ```
 
 **Note:** Notice the path of the `socket.io.js`, you don't actually have to have `socket.io.js` file anywhere in your project; it will be generated automatically at runtime.

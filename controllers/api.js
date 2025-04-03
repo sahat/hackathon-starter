@@ -1106,8 +1106,7 @@ exports.postPinterest = (req, res, next) => {
 
 exports.getHereMaps = (req, res) => {
   res.render('api/here-maps', {
-    app_id: process.env.HERE_APP_ID,
-    app_code: process.env.HERE_APP_CODE,
+    apikey: process.env.HERE_API_KEY,
     title: 'Here Maps API',
   });
 };
