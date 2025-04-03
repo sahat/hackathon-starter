@@ -1,51 +1,14 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const passport = require('passport');
 const _ = require('lodash');
 const validator = require('validator');
 const mailChecker = require('mailchecker');
 const User = require('../models/User');
 const Session = require('../models/Session');
+const nodemailerConfig = require('../config/nodemailer');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
-
-/**
- * Helper Function to Send Mail.
- */
-const sendMail = (settings) => {
-  const transportConfig = {
-    host: process.env.SMTP_HOST,
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD
-    }
-  };
-
-  let transporter = nodemailer.createTransport(transportConfig);
-
-  return transporter.sendMail(settings.mailOptions)
-    .then(() => {
-      settings.req.flash(settings.successfulType, { msg: settings.successfulMsg });
-    })
-    .catch((err) => {
-      if (err.message === 'self signed certificate in certificate chain') {
-        console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.');
-        transportConfig.tls = transportConfig.tls || {};
-        transportConfig.tls.rejectUnauthorized = false;
-        transporter = nodemailer.createTransport(transportConfig);
-        return transporter.sendMail(settings.mailOptions)
-          .then(() => {
-            settings.req.flash(settings.successfulType, { msg: settings.successfulMsg });
-          });
-      }
-      console.log(settings.loggingError, err);
-      settings.req.flash(settings.errorType, { msg: settings.errorMsg });
-      return err;
-    });
-};
 
 /**
  * GET /login
@@ -398,7 +361,7 @@ exports.getVerifyEmail = (req, res, next) => {
       mailOptions,
       req
     };
-    return sendMail(mailSettings);
+    return nodemailerConfig.sendMail(mailSettings);
   };
 
   createRandomToken
@@ -460,7 +423,7 @@ exports.postReset = (req, res, next) => {
       mailOptions,
       req
     };
-    return sendMail(mailSettings);
+    return nodemailerConfig.sendMail(mailSettings);
   };
 
   resetPassword()
@@ -534,7 +497,7 @@ exports.postForgot = (req, res, next) => {
       mailOptions,
       req
     };
-    return sendMail(mailSettings);
+    return nodemailerConfig.sendMail(mailSettings);
   };
 
   createRandomToken
