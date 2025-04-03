@@ -292,7 +292,7 @@ exports.getVerifyEmailToken = (req, res, next) => {
       .then((user) => {
         if (!user) {
           req.flash('errors', { msg: 'There was an error in loading your profile.' });
-          return res.redirect('back');
+          return res.redirect(user.get('Referrer') || '/');
         }
         user.emailVerificationToken = '';
         user.emailVerified = true;
@@ -378,7 +378,7 @@ exports.postReset = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash('errors', validationErrors);
-    return res.redirect('back');
+    return res.redirect(req.get('Referrer') || '/');
   }
 
   const resetPassword = () =>
@@ -388,7 +388,7 @@ exports.postReset = (req, res, next) => {
       .then((user) => {
         if (!user) {
           req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
-          return res.redirect('back');
+          return res.redirect(user.get('Referrer') || '/');
         }
         user.password = req.body.password;
         user.passwordResetToken = undefined;
