@@ -10,13 +10,14 @@ exports.sendMail = (settings) => {
     secure: true,
     auth: {
       user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD
-    }
+      pass: process.env.SMTP_PASSWORD,
+    },
   };
 
   let transporter = nodemailer.createTransport(transportConfig);
 
-  return transporter.sendMail(settings.mailOptions)
+  return transporter
+    .sendMail(settings.mailOptions)
     .then(() => {
       settings.req.flash(settings.successfulType, { msg: settings.successfulMsg });
     })
@@ -26,7 +27,8 @@ exports.sendMail = (settings) => {
         transportConfig.tls = transportConfig.tls || {};
         transportConfig.tls.rejectUnauthorized = false;
         transporter = nodemailer.createTransport(transportConfig);
-        return transporter.sendMail(settings.mailOptions)
+        return transporter
+          .sendMail(settings.mailOptions)
           .then(() => {
             settings.req.flash(settings.successfulType, { msg: settings.successfulMsg });
           })

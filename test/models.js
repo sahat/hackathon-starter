@@ -7,9 +7,7 @@ describe('User Model', () => {
     const UserMock = sinon.mock(new User({ email: 'test@gmail.com', password: 'root' }));
     const user = UserMock.object;
 
-    UserMock
-      .expects('save')
-      .yields(null);
+    UserMock.expects('save').yields(null);
 
     user.save((err) => {
       UserMock.verify();
@@ -23,12 +21,10 @@ describe('User Model', () => {
     const UserMock = sinon.mock(new User({ email: 'test@gmail.com', password: 'root' }));
     const user = UserMock.object;
     const expectedError = {
-      name: 'ValidationError'
+      name: 'ValidationError',
     };
 
-    UserMock
-      .expects('save')
-      .yields(expectedError);
+    UserMock.expects('save').yields(expectedError);
 
     user.save((err, result) => {
       UserMock.verify();
@@ -44,12 +40,10 @@ describe('User Model', () => {
     const user = UserMock.object;
     const expectedError = {
       name: 'MongoError',
-      code: 11000
+      code: 11000,
     };
 
-    UserMock
-      .expects('save')
-      .yields(expectedError);
+    UserMock.expects('save').yields(expectedError);
 
     user.save((err, result) => {
       UserMock.verify();
@@ -65,13 +59,10 @@ describe('User Model', () => {
     const userMock = sinon.mock(User);
     const expectedUser = {
       _id: '5700a128bd97c1341d8fb365',
-      email: 'test@gmail.com'
+      email: 'test@gmail.com',
     };
 
-    userMock
-      .expects('findOne')
-      .withArgs({ email: 'test@gmail.com' })
-      .yields(null, expectedUser);
+    userMock.expects('findOne').withArgs({ email: 'test@gmail.com' }).yields(null, expectedUser);
 
     User.findOne({ email: 'test@gmail.com' }, (err, result) => {
       userMock.verify();
@@ -84,13 +75,10 @@ describe('User Model', () => {
   it('should remove user by email', (done) => {
     const userMock = sinon.mock(User);
     const expectedResult = {
-      nRemoved: 1
+      nRemoved: 1,
     };
 
-    userMock
-      .expects('deleteOne')
-      .withArgs({ email: 'test@gmail.com' })
-      .yields(null, expectedResult);
+    userMock.expects('deleteOne').withArgs({ email: 'test@gmail.com' }).yields(null, expectedResult);
 
     User.deleteOne({ email: 'test@gmail.com' }, (err, result) => {
       userMock.verify();
@@ -102,10 +90,12 @@ describe('User Model', () => {
   });
 
   it('should check password', async () => {
-    const UserMock = sinon.mock(new User({
-      email: 'test@gmail.com',
-      password: '$2y$10$ux4O8y0CCilFQ5JS66namekb9Hbr1AN7kwEDn2ej6e6AYw3BPqAVa'
-    }));
+    const UserMock = sinon.mock(
+      new User({
+        email: 'test@gmail.com',
+        password: '$2y$10$ux4O8y0CCilFQ5JS66namekb9Hbr1AN7kwEDn2ej6e6AYw3BPqAVa',
+      }),
+    );
 
     const user = UserMock.object;
     const comparePasscbSpy = sinon.spy();

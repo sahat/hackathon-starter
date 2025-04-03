@@ -1,13 +1,17 @@
 # Changelog
----------
+
+---
 
 ### 8.1.0 (February 1, 2025)
+
 Security Enhancements
+
 - Added URL validation for redirects through session.returnTo (CWE-601).
 - Fixed OAuth state parameter generation and handling to address CSRF attack vectors in the OAuth workflow.
 - Added additional sanitization for user input in database queries using $eq in MongoDB.
 
 API and Integration:
+
 - Unified formatting for authentication parameters in route definitions and passport.js configuration.
 - Refactored common code for OAuth 2 token processing in passport strategies to improve maintainability.
 - Reworked the GitHub and Twitch API integration examples with additional data from the APIs.
@@ -20,17 +24,19 @@ API and Integration:
 - Renamed Twitter to X (Some of the backend and code still reference Twitter due to upstream dependencies, and the login button is using Twitter colors pending X addition to bootstrap-social).
 
 Update/Upgrades:
+
 - Dropped support for Nodejs < 22 due to ESM module import issues prior to that version.
 - Migrated from the unmaintained passport-linkedin-oauth2 to a passport-openidconnect strategy.
---- Added support and examples for openid-client.
+  - Added support and examples for openid-client.
 - Migrated from the deprecated paypal-rest-sdk to an example without the SDK, providing OAuth calls depending on the page state.
 - Migrated from the unmaintained bootstrap-social to a fork that can be easily patched and updated.
 - Migrated eslint to v9, and its new config format (breaking change).
 - Migrated Husky to v9, and its new config format (breaking change). Fixed Windows commit issue.
-- Updated dependencies. 
+- Updated dependencies.
 - Added temporary patch files for connect-flash and passport-openidconnect based on pending pull requests or issues on GitHub.
 
 Other:
+
 - Fixed a bug that prevented profile pictures from being displayed.
 - Added authentication link/unlink options to the user profile page for all OAuth/Identity providers.
 - Fixed typos, broken links, and minor formatting alignment issues on various pages.
@@ -65,7 +71,7 @@ Other:
 - Added Github Actions: NodeJS CI check unit test and lint
 - Upgrade nodejs for docker
 - Removed express-handlebars npm package as it was not used and is not that popular compared to pug (breaking change)
-- Removed chalk  npm package as it was not used (breaking change)
+- Removed chalk npm package as it was not used (breaking change)
 - Updated documentation
 
 - Upgraded to mongoose 7 (breaking change)
@@ -82,6 +88,7 @@ Other:
 - Removed travis.yml
 
 API example changes:
+
 - Removed the twitter API example as the APIs are actively changing and mostly not free (breaking change)
 - Removed the Instagram API example as it was broken and Meta has significantly reduced the API scope and availablity for devs
 - Improved the Chartjs+AlphaVantage to handle API failures
@@ -91,12 +98,14 @@ API example changes:
 - Improved the Last.fm API example as the artist image is no longer vended by last.fm
 
 ### 7.0.0 (Mar 26, 2022)
+
 - Dropped support for Node.js <16
 - Switched to Bootstrap 5
 - Removed older Bootstrap 4 themes
 - Updated dependencies
 
 ### 6.0.0 (January 2, 2020)
+
 - Dropped support for NodeJS 8.x, due to its EOL
 - Use HTML5 native client form validation (thanks to @peterblazejewicz)
 - Fix navbar rendering issues when using themes (thanks to @peterblazejewicz)
@@ -110,6 +119,7 @@ API example changes:
 - Update documentation (thanks in part to @noftaly, @yanivm)
 
 ### 5.2.0 (July 28, 2019)
+
 - Added API example: Google Drive (thanks to @tanaydin)
 - Added Google Sheets API example (thanks to @clarkngo)
 - Added HERE Maps API example
@@ -133,6 +143,7 @@ API example changes:
 - Updated documentation (thanks in part to @TheMissingNTLDR, @Coteh)
 
 ### 5.1.4 (May 14, 2019)
+
 - Migrate from requestjs to axios (thanks to @FX-Wood)
 - Enable page templates to add items to the HTML head element
 - Fix bold font issue on macs (thanks to @neighlyd)
@@ -143,6 +154,7 @@ API example changes:
 - Update documentation (thanks in part to @anubhavsrivastava, @Fullchee, @luckymurari)
 
 ### 5.1.3 (April 7, 2019)
+
 - Update Steam API Integration
 - Upgrade flatly theme files to 4.3.1
 - Migrate from bcrypt-nodejs to bcrypt
@@ -162,13 +174,14 @@ API example changes:
 - Update documentation (thanks in part to @GregBrimble)
 
 ### 5.1.2 (January 13, 2019)
+
 - Added Login by Snapchat (thanks to @nicholasgonzalezsc)
 - Migrate the Foursquare API example to use Axios calls instead of the npm library.
 - Fixed minor visual issue in the web scraping example.
 - Fixed issue with Popper.js integration (thanks to @binarymax and @Furchin)
 - Fixed wrapping issues in the navbar and logo indentation (thanks to @estevanmaito)
 - Fixed MongoDB deprecation warnings
-- Add production error handler middleware that returns 500 to handle errors.  Also, handle server errors in the lastfm API example (thanks to @jagatfx)
+- Add production error handler middleware that returns 500 to handle errors. Also, handle server errors in the lastfm API example (thanks to @jagatfx)
 - Added autocomplete properties to the views to address Chrome warnings (thanks to @peterblazejewicz)
 - Fixed issues in the unit tests.
 - Fixed issues in the modern theme variables and imports to be consistent (thanks to @monkeywithacupcake)
@@ -181,6 +194,7 @@ API example changes:
 - Fixed issues in the readme (thanks to @nero-adaware , @empurium, @aschwtzr)
 
 ### 5.1.1 (July 5, 2018)
+
 - Upgraded FontAwesome to FontAwesome v5.1 - FontAwsome is now integrated using its npm package
 - Fixed bug with JS libraries missing in Windows Dev envs
 - Enabled autofocus in the Contact view when the user is logged in
@@ -191,6 +205,7 @@ API example changes:
 - Dependency updates
 
 ### 5.1.0 (May 9, 2018)
+
 - Bootstrap 4.1 upgrade (breaking change)
 - Addition of popper.js
 - jQuery and Bootstrap will be pulled in the project using their npm packages
@@ -206,6 +221,7 @@ API example changes:
 - Dependency updates
 
 ### 5.0.0 (April 1, 2018)
+
 - NodeJS 8.0+ is now required
 - Removed dependency on Bluebird in favor of native NodeJS promisify support
 - Font awesome 5 Upgrade
@@ -221,7 +237,8 @@ API example changes:
 - Dependency updates
 
 ### 4.4.0 (March 23, 2018)
-- Added Docker support (Thanks to @gregorysobotka, @praveenweb, @ryanhanwu).  The initial integration has also been upgraded to use NodeJS 8 and Mongo 3.6.
+
+- Added Docker support (Thanks to @gregorysobotka, @praveenweb, @ryanhanwu). The initial integration has also been upgraded to use NodeJS 8 and Mongo 3.6.
 - Removed dependency on async in favor of using promises (@fmcarvalho). Note that the promise support will be upgraded in the upcoming releases to remove the use of Bluebird.
 - The contact form will no longer ask for the user's name and email address if they have logged-in already
 - Adding a confirmation prompt when a user asks for their account to be deleted
@@ -245,9 +262,10 @@ API example changes:
 - Code formatting, text prompt, and Readme improvements
 
 ### 4.3.0 (November 6, 2016)
+
 - [Added new theme](http://demos.creative-tim.com/get-shit-done/index.html) by Creative Tim (Thanks @conacelelena)
-- Added ESLint configuration to *package.json*
-- Added *yarn.lock* (Thanks @niallobrien)
+- Added ESLint configuration to _package.json_
+- Added _yarn.lock_ (Thanks @niallobrien)
 - Added **express-status-monitor** (to see it in action: `/status`)
 - Added missing error handling checks (Thanks @dskrepps)
 - Server address during the app startup is now clickable (⌘ + LMB) (Thanks @niallobrien)
@@ -260,93 +278,105 @@ API example changes:
 - Updated Yarn and NPM dependencies
 
 ### 4.2.1 (September 6, 2016)
+
 - User model minor code refactoring
 - Fixed gravatar display issue on the profile page
 - Pretty terminal logs for database connection and app server
-- Added compiled *main.css* to *.gitignore*
+- Added compiled _main.css_ to _.gitignore_
 
 ### 4.2.0 (August 21, 2016)
+
 - Converted templates from jade to pug (See [Rename from "Jade"](https://github.com/pugjs/pug#rename-from-jade))
 
 ### 4.1.1 (August 20, 2016)
+
 - Updated dependencies
 
 ### 4.1.0 (July 23, 2016)
+
 - Improved redirect logic after login [#435](https://github.com/sahat/hackathon-starter/pull/435)
 - Removed Venmo API (see [Venmo Halts New Developer Access To Its API](https://techcrunch.com/2016/02/26/how-not-to-run-a-platform/))
 - Removed BitGo API due to issues with `secp256k1` dependency on Windows
 
 ### 4.0.1 (May 17, 2016)
+
 - Renamed `MONGODB` to `MONGODB_URI` environment variable
-- Set engine `"node": "6.1.0"` in *package.json*
+- Set engine `"node": "6.1.0"` in _package.json_
 
 ### 4.0.0 (May 13, 2016)
+
 - **ECMAScript 2015 support!** (Make sure you are using Node.js 6.0+)
- - Thanks  @vanshady and @prashcr
-- Added `<meta theme-color>` support for *Chrome for Android*
+- Thanks @vanshady and @prashcr
+- Added `<meta theme-color>` support for _Chrome for Android_
 - Added Yahoo Finance API example
 - Updated Aviary API example
 - Flash an error message when updating email to that which is already taken
 - Removing an email address during profile update is no longer possible
-- PayPal API example now uses *return_url* and *cancel_url* from `.env`
-- Added client-side `required=true` attributes to input fields 
+- PayPal API example now uses _return_url_ and _cancel_url_ from `.env`
+- Added client-side `required=true` attributes to input fields
 - Fixed broken `show()` function in the GitHub API example
 - Fixed YQL query in the Yahoo Weather API example
-- Fixed *Can't set headers after they are sent* error in Stripe API example
+- Fixed _Can't set headers after they are sent_ error in Stripe API example
 - Code refactoring and cleanup
 - Updated Travis-CI Node.js version
 - Updated NPM dependencies
 - Removed Mandrill references
 
 ### 3.5.0 (March 4, 2016)
+
 - Added file upload example
 - Added Pinterest API example
 - Added timestamp support to the User schema
-- Fixed `next` parameter being *undefined* inside `getReset` handler
-- Refactored querysting param usage in *api.js* controller
-- Removed *setup.js* (generator) due to its limited functionality and a lack of updates
+- Fixed `next` parameter being _undefined_ inside `getReset` handler
+- Refactored querysting param usage in _api.js_ controller
+- Removed _setup.js_ (generator) due to its limited functionality and a lack of updates
 
 ### 3.4.1 (February 6, 2016)
+
 - Added "Obtaining Twilio API Keys" instructions.
 - Updated Bootstrap v3.3.6.
 - Updated jQuery v2.2.0.
 - Updated Font Awesome v4.5.0.
 - Removed `debug` and `outputStyle` from the Sass middleware options.
-- Removed `connect-assets` (no longer used) from *package.json*`.
-- Fixed Font Awesome icon syntax error in *profile.jade*.
+- Removed `connect-assets` (no longer used) from _package.json_`.
+- Fixed Font Awesome icon syntax error in _profile.jade_.
 - Fixed Cheerio broken link.
 
 ### 3.4.0 (January 5, 2016)
+
 - Use `dontenv` package for managing API keys and secrets.
-- Removed *secrets.js* (replaced by *.env.example*).
+- Removed _secrets.js_ (replaced by _.env.example_).
 - Added .env to .gitignore.
 - Fixed broken Aviary API image.
 
 ### 3.3.1 (December 25, 2015)
+
 - Use `connect-mongo` ES5 fallback for backward-compatibility with Node.js version `< 4.0`.
 
 ### 3.3.0 (December 19, 2015)
+
 - Steam authorization via OpenID.
 - Code style update. (No longer use "one-liners" without braces)
 - Updated LinkedIn scope from `r_fullprofile` to `r_basicprofile` due to API changes.
 - Added LICENSE file.
 - Removed [Bitcore](https://bitcore.io/) example due to installation issues on Windows 10.
 
-
 ### 3.2.0 (October 19, 2015)
+
 - Added Google Analytics script.
-- Split *api.js* `require` intro declaration and initialization for better performance. (See <a href="https://github.com/sahat/hackathon-starter/issues/247">#247</a>)
+- Split _api.js_ `require` intro declaration and initialization for better performance. (See <a href="https://github.com/sahat/hackathon-starter/issues/247">#247</a>)
 - Removed [ionicons](http://ionicons.com).
 - Removed [connect-assets](https://github.com/adunkman/connect-assets). (Replaced by [node-sass-middleware](https://github.com/sass/node-sass-middleware))
 - Fixed alignment styling on /login, /profile and /account
 - Fixed Stripe API `POST` request.
 - Converted LESS to Sass stylesheets.
-- Set `node_js` version to "stable" in *.travis.yml*.
+- Set `node_js` version to "stable" in _.travis.yml_.
 - Removed `mocha.opts` file, pass options directly to package.json
 - README cleanup and fixes.
 - Updated Font Awesome to 4.4.0
 
 ### 3.1.0 (August 25, 2015)
+
 - Added Bitcore example.
 - Added Bitgo example.
 - Lots of README fixes.
@@ -357,10 +387,12 @@ API example changes:
 - Removed Ordrx API. (Shutdown)
 
 ### 3.0.3 (May 14, 2015)
+
 - Added favicon.
 - Fixed an email issue with Google login.
 
 ### 3.0.2 (March 31, 2015)
+
 - Renamed `navbar.jade` to `header.jade`.
 - Fixed typos in README. Thanks @josephahn and @rstormsf.
 - Fix radio button alignment on small screens in Profile page.
@@ -369,10 +401,11 @@ API example changes:
 - Updated Font Awesome `4.3.0`.
 - Updated Bootstrap `3.3.4`.
 - Removed Ionicons.
-- Removed unused `User` variable in *controllers/api.js*.
+- Removed unused `User` variable in _controllers/api.js_.
 - Removed Nodejitsu instructions from README.
 
 ### 3.0.1 (February 23, 2015)
+
 - Reverted Sass to LESS stylesheets. See <a href="https://github.com/sahat/hackathon-starter/issues/233">#233</a>.
 - Convert email to lower case in Passport's LocalStrategy during login.
 - New Lob API.
@@ -380,12 +413,13 @@ API example changes:
 - Updated Bootstrap and Flatly theme to 3.3.2.
 
 ### 3.0.0 (January 11, 2015)
+
 - New Ordr.in API example.
 - Brought back PayPal API example.
 - Added `xframe` and xssProtection` protection via **lusca** module.
 - No more CSRF route whitelisting, either enable or dsiable it globally.
 - Simplified "remember original destination" middleware.
- - Instead of excluding certain routes, you now have to "opt-in" for the routes you wish to remember for a redirect after successful authentication.
+  - Instead of excluding certain routes, you now have to "opt-in" for the routes you wish to remember for a redirect after successful authentication.
 - Converted LESS to Sass.
 - Updated Bootstrap to 3.3.1 and Font Awesome to 4.2.0.
 - Updated jQuery to 2.1.3 and Bootstrap to 3.3.1 JS files.
@@ -399,12 +433,14 @@ API example changes:
 - Added `git remote rm origin` to Getting Started instructions in README.
 
 ### 2.4.0 (November 8, 2014)
+
 - Bootstrap 3.3.0.
 - Flatly 3.3.0 theme.
 - User model cleanup.
 - Removed `helperContext` from connect-assets middleware.
 
 ### 2.3.4 (October 27, 2014)
+
 - Font Awesome 4.2.0 [01e7bd5c09926911ca856fe4990e6067d9148694](https://github.com/sahat/hackathon-starter/commit/01e7bd5c09926911ca856fe4990e6067d9148694)
 - Code cleanup in `app.js` and `controllers/api.js`. [8ce48f767c0146062296685cc101acf3d5d224d9](https://github.com/sahat/hackathon-starter/commit/8ce48f767c0146062296685cc101acf3d5d224d9) [cdbb9d1888a96bbba92d4d14deec99a8acba2618](https://github.com/sahat/hackathon-starter/commit/cdbb9d1888a96bbba92d4d14deec99a8acba2618)
 - Updated Stripe API example. [afef373cd57b6a44bf856eb093e8f2801fc2dbe2](https://github.com/sahat/hackathon-starter/commit/afef373cd57b6a44bf856eb093e8f2801fc2dbe2)
@@ -413,16 +449,20 @@ API example changes:
 - Fixed dead links in the README. [78fac5489c596e8bcef0ab11a96e654335573bb4](https://github.com/sahat/hackathon-starter/commit/78fac5489c596e8bcef0ab11a96e654335573bb4)
 
 ### 2.3.3 (September 1, 2014)
-- Use *https* (instead of http) profile image URL with Twitter authentication
+
+- Use _https_ (instead of http) profile image URL with Twitter authentication
 
 ### 2.3.2 (July 28, 2014)
+
 - Fixed an issue with connect-assets when running `app.js` from an outside folder
 - Temporarily disabled `setup.js` on Windows platform until [blessed](https://github.com/chjj/blessed) fixes its problems
 
 ### 2.3.1 (July 15, 2014)
+
 - Migrated to Nodemailer 1.0
 
 ### 2.3 (July 2, 2014)
+
 - Bootstrap 3.2
 - New default theme
 - Ionicons fonts
@@ -432,9 +472,11 @@ API example changes:
 - Replaced `navbar-brand` image with a font icon
 
 ### 2.2.1 (June 17, 2014)
+
 - Added IBM Codename: BlueMix deployment instructions
 
 ### 2.2 (June 6, 2014)
+
 - Use Lodash instead of Underscore.js
 - Replaced all occurrences of `_.findWhere` with `_.find`
 - Added a flash message when user deletes an account
@@ -451,24 +493,29 @@ API example changes:
 - Fixed Foursquare secret token
 
 ### 2.1.4 (June 5, 2014)
+
 - Fixed a bug related to `returnTo` url (#155)
 
 ### 2.1.3 (June 3, 2014)
+
 - Font Awesome 4.1
 - Updated icons on some API examples
-- Use LESS files for *bootstrap-social* and *font-awesome*
+- Use LESS files for _bootstrap-social_ and _font-awesome_
 
 ### 2.1.2 (June 2, 2014)
+
 - Improved Twilio API example
 - Updated dependencies
 
 ### 2.1.1 (May 29, 2014)
+
 - Added **Compose new Tweet** to Twitter API example
 - Fixed email service indentation
 - Fixed Mailgun and Mandrill secret.js properties
 - Renamed `navigation.jade` to `navbar.jade`
 
 ### 2.1 (May 13, 2014)
+
 - New and improved generator - **setup.js**
 - Added Yahoo API
 - CSS and templates cleanup
@@ -476,28 +523,33 @@ API example changes:
 - `cluster_app.js` has been moved into **setup.js**
 
 ### 2.0.4 (April 26, 2014)
+
 - Added Mandrill e-mail service (via generator)
 
 ### 2.0.3 (April 25, 2014)
+
 - LinkedIn API: Fixed an error if a user did not specify education on LinkedIn
 - Removed email constraint when linking OAuth accounts in order to be able to merge accounts that use the same email address
 - Check if email address is already taken when creating a new local account
- - Previously relied on Validation Error 11000, which doesn't always work
+  - Previously relied on Validation Error 11000, which doesn't always work
 - When creating a local account, checks if e-mail address is already taken
 - Flash notifications can now be dismissed by clicking on �?
 
 ### 2.0.2 (April 22, 2014)
+
 - Added Instagram Authentication
 - Added Instagram API example
 - Updated Instagram Strategy to use a "fake" email address similar to Twitter Startegy
 
 ### 2.0.1 (April 18, 2014)
+
 - Conditional CSRF support using [lusca](https://github.com/krakenjs/lusca)
 - Fixed EOL problem in `generator.js` for Windows users
 - Fixed outdated csrf token string on profile.jade
 - Code cleanup
 
 ### 2.0.0 (April 15, 2014)
+
 There are have been over **500+** commits since the initial announcement in
 January 2014 and over a **120** issues and pull requests from **28** contributors.
 

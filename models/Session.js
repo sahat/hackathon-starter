@@ -14,9 +14,9 @@ sessionSchema.statics = {
   removeSessionByUserId(userId) {
     return this.deleteMany({
       expires: { $gt: new Date() },
-      session: { $regex: userId }
+      session: { $regex: userId },
     });
-  }
+  },
 };
 
 const Session = mongoose.model('Session', sessionSchema);

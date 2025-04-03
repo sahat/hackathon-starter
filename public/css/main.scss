@@ -1,52 +1,56 @@
-@import "node_modules/bootstrap/scss/bootstrap";
-@import "node_modules/bootstrap-social/bootstrap-social.scss";
-@import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
-@import "node_modules/@fortawesome/fontawesome-free/scss/brands";
-@import "node_modules/@fortawesome/fontawesome-free/scss/regular";
-@import "node_modules/@fortawesome/fontawesome-free/scss/solid";
-
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-social/bootstrap-social.scss';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/brands';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/regular';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/solid';
 
 // Basic Twitch Button CSS
 .btn-twitch {
   background-color: #6441a5;
-  color: #FFF !important;
+  color: #fff !important;
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     background-color: #503484;
   }
 }
 
 .btn-twitter {
-  &:hover, &:active {
-    color: #FFF !important;
+  &:hover,
+  &:active {
+    color: #fff !important;
   }
 }
 
 .btn-twitter {
-  color: #FFF !important;
+  color: #fff !important;
 
-  &:hover, &:active {
-    color: #FFF !important;
+  &:hover,
+  &:active {
+    color: #fff !important;
     background-color: #0f97ea;
   }
 }
 
 .btn-google {
-  &:hover, &:active {
-    color: #FFF !important;
+  &:hover,
+  &:active {
+    color: #fff !important;
   }
 }
 
 .btn-google {
-  color: #FFF !important;
+  color: #fff !important;
 
-  &:hover, &:active {
-    color: #FFF !important;
+  &:hover,
+  &:active {
+    color: #fff !important;
     background-color: #d93b27;
   }
 }
 
 // Add a space after fontawesome icons
-.iconpadding{
-  padding-right: 6px!important;
+.iconpadding {
+  padding-right: 6px !important;
 }

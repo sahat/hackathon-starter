@@ -19,7 +19,7 @@ exports.getLogin = (req, res) => {
     return res.redirect('/');
   }
   res.render('account/login', {
-    title: 'Login'
+    title: 'Login',
   });
 };
 
@@ -39,13 +39,17 @@ exports.postLogin = (req, res, next) => {
   req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
 
   passport.authenticate('local', (err, user, info) => {
-    if (err) { return next(err); }
+    if (err) {
+      return next(err);
+    }
     if (!user) {
       req.flash('errors', info);
       return res.redirect('/login');
     }
     req.logIn(user, (err) => {
-      if (err) { return next(err); }
+      if (err) {
+        return next(err);
+      }
       req.flash('success', { msg: 'Success! You are logged in.' });
       res.redirect(req.session.returnTo || '/');
     });
@@ -76,7 +80,7 @@ exports.getSignup = (req, res) => {
     return res.redirect('/');
   }
   res.render('account/signup', {
-    title: 'Create Account'
+    title: 'Create Account',
   });
 };
 
@@ -102,7 +106,7 @@ exports.postSignup = async (req, res, next) => {
     }
     const user = new User({
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
     });
     await user.save();
     req.logIn(user, (err) => {
@@ -122,7 +126,7 @@ exports.postSignup = async (req, res, next) => {
  */
 exports.getAccount = (req, res) => {
   res.render('account/profile', {
-    title: 'Account Management'
+    title: 'Account Management',
   });
 };
 
@@ -213,18 +217,13 @@ exports.getOauthUnlink = async (req, res, next) => {
     provider = validator.escape(provider);
     const user = await User.findById(req.user.id);
     user[provider.toLowerCase()] = undefined;
-    const tokensWithoutProviderToUnlink = user.tokens.filter((token) =>
-      token.kind !== provider.toLowerCase());
+    const tokensWithoutProviderToUnlink = user.tokens.filter((token) => token.kind !== provider.toLowerCase());
     // Some auth providers do not provide an email address in the user profile.
     // As a result, we need to verify that unlinking the provider is safe by ensuring
     // that another login method exists.
-    if (
-      !(user.email && user.password)
-      && tokensWithoutProviderToUnlink.length === 0
-    ) {
+    if (!(user.email && user.password) && tokensWithoutProviderToUnlink.length === 0) {
       req.flash('errors', {
-        msg: `The ${_.startCase(_.toLower(provider))} account cannot be unlinked without another form of login enabled.`
-        + ' Please link another account or add an email address and password.'
+        msg: `The ${_.startCase(_.toLower(provider))} account cannot be unlinked without another form of login enabled. Please link another account or add an email address and password.`,
       });
       return res.redirect('/account');
     }
@@ -257,14 +256,14 @@ exports.getReset = async (req, res, next) => {
 
     const user = await User.findOne({
       passwordResetToken: req.params.token,
-      passwordResetExpires: { $gt: Date.now() }
+      passwordResetExpires: { $gt: Date.now() },
     }).exec();
     if (!user) {
       req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
       return res.redirect('/forgot');
     }
     res.render('account/reset', {
-      title: 'Password Reset'
+      title: 'Password Reset',
     });
   } catch (err) {
     return next(err);
@@ -282,15 +281,14 @@ exports.getVerifyEmailToken = (req, res, next) => {
   }
 
   const validationErrors = [];
-  if (validator.escape(req.params.token) && (!validator.isHexadecimal(req.params.token))) validationErrors.push({ msg: 'Invalid Token.  Please retry.' });
+  if (validator.escape(req.params.token) && !validator.isHexadecimal(req.params.token)) validationErrors.push({ msg: 'Invalid Token.  Please retry.' });
   if (validationErrors.length) {
     req.flash('errors', validationErrors);
     return res.redirect('/account');
   }
 
   if (req.params.token === req.user.emailVerificationToken) {
-    User
-      .findOne({ email: req.user.email })
+    User.findOne({ email: req.user.email })
       .then((user) => {
         if (!user) {
           req.flash('errors', { msg: 'There was an error in loading your profile.' });
@@ -328,16 +326,13 @@ exports.getVerifyEmail = (req, res, next) => {
     return res.redirect('/account');
   }
 
-  const createRandomToken = randomBytesAsync(16)
-    .then((buf) => buf.toString('hex'));
+  const createRandomToken = randomBytesAsync(16).then((buf) => buf.toString('hex'));
 
   const setRandomToken = (token) => {
-    User
-      .findOne({ email: { $eq: req.user.email } })
-      .then((user) => {
-        user.emailVerificationToken = token;
-        user = user.save();
-      });
+    User.findOne({ email: { $eq: req.user.email } }).then((user) => {
+      user.emailVerificationToken = token;
+      user = user.save();
+    });
     return token;
   };
 
@@ -350,7 +345,7 @@ exports.getVerifyEmail = (req, res, next) => {
         To verify your email address, please click on the following link, or paste this into your browser:\n\n
         ${process.env.BASE_URL}/account/verify/${token}\n\n
         \n\n
-        Thank you!`
+        Thank you!`,
     };
     const mailSettings = {
       successfulType: 'info',
@@ -359,7 +354,7 @@ exports.getVerifyEmail = (req, res, next) => {
       errorType: 'errors',
       errorMsg: 'Error sending the email verification message. Please try again shortly.',
       mailOptions,
-      req
+      req,
     };
     return nodemailerConfig.sendMail(mailSettings);
   };
@@ -387,9 +382,9 @@ exports.postReset = (req, res, next) => {
   }
 
   const resetPassword = () =>
-    User
-      .findOne({ passwordResetToken: { $eq: req.params.token } })
-      .where('passwordResetExpires').gt(Date.now())
+    User.findOne({ passwordResetToken: { $eq: req.params.token } })
+      .where('passwordResetExpires')
+      .gt(Date.now())
       .then((user) => {
         if (!user) {
           req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
@@ -398,21 +393,28 @@ exports.postReset = (req, res, next) => {
         user.password = req.body.password;
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
-        return user.save().then(() => new Promise((resolve, reject) => {
-          req.logIn(user, (err) => {
-            if (err) { return reject(err); }
-            resolve(user);
-          });
-        }));
+        return user.save().then(
+          () =>
+            new Promise((resolve, reject) => {
+              req.logIn(user, (err) => {
+                if (err) {
+                  return reject(err);
+                }
+                resolve(user);
+              });
+            }),
+        );
       });
 
   const sendResetPasswordEmail = (user) => {
-    if (!user) { return; }
+    if (!user) {
+      return;
+    }
     const mailOptions = {
       to: user.email,
       from: process.env.SITE_CONTACT_EMAIL,
       subject: 'Your Hackathon Starter password has been changed',
-      text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+      text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`,
     };
     const mailSettings = {
       successfulType: 'success',
@@ -421,14 +423,16 @@ exports.postReset = (req, res, next) => {
       errorType: 'warning',
       errorMsg: 'Your password has been changed, however we were unable to send you a confirmation email. We will be looking into it shortly.',
       mailOptions,
-      req
+      req,
     };
     return nodemailerConfig.sendMail(mailSettings);
   };
 
   resetPassword()
     .then(sendResetPasswordEmail)
-    .then(() => { if (!res.finished) res.redirect('/'); })
+    .then(() => {
+      if (!res.finished) res.redirect('/');
+    })
     .catch((err) => next(err));
 };
 
@@ -441,7 +445,7 @@ exports.getForgot = (req, res) => {
     return res.redirect('/');
   }
   res.render('account/forgot', {
-    title: 'Forgot Password'
+    title: 'Forgot Password',
   });
 };
 
@@ -459,25 +463,24 @@ exports.postForgot = (req, res, next) => {
   }
   req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
 
-  const createRandomToken = randomBytesAsync(16)
-    .then((buf) => buf.toString('hex'));
+  const createRandomToken = randomBytesAsync(16).then((buf) => buf.toString('hex'));
 
   const setRandomToken = (token) =>
-    User
-      .findOne({ email: { $eq: req.body.email } })
-      .then((user) => {
-        if (!user) {
-          req.flash('errors', { msg: 'Account with that email address does not exist.' });
-        } else {
-          user.passwordResetToken = token;
-          user.passwordResetExpires = Date.now() + 3600000; // 1 hour
-          user = user.save();
-        }
-        return user;
-      });
+    User.findOne({ email: { $eq: req.body.email } }).then((user) => {
+      if (!user) {
+        req.flash('errors', { msg: 'Account with that email address does not exist.' });
+      } else {
+        user.passwordResetToken = token;
+        user.passwordResetExpires = Date.now() + 3600000; // 1 hour
+        user = user.save();
+      }
+      return user;
+    });
 
   const sendForgotPasswordEmail = (user) => {
-    if (!user) { return; }
+    if (!user) {
+      return;
+    }
     const token = user.passwordResetToken;
     const mailOptions = {
       to: user.email,
@@ -486,7 +489,7 @@ exports.postForgot = (req, res, next) => {
       text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
         ${process.env.BASE_URL}/reset/${token}\n\n
-        If you did not request this, please ignore this email and your password will remain unchanged.\n`
+        If you did not request this, please ignore this email and your password will remain unchanged.\n`,
     };
     const mailSettings = {
       successfulType: 'info',
@@ -495,7 +498,7 @@ exports.postForgot = (req, res, next) => {
       errorType: 'errors',
       errorMsg: 'Error sending the password reset message. Please try again shortly.',
       mailOptions,
-      req
+      req,
     };
     return nodemailerConfig.sendMail(mailSettings);
   };

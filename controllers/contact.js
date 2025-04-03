@@ -3,11 +3,13 @@ const validator = require('validator');
 const nodemailerConfig = require('../config/nodemailer');
 
 async function validateReCAPTCHA(token) {
-  const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
+  const response = await axios.post(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
     {},
     {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' },
-    });
+    },
+  );
   return response;
 }
 
@@ -16,7 +18,7 @@ async function validateReCAPTCHA(token) {
  * Contact form page.
  */
 exports.getContact = (req, res) => {
-  const unknownUser = !(req.user);
+  const unknownUser = !req.user;
 
   res.render('contact', {
     title: 'Contact',
@@ -67,7 +69,7 @@ exports.postContact = async (req, res, next) => {
       to: process.env.SITE_CONTACT_EMAIL,
       from: `${fromName} <${fromEmail}>`,
       subject: 'Contact Form | Hackathon Starter',
-      text: req.body.message
+      text: req.body.message,
     };
 
     const mailSettings = {
@@ -77,7 +79,7 @@ exports.postContact = async (req, res, next) => {
       errorType: 'errors',
       errorMsg: 'Error sending the message. Please try again shortly.',
       mailOptions,
-      req
+      req,
     };
 
     return nodemailerConfig.sendMail(mailSettings);

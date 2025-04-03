@@ -23,7 +23,7 @@ dotenv.config({ path: '.env.example' });
 /**
  * Set config values
  */
-const secureTransfer = (process.env.BASE_URL.startsWith('https'));
+const secureTransfer = process.env.BASE_URL.startsWith('https');
 
 // Consider adding a proxy such as cloudflare for production.
 const limiter = rateLimit({
@@ -37,7 +37,8 @@ const limiter = rateLimit({
 // behind cloudflare, etc. You may need to change it for more complex network settings.
 // See readme.md for more info.
 let numberOfProxies;
-if (secureTransfer) numberOfProxies = 1; else numberOfProxies = 0;
+if (secureTransfer) numberOfProxies = 1;
+else numberOfProxies = 0;
 
 /**
  * Controllers (route handlers).
@@ -64,7 +65,7 @@ console.log('Run this app using "npm start" to include sass/scss/css builds.\n')
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
   console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.');
+  console.log('MongoDB connection error. Please make sure MongoDB is running.');
   process.exit(1);
 });
 
@@ -81,17 +82,19 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
-app.use(session({
-  resave: true, // Only save session if modified
-  saveUninitialized: false, // Do not save sessions until we have something to store
-  secret: process.env.SESSION_SECRET,
-  name: 'startercookie', // change the cookie name for additional security in production
-  cookie: {
-    maxAge: 1209600000, // Two weeks in milliseconds
-    secure: secureTransfer
-  },
-  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
-}));
+app.use(
+  session({
+    resave: true, // Only save session if modified
+    saveUninitialized: false, // Do not save sessions until we have something to store
+    secret: process.env.SESSION_SECRET,
+    name: 'startercookie', // change the cookie name for additional security in production
+    cookie: {
+      maxAge: 1209600000, // Two weeks in milliseconds
+      secure: secureTransfer,
+    },
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+  }),
+);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -115,19 +118,14 @@ app.use((req, res, next) => {
   const isSafeRedirect = (url) => /^\/[a-zA-Z0-9/]*$/.test(url);
 
   // After successful login, redirect back to the intended page
-  if (!req.user
-    && req.path !== '/login'
-    && req.path !== '/signup'
-    && !req.path.match(/^\/auth/)
-    && !req.path.match(/\./)) {
+  if (!req.user && req.path !== '/login' && req.path !== '/signup' && !req.path.match(/^\/auth/) && !req.path.match(/\./)) {
     const returnTo = req.originalUrl;
     if (isSafeRedirect(returnTo)) {
       req.session.returnTo = returnTo;
     } else {
       req.session.returnTo = '/';
     }
-  } else if (req.user
-    && (req.path === '/account' || req.path.match(/^\/api/))) {
+  } else if (req.user && (req.path === '/account' || req.path.match(/^\/api/))) {
     const returnTo = req.originalUrl;
     if (isSafeRedirect(returnTo)) {
       req.session.returnTo = returnTo;
@@ -276,7 +274,9 @@ app.listen(app.get('port'), () => {
   const port = parseInt(BASE_URL.slice(colonIndex + 1), 10);
 
   if (!BASE_URL.startsWith('http://localhost')) {
-    console.log(`The BASE_URL env variable is set to ${BASE_URL}. If you directly test the application through http://localhost:${app.get('port')} instead of the BASE_URL, it may cause a CSRF mismatch or an Oauth authentication failure. To avoid the issues, change the BASE_URL or configure your proxy to match it.\n`);
+    console.log(
+      `The BASE_URL env variable is set to ${BASE_URL}. If you directly test the application through http://localhost:${app.get('port')} instead of the BASE_URL, it may cause a CSRF mismatch or an Oauth authentication failure. To avoid the issues, change the BASE_URL or configure your proxy to match it.\n`,
+    );
   } else if (app.get('port') !== port) {
     console.warn(`WARNING: The BASE_URL environment variable and the App have a port mismatch. If you plan to view the app in your browser using the localhost address, you may need to adjust one of the ports to make them match. BASE_URL: ${BASE_URL}\n`);
   }
