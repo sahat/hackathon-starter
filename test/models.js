@@ -134,9 +134,9 @@ describe('User Model', () => {
   it('should generate gravatar with email', () => {
     const UserMock = sinon.mock(new User({ email: 'test@gmail.com' }));
     const user = UserMock.object;
-    const md5 = '1aedb8d9dc4751e229a335e371db8058';
+    const sha256 = '87924606b4131a8aceeeae8868531fbb9712aaa07a5d3a756b26ce0f5d6ca674';
 
     const gravatar = user.gravatar();
-    expect(gravatar.includes(md5)).to.equal(true);
+    expect(gravatar.includes(sha256)).to.equal(true);
   });
 });
