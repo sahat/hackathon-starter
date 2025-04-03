@@ -507,7 +507,6 @@ Required during code development for testing, Hygiene, code styleing, etc.
 | eslint-plugin-import            | ESLint plugin with rules that help validate proper imports.             |
 | globals                         | ESLint global identifiers from different JavaScript environments        |
 | husky                           | Git hook manager to automate tasks with git.                            |
-| lint-stage                      | Utility to lint files staged by git.                                    |
 | mocha                           | Test framework.                                                         |
 | mongodb-memory-server           | In memory mongodb server for testing, so tests can be ran without a DB  |
 | c8                              | Coverage test.                                                          |
