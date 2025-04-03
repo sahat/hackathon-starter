@@ -1,4 +1,5 @@
 {
+  "plugins": ["@prettier/plugin-pug"],
   "singleQuote": true,
   "printWidth": 300
 }

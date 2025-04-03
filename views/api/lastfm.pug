@@ -3,31 +3,31 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.far.fa-play-circle(style='color: #db1302').fa-sm.iconpadding
+      i.far.fa-play-circle.fa-sm.iconpadding(style='color: #db1302')
       | Last.fm API
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://github.com/jammus/lastfm-node#lastfm-node', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://github.com/jammus/lastfm-node#lastfm-node', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | Last.fm Node Docs
-    a.btn.btn-primary(href='http://www.last.fm/api/account/create', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='http://www.last.fm/api/account/create', target='_blank')
       i.fas.fa-laptop.fa-sm.iconpadding
       | Create API Account
-    a.btn.btn-primary(href='http://www.last.fm/api', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='http://www.last.fm/api', target='_blank')
       i.fas.fa-code-branch.fa-sm.iconpadding
       | API Endpoints
 
   h3= artist.name
   h4 Top Albums
-  for album in artist.topAlbums
-    img(src='' + album.image.slice(-1)[0]["#text"], width=240, height=240)
+  each album in artist.topAlbums
+    img(src='' + album.image.slice(-1)[0]['#text'], width=240, height=240)
     | &nbsp;
 
   h4 Tags
-  for tag in artist.tags
+  each tag in artist.tags
     span.label.label-primary
       i.fas.fa-tag.fa-sm.iconpadding
-      | #{tag.name} |
-    |&nbsp;
+      | #{ tag.name } |
+    | &nbsp;
   p
 
   h4 Biography
@@ -38,12 +38,12 @@ block content
 
   h4 Top Tracks
   ol
-    for track in artist.topTracks
+    each track in artist.topTracks
       li
-        a(href='' + track.url) #{track.name}
+        a(href='' + track.url) #{ track.name }
 
   h4 Similar Artists
   ul.list-unstyled.list-inline
-    for similarArtist in artist.similar
+    each similarArtist in artist.similar
       li
-        a(href='' + similarArtist.url) #{similarArtist.name}
+        a(href='' + similarArtist.url) #{ similarArtist.name }

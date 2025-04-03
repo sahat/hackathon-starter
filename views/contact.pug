@@ -1,7 +1,7 @@
 extends layout
 
 block head
-  script(src='https://www.google.com/recaptcha/api.js' async='' defer='')
+  script(src='https://www.google.com/recaptcha/api.js', async='', defer='')
 
 block content
   .pb-2.mt-2.mb-4.border-bottom
@@ -11,17 +11,17 @@ block content
     input(type='hidden', name='_csrf', value=_csrf)
     if (unknownUser)
       .form-group.row.mb-3
-        label(class='col-md-2 col-form-label font-weight-bold', for='name') Name
+        label.col-md-2.col-form-label.font-weight-bold(for='name') Name
         .col-md-8
-          input.form-control(type='text', name='name', id='name', autocomplete='name', autofocus, required)
+          input#name.form-control(type='text', name='name', autocomplete='name', autofocus, required)
       .form-group.row.mb-3
-        label(class='col-md-2 col-form-label font-weight-bold', for='email') Email
+        label.col-md-2.col-form-label.font-weight-bold(for='email') Email
         .col-md-8
-          input.form-control(type='email', name='email', id='email', autocomplete='email', required)
+          input#email.form-control(type='email', name='email', autocomplete='email', required)
     .form-group.row.mb-3
-      label(class='col-md-2 col-form-label font-weight-bold', for='message') Please describe the issue or your suggestion
+      label.col-md-2.col-form-label.font-weight-bold(for='message') Please describe the issue or your suggestion
       .col-md-8
-        textarea.form-control(name='message', id='message', rows='7', autofocus=(!unknownUser).toString(), required)
+        textarea#message.form-control(name='message', rows='7', autofocus=(!unknownUser).toString(), required)
     .form-group
       .offset-md-2.col-md-8.p-1
         .g-recaptcha(data-sitekey=sitekey)

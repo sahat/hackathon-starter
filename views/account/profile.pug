@@ -9,7 +9,7 @@ block content
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='email') Email
       .col-md-7
-        input.form-control(type='email', name='email', id='email', value=user.email, autocomplete='email', required)
+        input#email.form-control(type='email', name='email', value=user.email, autocomplete='email', required)
       .offset-sm-3.col-md-7.pl-3.mb-2
         if user.emailVerified
           .text-success.font-italic
@@ -21,33 +21,33 @@ block content
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='name') Name
       .col-md-7.mt-2
-        input.form-control(type='text', name='name', id='name', value=user.profile.name, autocomplete='name')
+        input#name.form-control(type='text', name='name', value=user.profile.name, autocomplete='name')
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right Gender
       .col-sm-6.mt-2
         .form-check.form-check-inline
-          input(type='radio', class='form-check-input' checked=user.profile.gender == 'male', name='gender', value='male', data-toggle='radio')
+          input.form-check-input(type='radio', checked=user.profile.gender == 'male', name='gender', value='male', data-toggle='radio')
           label.form-check-label Male
 
         .form-check.form-check-inline
-          input(type='radio', class='form-check-input' checked=user.profile.gender == 'female', name='gender', value='female', data-toggle='radio')
+          input.form-check-input(type='radio', checked=user.profile.gender == 'female', name='gender', value='female', data-toggle='radio')
           label.form-check-label Female
 
         .form-check.form-check-inline
-          input(type='radio', class='form-check-input' checked=user.profile.gender == 'other', name='gender', value='other', data-toggle='radio')
+          input.form-check-input(type='radio', checked=user.profile.gender == 'other', name='gender', value='other', data-toggle='radio')
           label.form-check-label Other
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='location') Location
       .col-md-7.mb-2
-        input.form-control(type='text', name='location', id='location', value=user.profile.location, autocomplete)
+        input#location.form-control(type='text', name='location', value=user.profile.location, autocomplete)
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='website') Website
       .col-md-7.mb-2
-        input.form-control(type='text', name='website', id='website', value=user.profile.website, autocomplete='url')
+        input#website.form-control(type='text', name='website', value=user.profile.website, autocomplete='url')
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right Profile Picture
       .col-sm-4.mb-2
-        img(src=(user.profile.picture ? user.profile.picture : user.gravatar()), class='profile', width='100', height='100')
+        img.profile(src=user.profile.picture ? user.profile.picture : user.gravatar(), width='100', height='100')
     .form-group
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn.btn-primary(type='submit')
@@ -62,11 +62,11 @@ block content
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') New Password
       .col-md-7.mb-2
-        input.form-control(type='password', name='password', id='password', autocomplete='new-password', minlength='8', required)
+        input#password.form-control(type='password', name='password', autocomplete='new-password', minlength='8', required)
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='confirmPassword') Confirm Password
       .col-md-7.mb-2
-        input.form-control(type='password', name='confirmPassword', id='confirmPassword', autocomplete='new-password', minlength='8', required)
+        input#confirmPassword.form-control(type='password', name='confirmPassword', autocomplete='new-password', minlength='8', required)
     .form-group
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn-primary(type='submit')
@@ -89,7 +89,7 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h3 Delete Account
 
-  form(action='/account/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
+  form(action='/account/delete', method='POST', onsubmit='return confirm(\'Are you sure you want to delete your account?\');')
     .form-group
       p.offset-sm-3.col-md-7.pl-2 You can delete your account, but keep in mind this action is irreversible.
       input(type='hidden', name='_csrf', value=_csrf)

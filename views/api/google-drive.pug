@@ -1,17 +1,16 @@
 extends ../layout
 
 block content
-
   .pb-2.mt-2.mb-4.border-bottom
     h2
       i.fab.fa-google-drive.fa-sm.iconpadding
       | Google Drive API
 
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://developers.google.com/drive/api/v3/quickstart/nodejs', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://developers.google.com/drive/api/v3/quickstart/nodejs', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | Getting Started
-    a.btn.btn-primary(href='https://console.developers.google.com/apis/dashboard', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://console.developers.google.com/apis/dashboard', target='_blank')
       i.fas.fa-laptop.fa-sm.iconpadding
       | API Console
 
@@ -19,9 +18,9 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h4
       | The list of files at the root of your Google Drive
-    for file in files
+    each file in files
       li
         img(src=file.iconLink)
-        | 
-        a(href=file.webViewLink, target="_blank")
-         =file.name
+        |
+        a(href=file.webViewLink, target='_blank')
+          = file.name

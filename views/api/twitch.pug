@@ -6,7 +6,7 @@ block content
       i.fab.fa-twitch.fa-sm.iconpadding
       | Twitch API
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://dev.twitch.tv/docs/api', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://dev.twitch.tv/docs/api', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | API Overview
 
@@ -19,11 +19,11 @@ block content
         .col-sm-2
           img(src=yourTwitchUserData.profile_image_url, width='150', height='150')
         .col-sm-8
-          span.lead Name: #{yourTwitchUserData.display_name}
-          div Twitch ID: #{yourTwitchUserData.login}
-          div Description: #{yourTwitchUserData.description}
-          div Broadcaster Type: #{yourTwitchUserData.broadcaster_type}
-          div Follower Count: #{twitchFollowers.total}
+          span.lead Name: #{ yourTwitchUserData.display_name }
+          div Twitch ID: #{ yourTwitchUserData.login }
+          div Description: #{ yourTwitchUserData.description }
+          div Broadcaster Type: #{ yourTwitchUserData.broadcaster_type }
+          div Follower Count: #{ twitchFollowers.total }
 
   br
   .card.text-white.bg-primary.mb-4
@@ -34,21 +34,23 @@ block content
         .col-sm-2
           img(src=otherTwitchStreamerInfo.profile_image_url, width='150', height='150')
         .col-sm-8
-          span.lead Name: #{otherTwitchStreamStatus.user_name}
-          div Twitch ID: #{otherTwitchStreamStatus.user_login}
-          div Twitch member since: #{otherTwitchStreamerInfo.created_at}
-          div Description: #{otherTwitchStreamerInfo.description}
-          div Broadcaster Type: #{otherTwitchStreamerInfo.broadcaster_type}
-          div Game: #{otherTwitchStreamStatus.game_name}
-          div Language: #{otherTwitchStreamStatus.language}
-          div Mature Content: #{otherTwitchStreamStatus.is_mature ? 'Yes' : 'No'}
+          span.lead Name: #{ otherTwitchStreamStatus.user_name }
+          div Twitch ID: #{ otherTwitchStreamStatus.user_login }
+          div Twitch member since: #{ otherTwitchStreamerInfo.created_at }
+          div Description: #{ otherTwitchStreamerInfo.description }
+          div Broadcaster Type: #{ otherTwitchStreamerInfo.broadcaster_type }
+          div Game: #{ otherTwitchStreamStatus.game_name }
+          div Language: #{ otherTwitchStreamStatus.language }
+          div Mature Content: #{ otherTwitchStreamStatus.is_mature ? 'Yes' : 'No' }
           if otherTwitchStreamStatus.type === 'live'
             br
             span.status.text-success
               i.fas.fa-circle.iconpadding
-              |  Currently Online
-            |  - viewers: #{otherTwitchStreamStatus.viewer_count} - Stream started: #{otherTwitchStreamStatus.started_at}
-            div Stream Title: #{otherTwitchStreamStatus.title}
+              |
+              | Currently Online
+            |
+            | - viewers: #{ otherTwitchStreamStatus.viewer_count } - Stream started: #{ otherTwitchStreamStatus.started_at }
+            div Stream Title: #{ otherTwitchStreamStatus.title }
             div
               span Stream tags:
               each tag in otherTwitchStreamStatus.tags

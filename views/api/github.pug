@@ -6,10 +6,10 @@ block content
     | GitHub API
 
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='http://developer.github.com/guides/getting-started/', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='http://developer.github.com/guides/getting-started/', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | Getting Started
-    a.btn.btn-primary(href='http://developer.github.com/v3/', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='http://developer.github.com/v3/', target='_blank')
       i.far.fa-file-alt.fa-sm.iconpadding
       | Documentation
   br
@@ -21,70 +21,76 @@ block content
       .card-body.text-dark.bg-white
         .row
           .col-3
-            img(src=userInfo.avatar_url alt='User Avatar' class='img-thumbnail')
+            img.img-thumbnail(src=userInfo.avatar_url, alt='User Avatar')
           .col-9
-            h4 #{userInfo.name || userInfo.login}
+            h4 #{ userInfo.name || userInfo.login }
             ul.list-unstyled
               li
                 strong Username:
-                | #{userInfo.login}
+                | #{ userInfo.login }
               li
                 strong Followers:
-                | #{userInfo.followers}
+                | #{ userInfo.followers }
               li
                 strong Public Repositories:
-                | #{userInfo.public_repos}
+                | #{ userInfo.public_repos }
               li
                 strong GitHub Profile:
-                | 
-                a(href=userInfo.html_url target='_blank') #{userInfo.html_url}
+                |
+                a(href=userInfo.html_url, target='_blank') #{ userInfo.html_url }
 
         if userRepos.length > 0
           hr
-          h5 My Repositories (up to #{limit})
+          h5 My Repositories (up to #{ limit })
           ul.list-unstyled
             each repo in userRepos
               li
-                a(href=repo.html_url target='_blank') #{repo.name}
-                |  - #{repo.description || 'No description provided.'}
+                a(href=repo.html_url, target='_blank') #{ repo.name }
+                |
+                | - #{ repo.description || 'No description provided.' }
 
         if userEvents.length > 0
           hr
-          h5 Recent Activity (up to #{limit})
+          h5 Recent Activity (up to #{ limit })
           ul.list-unstyled
             each event in userEvents
               if event.type === 'PullRequestEvent'
                 li
-                  | Pull request created 
-                  a(href=event.payload.pull_request.html_url target='_blank') #{event.payload.pull_request.title}
-                  |  in 
-                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com') target='_blank')  #{event.repo.name}
+                  | Pull request created
+                  a(href=event.payload.pull_request.html_url, target='_blank') #{ event.payload.pull_request.title }
+                  |
+                  | in
+                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
               else if event.type === 'IssuesEvent' && event.payload.action === 'opened'
                 li
-                  | Issue created 
-                  a(href=event.payload.issue.html_url target='_blank') #{event.payload.issue.title}
-                  |  in 
-                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com') target='_blank')  #{event.repo.name}
+                  | Issue created
+                  a(href=event.payload.issue.html_url, target='_blank') #{ event.payload.issue.title }
+                  |
+                  | in
+                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
               else if event.type === 'IssuesEvent' && event.payload.action === 'closed'
                 li
-                  | Issue closed 
-                  a(href=event.payload.issue.html_url target='_blank') #{event.payload.issue.title}
-                  |  in 
-                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com') target='_blank')  #{event.repo.name}
+                  | Issue closed
+                  a(href=event.payload.issue.html_url, target='_blank') #{ event.payload.issue.title }
+                  |
+                  | in
+                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
               else if event.type === 'IssueCommentEvent'
                 li
-                  | Commented 
-                  a(href=event.payload.comment.html_url target='_blank') #{event.payload.comment.id}
-                  |  in 
-                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com') target='_blank')  #{event.repo.name}
+                  | Commented
+                  a(href=event.payload.comment.html_url, target='_blank') #{ event.payload.comment.id }
+                  |
+                  | in
+                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
   else
     .alert.alert-warning
       if authFailure === 'NotLoggedIn'
         | Please log in to access your GitHub profile information.
       else if authFailure === 'NotGitHubAuthorized'
-        | You are logged in but have not linked your GitHub account. 
+        | You are logged in but have not linked your GitHub account.
         a(href='/auth/github') Link your GitHub account
-        |  to access your GitHub profile information.
+        |
+        | to access your GitHub profile information.
       else
         | Unable to fetch user information. Please ensure you are authenticated.
 
@@ -96,43 +102,43 @@ block content
       .row
         .col-8
           h4
-            a(href=repo.html_url target='_blank') #{repo.name}
+            a(href=repo.html_url, target='_blank') #{ repo.name }
           p= repo.description
           ul.list-inline
             li.list-inline-item
               i.far.fa-star.fa-sm.iconpadding
-              | Stars: #{repo.stargazers_count}
+              | Stars: #{ repo.stargazers_count }
             li.list-inline-item
               i.fas.fa-code-branch.fa-sm.iconpadding
-              | Forks: #{repo.forks_count}
+              | Forks: #{ repo.forks_count }
             li.list-inline-item
               i.far.fa-eye-slash.fa-sm.iconpadding
-              | Watchers: #{repo.watchers_count}
+              | Watchers: #{ repo.watchers_count }
             li.list-inline-item
               i.fas.fa-book.fa-sm.iconpadding
-              | License: #{repo.license ? repo.license.name : 'None'}
+              | License: #{ repo.license ? repo.license.name : 'None' }
             li.list-inline-item
               i.far.fa-eye.fa-sm.iconpadding
-              | Visibility: #{repo.visibility}
+              | Visibility: #{ repo.visibility }
             li.list-inline-item
               i.fas.fa-exclamation-circle.fa-sm.iconpadding
-              | Open Issues: #{repo.open_issues_count}
+              | Open Issues: #{ repo.open_issues_count }
 
-          strong Topics: 
+          strong Topics:
           if repo.topics.length > 0
             each topic in repo.topics
               span.badge.badge-secondary= topic
-          else 
+          else
             | None
           br
           strong Wiki:
-          |  #{repo.has_wiki ? 'Enabled' : 'N/A'}
+          | #{ repo.has_wiki ? 'Enabled' : 'N/A' }
 
           if repoStargazers.length > 0
             hr
-            h5 Stargazers (up to #{limit})
+            h5 Stargazers (up to #{ limit })
             ul.list-inline
               each stargazer in repoStargazers
                 li.list-inline-item
-                  a(href=stargazer.html_url target='_blank')
-                    img(src=stargazer.avatar_url alt='Stargazer Avatar' class='img-thumbnail' style='width: 50px; height: 50px;')
+                  a(href=stargazer.html_url, target='_blank')
+                    img.img-thumbnail(src=stargazer.avatar_url, alt='Stargazer Avatar', style='width: 50px; height: 50px')

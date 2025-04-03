@@ -1,21 +1,20 @@
 extends ../layout
 
 block content
-
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fas.fa-table(style='color: #1B4A7D').fa-sm.iconpadding
+      i.fas.fa-table.fa-sm.iconpadding(style='color: #1b4a7d')
       | Google Sheets API
   h3
     | API References
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://github.com/googleapis/google-api-nodejs-client#google-apis-nodejs-client', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://github.com/googleapis/google-api-nodejs-client#google-apis-nodejs-client', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | Getting Started
-    a.btn.btn-primary(href='https://console.developers.google.com/apis/dashboard', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://console.developers.google.com/apis/dashboard', target='_blank')
       i.fas.fa-laptop.fa-sm.iconpadding
       | API Console
-    a.btn.btn-primary(href='https://www.freecodecamp.org/news/cjn-google-sheets-as-json-endpoint', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://www.freecodecamp.org/news/cjn-google-sheets-as-json-endpoint', target='_blank')
       i.fas.fa-book.fa-sm.iconpadding
       | Exposing your Google Sheets
 
@@ -23,7 +22,7 @@ block content
   h3
     | Examples
   p
-  | View data from a Google Spreadsheet at 
+  | View data from a Google Spreadsheet at
   a(href='https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit#gid=0', target='_blank')
     | URL
   p
@@ -32,13 +31,13 @@ block content
     h4
       | Values in Google Sheets
 
-  - if (values.length)
-    table(style='width:100%', border='1')
+  if (values.length)
+    table(style='width: 100%', border='1')
       tr
-        -for (var i = 0; i < values.length; i++)
+        each row, i in values
           tr
-          -for (var j = 0; j < values[i].length; j++)
-            - if (i == 0)
-              td(style='font-weight:bold')= values[i][j]
-            - else
-              td= values[i][j]
+            each cell, j in row
+              if i == 0
+                td(style='font-weight: bold')= cell
+              else
+                td= cell

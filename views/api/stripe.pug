@@ -7,10 +7,10 @@ block content
       | Stripe API
 
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://stripe.com/docs/api', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://stripe.com/docs/api', target='_blank')
       i.fas.fa-code.fa-sm.iconpadding
       | API Reference
-    a.btn.btn-primary(href='https://manage.stripe.com/account/apikeys', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://manage.stripe.com/account/apikeys', target='_blank')
       i.fas.fa-cog.fa-sm.iconpadding
       | Get API Keys
 
@@ -18,14 +18,7 @@ block content
 
   form(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
-    script(
-    src='https://checkout.stripe.com/checkout.js',
-    class='stripe-button',
-    data-key=publishableKey,
-    data-image='https://static.tumblr.com/nljhkjv/z0Jlpk23i/logo',
-    data-name='Hackathon Starter',
-    data-description='Caramel Macchiato ($3.95)',
-    data-amount='395')
+    script.stripe-button(src='https://checkout.stripe.com/checkout.js', data-key=publishableKey, data-image='https://static.tumblr.com/nljhkjv/z0Jlpk23i/logo', data-name='Hackathon Starter', data-description='Caramel Macchiato ($3.95)', data-amount='395')
 
   h3
     i.far.fa-credit-card.fa-sm.iconpadding

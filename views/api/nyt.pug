@@ -7,10 +7,10 @@ block content
       | New York Times API
 
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://developer.nytimes.com/', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://developer.nytimes.com/', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | NYT Developer Network
-    a.btn.btn-primary(href='https://developer.nytimes.com/apis', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://developer.nytimes.com/apis', target='_blank')
       i.fas.fa-code-branch.fa-sm.iconpadding
       | API Endpoints
 
@@ -24,7 +24,7 @@ block content
         th Author
         th.hidden-xs ISBN-13
     tbody
-      for book in books
+      each book in books
         tr
           td= book.rank
           td= book.book_details[0].title

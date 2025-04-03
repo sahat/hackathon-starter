@@ -1,17 +1,17 @@
 if messages.errors
   .alert.alert-danger.alert-dismissible(role='alert')
-    for error in messages.errors
+    each error in messages.errors
       div= error.msg
-    button.btn-close(type='button' data-bs-dismiss='alert' aria-label='Close')
+    button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
 
 if messages.info
   .alert.alert-primary.alert-dismissible(role='alert')
-    for info in messages.info
+    each info in messages.info
       div= info.msg
-    button.btn-close(type='button' data-bs-dismiss='alert' aria-label='Close')
+    button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
 
 if messages.success
   .alert.alert-success.alert-dismissible(role='alert')
-    for success in messages.success
+    each success in messages.success
       div= success.msg
-    button.btn-close(type='button' data-bs-dismiss='alert' aria-label='Close')
+    button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')

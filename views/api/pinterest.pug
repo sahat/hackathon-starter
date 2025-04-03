@@ -3,27 +3,27 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fab.fa-pinterest(style='color: #cb2027').fa-sm.iconpadding
+      i.fab.fa-pinterest.fa-sm.iconpadding(style='color: #cb2027')
       | Pinterest API
   .btn-group.mb-4.d-flex(role='group')
-    a.btn.btn-primary(href='https://developers.pinterest.com/', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://developers.pinterest.com/', target='_blank')
       i.fab.fa-pinterest.fa-sm.iconpadding
       | Developer Platform
-    a.btn.btn-primary(href='https://developers.pinterest.com/docs/getting-started/introduction/', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://developers.pinterest.com/docs/getting-started/introduction/', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | Getting Started
-    a.btn.btn-primary(href='https://developers.pinterest.com/docs/api/v5/introduction', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://developers.pinterest.com/docs/api/v5/introduction', target='_blank')
       i.fas.fa-code-branch.fa-sm.iconpadding
       | API Refrence
 
-  h3 Create a Pin    
+  h3 Create a Pin
   form(role='form', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group.row
       .col-md-6
         label.col-form-label.font-weight-bold Board
         select.form-control(name='board')
-          for board in boards
+          each board in boards
             option(value=board.id)= board.name
       .col-md-6
         label.col-form-label.font-weight-bold Note
@@ -40,5 +40,6 @@ block content
           input.form-control(name='image_url', placeholder='The link to the image that you want to Pin.')
     .mb-4
     button.btn.btn-primary(type='submit')
-        i.fab.fa-pinterest.fa-sm
-        |  Pin It
+      i.fab.fa-pinterest.fa-sm
+      |
+      | Pin It

@@ -5,12 +5,12 @@ block content
     h2
       i.fab.fa-foursquare.fa-sm.iconpadding
       | Foursquare API
-  
+
   .btn-group.mb-4.d-flex(role='group')
-    a.btn.btn-primary(href='https://location.foursquare.com/developer', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://location.foursquare.com/developer', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | Developer Info
-    a.btn.btn-primary(href='https://docs.foursquare.com/', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://docs.foursquare.com/', target='_blank')
       i.fas.fa-code-branch.fa-sm.iconpadding
       | API Docs
   h3.text-primary Trending Venues
@@ -18,14 +18,14 @@ block content
     table.table.table-striped.table-bordered
       thead
         tr
-          th.d-xs 
+          th.d-xs
           th Name
           th.d-xs.d-sm Category
           th.d-xs Address
           th.d-xs Distance (meters)
           th.d-xs Open Now ?
       tbody
-        for venue in trendingVenues
+        each venue in trendingVenues
           tr
             td.d-xs
               if venue.categories && venue.categories.length > 0
@@ -33,7 +33,7 @@ block content
               else
                 | N/A
             td= venue.name
-            td.d-xs.d-sm= (venue.categories && venue.categories.length > 0) ? venue.categories[0].name : 'N/A'
+            td.d-xs.d-sm= venue.categories && venue.categories.length > 0 ? venue.categories[0].name : 'N/A'
             td.d-xs= venue.location.formatted_address || 'N/A'
             td.d-xs= venue.distance
             td.d-xs= venue.closed_bucket || 'Unknown'
@@ -41,17 +41,19 @@ block content
   h3.text-primary Venue Details
   p
     i
-      u #{venueDetail.name}
+      u #{ venueDetail.name }
     if venueDetail.categories && venueDetail.categories.length > 0
-      |  is a #{venueDetail.categories[0].name}
-    |  located at #{venueDetail.location.address || 'N/A'}, #{venueDetail.location.locality || 'N/A'}, #{venueDetail.location.region || 'N/A'}. (longitude: #{venueDetail.geocodes.main.longitude}, latitude: #{venueDetail.geocodes.main.latitude})
+      |
+      | is a #{ venueDetail.categories[0].name }
+    |
+    | located at #{ venueDetail.location.address || 'N/A' }, #{ venueDetail.location.locality || 'N/A' }, #{ venueDetail.location.region || 'N/A' }. (longitude: #{ venueDetail.geocodes.main.longitude }, latitude: #{ venueDetail.geocodes.main.latitude })
     if venueDetail.related_places
       if venueDetail.related_places.children && venueDetail.related_places.children.length > 0
-        p Related venues or businesses to #{venueDetail.name}, which are mostly in the same building or the immediate area are:
-        p(style='margin-left: 20px; white-space: pre-wrap;') #{venueDetail.related_places.children.map(place => place.name).join(', ')}
+        p Related venues or businesses to #{ venueDetail.name }, which are mostly in the same building or the immediate area are:
+        p(style='margin-left: 20px; white-space: pre-wrap') #{ venueDetail.related_places.children.map(place => place.name).join(', ') }
   if venuePhotos && venuePhotos.length > 0
     h4.text-secondary Photo Gallery
-    | #{venueDetail.name}
+    | #{ venueDetail.name }
     .row
       each photo in venuePhotos
         .col-md-4

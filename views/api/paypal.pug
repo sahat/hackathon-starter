@@ -3,13 +3,13 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fab.fa-paypal(style='color: #1B4A7D').fa-sm.iconpadding
+      i.fab.fa-paypal.fa-sm.iconpadding(style='color: #1b4a7d')
       | PayPal API
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://developer.paypal.com/docs/checkout/', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://developer.paypal.com/docs/checkout/', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | Checkout API
-    a.btn.btn-primary(href='https://developer.paypal.com/docs/api/orders/v2/', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://developer.paypal.com/docs/api/orders/v2/', target='_blank')
       i.fas.fa-code.fa-sm.iconpadding
       | Payments API
   h3 Sample Payment
@@ -29,12 +29,12 @@ block content
       ul
         li
           strong Description:
-          |  #{purchaseInfo.description}
+          | #{ purchaseInfo.description }
         li
           strong Currency:
-          |  #{purchaseInfo.amount.currency_code}
+          | #{ purchaseInfo.amount.currency_code }
         li
           strong Amount:
-          |  #{purchaseInfo.amount.value}
+          | #{ purchaseInfo.amount.value }
       a(href=approvalUrl)
         button.btn.btn-primary Authorize Payment

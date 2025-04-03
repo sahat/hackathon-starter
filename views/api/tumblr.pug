@@ -7,7 +7,7 @@ block content
       | Tumblr API
 
   .btn-group.mb-4.d-flex(role='group')
-    a.btn.btn-primary(href='https://www.tumblr.com/docs/en/api/v2', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://www.tumblr.com/docs/en/api/v2', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | API Docs
 
@@ -17,14 +17,14 @@ block content
     .card-body.text-dark.bg-white
       .row
         .col-8
-          h5 Name: #{userInfo.name}
+          h5 Name: #{ userInfo.name }
           ul.list-inline
             li.list-inline-item
               i.fas.fa-users.fa-sm.iconpadding
-              | Following: #{userInfo.following}
+              | Following: #{ userInfo.following }
             li.list-inline-item
               i.far.fa-heart.fa-sm.iconpadding
-              | Likes: #{userInfo.likes}
+              | Likes: #{ userInfo.likes }
 
   .card.text-white.bg-primary.mb-4
     .card-header
@@ -32,21 +32,21 @@ block content
     .card-body.text-dark.bg-white
       .row
         .col-8
-          - if (blog.avatar && blog.avatar.length > 0)
-            img(src=blog.avatar[0].url alt="Avatar" width=50 height=50 style="float:left; margin-right: 10px;")
+          if (blog.avatar && blog.avatar.length > 0)
+            img(src=blog.avatar[0].url, alt='Avatar', width=50, height=50, style='float: left; margin-right: 10px')
           h4
-            a(href=blog.url target='_blank') #{blog.name}
-          h6 #{blog.title} | #{blog.description}
+            a(href=blog.url, target='_blank') #{ blog.name }
+          h6 #{ blog.title } | #{ blog.description }
           br
           ul.list-inline
             li.list-inline-item
               i.far.fa-heart.fa-sm.iconpadding
-              | Likes: #{blog.likes}
+              | Likes: #{ blog.likes }
             li.list-inline-item
               i.fas.fa-file-alt.fa-sm.iconpadding
-              | Posts: #{blog.posts}
+              | Posts: #{ blog.posts }
             li.list-inline-item
-              | Latest Post: #{new Date(blog.updated * 1000).toLocaleString()}
+              | Latest Post: #{ new Date(blog.updated * 1000).toLocaleString() }
           h4 Latest Photo Post
-          for photo in photoset
+          each photo in photoset
             img.item(src=photo.original_size.url)

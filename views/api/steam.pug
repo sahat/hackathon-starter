@@ -6,7 +6,7 @@ block content
       i.fab.fa-steam-square.fa-sm.iconpadding
       | Steam Web API
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary(href='https://developer.valvesoftware.com/wiki/Steam_Web_API', target='_blank').w-100
+    a.btn.btn-primary.w-100(href='https://developer.valvesoftware.com/wiki/Steam_Web_API', target='_blank')
       i.far.fa-check-square.fa-sm.iconpadding
       | API Overview
 
@@ -14,26 +14,26 @@ block content
 
   .alert.alert-info
     h4 Steam ID
-    p Displaying public information for Steam ID: #{playerSummary.steamid}.
+    p Displaying public information for Steam ID: #{ playerSummary.steamid }.
 
   h3 Profile Information
   .row
     .col-sm-2
       img(src=playerSummary.avatarfull, width='92', height='92')
     .col-sm-8
-      span.lead #{playerSummary.personaname}
-      div Account since: #{new Date(playerSummary.timecreated * 1000)}
-      div Last Online: #{new Date(playerSummary.lastlogoff * 1000)}
+      span.lead #{ playerSummary.personaname }
+      div Account since: #{ new Date(playerSummary.timecreated * 1000) }
+      div Last Online: #{ new Date(playerSummary.lastlogoff * 1000) }
       div Online Status:
         if playerSummary.personastate === 1
-          strong.text-success  Online
+          strong.text-success Online
         else
-          strong.text-danger  Offline
+          strong.text-danger Offline
 
   if playerAchievements
-    h3 #{playerAchievements.gameName} Achievements
+    h3 #{ playerAchievements.gameName } Achievements
     ul.lead.list-unstyled
-      for achievement in playerAchievements.achievements
+      each achievement in playerAchievements.achievements
         if achievement.achieved
           li.text-success= achievement.name
   else
@@ -41,8 +41,8 @@ block content
 
   if ownedGames.games
     h3 Owned Games
-    span.lead #{ownedGames.game_count} games
+    span.lead #{ ownedGames.game_count } games
     br
-    for game in ownedGames.games
+    each game in ownedGames.games
       a(href='https://store.steampowered.com/app/' + game.appid)
-        img.thumbnail(src='https://cdn.cloudflare.steamstatic.com/steam/apps/' + game.appid + '/header.jpg' width=92)
+        img.thumbnail(src='https://cdn.cloudflare.steamstatic.com/steam/apps/' + game.appid + '/header.jpg', width=92)
