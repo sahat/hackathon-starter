@@ -45,6 +45,8 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Obtaining API Keys](#obtaining-api-keys)
+- [Web Analytics](#web-analytics)
+- [Open Graph](#open-graph)
 - [Project Structure](#project-structure)
 - [List of Packages](#list-of-packages)
 - [Useful Tools and Resources](#useful-tools-and-resources)
@@ -391,7 +393,28 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Click **Update this X's applications settings**
 - Copy and paste _Consumer Key_ and _Consumer Secret_ keys into `.env` file
 
-<hr>
+## Web Analytics
+
+This project supports integrating web analytics tools such as Google Analytics 4 and Facebook Pixel, along with Open Graph metadata for social sharing. Below are instructions to help you set up these features in your application.
+
+### Google Analytics 4 Setup
+
+- Go to [Google Analytics](https://analytics.google.com)
+- Create a new GA4 property to cerate a Measurement ID.
+- Copy and paste your Measurement ID into `.env` file or set it up as an env variable
+
+### Facebook Pixel
+
+**Optional:** It is highly recommanded to setup a business with Facebook that your personal account along with others you authorize can manage. You would need to gGo to [Meta Business Suite](https://business.facebook.com/), register a business and add a business page and your website as an asset for the business.
+
+- Go to [Meta Event Manager](https://www.facebook.com/events_manager)
+- If you have setup a business, switch from your personal to your business account and pick your business asset using the drop down in the upper right corner of the page.
+- Use the Connect Data option to add a Web data source and create a Pixel ID
+- Copy and paste the Pixel ID into `.env` file for FACEBOOK_PIXEL_ID or set it up as an enviornment variable
+
+## Open Graph
+
+The metadata for Open Graph is only set up for the home page (`home.pug`). Update it to suit your application. You can also add Open Graph metadata to any other page that you plan to share through social media by including the relevant data in the corresponding view.
 
 ## Project Structure
 

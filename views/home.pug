@@ -1,4 +1,16 @@
 extends layout
+block head
+  //- Opengraph tags
+  meta(property='og:title', content='Hackathon Starter')
+  meta(property='og:description', content='A boilerplate for Node.js web applications.')
+  meta(property='og:type', content='website')
+  meta(property='og:url', content=siteURL)
+  meta(property='og:image', content=`${siteURL}/bootstrap-logo.svg`)
+  //- Twitter Card tags (optional but recommended)
+  meta(name='twitter:card', content='summary_large_image')
+  meta(name='twitter:title', content='Hackathon Starter')
+  meta(name='twitter:description', content='A boilerplate for Node.js web applications.')
+  meta(name='twitter:image', content=`${siteURL}/bootstrap-logo.svg`)
 
 block content
   h1 Hackathon Starter
