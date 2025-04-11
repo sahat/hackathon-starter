@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const passport = require('passport');
 const refresh = require('passport-oauth2-refresh');
-const axios = require('axios');
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: FacebookStrategy } = require('passport-facebook');
 const { Strategy: TwitterStrategy } = require('@passport-js/passport-twitter');
@@ -587,12 +586,18 @@ passport.use(
         }
 
         const userInfoURL = 'https://api.tumblr.com/v2/user/info';
-        const response = await axios.get(userInfoURL, {
+        const response = await fetch(userInfoURL, {
           headers: { Authorization: getTumblrAuthHeader(userInfoURL, 'GET') },
         });
 
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
         // Extract user info from the API response
-        const tumblrUser = response.data.response.user;
+        const tumblrUser = data.response.user;
         if (!user.tumblr) {
           user.tumblr = tumblrUser.name; // Save Tumblr username
         }
@@ -646,8 +651,12 @@ passport.use(
           user.steam = steamId;
           user.tokens.push({ kind: 'steam', accessToken: steamId });
           try {
-            const res = await axios.get(profileURL);
-            const profileData = res.data.response.players[0];
+            const response = await fetch(profileURL);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            const profileData = data.response.players[0];
             user.profile.name = user.profile.name || profileData.personaname;
             user.profile.picture = user.profile.picture || profileData.avatarmedium;
             await user.save();
@@ -659,7 +668,11 @@ passport.use(
           }
         } else {
           try {
-            const { data } = await axios.get(profileURL);
+            const response = await fetch(profileURL);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
             const profileData = data.response.players[0];
             const user = new User();
             user.steam = steamId;
@@ -701,12 +714,15 @@ const pinterestStrategyConfig = new OAuth2Strategy(
     try {
       const user = await User.findById(req.user._id);
       if (!user.pinterest) {
-        const pinterestUserResponse = await axios.get('https://api.pinterest.com/v5/user_account', {
+        const pinterestUserResponse = await fetch('https://api.pinterest.com/v5/user_account', {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        const pinterestUser = pinterestUserResponse.data;
+        if (!pinterestUserResponse.ok) {
+          throw new Error(`HTTP error! status: ${pinterestUserResponse.status}`);
+        }
+        const pinterestUser = await pinterestUserResponse.json();
         user.pinterest = pinterestUser.id;
         if (pinterestUser.website_url) {
           user.profile.website = pinterestUser.website_url;
