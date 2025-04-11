@@ -79,6 +79,73 @@ passport.use(
  */
 
 /**
+ * Common function to handle OAuth2 token processing and saving user data.
+ *
+ * This function is to handle various senarious that we would run into when it comes to
+ * processing the OAuth2 tokens and saving the user data.
+ *
+ * If we have an existing tokens:
+ *    - Updates the access token
+ *    - Updates access token expiration if provided
+ *    - Updates refresh token if provided
+ *    - Updates refresh token expiration if provided
+ *    - Removes expiration dates if new tokens don't have them
+ *
+ * If no tokens exists:
+ *    - Creates new token entry with provided tokens and expirations
+ */
+async function saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName, tokenConfig = {}) {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      // If user is not found in DB, use the one from the request because we are creating a new user
+      user = req.user;
+    }
+    const providerToken = user.tokens.find((token) => token.kind === providerName);
+    if (providerToken) {
+      providerToken.accessToken = accessToken;
+      if (accessTokenExpiration) {
+        providerToken.accessTokenExpires = moment().add(accessTokenExpiration, 'seconds').format();
+      } else {
+        delete providerToken.accessTokenExpires;
+      }
+      if (refreshToken) {
+        providerToken.refreshToken = refreshToken;
+      }
+      if (refreshTokenExpiration) {
+        providerToken.refreshTokenExpires = moment().add(refreshTokenExpiration, 'seconds').format();
+      } else if (refreshToken) {
+        // Only delete refresh token expiration if we got a new refresh token and don't have an expiration for it
+        delete providerToken.refreshTokenExpires;
+      }
+    } else {
+      const newToken = {
+        kind: providerName,
+        accessToken,
+        ...(accessTokenExpiration && {
+          accessTokenExpires: moment().add(accessTokenExpiration, 'seconds').format(),
+        }),
+        ...(refreshToken && { refreshToken }),
+        ...(refreshTokenExpiration && {
+          refreshTokenExpires: moment().add(refreshTokenExpiration, 'seconds').format(),
+        }),
+      };
+      user.tokens.push(newToken);
+    }
+
+    if (tokenConfig) {
+      Object.assign(user, tokenConfig);
+    }
+
+    user.markModified('tokens');
+    await user.save();
+    return user;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+/**
  * Sign in with Facebook.
  */
 passport.use(
@@ -91,7 +158,8 @@ passport.use(
       state: generateState(),
       passReqToCallback: true,
     },
-    async (req, accessToken, refreshToken, profile, done) => {
+    async (req, accessToken, refreshToken, params, profile, done) => {
+      // Facebook does not provide a refresh token but includes an expiration for the access token
       try {
         if (req.user) {
           const existingUser = await User.findOne({
@@ -103,9 +171,8 @@ passport.use(
             });
             return done(null, existingUser);
           }
-          const user = await User.findById(req.user.id);
+          const user = await saveOAuth2UserTokens(req, accessToken, null, params.expires_in, null, 'facebook');
           user.facebook = profile.id;
-          user.tokens.push({ kind: 'facebook', accessToken });
           user.profile.name = user.profile.name || `${profile.name.givenName} ${profile.name.familyName}`;
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
@@ -131,7 +198,8 @@ passport.use(
         const user = new User();
         user.email = profile._json.email;
         user.facebook = profile.id;
-        user.tokens.push({ kind: 'facebook', accessToken });
+        req.user = user;
+        await saveOAuth2UserTokens(req, accessToken, null, params.expires_in, null, 'facebook');
         user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
         user.profile.gender = profile._json.gender;
         user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
@@ -158,7 +226,8 @@ passport.use(
       passReqToCallback: true,
       scope: ['user:email'],
     },
-    async (req, accessToken, refreshToken, profile, done) => {
+    async (req, accessToken, refreshToken, params, profile, done) => {
+      // GitHub does not provide a refresh token or an expiration
       try {
         if (req.user) {
           const existingUser = await User.findOne({
@@ -170,9 +239,8 @@ passport.use(
             });
             return done(null, existingUser);
           }
-          const user = await User.findById(req.user.id);
+          const user = await saveOAuth2UserTokens(req, accessToken, null, null, null, 'github');
           user.github = profile.id;
-          user.tokens.push({ kind: 'github', accessToken });
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.picture = user.profile.picture || profile._json.avatar_url;
           user.profile.location = user.profile.location || profile._json.location;
@@ -213,7 +281,8 @@ passport.use(
         const user = new User();
         user.email = emailValue;
         user.github = profile.id;
-        user.tokens.push({ kind: 'github', accessToken });
+        req.user = user;
+        await saveOAuth2UserTokens(req, accessToken, null, null, null, 'github');
         user.profile.name = profile.displayName;
         user.profile.picture = profile._json.avatar_url;
         user.profile.location = profile._json.location;
@@ -308,14 +377,8 @@ const googleStrategyConfig = new GoogleStrategy(
           });
           return done(null, existingUser);
         }
-        const user = await User.findById(req.user.id);
+        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'google');
         user.google = profile.id;
-        user.tokens.push({
-          kind: 'google',
-          accessToken,
-          accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
-          refreshToken,
-        });
         user.profile.name = user.profile.name || profile.displayName;
         user.profile.gender = user.profile.gender || profile._json.gender;
         user.profile.picture = user.profile.picture || profile._json.picture;
@@ -339,12 +402,8 @@ const googleStrategyConfig = new GoogleStrategy(
       const user = new User();
       user.email = profile.emails[0].value;
       user.google = profile.id;
-      user.tokens.push({
-        kind: 'google',
-        accessToken,
-        accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
-        refreshToken,
-      });
+      req.user = user; // Set req.user so saveOAuth2UserTokens can use it
+      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'google');
       user.profile.name = profile.displayName;
       user.profile.gender = profile._json.gender;
       user.profile.picture = profile._json.picture;
@@ -455,14 +514,8 @@ const twitchStrategyConfig = new TwitchStrategy(
           });
           return done(null, existingUser);
         }
-        const user = await User.findById(req.user.id);
+        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'twitch');
         user.twitch = profile.id;
-        user.tokens.push({
-          kind: 'twitch',
-          accessToken,
-          accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
-          refreshToken,
-        });
         user.profile.name = user.profile.name || profile.display_name;
         user.profile.email = user.profile.gender || profile.email;
         user.profile.picture = user.profile.picture || profile.profile_image_url;
@@ -486,12 +539,8 @@ const twitchStrategyConfig = new TwitchStrategy(
       const user = new User();
       user.email = profile.email;
       user.twitch = profile.id;
-      user.tokens.push({
-        kind: 'twitch',
-        accessToken,
-        accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
-        refreshToken,
-      });
+      req.user = user; // Set req.user so saveOAuth2UserTokens can use it
+      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'twitch');
       user.profile.name = profile.display_name;
       user.profile.email = profile.email;
       user.profile.picture = profile.profile_image_url;
@@ -632,54 +681,6 @@ passport.use(
 );
 
 /**
- * Common function to handle OAuth2 token processing and saving user data.
- */
-async function handleOAuth2Callback(req, accessToken, refreshToken, params, providerName, tokenConfig = {}) {
-  try {
-    const user = await User.findById(req.user._id);
-    const providerToken = user.tokens.find((token) => token.kind === providerName);
-    if (providerToken) {
-      providerToken.accessToken = accessToken;
-      if (params.expires_in) {
-        providerToken.accessTokenExpires = moment().add(params.expires_in, 'seconds').format();
-      }
-      if (refreshToken) {
-        providerToken.refreshToken = refreshToken;
-      }
-      if (params.refresh_token_expires_in) {
-        providerToken.refreshTokenExpires = moment().add(params.refresh_token_expires_in, 'seconds').format();
-      } else if (params.x_refresh_token_expires_in) {
-        // some providers may use X_ (i.e. Quickbooks)
-        providerToken.refreshTokenExpires = moment().add(params.x_refresh_token_expires_in, 'seconds').format();
-      }
-    } else {
-      const newToken = {
-        kind: providerName,
-        accessToken,
-        ...(params.expires_in && {
-          accessTokenExpires: moment().add(params.expires_in, 'seconds').format(),
-        }),
-        ...(refreshToken && { refreshToken }),
-        ...(params.x_refresh_token_expires_in && {
-          refreshTokenExpires: moment().add(params.x_refresh_token_expires_in, 'seconds').format(),
-        }),
-      };
-      user.tokens.push(newToken);
-    }
-
-    if (tokenConfig) {
-      Object.assign(user, tokenConfig);
-    }
-
-    user.markModified('tokens');
-    await user.save();
-    return user;
-  } catch (err) {
-    throw new Error(err);
-  }
-}
-
-/**
  * Pinterest API OAuth.
  */
 const pinterestStrategyConfig = new OAuth2Strategy(
@@ -719,7 +720,7 @@ const pinterestStrategyConfig = new OAuth2Strategy(
           user.profile.picture = pinterestUser.profile_image;
         }
       }
-      const updatedUser = await handleOAuth2Callback(req, accessToken, refreshToken, params, 'pinterest');
+      const updatedUser = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.refresh_token_expires_in, 'pinterest');
       await user.save();
       return done(null, updatedUser);
     } catch (err) {
@@ -746,7 +747,7 @@ const quickbooksStrategyConfig = new OAuth2Strategy(
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
     try {
-      const user = await handleOAuth2Callback(req, accessToken, refreshToken, params, 'quickbooks', {
+      const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.x_refresh_token_expires_in, 'quickbooks', {
         quickbooks: req.query.realmId,
       });
       return done(null, user);
@@ -799,7 +800,7 @@ exports.isAuthorized = async (req, res, next) => {
           return next();
         } catch (err) {
           console.log(err);
-          return next();
+          return res.redirect(`/auth/${provider}`);
         }
       } else {
         return res.redirect(`/auth/${provider}`);
@@ -811,3 +812,6 @@ exports.isAuthorized = async (req, res, next) => {
     return res.redirect(`/auth/${provider}`);
   }
 };
+
+// Add export for testing the internal function
+exports._saveOAuth2UserTokens = saveOAuth2UserTokens;
