@@ -2,6 +2,57 @@
 
 ---
 
+### 9.0.0 (April 12, 2025)
+
+New Features
+
+- Introduced "Logout Everywhere" functionality for enhanced security (Thanks to @vimark1).
+- Added support for Google Analytics 4, Facebook Pixel, and Open Graph metadata.
+
+Enhancements
+
+- Removed unnecessary session saves for uninitialized sessions.
+- Cleaned up GitHub Actions by removing unnecessary CodeQL references.
+- Updated documentation for improved clarity and relevance.
+- Optimized Dockerfile and updated Docker image for better performance (Thanks to @akarys2304).
+- Replaced favicon.png with favicon.ico to match browser default requests.
+- Added Apple touch icons.
+- Refactored Nodemailer calls into config/nodemailer.js for unified security and configuration settings.
+- Removed redundant installation of body-parser, now included with ExpressJS.
+- Renamed getValidateReCAPTCHA to validateReCAPTCHA for better clarity.
+- Adopted Prettier for consistent code formatting.
+- Suppressed unactionable Sass import deprecation warnings.
+- Renamed handleOAuth2Callback to saveOAuth2UserTokens for clarity.
+
+Security Updates
+
+- Addressed Host-header Injection vulnerability in Password Reset & Email Verification (CVE-2025-29036).
+- Added upload size limit for Multer and moved its configuration to api.js.
+- Replaced MD5 with SHA256 for Gravatar generation.
+
+Bug Fixes
+
+- Updated to the latest HERE Maps API as the prior API version calls were no longer working.
+- Corrected the path for popper.js.
+- Fixed pre-commit test and lint execution.
+- Updated the default privacy policy to comply with Facebook terms and other regulations.
+- Improved OAuth2 token handling logic:
+  - Properly save tokens without expiration dates.
+  - Consolidated token-saving logic across all providers to fix multiple issues.
+  - Prevented infinite redirect loops in isAuthorized during failed token refresh attempts.
+
+Chore & Maintenance
+
+- [Breaking] Upgraded to Express 5.x.
+- [Breaking] Migrated from axios to Node.js's built-in fetch, reducing dependencies and improving performance.
+- Switched from the deprecated nyc to c8 for code coverage reporting.
+- Updated all dependencies.
+
+Tests
+
+- Added unit tests for isAuthorized and saveOAuth2UserTokens in config/passport.js.
+- Fixed unit tests for app.js.
+
 ### 8.1.0 (February 1, 2025)
 
 Security Enhancements

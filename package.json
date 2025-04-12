@@ -1,6 +1,6 @@
 {
   "name": "hackathon-starter",
-  "version": "8.1.0",
+  "version": "9.0.0",
   "description": "A boilerplate for Node.js web applications",
   "repository": {
     "type": "git",
@@ -93,6 +93,6 @@
     "@sinonjs/samsam": "github:SeattleDevs/samsam.git"
   },
   "engines": {
-    "node": ">=22.12"
+    "node": ">=22.13.1"
   }
 }
