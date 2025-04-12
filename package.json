@@ -16,7 +16,7 @@
     "lint-check": "eslint \"**/*.js\" && prettier . --check",
     "postinstall": "patch-package && npm run scss",
     "prepare": "husky",
-    "scss": "sass --no-source-map --quiet-deps --load-path=./ --update ./public/css:./public/css",
+    "scss": "sass --no-source-map --silence-deprecation=import --quiet-deps --load-path=./ --update ./public/css:./public/css",
     "start": "npm run scss && node app.js",
     "test": "c8 mocha --timeout=60000 --exit"
   },
