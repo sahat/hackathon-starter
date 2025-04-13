@@ -254,7 +254,7 @@ describe('Passport Config', () => {
       const refreshToken = 'refresh-token';
       const accessTokenExpiration = 2592000;
       const refreshTokenExpiration = 31536000;
-      const providerName = 'pinterest';
+      const providerName = 'quickbooks';
 
       _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName)
         .then(() => {
@@ -468,7 +468,7 @@ describe('Passport Config', () => {
       const refreshToken = 'refresh-token';
       const accessTokenExpiration = 2592000;
       const refreshTokenExpiration = 31536000;
-      const providerName = 'pinterest';
+      const providerName = 'quickbooks';
       const tokenConfig = {};
 
       _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName, tokenConfig)

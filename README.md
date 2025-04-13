@@ -85,7 +85,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
 - File upload
 - **API Examples**
-  - Facebook, Foursquare, Tumblr (OAuth 1.0a example), Pinterest, Github, Steam, Quickbooks, Paypal, Stripe, Twilio (text messaging), Lob (USPS Mail), HERE Maps, Google Maps, Google Drive, Google Sheets, Alpha Vantage (stocks and finance info) with ChartJS, Last.fm, New York Times, Web Scraping
+  - Facebook, Foursquare, Tumblr (OAuth 1.0a example), Github, Steam, Quickbooks, Paypal, Stripe, Twilio (text messaging), Lob (USPS Mail), HERE Maps, Google Maps, Google Drive, Google Sheets, Alpha Vantage (stocks and finance info) with ChartJS, Last.fm, New York Times, Web Scraping
 - Flash notifications
 - reCaPTCHA and rate limit protection
 - CSRF protection
@@ -162,7 +162,7 @@ _What to get and configure:_
   - Set TRANSACTION_EMAIL as the "From" address for emails sent to users thru the lost password or email verification emails to users. You may set this to the same address as SITE_CONTACT_EMAIL.
 
 - ngrok and HTTPS
-  If you want to use some API that needs HTTPS to work (for example Pinterest or Facebook),
+  If you want to use some API that needs HTTPS to work (for example Github or Facebook),
   you will need to download [ngrok](https://ngrok.com/). Start ngrok, set your BASE_URL to the forwarding address (i.e `https://3ccb-1234-abcd.ngrok-free.app` ), and use the forwarding address to access your application. If you are using a proxy like ngrok, you may get a CSRF mismatch error if you try to access the app at `http://localhost:8080` instead of the https://...ngrok-free.app address.
 
   After installing or downloading the standalone ngrok client you can start ngrok to intercept the data exchanged on port 8080 with `./ngrok http 8080` in Linux or `ngrok http 8080` in Windows.
@@ -243,11 +243,11 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Visit <a href="https://cloud.google.com/console/project" target="_blank">Google Cloud Console</a>
 - Click on the **Create Project** button
 - Enter _Project Name_, then click on **Create** button
-- Then click on _APIs & auth_ in the sidebar and select _API_ tab
-- Click on **Google+ API** under _Social APIs_, then click **Enable API**
-- Click on **Google Drive API** under _G Suite_, then click **Enable API**
-- Click on **Google Sheets API** under _G Suite_, then click **Enable API**
-- Next, under _APIs & auth_ in the sidebar click on _Credentials_ tab
+- Then click on _APIs & auth_ in the sidebar and select _API_ tab and based on your usage add:
+  - Login by Google: Click on **Google+ API** under _Social APIs_, then click **Enable API**
+  - Google Drive: Click on **Google Drive API** under _G Suite_, then click **Enable API**
+  - Google Sheets: Click on **Google Sheets API** under _G Suite_, then click **Enable API**
+- Next, under _APIs & auth_ in the sidebar click on the _Credentials_ tab
 - Click on **Create new Client ID** button
 - Select _Web Application_ and click on **Configure Consent Screen**
 - Fill out the required fields then click on **Save**
@@ -257,6 +257,10 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - **Authorized redirect URI**: set to your BASE_URL value followed by /auth/google/callback (i.e. `http://localhost:8080/auth/google/callback` )
 - Click on **Create Client ID** button
 - Copy and paste _Client ID_ and _Client secret_ keys into `.env`
+
+**Warning:** Restrict your **Google Maps API key** to the "Maps JavaScript API" and the specific domain name you are using (for example, your ngrok development domain). Avoid using "localhost" or leaving the key unrestricted, because your Maps API key will be publicly exposed through the web application. This exposure could allow unauthorized users to misuse your key, potentially resulting in charges to your GCP account and credit card.
+
+- Google Maps API Key: To use the "Maps JavaScript API," you must activate your Google Cloud Platform account with a valid credit card. If your account hasn't been activated yet, this process will also trigger the countdown for the expiration of your free credits if any. If you'd prefer to avoid this, consider using **HERE Maps** as an alternative. To get a key add the Search for "Maps Platform API Key" in your GCP Console and select the appropriate option. Then get your key and add your domain as the Website restriction for it.
 
 <hr>
 

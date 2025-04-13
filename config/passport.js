@@ -694,60 +694,6 @@ passport.use(
 );
 
 /**
- * Pinterest API OAuth.
- */
-const pinterestStrategyConfig = new OAuth2Strategy(
-  {
-    authorizationURL: 'https://www.pinterest.com/oauth',
-    tokenURL: 'https://api.pinterest.com/v5/oauth/token',
-    clientID: process.env.PINTEREST_ID,
-    clientSecret: process.env.PINTEREST_SECRET,
-    callbackURL: `${process.env.BASE_URL}/auth/pinterest/callback`,
-    passReqToCallback: true,
-    state: generateState(),
-    scope: ['user_accounts:read', 'pins:read', 'pins:write', 'boards:read'],
-    customHeaders: {
-      Authorization: `Basic ${Buffer.from(`${process.env.PINTEREST_ID}:${process.env.PINTEREST_SECRET}`).toString('base64')}`,
-    },
-  },
-  async (req, accessToken, refreshToken, params, profile, done) => {
-    try {
-      const user = await User.findById(req.user._id);
-      if (!user.pinterest) {
-        const pinterestUserResponse = await fetch('https://api.pinterest.com/v5/user_account', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        if (!pinterestUserResponse.ok) {
-          throw new Error(`HTTP error! status: ${pinterestUserResponse.status}`);
-        }
-        const pinterestUser = await pinterestUserResponse.json();
-        user.pinterest = pinterestUser.id;
-        if (pinterestUser.website_url) {
-          user.profile.website = pinterestUser.website_url;
-        }
-        if (
-          !user.profile.picture &&
-          // && pinterestUser.account_type === 'PINNER'
-          pinterestUser.profile_image &&
-          !pinterestUser.profile_image.includes('default')
-        ) {
-          user.profile.picture = pinterestUser.profile_image;
-        }
-      }
-      const updatedUser = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.refresh_token_expires_in, 'pinterest');
-      await user.save();
-      return done(null, updatedUser);
-    } catch (err) {
-      return done(err);
-    }
-  },
-);
-passport.use('pinterest', pinterestStrategyConfig);
-refresh.use('pinterest', pinterestStrategyConfig);
-
-/**
  * Intuit/QuickBooks API OAuth.
  */
 const quickbooksStrategyConfig = new OAuth2Strategy(
