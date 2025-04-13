@@ -5,7 +5,6 @@ const path = require('path');
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
-const logger = require('morgan');
 const errorHandler = require('errorhandler');
 const lusca = require('lusca');
 const dotenv = require('dotenv');
@@ -54,6 +53,11 @@ const contactController = require('./controllers/contact');
 const passportConfig = require('./config/passport');
 
 /**
+ * Request logging configuration
+ */
+const { morganLogger } = require('./config/morgan');
+
+/**
  * Create Express server.
  */
 const app = express();
@@ -78,7 +82,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.set('trust proxy', numberOfProxies);
 app.use(compression());
-app.use(logger('dev'));
+app.use(morganLogger());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
