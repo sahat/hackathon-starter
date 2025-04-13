@@ -87,7 +87,12 @@ logger.token('transfer-state', (req, res) => {
 // especially when collaborating with other developers testing the running instance.
 // In production, omit the IP address to reduce the risk of leaking sensitive information and to support
 // compliance with GDPR and other privacy regulations.
-const morganFormat = process.env.NODE_ENV === 'production' ? ':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state - :parsed-user-agent' : ':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state :remote-addr :parsed-user-agent';
+// Also using a function so we can test it in our unit tests.
+const getMorganFormat = () =>
+  process.env.NODE_ENV === 'production' ? ':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state - :parsed-user-agent' : ':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state :remote-addr :parsed-user-agent';
+
+// Set the format once at initialization for the actual middleware so we don't have to evaluate on each call
+const morganFormat = getMorganFormat();
 
 // Create a middleware to capture original content length
 const captureContentLength = (req, res, next) => {
@@ -124,3 +129,6 @@ exports.morganLogger = () => (req, res, next) => {
     })(req, res, next);
   });
 };
+
+// Expose for testing
+exports._getMorganFormat = getMorganFormat;

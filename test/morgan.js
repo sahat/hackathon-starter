@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 
 // Import the morgan configuration to ensure tokens are registered
-require('../config/morgan');
+const { _getMorganFormat } = require('../config/morgan');
 
 describe('Morgan Configuration Tests', () => {
   let req;
@@ -115,38 +115,21 @@ describe('Morgan Configuration Tests', () => {
   });
 
   describe('Complete Morgan Format', () => {
+    // const { _getMorganFormat } = require('../config/morgan');
+
     it('should combine all tokens correctly in development', () => {
       process.env.NODE_ENV = 'development';
-      // Setup response with known values
-      res.statusCode = 200;
-      res.setHeader('Content-Length', '2048');
-
-      const formatter = morgan.compile(':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state :remote-addr :parsed-user-agent');
-
+      const formatter = morgan.compile(_getMorganFormat());
       const output = formatter(morgan, req, res);
-
-      // Test the complete output contains all expected parts
-      expect(output).to.include('2024-01-01 12:00:00'); // date
-      expect(output).to.include('GET'); // method
-      expect(output).to.include('/test'); // url
-      expect(output).to.include('\x1b[32m200\x1b[0m'); // colored status
-      expect(output).to.include('2.00KB'); // bytes sent
-      expect(output).to.include('127.0.0.1'); // IP address in development
-      expect(output).to.include('Windows/Chrome v120'); // parsed user agent
+      expect(output).to.include('127.0.0.1'); // Should include IP in development
     });
 
-    it('should redact IP address in production', () => {
+    it('should exclude IP address in production', () => {
       process.env.NODE_ENV = 'production';
-      res.statusCode = 200;
-      res.setHeader('Content-Length', '2048');
-
-      const formatter = morgan.compile(':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state REDACTED :parsed-user-agent');
-
+      const formatter = morgan.compile(_getMorganFormat());
       const output = formatter(morgan, req, res);
-
-      expect(output).to.include('REDACTED');
-      expect(output).to.not.include('127.0.0.1');
-      expect(output).to.include('2.00KB'); // bytes sent
+      expect(output).to.not.include('127.0.0.1'); // Should not include IP
+      expect(output).to.include(' - '); // Should have hyphen instead
     });
   });
 });
