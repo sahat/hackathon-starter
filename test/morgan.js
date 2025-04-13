@@ -9,6 +9,7 @@ describe('Morgan Configuration Tests', () => {
   let req;
   let res;
   let clock;
+  const originalEnv = process.env.NODE_ENV;
 
   beforeEach(() => {
     // Mock request
@@ -22,11 +23,21 @@ describe('Morgan Configuration Tests', () => {
       ip: '127.0.0.1',
     };
 
-    // Mock response
+    // Enhanced mock response
     res = {
       statusCode: 200,
-      getHeader: sinon.stub(),
-      _header: {}, // morgan checks for this
+      _header: true, // Set to true to indicate headers sent
+      finished: true, // Set to true to indicate response complete
+      _headers: {}, // for storing headers
+      getHeader(name) {
+        return this._headers[name.toLowerCase()];
+      },
+      get(name) {
+        return this.getHeader(name);
+      },
+      setHeader(name, value) {
+        this._headers[name.toLowerCase()] = value;
+      },
     };
 
     // Fix the date for consistent testing
@@ -36,6 +47,7 @@ describe('Morgan Configuration Tests', () => {
   afterEach(() => {
     clock.restore();
     sinon.restore();
+    process.env.NODE_ENV = originalEnv;
   });
 
   describe('Custom Token: colored-status', () => {
@@ -79,30 +91,37 @@ describe('Morgan Configuration Tests', () => {
     });
   });
 
-  describe('Custom Token: content-length-in-kb', () => {
-    it('should format content length to KB', () => {
-      res.getHeader.withArgs('Content-Length').returns(2048);
-      const formatter = morgan.compile(':content-length-in-kb');
+  describe('Custom Token: bytes-sent', () => {
+    it('should format bytes correctly', () => {
+      res.setHeader('Content-Length', '2048');
+      const formatter = morgan.compile(':bytes-sent');
       const output = formatter(morgan, req, res);
       expect(output).to.equal('2.00KB');
     });
 
     it('should handle missing content length', () => {
-      res.getHeader.withArgs('Content-Length').returns(undefined);
-      const formatter = morgan.compile(':content-length-in-kb');
+      const formatter = morgan.compile(':bytes-sent');
       const output = formatter(morgan, req, res);
       expect(output).to.equal('-');
     });
   });
 
+  describe('Custom Token: transfer-state', () => {
+    it('should show correct transfer state', () => {
+      const formatter = morgan.compile(':transfer-state');
+      const output = formatter(morgan, req, res);
+      expect(output).to.equal('COMPLETE');
+    });
+  });
+
   describe('Complete Morgan Format', () => {
-    it('should combine all tokens correctly', () => {
+    it('should combine all tokens correctly in development', () => {
+      process.env.NODE_ENV = 'development';
       // Setup response with known values
       res.statusCode = 200;
-      res.getHeader.withArgs('Content-Length').returns(2048);
+      res.setHeader('Content-Length', '2048');
 
-      // Get the complete format string from your configuration
-      const formatter = morgan.compile(':short-date :method :url :colored-status :response-time[0]ms :content-length-in-kb :remote-addr :parsed-user-agent');
+      const formatter = morgan.compile(':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state :remote-addr :parsed-user-agent');
 
       const output = formatter(morgan, req, res);
 
@@ -111,9 +130,23 @@ describe('Morgan Configuration Tests', () => {
       expect(output).to.include('GET'); // method
       expect(output).to.include('/test'); // url
       expect(output).to.include('\x1b[32m200\x1b[0m'); // colored status
-      expect(output).to.include('2.00KB'); // content length
-      expect(output).to.include('127.0.0.1'); // remote addr
+      expect(output).to.include('2.00KB'); // bytes sent
+      expect(output).to.include('127.0.0.1'); // IP address in development
       expect(output).to.include('Windows/Chrome v120'); // parsed user agent
+    });
+
+    it('should redact IP address in production', () => {
+      process.env.NODE_ENV = 'production';
+      res.statusCode = 200;
+      res.setHeader('Content-Length', '2048');
+
+      const formatter = morgan.compile(':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state REDACTED :parsed-user-agent');
+
+      const output = formatter(morgan, req, res);
+
+      expect(output).to.include('REDACTED');
+      expect(output).to.not.include('127.0.0.1');
+      expect(output).to.include('2.00KB'); // bytes sent
     });
   });
 });

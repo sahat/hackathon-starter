@@ -43,20 +43,84 @@ logger.token('parsed-user-agent', (req) => {
   return `${osName}/${browserName} v${majorVersion}`;
 });
 
-// Custom token for content length in KB
-logger.token('content-length-in-kb', (req, res) => {
-  const length = res.getHeader('Content-Length');
-  if (!length) return '-';
+// Track bytes actually sent
+logger.token('bytes-sent', (req, res) => {
+  // Check for original uncompressed size first
+  let length =
+    res.getHeader('X-Original-Content-Length') || // Some compression middlewares add this
+    res.get('x-content-length') || // Alternative header
+    res.getHeader('Content-Length');
 
-  const sizeInKB = (length / 1024).toFixed(2);
-  return `${sizeInKB}KB`;
+  // For static files
+  if (!length && res.locals && res.locals.stat) {
+    length = res.locals.stat.size;
+  }
+
+  // For response bodies (API responses)
+  if (!length && res._contentLength) {
+    length = res._contentLength;
+  }
+
+  // If we found a length, format it
+  if (length && Number.isNaN(Number(length)) === false) {
+    return `${(parseInt(length, 10) / 1024).toFixed(2)}KB`;
+  }
+
+  // For chunked responses
+  const transferEncoding = res.getHeader('Transfer-Encoding');
+  if (transferEncoding === 'chunked') {
+    return 'chunked';
+  }
+
+  return '-';
 });
 
-// Define the custom format
-const morganFormat = ':short-date :method :url :colored-status :response-time[0]ms :content-length-in-kb :remote-addr :parsed-user-agent';
+// Track partial response info
+logger.token('transfer-state', (req, res) => {
+  if (!res._header) return 'NO_RESPONSE';
+  if (res.finished) return 'COMPLETE';
+  return 'PARTIAL';
+});
 
-// Export the logger setup function
-exports.morganLogger = () =>
-  logger(morganFormat, {
-    immediate: false,
+// Define the custom request log format
+// In development/test environments, include the full IP address in the logs to facilitate debugging,
+// especially when collaborating with other developers testing the running instance.
+// In production, omit the IP address to reduce the risk of leaking sensitive information and to support
+// compliance with GDPR and other privacy regulations.
+const morganFormat = process.env.NODE_ENV === 'production' ? ':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state - :parsed-user-agent' : ':short-date :method :url :colored-status :response-time[0]ms :bytes-sent :transfer-state :remote-addr :parsed-user-agent';
+
+// Create a middleware to capture original content length
+const captureContentLength = (req, res, next) => {
+  const originalWrite = res.write;
+  const originalEnd = res.end;
+  let length = 0;
+
+  res.write = (...args) => {
+    const [chunk] = args;
+    if (chunk) {
+      length += chunk.length;
+    }
+    return originalWrite.apply(res, args);
+  };
+
+  res.end = (...args) => {
+    const [chunk] = args;
+    if (chunk) {
+      length += chunk.length;
+    }
+    if (length > 0) {
+      res._contentLength = length;
+    }
+    return originalEnd.apply(res, args);
+  };
+
+  next();
+};
+
+exports.morganLogger = () => (req, res, next) => {
+  captureContentLength(req, res, () => {
+    logger(morganFormat, {
+      immediate: false,
+    })(req, res, next);
   });
+};
