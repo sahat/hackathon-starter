@@ -420,6 +420,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 
 | Name                             | Description                                                          |
 | -------------------------------- | -------------------------------------------------------------------- |
+| **config**/morgan.js             | Configuration for request logging with morgan.                       |
 | **config**/nodemailer.js         | Configuration and helper function for sending email with nodemailer. |
 | **config**/passport.js           | Passport Local and OAuth strategies, plus login middleware.          |
 | **controllers**/api.js           | Controller for /api route and all api examples.                      |
@@ -474,6 +475,7 @@ Required to run the project before your modifications
 | @popperjs/core                | Frontend js library for poppers and tooltips.                         |
 | bootstrap                     | CSS Framework.                                                        |
 | bootstrap-social              | Social buttons library.                                               |
+| bowser                        | User agent parser                                                     |
 | chart.js                      | Frontend js library for creating charts.                              |
 | cheerio                       | Scrape web pages using jQuery-style syntax.                           |
 | compression                   | Node.js compression middleware.                                       |
