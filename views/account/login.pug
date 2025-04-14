@@ -10,6 +10,11 @@ block content
       .col-md-7
         input#email.form-control(type='email', name='email', placeholder='Email', autofocus, autocomplete='email', required)
     .form-group.row.mb-3
+      .col-md-3.offset-md-3
+        .form-check
+          input#loginByEmailLink.form-check-input(type='checkbox', name='loginByEmailLink')
+          label.form-check-label(for='loginByEmailLink') Login by Email Link
+    .form-group.row.mb-3.password-group
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') Password
       .col-md-7
         input#password.form-control(type='password', name='password', placeholder='Password', autocomplete='current-password', required)
@@ -42,3 +47,24 @@ block content
         a.btn.btn-block.btn-github.btn-social(href='/auth/github')
           i.fab.fa-github.fa-sm
           | Sign in with GitHub
+
+  script.
+    document.getElementById('loginByEmailLink').addEventListener('change', function () {
+      const passwordGroup = document.querySelector('.password-group');
+      const passwordInput = document.getElementById('password');
+      if (this.checked) {
+        passwordGroup.style.display = 'none';
+        passwordInput.removeAttribute('required');
+        // Don't clear the password here
+      } else {
+        passwordGroup.style.display = 'flex';
+        passwordInput.setAttribute('required', '');
+      }
+    });
+
+    // Only clear password at form submission if email link is selected
+    document.querySelector('form').addEventListener('submit', function (e) {
+      if (document.getElementById('loginByEmailLink').checked) {
+        document.getElementById('password').value = '';
+      }
+    });

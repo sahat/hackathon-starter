@@ -10,16 +10,37 @@ block content
       .col-md-7
         input#email.form-control(type='email', name='email', placeholder='Email', autofocus, autocomplete='email', required)
     .form-group.row.mb-3
-      label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') Password
-      .col-md-7
-        input#password.form-control(type='password', name='password', placeholder='Password', autocomplete='new-password', minlength='8', required)
+      .col-md-6.offset-md-3
+        .form-check
+          input#passwordless.form-check-input(type='checkbox', name='passwordless')
+          label.form-check-label(for='passwordless') Sign up without password (passwordless login via email)
+    #password-fields
+      .form-group.row.mb-3
+        label.col-md-3.col-form-label.font-weight-bold.text-right(for='password') Password
+        .col-md-7
+          input#password.form-control(type='password', name='password', placeholder='Password', autocomplete='new-password', minlength='8', required)
+      .form-group.row.mb-3
+        label.col-md-3.col-form-label.font-weight-bold.text-right(for='confirmPassword') Confirm Password
+        .col-md-7
+          input#confirmPassword.form-control(type='password', name='confirmPassword', placeholder='Confirm Password', autocomplete='new-password', minlength='8', required)
     .form-group.row.mb-3
-      label.col-md-3.col-form-label.font-weight-bold.text-right(for='confirmPassword') Confirm Password
-      .col-md-7
-        input#confirmPassword.form-control(type='password', name='confirmPassword', placeholder='Confirm Password', autocomplete='new-password', minlength='8', required)
-    .form-group.row
       .col-md-3
       .col-md-7
         button.btn.btn-success(type='submit')
           i.fas.fa-user-plus.fa-sm.iconpadding
           | Signup
+
+  //- Handle checkbox toggle
+  script.
+    document.getElementById('passwordless').addEventListener('change', function () {
+      const passwordFields = document.getElementById('password-fields');
+      const passwordInputs = passwordFields.querySelectorAll('input');
+
+      if (this.checked) {
+        passwordFields.style.display = 'none';
+        passwordInputs.forEach((input) => input.removeAttribute('required'));
+      } else {
+        passwordFields.style.display = 'block';
+        passwordInputs.forEach((input) => input.setAttribute('required', ''));
+      }
+    });
