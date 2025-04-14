@@ -70,7 +70,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 ## Features
 
 - Login
-  - **Local Authentication** using Email and Password
+  - **Local Authentication** using Email and Password, as well as Passwordless
   - **OAuth 2.0 Authentication:** Sign in with Google, Facebook, X (Twitter), Twitch, Github
   - **OpenID Connect:** Sign in with LinkedIn
 - **User Profile and Account Management**

@@ -24,12 +24,33 @@ dotenv.config({ path: '.env.example' });
  */
 const secureTransfer = process.env.BASE_URL.startsWith('https');
 
-// Consider adding a proxy such as cloudflare for production.
+/**
+ * Rate limiting configuration
+ * This is a basic rate limiting configuration. You may want to adjust the settings
+ * based on your application's needs and the expected traffic patterns.
+ * Alos, consider adding a proxy such as cloudflare for production.
+ */
+// Global Rate Limiter Config
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 200, // Limit each IP to 200 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+// Strict Auth Rate Limiter Config for signup, password recover, account verification, login by email
+const strictLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5, // 5 attempts per hour
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Login Rate Limiter Config
+const loginLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10, // 10 attempts per hour
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 // This logic for numberOfProxies works for local testing, ngrok use, single host deployments
@@ -158,15 +179,16 @@ app.locals.FACEBOOK_PIXEL_ID = process.env.FACEBOOK_PIXEL_ID ? process.env.FACEB
  */
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
-app.post('/login', userController.postLogin);
+app.post('/login', loginLimiter, userController.postLogin);
+app.get('/login/verify/:token', loginLimiter, userController.getLoginByEmail);
 app.get('/logout', userController.logout);
 app.get('/forgot', userController.getForgot);
-app.post('/forgot', userController.postForgot);
+app.post('/forgot', strictLimiter, userController.postForgot);
 app.get('/reset/:token', userController.getReset);
-app.post('/reset/:token', userController.postReset);
+app.post('/reset/:token', loginLimiter, userController.postReset);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
-app.get('/contact', contactController.getContact);
+app.get('/contact', strictLimiter, contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/account/verify', passportConfig.isAuthenticated, userController.getVerifyEmail);
 app.get('/account/verify/:token', passportConfig.isAuthenticated, userController.getVerifyEmailToken);
@@ -199,7 +221,7 @@ app.get('/api/paypal/success', apiController.getPayPalSuccess);
 app.get('/api/paypal/cancel', apiController.getPayPalCancel);
 app.get('/api/lob', apiController.getLob);
 app.get('/api/upload', lusca({ csrf: true }), apiController.getFileUpload);
-app.post('/api/upload', apiController.uploadMiddleware, lusca({ csrf: true }), apiController.postFileUpload);
+app.post('/api/upload', strictLimiter, apiController.uploadMiddleware, lusca({ csrf: true }), apiController.postFileUpload);
 app.get('/api/here-maps', apiController.getHereMaps);
 app.get('/api/google-maps', apiController.getGoogleMaps);
 app.get('/api/google/drive', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getGoogleDrive);

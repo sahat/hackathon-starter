@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
+const bcrypt = require('@node-rs/bcrypt');
 const User = require('../models/User');
 
 describe('User Model', () => {
@@ -128,5 +129,311 @@ describe('User Model', () => {
 
     const gravatar = user.gravatar();
     expect(gravatar.includes(sha256)).to.equal(true);
+  });
+  describe('Token Verification', () => {
+    it('should verify valid token and IP hash before expiration', () => {
+      const token = 'testtoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          emailVerificationToken: token,
+          emailVerificationIpHash: User.hashIP(ip),
+          emailVerificationExpires: Date.now() + 3600000, // 1 hour in the future
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'emailVerification');
+      expect(isValid).to.be.true;
+    });
+
+    it('should reject expired token', () => {
+      const token = 'testtoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          emailVerificationToken: token,
+          emailVerificationIpHash: User.hashIP(ip),
+          emailVerificationExpires: Date.now() - 3600000, // 1 hour in the past
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'emailVerification');
+      expect(isValid).to.be.false;
+    });
+
+    it('should reject invalid token', () => {
+      const token = 'testtoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          emailVerificationToken: 'differenttoken',
+          emailVerificationIpHash: User.hashIP(ip),
+          emailVerificationExpires: Date.now() + 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'emailVerification');
+      expect(isValid).to.be.false;
+    });
+
+    it('should reject invalid IP', () => {
+      const token = 'testtoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          emailVerificationToken: token,
+          emailVerificationIpHash: User.hashIP('192.168.1.1'),
+          emailVerificationExpires: Date.now() + 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'emailVerification');
+      expect(isValid).to.be.false;
+    });
+
+    it('should handle missing token fields', () => {
+      const token = 'testtoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(new User({}));
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'emailVerification');
+      expect(isValid).to.be.false;
+    });
+  });
+  describe('Password Reset Token Verification', () => {
+    it('should verify valid password reset token and IP hash before expiration', () => {
+      const token = 'resettoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          passwordResetToken: token,
+          passwordResetIpHash: User.hashIP(ip),
+          passwordResetExpires: Date.now() + 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'passwordReset');
+      expect(isValid).to.be.true;
+    });
+
+    it('should reject expired password reset token', () => {
+      const token = 'resettoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          passwordResetToken: token,
+          passwordResetIpHash: User.hashIP(ip),
+          passwordResetExpires: Date.now() - 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'passwordReset');
+      expect(isValid).to.be.false;
+    });
+
+    it('should reject invalid password reset token', () => {
+      const token = 'resettoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          passwordResetToken: 'differenttoken',
+          passwordResetIpHash: User.hashIP(ip),
+          passwordResetExpires: Date.now() + 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'passwordReset');
+      expect(isValid).to.be.false;
+    });
+
+    it('should reject invalid IP for password reset', () => {
+      const token = 'resettoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          passwordResetToken: token,
+          passwordResetIpHash: User.hashIP('192.168.1.1'),
+          passwordResetExpires: Date.now() + 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'passwordReset');
+      expect(isValid).to.be.false;
+    });
+  });
+
+  describe('Login Token Verification', () => {
+    it('should verify valid login token and IP hash before expiration', () => {
+      const token = 'logintoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          loginToken: token,
+          loginIpHash: User.hashIP(ip),
+          loginExpires: Date.now() + 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'login');
+      expect(isValid).to.be.true;
+    });
+
+    it('should reject expired login token', () => {
+      const token = 'logintoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          loginToken: token,
+          loginIpHash: User.hashIP(ip),
+          loginExpires: Date.now() - 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'login');
+      expect(isValid).to.be.false;
+    });
+
+    it('should reject invalid login token', () => {
+      const token = 'logintoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          loginToken: 'differenttoken',
+          loginIpHash: User.hashIP(ip),
+          loginExpires: Date.now() + 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'login');
+      expect(isValid).to.be.false;
+    });
+
+    it('should reject invalid IP for login', () => {
+      const token = 'logintoken123';
+      const ip = '127.0.0.1';
+      const UserMock = sinon.mock(
+        new User({
+          loginToken: token,
+          loginIpHash: User.hashIP('192.168.1.1'),
+          loginExpires: Date.now() + 3600000,
+        }),
+      );
+      const user = UserMock.object;
+
+      const isValid = user.verifyTokenAndIp(token, ip, 'login');
+      expect(isValid).to.be.false;
+    });
+  });
+
+  describe('IP Hashing', () => {
+    it('should consistently hash the same IP', () => {
+      const ip = '127.0.0.1';
+      const hash1 = User.hashIP(ip);
+      const hash2 = User.hashIP(ip);
+      expect(hash1).to.equal(hash2);
+    });
+
+    it('should produce different hashes for different IPs', () => {
+      const hash1 = User.hashIP('127.0.0.1');
+      const hash2 = User.hashIP('192.168.1.1');
+      expect(hash1).to.not.equal(hash2);
+    });
+  });
+
+  describe('User Model Virtual Properties', () => {
+    it('should check if password reset is expired', () => {
+      const user = new User({
+        passwordResetExpires: Date.now() - 3600000,
+      });
+      expect(user.isPasswordResetExpired).to.be.true;
+    });
+
+    it('should check if email verification is expired', () => {
+      const user = new User({
+        emailVerificationExpires: Date.now() - 3600000,
+      });
+      expect(user.isEmailVerificationExpired).to.be.true;
+    });
+
+    it('should check if login token is expired', () => {
+      const user = new User({
+        loginExpires: Date.now() - 3600000,
+      });
+      expect(user.isLoginExpired).to.be.true;
+    });
+  });
+
+  describe('User Password Handling', () => {
+    it('should handle error during password comparison', async () => {
+      const user = new User({ password: 'invalid-hash' });
+      await new Promise((resolve) => {
+        user.comparePassword('password', (err) => {
+          expect(err).to.exist;
+          resolve();
+        });
+      });
+    });
+
+    it('should handle password hashing error', async () => {
+      const user = new User({
+        email: 'test@example.com', // Add required email field
+        password: 'test',
+      });
+      // Mock bcrypt to throw error
+      sinon.stub(bcrypt, 'hash').rejects(new Error('Hash error'));
+
+      try {
+        await user.save();
+        expect.fail('Should have thrown error');
+      } catch (err) {
+        expect(err.message).to.equal('Hash error');
+      } finally {
+        bcrypt.hash.restore();
+      }
+    });
+  });
+
+  describe('Gravatar URL Generation', () => {
+    it('should generate default gravatar URL when email is missing', () => {
+      const user = new User();
+      const url = user.gravatar(200);
+      expect(url).to.include('00000000000000000000000000000000');
+    });
+  });
+
+  describe('Token Cleanup on Save', () => {
+    it('should clear expired tokens before save', async () => {
+      const user = new User({
+        email: 'test@example.com', // Add required email field
+        password: 'testpassword', // Add password if it's required
+        passwordResetToken: 'token',
+        passwordResetExpires: Date.now() - 3600000,
+        passwordResetIpHash: 'hash',
+        emailVerificationToken: 'token',
+        emailVerificationExpires: Date.now() - 3600000,
+        emailVerificationIpHash: 'hash',
+        loginToken: 'token',
+        loginExpires: Date.now() - 3600000,
+        loginIpHash: 'hash',
+      });
+
+      await user.save();
+
+      expect(user.passwordResetToken).to.be.undefined;
+      expect(user.emailVerificationToken).to.be.undefined;
+      expect(user.loginToken).to.be.undefined;
+    });
   });
 });
