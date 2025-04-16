@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema(
     twitch: String,
     quickbooks: String,
     tumblr: String,
+    trakt: String,
     tokens: Array,
 
     profile: {

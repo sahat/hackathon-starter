@@ -166,6 +166,7 @@ app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/@popperjs/c
 app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js'), { maxAge: 31557600000 }));
 app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/jquery/dist'), { maxAge: 31557600000 }));
 app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 31557600000 }));
+app.use('/image-cache', express.static(path.join(__dirname, 'tmp/image-cache'), { maxAge: 31557600000 }));
 
 /**
  * Analytics IDs needed thru layout.pug; set as express local so we don't have to pass them with each render call
@@ -228,6 +229,7 @@ app.get('/api/google/drive', passportConfig.isAuthenticated, passportConfig.isAu
 app.get('/api/chart', apiController.getChart);
 app.get('/api/google/sheets', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getGoogleSheets);
 app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getQuickbooks);
+app.get('/api/trakt', apiController.getTrakt);
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -266,6 +268,10 @@ app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect:
 });
 app.get('/auth/steam', passport.authorize('steam-openid'));
 app.get('/auth/steam/callback', passport.authorize('steam-openid', { failureRedirect: '/api' }), (req, res) => {
+  res.redirect(req.session.returnTo);
+});
+app.get('/auth/trakt', passport.authorize('trakt'));
+app.get('/auth/trakt/callback', passport.authorize('trakt', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo);
 });
 app.get('/auth/quickbooks', passport.authorize('quickbooks'));

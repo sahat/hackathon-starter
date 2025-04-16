@@ -85,9 +85,9 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
 - File upload
 - **API Examples**
-  - Facebook, Foursquare, Tumblr (OAuth 1.0a example), Github, Steam, Quickbooks, Paypal, Stripe, Twilio (text messaging), Lob (USPS Mail), HERE Maps, Google Maps, Google Drive, Google Sheets, Alpha Vantage (stocks and finance info) with ChartJS, Last.fm, New York Times, Web Scraping
+  - Facebook, Foursquare, Tumblr (OAuth 1.0a example), Github, Steam, Quickbooks, Paypal, Stripe, Twilio (text messaging), Lob (USPS Mail), HERE Maps, Google Maps, Google Drive, Google Sheets, Alpha Vantage (stocks and finance info) with ChartJS, Last.fm, New York Times, Web Scraping, Trakt.tv (movies/TV)
 - Flash notifications
-- reCaPTCHA and rate limit protection
+- reCAPTCHA and rate limit protection
 - CSRF protection
 - MVC Project Structure
 - Node.js clusters support
@@ -158,8 +158,8 @@ _What to get and configure:_
 
 - Email address
 
-  - Set SITE_CONTACT_EMAIL as your incoming email address for messages sent to you thru the contact form.
-  - Set TRANSACTION_EMAIL as the "From" address for emails sent to users thru the lost password or email verification emails to users. You may set this to the same address as SITE_CONTACT_EMAIL.
+  - Set SITE_CONTACT_EMAIL as your incoming email address for messages sent to you through the contact form.
+  - Set TRANSACTION_EMAIL as the "From" address for emails sent to users through the lost password or email verification emails to users. You may set this to the same address as SITE_CONTACT_EMAIL.
 
 - ngrok and HTTPS
   If you want to use some API that needs HTTPS to work (for example Github or Facebook),
@@ -179,11 +179,11 @@ See:
 
 # Obtaining API Keys
 
-You will need to obtain appropriate credentials (Client ID, Client Secret, API Key, or Username & Password) for API and service provides which you need. See Step 2 in the Getting started section for more info.
+You will need to obtain appropriate credentials (Client ID, Client Secret, API Key, or Username & Password) for API and service providers which you need. See Step 2 in the Getting started section for more info.
 
 ## SMTP
 
-Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_USER, SMTP_PASSWORD, and SMTP_HOST environment variables accordingly. When picking the smtp host, keep in mind that the app is configured to use secure SMTP transmissions over port 465 out of the box. You have the flexibility to select any provider that suits your needs or take advantage of one of the following providers, each offering a free tier for your convenience.
+Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_USER, SMTP_PASSWORD, and SMTP_HOST environment variables accordingly. When picking the SMTP host, keep in mind that the app is configured to use secure SMTP transmissions over port 465 out of the box. You have the flexibility to select any provider that suits your needs or take advantage of one of the following providers, each offering a free tier for your convenience.
 
 | Provider | Free Tier                  | Website                 |
 | -------- | -------------------------- | ----------------------- |
@@ -350,6 +350,18 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <hr>
 
+<img src="https://i.imgur.com/Adtl9qg.png" height="75">
+
+- Sign up or sign in to your trakt.tv account and go to <a href="https://trakt.tv/oauth/applications" target="_blank">Trakt.tv Applications</a>.
+- Create a new application and fill in the required fields:
+  - **Name**: Your app name.
+  - **Redirect URI**: Set to your BASE_URL value followed by `/auth/trakt/callback` (i.e. `http://localhost:8080/auth/trakt/callback` or `ngrokURL/auth/trakt/callback`)
+  - Leave the JavaScript origins blank as we won't be using client-side API calls.
+- Click **Save App**.
+- Copy and paste the **Client ID** and **Client Secret** into your `.env` file as `TRAKT_ID` and `TRAKT_SECRET` or set them as your environment variables.
+
+<hr>
+
 <img src="https://i.imgur.com/gUngyyW.png" height="50">
 
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
@@ -397,6 +409,8 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Click **Update this X's applications settings**
 - Copy and paste _Consumer Key_ and _Consumer Secret_ keys into `.env` file
 
+<hr>
+
 ## Web Analytics
 
 This project supports integrating web analytics tools such as Google Analytics 4 and Facebook Pixel, along with Open Graph metadata for social sharing. Below are instructions to help you set up these features in your application.
@@ -404,15 +418,15 @@ This project supports integrating web analytics tools such as Google Analytics 4
 ### Google Analytics 4 Setup
 
 - Go to [Google Analytics](https://analytics.google.com)
-- Create a new GA4 property to cerate a Measurement ID.
+- Create a new GA4 property so you create a Measurement ID.
 - Copy and paste your Measurement ID into `.env` file or set it up as an env variable
 
 ### Facebook Pixel
 
-**Optional:** It is highly recommanded to setup a business with Facebook that your personal account along with others you authorize can manage. You would need to Go to [Meta Business Suite](https://business.facebook.com/), register a business and add a business page and your website as an asset for the business.
+**Optional:** It is highly recommended to set up a business with Facebook that your personal account along with others you authorize can manage. You would need to Go to [Meta Business Suite](https://business.facebook.com/), register a business and add a business page and your website as an asset for the business.
 
 - Go to [Meta Event Manager](https://www.facebook.com/events_manager)
-- If you have setup a business, switch from your personal to your business account and pick your business asset using the drop down in the upper right corner of the page.
+- If you have set up a business, switch from your personal to your business account and pick your business asset using the drop down in the upper right corner of the page.
 - Use the Connect Data option to add a Web data source and create a Pixel ID
 - Copy and paste the Pixel ID into `.env` file for FACEBOOK_PIXEL_ID or set it up as an environment variable
 
@@ -480,7 +494,7 @@ Required to run the project before your modifications
 | bootstrap                     | CSS Framework.                                                        |
 | bootstrap-social              | Social buttons library.                                               |
 | bowser                        | User agent parser                                                     |
-| chart.js                      | Frontend js library for creating charts.                              |
+| chart.js                      | Front-end js library for creating charts.                             |
 | cheerio                       | Scrape web pages using jQuery-style syntax.                           |
 | compression                   | Node.js compression middleware.                                       |
 | connect-mongo                 | MongoDB session store for Express.                                    |
@@ -1258,11 +1272,11 @@ You will need to install docker and docker-compose on your system. If you are us
 After installing docker, start the application with the following commands :
 
 ```
-# To build the project while supressing most of the build messages
+# To build the project while suppressing most of the build messages
 docker-compose build web
 
-# To build the project without supressing the build messages or using cached data
- docker-compose build --no-cache --progress=plain web
+# To build the project without suppressing the build messages or using cached data
+docker-compose build --no-cache --progress=plain web
 
 # To start the application (or to restart after making changes to the source code)
 docker-compose up web
@@ -1273,7 +1287,7 @@ To view the app, find your docker IP address + port 8080 ( this will typically b
 
 ## Deployment
 
-Using a local instance on your laptop with ngrok is a good solution for your demo during the hackathon, and you wouldn't necessorily need to deploy to a cloud platform. If we wish to have your app run 24x7 for general audiance, once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. There are a number of cloud service providers out there that you can research. Service providers like AWS provide a free tier of service which can help you get started with just some minor costs (such as traffic overage if any, etc).
+Using a local instance on your laptop with ngrok is a good solution for your demo during the hackathon, and you wouldn't necessarily need to deploy to a cloud platform. If you wish to have your app run 24x7 for a general audience, once you are ready to deploy your app, you will need to create an account with a cloud platform to host it. There are a number of cloud service providers out there that you can research. Service providers like AWS provide a free tier of service which can help you get started with just some minor costs (such as traffic overage if any, etc).
 
 ---
 
@@ -1285,16 +1299,16 @@ Using a local instance on your laptop with ngrok is a good solution for your dem
 
 | Service                                                                                                                                   | Setup                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://icon.icepanel.io/AWS/svg/Compute/EC2.svg" width="50"><br>**EC2 Instance**                                               | EC2 is the compute server to host your application. You can run your application on your EC2 instance similar to how your run applications on your computer.<br><br>**Setup Steps:**<br>1. Create an AWS account and/or login to AWS console<br>2. In the search bar search for "EC2", and then pick EC2 from the services<br>3. Click on Launch an instance<br>4. Pick an OS image and Instance type. You can go with a free-tier one to try EC2 before upgrading to an instance that matches your traffic and application requiremnts<br>5. Under the Network settings, Create a security group, but remove checkboxes from Allow SSH, HTTPS, and HTTP. You will expose the proper ports later<br>6. You can go with the defaults for the remaining setting as long as they match with the free-tier if that is what you are choosing to use<br>7. Launch the instance, and wait for it to be provisioned |
+| <img src="https://icon.icepanel.io/AWS/svg/Compute/EC2.svg" width="50"><br>**EC2 Instance**                                               | EC2 is the compute server to host your application. You can run your application on your EC2 instance similar to how you run applications on your computer.<br><br>**Setup Steps:**<br>1. Create an AWS account and/or login to AWS console<br>2. In the search bar search for "EC2", and then pick EC2 from the services<br>3. Click on Launch an instance<br>4. Pick an OS image and Instance type. You can go with a free-tier one to try EC2 before upgrading to an instance that matches your traffic and application requirements<br>5. Under the Network settings, Create a security group, but remove checkboxes from Allow SSH, HTTPS, and HTTP. You will expose the proper ports later<br>6. You can go with the defaults for the remaining setting as long as they match with the free-tier if that is what you are choosing to use<br>7. Launch the instance, and wait for it to be provisioned |
 | <img src="https://icon.icepanel.io/AWS/svg/Networking-Content-Delivery/Virtual-Private-Cloud.svg" width="50"><br>**VPC / Security Group** | A security group controls the traffic that is allowed to reach and leave the resources that it is associated with. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | <img src="https://icon.icepanel.io/AWS/svg/Developer-Tools/CodeDeploy.svg" width="50"><br>**CodeDeploy**                                  | AWS CodeDeploy is a deployment service that automates application deployments to various compute platforms such as Amazon EC2 instances, on-premises instances, serverless AWS Lambda functions, and Amazon ECS services. You can use it to have your instance auto-update from your git repo like github, bitbucket, etc. Note that using the CodeDeploy service would require S3 storage usage as well. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | <img src="https://icon.icepanel.io/AWS/svg/Compute/App-Runner.svg" width="50"><br>**App Runner**                                          | If your application is stable and you expect surges of traffic, you can move from direct EC2 deployment to AWS App Runner which can scale the number of hosts that the application runs on up and down depending on the traffic to your host. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| <img src="https://icon.icepanel.io/AWS/svg/Compute/Elastic-Beanstalk.svg" width="50"><br>**Elastic Beanstalk**                            | You can use an Elastic Beanstalk deployment instead of an EC2 deployment of your application. When using Elastic Beanstalk deployments you are just provided with a code execution environemnt and you are no longer required to maintain the OS for the server (i.e. Windows or Linux security patching, etc.) <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| <img src="https://icon.icepanel.io/AWS/svg/Compute/Elastic-Beanstalk.svg" width="50"><br>**Elastic Beanstalk**                            | You can use an Elastic Beanstalk deployment instead of an EC2 deployment of your application. When using Elastic Beanstalk deployments you are just provided with a code execution environment and you are no longer required to maintain the OS for the server (i.e. Windows or Linux security patching, etc.) <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | <img src="https://icon.icepanel.io/AWS/svg/Containers/Elastic-Container-Service.svg" width="50"><br>**Elastic Container Service**         | ECS is the fully managed AWS container service that enables you to run docker containers on EC2 instances. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | <img src="https://icon.icepanel.io/AWS/svg/Compute/Fargate.svg" width="50"><br>**Fargate**                                                | Fargate takes your container deployment to the next level by moving you to a serverless setup for running containers. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | <img src="https://icon.icepanel.io/AWS/svg/Compute/Bottlerocket.svg" width="50"><br>**Bedrock**                                           | Bedrock provides serverless access to use Foundational LLM models such as Llama, Amazon Titan, Amazon Nova, etc. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| <img src="https://icon.icepanel.io/AWS/svg/Networking-Content-Delivery/CloudFront.svg" width="50"><br>**CloudFront**                      | You can use AWS CloudFront as the edge service that fronts client requests. CloudFront can cache static content to reduce resource usage and speed up data delivery. It can also serve as an extra later of security because your application server isn't directly exposed to the internet traffic. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| <img src="https://icon.icepanel.io/AWS/svg/Networking-Content-Delivery/CloudFront.svg" width="50"><br>**Simple Email Service**            | You can use AWS SES just like an SMTP server. Don't try to setup an email server on your EC2 instance to send out email, use SES. Note that SES strictly enforces anti-spam rules, so don't send anything that a recipent may mark as spam as it will get reported back to AWS. If **1%** of your emails get reported as spam by recipients AWS will suspend your SES service. Also you should setup mail setting such as spf, DMARC and DKIM so others can't spoof your email address causing your domain to get tagged as a spam domain, since it may cause automated spam marking of your emails by email service providers such as gmail, yahoo, etc.<br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                           |
+| <img src="https://icon.icepanel.io/AWS/svg/Networking-Content-Delivery/CloudFront.svg" width="50"><br>**CloudFront**                      | You can use AWS CloudFront as the edge service that fronts client requests. CloudFront can cache static content to reduce resource usage and speed up data delivery. It can also serve as an extra layer of security because your application server isn't directly exposed to the internet traffic. <br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| <img src="https://icon.icepanel.io/AWS/svg/Networking-Content-Delivery/CloudFront.svg" width="50"><br>**Simple Email Service**            | You can use AWS SES just like an SMTP server. Don't try to set up an email server on your EC2 instance to send out email, use SES. Note that SES strictly enforces anti-spam rules, so don't send anything that a recipient may mark as spam as it will get reported back to AWS. If **1%** of your emails get reported as spam by recipients AWS will suspend your SES service. Also you should set up mail settings such as SPF, DMARC and DKIM so others can't spoof your email address causing your domain to get tagged as a spam domain, since it may cause automated spam marking of your emails by email service providers such as gmail, yahoo, etc.<br><br>**Setup Steps:**<br>1. ---.<br>2. ---.<br>3. ---.<br>4. ---.<br>                                                                                                                                                                       |
 
 ---
 
