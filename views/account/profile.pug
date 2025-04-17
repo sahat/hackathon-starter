@@ -146,3 +146,8 @@ block content
         p.mb-1: a.text-danger(href='/account/unlink/tumblr') Unlink your Tumblr account
       else
         p.mb-1: a(href='/auth/tumblr') Link your Tumblr account
+    .offset-sm-3.col-md-7.pl-2
+      if user.trakt
+        p.mb-1: a.text-danger(href='/account/unlink/trakt') Unlink your Trakt account
+      else
+        p.mb-1: a(href='/auth/trakt') Link your Trakt account

@@ -722,6 +722,49 @@ passport.use('quickbooks', quickbooksStrategyConfig);
 refresh.use('quickbooks', quickbooksStrategyConfig);
 
 /**
+ * trakt.tv API OAuth.
+ */
+const traktStrategyConfig = new OAuth2Strategy(
+  {
+    authorizationURL: 'https://api.trakt.tv/oauth/authorize',
+    tokenURL: 'https://api.trakt.tv/oauth/token',
+    clientID: process.env.TRAKT_ID,
+    clientSecret: process.env.TRAKT_SECRET,
+    callbackURL: `${process.env.BASE_URL}/auth/trakt/callback`,
+    state: generateState(),
+    passReqToCallback: true,
+  },
+  async (req, accessToken, refreshToken, params, profile, done) => {
+    try {
+      const response = await fetch('https://api.trakt.tv/users/me?extended=full', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'trakt-api-version': 2,
+          'trakt-api-key': process.env.TRAKT_ID,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.x_refresh_token_expires_in, 'trakt', {
+        trakt: data.ids.slug,
+      });
+      user.profile.name = user.profile.name || data.name;
+      user.profile.location = user.profile.location || data.location;
+      await user.save();
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  },
+);
+passport.use('trakt', traktStrategyConfig);
+refresh.use('trakt', traktStrategyConfig);
+
+/**
  * Login Required middleware.
  */
 exports.isAuthenticated = (req, res, next) => {

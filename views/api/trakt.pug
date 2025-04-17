@@ -1,0 +1,127 @@
+extends ../layout
+
+block content
+  h2
+    i.fab.fa-trakt.fa-sm.iconpadding
+    | Trakt.tv API
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://trakt.docs.apiary.io/', target='_blank')
+      i.far.fa-file-alt.fa-sm.iconpadding
+      | API Docs
+    a.btn.btn-primary.w-100(href='https://trakt.tv/oauth/applications', target='_blank')
+      i.far.fa-square-check.fa-sm.iconpadding
+      | App Dashboard
+  br
+
+  // User Profile and Recently Watched
+  if userInfo
+    .card.text-white.bg-success.mb-4f
+      .card-header
+        h6.panel-title.mb-0 Your Trakt.tv Profile & Recently Watched
+      .card-body.text-dark.bg-white
+        ul.list-unstyled
+          li
+            strong Username:
+            | &nbsp;#{ userInfo.username }
+          li
+            strong Joined Trakt:
+            | &nbsp;#{ formatDate(userInfo.joined_at) }
+        if userHistory && userHistory.length > 0
+          hr
+          h5.mb-2 Recently Watched (up to #{ limit })
+          ul.list-unstyled
+            each item in userHistory
+              li
+                if item.movie
+                  strong= item.movie.title
+                  |
+                  | (#{ item.movie.year })
+                  |
+                  | - watched at #{ formatDate(item.watched_at) }
+                else if item.episode && item.show
+                  strong= item.show.title
+                  |
+                  | - S#{ item.episode.season }E#{ item.episode.number }: #{ item.episode.title }
+                  |
+                  | - watched at #{ formatDate(item.watched_at) }
+                else if item.show
+                  strong= item.show.title
+                  |
+                  | - watched at #{ formatDate(item.watched_at) }
+  else
+    .alert.alert-warning
+      if authFailure === 'NotLoggedIn'
+        | Please log in to access your Trakt.tv profile information.
+      else if authFailure === 'NotTraktAuthorized'
+        | You are logged in but have not linked your Trakt.tv account.
+        |
+        a(href='/auth/trakt') Link your Trakt.tv account
+        |
+        | to access your Trakt.tv profile information.
+      else
+        | Unable to fetch user information. Please ensure you are authenticated.
+
+  // Public API Example: Trending List
+  if trending && trending.length > 0
+    .card.text-white.bg-info.mb-4
+      .card-header
+        h6.panel-title.mb-0 Trending Movies (Public API, top 6)
+      .card-body.text-dark.bg-white
+        .row
+          each item in trending
+            .col-md-4.col-6.mb-3
+              if item.movie && item.movie.largeImageUrl
+                img.img-thumbnail.mb-1(src=item.movie.largeImageUrl, alt=item.movie.title, style='width: 100%; max-width: 320px; height: auto')
+              else
+                .mb-1(style='width: 320px; height: 180px; background: #eee; display: flex; align-items: center; justify-content: center') No Image
+              div
+                strong= item.movie ? item.movie.title : 'N/A'
+              div
+                small.text-muted #{ item.watchers } watchers
+
+  // Public API Example: Top Trending Details
+  if trendingTop
+    .card.text-white.bg-primary.mb-4
+      .card-header
+        h6.panel-title.mb-0 Top Trending Movie Details (Public API)
+      .card-body.text-dark.bg-white
+        .row
+          .col-md-5
+            .mb-3(style='width: 100%; max-width: 480px; margin: auto')
+              if trendingTop.largeImageUrl
+                .ratio-16x9(style='position: relative; width: 100%; padding-bottom: 56.25%; background: #222')
+                  img.img-thumbnail(src=trendingTop.largeImageUrl, alt=trendingTop.title, style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover')
+              if trendingTop.trailerEmbed
+                .ratio-16x9.mt-3(style='position: relative; width: 100%; padding-bottom: 56.25%; background: #222')
+                  iframe(src=trendingTop.trailerEmbed, frameborder='0', allowfullscreen, style='position: absolute; top: 0; left: 0; width: 100%; height: 100%')
+          .col-md-7
+            h4.mb-1= trendingTop.title
+            if trendingTop.year
+              span.text-muted (#{ trendingTop.year })
+            if trendingTop.tagline
+              p.mb-1.text-muted= trendingTop.tagline
+            if trendingTop.overview
+              p= trendingTop.overview
+            ul.list-unstyled
+              li
+                strong Released:
+                | &nbsp;#{ trendingTop.released }
+              li
+                strong Runtime:
+                | &nbsp;#{ trendingTop.runtime } min
+              li
+                strong Rating:
+                | &nbsp;#{ trendingTop.ratingFormatted }
+              li
+                strong Languages:
+                | &nbsp;#{ trendingTop.languages && trendingTop.languages.length ? trendingTop.languages.join(', ') : 'N/A' }
+              li
+                strong Genres:
+                | &nbsp;#{ trendingTop.genres && trendingTop.genres.length ? trendingTop.genres.join(', ') : 'N/A' }
+              li
+                strong Certification:
+                | &nbsp;#{ trendingTop.certification || 'N/A' }
+              li
+                strong Watchers:
+                | &nbsp;#{ trendingTop.watchers }

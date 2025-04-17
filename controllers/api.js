@@ -14,6 +14,7 @@ const googledrive = require('@googleapis/drive');
 const googlesheets = require('@googleapis/sheets');
 const validator = require('validator');
 const { Configuration: LobConfiguration, LetterEditable, LettersApi, ZipEditable, ZipLookupsApi } = require('@lob/lob-typescript-sdk');
+const fs = require('fs');
 
 /**
  * GET /api
@@ -1187,4 +1188,242 @@ exports.getGoogleSheets = (req, res) => {
       });
     },
   );
+};
+
+/**
+ * Trakt.tv API Helpers
+ */
+const formatDate = (isoString) => {
+  if (!isoString) return '';
+  const date = new Date(isoString);
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+};
+
+/* Trakt does not permit hotlinking of images, so we need to get the image
+ * from them and serve it ourselves. Use an edge CDN/caching service like Cloudflare
+ * or Fastly in front of your server to cache the images in production.
+ * This is a simple implementation of an image cache from Trakt as a trusted source:
+ * - Uses a simple in-memory cache, with a limit on the number of images stored
+ * - Uses a static path for the image cache, which is sufficient for this use case
+ * - Uses a helper function to convert a Trakt image URL to a filename
+ * - Uses a helper function to fetch and cache an image, returning the static path for <img src="">
+ */
+
+/*
+ * Helper function and variables for file name generation and tracking of cached images
+ */
+const traktImageCache = [];
+const TRAKT_IMAGE_CACHE_LIMIT = 20;
+function traktUrlToFilename(url) {
+  if (!url) return null;
+  const a = url.replace(/^https?:\/\//, '').replace(/\//g, '-');
+  return a;
+}
+
+/*
+ * Helper function to fetch and cache Trakt image
+ * Fetch and cache Trakt image, return the static path for <img src="">
+ */
+async function fetchAndCacheTraktImage(imageUrl) {
+  const imageCacheDir = 'tmp/image-cache';
+  if (!imageUrl) return null;
+  const filename = traktUrlToFilename(imageUrl);
+  if (!filename) return null;
+
+  // Check if already cached
+  const found = traktImageCache.find((entry) => entry.url === imageUrl);
+  if (found) {
+    return `${process.env.BASE_URL}/image-cache/${found.filename}`;
+  }
+
+  if (!fs.existsSync(imageCacheDir)) {
+    fs.mkdirSync(imageCacheDir, { recursive: true }); // Ensures that parent directories are created
+  }
+
+  // Download and save
+  try {
+    const response = await fetch(imageUrl);
+    if (!response.ok) return null;
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const absPath = `${imageCacheDir}/${filename}`;
+    try {
+      fs.writeFileSync(absPath, buffer);
+    } catch (writeErr) {
+      console.error('Failed to write image to disk:', absPath, writeErr);
+      return null;
+    }
+
+    // Add to cache, delete the oldest file if we have hit our cache limit
+    traktImageCache.push({ url: imageUrl, filename });
+    while (traktImageCache.length > TRAKT_IMAGE_CACHE_LIMIT) {
+      const removed = traktImageCache.shift();
+      const oldPath = `${imageCacheDir}/${removed.filename}`;
+      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    }
+
+    return `${process.env.BASE_URL}/image-cache/${filename}`;
+  } catch (err) {
+    console.log('Trakt image cache error:', err);
+    return null;
+  }
+}
+
+async function fetchTraktUserProfile(traktToken) {
+  const res = await fetch('https://api.trakt.tv/users/me?extended=full', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${traktToken}`,
+      'trakt-api-version': 2,
+      'trakt-api-key': process.env.TRAKT_ID,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+  return res.json();
+}
+
+async function fetchTraktUserHistory(traktToken, limit) {
+  const res = await fetch(`https://api.trakt.tv/users/me/history?limit=${limit}`, {
+    headers: {
+      Authorization: `Bearer ${traktToken}`,
+      'trakt-api-version': 2,
+      'trakt-api-key': process.env.TRAKT_ID,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+async function fetchTraktTrendingMovies(limit) {
+  const res = await fetch(`https://api.trakt.tv/movies/trending?limit=${limit}&extended=images`, {
+    headers: {
+      'trakt-api-version': 2,
+      'trakt-api-key': process.env.TRAKT_ID,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) return [];
+  const trending = await res.json();
+  return Promise.all(
+    trending.map(async (item) => {
+      let imgUrl = null;
+      if (item.movie && item.movie.images) {
+        if (item.movie.images.fanart && Array.isArray(item.movie.images.fanart) && item.movie.images.fanart.length > 0) {
+          imgUrl = `https://${item.movie.images.fanart[0].replace(/^https?:\/\//, '')}`;
+        } else if (item.movie.images.poster && Array.isArray(item.movie.images.poster) && item.movie.images.poster.length > 0) {
+          imgUrl = `https://${item.movie.images.poster[0].replace(/^https?:\/\//, '')}`;
+        }
+      }
+      item.movie.largeImageUrl = await fetchAndCacheTraktImage(imgUrl);
+      return item;
+    }),
+  );
+}
+
+async function fetchMovieDetails(slug, watchers) {
+  const res = await fetch(`https://api.trakt.tv/movies/${slug}?extended=full,images`, {
+    headers: {
+      'trakt-api-version': 2,
+      'trakt-api-key': process.env.TRAKT_ID,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) return null;
+  const movie = await res.json();
+  let imgUrl = null;
+  if (movie.images) {
+    if (movie.images.fanart && Array.isArray(movie.images.fanart) && movie.images.fanart.length > 0) {
+      imgUrl = `https://${movie.images.fanart[0].replace(/^https?:\/\//, '')}`;
+    } else if (movie.images.poster && Array.isArray(movie.images.poster) && movie.images.poster.length > 0) {
+      imgUrl = `https://${movie.images.poster[0].replace(/^https?:\/\//, '')}`;
+    }
+  }
+  movie.largeImageUrl = await fetchAndCacheTraktImage(imgUrl);
+  if (typeof movie.rating === 'number') {
+    movie.ratingFormatted = `${movie.rating.toFixed(2)} / 10`;
+  } else {
+    movie.ratingFormatted = '';
+  }
+  movie.languages = movie.languages || [];
+  movie.genres = movie.genres || [];
+  movie.certification = movie.certification || '';
+  movie.watchers = watchers;
+  // Trailer (YouTube embed)
+  movie.trailerEmbed = null;
+  if (movie.trailer && (movie.trailer.startsWith('https://youtube.com/') || movie.trailer.startsWith('http://youtu.be/'))) {
+    const match = movie.trailer.match(/v=([a-zA-Z0-9_-]+)/) || movie.trailer.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) {
+      movie.trailerEmbed = `https://www.youtube.com/embed/${match[1]}`;
+    }
+  }
+  return movie;
+}
+
+/*
+ * GET /api/trakt
+ * Trakt.tv API Example.
+ * - Always show public trending movies, even if not logged in.
+ * - Show user profile/history only if user is logged in AND has linked Trakt.
+ */
+exports.getTrakt = async (req, res, next) => {
+  const limit = 10;
+  let authFailure = null;
+  let userInfo = null;
+  let userHistory = [];
+  let trending = [];
+  let trendingTop = null;
+
+  // Determine Trakt token if user is logged in and has linked Trakt
+  let traktToken = null;
+  if (req.user && req.user.tokens) {
+    const tokenObj = req.user.tokens.find((token) => token.kind === 'trakt');
+    if (tokenObj) {
+      traktToken = tokenObj.accessToken;
+    }
+  }
+
+  // Only fetch user info/history if logged in and linked Trakt
+  if (req.user) {
+    if (!traktToken) {
+      authFailure = 'NotTraktAuthorized';
+    }
+  } else {
+    authFailure = 'NotLoggedIn';
+  }
+
+  try {
+    if (traktToken) {
+      userInfo = await fetchTraktUserProfile(traktToken);
+      userHistory = await fetchTraktUserHistory(traktToken, limit);
+    }
+    trending = await fetchTraktTrendingMovies(6);
+    if (trending.length > 0) {
+      const top = trending[0];
+      const slug = top.movie && top.movie.ids && top.movie.ids.slug;
+      if (slug) {
+        trendingTop = await fetchMovieDetails(slug, top.watchers);
+      }
+    }
+  } catch (error) {
+    console.log('Trakt API Error:', error);
+    trending = [];
+    trendingTop = null;
+  }
+
+  try {
+    res.render('api/trakt', {
+      title: 'Trakt.tv API',
+      userInfo,
+      userHistory,
+      limit,
+      authFailure,
+      formatDate,
+      trending,
+      trendingTop,
+      trendingTopTrailer: trendingTop && trendingTop.trailerEmbed,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
