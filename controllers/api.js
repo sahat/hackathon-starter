@@ -1105,7 +1105,7 @@ exports.postFileUpload = (req, res) => {
 exports.uploadMiddleware = (req, res, next) => {
   // configure Multer with a 1 MB limit
   const upload = multer({
-    dest: path.join(__dirname, 'uploads'),
+    dest: path.join(__dirname, '../uploads'),
     limits: { fileSize: 1024 * 1024 * 1 },
   });
   upload.single('myFile')(req, res, (err) => {

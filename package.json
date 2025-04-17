@@ -12,13 +12,14 @@
     "Yashar Fakhari (https://github.com/YasharF)"
   ],
   "scripts": {
+    "clean-install": "rm -rf node_modules && rm -rf package-lock.json && rm -rf tmp && npm install",
     "lint": "eslint \"**/*.js\" --fix && prettier . --write",
     "lint-check": "eslint \"**/*.js\" && prettier . --check",
     "postinstall": "patch-package && npm run scss",
     "prepare": "husky",
     "scss": "sass --no-source-map --silence-deprecation=import --quiet-deps --load-path=./ --update ./public/css:./public/css",
     "start": "npm run scss && node app.js",
-    "test": "c8 mocha --timeout=60000 --exit"
+    "test": "c8 --temp-directory tmp/coverage mocha --timeout=60000 --exit"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
@@ -33,7 +34,7 @@
     "bootstrap": "^5.3.5",
     "bootstrap-social": "github:SeattleDevs/bootstrap-social",
     "bowser": "^2.11.0",
-    "chart.js": "^4.4.8",
+    "chart.js": "^4.4.9",
     "cheerio": "^1.0.0",
     "compression": "^1.8.0",
     "connect-mongo": "^5.1.0",
