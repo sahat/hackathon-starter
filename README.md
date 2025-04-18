@@ -15,16 +15,16 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 
 ### Testimonials
 
-> [**“Nice! That README alone is already gold!”**](https://www.producthunt.com/tech/hackathon-starter#comment-224732)<br>
+> [**"Nice! That README alone is already gold!"**](https://www.producthunt.com/tech/hackathon-starter#comment-224732)<br>
 > — Adrian Le Bas
 
-> [**“Awesome. Simply awesome.”**](https://www.producthunt.com/tech/hackathon-starter#comment-224966)<br>
+> [**"Awesome. Simply awesome."**](https://www.producthunt.com/tech/hackathon-starter#comment-224966)<br>
 > — Steven Rueter
 
-> [**“I'm using it for a year now and many projects, it's an awesome boilerplate and the project is well maintained!”**](https://www.producthunt.com/tech/hackathon-starter#comment-228610)<br>
+> [**"I'm using it for a year now and many projects, it's an awesome boilerplate and the project is well maintained!"**](https://www.producthunt.com/tech/hackathon-starter#comment-228610)<br>
 > — Kevin Granger
 
-> **“Small world with Sahat's project. We were using his hackathon starter for our hackathon this past weekend and got some prizes. Really handy repo!”**<br>
+> **"Small world with Sahat's project. We were using his hackathon starter for our hackathon this past weekend and got some prizes. Really handy repo!"**<br>
 > — Interview candidate for one of the companies I used to work with.
 
 <h4 align="center">Modern Theme</h4>
@@ -53,7 +53,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - [Recommended Design Resources](#recommended-design-resources)
 - [Recommended Node.js Libraries](#recommended-nodejs-libraries)
 - [Recommended Client-side Libraries](#recommended-client-side-libraries)
-- [Pro Tips](#pro-tips)
+- [Using AI Assistants](#using-ai-assistants)
 - [FAQ](#faq)
 - [How It Works](#how-it-works-mini-guides)
 - [Cheatsheets](#cheatsheets)
@@ -598,9 +598,43 @@ Required during code development for testing, Hygiene, code styling, etc.
 - [drop.js](http://github.hubspot.com/drop/docs/welcome/) - Powerful Javascript and CSS library for creating dropdowns and other floating displays.
 - [scrollReveal.js](https://github.com/jlmakes/scrollReveal.js) - Declarative on-scroll reveal animations.
 
-## Pro Tips
+## Using AI Assistants
 
-- Need to find a specific object inside an Array? Use [\_.find](http://lodash.com/docs#find) function from Lodash. For example, this is how you would retrieve Twitch token from database: `const token = _.find(req.user.tokens, { kind: 'twitch' });`, where 1st parameter is an array, and a 2nd parameter is an object to search for.
+AI tools and large language models (LLMs) can greatly accelerate your ramp-up time, efficiency, and productivity during hackathons. Many of these tools are available for free and offer features that can significantly enhance your coding experience.
+
+You have two main options for accessing these tools:
+
+- **Web-based chat interfaces**: Platforms like [ChatGPT](https://chat.openai.com/) and [MS Copilot](https://copilot.microsoft.com/)
+- **Integrated code assistants**: Tools like [Amazon Q (CodeWhisperer)](https://aws.amazon.com/q/developer/pricing/), [GitHub Copilot](https://github.com/features/copilot), and Gemini Code Assist integrate directly into code editors, such as Visual Studio Code.
+
+Integrated tools, like plugins for Visual Studio Code, let you reference your code directly without needing to copy-paste, making them easier to use in many cases. Web-based assistants, on the other hand, require manual copy-pasting but can offer a different approach without impacting the "context" for your integrated tool. Tools and models perform differently depending on their update cycles, so results may vary. If an integrated tool struggles with a task, try copy-pasting the relevant code into a web assistant to troubleshoot. A good starting point is combining Amazon Q and MS Copilot, as these tools tend to produce fewer issues like outdated syntax, vulnerable code, or incomplete solutions compared to other assistants.
+
+### Providing Context to AI Tools
+
+Context for LLMs is the additional information that the model needs to make sense of how it should respond to your question, which in coding is probably your existing code, example implementation, or specifications that you might copy-paste or pass to the model. Keep in mind that integrated assistants may not automatically include your project files as the context and may try to answer your question without looking at your code. To include the context:
+
+- **Amazon Q**: Use `@[filename]` to specify a file or `@workspace` to include the entire project.
+- **GitHub Copilot**: Click the "Add Context" button in the chat and manually add specific files or choose Codebase for full project context. Note that you need to set the copilot mode to "Ask", "Edit", etc based on your intended conversation.
+
+### Example Prompts to Get You Started
+
+**Explaining Code and Concepts**
+
+- "Can you explain how this project handles sanitization of user inputs?"
+- "What does function `x` in file `y` do?" (_Copy-paste code into a web-based assistant if using one._)
+- "Can you walk me through what this regex does?"
+
+**Adding New Features**
+
+- "I want to add login functionality for [OAuth2 provider]. The project already includes similar logins for other providers. Can you guide me through the required changes to `app.js`, `config/passport.js`, `models/User.js`, and the relevant views?"  
+  _Pro Tip:_ If the assistant misses some changes, follow up with specific files or provide relevant documentation for better accuracy.
+- "Can you help me design an addition to this project to do the following. I don't need any code yet, and want to work on the design and refine it before moving to an implementation. --- continue with a bullet point list of your requirements"
+
+**Debugging or Fixing Code**
+
+- "I modified the function `x` below to achieve `y`, but I get the following error. Can you help me fix it? --- Can have blocks afterward with a header like `==== error ====` and `==== function x ====` afterward."
+- "Can you help me fix a bug in the following function or function `x`. It is supposed to return `y` when it gets input `i` but it is returning `z`."
+- "Can you check my comments for spelling issues?".
 
 ## FAQ
 
