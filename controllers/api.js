@@ -1488,3 +1488,120 @@ exports.postOpenAIModeration = async (req, res) => {
     input: inputText,
   });
 };
+
+/**
+ * GET /api/togetherai-classifier
+ * Together AI / LLM API Example.
+ */
+exports.getTogetherAIClassifier = (req, res) => {
+  res.render('api/togetherai-classifier', {
+    title: 'Together.ai/LLM Department Classifier',
+    result: null,
+    error: null,
+    input: '',
+  });
+};
+
+/**
+ * POST /api/togetherai-classifier
+ * Together AI API Example.
+ * - Classifies customer service inquiries into departments.
+ * - Uses Together AI API with a foundational LLM model to classify the input text.
+ * - The systemPrompt is the instructions from the developer to the model for processing
+ *   the user input.
+ */
+exports.postTogetherAIClassifier = async (req, res) => {
+  const togetherAiKey = process.env.TOGETHERAI_API_KEY;
+  const togetherAiModel = process.env.TOGETHERAI_MODEL;
+  const inputText = (req.body.inputText || '').slice(0, 300);
+  let result = null;
+  let error = null;
+
+  if (!togetherAiKey) {
+    error = 'TogetherAI API key is not set in environment variables.';
+  } else if (!togetherAiModel) {
+    error = 'TogetherAI model is not set in environment variables.';
+  } else if (!inputText.trim()) {
+    error = 'Please enter a message to classify.';
+  } else {
+    try {
+      const systemPrompt = `You are a customer service classifier for an e-commerce platform. Your role is to identify the primary issue described by the customer and return the result in JSON format. Carefully analyze the customer's message and select one of the following departments as the classification result:
+
+Order Tracking and Status
+Returns and Refunds
+Payments and Billing Issues
+Account Management
+Product Inquiries
+Technical Support
+Shipping and Delivery Issues
+Promotions and Discounts
+Marketplace Seller Support
+Feedback and Complaints
+
+Provide the output in this JSON structure:
+
+{
+  "department": "<selected_department>"
+}
+Replace <selected_department> with the name of the most relevant department from the list above. If the inquiry spans multiple categories, choose the department that is most likely to address the customer's issue promptly and effectively.`;
+
+      const response = await fetch('https://api.together.xyz/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${togetherAiKey}`,
+        },
+        body: JSON.stringify({
+          model: togetherAiModel,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: inputText },
+          ],
+          temperature: 0,
+          max_tokens: 64,
+        }),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        error = errData.error && errData.error.message ? errData.error.message : `API Error: ${response.status}`;
+      } else {
+        const data = await response.json();
+        const content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        let department = null;
+        if (content) {
+          try {
+            // Try to extract JSON from the response
+            const jsonStringMatch = content.match(/{.*}/s);
+            if (jsonStringMatch) {
+              const parsed = JSON.parse(jsonStringMatch[0].replace(/'/g, '"'));
+              department = parsed.department;
+            }
+          } catch (err) {
+            console.log('Failed to parse JSON from TogetherAI API response:', err);
+            // fallback: try to extract department manually
+            const match = content.match(/"department"\s*:\s*"([^"]+)"/);
+            if (match) {
+              [, department] = match;
+            }
+          }
+        }
+        result = {
+          department: department || 'Unknown',
+          raw: content,
+          systemPrompt, // Send the sysetemPrompt to the front-end for this demo, not actual production applications.
+        };
+      }
+    } catch (err) {
+      console.log('TogetherAI Classifier API Error:', err);
+      error = 'Failed to call TogetherAI API.';
+    }
+  }
+
+  res.render('api/togetherai-classifier', {
+    title: 'TogetherAI Department Classifier',
+    result,
+    error,
+    input: inputText,
+  });
+};
