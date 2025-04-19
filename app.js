@@ -230,6 +230,8 @@ app.get('/api/chart', apiController.getChart);
 app.get('/api/google/sheets', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getGoogleSheets);
 app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getQuickbooks);
 app.get('/api/trakt', apiController.getTrakt);
+app.get('/api/openai-moderation', apiController.getOpenAIModeration);
+app.post('/api/openai-moderation', apiController.postOpenAIModeration);
 
 /**
  * OAuth authentication routes. (Sign in)
