@@ -232,6 +232,8 @@ app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuth
 app.get('/api/trakt', apiController.getTrakt);
 app.get('/api/openai-moderation', apiController.getOpenAIModeration);
 app.post('/api/openai-moderation', apiController.postOpenAIModeration);
+app.get('/api/togetherai-classifier', apiController.getTogetherAIClassifier);
+app.post('/api/togetherai-classifier', apiController.postTogetherAIClassifier);
 
 /**
  * OAuth authentication routes. (Sign in)

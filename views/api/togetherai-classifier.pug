@@ -1,0 +1,57 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fas.fa-network-wired.fa-sm.iconpadding(style='color: #6f42c1')
+      | Together AI - one shot LLM API call example
+
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://api.together.ai', target='_blank')
+      i.fas.fa-table-columns.fa-sm.iconpadding
+      | Together AI Dashboard
+    a.btn.btn-primary.w-100(href='https://docs.together.ai/docs/inference', target='_blank')
+      i.fas.fa-info.fa-sm.iconpadding
+      | Together AI Docs
+    a.btn.btn-primary.w-100(href='https://docs.together.ai/reference/chat-completions', target='_blank')
+      i.fas.fa-book.fa-sm.iconpadding
+      | API Reference
+
+  p.text-muted
+    | This example demonstrates the use of Together.AI's LLM API to build an AI Agent that classifies customer messages for department routing. TogetherAI provides serverless access to various foundational models, including Llama, Deepseek, Mistral, and more. The hackathon starter live demo leverages the Llama-3.3-70B-Instruct-Turbo-Free model. TogetherAI's REST API is fully compatible with OpenAI's API as well as locally hosted Ollama REST API, offering the flexibility to run a locally hosted LLM instead of relying on remote API calls. Furthermore, the output is requested in JSON format, enabling us to extend the code as an AI Agent to take additional actions for the user, such as querying a tracking number from a database based on the classification.
+
+  .row
+    .col-md-8.col-lg-6
+      form(method='POST', action='/api/togetherai-classifier')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .mb-3
+          label(for='inputText') Customer message
+          textarea#inputText.form-control(name='inputText', maxlength='300', rows='4', required)= input
+          .form-text.text-muted Maximum 300 characters.
+        button.btn.btn-primary(type='submit') Classify
+
+      if error
+        .alert.alert-danger.mt-3= error
+
+      if result
+        .mt-4
+          h5.text-secondary.mb-3 Classification (Routing) Results
+          .d-flex.align-items-center.mb-2
+            i.fas.fa-tag.me-2(style='color: #6f42c1')
+            if result.department && result.department !== 'Unknown'
+              span.fw-bold.text-primary.fs-4 Department:
+              span.ms-2.fs-4= result.department
+            else
+              span.text-warning Could not determine department.
+          if result.raw
+            details
+              summary Show raw model output
+              pre.mt-2= result.raw
+          if result.systemPrompt
+            details
+              summary Show system prompt
+              pre.mt-2(style='white-space: pre-wrap; word-break: break-word')= result.systemPrompt
+          if result.userPrompt
+            details
+              summary Show user prompt
+              pre.mt-2= result.userPrompt

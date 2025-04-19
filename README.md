@@ -85,7 +85,13 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
 - File upload
 - **API Examples**
-  - Facebook, Foursquare, Tumblr (OAuth 1.0a example), Github, Steam, Quickbooks, Paypal, Stripe, Twilio (text messaging), Lob (USPS Mail), HERE Maps, Google Maps, Google Drive, Google Sheets, Alpha Vantage (stocks and finance info) with ChartJS, Last.fm, New York Times, Web Scraping, Trakt.tv (movies/TV)
+
+  - **AI:** OpenAI Moderation, Together AI foundational model LLMs (aka Deepseek, Llama, Mistral, etc.)
+  - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
+  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
+  - **Maps and Location:** Google Maps, HERE Maps
+  - **Productivity:** Google Drive, Google Sheets
+
 - Flash notifications
 - reCAPTCHA and rate limit protection
 - CSRF protection
@@ -404,6 +410,16 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 - Sign in or create an OpenAI account.
 - Click on **Create new secret key** to generate an API key.
 - Copy and paste the generated API key into your `.env` file as `OPENAI_API_KEY` or set it as an environment variable.
+
+<hr>
+
+<img src="https://i.imgur.com/dOCkJxT.png" height="50">
+
+- Visit <a href="https://www.together.ai" target="_blank">Together AI</a>
+- Sign in or create a Together AI account.
+- Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
+- Copy and paste the generated API key into your `.env` file as `TOGETHERAI_API_KEY` or set it as an environment variable.
+- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your usecase and budget and specify it the `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
 
 <hr>
 
