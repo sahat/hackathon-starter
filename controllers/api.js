@@ -1427,3 +1427,64 @@ exports.getTrakt = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * GET /api/openai-moderation
+ * OpenAI Moderation API example.
+ */
+exports.getOpenAIModeration = (req, res) => {
+  res.render('api/openai-moderation', {
+    title: 'OpenAI Input Moderation',
+    result: null,
+    error: null,
+    input: '',
+  });
+};
+
+/**
+ * POST /api/openai-moderation
+ * OpenAI Moderation API example.
+ */
+exports.postOpenAIModeration = async (req, res) => {
+  const openAiKey = process.env.OPENAI_API_KEY;
+  const inputText = req.body.inputText || '';
+  let result = null;
+  let error = null;
+
+  if (!openAiKey) {
+    error = 'OpenAI API key is not set in environment variables.';
+  } else if (!inputText.trim()) {
+    error = 'Text for input modaration check:';
+  } else {
+    try {
+      const response = await fetch('https://api.openai.com/v1/moderations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${openAiKey}`,
+        },
+        body: JSON.stringify({
+          model: 'text-moderation-latest',
+          input: inputText,
+        }),
+      });
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        error = errData.error && errData.error.message ? errData.error.message : `API Error: ${response.status}`;
+      } else {
+        const data = await response.json();
+        result = data.results && data.results[0];
+      }
+    } catch (err) {
+      console.error('OpenAI Moderation API Error:', err);
+      error = 'Failed to call OpenAI Moderation API.';
+    }
+  }
+
+  res.render('api/openai-moderation', {
+    title: 'OpenAI Moderation API',
+    result,
+    error,
+    input: inputText,
+  });
+};

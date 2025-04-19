@@ -1,0 +1,61 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fas.fa-robot.fa-sm.iconpadding(style='color: #10a37f')
+      | OpenAI Moderation API
+
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://platform.openai.com/docs/guides/moderation', target='_blank')
+      i.fas.fa-info.fa-sm.iconpadding
+      | OpenAI Moderation Docs
+    a.btn.btn-primary.w-100(href='https://platform.openai.com/docs/api-reference/moderations', target='_blank')
+      i.fas.fa-book.fa-sm.iconpadding
+      | API Reference
+
+  p.text-muted
+    | This example demonstrates how to use the OpenAI Moderation API to check if a user is providing harmful input (using the omni-moderation-latest model). The API utilizes OpenAI's GPT-based classifiers to assess whether content should be flagged across categories such as hate, violence, and self-harm. The output results provide granular probability scores to reflect the likelihood of content matching the detected category, enabling you to calibrate the moderation based on your use case or context.
+
+  .row
+    form(method='POST', action='/api/openai-moderation')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .mb-3
+        label(for='inputText') Enter text to check for harmful content:
+        textarea#inputText.form-control(name='inputText', rows='4', required)= input
+      button.btn.btn-primary(type='submit') Check
+
+    if error
+      .alert.alert-danger.mt-3= error
+
+    if result
+      .mt-4
+        h4 Moderation Result
+        if result.flagged
+          .alert.alert-warning The content was flagged as harmful.
+        else
+          .alert.alert-success The content was not flagged.
+
+        h5 Category Scores
+        .d-flex.flex-column
+          each val, key in result.category_scores
+            -
+              // Compute color: green (#28a745) at 0, yellow at 0.5, red (#dc3545) at 1
+              // We'll interpolate between green and red
+              var score = typeof val === 'number' ? val : 0;
+              var r = Math.round(40 + (220-40)*score); // 40->220
+              var g = Math.round(167 + (53-167)*score); // 167->53
+              var b = Math.round(69 + (197-69)*score); // 69->197
+              var color = `rgb(${r},${g},${b})`;
+            .d-flex.justify-content-between.align-items-center.mb-1.w-100(style='max-width: 400px')
+              span.fw-bold= key
+              span.badge.rounded-pill.px-3.py-2(style=`background-color:${color};color:#fff;font-size:1em;min-width:60px;display:inline-block`)= val.toFixed ? val.toFixed(2) : val
+        br
+        h6 Flagged Categories:
+        if Object.values(result.categories).some(flagged => flagged)
+          ul
+            each flagged, cat in result.categories
+              if flagged
+                li.text-danger= cat
+        else
+          p.text-success No categories were flagged.
