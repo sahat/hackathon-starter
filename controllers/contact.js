@@ -18,9 +18,13 @@ async function validateReCAPTCHA(token) {
 exports.getContact = (req, res) => {
   const unknownUser = !req.user;
 
+  if (!process.env.RECAPTCHA_SITE_KEY) {
+    console.warn('\x1b[33mWARNING: RECAPTCHA_SITE_KEY is missing. Add a key to your .env, env variable, or use a WebApp Firewall with an interactive challenge before going to production.\x1b[0m');
+  }
+
   res.render('contact', {
     title: 'Contact',
-    sitekey: process.env.RECAPTCHA_SITE_KEY,
+    sitekey: process.env.RECAPTCHA_SITE_KEY || null, // Pass null if the key is missing
     unknownUser,
   });
 };
@@ -39,14 +43,20 @@ exports.postContact = async (req, res, next) => {
   }
   if (validator.isEmpty(req.body.message)) validationErrors.push({ msg: 'Please enter your message.' });
 
-  try {
-    const reCAPTCHAResponse = await validateReCAPTCHA(req.body['g-recaptcha-response']);
-    if (!reCAPTCHAResponse.data.success) {
-      validationErrors.push({ msg: 'reCAPTCHA validation failed.' });
+  if (!process.env.RECAPTCHA_SITE_KEY) {
+    console.warn('\x1b[33mWARNING: RECAPTCHA_SITE_KEY is missing. Add a key to your .env or use a WebApp Firewall for CAPTCHA validation before going to production.\x1b[0m');
+  } else if (!validator.isEmpty(req.body['g-recaptcha-response'])) {
+    try {
+      const reCAPTCHAResponse = await validateReCAPTCHA(req.body['g-recaptcha-response']);
+      if (!reCAPTCHAResponse.success) {
+        validationErrors.push({ msg: 'reCAPTCHA validation failed.' });
+      }
+    } catch (error) {
+      console.error('Error validating reCAPTCHA:', error);
+      validationErrors.push({ msg: 'Error validating reCAPTCHA. Please try again.' });
     }
-  } catch (error) {
-    console.error('Error validating reCAPTCHA:', error);
-    validationErrors.push({ msg: 'Error validating reCAPTCHA. Please try again.' });
+  } else {
+    validationErrors.push({ msg: 'reCAPTCHA response was missing.' });
   }
 
   if (validationErrors.length) {

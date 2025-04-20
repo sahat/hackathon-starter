@@ -153,10 +153,10 @@ _What to get and configure:_
   - For user workflows for reset password and verify email
   - For contact form processing
 - reCAPTCHA
-  - For contact form submission
+  - For contact form submission, but you can skip it during your development
 - OAuth for social logins (Sign in with / Login with)
   - Depending on your application need, obtain keys from Google, Facebook, X (Twitter), LinkedIn, Twitch, GitHub. You don't have to obtain valid keys for any provider that you don't need. Just remove the buttons and links in the login and account pug views before your demo.
-- API keys for service providers in the API Examples if you are planning to use them.
+- API keys for service providers that you need in the API Examples if you are planning to use them.
 
 - MongoDB Atlas
 

@@ -1,13 +1,14 @@
 extends layout
 
 block head
-  script(src='https://www.google.com/recaptcha/api.js', async='', defer='')
+  if sitekey
+    script(src='https://www.google.com/recaptcha/api.js', async='', defer='')
 
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h3 Contact Form
 
-  form(method='POST')
+  form#contactForm(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     if (unknownUser)
       .form-group.row.mb-3
@@ -24,8 +25,20 @@ block content
         textarea#message.form-control(name='message', rows='7', autofocus=(!unknownUser).toString(), required)
     .form-group
       .offset-md-2.col-md-8.p-1
-        .g-recaptcha(data-sitekey=sitekey)
+        if sitekey
+          #recaptchaWidget.g-recaptcha(data-sitekey=sitekey)
+          span#recaptchaError.text-danger.d-none.mt-2 Please complete the reCAPTCHA before submitting the form.
         br
-        button.col-md-2.btn.btn-primary(type='submit')
+        button#submitBtn.col-md-2.btn.btn-primary(type='submit')
           i.far.fa-envelope.fa-sm.iconpadding
           | Send
+  script.
+    document.getElementById('contactForm').addEventListener('submit', function (event) {
+      const recaptchaError = document.getElementById('recaptchaError');
+      if (typeof grecaptcha !== 'undefined' && !grecaptcha.getResponse()) {
+        event.preventDefault(); // Prevent form submission
+        recaptchaError.classList.remove('d-none');
+      } else {
+        recaptchaError.classList.add('d-none');
+      }
+    });
