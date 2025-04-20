@@ -20,17 +20,18 @@ const userSchema = new mongoose.Schema(
     loginExpires: Date,
     loginIpHash: String,
 
-    facebook: String,
-    x: String,
-    google: String,
-    github: String,
-    linkedin: String,
-    steam: String,
-    twitch: String,
-    quickbooks: String,
-    tumblr: String,
-    trakt: String,
     discord: String,
+    facebook: String,
+    github: String,
+    google: String,
+    linkedin: String,
+    quickbooks: String,
+    steam: String,
+    trakt: String,
+    tumblr: String,
+    twitch: String,
+    x: String,
+
     tokens: Array,
 
     profile: {
