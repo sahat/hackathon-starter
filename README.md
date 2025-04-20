@@ -545,7 +545,6 @@ Required to run the project before your modifications
 | express-session               | Simple session middleware for Express.                                |
 | jquery                        | Front-end JS library to interact with HTML elements.                  |
 | lastfm                        | Last.fm API library.                                                  |
-| lodash                        | A utility library for working with arrays, numbers, objects, strings. |
 | lusca                         | CSRF middleware.                                                      |
 | mailchecker                   | Verifies that an email address is valid and not a disposable address. |
 | moment                        | Parse, validate, compute dates and times.                             |

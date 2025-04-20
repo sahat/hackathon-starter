@@ -46,7 +46,6 @@
     "express-session": "^1.18.1",
     "jquery": "^3.7.1",
     "lastfm": "^0.9.4",
-    "lodash": "^4.17.21",
     "lusca": "^1.7.0",
     "mailchecker": "^6.0.17",
     "moment": "^2.30.1",
