@@ -12,7 +12,6 @@ const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
 const OpenIDConnectStrategy = require('passport-openidconnect');
 const { OAuth } = require('oauth');
-const _ = require('lodash');
 const moment = require('moment');
 
 const User = require('../models/User');
@@ -254,7 +253,14 @@ passport.use(
         if (existingUser) {
           return done(null, existingUser);
         }
-        const emailValue = _.get(_.orderBy(profile.emails, ['primary', 'verified'], ['desc', 'desc']), [0, 'value'], null);
+        // Github may return a list of email addresses instead of just one
+        // Sort by primary, then by verified, then pick the first one in the list
+        const sortedEmails = (profile.emails || []).slice().sort((a, b) => {
+          if (b.primary !== a.primary) return b.primary - a.primary;
+          if (b.verified !== a.verified) return b.verified - a.verified;
+          return 0;
+        });
+        const emailValue = sortedEmails.length > 0 ? sortedEmails[0].value : null;
         if (profile._json.email === null) {
           const existingEmailUser = await User.findOne({
             email: { $eq: emailValue },

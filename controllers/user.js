@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const passport = require('passport');
-const _ = require('lodash');
 const validator = require('validator');
 const mailChecker = require('mailchecker');
 const User = require('../models/User');
@@ -325,14 +324,14 @@ exports.getOauthUnlink = async (req, res, next) => {
     // that another login method exists.
     if (!(user.email && user.password) && tokensWithoutProviderToUnlink.length === 0) {
       req.flash('errors', {
-        msg: `The ${_.startCase(_.toLower(provider))} account cannot be unlinked without another form of login enabled. Please link another account or add an email address and password.`,
+        msg: `The ${provider.charAt(0).toUpperCase() + provider.slice(1).toLowerCase()} account cannot be unlinked without another form of login enabled. Please link another account or add an email address and password.`,
       });
       return res.redirect('/account');
     }
     user.tokens = tokensWithoutProviderToUnlink;
     await user.save();
     req.flash('info', {
-      msg: `${_.startCase(_.toLower(provider))} account has been unlinked.`,
+      msg: `${provider.charAt(0).toUpperCase() + provider.slice(1).toLowerCase()} account has been unlinked.`,
     });
     res.redirect('/account');
   } catch (err) {
