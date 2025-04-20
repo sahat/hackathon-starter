@@ -102,57 +102,57 @@ block content
     h3 Linked Accounts
   .form-group
     .offset-sm-3.col-md-7.pl-2
-      if user.google
-        p.mb-1: a.text-danger(href='/account/unlink/google') Unlink your Google account
+      if user.discord
+        p.mb-1: a.text-danger(href='/account/unlink/discord') Unlink your Discord account
       else
-        p.mb-1: a(href='/auth/google') Link your Google account
+        p.mb-1: a(href='/auth/discord') Link your Discord account
     .offset-sm-3.col-md-7.pl-2
       if user.facebook
         p.mb-1: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
       else
         p.mb-1: a(href='/auth/facebook') Link your Facebook account
     .offset-sm-3.col-md-7.pl-2
-      if user.x
-        p.mb-1: a.text-danger(href='/account/unlink/x') Unlink your X account
-      else
-        p.mb-1: a(href='/auth/x') Link your X account
-    .offset-sm-3.col-md-7.pl-2
       if user.github
         p.mb-1: a.text-danger(href='/account/unlink/github') Unlink your GitHub account
       else
         p.mb-1: a(href='/auth/github') Link your GitHub account
+    .offset-sm-3.col-md-7.pl-2
+      if user.google
+        p.mb-1: a.text-danger(href='/account/unlink/google') Unlink your Google account
+      else
+        p.mb-1: a(href='/auth/google') Link your Google account
     .offset-sm-3.col-md-7.pl-2
       if user.linkedin
         p.mb-1: a.text-danger(href='/account/unlink/linkedin') Unlink your LinkedIn account
       else
         p.mb-1: a(href='/auth/linkedin') Link your LinkedIn account
     .offset-sm-3.col-md-7.pl-2
-      if user.steam
-        p.mb-1: a.text-danger(href='/account/unlink/steam') Unlink your Steam account
-      else
-        p.mb-1: a(href='/auth/steam') Link your Steam account
-    .offset-sm-3.col-md-7.pl-2
-      if user.twitch
-        p.mb-1: a.text-danger(href='/account/unlink/twitch') Unlink your Twitch account
-      else
-        p.mb-1: a(href='/auth/twitch') Link your Twitch account
-    .offset-sm-3.col-md-7.pl-2
       if user.quickbooks
         p.mb-1: a.text-danger(href='/account/unlink/quickbooks') Unlink your QuickBooks account
       else
         p.mb-1: a(href='/auth/quickbooks') Link your QuickBooks account
     .offset-sm-3.col-md-7.pl-2
-      if user.tumblr
-        p.mb-1: a.text-danger(href='/account/unlink/tumblr') Unlink your Tumblr account
+      if user.steam
+        p.mb-1: a.text-danger(href='/account/unlink/steam') Unlink your Steam account
       else
-        p.mb-1: a(href='/auth/tumblr') Link your Tumblr account
+        p.mb-1: a(href='/auth/steam') Link your Steam account
     .offset-sm-3.col-md-7.pl-2
       if user.trakt
         p.mb-1: a.text-danger(href='/account/unlink/trakt') Unlink your Trakt account
       else
         p.mb-1: a(href='/auth/trakt') Link your Trakt account
     .offset-sm-3.col-md-7.pl-2
-      if user.discord
-        p.mb-1: a.text-danger(href='/account/unlink/discord') Unlink your Discord account
+      if user.tumblr
+        p.mb-1: a.text-danger(href='/account/unlink/tumblr') Unlink your Tumblr account
       else
-        p.mb-1: a(href='/auth/discord') Link your Discord account
+        p.mb-1: a(href='/auth/tumblr') Link your Tumblr account
+    .offset-sm-3.col-md-7.pl-2
+      if user.twitch
+        p.mb-1: a.text-danger(href='/account/unlink/twitch') Unlink your Twitch account
+      else
+        p.mb-1: a(href='/auth/twitch') Link your Twitch account
+    .offset-sm-3.col-md-7.pl-2
+      if user.x
+        p.mb-1: a.text-danger(href='/account/unlink/x') Unlink your X account
+      else
+        p.mb-1: a(href='/auth/x') Link your X account
