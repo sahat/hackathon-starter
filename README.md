@@ -70,17 +70,15 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 ## Features
 
 - Login
-  - **Local Authentication** using Email and Password, as well as Passwordless
-  - **OAuth 2.0 Authentication:** Sign in with Google, Facebook, X (Twitter), Twitch, Github
+  - **Local Authentication** Sign in with Email and Password, Passwordless
+  - **OAuth 2.0 Authentication:** Sign in with Google, Facebook, X (Twitter), Twitch, Github, Discord
   - **OpenID Connect:** Sign in with LinkedIn
 - **User Profile and Account Management**
   - Gravatar
   - Profile Details
-  - Change Password
-  - Forgot Password
-  - Reset Password
+  - Password management (Change, Reset, Forgot)
   - Verify Email
-  - Link multiple OAuth strategies to one account
+  - Link multiple OAuth provider accounts to one account
   - Delete Account
 - Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
 - File upload
@@ -267,6 +265,20 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 **Warning:** Restrict your **Google Maps API key** to the "Maps JavaScript API" and the specific domain name you are using (for example, your ngrok development domain). Avoid using "localhost" or leaving the key unrestricted, because your Maps API key will be publicly exposed through the web application. This exposure could allow unauthorized users to misuse your key, potentially resulting in charges to your GCP account and credit card.
 
 - Google Maps API Key: To use the "Maps JavaScript API," you must activate your Google Cloud Platform account with a valid credit card. If your account hasn't been activated yet, this process will also trigger the countdown for the expiration of your free credits if any. If you'd prefer to avoid this, consider using **HERE Maps** as an alternative. To get a key add the Search for "Maps Platform API Key" in your GCP Console and select the appropriate option. Then get your key and add your domain as the Website restriction for it.
+
+<hr>
+
+<img src="https://cdn.worldvectorlogo.com/logos/discord-6.svg" height="50">
+
+- Go to <a href="https://discord.com/developers/teams" target="_blank">Teams tab</a> in the Discord Developer Portal and create a new team. This allows you to manage your Discord applications under a team name instead of your personal account.
+- After creating a team, switch to the <a href="https://discord.com/developers/applications" target="_blank">Applications tab</a> in the Discord Developer Portal.
+- Click on **New Application** and give your app a name. When prompted, select your team as the owner.
+- In the left sidebar, click on **OAuth2** > **General**.
+- Copy the **Client ID** and **Client Secret** (you may need to "reset" the client secret to obtain it for the first time), then paste them into your `.env` file as `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET`, or set them as environment variables.
+- In the left sidebar, click on **OAuth2** > **URL Generator**.
+- Under **Scopes**, select `identify` and `email`.
+- Under **Redirects**, add your BASE_URL value followed by `/auth/discord/callback` (i.e. `http://localhost:8080/auth/discord/callback`).
+- Save changes.
 
 <hr>
 

@@ -50,6 +50,17 @@
   }
 }
 
+.btn-discord {
+  background-color: #5865f2;
+  color: #fff !important;
+
+  &:hover,
+  &:active {
+    background-color: #4752c4;
+    color: #fff !important;
+  }
+}
+
 // Add a space after fontawesome icons
 .iconpadding {
   padding-right: 6px !important;

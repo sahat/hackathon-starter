@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema(
     quickbooks: String,
     tumblr: String,
     trakt: String,
+    discord: String,
     tokens: Array,
 
     profile: {
