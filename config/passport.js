@@ -765,6 +765,79 @@ passport.use('trakt', traktStrategyConfig);
 refresh.use('trakt', traktStrategyConfig);
 
 /**
+ * Sign in with Discord using OAuth2Strategy.
+ */
+const discordStrategyConfig = new OAuth2Strategy(
+  {
+    authorizationURL: 'https://discord.com/api/oauth2/authorize',
+    tokenURL: 'https://discord.com/api/oauth2/token',
+    clientID: process.env.DISCORD_CLIENT_ID,
+    clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    callbackURL: `${process.env.BASE_URL}/auth/discord/callback`,
+    scope: ['identify', 'email'].join(' '),
+    state: generateState(),
+    passReqToCallback: true,
+  },
+  async (req, accessToken, refreshToken, params, profile, done) => {
+    try {
+      // Fetch Discord profile using accessToken
+      const response = await fetch('https://discord.com/api/users/@me', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (!response.ok) {
+        return done(new Error('Failed to fetch Discord profile'));
+      }
+      const discordProfile = await response.json();
+
+      if (req.user) {
+        const existingUser = await User.findOne({ discord: { $eq: discordProfile.id } });
+        if (existingUser && existingUser.id !== req.user.id) {
+          req.flash('errors', {
+            msg: 'There is already a Discord account that belongs to you. Sign in with that account or delete it, then link it with your current account.',
+          });
+          return done(null, existingUser);
+        }
+        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'discord');
+        user.discord = discordProfile.id;
+        user.profile.name = user.profile.name || discordProfile.username;
+        user.profile.picture = user.profile.picture || (discordProfile.avatar ? `https://cdn.discordapp.com/avatars/${discordProfile.id}/${discordProfile.avatar}.png` : undefined);
+        await user.save();
+        req.flash('info', { msg: 'Discord account has been linked.' });
+        return done(null, user);
+      }
+      const existingUser = await User.findOne({ discord: { $eq: discordProfile.id } });
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      const existingEmailUser = await User.findOne({
+        email: { $eq: discordProfile.email },
+      });
+      if (existingEmailUser) {
+        req.flash('errors', {
+          msg: 'There is already an account using this email address. Sign in to that account and link it with Discord manually from Account Settings.',
+        });
+        return done(null, existingEmailUser);
+      }
+      const user = new User();
+      user.email = discordProfile.email;
+      user.discord = discordProfile.id;
+      req.user = user;
+      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'discord');
+      user.profile.name = discordProfile.username;
+      user.profile.picture = discordProfile.avatar ? `https://cdn.discordapp.com/avatars/${discordProfile.id}/${discordProfile.avatar}.png` : undefined;
+      await user.save();
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  },
+);
+passport.use('discord', discordStrategyConfig);
+refresh.use('discord', discordStrategyConfig);
+
+/**
  * Login Required middleware.
  */
 exports.isAuthenticated = (req, res, next) => {

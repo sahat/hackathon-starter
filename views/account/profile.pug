@@ -151,3 +151,8 @@ block content
         p.mb-1: a.text-danger(href='/account/unlink/trakt') Unlink your Trakt account
       else
         p.mb-1: a(href='/auth/trakt') Link your Trakt account
+    .offset-sm-3.col-md-7.pl-2
+      if user.discord
+        p.mb-1: a.text-danger(href='/account/unlink/discord') Unlink your Discord account
+      else
+        p.mb-1: a(href='/auth/discord') Link your Discord account
