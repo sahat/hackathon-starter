@@ -38,7 +38,9 @@ exports.postLogin = async (req, res, next) => {
     try {
       const user = await User.findOne({ email: { $eq: req.body.email } });
       if (!user) {
-        req.flash('info', { msg: 'You will receive a login link shortly, if your account is associated with this email address.' });
+        console.log('Login by email link: User not found');
+        // we need to show the same message as successfulMsg to avoid an enumeration vulnerability
+        req.flash('info', { msg: 'We are sending further instructions to the email you provided, if there is an account with that email address in our system.' });
         return res.redirect('/login');
       }
 
@@ -71,10 +73,10 @@ Thank you!\n`,
       await nodemailerConfig.sendMail({
         mailOptions,
         successfulType: 'info',
-        successfulMsg: 'An email has been sent with login instructions.',
+        successfulMsg: 'We are sending further instructions to the email you provided, if there is an account with that email address in our system.',
         loggingError: 'ERROR: Could not send login by email link.',
         errorType: 'errors',
-        errorMsg: 'Error sending login email.  Please try again later or login using another method.',
+        errorMsg: 'We encountered an issue sending instructions. Please try again later.',
         req,
       });
 
@@ -136,6 +138,86 @@ exports.getSignup = (req, res) => {
 };
 
 /**
+ * Helper to send passwordless login link if a user is trying to create an account
+ * but we already have an account for that email address.
+ * This process with ambigious flash messages is a part of the security measure to
+ * mitigate account enumeration attacks.
+ */
+async function sendPasswordlessLoginLinkIfUserExists(user, req) {
+  const token = await User.generateToken();
+  user.loginToken = token;
+  user.loginExpires = Date.now() + 900000; // 15 min
+  user.loginIpHash = User.hashIP(req.ip);
+  await user.save();
+
+  const mailOptions = {
+    to: user.email,
+    from: process.env.SITE_CONTACT_EMAIL,
+    subject: 'Login Link',
+    text: `Hello,
+We found an existing account for this email. Please use the following link to log in:
+
+${process.env.BASE_URL}/login/verify/${token}
+
+If you didn't request this login, please ignore this email.
+
+Once logged in, you can go to your profile page to set or change your password.
+
+Thank you!\n`,
+  };
+  await nodemailerConfig.sendMail({
+    mailOptions,
+    successfulType: 'info',
+    successfulMsg: 'An email has been sent to the email address you provided with further instructions.',
+    loggingError: 'ERROR: Could not send login by email link.',
+    errorType: 'errors',
+    errorMsg: 'We encountered an issue sending instructions. Please try again later.',
+    req,
+  });
+}
+
+/**
+ * Helper to send passwordless signup link for new users.
+ */
+async function sendPasswordlessSignupLink(user, req) {
+  const token = await User.generateToken();
+  user.loginToken = token;
+  user.loginExpires = Date.now() + 900000; // 15 min
+  user.loginIpHash = User.hashIP(req.ip);
+  await user.save();
+
+  const mailOptions = {
+    to: user.email,
+    from: process.env.SITE_CONTACT_EMAIL,
+    subject: 'Login Link',
+    text: `Hello,
+Please click on the following link to log in:
+
+${process.env.BASE_URL}/login/verify/${token}
+
+If you didn't request this login, please ignore this email and make sure you can still access your account.
+
+For security:
+- Never share this link with anyone
+- We'll never ask you to send us this link
+- Only use this link on the same device/browser where you requested it
+- This link will expire in 15 minutes and can only be used once
+
+Thank you!\n`,
+  };
+
+  await nodemailerConfig.sendMail({
+    mailOptions,
+    successfulType: 'info',
+    successfulMsg: 'An email has been sent to the email address you provided with further instructions.',
+    loggingError: 'ERROR: Could not send login by email link.',
+    errorType: 'errors',
+    errorMsg: 'Error sending login email. Please try again later.',
+    req,
+  });
+}
+
+/**
  * POST /signup
  * Create a new local account.
  */
@@ -153,11 +235,18 @@ exports.postSignup = async (req, res, next) => {
     return res.redirect('/signup');
   }
   req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
+  if (!mailChecker.isValid(req.body.email)) {
+    req.flash('errors', { msg: 'The email address is invalid or disposable and can not be verified.  Please update your email address and try again.' });
+    return res.redirect('/signup');
+  }
+
   try {
     const existingUser = await User.findOne({ email: { $eq: req.body.email } });
+
     if (existingUser) {
-      req.flash('errors', { msg: 'Account with that email address already exists.' });
-      return res.redirect('/signup');
+      // Always send login link and generic message if email exists
+      await sendPasswordlessLoginLinkIfUserExists(existingUser, req);
+      return res.redirect('/login');
     }
 
     // For passwordless signup, generate a random password
@@ -170,42 +259,7 @@ exports.postSignup = async (req, res, next) => {
     await user.save();
 
     if (req.body.passwordless) {
-      const token = await User.generateToken();
-      user.loginToken = token;
-      user.loginExpires = Date.now() + 900000; // 15 min
-      user.loginIpHash = User.hashIP(req.ip);
-      await user.save();
-
-      const mailOptions = {
-        to: user.email,
-        from: process.env.SITE_CONTACT_EMAIL,
-        subject: 'Login Link',
-        text: `Hello,
-Please click on the following link to log in:
-
-${process.env.BASE_URL}/login/verify/${token}
-
-If you didn't request this login, please ignore this email and make sure you can still access your account.
-
-For security:
-- Never share this link with anyone
-- We'll never ask you to send us this link
-- Only use this link on the same device/browser where you requested it
-- This link will expire in 15 minutes and can only be used once
-
-Thank you!\n`,
-      };
-
-      await nodemailerConfig.sendMail({
-        mailOptions,
-        successfulType: 'info',
-        successfulMsg: 'Account created! An email has been sent with login instructions.',
-        loggingError: 'ERROR: Could not send login by email link.',
-        errorType: 'errors',
-        errorMsg: 'Error sending login email. Please try again later.',
-        req,
-      });
-
+      await sendPasswordlessSignupLink(user, req);
       return res.redirect('/');
     }
 
@@ -244,6 +298,10 @@ exports.postUpdateProfile = async (req, res, next) => {
     return res.redirect('/account');
   }
   req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
+  if (!mailChecker.isValid(req.body.email)) {
+    req.flash('errors', { msg: 'The email address is invalid or disposable and can not be verified.  Please update your email address and try again.' });
+    return res.redirect('/account');
+  }
   try {
     const user = await User.findById(req.user.id);
     if (user.email !== req.body.email) user.emailVerified = false;
@@ -257,10 +315,16 @@ exports.postUpdateProfile = async (req, res, next) => {
     res.redirect('/account');
   } catch (err) {
     if (err.code === 11000) {
-      req.flash('errors', { msg: 'The email address you have entered is already associated with an account.' });
-      return res.redirect('/account');
+      console.log('Duplicate email address when trying to update the profile email.');
+    } else {
+      console.log('Error updating profile', err);
     }
-    next(err);
+    // Generic error message for the user. Do not reveal the cause of the error tsuch as
+    // the new email being in the system to the user to avoid enumeration vulenrability.
+    req.flash('errors', {
+      msg: "We encountered an issue updating your email address. If you suspect you have duplicate accounts, please log in with the other email address you've used or contact support for assistance. You can delete duplicate accounts from your account settings.",
+    });
+    return res.redirect('/account');
   }
 };
 
@@ -575,7 +639,9 @@ exports.postForgot = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: { $eq: req.body.email.toLowerCase() } });
     if (!user) {
-      req.flash('info', { msg: 'You will receive an email with password reset instructions shortly, if your account is associated with this email address.' });
+      console.log('Forgot password: User not found');
+      // Generic message to avoid enumeration vunerability
+      req.flash('info', { msg: 'If an account with that email exists, you will receive password reset instructions.' });
       return res.redirect('/forgot');
     }
 
@@ -611,7 +677,7 @@ Thank you!\n`,
       successfulMsg: `If an account with that email exists, you will receive password reset instructions.`,
       loggingError: 'ERROR: Could not send password reset email.',
       errorType: 'errors',
-      errorMsg: 'Error sending password reset email. Please try again later.',
+      errorMsg: 'We encountered an issue sending instructions. Please try again later.',
       req,
     });
 

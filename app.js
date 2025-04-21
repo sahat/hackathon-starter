@@ -138,10 +138,9 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
+// Function to validate if the URL is a safe relative path
+const isSafeRedirect = (url) => /^\/[a-zA-Z0-9/_-]*$/.test(url);
 app.use((req, res, next) => {
-  // Function to validate if the URL is a safe relative path
-  const isSafeRedirect = (url) => /^\/[a-zA-Z0-9/]*$/.test(url);
-
   // After successful login, redirect back to the intended page
   if (!req.user && req.path !== '/login' && req.path !== '/signup' && !req.path.match(/^\/auth/) && !req.path.match(/\./)) {
     const returnTo = req.originalUrl;
@@ -236,34 +235,58 @@ app.get('/api/togetherai-classifier', apiController.getTogetherAIClassifier);
 app.post('/api/togetherai-classifier', apiController.postTogetherAIClassifier);
 
 /**
+ * OAuth authentication failure handler (common for all providers)
+ * passport.js requires a static route for failureRedirect.
+ * With this auth failure handler, we can decide where to redirect the user
+ * and avoid infinite loops in cases when they navigate to a route
+ * protected by isAuthorized and the user is not authorized.
+ */
+app.get('/auth/failure', (req, res) => {
+  // Check if a flash message for 'errors' already exists in the session (do not consume it)
+  const hasErrorFlash = req.session && req.session.flash && req.session.flash.errors && req.session.flash.errors.length > 0;
+
+  if (!hasErrorFlash) {
+    req.flash('errors', { msg: 'Authentication failed or provider account is already linked.' });
+  }
+  const { returnTo } = req.session;
+  req.session.returnTo = undefined;
+  // Prevent infinite loop: if returnTo is the current URL or an /auth/ route, redirect to /
+  if (!returnTo || !isSafeRedirect(returnTo) || returnTo === req.originalUrl || /^\/auth\//.test(returnTo)) {
+    res.redirect('/');
+  } else {
+    res.redirect(returnTo);
+  }
+});
+
+/**
  * OAuth authentication routes. (Sign in)
  */
 app.get('/auth/facebook', passport.authenticate('facebook'));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/github', passport.authenticate('github'));
-app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/google', passport.authenticate('google'));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/x', passport.authenticate('X'));
-app.get('/auth/x/callback', passport.authenticate('X', { failureRedirect: '/login' }), (req, res) => {
+app.get('/auth/x/callback', passport.authenticate('X', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/linkedin', passport.authenticate('linkedin'));
-app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), (req, res) => {
+app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/twitch', passport.authenticate('twitch'));
-app.get('/auth/twitch/callback', passport.authenticate('twitch', { failureRedirect: '/login' }), (req, res) => {
+app.get('/auth/twitch/callback', passport.authenticate('twitch', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/discord', passport.authenticate('discord'));
-app.get('/auth/discord/callback', passport.authenticate('discord', { failureRedirect: '/login' }), (req, res) => {
+app.get('/auth/discord/callback', passport.authenticate('discord', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 
@@ -271,20 +294,20 @@ app.get('/auth/discord/callback', passport.authenticate('discord', { failureRedi
  * OAuth authorization routes. (API examples)
  */
 app.get('/auth/tumblr', passport.authorize('tumblr'));
-app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect: '/api' }), (req, res) => {
-  res.redirect(req.session.returnTo);
+app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect: '/auth/failure' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/steam', passport.authorize('steam-openid'));
-app.get('/auth/steam/callback', passport.authorize('steam-openid', { failureRedirect: '/api' }), (req, res) => {
-  res.redirect(req.session.returnTo);
+app.get('/auth/steam/callback', passport.authorize('steam-openid', { failureRedirect: '/auth/failure' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/trakt', passport.authorize('trakt'));
-app.get('/auth/trakt/callback', passport.authorize('trakt', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect(req.session.returnTo);
+app.get('/auth/trakt/callback', passport.authorize('trakt', { failureRedirect: '/auth/failure' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/quickbooks', passport.authorize('quickbooks'));
-app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect(req.session.returnTo);
+app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/auth/failure' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
 });
 
 /**

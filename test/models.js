@@ -1,9 +1,52 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const bcrypt = require('@node-rs/bcrypt');
+const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 const User = require('../models/User');
 
 describe('User Model', () => {
+  let mongoServer;
+
+  before(async () => {
+    // Close any existing connections
+    await mongoose.disconnect();
+
+    // Create new mongo instance
+    mongoServer = await MongoMemoryServer.create();
+    const mongoUri = mongoServer.getUri();
+
+    // Configure mongoose to not wait for other connections
+    const mongooseOpts = {
+      autoIndex: false,
+      connectTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 20000,
+    };
+
+    await mongoose.connect(mongoUri, mongooseOpts);
+  });
+
+  beforeEach(async () => {
+    // Drop the entire database between tests
+    if (mongoose.connection.db) {
+      await mongoose.connection.db.dropDatabase();
+    }
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  after(async () => {
+    if (mongoose.connection) {
+      await mongoose.connection.close();
+    }
+    if (mongoServer) {
+      await mongoServer.stop();
+    }
+  });
+
   it('should create a new user', (done) => {
     const UserMock = sinon.mock(new User({ email: 'test@gmail.com', password: 'root' }));
     const user = UserMock.object;
@@ -401,6 +444,33 @@ describe('User Model', () => {
         expect(err.message).to.equal('Hash error');
       } finally {
         bcrypt.hash.restore();
+      }
+    });
+
+    it('should reject password shorter than minimum length', async () => {
+      const user = new User({
+        email: 'test@example.com',
+        password: 'short',
+      });
+
+      try {
+        await user.save();
+        expect.fail('Should have thrown validation error');
+      } catch (err) {
+        expect(err).to.be.instanceOf(Error);
+      }
+    });
+
+    it('should handle undefined password gracefully', async () => {
+      const user = new User({
+        email: 'test@example.com',
+      });
+
+      try {
+        await user.save();
+        expect.fail('Should have thrown validation error');
+      } catch (err) {
+        expect(err).to.be.instanceOf(Error);
       }
     });
   });
