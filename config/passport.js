@@ -13,6 +13,7 @@ const { OAuth2Strategy } = require('passport-oauth');
 const OpenIDConnectStrategy = require('passport-openidconnect');
 const { OAuth } = require('oauth');
 const moment = require('moment');
+const validator = require('validator');
 
 const User = require('../models/User');
 
@@ -44,7 +45,7 @@ passport.use(
         }
         if (!user.password) {
           return done(null, false, {
-            msg: 'Your account was registered using a sign-in provider. To enable password login, sign in using a provider, and then set a password under your user profile.',
+            msg: 'Your account was created with a sign-in provider. You can log in using the provider or an email link. To enable email and password login, set a new password in your profile settings.',
           });
         }
         user.comparePassword(password, (err, isMatch) => {
@@ -165,9 +166,10 @@ passport.use(
           });
           if (existingUser) {
             req.flash('errors', {
-              msg: 'There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account.',
+              msg: 'There is another account in our system linked to your Facebook account. Please delete the duplicate account before linking Facebook to your current account.',
             });
-            return done(null, existingUser);
+            if (req.session) req.session.returnTo = undefined; // Prevent infinite redirect loop
+            return done(null, req.user);
           }
           const user = await saveOAuth2UserTokens(req, accessToken, null, params.expires_in, null, 'facebook');
           user.facebook = profile.id;
@@ -184,17 +186,19 @@ passport.use(
         if (existingUser) {
           return done(null, existingUser);
         }
+        const emailFromProvider = profile._json.email;
+        const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
         const existingEmailUser = await User.findOne({
-          email: { $eq: profile._json.email },
+          email: { $eq: normalizedEmail },
         });
         if (existingEmailUser) {
           req.flash('errors', {
-            msg: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.',
+            msg: `Unable to sign in with Facebook at this time. If you have an existing account in our system, please sign in by email and link your account to Facebook in your user profile settings.`,
           });
-          return done(null, existingEmailUser);
+          return done(null, false);
         }
         const user = new User();
-        user.email = profile._json.email;
+        user.email = normalizedEmail;
         user.facebook = profile.id;
         req.user = user;
         await saveOAuth2UserTokens(req, accessToken, null, params.expires_in, null, 'facebook');
@@ -233,9 +237,10 @@ passport.use(
           });
           if (existingUser) {
             req.flash('errors', {
-              msg: 'There is already a GitHub account that belongs to you. Sign in with that account or delete it, then link it with your current account.',
+              msg: 'There is another account in our system linked to your GitHub account. Please delete the duplicate account before linking GitHub to your current account.',
             });
-            return done(null, existingUser);
+            if (req.session) req.session.returnTo = undefined;
+            return done(null, req.user);
           }
           const user = await saveOAuth2UserTokens(req, accessToken, null, null, null, 'github');
           user.github = profile.id;
@@ -260,31 +265,19 @@ passport.use(
           if (b.verified !== a.verified) return b.verified - a.verified;
           return 0;
         });
-        const emailValue = sortedEmails.length > 0 ? sortedEmails[0].value : null;
-        if (profile._json.email === null) {
-          const existingEmailUser = await User.findOne({
-            email: { $eq: emailValue },
+        const emailFromProvider = sortedEmails.length > 0 ? sortedEmails[0].value : null;
+        const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
+        const existingEmailUser = await User.findOne({
+          email: { $eq: normalizedEmail },
+        });
+        if (existingEmailUser) {
+          req.flash('errors', {
+            msg: `Unable to sign in with GitHub at this time. If you have an existing account in our system, please sign in by email and link your account to GitHub in your user profile settings.`,
           });
-
-          if (existingEmailUser) {
-            req.flash('errors', {
-              msg: 'There is already an account using this email address. Sign in to that account and link it with GitHub manually from Account Settings.',
-            });
-            return done(null, existingEmailUser);
-          }
-        } else {
-          const existingEmailUser = await User.findOne({
-            email: { $eq: profile._json.email },
-          });
-          if (existingEmailUser) {
-            req.flash('errors', {
-              msg: 'There is already an account using this email address. Sign in to that account and link it with GitHub manually from Account Settings.',
-            });
-            return done(null, existingEmailUser);
-          }
+          return done(null, false);
         }
         const user = new User();
-        user.email = emailValue;
+        user.email = normalizedEmail;
         user.github = profile.id;
         req.user = user;
         await saveOAuth2UserTokens(req, accessToken, null, null, null, 'github');
@@ -319,9 +312,10 @@ passport.use(
           const existingUser = await User.findOne({ x: { $eq: profile.id } });
           if (existingUser) {
             req.flash('errors', {
-              msg: 'There is already a X account that belongs to you. Sign in with that account or delete it, then link it with your current account.',
+              msg: 'There is another account in our system linked to your X account. Please delete the duplicate account before linking X to your current account.',
             });
-            return done(null, existingUser);
+            if (req.session) req.session.returnTo = undefined;
+            return done(null, req.user);
           }
           const user = await User.findById(req.user.id);
           user.x = profile.id;
@@ -364,7 +358,7 @@ const googleStrategyConfig = new GoogleStrategy(
     clientID: process.env.GOOGLE_ID,
     clientSecret: process.env.GOOGLE_SECRET,
     callbackURL: '/auth/google/callback',
-    scope: ['profile', 'email', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
+    scope: ['profile', 'email', 'https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
     accessType: 'offline',
     prompt: 'consent',
     state: generateState(),
@@ -376,11 +370,12 @@ const googleStrategyConfig = new GoogleStrategy(
         const existingUser = await User.findOne({
           google: { $eq: profile.id },
         });
-        if (existingUser && existingUser.id !== req.user.id) {
+        if (existingUser) {
           req.flash('errors', {
-            msg: 'There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account.',
+            msg: 'There is another account in our system linked to your Google account. Please delete the duplicate account before linking Google to your current account.',
           });
-          return done(null, existingUser);
+          if (req.session) req.session.returnTo = undefined;
+          return done(null, req.user);
         }
         const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'google');
         user.google = profile.id;
@@ -395,17 +390,19 @@ const googleStrategyConfig = new GoogleStrategy(
       if (existingUser) {
         return done(null, existingUser);
       }
+      const emailFromProvider = profile.emails && profile.emails[0] && profile.emails[0].value ? profile.emails[0].value : undefined;
+      const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
       const existingEmailUser = await User.findOne({
-        email: { $eq: profile.emails[0].value },
+        email: { $eq: normalizedEmail },
       });
       if (existingEmailUser) {
         req.flash('errors', {
-          msg: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.',
+          msg: `Unable to sign in with Google at this time. If you have an existing account in our system, please sign in by email and link your account to Google in your user profile settings.`,
         });
-        return done(null, existingEmailUser);
+        return done(null, false);
       }
       const user = new User();
-      user.email = profile.emails[0].value;
+      user.email = normalizedEmail;
       user.google = profile.id;
       req.user = user; // Set req.user so saveOAuth2UserTokens can use it
       await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'google');
@@ -452,9 +449,10 @@ passport.use(
           });
           if (existingUser) {
             req.flash('errors', {
-              msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.',
+              msg: 'There is another account in our system linked to your LinkedIn account. Please delete the duplicate account before linking LinkedIn to your current account.',
             });
-            return done(null, existingUser);
+            if (req.session) req.session.returnTo = undefined;
+            return done(null, req.user);
           }
           const user = await User.findById(req.user.id);
           user.linkedin = profile.id;
@@ -472,18 +470,18 @@ passport.use(
           return done(null, existingUser);
         }
         const email = profile.emails && profile.emails[0] && profile.emails[0].value ? profile.emails[0].value : undefined;
-        const existingEmailUser = await User.findOne({ email: { $eq: email } });
-
+        const normalizedEmail = email ? validator.normalizeEmail(email, { gmail_remove_dots: false }) : undefined;
+        const existingEmailUser = await User.findOne({ email: { $eq: normalizedEmail } });
         if (existingEmailUser) {
           req.flash('errors', {
-            msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.',
+            msg: `Unable to sign in with LinkedIn at this time. If you have an existing account in our system, please sign in by email and link your account to LinkedIn in your user profile settings.`,
           });
-          return done(null, existingEmailUser);
+          return done(null, false);
         }
         const user = new User();
         user.linkedin = profile.id;
         user.tokens.push({ kind: 'linkedin', accessToken: null });
-        user.email = email;
+        user.email = normalizedEmail;
         user.profile.name = profile.displayName;
         user.profile.picture = profile.photos || '';
         await user.save();
@@ -513,16 +511,16 @@ const twitchStrategyConfig = new TwitchStrategy(
         const existingUser = await User.findOne({
           twitch: { $eq: profile.id },
         });
-        if (existingUser && existingUser.id !== req.user.id) {
+        if (existingUser) {
           req.flash('errors', {
-            msg: 'There is already a Twitch account that belongs to you. Sign in with that account or delete it, then link it with your current account.',
+            msg: 'There is another account in our system linked to your Twitch account. Please delete the duplicate account before linking Twitch to your current account.',
           });
-          return done(null, existingUser);
+          if (req.session) req.session.returnTo = undefined;
+          return done(null, req.user);
         }
         const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'twitch');
         user.twitch = profile.id;
-        user.profile.name = user.profile.name || profile.display_name;
-        user.profile.email = user.profile.gender || profile.email;
+        user.profile.name = user.profile.name || profile.displayName;
         user.profile.picture = user.profile.picture || profile.profile_image_url;
         await user.save();
         req.flash('info', { msg: 'Twitch account has been linked.' });
@@ -532,17 +530,19 @@ const twitchStrategyConfig = new TwitchStrategy(
       if (existingUser) {
         return done(null, existingUser);
       }
+      const emailFromProvider = profile._json.data[0].email;
+      const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
       const existingEmailUser = await User.findOne({
-        email: { $eq: profile.email },
+        email: { $eq: normalizedEmail },
       });
       if (existingEmailUser) {
         req.flash('errors', {
-          msg: 'There is already an account using this email address. Sign in to that account and link it with Twitch manually from Account Settings.',
+          msg: `Unable to sign in with Twitch at this time. If you have an existing account in our system, please sign in by email and link your account to Twitch in your user profile settings.`,
         });
-        return done(null, existingEmailUser);
+        return done(null, false);
       }
       const user = new User();
-      user.email = profile.email;
+      user.email = normalizedEmail;
       user.twitch = profile.id;
       req.user = user; // Set req.user so saveOAuth2UserTokens can use it
       await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'twitch');
@@ -649,9 +649,10 @@ passport.use(
           const existingUser = await User.findOne({ steam: { $eq: steamId } });
           if (existingUser) {
             req.flash('errors', {
-              msg: 'There is already an account associated with the SteamID. Sign in with that account or delete it, then link it with your current account.',
+              msg: 'There is another account in our system linked to your Steam account. Please delete the duplicate account before linking Steam to your current account.',
             });
-            return done(null, existingUser);
+            if (req.session) req.session.returnTo = undefined;
+            return done(null, req.user);
           }
           const user = await User.findById(req.user.id);
           user.steam = steamId;
@@ -796,14 +797,14 @@ const discordStrategyConfig = new OAuth2Strategy(
         return done(new Error('Failed to fetch Discord profile'));
       }
       const discordProfile = await response.json();
-
       if (req.user) {
         const existingUser = await User.findOne({ discord: { $eq: discordProfile.id } });
-        if (existingUser && existingUser.id !== req.user.id) {
+        if (existingUser) {
           req.flash('errors', {
-            msg: 'There is already a Discord account that belongs to you. Sign in with that account or delete it, then link it with your current account.',
+            msg: 'There is another account in our system linked to your Discord account. Please delete the duplicate account before linking Discord to your current account.',
           });
-          return done(null, existingUser);
+          if (req.session) req.session.returnTo = undefined;
+          return done(null, req.user);
         }
         const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'discord');
         user.discord = discordProfile.id;
@@ -817,17 +818,19 @@ const discordStrategyConfig = new OAuth2Strategy(
       if (existingUser) {
         return done(null, existingUser);
       }
+      const emailFromProvider = discordProfile.email;
+      const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
       const existingEmailUser = await User.findOne({
-        email: { $eq: discordProfile.email },
+        email: { $eq: normalizedEmail },
       });
       if (existingEmailUser) {
         req.flash('errors', {
-          msg: 'There is already an account using this email address. Sign in to that account and link it with Discord manually from Account Settings.',
+          msg: `Unable to sign in with Discord at this time. If you have an existing account in our system, please sign in by email and link your account to Discord in your user profile settings.`,
         });
-        return done(null, existingEmailUser);
+        return done(null, false);
       }
       const user = new User();
-      user.email = discordProfile.email;
+      user.email = normalizedEmail;
       user.discord = discordProfile.id;
       req.user = user;
       await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'discord');
@@ -850,6 +853,7 @@ exports.isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
+  req.flash('errors', { msg: 'You need to be logged in to access that page.' });
   res.redirect('/login');
 };
 

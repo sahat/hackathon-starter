@@ -1148,7 +1148,10 @@ exports.getGoogleDrive = (req, res) => {
       fields: 'files(iconLink, webViewLink, name)',
     },
     (err, response) => {
-      if (err) return console.log(`The API returned an error: ${err}`);
+      if (err && err.message === 'Insufficient Permission') {
+        req.flash('errors', { msg: 'Missing Google Drive access permission. Please unlink and relink your Google account with sufficent permissiosn under your account settings.' });
+        return res.redirect('/api');
+      }
       res.render('api/google-drive', {
         title: 'Google Drive API',
         files: response.data.files,
@@ -1181,7 +1184,10 @@ exports.getGoogleSheets = (req, res) => {
       range: 'Class Data!A1:F',
     },
     (err, response) => {
-      if (err) return console.log(`The API returned an error: ${err}`);
+      if (err && err.message === 'Insufficient Permission') {
+        req.flash('errors', { msg: 'Missing Google sheets access permission. Please unlink and relink your Google account with sufficent permissiosn under your account settings.' });
+        return res.redirect('/api');
+      }
       res.render('api/google-sheets', {
         title: 'Google Sheets API',
         values: response.data.values,
