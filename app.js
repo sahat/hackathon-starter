@@ -28,7 +28,7 @@ const secureTransfer = process.env.BASE_URL.startsWith('https');
  * Rate limiting configuration
  * This is a basic rate limiting configuration. You may want to adjust the settings
  * based on your application's needs and the expected traffic patterns.
- * Alos, consider adding a proxy such as cloudflare for production.
+ * Also, consider adding a proxy such as cloudflare for production.
  */
 // Global Rate Limiter Config
 const limiter = rateLimit({
@@ -124,8 +124,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
+  if (req.path === '/api/upload' || req.path === '/api/togetherai-camera') {
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
+    // WARN: Any path that is not protected by CSRF here should have lusca.csrf() chained
+    // in their route handler.
     next();
   } else {
     lusca.csrf()(req, res, next);
@@ -233,6 +235,8 @@ app.get('/api/openai-moderation', apiController.getOpenAIModeration);
 app.post('/api/openai-moderation', apiController.postOpenAIModeration);
 app.get('/api/togetherai-classifier', apiController.getTogetherAIClassifier);
 app.post('/api/togetherai-classifier', apiController.postTogetherAIClassifier);
+app.get('/api/togetherai-camera', lusca({ csrf: true }), apiController.getTogetherAICamera);
+app.post('/api/togetherai-camera', strictLimiter, apiController.imageUploadMiddleware, lusca({ csrf: true }), apiController.postTogetherAICamera);
 
 /**
  * OAuth authentication failure handler (common for all providers)

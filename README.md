@@ -82,9 +82,10 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Delete Account
 - Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
 - File upload
+- Device camera
 - **API Examples**
 
-  - **AI:** OpenAI Moderation, Together AI foundational model LLMs (aka Deepseek, Llama, Mistral, etc.)
+  - **AI:** OpenAI Moderation, LLAMA instruct, LLAMA vision (via Together AI serverless foundational models - Deepseek, Llama, Mistral, etc.)
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
   - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
   - **Maps and Location:** Google Maps, HERE Maps
@@ -108,7 +109,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Hosted: No need to install, see the MongoDB Atlas section
 
 - [Node.js 22.12+](http://nodejs.org)
-  - Highly recommended: Use/Upgrade your NodeJS to the latest NodeJS 22 LTS version.
+  - Highly recommended: Use/Upgrade your Node.js to the latest Node.js 22 LTS version.
 - Command Line Tools
 - <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Apple_logo_grey.svg" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
 - <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg" height="17">&nbsp;**Windows:** [Visual Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://learn.microsoft.com/en-us/windows/wsl/install) OR [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
@@ -1023,7 +1024,7 @@ You now have a choice - to include your JavaScript code in Pug templates or have
 
 But it's also understandable if you want to take the easier road. Most of the time you don't even care about performance during hackathons, you just want to _"get shit done"_ before the time runs out. Well, either way, use whichever approach makes more sense to you. At the end of the day, it's **what** you build that matters, not **how** you build it.
 
-If you want to stick all your JavaScript inside templates, then in `layout.pug` - your main template file, add this to `head` block.
+If you want to stick all your JavaScript inside templates, then in `layout.pug` - your main template file, add this to the `head` block.
 
 ```pug
 script(src='/socket.io/socket.io.js')

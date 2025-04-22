@@ -4,7 +4,7 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
       i.fas.fa-network-wired.fa-sm.iconpadding(style='color: #6f42c1')
-      | Together AI - one shot LLM API call example
+      | Together AI - One-shot LLM API call example
 
   .btn-group.mb-4.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://api.together.ai', target='_blank')
@@ -18,7 +18,7 @@ block content
       | API Reference
 
   p.text-muted
-    | This example demonstrates the use of Together.AI's LLM API to build an AI Agent that classifies customer messages for department routing. TogetherAI provides serverless access to various foundational models, including Llama, Deepseek, Mistral, and more. The hackathon starter live demo leverages the Llama-3.3-70B-Instruct-Turbo-Free model. TogetherAI's REST API is fully compatible with OpenAI's API as well as locally hosted Ollama REST API, offering the flexibility to run a locally hosted LLM instead of relying on remote API calls. Furthermore, the output is requested in JSON format, enabling us to extend the code as an AI Agent to take additional actions for the user, such as querying a tracking number from a database based on the classification.
+    | Analyze a customer message using #{ togetherAiModel } hosted on Together.AI to determine the appropriate department for routing. Our system prompt provides classification instructions and requests the LLM to respond in JSON format, which our application can parse for further actions, including AI Agent creation.
 
   .row
     .col-md-8.col-lg-6
