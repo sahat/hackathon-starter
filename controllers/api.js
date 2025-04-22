@@ -1496,42 +1496,95 @@ exports.postOpenAIModeration = async (req, res) => {
 };
 
 /**
- * GET /api/togetherai-classifier
- * Together AI / LLM API Example.
+ * Helper functions and constants for Together AI API Example
+ * We are using LLMs to classify text or analyze a picture taken by the user's camera.
  */
-exports.getTogetherAIClassifier = (req, res) => {
-  res.render('api/togetherai-classifier', {
-    title: 'Together.ai/LLM Department Classifier',
-    result: null,
-    error: null,
-    input: '',
+
+// Shared Together AI API caller
+const callTogetherAiApi = async (apiRequestBody, apiKey) => {
+  const response = await fetch('https://api.together.xyz/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify(apiRequestBody),
   });
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({}));
+    console.error('Together AI API Error Response:', errData);
+    const errorMessage = errData.error && errData.error.message ? errData.error.message : `API Error: ${response.status}`;
+    throw new Error(errorMessage);
+  }
+  return response.json();
 };
 
-/**
- * POST /api/togetherai-classifier
- * Together AI API Example.
- * - Classifies customer service inquiries into departments.
- * - Uses Together AI API with a foundational LLM model to classify the input text.
- * - The systemPrompt is the instructions from the developer to the model for processing
- *   the user input.
- */
-exports.postTogetherAIClassifier = async (req, res) => {
-  const togetherAiKey = process.env.TOGETHERAI_API_KEY;
-  const togetherAiModel = process.env.TOGETHERAI_MODEL;
-  const inputText = (req.body.inputText || '').slice(0, 300);
-  let result = null;
-  let error = null;
+// Vision-specific functions
+const createVisionLLMRequestBody = (dataUrl, model) => ({
+  model,
+  messages: [
+    {
+      role: 'user',
+      content: [
+        {
+          type: 'text',
+          text: 'What is in this image?',
+        },
+        {
+          type: 'image_url',
+          image_url: {
+            url: dataUrl,
+          },
+        },
+      ],
+    },
+  ],
+});
 
-  if (!togetherAiKey) {
-    error = 'TogetherAI API key is not set in environment variables.';
-  } else if (!togetherAiModel) {
-    error = 'TogetherAI model is not set in environment variables.';
-  } else if (!inputText.trim()) {
-    error = 'Please enter a message to classify.';
-  } else {
+const extractVisionAnalysis = (data) => {
+  if (data.choices && Array.isArray(data.choices) && data.choices.length > 0 && data.choices[0].message && data.choices[0].message.content) {
+    return data.choices[0].message.content;
+  }
+  return 'No vision analysis available';
+};
+
+// Classifier-specific functions
+const createClassifierLLMRequestBody = (inputText, model, systemPrompt) => ({
+  model,
+  messages: [
+    { role: 'system', content: systemPrompt },
+    { role: 'user', content: inputText },
+  ],
+  temperature: 0,
+  max_tokens: 64,
+});
+
+const extractClassifierResponse = (content) => {
+  let department = null;
+  if (content) {
     try {
-      const systemPrompt = `You are a customer service classifier for an e-commerce platform. Your role is to identify the primary issue described by the customer and return the result in JSON format. Carefully analyze the customer's message and select one of the following departments as the classification result:
+      // Try to extract JSON from the response
+      const jsonStringMatch = content.match(/{.*}/s);
+      if (jsonStringMatch) {
+        const parsed = JSON.parse(jsonStringMatch[0].replace(/'/g, '"'));
+        department = parsed.department;
+      }
+    } catch (err) {
+      console.log('Failed to parse JSON from TogetherAI API response:', err);
+      // fallback: try to extract department manually
+      const match = content.match(/"department"\s*:\s*"([^"]+)"/);
+      if (match) {
+        [, department] = match;
+      }
+    }
+  }
+  return department || 'Unknown';
+};
+
+// System prompt for the classifier
+// This is the system prompt that instructs the LLM on how to classify the customer message
+// into the appropriate department.
+const messageClassifierSystemPrompt = `You are a customer service classifier for an e-commerce platform. Your role is to identify the primary issue described by the customer and return the result in JSON format. Carefully analyze the customer's message and select one of the following departments as the classification result:
 
 Order Tracking and Status
 Returns and Refunds
@@ -1551,53 +1604,115 @@ Provide the output in this JSON structure:
 }
 Replace <selected_department> with the name of the most relevant department from the list above. If the inquiry spans multiple categories, choose the department that is most likely to address the customer's issue promptly and effectively.`;
 
-      const response = await fetch('https://api.together.xyz/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${togetherAiKey}`,
-        },
-        body: JSON.stringify({
-          model: togetherAiModel,
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: inputText },
-          ],
-          temperature: 0,
-          max_tokens: 64,
-        }),
-      });
+// Image Uploade middleware for Camera uploads
+const createImageUploader = () => {
+  const memoryStorage = multer.memoryStorage();
+  return multer({
+    storage: memoryStorage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  }).single('image');
+};
 
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        error = errData.error && errData.error.message ? errData.error.message : `API Error: ${response.status}`;
-      } else {
-        const data = await response.json();
-        const content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-        let department = null;
-        if (content) {
-          try {
-            // Try to extract JSON from the response
-            const jsonStringMatch = content.match(/{.*}/s);
-            if (jsonStringMatch) {
-              const parsed = JSON.parse(jsonStringMatch[0].replace(/'/g, '"'));
-              department = parsed.department;
-            }
-          } catch (err) {
-            console.log('Failed to parse JSON from TogetherAI API response:', err);
-            // fallback: try to extract department manually
-            const match = content.match(/"department"\s*:\s*"([^"]+)"/);
-            if (match) {
-              [, department] = match;
-            }
-          }
-        }
-        result = {
-          department: department || 'Unknown',
-          raw: content,
-          systemPrompt, // Send the sysetemPrompt to the front-end for this demo, not actual production applications.
-        };
-      }
+exports.imageUploadMiddleware = (req, res, next) => {
+  const uploadToMemory = createImageUploader();
+  uploadToMemory(req, res, (err) => {
+    if (err) {
+      console.error('Upload error:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    next();
+  });
+};
+
+const createImageDataUrl = (file) => {
+  const base64Image = file.buffer.toString('base64');
+  return `data:${file.mimetype};base64,${base64Image}`;
+};
+
+/**
+ * GET /api/togetherai-camera
+ * Together AI Camera Analysis Example
+ */
+exports.getTogetherAICamera = (req, res) => {
+  res.render('api/togetherai-camera', {
+    title: 'Together.ai Camera Analysis',
+    togetherAiModel: process.env.TOGETHERAI_VISION_MODEL,
+  });
+};
+
+/**
+ * POST /api/togetherai-camera
+ * Analyze image using Together AI Vision
+ */
+exports.postTogetherAICamera = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No image provided' });
+  }
+  try {
+    const togetherAiKey = process.env.TOGETHERAI_API_KEY;
+    const togetherAiModel = process.env.TOGETHERAI_VISION_MODEL;
+    if (!togetherAiKey) {
+      return res.status(500).json({ error: 'TogetherAI API key is not set' });
+    }
+    const dataUrl = createImageDataUrl(req.file);
+    const apiRequestBody = createVisionLLMRequestBody(dataUrl, togetherAiModel);
+    // console.log('Making Vision API request to Together AI...');
+    const data = await callTogetherAiApi(apiRequestBody, togetherAiKey);
+    const analysis = extractVisionAnalysis(data);
+    // console.log('Vision analysis completed:', analysis);
+    res.json({ analysis });
+  } catch (error) {
+    console.error('Error analyzing image:', error);
+    res.status(500).json({ error: `Error analyzing image: ${error.message}` });
+  }
+};
+
+/**
+ * GET /api/togetherai-classifier
+ * Together AI / LLM API Example.
+ */
+exports.getTogetherAIClassifier = (req, res) => {
+  res.render('api/togetherai-classifier', {
+    title: 'Together.ai/LLM Department Classifier',
+    result: null,
+    togetherAiModel: process.env.TOGETHERAI_MODEL,
+    error: null,
+    input: '',
+  });
+};
+
+/**
+ * POST /api/togetherai-classifier
+ * Together AI API Example.
+ * - Classifies customer service inquiries into departments.
+ * - Uses Together AI API with a foundational LLM model to classify the input text.
+ * - The systemPrompt is the instructions from the developer to the model for processing
+ *   the user input.
+ */
+exports.postTogetherAIClassifier = async (req, res) => {
+  const togetherAiKey = process.env.TOGETHERAI_API_KEY;
+  const togetherAiModel = process.env.TOGETHERAI_MODEL;
+  const inputText = (req.body.inputText || '').slice(0, 300);
+  let result = null;
+  let error = null;
+  if (!togetherAiKey) {
+    error = 'TogetherAI API key is not set in environment variables.';
+  } else if (!togetherAiModel) {
+    error = 'TogetherAI model is not set in environment variables.';
+  } else if (!inputText.trim()) {
+    error = 'Please enter the customer message to classify.';
+  } else {
+    try {
+      const systemPrompt = messageClassifierSystemPrompt; // Your existing system prompt here
+      const apiRequestBody = createClassifierLLMRequestBody(inputText, togetherAiModel, systemPrompt);
+      const data = await callTogetherAiApi(apiRequestBody, togetherAiKey);
+      const content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+      const department = extractClassifierResponse(content);
+      result = {
+        department,
+        raw: content,
+        systemPrompt,
+      };
     } catch (err) {
       console.log('TogetherAI Classifier API Error:', err);
       error = 'Failed to call TogetherAI API.';

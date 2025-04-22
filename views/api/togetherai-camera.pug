@@ -1,0 +1,189 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fas.fa-camera.fa-sm.iconpadding
+      | Together AI LLama Vision + User Camera
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://api.together.ai', target='_blank')
+      i.fas.fa-table-columns.fa-sm.iconpadding
+      | Together AI Dashboard
+    a.btn.btn-primary.w-100(href='https://docs.together.ai/docs/vision-api', target='_blank')
+      i.fas.fa-code.fa-sm.iconpadding
+      | API Reference
+  br
+  p.lead Take a picture with your device camera and send it to Together AI to analyze with #{ togetherAiModel } model.
+
+  .row
+    .col-md-7
+      .card
+        .card-body
+          .preview-container.position-relative.mb-3
+            video#preview.img-fluid(autoplay, muted, style='width: 100%')
+            canvas#photoCanvas(style='display: none')
+            img#capturedImage.img-fluid(style='display: none', alt='Captured photo')
+            #loadingSpinner.spinner-border.text-primary(style='display: none; position: absolute; top: 50%; left: 50%; margin: -1rem', role='status')
+              span.sr-only Loading...
+          .d-flex.flex-column.flex-md-row.gap-2
+            select#cameraSelect.form-select(style='width: auto')
+              option(value='') Loading cameras...
+            .btn-group
+              button#startButton.btn.btn-primary
+                i.fas.fa-video.me-2
+                | Start
+              button#stopButton.btn.btn-danger(disabled)
+                i.fas.fa-stop.me-2
+                | Stop
+              button#snapButton.btn.btn-success(disabled)
+                i.fas.fa-camera.me-2
+                | Capture
+
+    .col-md-5
+      .card
+        .card-body
+          h4.card-title
+            i.fas.fa-robot.me-2
+            | AI Analysis
+          #resultArea(style='display: none')
+            p#analysisResult.lead(aria-live='polite') 
+          #initialMessage.text-muted
+            p.mb-2 Follow these steps:
+            ol.ps-4.mb-0
+              li Select your camera
+              li Click "Start" to begin
+              li Click "Capture" to take a photo
+              li Wait for AI analysis
+
+  script.
+    document.addEventListener('DOMContentLoaded', async () => {
+      const preview = document.getElementById('preview');
+      const photoCanvas = document.getElementById('photoCanvas');
+      const capturedImage = document.getElementById('capturedImage');
+      const cameraSelect = document.getElementById('cameraSelect');
+      const startButton = document.getElementById('startButton');
+      const stopButton = document.getElementById('stopButton');
+      const snapButton = document.getElementById('snapButton');
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      const resultArea = document.getElementById('resultArea');
+      const analysisResult = document.getElementById('analysisResult');
+      const initialMessage = document.getElementById('initialMessage');
+
+      let stream = null;
+
+      // Populate camera list
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+
+        cameraSelect.innerHTML = videoDevices.length ? videoDevices.map((device) => `<option value="${device.deviceId}">${device.label || `Camera ${device.deviceId.slice(0, 5)}...`}</option>`).join('') : '<option value="">No cameras found</option>';
+      } catch (err) {
+        console.error('Error listing cameras:', err);
+        cameraSelect.innerHTML = '<option value="">Error loading cameras</option>';
+      }
+
+      // Start camera
+      startButton.addEventListener('click', async () => {
+        try {
+          const constraints = {
+            video: {
+              deviceId: cameraSelect.value ? { exact: cameraSelect.value } : undefined,
+            },
+          };
+
+          stream = await navigator.mediaDevices.getUserMedia(constraints);
+          preview.srcObject = stream;
+
+          startButton.disabled = true;
+          stopButton.disabled = false;
+          snapButton.disabled = false;
+          capturedImage.style.display = 'none';
+          preview.style.display = 'block';
+        } catch (err) {
+          console.error('Error starting camera:', err);
+          alert('Error starting camera. Please make sure you have granted camera permissions.');
+        }
+      });
+
+      // Stop camera
+      stopButton.addEventListener('click', () => {
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+          preview.srcObject = null;
+        }
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        snapButton.disabled = true;
+      });
+
+      // Capture photo
+      snapButton.addEventListener('click', async () => {
+        // Set canvas dimensions to match video
+        photoCanvas.width = preview.videoWidth;
+        photoCanvas.height = preview.videoHeight;
+
+        // Draw video frame to canvas
+        const context = photoCanvas.getContext('2d');
+        context.drawImage(preview, 0, 0);
+
+        // Convert to blob
+        photoCanvas.toBlob(
+          async (blob) => {
+            try {
+              // Show loading state
+              loadingSpinner.style.display = 'block';
+              initialMessage.style.display = 'none';
+              resultArea.style.display = 'none';
+
+              // Create form data
+              const formData = new FormData();
+              formData.append('image', blob, 'photo.jpg');
+              // Append CSRF token
+              formData.append('_csrf', '#{_csrf}');
+
+              // Send to server
+              const response = await fetch('/api/togetherai-camera', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin',
+              });
+
+              if (!response.ok) {
+                throw new Error(`Server returned ${response.status}`);
+              }
+
+              const data = await response.json();
+
+              if (data.error) {
+                throw new Error(data.error);
+              }
+
+              // Display results
+              resultArea.style.display = 'block';
+              analysisResult.textContent = data.analysis;
+
+              // Display captured image
+              capturedImage.src = URL.createObjectURL(blob);
+              capturedImage.style.display = 'block';
+              preview.style.display = 'none';
+            } catch (err) {
+              console.error('Error analyzing image:', err);
+              analysisResult.textContent = 'Error analyzing image: ' + err.message;
+              resultArea.style.display = 'block';
+            } finally {
+              loadingSpinner.style.display = 'none';
+            }
+          },
+          'image/jpeg',
+          0.8,
+        );
+      });
+
+      // Clean up on page unload
+      window.addEventListener('beforeunload', () => {
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+        }
+      });
+    });
