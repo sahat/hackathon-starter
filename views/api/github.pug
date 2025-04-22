@@ -27,15 +27,19 @@ block content
             ul.list-unstyled
               li
                 strong Username:
+                |
                 | #{ userInfo.login }
               li
                 strong Followers:
+                |
                 | #{ userInfo.followers }
               li
                 strong Public Repositories:
+                |
                 | #{ userInfo.public_repos }
               li
                 strong GitHub Profile:
+                |
                 |
                 a(href=userInfo.html_url, target='_blank') #{ userInfo.html_url }
 
@@ -56,38 +60,75 @@ block content
             each event in userEvents
               if event.type === 'PullRequestEvent'
                 li
-                  | Pull request created
-                  a(href=event.payload.pull_request.html_url, target='_blank') #{ event.payload.pull_request.title }
+                  | Pull request #{ event.payload.action }
+                  |
+                  a(href=event.payload.pull_request.html_url, target='_blank') #{ event.payload.pull_request.title || `#${event.payload.number}` }
                   |
                   | in
+                  |
                   a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
-              else if event.type === 'IssuesEvent' && event.payload.action === 'opened'
+              else if event.type === 'PushEvent'
                 li
-                  | Issue created
-                  a(href=event.payload.issue.html_url, target='_blank') #{ event.payload.issue.title }
+                  | Pushed to
                   |
-                  | in
                   a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
-              else if event.type === 'IssuesEvent' && event.payload.action === 'closed'
+                  |
+                  | (#{ event.payload.ref.replace('refs/heads/', '') })
+              else if event.type === 'IssuesEvent'
                 li
-                  | Issue closed
-                  a(href=event.payload.issue.html_url, target='_blank') #{ event.payload.issue.title }
+                  | Issue #{ event.payload.action }
+                  |
+                  a(href=event.payload.issue.html_url, target='_blank') #{ event.payload.issue.title || `#${event.payload.issue.number}` }
                   |
                   | in
+                  |
                   a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
               else if event.type === 'IssueCommentEvent'
                 li
-                  | Commented
-                  a(href=event.payload.comment.html_url, target='_blank') #{ event.payload.comment.id }
+                  | Commented on issue
+                  |
+                  a(href=event.payload.issue.html_url, target='_blank') #{ event.payload.issue.title || `#${event.payload.issue.number}` }
                   |
                   | in
+                  |
                   a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
+              else if event.type === 'CreateEvent'
+                li
+                  | Created #{ event.payload.ref_type }
+                  |
+                  if event.payload.ref
+                    | #{ event.payload.ref }
+                  |
+                  | in
+                  |
+                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
+              else if event.type === 'DeleteEvent'
+                li
+                  | Deleted #{ event.payload.ref_type }
+                  |
+                  | #{ event.payload.ref }
+                  |
+                  | in
+                  |
+                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
+              else if event.type === 'ForkEvent'
+                li
+                  | Forked
+                  |
+                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
+              else if event.type === 'WatchEvent'
+                li
+                  | #{ event.payload.action === 'started' ? 'Starred' : event.payload.action }
+                  |
+                  a(href=event.repo.url.replace('api.github.com/repos', 'github.com'), target='_blank') #{ event.repo.name }
+
   else
     .alert.alert-warning
       if authFailure === 'NotLoggedIn'
         | Please log in to access your GitHub profile information.
       else if authFailure === 'NotGitHubAuthorized'
         | You are logged in but have not linked your GitHub account.
+        |
         a(href='/auth/github') Link your GitHub account
         |
         | to access your GitHub profile information.
