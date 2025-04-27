@@ -164,7 +164,7 @@ passport.use(
           const existingUser = await User.findOne({
             facebook: { $eq: profile.id },
           });
-          if (existingUser) {
+          if (existingUser && existingUser.id !== req.user.id) {
             req.flash('errors', {
               msg: 'There is another account in our system linked to your Facebook account. Please delete the duplicate account before linking Facebook to your current account.',
             });
@@ -235,7 +235,7 @@ passport.use(
           const existingUser = await User.findOne({
             github: { $eq: profile.id },
           });
-          if (existingUser) {
+          if (existingUser && existingUser.id !== req.user.id) {
             req.flash('errors', {
               msg: 'There is another account in our system linked to your GitHub account. Please delete the duplicate account before linking GitHub to your current account.',
             });
@@ -310,7 +310,7 @@ passport.use(
       try {
         if (req.user) {
           const existingUser = await User.findOne({ x: { $eq: profile.id } });
-          if (existingUser) {
+          if (existingUser && existingUser.id !== req.user.id) {
             req.flash('errors', {
               msg: 'There is another account in our system linked to your X account. Please delete the duplicate account before linking X to your current account.',
             });
@@ -370,7 +370,7 @@ const googleStrategyConfig = new GoogleStrategy(
         const existingUser = await User.findOne({
           google: { $eq: profile.id },
         });
-        if (existingUser) {
+        if (existingUser && existingUser.id !== req.user.id) {
           req.flash('errors', {
             msg: 'There is another account in our system linked to your Google account. Please delete the duplicate account before linking Google to your current account.',
           });
@@ -447,7 +447,7 @@ passport.use(
           const existingUser = await User.findOne({
             linkedin: { $eq: profile.id },
           });
-          if (existingUser) {
+          if (existingUser && existingUser.id !== req.user.id) {
             req.flash('errors', {
               msg: 'There is another account in our system linked to your LinkedIn account. Please delete the duplicate account before linking LinkedIn to your current account.',
             });
@@ -511,7 +511,7 @@ const twitchStrategyConfig = new TwitchStrategy(
         const existingUser = await User.findOne({
           twitch: { $eq: profile.id },
         });
-        if (existingUser) {
+        if (existingUser && existingUser.id !== req.user.id) {
           req.flash('errors', {
             msg: 'There is another account in our system linked to your Twitch account. Please delete the duplicate account before linking Twitch to your current account.',
           });
@@ -647,7 +647,7 @@ passport.use(
       try {
         if (req.user) {
           const existingUser = await User.findOne({ steam: { $eq: steamId } });
-          if (existingUser) {
+          if (existingUser && existingUser.id !== req.user.id) {
             req.flash('errors', {
               msg: 'There is another account in our system linked to your Steam account. Please delete the duplicate account before linking Steam to your current account.',
             });
@@ -799,7 +799,7 @@ const discordStrategyConfig = new OAuth2Strategy(
       const discordProfile = await response.json();
       if (req.user) {
         const existingUser = await User.findOne({ discord: { $eq: discordProfile.id } });
-        if (existingUser) {
+        if (existingUser && existingUser.id !== req.user.id) {
           req.flash('errors', {
             msg: 'There is another account in our system linked to your Discord account. Please delete the duplicate account before linking Discord to your current account.',
           });
