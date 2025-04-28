@@ -1213,10 +1213,19 @@ exports.getRag = async (req, res) => {
   // Ensure rag_input/ and rag_input/ingested/ exist
   const inputDir = path.join(__dirname, '../rag_input');
   const ingestedDir = path.join(inputDir, 'ingested');
-  if (!fs.existsSync(inputDir)) fs.mkdirSync(inputDir, { recursive: true });
-  if (!fs.existsSync(ingestedDir)) fs.mkdirSync(ingestedDir, { recursive: true });
 
-  // List all files in MongoDB vector DB (by hash)
+  // Create directories if they don't exist
+  if (!fs.existsSync(inputDir)) {
+    fs.mkdirSync(inputDir, { recursive: true });
+    req.flash('info', {
+      msg: 'RAG input directory created. Please add PDF files to /rag_input/ directory for processing.',
+    });
+  }
+  if (!fs.existsSync(ingestedDir)) {
+    fs.mkdirSync(ingestedDir, { recursive: true });
+  }
+
+  // List all files in MongoDB vector DB
   let ingestedFiles = [];
   try {
     const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
@@ -1225,8 +1234,6 @@ exports.getRag = async (req, res) => {
     const collection = db.collection('rag_chunks');
 
     ingestedFiles = await collection.distinct('source');
-
-    // Optional: Clean up the file paths to show just the filename
     ingestedFiles = ingestedFiles.map((filepath) => path.basename(filepath));
 
     await client.close();
@@ -1238,12 +1245,9 @@ exports.getRag = async (req, res) => {
   res.render('api/rag', {
     title: 'Retrieval-Augmented Generation (RAG) Demo',
     ingestedFiles,
-    skipped: [],
-    processed: [],
     ragResponse: null,
     llmResponse: null,
     question: '',
-    error: null,
     maxInputLength: 500,
   });
 };
@@ -1255,10 +1259,17 @@ exports.getRag = async (req, res) => {
 exports.postRagIngest = async (req, res) => {
   const inputDir = path.join(__dirname, '../rag_input');
   const ingestedDir = path.join(inputDir, 'ingested');
+
+  // Ensure directories exist
   if (!fs.existsSync(inputDir)) fs.mkdirSync(inputDir, { recursive: true });
   if (!fs.existsSync(ingestedDir)) fs.mkdirSync(ingestedDir, { recursive: true });
 
-  const files = fs.readdirSync(inputDir).filter((f) => f.endsWith('.pdf'));
+  // Get list of PDF files in input directory
+  const files = fs
+    .readdirSync(inputDir)
+    .filter((f) => f.endsWith('.pdf'))
+    .filter((f) => !f.includes('ingested')); // Exclude anything from ingested directory
+
   const skipped = [];
   const processed = [];
 
@@ -1268,75 +1279,79 @@ exports.postRagIngest = async (req, res) => {
   const db = client.db('hackathonstarter_rag');
   const collection = db.collection('rag_chunks');
 
-  // Use Promise.all to avoid await in loop and continue
-  await Promise.all(
-    files.map(async (file) => {
-      const filePath = path.join(inputDir, file);
-      const fileBuffer = fs.readFileSync(filePath);
-      const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
-
-      // Check if hash exists
-      const exists = await collection.findOne({ fileHash: hash });
-      if (exists) {
-        skipped.push(file);
-        return;
-      }
-
-      // Extract text and chunk
-      const loader = new PDFLoader(filePath, {
-        pdfjs: () => Promise.resolve(pdfjsLib),
-      });
-      const docs = await loader.load();
-      const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 200 });
-      const chunks = await splitter.splitDocuments(docs);
-
-      // Embed and store
-      const embeddings = new HuggingFaceInferenceEmbeddings({
-        apiKey: process.env.HUGGINGFACE_KEY,
-        model: process.env.HUGGINGFACE_EMBEDING_MODEL,
-      });
-      // Import
-      await MongoDBAtlasVectorSearch.fromDocuments(chunks, embeddings, {
-        collection,
-        indexName: 'default',
-        textKey: 'text',
-        embeddingKey: 'embedding',
-        extraMetadata: { fileName: file, fileHash: hash },
-      });
-
-      // Move file to ingested
-      fs.renameSync(filePath, path.join(ingestedDir, file));
-      processed.push(file);
-    }),
-  );
-
-  await client.close();
-
-  // After ingestion, get updated file list
-  let ingestedFiles = [];
   try {
-    const client2 = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
-    await client2.connect();
-    const db2 = client2.db('hackathonstarter_rag');
-    const collection2 = db2.collection('rag_chunks');
-    ingestedFiles = await collection2.distinct('fileName');
-    await client2.close();
-  } catch (err) {
-    console.log(err);
-    ingestedFiles = [];
-  }
+    // Process each file
+    await Promise.all(
+      files.map(async (file) => {
+        const filePath = path.join(inputDir, file);
+        const fileBuffer = fs.readFileSync(filePath);
+        const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
 
-  res.render('api/rag', {
-    title: 'Retrieval-Augmented Generation (RAG) Demo',
-    ingestedFiles,
-    skipped,
-    processed,
-    ragResponse: null,
-    llmResponse: null,
-    question: '',
-    error: null,
-    maxInputLength: 500,
-  });
+        // Check if hash exists
+        const exists = await collection.findOne({ fileHash: hash });
+        if (exists) {
+          skipped.push(file);
+          return;
+        }
+
+        // Extract text and chunk
+        const loader = new PDFLoader(filePath, {
+          pdfjs: () => Promise.resolve(pdfjsLib),
+        });
+        const docs = await loader.load();
+        const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 200 });
+        const chunks = await splitter.splitDocuments(docs);
+
+        // Add hash and source to each chunk
+        const chunksWithMetadata = chunks.map((chunk) => ({
+          ...chunk,
+          fileHash: hash,
+          source: filePath,
+        }));
+
+        // Embed and store
+        const embeddings = new HuggingFaceInferenceEmbeddings({
+          apiKey: process.env.HUGGINGFACE_KEY,
+          model: process.env.HUGGINGFACE_EMBEDING_MODEL,
+        });
+
+        await MongoDBAtlasVectorSearch.fromDocuments(chunksWithMetadata, embeddings, {
+          collection,
+          indexName: 'default',
+          textKey: 'text',
+          embeddingKey: 'embedding',
+        });
+
+        // Move file to ingested directory
+        fs.renameSync(filePath, path.join(ingestedDir, file));
+        processed.push(file);
+      }),
+    );
+
+    if (processed.length > 0) {
+      req.flash('success', {
+        msg: `Successfully ingested ${processed.length} new file(s): ${processed.join(', ')}`,
+      });
+    } else if (skipped.length > 0) {
+      req.flash('info', {
+        msg: `No new files to ingest. ${skipped.length} file(s) already processed: ${skipped.join(', ')}`,
+      });
+    } else {
+      req.flash('info', {
+        msg: 'No PDF files found in the input directory. Add files to /rag_input/ to process.',
+      });
+    }
+
+    res.redirect('/api/rag');
+  } catch (err) {
+    console.error('Error during ingestion:', err);
+    req.flash('errors', {
+      msg: `Error during ingestion: ${err.message}`,
+    });
+    res.redirect('/api/rag');
+  } finally {
+    await client.close();
+  }
 };
 
 /**
@@ -1345,19 +1360,10 @@ exports.postRagIngest = async (req, res) => {
  */
 exports.postRagAsk = async (req, res) => {
   const question = (req.body.question || '').slice(0, 500);
-  const maxInputLength = 500;
+
   if (!question.trim()) {
-    return res.render('api/rag', {
-      title: 'Retrieval-Augmented Generation (RAG) Demo',
-      ingestedFiles: [],
-      skipped: [],
-      processed: [],
-      ragResponse: null,
-      llmResponse: null,
-      question,
-      error: 'Please enter a question.',
-      maxInputLength,
-    });
+    req.flash('errors', { msg: 'Please enter a question.' });
+    return res.redirect('/api/rag');
   }
 
   // Get list of ingested files for display
@@ -1367,19 +1373,10 @@ exports.postRagAsk = async (req, res) => {
     await client.connect();
     const db = client.db('hackathonstarter_rag');
     const collection = db.collection('rag_chunks');
-    ingestedFiles = await collection.distinct('fileName');
-    await client.close();
-  } catch (err) {
-    console.log(err);
-    ingestedFiles = [];
-  }
+    ingestedFiles = await collection.distinct('source');
+    ingestedFiles = ingestedFiles.map((filepath) => path.basename(filepath));
 
-  try {
     // Setup vector store and embeddings
-    const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
-    await client.connect();
-    const db = client.db('hackathonstarter_rag');
-    const collection = db.collection('rag_chunks');
     const embeddings = new HuggingFaceInferenceEmbeddings({
       apiKey: process.env.HUGGINGFACE_KEY,
       model: process.env.HUGGINGFACE_EMBEDING_MODEL || 'BAAI/bge-large-en-v1.5',
@@ -1414,26 +1411,15 @@ exports.postRagAsk = async (req, res) => {
     res.render('api/rag', {
       title: 'Retrieval-Augmented Generation (RAG) Demo',
       ingestedFiles,
-      skipped: [],
-      processed: [],
       ragResponse: ragResponse.content,
       llmResponse: llmResponse.content,
       question,
-      error: null,
-      maxInputLength,
+      maxInputLength: 500,
     });
   } catch (error) {
-    res.render('api/rag', {
-      title: 'Retrieval-Augmented Generation (RAG) Demo',
-      ingestedFiles,
-      skipped: [],
-      processed: [],
-      ragResponse: null,
-      llmResponse: null,
-      question,
-      error: `Error: ${error.message}`,
-      maxInputLength,
-    });
+    console.error('RAG Error:', error);
+    req.flash('errors', { msg: `Error: ${error.message}` });
+    res.redirect('/api/rag');
   }
 };
 

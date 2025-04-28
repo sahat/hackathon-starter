@@ -1,51 +1,79 @@
 extends ../layout
 
 block content
-  h1= title
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fas.fa-robot.fa-sm
+      | Retrieval-Augmented Generation (RAG) Demo
 
-  if error
-    .alert.alert-danger= error
+  .row
+    .col-md-6
+      .card
+        .card-body
+          h3 Ingested Files
+          if ingestedFiles && ingestedFiles.length > 0
+            table.table
+              thead
+                tr
+                  th File Name
+              tbody
+                each file in ingestedFiles
+                  tr
+                    td= file
+          else
+            p.text-muted No files ingested yet.
 
-  h2 Ingested Files
-  ul
-    each file in ingestedFiles
-      li= file
-    if !ingestedFiles.length
-      li No files ingested yet.
+          form(action='/api/rag/ingest', method='POST')
+            input(type='hidden', name='_csrf', value=_csrf)
+            button.btn.btn-primary(type='submit')
+              i.fas.fa-sync.fa-sm
+              |
+              | Update Data
 
-  form(action='/api/rag/ingest', method='post')
-    input(type='hidden', name='_csrf', value=_csrf)
-    button.btn.btn-primary(type='submit') Update Data
-
-  if processed.length || skipped.length
-    h3 Ingestion Results
-    if processed.length
-      p.text-success Processed:
-      ul
-        each f in processed
-          li= f
-    if skipped.length
-      p.text-warning Skipped (already ingested):
-      ul
-        each f in skipped
-          li= f
-
-  hr
-
-  h2 Ask a Question
-  form(action='/api/rag/ask', method='post')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label(for='question') Question (max #{ maxInputLength } chars):
-      input#question.form-control(type='text', name='question', maxlength=maxInputLength, value=question)
-    button.btn.btn-success(type='submit') Ask
+    .col-md-6
+      .card
+        .card-body
+          h3 Ask a Question
+          form(action='/api/rag/ask', method='POST')
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group
+              label(for='question') Your Question:
+              textarea#question.form-control(name='question', rows='3', maxlength=maxInputLength, required)= question
+            button.btn.btn-primary.mt-3(type='submit')
+              i.fas.fa-paper-plane.fa-sm
+              |
+              | Ask
 
   if ragResponse || llmResponse
-    h3 Results
-    .row
-      .col-md-6
-        h4 RAG (with retrieval)
-        pre= ragResponse
-      .col-md-6
-        h4 LLM only (no retrieval)
-        pre= llmResponse
+    .row.mt-4
+      if ragResponse
+        .col-md-6
+          .card
+            .card-body
+              h3
+                i.fas.fa-database.fa-sm
+                |
+                | RAG Response
+              .response-box
+                pre.text-wrap= ragResponse
+      if llmResponse
+        .col-md-6
+          .card
+            .card-body
+              h3
+                i.fas.fa-brain.fa-sm
+                |
+                | LLM Response
+              .response-box
+                pre.text-wrap= llmResponse
+  style.
+    .response-box {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    pre.text-wrap {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
