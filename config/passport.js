@@ -360,7 +360,7 @@ const googleStrategyConfig = new GoogleStrategy(
     callbackURL: '/auth/google/callback',
     scope: ['profile', 'email', 'https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
     accessType: 'offline',
-    prompt: 'consent',
+    // prompt: 'consent',
     state: generateState(),
     passReqToCallback: true,
   },

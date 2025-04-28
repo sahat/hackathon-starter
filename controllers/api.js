@@ -15,6 +15,15 @@ const googlesheets = require('@googleapis/sheets');
 const validator = require('validator');
 const { Configuration: LobConfiguration, LetterEditable, LettersApi, ZipEditable, ZipLookupsApi } = require('@lob/lob-typescript-sdk');
 const fs = require('fs');
+const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
+const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
+const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
+const { MongoDBAtlasVectorSearch } = require('@langchain/mongodb');
+const { ChatTogetherAI } = require('@langchain/community/chat_models/togetherai');
+const { HumanMessage } = require('@langchain/core/messages');
+const { MongoClient } = require('mongodb');
+// eslint-disable-next-line import/extensions
+const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
 
 /**
  * GET /api
@@ -1194,6 +1203,238 @@ exports.getGoogleSheets = (req, res) => {
       });
     },
   );
+};
+
+/**
+ * GET /api/rag
+ * RAG dashboard: show ingested files, allow question submission, show results.
+ */
+exports.getRag = async (req, res) => {
+  // Ensure rag_input/ and rag_input/ingested/ exist
+  const inputDir = path.join(__dirname, '../rag_input');
+  const ingestedDir = path.join(inputDir, 'ingested');
+  if (!fs.existsSync(inputDir)) fs.mkdirSync(inputDir, { recursive: true });
+  if (!fs.existsSync(ingestedDir)) fs.mkdirSync(ingestedDir, { recursive: true });
+
+  // List all files in MongoDB vector DB (by hash)
+  let ingestedFiles = [];
+  try {
+    const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
+    await client.connect();
+    const db = client.db('hackathonstarter_rag');
+    const collection = db.collection('rag_chunks');
+
+    ingestedFiles = await collection.distinct('source');
+
+    // Optional: Clean up the file paths to show just the filename
+    ingestedFiles = ingestedFiles.map((filepath) => path.basename(filepath));
+
+    await client.close();
+  } catch (err) {
+    console.log(err);
+    ingestedFiles = [];
+  }
+
+  res.render('api/rag', {
+    title: 'Retrieval-Augmented Generation (RAG) Demo',
+    ingestedFiles,
+    skipped: [],
+    processed: [],
+    ragResponse: null,
+    llmResponse: null,
+    question: '',
+    error: null,
+    maxInputLength: 500,
+  });
+};
+
+/**
+ * POST /api/rag/ingest
+ * Scan rag_input/, ingest new PDFs, update MongoDB, move files, return status.
+ */
+exports.postRagIngest = async (req, res) => {
+  const inputDir = path.join(__dirname, '../rag_input');
+  const ingestedDir = path.join(inputDir, 'ingested');
+  if (!fs.existsSync(inputDir)) fs.mkdirSync(inputDir, { recursive: true });
+  if (!fs.existsSync(ingestedDir)) fs.mkdirSync(ingestedDir, { recursive: true });
+
+  const files = fs.readdirSync(inputDir).filter((f) => f.endsWith('.pdf'));
+  const skipped = [];
+  const processed = [];
+
+  // Connect to MongoDB
+  const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
+  await client.connect();
+  const db = client.db('hackathonstarter_rag');
+  const collection = db.collection('rag_chunks');
+
+  // Use Promise.all to avoid await in loop and continue
+  await Promise.all(
+    files.map(async (file) => {
+      const filePath = path.join(inputDir, file);
+      const fileBuffer = fs.readFileSync(filePath);
+      const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
+
+      // Check if hash exists
+      const exists = await collection.findOne({ fileHash: hash });
+      if (exists) {
+        skipped.push(file);
+        return;
+      }
+
+      // Extract text and chunk
+      const loader = new PDFLoader(filePath, {
+        pdfjs: () => Promise.resolve(pdfjsLib),
+      });
+      const docs = await loader.load();
+      const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 200 });
+      const chunks = await splitter.splitDocuments(docs);
+
+      // Embed and store
+      const embeddings = new HuggingFaceInferenceEmbeddings({
+        apiKey: process.env.HUGGINGFACE_KEY,
+        model: process.env.HUGGINGFACE_EMBEDING_MODEL,
+      });
+      // Import
+      await MongoDBAtlasVectorSearch.fromDocuments(chunks, embeddings, {
+        collection,
+        indexName: 'default',
+        textKey: 'text',
+        embeddingKey: 'embedding',
+        extraMetadata: { fileName: file, fileHash: hash },
+      });
+
+      // Move file to ingested
+      fs.renameSync(filePath, path.join(ingestedDir, file));
+      processed.push(file);
+    }),
+  );
+
+  await client.close();
+
+  // After ingestion, get updated file list
+  let ingestedFiles = [];
+  try {
+    const client2 = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
+    await client2.connect();
+    const db2 = client2.db('hackathonstarter_rag');
+    const collection2 = db2.collection('rag_chunks');
+    ingestedFiles = await collection2.distinct('fileName');
+    await client2.close();
+  } catch (err) {
+    console.log(err);
+    ingestedFiles = [];
+  }
+
+  res.render('api/rag', {
+    title: 'Retrieval-Augmented Generation (RAG) Demo',
+    ingestedFiles,
+    skipped,
+    processed,
+    ragResponse: null,
+    llmResponse: null,
+    question: '',
+    error: null,
+    maxInputLength: 500,
+  });
+};
+
+/**
+ * POST /api/rag/ask
+ * Accepts a question, runs RAG and non-RAG queries, returns both responses.
+ */
+exports.postRagAsk = async (req, res) => {
+  const question = (req.body.question || '').slice(0, 500);
+  const maxInputLength = 500;
+  if (!question.trim()) {
+    return res.render('api/rag', {
+      title: 'Retrieval-Augmented Generation (RAG) Demo',
+      ingestedFiles: [],
+      skipped: [],
+      processed: [],
+      ragResponse: null,
+      llmResponse: null,
+      question,
+      error: 'Please enter a question.',
+      maxInputLength,
+    });
+  }
+
+  // Get list of ingested files for display
+  let ingestedFiles = [];
+  try {
+    const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
+    await client.connect();
+    const db = client.db('hackathonstarter_rag');
+    const collection = db.collection('rag_chunks');
+    ingestedFiles = await collection.distinct('fileName');
+    await client.close();
+  } catch (err) {
+    console.log(err);
+    ingestedFiles = [];
+  }
+
+  try {
+    // Setup vector store and embeddings
+    const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
+    await client.connect();
+    const db = client.db('hackathonstarter_rag');
+    const collection = db.collection('rag_chunks');
+    const embeddings = new HuggingFaceInferenceEmbeddings({
+      apiKey: process.env.HUGGINGFACE_KEY,
+      model: process.env.HUGGINGFACE_EMBEDING_MODEL || 'BAAI/bge-large-en-v1.5',
+    });
+    const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
+      collection,
+      indexName: 'default',
+      textKey: 'text',
+      embeddingKey: 'embedding',
+    });
+
+    // Retrieve top 4 relevant chunks
+    const relevantDocs = await vectorStore.similaritySearch(question, 4);
+    const context = relevantDocs.map((doc) => doc.pageContent).join('\n---\n');
+
+    // Setup LLM
+    const llm = new ChatTogetherAI({
+      apiKey: process.env.TOGETHERAI_API_KEY,
+      modelName: process.env.TOGETHERAI_MODEL,
+    });
+
+    // RAG prompt
+    const ragPrompt = `You are an assistant. Use the following context to answer the user's question.\n\nContext:\n${context}\n\nQuestion: ${question}\nAnswer:`;
+    // Non-RAG prompt
+    const llmPrompt = `Answer the following question as best as you can:\n${question}\nAnswer:`;
+
+    // Run both in parallel
+    const [ragResponse, llmResponse] = await Promise.all([llm.invoke([new HumanMessage(ragPrompt)]), llm.invoke([new HumanMessage(llmPrompt)])]);
+
+    await client.close();
+
+    res.render('api/rag', {
+      title: 'Retrieval-Augmented Generation (RAG) Demo',
+      ingestedFiles,
+      skipped: [],
+      processed: [],
+      ragResponse: ragResponse.content,
+      llmResponse: llmResponse.content,
+      question,
+      error: null,
+      maxInputLength,
+    });
+  } catch (error) {
+    res.render('api/rag', {
+      title: 'Retrieval-Augmented Generation (RAG) Demo',
+      ingestedFiles,
+      skipped: [],
+      processed: [],
+      ragResponse: null,
+      llmResponse: null,
+      question,
+      error: `Error: ${error.message}`,
+      maxInputLength,
+    });
+  }
 };
 
 /**

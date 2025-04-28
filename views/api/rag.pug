@@ -1,0 +1,51 @@
+extends ../layout
+
+block content
+  h1= title
+
+  if error
+    .alert.alert-danger= error
+
+  h2 Ingested Files
+  ul
+    each file in ingestedFiles
+      li= file
+    if !ingestedFiles.length
+      li No files ingested yet.
+
+  form(action='/api/rag/ingest', method='post')
+    input(type='hidden', name='_csrf', value=_csrf)
+    button.btn.btn-primary(type='submit') Update Data
+
+  if processed.length || skipped.length
+    h3 Ingestion Results
+    if processed.length
+      p.text-success Processed:
+      ul
+        each f in processed
+          li= f
+    if skipped.length
+      p.text-warning Skipped (already ingested):
+      ul
+        each f in skipped
+          li= f
+
+  hr
+
+  h2 Ask a Question
+  form(action='/api/rag/ask', method='post')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label(for='question') Question (max #{ maxInputLength } chars):
+      input#question.form-control(type='text', name='question', maxlength=maxInputLength, value=question)
+    button.btn.btn-success(type='submit') Ask
+
+  if ragResponse || llmResponse
+    h3 Results
+    .row
+      .col-md-6
+        h4 RAG (with retrieval)
+        pre= ragResponse
+      .col-md-6
+        h4 LLM only (no retrieval)
+        pre= llmResponse

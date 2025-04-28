@@ -87,7 +87,7 @@ console.log('Run this app using "npm start" to include sass/scss/css builds.\n')
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, { dbName: 'hackathonstarter' });
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('MongoDB connection error. Please make sure MongoDB is running.');
@@ -117,7 +117,7 @@ app.use(
       maxAge: 1209600000, // Two weeks in milliseconds
       secure: secureTransfer,
     },
-    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI, dbName: 'hackathonstarter' }),
   }),
 );
 app.use(passport.initialize());
@@ -237,6 +237,9 @@ app.get('/api/togetherai-classifier', apiController.getTogetherAIClassifier);
 app.post('/api/togetherai-classifier', apiController.postTogetherAIClassifier);
 app.get('/api/togetherai-camera', lusca({ csrf: true }), apiController.getTogetherAICamera);
 app.post('/api/togetherai-camera', strictLimiter, apiController.imageUploadMiddleware, lusca({ csrf: true }), apiController.postTogetherAICamera);
+app.get('/api/rag', apiController.getRag);
+app.post('/api/rag/ingest', apiController.postRagIngest);
+app.post('/api/rag/ask', apiController.postRagAsk);
 
 /**
  * OAuth authentication failure handler (common for all providers)
