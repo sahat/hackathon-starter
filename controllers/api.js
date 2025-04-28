@@ -1208,84 +1208,70 @@ exports.getGoogleSheets = (req, res) => {
 /**
  * Helper function to ensure vector search index exists for RAG Example
  */
+/**
+ * Helper function to ensure vector search index exists for RAG Example
+ */
 async function ensureVectorIndex(db) {
+  const COLLECTION_NAME = 'rag_chunks';
+
+  // Get list of collections
+  const collections = await db.listCollections({ name: COLLECTION_NAME }).toArray();
+
   // First ensure collection exists
   let collection;
-  try {
-    collection = await db.createCollection('rag_chunks');
-    console.log('Collection rag_chunks created');
-  } catch (e) {
-    if (e.code === 48) {
-      // Collection already exists
-      collection = db.collection('rag_chunks');
-      console.log('Collection rag_chunks already exists');
-    } else {
-      throw e;
-    }
+  if (collections.length === 0) {
+    collection = await db.createCollection(COLLECTION_NAME);
+    console.log(`Collection ${COLLECTION_NAME} created`);
+  } else {
+    collection = db.collection(COLLECTION_NAME);
+    console.log(`Collection ${COLLECTION_NAME} already exists`);
   }
 
-  // Check if we have any documents with embeddings
-  const sampleDoc = await collection.findOne({ embedding: { $exists: true } });
-
-  if (!sampleDoc || !sampleDoc.embedding || !Array.isArray(sampleDoc.embedding)) {
-    console.log('No documents with embeddings found yet. Skipping index creation.');
-    return collection;
-  }
-
-  // Get dimensions from the first document's embedding
-  const dimensions = sampleDoc.embedding.length;
-  console.log(`Detected embedding dimensions: ${dimensions}`);
-
-  // Define the index configuration based on the detected dimensions
-  const indexConfig = {
-    name: 'default',
-    definition: {
-      mappings: {
-        dynamic: true,
-        fields: {
-          embedding: {
-            dimensions,
-            similarity: 'cosine',
-            type: 'knnVector',
-          },
-        },
-      },
-    },
-  };
-
-  // Check if index exists
+  // Ensure hash index exists
   const indexes = await collection.listIndexes().toArray();
-  const vectorIndexExists = indexes.some((index) => index.name === 'default');
+  const hashIndexExists = indexes.some((index) => index.key && index.key['metadata.fileHash']);
+
+  if (!hashIndexExists) {
+    await collection.createIndex({ 'metadata.fileHash': 1 });
+    console.log('Created index on metadata.fileHash');
+  }
+
+  // Check if vector search index exists
+  const searchIndexes = await collection.listSearchIndexes().toArray();
+  const vectorIndexExists = searchIndexes.some((index) => index.name === 'default');
 
   if (!vectorIndexExists) {
-    console.log('Creating vector search index...');
-    await collection.createSearchIndex(indexConfig);
-    console.log('Vector search index created successfully');
-  } else {
-    // Verify existing index has correct parameters
-    const indexSpecs = await collection.listSearchIndexes().toArray();
-    const existingIndex = indexSpecs.find((index) => index.name === 'default');
-    if (!existingIndex || !existingIndex.definition || !existingIndex.definition.mappings || !existingIndex.definition.mappings.fields || !existingIndex.definition.mappings.fields.embedding) {
-      console.log('Existing index is malformed, recreating...');
-      await collection.dropSearchIndex('default');
-      await collection.createSearchIndex(indexConfig);
+    // Only check for dimensions if we need to create the index
+    const sampleDoc = await collection.findOne({ embedding: { $exists: true } });
+
+    if (!sampleDoc?.embedding?.length) {
+      console.log('No documents with embeddings found yet. Skipping vector index creation.');
       return collection;
     }
 
-    const existingParams = existingIndex.definition.mappings.fields.embedding;
-    const paramsMatch = existingParams.dimensions === dimensions;
+    const dimensions = sampleDoc.embedding.length;
+    console.log(`Creating vector index with detected embedding dimensions: ${dimensions}`);
 
-    if (!paramsMatch) {
-      console.log('Index dimensions mismatch.');
-      console.log('Current:', existingParams.dimensions);
-      console.log('Required:', dimensions);
-      console.log('Recreating index with correct dimensions...');
-      await collection.dropSearchIndex('default');
-      await collection.createSearchIndex(indexConfig);
-      console.log('Vector search index recreated with correct dimensions');
-    } else {
-      console.log('Vector search index exists with correct dimensions');
-    }
+    const indexConfig = {
+      name: 'default',
+      definition: {
+        mappings: {
+          dynamic: true,
+          fields: {
+            embedding: {
+              dimensions,
+              similarity: 'cosine',
+              type: 'knnVector',
+            },
+          },
+        },
+      },
+    };
+
+    await collection.createSearchIndex(indexConfig);
+    console.log('Vector search index created successfully');
+  } else {
+    console.log('Vector search index already exists');
   }
 
   return collection;
@@ -1356,31 +1342,47 @@ exports.postRagIngest = async (req, res) => {
     .filter((f) => f.endsWith('.pdf'))
     .filter((f) => !f.includes('ingested')); // Exclude anything from ingested directory
 
+  if (files.length === 0) {
+    req.flash('info', {
+      msg: 'No PDF files found in the input directory. Add files to /rag_input/ to process.',
+    });
+    return res.redirect('/api/rag');
+  }
+
   const skipped = [];
   const processed = [];
 
   // Connect to MongoDB
-  const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
-  await client.connect();
-  const db = client.db('hackathonstarter_rag');
+  const client = new MongoClient(process.env.MONGODB_URI);
 
   try {
+    await client.connect();
+    const db = client.db('hackathonstarter_rag');
     const collection = await ensureVectorIndex(db);
-    // Process each file
-    await Promise.all(
-      files.map(async (file) => {
-        const filePath = path.join(inputDir, file);
-        const fileBuffer = fs.readFileSync(filePath);
-        const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
 
-        // Check if hash exists
-        const exists = await collection.findOne({ 'metadata.fileHash': hash });
-        if (exists) {
-          skipped.push(file);
-          return;
-        }
+    // Process files sequentially using reduce
+    await files.reduce(async (promise, file) => {
+      // Wait for the previous file to finish processing
+      await promise;
 
-        // Extract text and chunk
+      const filePath = path.join(inputDir, file);
+      const fileBuffer = fs.readFileSync(filePath);
+      const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
+
+      // Check if hash exists
+      const hashCount = await collection.countDocuments({ fileHash: hash }); // Changed from 'metadata.fileHash'
+
+      if (hashCount > 0) {
+        console.log(`File ${file} already processed (hash: ${hash}, found ${hashCount} existing chunks)`);
+        skipped.push(file);
+        // Move to ingested even if skipped
+        fs.renameSync(filePath, path.join(ingestedDir, file));
+        return promise;
+      }
+
+      console.log(`Processing new file ${file} (hash: ${hash})`);
+
+      try {
         const loader = new PDFLoader(filePath, {
           pdfjs: () => Promise.resolve(pdfjsLib),
         });
@@ -1388,20 +1390,19 @@ exports.postRagIngest = async (req, res) => {
         const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 200 });
         const chunks = await splitter.splitDocuments(docs);
 
-        // Add hash and source to each chunk
         const chunksWithMetadata = chunks.map((chunk) => ({
           ...chunk,
           metadata: {
             ...chunk.metadata,
             fileHash: hash,
+            fileName: file,
+            source: filePath,
           },
-          source: filePath,
         }));
 
-        // Embed and store
         const embeddings = new HuggingFaceInferenceEmbeddings({
           apiKey: process.env.HUGGINGFACE_KEY,
-          model: process.env.HUGGINGFACE_EMBEDING_MODEL || 'BAAI/bge-large-en-v1.5',
+          model: process.env.HUGGINGFACE_EMBEDING_MODEL || 'sentence-transformers/all-MiniLM-L6-v2',
         });
 
         await MongoDBAtlasVectorSearch.fromDocuments(chunksWithMetadata, embeddings, {
@@ -1411,11 +1412,14 @@ exports.postRagIngest = async (req, res) => {
           embeddingKey: 'embedding',
         });
 
-        // Move file to ingested directory
         fs.renameSync(filePath, path.join(ingestedDir, file));
         processed.push(file);
-      }),
-    );
+        console.log(`Successfully processed ${file} (hash: ${hash})`);
+      } catch (err) {
+        console.error(`Error processing file ${file}:`, err);
+        throw err;
+      }
+    }, Promise.resolve());
 
     if (processed.length > 0) {
       req.flash('success', {
@@ -1425,22 +1429,16 @@ exports.postRagIngest = async (req, res) => {
       req.flash('info', {
         msg: `No new files to ingest. ${skipped.length} file(s) already processed: ${skipped.join(', ')}`,
       });
-    } else {
-      req.flash('info', {
-        msg: 'No PDF files found in the input directory. Add files to /rag_input/ to process.',
-      });
     }
-
-    res.redirect('/api/rag');
   } catch (err) {
     console.error('Error during ingestion:', err);
     req.flash('errors', {
       msg: `Error during ingestion: ${err.message}`,
     });
-    res.redirect('/api/rag');
   } finally {
     await client.close();
   }
+  res.redirect('/api/rag');
 };
 
 /**
