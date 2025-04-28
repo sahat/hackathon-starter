@@ -1206,6 +1206,92 @@ exports.getGoogleSheets = (req, res) => {
 };
 
 /**
+ * Helper function to ensure vector search index exists for RAG Example
+ */
+async function ensureVectorIndex(db) {
+  // First ensure collection exists
+  let collection;
+  try {
+    collection = await db.createCollection('rag_chunks');
+    console.log('Collection rag_chunks created');
+  } catch (e) {
+    if (e.code === 48) {
+      // Collection already exists
+      collection = db.collection('rag_chunks');
+      console.log('Collection rag_chunks already exists');
+    } else {
+      throw e;
+    }
+  }
+
+  // Check if we have any documents with embeddings
+  const sampleDoc = await collection.findOne({ embedding: { $exists: true } });
+
+  if (!sampleDoc || !sampleDoc.embedding || !Array.isArray(sampleDoc.embedding)) {
+    console.log('No documents with embeddings found yet. Skipping index creation.');
+    return collection;
+  }
+
+  // Get dimensions from the first document's embedding
+  const dimensions = sampleDoc.embedding.length;
+  console.log(`Detected embedding dimensions: ${dimensions}`);
+
+  // Define the index configuration based on the detected dimensions
+  const indexConfig = {
+    name: 'default',
+    definition: {
+      mappings: {
+        dynamic: true,
+        fields: {
+          embedding: {
+            dimensions,
+            similarity: 'cosine',
+            type: 'knnVector',
+          },
+        },
+      },
+    },
+  };
+
+  // Check if index exists
+  const indexes = await collection.listIndexes().toArray();
+  const vectorIndexExists = indexes.some((index) => index.name === 'default');
+
+  if (!vectorIndexExists) {
+    console.log('Creating vector search index...');
+    await collection.createSearchIndex(indexConfig);
+    console.log('Vector search index created successfully');
+  } else {
+    // Verify existing index has correct parameters
+    const indexSpecs = await collection.listSearchIndexes().toArray();
+    const existingIndex = indexSpecs.find((index) => index.name === 'default');
+    if (!existingIndex || !existingIndex.definition || !existingIndex.definition.mappings || !existingIndex.definition.mappings.fields || !existingIndex.definition.mappings.fields.embedding) {
+      console.log('Existing index is malformed, recreating...');
+      await collection.dropSearchIndex('default');
+      await collection.createSearchIndex(indexConfig);
+      return collection;
+    }
+
+    const existingParams = existingIndex.definition.mappings.fields.embedding;
+    const paramsMatch = existingParams.dimensions === dimensions;
+
+    if (!paramsMatch) {
+      console.log('Index dimensions mismatch.');
+      console.log('Current:', existingParams.dimensions);
+      console.log('Required:', dimensions);
+      console.log('Recreating index with correct dimensions...');
+      await collection.dropSearchIndex('default');
+      await collection.createSearchIndex(indexConfig);
+      console.log('Vector search index recreated with correct dimensions');
+    } else {
+      console.log('Vector search index exists with correct dimensions');
+    }
+  }
+
+  return collection;
+}
+
+/**
  * GET /api/rag
  * RAG dashboard: show ingested files, allow question submission, show results.
  */
@@ -1231,7 +1317,7 @@ exports.getRag = async (req, res) => {
     const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
     await client.connect();
     const db = client.db('hackathonstarter_rag');
-    const collection = db.collection('rag_chunks');
+    const collection = await ensureVectorIndex(db);
 
     ingestedFiles = await collection.distinct('source');
     ingestedFiles = ingestedFiles.map((filepath) => path.basename(filepath));
@@ -1277,9 +1363,9 @@ exports.postRagIngest = async (req, res) => {
   const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
   await client.connect();
   const db = client.db('hackathonstarter_rag');
-  const collection = db.collection('rag_chunks');
 
   try {
+    const collection = await ensureVectorIndex(db);
     // Process each file
     await Promise.all(
       files.map(async (file) => {
@@ -1288,7 +1374,7 @@ exports.postRagIngest = async (req, res) => {
         const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
 
         // Check if hash exists
-        const exists = await collection.findOne({ fileHash: hash });
+        const exists = await collection.findOne({ 'metadata.fileHash': hash });
         if (exists) {
           skipped.push(file);
           return;
@@ -1305,14 +1391,17 @@ exports.postRagIngest = async (req, res) => {
         // Add hash and source to each chunk
         const chunksWithMetadata = chunks.map((chunk) => ({
           ...chunk,
-          fileHash: hash,
+          metadata: {
+            ...chunk.metadata,
+            fileHash: hash,
+          },
           source: filePath,
         }));
 
         // Embed and store
         const embeddings = new HuggingFaceInferenceEmbeddings({
           apiKey: process.env.HUGGINGFACE_KEY,
-          model: process.env.HUGGINGFACE_EMBEDING_MODEL,
+          model: process.env.HUGGINGFACE_EMBEDING_MODEL || 'BAAI/bge-large-en-v1.5',
         });
 
         await MongoDBAtlasVectorSearch.fromDocuments(chunksWithMetadata, embeddings, {
@@ -1372,7 +1461,8 @@ exports.postRagAsk = async (req, res) => {
     const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
     await client.connect();
     const db = client.db('hackathonstarter_rag');
-    const collection = db.collection('rag_chunks');
+    const collection = await ensureVectorIndex(db);
+
     ingestedFiles = await collection.distinct('source');
     ingestedFiles = ingestedFiles.map((filepath) => path.basename(filepath));
 
