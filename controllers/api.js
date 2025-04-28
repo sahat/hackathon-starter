@@ -1208,9 +1208,6 @@ exports.getGoogleSheets = (req, res) => {
 /**
  * Helper function to ensure vector search index exists for RAG Example
  */
-/**
- * Helper function to ensure vector search index exists for RAG Example
- */
 async function ensureVectorIndex(db) {
   const COLLECTION_NAME = 'rag_chunks';
 
@@ -1229,11 +1226,10 @@ async function ensureVectorIndex(db) {
 
   // Ensure hash index exists
   const indexes = await collection.listIndexes().toArray();
-  const hashIndexExists = indexes.some((index) => index.key && index.key['metadata.fileHash']);
-
+  const hashIndexExists = indexes.some((index) => index.key && index.key.fileHash === 1);
   if (!hashIndexExists) {
-    await collection.createIndex({ 'metadata.fileHash': 1 });
-    console.log('Created index on metadata.fileHash');
+    await collection.createIndex({ fileHash: 1 });
+    console.log('Created index on fileHash');
   }
 
   // Check if vector search index exists
@@ -1300,9 +1296,9 @@ exports.getRag = async (req, res) => {
   // List all files in MongoDB vector DB
   let ingestedFiles = [];
   try {
-    const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
+    const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
-    const db = client.db('hackathonstarter_rag');
+    const db = client.db();
     const collection = await ensureVectorIndex(db);
 
     ingestedFiles = await collection.distinct('source');
@@ -1357,7 +1353,7 @@ exports.postRagIngest = async (req, res) => {
 
   try {
     await client.connect();
-    const db = client.db('hackathonstarter_rag');
+    const db = client.db();
     const collection = await ensureVectorIndex(db);
 
     // Process files sequentially using reduce
@@ -1402,7 +1398,7 @@ exports.postRagIngest = async (req, res) => {
 
         const embeddings = new HuggingFaceInferenceEmbeddings({
           apiKey: process.env.HUGGINGFACE_KEY,
-          model: process.env.HUGGINGFACE_EMBEDING_MODEL || 'sentence-transformers/all-MiniLM-L6-v2',
+          model: process.env.HUGGINGFACE_EMBEDING_MODEL,
         });
 
         await MongoDBAtlasVectorSearch.fromDocuments(chunksWithMetadata, embeddings, {
@@ -1421,9 +1417,13 @@ exports.postRagIngest = async (req, res) => {
       }
     }, Promise.resolve());
 
-    if (processed.length > 0) {
+    if (processed.length > 0 && skipped.length > 0) {
       req.flash('success', {
-        msg: `Successfully ingested ${processed.length} new file(s): ${processed.join(', ')}`,
+        msg: `Successfully ingested ${processed.length} file(s): ${processed.join(', ')}. Skipped ${skipped.length} existing file(s): ${skipped.join(', ')}`,
+      });
+    } else if (processed.length > 0) {
+      req.flash('success', {
+        msg: `Successfully ingested ${processed.length} file(s): ${processed.join(', ')}`,
       });
     } else if (skipped.length > 0) {
       req.flash('info', {
@@ -1456,9 +1456,9 @@ exports.postRagAsk = async (req, res) => {
   // Get list of ingested files for display
   let ingestedFiles = [];
   try {
-    const client = new MongoClient(process.env.MONGODB_URI, { dbName: 'hackathonstarter_rag' });
+    const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
-    const db = client.db('hackathonstarter_rag');
+    const db = client.db();
     const collection = await ensureVectorIndex(db);
 
     ingestedFiles = await collection.distinct('source');
@@ -1467,7 +1467,7 @@ exports.postRagAsk = async (req, res) => {
     // Setup vector store and embeddings
     const embeddings = new HuggingFaceInferenceEmbeddings({
       apiKey: process.env.HUGGINGFACE_KEY,
-      model: process.env.HUGGINGFACE_EMBEDING_MODEL || 'BAAI/bge-large-en-v1.5',
+      model: process.env.HUGGINGFACE_EMBEDING_MODEL,
     });
     const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
       collection,

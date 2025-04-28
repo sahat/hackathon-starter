@@ -21,6 +21,7 @@ export default [
         ...globals.node,
         ...globals.mocha,
       },
+      ecmaVersion: 2022,
     },
 
     rules: {

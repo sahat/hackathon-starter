@@ -3,6 +3,22 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
+      i.fas.fa-robot.iconpadding
+      | Retrieval-Augmented Generation (RAG) Demo
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://huggingface.co/docs/api-inference/index', target='_blank')
+      i.fas.fa-brain.fa-sm.iconpadding
+      | Hugging Face Inference API
+    a.btn.btn-primary.w-100(href='https://www.mongodb.com/docs/atlas/atlas-vector-search/', target='_blank')
+      i.fas.fa-database.fa-sm.iconpadding
+      | MongoDB Vector Search
+    a.btn.btn-primary.w-100(href='https://js.langchain.com/docs/modules/indexes/vector_stores/integrations/mongodb_atlas', target='_blank')
+      i.fas.fa-link.fa-sm.iconpadding
+      | LangChain.js MongoDB
+
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
       i.fas.fa-robot.fa-sm
       | Retrieval-Augmented Generation (RAG) Demo
 

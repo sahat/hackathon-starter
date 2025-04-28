@@ -87,7 +87,7 @@ console.log('Run this app using "npm start" to include sass/scss/css builds.\n')
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(process.env.MONGODB_URI, { dbName: 'hackathonstarter' });
+mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('MongoDB connection error. Please make sure MongoDB is running.');
@@ -117,7 +117,7 @@ app.use(
       maxAge: 1209600000, // Two weeks in milliseconds
       secure: secureTransfer,
     },
-    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI, dbName: 'hackathonstarter' }),
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
   }),
 );
 app.use(passport.initialize());
