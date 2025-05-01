@@ -19,8 +19,11 @@ const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
 const { MongoDBAtlasVectorSearch } = require('@langchain/mongodb');
+const { MongoDBStore } = require('@langchain/mongodb');
 const { ChatTogetherAI } = require('@langchain/community/chat_models/togetherai');
 const { HumanMessage } = require('@langchain/core/messages');
+const { CacheBackedEmbeddings } = require('langchain/embeddings/cache_backed');
+const { LocalFileCache } = require('langchain/cache/file_system');
 const { MongoClient } = require('mongodb');
 // eslint-disable-next-line import/extensions
 const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
@@ -1208,13 +1211,17 @@ exports.getGoogleSheets = (req, res) => {
 /**
  * Helper function to ensure vector search index exists for RAG Example
  */
+// RAG collection name
+const RAG_CHUNKS = 'rag_chunks';
+const DOC_EMBEDDINGS_CACHE = 'doc_emb_cache';
+const QUERY_EMBEDDINGS_CACHE = 'query_emb_cache';
 
 // Initialization flags
-let ragFolderInitialized = false;
-let ragCollectionInitialized = false;
-let ragIndexCreated = false;
+let ragFolderReady = false;
+let ragCollectionReady = false;
+let vectorIndexConfigured = false;
 
-function initializeRagFolder() {
+function prepareRagFolder() {
   const inputDir = path.join(__dirname, '../rag_input');
   const ingestedDir = path.join(inputDir, 'ingested');
   if (!fs.existsSync(inputDir)) {
@@ -1223,99 +1230,121 @@ function initializeRagFolder() {
   if (!fs.existsSync(ingestedDir)) {
     fs.mkdirSync(ingestedDir, { recursive: true });
   }
-  ragFolderInitialized = true;
+  ragFolderReady = true;
 }
 
 /**
  * Initialize the MongoDB collection for RAG
  */
-async function initializeRagCollection(db) {
-  const COLLECTION_NAME = 'rag_chunks';
-
+async function setupRagCollection(db) {
   // Check if the collection exists
-  const collections = await db.listCollections({ name: COLLECTION_NAME }).toArray();
+  const collections = await db.listCollections({ name: RAG_CHUNKS }).toArray();
   let collection;
   if (collections.length === 0) {
-    collection = await db.createCollection(COLLECTION_NAME);
-    console.log(`Collection ${COLLECTION_NAME} created`);
+    collection = await db.createCollection(RAG_CHUNKS);
+    console.log(`Collection ${RAG_CHUNKS} created.`);
   } else {
-    collection = db.collection(COLLECTION_NAME);
-    console.log(`Collection ${COLLECTION_NAME} already exists`);
+    collection = db.collection(RAG_CHUNKS);
   }
 
-  // Create index on fileHash if it doesn't exist
-  // We use this to see if a file with the same hash has already been processed
+  // Create index on fileHash and FileName if they don't exist
+  // We use fileHash to see if a file with the same hash has already been processed.
   // and to avoid duplicate data in the vector db
+  // We use fileName to list the files that have been ingested in the frontend.
   const indexes = await collection.listIndexes().toArray();
   const hashIndexExists = indexes.some((index) => index.key && index.key.fileHash === 1);
   if (!hashIndexExists) {
     await collection.createIndex({ fileHash: 1 });
-    console.log('Created index on fileHash');
+  }
+  const fileNameIndexExists = indexes.some((index) => index.key && index.key.fileName === 1);
+  if (!fileNameIndexExists) {
+    await collection.createIndex({ fileName: 1 });
   }
 
-  // Check if vector search index exists. if there isn't one, create a
+  // Check if vector search index exists. If there isn't one, create a
   // placeholder index to enable further vector operations including storing
   // embeddings. We will update the index with the correct dimensions later
   // when we have a sample embedding to determine the dimensions.
   const searchIndexes = await collection.listSearchIndexes().toArray();
-  const vectorIndexExists = searchIndexes.some((index) => index.name === 'default' || index.name === 'init_index');
-
+  const vectorIndexExists = searchIndexes.some((index) => index.name === 'default');
   if (!vectorIndexExists) {
     console.log('No vector search index found. Creating placeholder index...');
-    await collection.createSearchIndex({
-      name: 'init_index',
-      definition: {
-        mappings: {
-          dynamic: true,
-          fields: {
-            embedding: { dimensions: 1024, type: 'knnVector', similarity: 'cosine' },
-          },
-        },
-      },
-    });
-    console.log('Placeholder vector search index created.');
-  }
-  ragCollectionInitialized = true;
-  console.log('Vector Search Collection initialization complete.');
-  return collection;
-}
-
-/**
- * Create a properly vector index for RAG
- */
-async function createVectorIndex(db) {
-  const collection = db.collection('rag_chunks');
-  const sampleDoc = await collection.findOne({ embedding: { $exists: true } });
-
-  if (sampleDoc?.embedding?.length) {
-    const dimensions = sampleDoc.embedding.length;
-
-    console.log(`Reindexing vector search with detected dimensions: ${dimensions}`);
-
-    // Drop old placeholder index
-    const existingIndexes = await collection.listSearchIndexes().toArray();
-    const vectorIndexExists = existingIndexes.some((index) => index.name === 'init_index');
-
-    if (vectorIndexExists) {
-      await collection.dropSearchIndex('init_index');
-    }
-
-    // Create an index with corrected dimensions and name (default)
     await collection.createSearchIndex({
       name: 'default',
       definition: {
         mappings: {
           dynamic: true,
           fields: {
-            embedding: { dimensions, similarity: 'cosine', type: 'knnVector' },
+            embedding: { dimensions: 1024, similarity: 'cosine', type: 'knnVector' },
           },
         },
       },
     });
-    ragIndexCreated = true;
-    console.log('Vector search index updated successfully.');
+    console.log('Placeholder vector search index created.');
+  }
+
+  // Create document embedding cache collection if it doesn't exist
+  const docCacheCollections = await db.listCollections({ name: DOC_EMBEDDINGS_CACHE }).toArray();
+  if (docCacheCollections.length === 0) {
+    await db.createCollection(DOC_EMBEDDINGS_CACHE);
+    console.log(`Created collection ${DOC_EMBEDDINGS_CACHE} for permanent document embedding cache.`);
+  }
+
+  // Create query embedding cache collection with TTL if it doesn't exist
+  const queryCacheCollections = await db.listCollections({ name: QUERY_EMBEDDINGS_CACHE }).toArray();
+  if (queryCacheCollections.length === 0) {
+    await db.createCollection(QUERY_EMBEDDINGS_CACHE);
+    console.log(`Created collection ${QUERY_EMBEDDINGS_CACHE} for query embedding cache with TTL.`);
+
+    // Set TTL index (60 days) for automatic expiration
+    await db.collection(QUERY_EMBEDDINGS_CACHE).createIndex({ createdAt: 1 }, { expireAfterSeconds: 5184000 }); // 60 days
+    console.log('Created TTL index on query embedding cache (expiration: 60 days).');
+  }
+
+  ragCollectionReady = true;
+  console.log('Vector Search and Embedding Cache Collections have been set up.');
+  return collection;
+}
+
+/**
+ * Configure/update the vector index dimensions based on our embedding results
+ * Do this only once.  If you are changing your embedding model to a different one,
+ * you should switch to a new collection, since you need to use the model
+ * that was used to generate the embeddings when doing queries (similarity search, etc.)
+ */
+async function configureVectorIndex(db) {
+  const collection = db.collection(RAG_CHUNKS);
+  const sampleDoc = await collection.findOne({ embedding: { $exists: true } });
+  if (sampleDoc?.embedding?.length) {
+    const existingIndexes = await collection.listSearchIndexes().toArray();
+    const vectorIndex = existingIndexes.find((index) => index.name === 'default');
+    if (vectorIndex) {
+      await collection.updateSearchIndex('default', {
+        mappings: {
+          dynamic: true,
+          fields: {
+            embedding: { dimensions: sampleDoc.embedding.length, similarity: 'cosine', type: 'knnVector' },
+          },
+        },
+      });
+      console.log('Vector search index dimensions updated successfully.');
+    } else {
+      await collection.createSearchIndex({
+        name: 'default',
+        definition: {
+          mappings: {
+            dynamic: true,
+            fields: {
+              embedding: { dimensions: sampleDoc.embedding.length, similarity: 'cosine', type: 'knnVector' },
+            },
+          },
+        },
+      });
+      vectorIndexConfigured = true;
+      console.log('Vector search index with detected dimensions created successfully.');
+    }
   } else {
-    console.error('No embeddings found yet, cannot update vector index.');
+    console.error('No embeddings found yet; cannot update vector index.');
   }
 }
 
@@ -1324,7 +1353,7 @@ async function createVectorIndex(db) {
  * RAG dashboard: show ingested files, allow question submission, show results.
  */
 exports.getRag = async (req, res) => {
-  if (!ragFolderInitialized) initializeRagFolder();
+  if (!ragFolderReady) prepareRagFolder();
 
   // List all files in MongoDB vector DB
   let ingestedFiles = [];
@@ -1332,9 +1361,8 @@ exports.getRag = async (req, res) => {
     const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
     const db = client.db();
-    const collection = ragCollectionInitialized ? db.collection('rag_chunks') : await initializeRagCollection(db);
-    ingestedFiles = await collection.distinct('source');
-    ingestedFiles = ingestedFiles.map((filepath) => path.basename(filepath));
+    const collection = ragCollectionReady ? db.collection(RAG_CHUNKS) : await setupRagCollection(db);
+    ingestedFiles = await collection.distinct('fileName');
     await client.close();
   } catch (err) {
     console.log(err);
@@ -1356,7 +1384,7 @@ exports.getRag = async (req, res) => {
  * Scan rag_input/, ingest new PDFs, update MongoDB, move files, return status.
  */
 exports.postRagIngest = async (req, res) => {
-  if (!ragFolderInitialized) initializeRagFolder();
+  if (!ragFolderReady) prepareRagFolder();
   const inputDir = path.join(__dirname, '../rag_input');
   const ingestedDir = path.join(inputDir, 'ingested');
 
@@ -1379,7 +1407,9 @@ exports.postRagIngest = async (req, res) => {
   try {
     await client.connect();
     const db = client.db();
-    const collection = ragCollectionInitialized ? db.collection('rag_chunks') : await initializeRagCollection(db);
+    const collection = ragCollectionReady ? db.collection(RAG_CHUNKS) : await setupRagCollection(db);
+    const documentEmbeddingsCache = new MongoDBStore({ collection: db.collection(DOC_EMBEDDINGS_CACHE) });
+    const queryEmbeddingsCache = new MongoDBStore({ collection: db.collection(QUERY_EMBEDDINGS_CACHE) });
 
     // Process files sequentially using reduce
     await files.reduce(async (promise, file) => {
@@ -1395,7 +1425,7 @@ exports.postRagIngest = async (req, res) => {
       // processed under a different name, etc.
       const hashCount = await collection.countDocuments({ fileHash: hash });
       if (hashCount > 0) {
-        console.log(`File ${file} already processed (hash: ${hash}, found ${hashCount} existing chunks)`);
+        console.log(`File ${file} already processed (hash: ${hash}, found ${hashCount} existing chunks).`);
         skipped.push(file);
         // Move to ingested even if skipped
         fs.renameSync(filePath, path.join(ingestedDir, file));
@@ -1421,7 +1451,6 @@ exports.postRagIngest = async (req, res) => {
             ...chunk.metadata,
             fileHash: hash,
             fileName: file,
-            source: filePath,
           },
         }));
 
@@ -1430,13 +1459,20 @@ exports.postRagIngest = async (req, res) => {
         // You can also use OpenAIEmbeddings or any other providers
         // If you are changing your embedding provider, you may need to reprocess all
         // your files and recreate the vector index if the embedding dimensions are different
-        const embeddings = new HuggingFaceInferenceEmbeddings({
-          apiKey: process.env.HUGGINGFACE_KEY,
-          model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
-        });
+        const cacheBackedEmbeddings = CacheBackedEmbeddings.fromBytesStore(
+          new HuggingFaceInferenceEmbeddings({
+            apiKey: process.env.HUGGINGFACE_KEY,
+            model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
+          }),
+          documentEmbeddingsCache,
+          {
+            namespace: process.env.HUGGINGFACE_EMBEDDING_MODEL,
+            queryEmbeddingStore: queryEmbeddingsCache,
+          },
+        );
 
         // Create embeddings and add them to MongoDB
-        await MongoDBAtlasVectorSearch.fromDocuments(chunksWithMetadata, embeddings, {
+        await MongoDBAtlasVectorSearch.fromDocuments(chunksWithMetadata, cacheBackedEmbeddings, {
           collection,
           indexName: 'default',
           textKey: 'text',
@@ -1444,10 +1480,10 @@ exports.postRagIngest = async (req, res) => {
         });
 
         // If this is the first file processed, resize the vector index to match the output of
-        // the embedding model. Vector index is what allows us to do vector search in MongoDB
-        // We only need to do this once, so we can skip it for subsequent files
-        if (!ragIndexCreated) {
-          await createVectorIndex(db);
+        // the embedding model. The vector index allows us to do vector search in MongoDB.
+        // We only need to do this once, so we can skip it for subsequent files.
+        if (!vectorIndexConfigured) {
+          await configureVectorIndex(db);
         }
         // Move the file after processing to the ingested directory to avoid reprocessing
         fs.renameSync(filePath, path.join(ingestedDir, file));
@@ -1494,17 +1530,19 @@ exports.postRagAsk = async (req, res) => {
     req.flash('errors', { msg: 'Please enter a question.' });
     return res.redirect('/api/rag');
   }
+  // Local cache for the LLM and Embedding model responses. Local cache is not recommended for production.
+  const llmCache = await LocalFileCache.create('./tmp/llm_cache');
 
   try {
     const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
     const db = client.db();
-    const collection = ragCollectionInitialized ? db.collection('rag_chunks') : await initializeRagCollection(db);
+    const collection = ragCollectionReady ? db.collection(RAG_CHUNKS) : await setupRagCollection(db);
+    const documentEmbeddingsCache = new MongoDBStore({ collection: db.collection(DOC_EMBEDDINGS_CACHE) });
+    const queryEmbeddingsCache = new MongoDBStore({ collection: db.collection(QUERY_EMBEDDINGS_CACHE) });
 
     // Get list of ingested files for display in the frontend
-    let ingestedFiles = [];
-    ingestedFiles = await collection.distinct('source');
-    ingestedFiles = ingestedFiles.map((filepath) => path.basename(filepath));
+    const ingestedFiles = await collection.distinct('fileName');
     if (ingestedFiles.length === 0) {
       req.flash('errors', {
         msg: 'No files have been indexed for the RAG. Please upload your relevant PDF files to the /rag_input/ directory and "Ingest" them prior to asking questions.',
@@ -1520,11 +1558,18 @@ exports.postRagAsk = async (req, res) => {
     // MongoDBAtlasVectorSearch. This enables the system to perform a similarity search against
     // stored document embeddings, retrieving the most relevant chunks based on meaning rather
     // than exact keywords.
-    const embeddings = new HuggingFaceInferenceEmbeddings({
-      apiKey: process.env.HUGGINGFACE_KEY,
-      model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
-    });
-    const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
+    const cacheBackedEmbeddings = CacheBackedEmbeddings.fromBytesStore(
+      new HuggingFaceInferenceEmbeddings({
+        apiKey: process.env.HUGGINGFACE_KEY,
+        model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
+      }),
+      documentEmbeddingsCache,
+      {
+        namespace: process.env.HUGGINGFACE_EMBEDDING_MODEL,
+        queryEmbeddingStore: queryEmbeddingsCache,
+      },
+    );
+    const vectorStore = new MongoDBAtlasVectorSearch(cacheBackedEmbeddings, {
       collection,
       indexName: 'default',
       textKey: 'text',
@@ -1538,7 +1583,8 @@ exports.postRagAsk = async (req, res) => {
     // Setup LLM
     const llm = new ChatTogetherAI({
       apiKey: process.env.TOGETHERAI_API_KEY,
-      modelName: process.env.TOGETHERAI_MODEL,
+      model: process.env.TOGETHERAI_MODEL,
+      cache: llmCache,
     });
 
     // RAG prompt
@@ -1546,16 +1592,19 @@ exports.postRagAsk = async (req, res) => {
     // Non-RAG prompt
     const llmPrompt = `Answer the following question as best as you can:\n${question}\nAnswer:`;
 
-    // Run both in parallel
-    const [ragResponse, llmResponse] = await Promise.all([llm.invoke([new HumanMessage(ragPrompt)]), llm.invoke([new HumanMessage(llmPrompt)])]);
+    // Run batch LLM calls
+    const results = await llm.generate([[new HumanMessage(ragPrompt)], [new HumanMessage(llmPrompt)]]);
+
+    const ragResponse = results.generations[0][0].text;
+    const llmResponse = results.generations[1][0].text;
 
     await client.close();
 
     res.render('api/rag', {
       title: 'Retrieval-Augmented Generation (RAG) Demo',
       ingestedFiles,
-      ragResponse: ragResponse.content,
-      llmResponse: llmResponse.content,
+      ragResponse,
+      llmResponse,
       question,
       maxInputLength: 500,
     });
