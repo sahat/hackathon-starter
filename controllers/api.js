@@ -18,12 +18,11 @@ const fs = require('fs');
 const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
-const { MongoDBAtlasVectorSearch } = require('@langchain/mongodb');
+const { MongoDBAtlasVectorSearch, MongoDBAtlasSemanticCache } = require('@langchain/mongodb');
 const { MongoDBStore } = require('@langchain/mongodb');
 const { ChatTogetherAI } = require('@langchain/community/chat_models/togetherai');
 const { HumanMessage } = require('@langchain/core/messages');
 const { CacheBackedEmbeddings } = require('langchain/embeddings/cache_backed');
-const { LocalFileCache } = require('langchain/cache/file_system');
 const { MongoClient } = require('mongodb');
 // eslint-disable-next-line import/extensions
 const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
@@ -1215,6 +1214,7 @@ exports.getGoogleSheets = (req, res) => {
 const RAG_CHUNKS = 'rag_chunks';
 const DOC_EMBEDDINGS_CACHE = 'doc_emb_cache';
 const QUERY_EMBEDDINGS_CACHE = 'query_emb_cache';
+const LLM_SEMANTIC_CACHE = 'llm_sem_cache';
 
 // Initialization flags
 let ragFolderReady = false;
@@ -1301,6 +1301,35 @@ async function setupRagCollection(db) {
     console.log('Created TTL index on query embedding cache (expiration: 60 days).');
   }
 
+  // Create semantic cache collection for LLM queries if it doesn't exist
+  const llmCacheCollections = await db.listCollections({ name: LLM_SEMANTIC_CACHE }).toArray();
+  let llmCacheCollection;
+  if (llmCacheCollections.length === 0) {
+    llmCacheCollection = await db.createCollection(LLM_SEMANTIC_CACHE);
+    await llmCacheCollection.createIndex({ llm_string: 1, prompt: 1 });
+    console.log(`Created collection ${LLM_SEMANTIC_CACHE} for permanent document embedding cache.`);
+  } else {
+    llmCacheCollection = db.collection(LLM_SEMANTIC_CACHE);
+  }
+  // Create index for semantic cache collection
+  const llmCacheIndexes = await llmCacheCollection.listSearchIndexes().toArray();
+  const llmCacheVectorIndexExists = llmCacheIndexes.some((index) => index.name === 'default');
+  if (!llmCacheVectorIndexExists) {
+    console.log('No vector search index found for the LLM Cache. Creating placeholder index...');
+    await llmCacheCollection.createSearchIndex({
+      name: 'default',
+      definition: {
+        mappings: {
+          dynamic: true,
+          fields: {
+            embedding: { dimensions: 1024, similarity: 'cosine', type: 'knnVector' },
+          },
+        },
+      },
+    });
+    console.log('Placeholder vector search index for LLM Cache created.');
+  }
+
   ragCollectionReady = true;
   console.log('Vector Search and Embedding Cache Collections have been set up.');
   return collection;
@@ -1316,6 +1345,7 @@ async function configureVectorIndex(db) {
   const collection = db.collection(RAG_CHUNKS);
   const sampleDoc = await collection.findOne({ embedding: { $exists: true } });
   if (sampleDoc?.embedding?.length) {
+    // Update the dimensions of the RAG vector index
     const existingIndexes = await collection.listSearchIndexes().toArray();
     const vectorIndex = existingIndexes.find((index) => index.name === 'default');
     if (vectorIndex) {
@@ -1340,9 +1370,38 @@ async function configureVectorIndex(db) {
           },
         },
       });
-      vectorIndexConfigured = true;
       console.log('Vector search index with detected dimensions created successfully.');
     }
+
+    // Update the dimensions of the LLM Cache vector index
+    const llmCacheIndexes = await db.collection(LLM_SEMANTIC_CACHE).listSearchIndexes().toArray();
+    const llmCacheVectorIndex = llmCacheIndexes.find((index) => index.name === 'default');
+    if (llmCacheVectorIndex) {
+      await db.collection(LLM_SEMANTIC_CACHE).updateSearchIndex('default', {
+        mappings: {
+          dynamic: true,
+          fields: {
+            embedding: { dimensions: sampleDoc.embedding.length, similarity: 'cosine', type: 'knnVector' },
+          },
+        },
+      });
+      console.log('LLM Cache vector search index dimensions updated successfully.');
+    } else {
+      await db.collection(LLM_SEMANTIC_CACHE).createSearchIndex({
+        name: 'default',
+        definition: {
+          mappings: {
+            dynamic: true,
+            fields: {
+              embedding: { dimensions: sampleDoc.embedding.length, similarity: 'cosine', type: 'knnVector' },
+            },
+          },
+        },
+      });
+      console.log('LLM Cache vector search index with detected dimensions created successfully.');
+    }
+
+    vectorIndexConfigured = true;
   } else {
     console.error('No embeddings found yet; cannot update vector index.');
   }
@@ -1530,8 +1589,6 @@ exports.postRagAsk = async (req, res) => {
     req.flash('errors', { msg: 'Please enter a question.' });
     return res.redirect('/api/rag');
   }
-  // Local cache for the LLM and Embedding model responses. Local cache is not recommended for production.
-  const llmCache = await LocalFileCache.create('./tmp/llm_cache');
 
   try {
     const client = new MongoClient(process.env.MONGODB_URI);
@@ -1576,6 +1633,12 @@ exports.postRagAsk = async (req, res) => {
       embeddingKey: 'embedding',
     });
 
+    const llmSemanticCache = new MongoDBAtlasSemanticCache(
+      db.collection(LLM_SEMANTIC_CACHE),
+      cacheBackedEmbeddings, // Embedding model should be passed separately
+      { scoreThreshold: 0.8 }, // Optional settings
+    );
+
     // Retrieve top 4 relevant chunks
     const relevantDocs = await vectorStore.similaritySearch(question, 4);
     const context = relevantDocs.map((doc) => doc.pageContent).join('\n---\n');
@@ -1584,7 +1647,7 @@ exports.postRagAsk = async (req, res) => {
     const llm = new ChatTogetherAI({
       apiKey: process.env.TOGETHERAI_API_KEY,
       model: process.env.TOGETHERAI_MODEL,
-      cache: llmCache,
+      cache: llmSemanticCache,
     });
 
     // RAG prompt
