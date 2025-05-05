@@ -25,7 +25,7 @@ index fcd1a1f..6613dfc 100644
 -     * Support for caching queries is easy to implement, but might make
 -     * sense to hold off to see the most common patterns.
 +     * Patched with caching support (CommonJS only) because
-+     * caching queries is not yet supported in langchain core.
++     * caching queries is not yet supported in LangChain core.
       *
       * If the cache has an eviction policy, we may need to be a bit more careful
       * about sharing the cache between documents and queries. Generally,

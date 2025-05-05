@@ -50,12 +50,12 @@ block content
         .card.shadow-sm
           .card-body.bg-light
             h3.text-center Ask a Question
-            p.text-left Try asking a question about information in the ingested RAG documents that were not part of the LLM's training data. For example,
+            p.text-left Try asking a question about information in the ingested RAG documents that was not part of the LLM's training data. For example,
             ul.list-group.list-group-flush
               li.list-group-item How much did Amazon make in 2024?
               li.list-group-item How much debt did Amazon have at the end of 2024?
               li.list-group-item How much was Microsoft's advertising expense in fiscal year 2024?
-              li.list-group-item What is the total amount of stock that Microsoft gave to its employees in fiscal year 2024?
+              li.list-group-item What is the total amount of stock Microsoft gave to its employees in fiscal year 2024?
             br
             form(action='/ai/rag/ask', method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
@@ -96,18 +96,18 @@ block content
             h4
               | Boilerplate RAG with Semantic Caching
             p
-              | You can start with this base RAG implementation and extend it for your project so you can focus on your business logic and not on boilerplate code. For this implementation, we are using:
+              | You can start with this base RAG implementation and extend it for your project, allowing you to focus on your business logic rather than boilerplate code. For this implementation, we are using:
               ul
                 li LangChain.js 🦜️🔗 for the pipeline and integrations
                 li Sentence-transformers/all-MiniLM-L6-v2 embedding model through the Hugging Face 🤗 Inference API
                 li Llama-3.3-70B-Instruct-Turbo 🦙 hosted by Together.ai as the LLM
-                li PDF.js to extract text from PDF files
+                li PDF.js for extracting text from PDF files
                 li MongoDB Atlas Vector Search as the vector DB for RAG document storage and LLM caching
                 li MongoDB as the key-value store for embedding caching
             br
             br
             p
-              | The commented source code including helper functions are in controllers/ai.js
+              | The commented source code, including helper functions, is in controllers/ai.js
           .col-md-7.text-center
             img.img-fluid.w-100.rounded.mx-auto.d-block(src='https://i.imgur.com/zqIxnEj.png', alt='RAG Demo Block Diagram')
     hr.border-primary.my-4

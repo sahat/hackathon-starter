@@ -87,7 +87,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - RAG with semantic and embedding caching
   - Llama Instruct, Llama Vision
   - OpenAI Moderation
-  - Support for a range of foundational and embedding models (Deepseek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI and Hugging Face
+  - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI, and Hugging Face
 - **API Examples**
 
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
@@ -296,7 +296,7 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <hr>
 
-<span style="font-size:50px;">🤗</span>
+<img src="https://i.imgur.com/OEVF7HK.png" height="75">
 
 - Go to <a href="https://huggingface.co" target="_blank">https://huggingface.co</a> and create an account.
 - Go to your Account Settings and create a new Access Token. Make sure you have granted the **"Make calls to Inference Provider"** permission to your token.
@@ -725,7 +725,7 @@ mongoose.connection.on('error', (err) => {
 You need to have a MongoDB server running before launching `app.js`. You can download MongoDB [here](https://www.mongodb.com/try/download/community), or install it via a package manager.
 Windows users, read [Install MongoDB on Windows](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows//).
 
-**Tip:** If you are always connected to the internet, you could just use [MongoDB Atlas](https://www.mongodb.com) instead of downloading and installing MongoDB locally. ou will only need to update the database credentials in the `.env` file.
+**Tip:** If you are always connected to the internet, you could just use [MongoDB Atlas](https://www.mongodb.com) instead of downloading and installing MongoDB locally. You will only need to update the database credentials in the `.env` file.
 
 **NOTE:** MongoDB Atlas (cloud database) is required for vector store, index, and search features used in AI integrations. These features are NOT available in locally installed MongoDBs.
 

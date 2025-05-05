@@ -23,15 +23,15 @@ exports.getAi = (req, res) => {
 };
 
 /**
- * Helper function to ensure vector search index exists for RAG Example
+ * Helper function to ensure the vector search index exists for RAG Boilerplate
  */
-// RAG collection name
+// RAG collection names
 const RAG_CHUNKS = 'rag_chunks';
 const DOC_EMBEDDINGS_CACHE = 'doc_emb_cache';
 const QUERY_EMBEDDINGS_CACHE = 'query_emb_cache';
 const LLM_SEMANTIC_CACHE = 'llm_sem_cache';
 
-// Initialization flags
+// Initialization status flags
 let ragFolderReady = false;
 let ragCollectionReady = false;
 let vectorIndexConfigured = false;
@@ -49,7 +49,7 @@ function prepareRagFolder() {
 }
 
 /*
- * Helper function to create Vector Search collections in MongoDB Atlas
+ * Helper function to create vector search collections in MongoDB Atlas
  */
 async function createCollectionForVectorSearch(db, collectionName, indexes) {
   const collections = await db.listCollections({ name: collectionName }).toArray();
@@ -87,23 +87,23 @@ async function setupRagCollection(db) {
   // and to avoid duplicate data in the vector db
   // We use fileName to list the files that have been ingested in the frontend.
   // llm_string and prompt combo is used to see if we have already processed the same LLM query
-  const ragCollection = await createCollectionForVectorSearch(db, RAG_CHUNKS, [{ fileHash: 1 }, { fileName: 1 }]); // for the rag chunks from input documents
-  await createCollectionForVectorSearch(db, LLM_SEMANTIC_CACHE, [{ llm_string: 1, prompt: 1 }]); // for the LLM semantic cache so we can reduce LLM calls and related cost
+  const ragCollection = await createCollectionForVectorSearch(db, RAG_CHUNKS, [{ fileHash: 1 }, { fileName: 1 }]); // for the RAG chunks from input documents
+  await createCollectionForVectorSearch(db, LLM_SEMANTIC_CACHE, [{ llm_string: 1, prompt: 1 }]); // for the LLM semantic cache so we can reduce LLM calls and related costs
 
-  // Create document embedding cache collection if it doesn't exist
+  // Create the document embedding cache collection if it doesn't exist
   const docCacheCollections = await db.listCollections({ name: DOC_EMBEDDINGS_CACHE }).toArray();
   if (docCacheCollections.length === 0) {
     await db.createCollection(DOC_EMBEDDINGS_CACHE);
     console.log(`Created collection ${DOC_EMBEDDINGS_CACHE} for permanent document embedding cache.`);
   }
 
-  // Create query embedding cache collection with TTL if it doesn't exist
+  // Create rge query embedding cache collection with TTL if it doesn't exist
   const queryCacheCollections = await db.listCollections({ name: QUERY_EMBEDDINGS_CACHE }).toArray();
   if (queryCacheCollections.length === 0) {
     await db.createCollection(QUERY_EMBEDDINGS_CACHE);
     console.log(`Created collection ${QUERY_EMBEDDINGS_CACHE} for query embedding cache with TTL.`);
 
-    // Set TTL index (60 days) for automatic expiration
+    // Set a TTL index (60 days) for automatic expiration
     await db.collection(QUERY_EMBEDDINGS_CACHE).createIndex({ createdAt: 1 }, { expireAfterSeconds: 5184000 }); // 60 days
     console.log('Created TTL index on query embedding cache (expiration: 60 days).');
   }
@@ -113,7 +113,7 @@ async function setupRagCollection(db) {
 }
 
 /**
- * Helper function to update/set a vector index in MongoDB Atlas with a new index definition
+ * Helper function to update or set a vector index in MongoDB Atlas with a new index definition
  */
 async function setVectorIndex(collection, indexDefinition) {
   const existingIndexes = await collection.listSearchIndexes().toArray();
@@ -129,10 +129,10 @@ async function setVectorIndex(collection, indexDefinition) {
 }
 
 /**
- * Configure/update the vector index dimensions based on our embedding results
- * Do this only once.  If you are changing your embedding model to a different one,
- * you should switch to a new collection, since you need to use the model
- * that was used to generate the embeddings when doing queries (similarity search, etc.)
+ * Configure or update the vector index dimensions based on our embedding results
+ * Do this only once. If you change your embedding model to a different one,
+ * you should switch to a new collection, since you need to use the same model that
+ * was used to generate the embeddings when performing queries (similarity search, etc.)
  */
 async function configureVectorIndex(db) {
   const collection = db.collection(RAG_CHUNKS);
@@ -156,12 +156,13 @@ async function configureVectorIndex(db) {
 
 /**
  * GET /ai/rag
- * RAG dashboard: show ingested files, allow question submission, show results.
+ * RAG dashboard: show ingested files, allow question submission, and show results.
+ * The page also includes a block diagram for the RAG Boilerplate and its components.
  */
 exports.getRag = async (req, res) => {
   if (!ragFolderReady) prepareRagFolder();
 
-  // List all files in MongoDB vector DB
+  // Get the list all files in the MongoDB vector DB to display in the frontend
   let ingestedFiles = [];
   try {
     const client = new MongoClient(process.env.MONGODB_URI);
@@ -194,11 +195,11 @@ exports.postRagIngest = async (req, res) => {
   const inputDir = path.join(__dirname, '../rag_input');
   const ingestedDir = path.join(inputDir, 'ingested');
 
-  // Get list of PDF files in input directory
+  // Get the list of PDF files in the input directory
   const files = fs
     .readdirSync(inputDir)
     .filter((f) => f.endsWith('.pdf'))
-    .filter((f) => !f.includes('ingested')); // Exclude anything from ingested directory
+    .filter((f) => !f.includes('ingested')); // Exclude anything from the ingested directory
 
   if (files.length === 0) {
     req.flash('info', {
@@ -227,8 +228,8 @@ exports.postRagIngest = async (req, res) => {
       const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
 
       // Check if this file has already been processed to avoid duplicate data in the
-      // vector db. We are checking for a matching hash in case if the same file was
-      // processed under a different name, etc.
+      // vector DB. We check for a matching hash in case the same file was processed
+      // under a different name, etc.
       const hashCount = await collection.countDocuments({ fileHash: hash });
       if (hashCount > 0) {
         console.log(`File ${file} already processed (hash: ${hash}, found ${hashCount} existing chunks).`);
@@ -238,17 +239,17 @@ exports.postRagIngest = async (req, res) => {
         return promise;
       }
 
-      // Process the PDF
+      // Process the PDF file
       try {
         const loader = new PDFLoader(filePath, {
           pdfjs: () => Promise.resolve(pdfjsLib),
         });
         const docs = await loader.load();
-        // Split documents into chunks
+        // Split the document into chunks
         // Use RecursiveCharacterTextSplitter to split the documents into smaller chunks
-        // When questioning the model later, the vector search finds the most relevant
-        // chunks based on the similarity of the text and sends the most relevant chunks
-        // to the LLM as context. The chunk size and overlap can be adjusted for performance.
+        // When querying the model later, the vector search finds the most relevant chunks
+        // based on text similarity and sends them to the LLM as context. The chunk size
+        // and overlap can be adjusted for performance.
         const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 200 });
         const chunks = await splitter.splitDocuments(docs);
         const chunksWithMetadata = chunks.map((chunk) => ({
@@ -260,11 +261,11 @@ exports.postRagIngest = async (req, res) => {
           },
         }));
 
-        // Create embeddings and store in MongoDB
-        // Use HuggingFaceInferenceEmbeddings as a hosted embedding model provider
-        // You can also use OpenAIEmbeddings or any other providers
-        // If you are changing your embedding provider, you may need to reprocess all
-        // your files and recreate the vector index if the embedding dimensions are different
+        // Create embeddings and store them in MongoDB
+        // Use HuggingFaceInferenceEmbeddings as the hosted embedding model provider.
+        // You can also use OpenAIEmbeddings or other providers.
+        // If you change your embedding model, you would need to reprocess all your
+        // files and recreate the vector index if the embedding dimensions are different.
         const cacheBackedEmbeddings = CacheBackedEmbeddings.fromBytesStore(
           new HuggingFaceInferenceEmbeddings({
             apiKey: process.env.HUGGINGFACE_KEY,
@@ -286,13 +287,13 @@ exports.postRagIngest = async (req, res) => {
           embeddingKey: 'embedding',
         });
 
-        // If this is the first file processed, resize the vector index to match the output of
-        // the embedding model. The vector index allows us to do vector search in MongoDB.
-        // We only need to do this once, so we can skip it for subsequent files.
+        // If this is the first file processed, resize the vector index to match the output
+        // dimensions of the embedding model. The vector index allows us to perform vector search
+        // in MongoDB. We only need to do this resizing once, so we can skip it for subsequent files.
         if (!vectorIndexConfigured) {
           await configureVectorIndex(db);
         }
-        // Move the file after processing to the ingested directory to avoid reprocessing
+        // Move the file to the ingested directory after processing to avoid reprocessing.
         fs.renameSync(filePath, path.join(ingestedDir, file));
         processed.push(file);
         console.log(`Successfully processed ${file} (hash: ${hash})`);
@@ -328,7 +329,7 @@ exports.postRagIngest = async (req, res) => {
 
 /**
  * POST /ai/rag/ask
- * Accepts a question, runs RAG and non-RAG queries, returns both responses.
+ * Accepts a question, runs RAG and non-RAG queries, and returns both responses.
  */
 exports.postRagAsk = async (req, res) => {
   const question = (req.body.question || '').slice(0, 500);
@@ -355,14 +356,14 @@ exports.postRagAsk = async (req, res) => {
       return res.redirect('/ai/rag');
     }
 
-    // Setup vector store and embeddings
-    // Instantiating HuggingFaceInferenceEmbeddings for consistency
-    // with the embedding model used during ingestion. We are not using the embedding model
-    // for the LLM, but we are using it for the vector search. The HuggingFaceInferenceEmbeddings
-    // instance converts the user’s question into an embedding, which is then passed to
-    // MongoDBAtlasVectorSearch. This enables the system to perform a similarity search against
-    // stored document embeddings, retrieving the most relevant chunks based on meaning rather
-    // than exact keywords.
+    // Set up vector store and embeddings
+    // Instantiate HuggingFaceInferenceEmbeddings for consistency with the embedding model
+    // used during ingestion. We do not use the embedding model for the LLM, but we use it
+    // for the vector search. The HuggingFaceInferenceEmbeddings instance converts the
+    // user's question into an embedding, which is then passed to MongoDBAtlasVectorSearch.
+    // This enables the system to perform a similarity search against stored document
+    // embeddings, retrieving the most relevant chunks based on meaning rather than exact
+    // keywords.
     const cacheBackedEmbeddings = CacheBackedEmbeddings.fromBytesStore(
       new HuggingFaceInferenceEmbeddings({
         apiKey: process.env.HUGGINGFACE_KEY,
@@ -385,14 +386,12 @@ exports.postRagAsk = async (req, res) => {
     const llmSemanticCache = new MongoDBAtlasSemanticCache(
       db.collection(LLM_SEMANTIC_CACHE),
       cacheBackedEmbeddings, // Embedding model should be passed separately
-      { scoreThreshold: 0.95 }, // Optional settings
+      { scoreThreshold: 0.95 }, // Optional similarity threshold settings
     );
-
-    // Retrieve top 10 relevant chunks
-    const relevantDocs = await vectorStore.similaritySearch(question, 8);
+    const relevantDocs = await vectorStore.similaritySearch(question, 8); // Retrieve top 8 relevant chunks
     const context = relevantDocs.map((doc) => doc.pageContent).join('\n---\n');
 
-    // Setup LLM
+    // Set up LLM
     const llm = new ChatTogetherAI({
       apiKey: process.env.TOGETHERAI_API_KEY,
       model: process.env.TOGETHERAI_MODEL,
