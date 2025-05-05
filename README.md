@@ -493,6 +493,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **config**/morgan.js             | Configuration for request logging with morgan.                       |
 | **config**/nodemailer.js         | Configuration and helper function for sending email with nodemailer. |
 | **config**/passport.js           | Passport Local and OAuth strategies, plus login middleware.          |
+| **controllers**/ai.js            | Controller for /ai route and all ai examples and boilerplates.       |
 | **controllers**/api.js           | Controller for /api route and all api examples.                      |
 | **controllers**/contact.js       | Controller for contact form.                                         |
 | **controllers**/home.js          | Controller for home page (index).                                    |
@@ -502,9 +503,10 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **public**/**js**/application.js | Specify client-side JavaScript dependencies.                         |
 | **public**/**js**/app.js         | Place your client-side JavaScript here.                              |
 | **public**/**css**/main.scss     | Main stylesheet for your app.                                        |
-| **test**/\*.js                   | Unit tests                                                           |
+| **test**/\*.js                   | Unit tests.                                                          |
 | **views/account**/               | Templates for _login, password reset, signup, profile_.              |
-| **views/api**/                   | Templates for API Examples.                                          |
+| **views/ai**/                    | Templates for AI examples and boilerplates.                          |
+| **views/api**/                   | Templates for API examples.                                          |
 | **views/partials**/flash.pug     | Error, info and success flash notifications.                         |
 | **views/partials**/header.pug    | Navbar partial template.                                             |
 | **views/partials**/footer.pug    | Footer partial template.                                             |
@@ -512,11 +514,11 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **views**/home.pug               | Home page template.                                                  |
 | .dockerignore                    | Folder and files ignored by docker usage.                            |
 | .env.example                     | Your API keys, tokens, passwords and database URI.                   |
-| eslint.config.mjs                | Rules for eslint linter.                                             |
 | .gitignore                       | Folder and files ignored by git.                                     |
 | app.js                           | The main application file.                                           |
 | docker-compose.yml               | Docker compose configuration file.                                   |
 | Dockerfile                       | Docker configuration file.                                           |
+| eslint.config.mjs                | Rules for eslint linter.                                             |
 | package.json                     | NPM dependencies.                                                    |
 | package-lock.json                | Contains exact versions of NPM dependencies in package.json.         |
 
