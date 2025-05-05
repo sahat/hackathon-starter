@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 AI Integration Examples
+
+  .row.g-3
+    .col-md-4
+      a.text-decoration-none(href='/ai/rag')
+        .card.text-white.bg-light.h-100
+          .card-body.d-flex.flex-column.flex-grow-1.align-items-center
+            .d-flex.align-items-center.mb-2.flex-wrap.justify-content-center
+              img(src='https://i.imgur.com/h9iDJCr.png', height='30', style='max-width: 100%; margin-right: 10px')
+              img(src='https://i.imgur.com/pEjC3Oy.png', height='30', style='max-width: 100%; margin-right: 10px')
+              img(src='https://i.imgur.com/mRw7TQs.png', height='15', style='max-width: 100%; margin-right: 10px')
+              img(src='https://i.imgur.com/OEVF7HK.png', height='35', style='max-width: 100%; margin-right: 10px')
+              img(src='https://i.imgur.com/vdNsjZu.png', height='20', style='max-width: 100%')
+            .text-dark.text-start.mt-2
+              h5 Retrieval-Augmented Generation (RAG)
+              ul
+                li LangChain pipeline and API integrations
+                li Llama 3.2: Together.AI API
+                li Embeddings: Hugging Face API
+                li Vector store and key value: MongoDB Atlas

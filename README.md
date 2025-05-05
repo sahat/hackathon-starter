@@ -83,9 +83,13 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
 - File upload
 - Device camera
+- **AI Examples and Boilerplates**
+  - RAG with semantic and embedding caching
+  - Llama Instruct, Llama Vision
+  - OpenAI Moderation
+  - Support for a range of foundational and embedding models (Deepseek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI and Hugging Face
 - **API Examples**
 
-  - **AI:** OpenAI Moderation, LLAMA instruct, LLAMA vision (via Together AI serverless foundational models - Deepseek, Llama, Mistral, etc.)
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
   - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
   - **Maps and Location:** Google Maps, HERE Maps
@@ -394,7 +398,7 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 - Sign in or create a Together AI account.
 - Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
 - Copy and paste the generated API key into your `.env` file as `TOGETHERAI_API_KEY` or set it as an environment variable.
-- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your usecase and budget and specify it the `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
+- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your use case and budget and specify it the `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
 
 <hr>
 
@@ -721,7 +725,9 @@ mongoose.connection.on('error', (err) => {
 You need to have a MongoDB server running before launching `app.js`. You can download MongoDB [here](https://www.mongodb.com/try/download/community), or install it via a package manager.
 Windows users, read [Install MongoDB on Windows](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows//).
 
-**Tip:** If you are always connected to the internet, you could just use [MongoDB Atlas](https://www.mongodb.com) instead of downloading and installing MongoDB locally. You will only need to update database credentials in `.env` file.
+**Tip:** If you are always connected to the internet, you could just use [MongoDB Atlas](https://www.mongodb.com) instead of downloading and installing MongoDB locally. ou will only need to update the database credentials in the `.env` file.
+
+**NOTE:** MongoDB Atlas (cloud database) is required for vector store, index, and search features used in AI integrations. These features are NOT available in locally installed MongoDBs.
 
 ### I get an error when I deploy my app, why?
 
@@ -1390,9 +1396,9 @@ Using a local instance on your laptop with ngrok is a good solution for your dem
 - Fill in your information then hit **Create your Atlas account**
 - You will be redirected to Create New Cluster page.
 - Select a **Cloud Provider and Region**
-- Select cluster Tier to Free forever **Shared** Cluster
+- Set the cluster Tier to Free Forever **Shared** Cluster
 - Give Cluster a name (default: Cluster0)
-- Click on green **:zap:Create Cluster button**
+- Click on the green **:zap:Create Cluster button**
 - Now, to access your database you need to create a DB user. To create a new MongoDB user, from the **Clusters view**, select the **Security tab**
 - Under the **MongoDB Users** tab, click on **+Add New User**
 - Fill in a username and password and give it either **Atlas Admin** User Privilege
