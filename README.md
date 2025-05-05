@@ -292,6 +292,14 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <hr>
 
+<span style="font-size:50px;">🤗</span>
+
+- Go to <a href="https://huggingface.co" target="_blank">https://huggingface.co</a> and create an account.
+- Go to your Account Settings and create a new Access Token. Make sure you have granted the **"Make calls to Inference Provider"** permission to your token.
+- Add your token as `HUGGINGFACE_KEY` to your `.env` file or as an environment variable.
+
+<hr>
+
 <img src="https://i.imgur.com/Lw5Jb7A.png" height="50">
 
 - Go to <a href="https://developer.intuit.com/app/developer/qbo/docs/get-started" target="_blank">https://developer.intuit.com/app/developer/qbo/docs/get-started</a>
@@ -325,6 +333,17 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Create an account
 - Once logged into the dashboard, go to Settings in the bottom left corner of the page. (If there is a bottom pop-up, you may need to close it to see the Settings option.)
 - Go to the API Keys tab and get your Secret API key for the Test Environment. No physical paper mail will be sent out if you use the Test key, but you can see the PDF of what would have been mailed from your app (with some limitations) through the dashboard. If you use the Live key, they will actually print a physical letter, put it in an envelope with postage, place it in a USPS mailbox, and bill you for it.
+
+<hr>
+
+<img src="https://i.imgur.com/iCsCgp6.png" height="75">
+
+The OpenAI moderation API for checking harmful inputs is free to use as long as you have paid credits in your OpenAI developer account. The cost of using their other models depends on the model, as well as the input and output size of the API call.
+
+- Visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a>
+- Sign in or create an OpenAI account.
+- Click on **Create new secret key** to generate an API key.
+- Copy and paste the generated API key into your `.env` file as `OPENAI_API_KEY` or set it as an environment variable.
 
 <hr>
 
@@ -366,6 +385,16 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Click on your profile and click on Account Settings
 - Then click on **API Keys**
 - Copy the **Secret Key**. and add this into `.env` file
+
+<hr>
+
+<img src="https://i.imgur.com/dOCkJxT.png" height="50">
+
+- Visit <a href="https://www.together.ai" target="_blank">Together AI</a>
+- Sign in or create a Together AI account.
+- Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
+- Copy and paste the generated API key into your `.env` file as `TOGETHERAI_API_KEY` or set it as an environment variable.
+- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your usecase and budget and specify it the `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
 
 <hr>
 
@@ -412,27 +441,6 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Sign up for an account.
 - Once logged into the dashboard, expand the link 'show api credentials'
 - Copy your Account Sid and Auth Token
-
-<hr>
-
-<img src="https://i.imgur.com/iCsCgp6.png" height="75">
-
-The OpenAI moderation API for checking harmful inputs is free to use as long as you have paid credits in your OpenAI developer account. The cost of using their other models depends on the model, as well as the input and output size of the API call.
-
-- Visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a>
-- Sign in or create an OpenAI account.
-- Click on **Create new secret key** to generate an API key.
-- Copy and paste the generated API key into your `.env` file as `OPENAI_API_KEY` or set it as an environment variable.
-
-<hr>
-
-<img src="https://i.imgur.com/dOCkJxT.png" height="50">
-
-- Visit <a href="https://www.together.ai" target="_blank">Together AI</a>
-- Sign in or create a Together AI account.
-- Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
-- Copy and paste the generated API key into your `.env` file as `TOGETHERAI_API_KEY` or set it as an environment variable.
-- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your usecase and budget and specify it the `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
 
 <hr>
 
@@ -525,6 +533,11 @@ Required to run the project before your modifications
 | @fortawesome/fontawesome-free | Symbol and Icon library.                                              |
 | @googleapis/drive             | Google Drive API integration library.                                 |
 | @googleapis/sheets            | Google Sheets API integration library.                                |
+| @huggingface/inference        | Client library for Hugging Face Inference providers                   |
+| @langchain/community          | Third party integrations for Langchain                                |
+| @langchain/core               | Base LangChain abstractions and Expression Language                   |
+| @langchain/mongodb            | MongoDB integrations for LangChain                                    |
+| @langchain/textsplitters      | LangChain text splitters for RAG pipelines                            |
 | @lob/lob-typescript-sdk       | Lob (USPS mailing / physical mailing service) library.                |
 | @naandalist/patch-package     | Fix broken node modules ahead of fixes by maintainers.                |
 | @node-rs/bcrypt               | Library for hashing and salting user passwords.                       |
@@ -545,10 +558,12 @@ Required to run the project before your modifications
 | express-rate-limit            | Rate limiting middleware for abuse protection.                        |
 | express-session               | Simple session middleware for Express.                                |
 | jquery                        | Front-end JS library to interact with HTML elements.                  |
+| langchain                     | Framework for developing LLM applications                             |
 | lastfm                        | Last.fm API library.                                                  |
 | lusca                         | CSRF middleware.                                                      |
 | mailchecker                   | Verifies that an email address is valid and not a disposable address. |
 | moment                        | Parse, validate, compute dates and times.                             |
+| mongodb                       | MongoDB driver                                                        |
 | mongoose                      | MongoDB ODM.                                                          |
 | morgan                        | HTTP request logger middleware for node.js.                           |
 | multer                        | Node.js middleware for handling `multipart/form-data`.                |
@@ -563,6 +578,7 @@ Required to run the project before your modifications
 | passport-oauth2-refresh       | A library to refresh OAuth 2.0 access tokens using refresh tokens.    |
 | passport-openidconnect        | Sign-in with OpenID Connect                                           |
 | passport-steam-openid         | OpenID 2.0 Steam plugin.                                              |
+| pdfjs-dist                    | PDF parser                                                            |
 | pug                           | Template engine for Express.                                          |
 | sass                          | Sass compiler to generate CSS with superpowers.                       |
 | sinon                         | Test spies, stubs and mocks for JavaScript.                           |
@@ -581,6 +597,7 @@ Required during code development for testing, Hygiene, code styling, etc.
 | @eslint/compat                  | Compatibility utilities for ESLin (eslint v8 support in v9).                |
 | @eslint/eslintrc                | Support for legacy ESLintRC config file format for ESLint.                  |
 | @eslint/js                      | ESLint JavaScript language implementation.                                  |
+| @prettier/plugin-pug            | Prettier plugin for formatting pug templates                                |
 | c8                              | Coverage test.                                                              |
 | chai                            | BDD/TDD assertion library.                                                  |
 | eslint-config-airbnb-base-ex... | Replacement for eslint-config-airbnb-base pending its upgrade to eslint v9. |

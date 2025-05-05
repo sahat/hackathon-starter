@@ -1233,42 +1233,11 @@ function prepareRagFolder() {
   ragFolderReady = true;
 }
 
-/**
- * Initialize the MongoDB collection for RAG
- */
-async function setupRagCollection(db) {
-  // Check if the collection exists
-  const collections = await db.listCollections({ name: RAG_CHUNKS }).toArray();
-  let collection;
+async function createCollectionForVectorSearch(db, collectionName, indexes) {
+  const collections = await db.listCollections({ name: collectionName }).toArray();
   if (collections.length === 0) {
-    collection = await db.createCollection(RAG_CHUNKS);
-    console.log(`Collection ${RAG_CHUNKS} created.`);
-  } else {
-    collection = db.collection(RAG_CHUNKS);
-  }
-
-  // Create index on fileHash and FileName if they don't exist
-  // We use fileHash to see if a file with the same hash has already been processed.
-  // and to avoid duplicate data in the vector db
-  // We use fileName to list the files that have been ingested in the frontend.
-  const indexes = await collection.listIndexes().toArray();
-  const hashIndexExists = indexes.some((index) => index.key && index.key.fileHash === 1);
-  if (!hashIndexExists) {
-    await collection.createIndex({ fileHash: 1 });
-  }
-  const fileNameIndexExists = indexes.some((index) => index.key && index.key.fileName === 1);
-  if (!fileNameIndexExists) {
-    await collection.createIndex({ fileName: 1 });
-  }
-
-  // Check if vector search index exists. If there isn't one, create a
-  // placeholder index to enable further vector operations including storing
-  // embeddings. We will update the index with the correct dimensions later
-  // when we have a sample embedding to determine the dimensions.
-  const searchIndexes = await collection.listSearchIndexes().toArray();
-  const vectorIndexExists = searchIndexes.some((index) => index.name === 'default');
-  if (!vectorIndexExists) {
-    console.log('No vector search index found. Creating placeholder index...');
+    const collection = await db.createCollection(collectionName);
+    console.log(`Collection ${collectionName} created.`);
     await collection.createSearchIndex({
       name: 'default',
       definition: {
@@ -1280,8 +1249,41 @@ async function setupRagCollection(db) {
         },
       },
     });
-    console.log('Placeholder vector search index created.');
+    console.log(`Vector search index added to ${collectionName}.`);
+    await Promise.all(
+      indexes.map(async (index) => {
+        await collection.createIndex(index);
+      }),
+    );
+    return collection;
   }
+  return db.collection(collectionName);
+}
+
+async function setVectorIndex(collection, indexDefinition) {
+  const existingIndexes = await collection.listSearchIndexes().toArray();
+  const vectorIndexExists = existingIndexes.some((index) => index.name === 'default');
+
+  if (vectorIndexExists) {
+    await collection.updateSearchIndex('default', indexDefinition);
+    console.log(`Updated vector search index for ${collection.collectionName} with dimensions: ${indexDefinition.mappings.fields.embedding.dimensions}.`);
+  } else {
+    await collection.createSearchIndex({ name: 'default', definition: indexDefinition });
+    console.log(`Created vector search index for ${collection.collectionName} with dimensions: ${indexDefinition.mappings.fields.embedding.dimensions}.`);
+  }
+}
+
+/**
+ * Initialize the MongoDB collection for RAG
+ */
+async function setupRagCollection(db) {
+  // Setup the vector search collections if they don't exist
+  // We use fileHash to see if a file with the same hash has already been processed
+  // and to avoid duplicate data in the vector db
+  // We use fileName to list the files that have been ingested in the frontend.
+  // llm_string and prompt combo is used to see if we have already processed the same LLM query
+  const ragCollection = await createCollectionForVectorSearch(db, RAG_CHUNKS, [{ fileHash: 1 }, { fileName: 1 }]); // for the rag chunks from input documents
+  await createCollectionForVectorSearch(db, LLM_SEMANTIC_CACHE, [{ llm_string: 1, prompt: 1 }]); // for the LLM semantic cache so we can reduce LLM calls and related cost
 
   // Create document embedding cache collection if it doesn't exist
   const docCacheCollections = await db.listCollections({ name: DOC_EMBEDDINGS_CACHE }).toArray();
@@ -1300,39 +1302,9 @@ async function setupRagCollection(db) {
     await db.collection(QUERY_EMBEDDINGS_CACHE).createIndex({ createdAt: 1 }, { expireAfterSeconds: 5184000 }); // 60 days
     console.log('Created TTL index on query embedding cache (expiration: 60 days).');
   }
-
-  // Create semantic cache collection for LLM queries if it doesn't exist
-  const llmCacheCollections = await db.listCollections({ name: LLM_SEMANTIC_CACHE }).toArray();
-  let llmCacheCollection;
-  if (llmCacheCollections.length === 0) {
-    llmCacheCollection = await db.createCollection(LLM_SEMANTIC_CACHE);
-    await llmCacheCollection.createIndex({ llm_string: 1, prompt: 1 });
-    console.log(`Created collection ${LLM_SEMANTIC_CACHE} for permanent document embedding cache.`);
-  } else {
-    llmCacheCollection = db.collection(LLM_SEMANTIC_CACHE);
-  }
-  // Create index for semantic cache collection
-  const llmCacheIndexes = await llmCacheCollection.listSearchIndexes().toArray();
-  const llmCacheVectorIndexExists = llmCacheIndexes.some((index) => index.name === 'default');
-  if (!llmCacheVectorIndexExists) {
-    console.log('No vector search index found for the LLM Cache. Creating placeholder index...');
-    await llmCacheCollection.createSearchIndex({
-      name: 'default',
-      definition: {
-        mappings: {
-          dynamic: true,
-          fields: {
-            embedding: { dimensions: 1024, similarity: 'cosine', type: 'knnVector' },
-          },
-        },
-      },
-    });
-    console.log('Placeholder vector search index for LLM Cache created.');
-  }
-
   ragCollectionReady = true;
   console.log('Vector Search and Embedding Cache Collections have been set up.');
-  return collection;
+  return ragCollection;
 }
 
 /**
@@ -1345,62 +1317,16 @@ async function configureVectorIndex(db) {
   const collection = db.collection(RAG_CHUNKS);
   const sampleDoc = await collection.findOne({ embedding: { $exists: true } });
   if (sampleDoc?.embedding?.length) {
-    // Update the dimensions of the RAG vector index
-    const existingIndexes = await collection.listSearchIndexes().toArray();
-    const vectorIndex = existingIndexes.find((index) => index.name === 'default');
-    if (vectorIndex) {
-      await collection.updateSearchIndex('default', {
-        mappings: {
-          dynamic: true,
-          fields: {
-            embedding: { dimensions: sampleDoc.embedding.length, similarity: 'cosine', type: 'knnVector' },
-          },
+    const indexDefinition = {
+      mappings: {
+        dynamic: true,
+        fields: {
+          embedding: { dimensions: sampleDoc.embedding.length, similarity: 'cosine', type: 'knnVector' },
         },
-      });
-      console.log('Vector search index dimensions updated successfully.');
-    } else {
-      await collection.createSearchIndex({
-        name: 'default',
-        definition: {
-          mappings: {
-            dynamic: true,
-            fields: {
-              embedding: { dimensions: sampleDoc.embedding.length, similarity: 'cosine', type: 'knnVector' },
-            },
-          },
-        },
-      });
-      console.log('Vector search index with detected dimensions created successfully.');
-    }
-
-    // Update the dimensions of the LLM Cache vector index
-    const llmCacheIndexes = await db.collection(LLM_SEMANTIC_CACHE).listSearchIndexes().toArray();
-    const llmCacheVectorIndex = llmCacheIndexes.find((index) => index.name === 'default');
-    if (llmCacheVectorIndex) {
-      await db.collection(LLM_SEMANTIC_CACHE).updateSearchIndex('default', {
-        mappings: {
-          dynamic: true,
-          fields: {
-            embedding: { dimensions: sampleDoc.embedding.length, similarity: 'cosine', type: 'knnVector' },
-          },
-        },
-      });
-      console.log('LLM Cache vector search index dimensions updated successfully.');
-    } else {
-      await db.collection(LLM_SEMANTIC_CACHE).createSearchIndex({
-        name: 'default',
-        definition: {
-          mappings: {
-            dynamic: true,
-            fields: {
-              embedding: { dimensions: sampleDoc.embedding.length, similarity: 'cosine', type: 'knnVector' },
-            },
-          },
-        },
-      });
-      console.log('LLM Cache vector search index with detected dimensions created successfully.');
-    }
-
+      },
+    };
+    await setVectorIndex(db.collection(RAG_CHUNKS), indexDefinition);
+    await setVectorIndex(db.collection(LLM_SEMANTIC_CACHE), indexDefinition);
     vectorIndexConfigured = true;
   } else {
     console.error('No embeddings found yet; cannot update vector index.');
@@ -1636,11 +1562,11 @@ exports.postRagAsk = async (req, res) => {
     const llmSemanticCache = new MongoDBAtlasSemanticCache(
       db.collection(LLM_SEMANTIC_CACHE),
       cacheBackedEmbeddings, // Embedding model should be passed separately
-      { scoreThreshold: 0.8 }, // Optional settings
+      { scoreThreshold: 0.95 }, // Optional settings
     );
 
-    // Retrieve top 4 relevant chunks
-    const relevantDocs = await vectorStore.similaritySearch(question, 4);
+    // Retrieve top 10 relevant chunks
+    const relevantDocs = await vectorStore.similaritySearch(question, 8);
     const context = relevantDocs.map((doc) => doc.pageContent).join('\n---\n');
 
     // Setup LLM

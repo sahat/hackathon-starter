@@ -4,92 +4,116 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
       i.fas.fa-robot.iconpadding
-      | Retrieval-Augmented Generation (RAG) Demo
+      | Retrieval-Augmented Generation (RAG)
 
   .btn-group.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://api.together.ai/', target='_blank')
+      i.fas.fa-hexagon-nodes.fa-sm.iconpadding
+      | Together.ai Inference API
     a.btn.btn-primary.w-100(href='https://huggingface.co/docs/api-inference/index', target='_blank')
-      i.fas.fa-brain.fa-sm.iconpadding
+      i.fas.fa-arrow-up-1-9.fa-sm.iconpadding
       | Hugging Face Inference API
     a.btn.btn-primary.w-100(href='https://www.mongodb.com/docs/atlas/atlas-vector-search/', target='_blank')
       i.fas.fa-database.fa-sm.iconpadding
       | MongoDB Vector Search
     a.btn.btn-primary.w-100(href='https://js.langchain.com/docs/modules/indexes/vector_stores/integrations/mongodb_atlas', target='_blank')
       i.fas.fa-link.fa-sm.iconpadding
-      | LangChain.js MongoDB
+      | LangChain.js
 
-  .pb-2.mt-2.mb-4.border-bottom
-    h2
-      i.fas.fa-robot.fa-sm
-      | Retrieval-Augmented Generation (RAG) Demo
+  .container.mt-3
+    .card.shadow-sm
+      .card-body.bg-light
+        .row.align-items-center.g-4
+          .col-md-5
+            p.lead
+              | This is a base boilerplate RAG implementation with semantic caching.
+            p
+              | You can start with this base RAG implementation and extend it for your project so you can focus on your business logic and not on boilerplate code. For this implementation, we are using:
+              ul
+                li LangChain.js 🦜️🔗 for the pipeline and integrations
+                li Sentence-transformers/all-MiniLM-L6-v2 embedding model through the Hugging Face 🤗 Inference API
+                li Llama-3.3-70B-Instruct-Turbo 🦙 hosted by Together.ai as the LLM
+                li PDF.js to extract text from PDF files
+                li MongoDB Atlas Vector Search as a vector DB for RAG document storage and LLM caching
+                li MongoDB as a key-value store for embedding caching
+          .col-md-7.text-center
+            img.img-fluid.w-100.rounded.mx-auto.d-block(src='https://i.imgur.com/zqIxnEj.png', alt='RAG Demo Block Diagram')
 
-  .row
-    .col-md-6
-      .card
-        .card-body
-          h3 Ingested Files
-          if ingestedFiles && ingestedFiles.length > 0
-            table.table
-              thead
-                tr
-                  th File Name
-              tbody
-                each file in ingestedFiles
+    .row.g-4.mt-4
+      .col-md-6
+        .card.shadow-sm
+          .card-body.bg-light
+            h3.text-center Ingested Files
+            if ingestedFiles && ingestedFiles.length > 0
+              table.table.table-striped.table-bordered
+                thead
                   tr
-                    td= file
-          else
-            p.text-muted No files ingested yet.
+                    th.text-center File Name
+                tbody
+                  each file in ingestedFiles
+                    tr
+                      td.text-center= file
+            else
+              p.text-muted.text-center No files ingested yet.
+            p.text-center
+              | You can add files to the 'rag_input' folder on the server and process them for RAG.
 
-          form(action='/api/rag/ingest', method='POST')
-            input(type='hidden', name='_csrf', value=_csrf)
-            button.btn.btn-primary(type='submit')
-              i.fas.fa-sync.fa-sm
-              |
-              | Update Data
+            form(action='/api/rag/ingest', method='POST')
+              button.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
+                i.fas.fa-sync.fa-sm.iconpadding
+                | Ingest Files
 
-    .col-md-6
-      .card
-        .card-body
-          h3 Ask a Question
-          form(action='/api/rag/ask', method='POST')
-            input(type='hidden', name='_csrf', value=_csrf)
-            .form-group
-              label(for='question') Your Question:
-              textarea#question.form-control(name='question', rows='3', maxlength=maxInputLength, required)= question
-            button.btn.btn-primary.mt-3(type='submit')
-              i.fas.fa-paper-plane.fa-sm
-              |
-              | Ask
+      .col-md-6
+        .card.shadow-sm
+          .card-body.bg-light
+            h3.text-center Ask a Question
+            p.text-left Try asking a question about information in the ingested RAG documents that was not part of the LLM's training data. For example,
+            ul.list-group.list-group-flush
+              li.list-group-item How much did Amazon make in 2024?
+              li.list-group-item How much debt did Amazon have at the end of 2024?
+              li.list-group-item How much was Microsoft's advertising expense in fiscal year 2024?
+              li.list-group-item What is the total amount of stock that Microsoft gave to its employees in fiscal year 2024?
+            br
+            form(action='/api/rag/ask', method='POST')
+              input(type='hidden', name='_csrf', value=_csrf)
+              .form-group
+                label(for='question') Your Question:
+                textarea#question.form-control(name='question', rows='3', maxlength=maxInputLength, required)= question
+              button.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
+                i.fas.fa-paper-plane.fa-sm.iconpadding
+                | Ask
 
-  if ragResponse || llmResponse
-    .row.mt-4
-      if ragResponse
-        .col-md-6
-          .card
-            .card-body
-              h3
-                i.fas.fa-database.fa-sm
-                |
-                | RAG Response
-              .response-box
-                pre.text-wrap= ragResponse
-      if llmResponse
-        .col-md-6
-          .card
-            .card-body
-              h3
-                i.fas.fa-brain.fa-sm
-                |
-                | LLM Response
-              .response-box
-                pre.text-wrap= llmResponse
-  style.
-    .response-box {
-      background-color: #f8f9fa;
-      padding: 15px;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-    pre.text-wrap {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
+    if ragResponse || llmResponse
+      .row.g-4.mt-4
+        if ragResponse
+          .col-md-6
+            .card.shadow-sm
+              .card-body.bg-light
+                h3.text-center
+                  i.fas.fa-database.fa-sm.iconpadding
+                  | RAG Response
+                .response-box
+                  pre.text-wrap= ragResponse
+        if llmResponse
+          .col-md-6
+            .card.shadow-sm
+              .card-body.bg-light
+                h3.text-center
+                  i.fas.fa-brain.fa-sm.iconpadding
+                  | LLM Response (no RAG)
+                .response-box
+                  pre.text-wrap= llmResponse
+
+    hr.border-primary.my-4
+
+    style.
+      .response-box {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 10px;
+      }
+      pre.text-wrap {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
