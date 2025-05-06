@@ -118,14 +118,13 @@ async function setupRagCollection(db) {
  */
 async function setVectorIndex(collection, indexDefinition) {
   const existingIndexes = await collection.listSearchIndexes().toArray();
-  const vectorIndexExists = existingIndexes.some((index) => index.name === 'default');
   const defaultIndex = existingIndexes.find((index) => index.name === 'default');
-  if (vectorIndexExists && defaultIndex?.latestDefinition?.mappings?.fields?.embedding?.dimensions !== indexDefinition.mappings.fields.embedding.dimensions) {
-    await collection.updateSearchIndex('default', indexDefinition);
-    console.log(`Updated vector search index for ${collection.collectionName} with dimensions: ${indexDefinition.mappings.fields.embedding.dimensions}.`);
-  } else {
+  if (!defaultIndex) {
     await collection.createSearchIndex({ name: 'default', definition: indexDefinition });
     console.log(`Created vector search index for ${collection.collectionName} with dimensions: ${indexDefinition.mappings.fields.embedding.dimensions}.`);
+  } else if (defaultIndex.latestDefinition?.mappings?.fields?.embedding?.dimensions !== indexDefinition.mappings.fields.embedding.dimensions) {
+    await collection.updateSearchIndex('default', indexDefinition);
+    console.log(`Updated vector search index for ${collection.collectionName} with dimensions: ${indexDefinition.mappings.fields.embedding.dimensions}.`);
   }
 }
 
