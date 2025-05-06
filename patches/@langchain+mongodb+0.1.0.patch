@@ -9,7 +9,7 @@ index 3b3fff7..8c43aec 100644
 +__exportStar(require("./semantic_cache.cjs"), exports);
 diff --git a/node_modules/@langchain/mongodb/dist/semantic_cache.cjs b/node_modules/@langchain/mongodb/dist/semantic_cache.cjs
 new file mode 100644
-index 0000000..3e0d197
+index 0000000..7c87375
 --- /dev/null
 +++ b/node_modules/@langchain/mongodb/dist/semantic_cache.cjs
 @@ -0,0 +1,92 @@
@@ -36,19 +36,19 @@ index 0000000..3e0d197
 +          index: this.indexName,
 +          path: "embedding",
 +          limit: 1,
-+          numCandidates: 10,  // Matches `10 * k` logic in Python Langchain
++          numCandidates: 20,
 +        };
-+      
 +        const searchResponse = await this.collection.aggregate([
 +          { $vectorSearch: searchQuery },
 +          { $set: { score: { $meta: "vectorSearchScore" } } },
 +          { $match: { llm_string: MongoDBAtlasSemanticCache.extractModelName(llmString ?? "") } },
 +          { $limit: 1 }
 +        ]).toArray();
-+      
-+        return searchResponse.length ? searchResponse[0].return_val : null;
++        if (searchResponse.length === 0 || (this.scoreThreshold !== null && searchResponse[0].score < this.scoreThreshold)) {
++            return null;
++        }
++        return searchResponse[0].return_val;
 +      }
-+      
 +
 +    async update(prompt, llmString, returnVal) {
 +        const embedding = await this.getEmbedding(prompt);
@@ -66,7 +66,7 @@ index 0000000..3e0d197
 +
 +    async getEmbedding(text) {
 +        return await this.embeddingModel.embedQuery(text);
-+      }
++    }
 +
 +    async clear(filters = {}) {
 +        await this.collection.deleteMany(filters);

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
@@ -118,8 +119,8 @@ async function setupRagCollection(db) {
 async function setVectorIndex(collection, indexDefinition) {
   const existingIndexes = await collection.listSearchIndexes().toArray();
   const vectorIndexExists = existingIndexes.some((index) => index.name === 'default');
-
-  if (vectorIndexExists) {
+  const defaultIndex = existingIndexes.find((index) => index.name === 'default');
+  if (vectorIndexExists && defaultIndex?.latestDefinition?.mappings?.fields?.embedding?.dimensions !== indexDefinition.mappings.fields.embedding.dimensions) {
     await collection.updateSearchIndex('default', indexDefinition);
     console.log(`Updated vector search index for ${collection.collectionName} with dimensions: ${indexDefinition.mappings.fields.embedding.dimensions}.`);
   } else {
@@ -163,9 +164,9 @@ exports.getRag = async (req, res) => {
   if (!ragFolderReady) prepareRagFolder();
 
   // Get the list all files in the MongoDB vector DB to display in the frontend
+  const client = new MongoClient(process.env.MONGODB_URI);
   let ingestedFiles = [];
   try {
-    const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
     const db = client.db();
     const collection = ragCollectionReady ? db.collection(RAG_CHUNKS) : await setupRagCollection(db);
@@ -174,6 +175,8 @@ exports.getRag = async (req, res) => {
   } catch (err) {
     console.log(err);
     ingestedFiles = [];
+  } finally {
+    await client.close();
   }
 
   res.render('ai/rag', {
@@ -339,13 +342,14 @@ exports.postRagAsk = async (req, res) => {
     return res.redirect('/ai/rag');
   }
 
+  const client = new MongoClient(process.env.MONGODB_URI);
   try {
-    const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
     const db = client.db();
     const collection = ragCollectionReady ? db.collection(RAG_CHUNKS) : await setupRagCollection(db);
     const documentEmbeddingsCache = new MongoDBStore({ collection: db.collection(DOC_EMBEDDINGS_CACHE) });
     const queryEmbeddingsCache = new MongoDBStore({ collection: db.collection(QUERY_EMBEDDINGS_CACHE) });
+    const llmSemCacheCollection = db.collection(LLM_SEMANTIC_CACHE);
 
     // Get list of ingested files for display in the frontend
     const ingestedFiles = await collection.distinct('fileName');
@@ -353,6 +357,24 @@ exports.postRagAsk = async (req, res) => {
       req.flash('errors', {
         msg: 'No files have been indexed for the RAG. Please upload your relevant PDF files to the /rag_input/ directory and "Ingest" them prior to asking questions.',
       });
+      return res.redirect('/ai/rag');
+    }
+
+    // Check and configure the vector index to address the potential edge case when
+    // LLM_SEMANTIC_CACHE was recreated prior to the app restart, while RAG_CHUNKS was not.
+    if (!vectorIndexConfigured) {
+      await configureVectorIndex(db);
+    }
+
+    // Check if the vector search index is ready
+    const ragCollectionStatus = (await collection.listSearchIndexes().toArray()).find((index) => index.name === 'default').status;
+    if (ragCollectionStatus !== 'READY') {
+      req.flash('errors', [{ msg: `RAG search index is not ready - status: ${ragCollectionStatus}. Please try again in a few minutes.` }]);
+      return res.redirect('/ai/rag');
+    }
+    const llmSemCacheCollectionStatus = (await llmSemCacheCollection.listSearchIndexes().toArray()).find((index) => index.name === 'default').status;
+    if (llmSemCacheCollectionStatus !== 'READY') {
+      req.flash('errors', [{ msg: `LLM semantic cache search index is not ready - status: ${llmSemCacheCollectionStatus}. Please try again in a few minutes.` }]);
       return res.redirect('/ai/rag');
     }
 
@@ -384,9 +406,9 @@ exports.postRagAsk = async (req, res) => {
     });
 
     const llmSemanticCache = new MongoDBAtlasSemanticCache(
-      db.collection(LLM_SEMANTIC_CACHE),
+      llmSemCacheCollection,
       cacheBackedEmbeddings, // Embedding model should be passed separately
-      { scoreThreshold: 0.95 }, // Optional similarity threshold settings
+      { scoreThreshold: 0.99 }, // Optional similarity threshold settings
     );
     const relevantDocs = await vectorStore.similaritySearch(question, 8); // Retrieve top 8 relevant chunks
     const context = relevantDocs.map((doc) => doc.pageContent).join('\n---\n');
@@ -423,5 +445,7 @@ exports.postRagAsk = async (req, res) => {
     console.error('RAG Error:', error);
     req.flash('errors', { msg: `Error: ${error.message}` });
     res.redirect('/ai/rag');
+  } finally {
+    await client.close();
   }
 };
