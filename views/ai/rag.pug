@@ -42,7 +42,7 @@ block content
 
             form(action='/ai/rag/ingest', method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
-              button.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
+              button#ingest-btn.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
                 i.fas.fa-sync.fa-sm.iconpadding
                 | Ingest Files
 
@@ -62,7 +62,7 @@ block content
               .form-group
                 label(for='question') Your Question:
                 textarea#question.form-control(name='question', rows='3', maxlength=maxInputLength, autofocus, required)= question
-              button.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
+              button#ask-btn.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
                 i.fas.fa-paper-plane.fa-sm.iconpadding
                 | Ask
 
@@ -99,7 +99,7 @@ block content
               | You can start with this base RAG implementation and extend it for your project, allowing you to focus on your business logic rather than boilerplate code. For this implementation, we are using:
               ul
                 li LangChain.js 🦜️🔗 for the pipeline and integrations
-                li Sentence-transformers/all-MiniLM-L6-v2 embedding model through the Hugging Face 🤗 Inference API
+                li BAAI/bge-small-en-v1.5 embedding model through the Hugging Face 🤗 Inference API
                 li Llama-3.3-70B-Instruct-Turbo 🦙 hosted by Together.ai as the LLM
                 li PDF.js for extracting text from PDF files
                 li MongoDB Atlas Vector Search as the vector DB for RAG document storage and LLM caching
@@ -109,7 +109,7 @@ block content
             p
               | The commented source code, including helper functions, is in controllers/ai.js
           .col-md-7.text-center
-            img.img-fluid.w-100.rounded.mx-auto.d-block(src='https://i.imgur.com/zqIxnEj.png', alt='RAG Demo Block Diagram')
+            img.img-fluid.w-100.rounded.mx-auto.d-block(src='https://i.imgur.com/gbr4Pta.png', alt='RAG Demo Block Diagram')
     hr.border-primary.my-4
     style.
       .response-box {
@@ -121,4 +121,44 @@ block content
       pre.text-wrap {
         white-space: pre-wrap;
         word-wrap: break-word;
+      }
+
+    script.
+      document.addEventListener('DOMContentLoaded', function () {
+        const ingestBtn = document.getElementById('ingest-btn');
+        const askBtn = document.getElementById('ask-btn');
+        function toggleLoadingEffect(btn, originalIconClass) {
+          const icon = btn.querySelector('i');
+          icon.classList.remove(originalIconClass);
+          icon.classList.add('fas', 'fa-circle', 'loading-icon');
+        }
+        if (ingestBtn) {
+          ingestBtn.addEventListener('click', function () {
+            toggleLoadingEffect(this, 'fa-sync');
+          });
+        }
+        if (askBtn) {
+          askBtn.addEventListener('click', function () {
+            toggleLoadingEffect(this, 'fa-paper-plane');
+          });
+        }
+      });
+
+    style.
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .loading-icon {
+        display: inline-block;
+        animation: spin 1s infinite linear;
+        transform-origin: -20% 40%;
+        position: relative;
+        top: -5px;
+        margin-right: 12px;
+        font-size: 6px;
       }

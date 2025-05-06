@@ -83,11 +83,11 @@ async function createCollectionForVectorSearch(db, collectionName, indexes) {
  * Initialize the MongoDB collection for RAG
  */
 async function setupRagCollection(db) {
-  // Setup the vector search collections if they don't exist
-  // We use fileHash to see if a file with the same hash has already been processed
-  // and to avoid duplicate data in the vector db
+  // Setup the vector search collections if they don't exist.
+  // We use fileHash to see if a file with the same hash has already been processed,
+  // to avoid duplicate data in the vector DB.
   // We use fileName to list the files that have been ingested in the frontend.
-  // llm_string and prompt combo is used to see if we have already processed the same LLM query
+  // llm_string and prompt combo is used to see if we have already processed the same LLM query.
   const ragCollection = await createCollectionForVectorSearch(db, RAG_CHUNKS, [{ fileHash: 1 }, { fileName: 1 }]); // for the RAG chunks from input documents
   await createCollectionForVectorSearch(db, LLM_SEMANTIC_CACHE, [{ llm_string: 1, prompt: 1 }]); // for the LLM semantic cache so we can reduce LLM calls and related costs
 
@@ -98,7 +98,7 @@ async function setupRagCollection(db) {
     console.log(`Created collection ${DOC_EMBEDDINGS_CACHE} for permanent document embedding cache.`);
   }
 
-  // Create rge query embedding cache collection with TTL if it doesn't exist
+  // Create the query embedding cache collection with TTL if it doesn't exist
   const queryCacheCollections = await db.listCollections({ name: QUERY_EMBEDDINGS_CACHE }).toArray();
   if (queryCacheCollections.length === 0) {
     await db.createCollection(QUERY_EMBEDDINGS_CACHE);
@@ -171,7 +171,6 @@ exports.getRag = async (req, res) => {
     const db = client.db();
     const collection = ragCollectionReady ? db.collection(RAG_CHUNKS) : await setupRagCollection(db);
     ingestedFiles = await collection.distinct('fileName');
-    await client.close();
   } catch (err) {
     console.log(err);
     ingestedFiles = [];
@@ -206,7 +205,7 @@ exports.postRagIngest = async (req, res) => {
 
   if (files.length === 0) {
     req.flash('info', {
-      msg: 'No PDF files found in the input directory. Add files to /rag_input/ to process.',
+      msg: 'No PDF files found in the input directory. Add files to ./rag_input directory to process.',
     });
     return res.redirect('/ai/rag');
   }
@@ -316,7 +315,7 @@ exports.postRagIngest = async (req, res) => {
       });
     } else if (skipped.length > 0) {
       req.flash('info', {
-        msg: `No new files to ingest. ${skipped.length} file(s) already processed: ${skipped.join(', ')}`,
+        msg: `No new files to ingest. ${skipped.length} file(s) have already been processed: ${skipped.join(', ')}`,
       });
     }
   } catch (err) {
@@ -336,7 +335,6 @@ exports.postRagIngest = async (req, res) => {
  */
 exports.postRagAsk = async (req, res) => {
   const question = (req.body.question || '').slice(0, 500);
-
   if (!question.trim()) {
     req.flash('errors', { msg: 'Please enter a question.' });
     return res.redirect('/ai/rag');
@@ -355,7 +353,7 @@ exports.postRagAsk = async (req, res) => {
     const ingestedFiles = await collection.distinct('fileName');
     if (ingestedFiles.length === 0) {
       req.flash('errors', {
-        msg: 'No files have been indexed for the RAG. Please upload your relevant PDF files to the /rag_input/ directory and "Ingest" them prior to asking questions.',
+        msg: 'No files have been indexed for RAG. Please upload your relevant PDF files to the ./rag_input directory and ingest them before asking questions.',
       });
       return res.redirect('/ai/rag');
     }
@@ -369,12 +367,12 @@ exports.postRagAsk = async (req, res) => {
     // Check if the vector search index is ready
     const ragCollectionStatus = (await collection.listSearchIndexes().toArray()).find((index) => index.name === 'default').status;
     if (ragCollectionStatus !== 'READY') {
-      req.flash('errors', [{ msg: `RAG search index is not ready - status: ${ragCollectionStatus}. Please try again in a few minutes.` }]);
+      req.flash('errors', { msg: `RAG search index is not ready - status: ${ragCollectionStatus}. Please try again in a few minutes.` });
       return res.redirect('/ai/rag');
     }
     const llmSemCacheCollectionStatus = (await llmSemCacheCollection.listSearchIndexes().toArray()).find((index) => index.name === 'default').status;
     if (llmSemCacheCollectionStatus !== 'READY') {
-      req.flash('errors', [{ msg: `LLM semantic cache search index is not ready - status: ${llmSemCacheCollectionStatus}. Please try again in a few minutes.` }]);
+      req.flash('errors', { msg: `LLM semantic cache search index is not ready - status: ${llmSemCacheCollectionStatus}. Please try again in a few minutes.` });
       return res.redirect('/ai/rag');
     }
 
@@ -428,11 +426,13 @@ exports.postRagAsk = async (req, res) => {
     // Run batch LLM calls
     const results = await llm.generate([[new HumanMessage(ragPrompt)], [new HumanMessage(llmPrompt)]]);
 
+    // Before parsing the results, check to see if we have a valid response so we don't crash
+    if (!results?.generations?.length || results.generations.length < 2) {
+      req.flash('errors', { msg: `Unable to get a valid response from the LLM. Please try again.` });
+      return res.redirect('/ai/rag');
+    }
     const ragResponse = results.generations[0][0].text;
     const llmResponse = results.generations[1][0].text;
-
-    await client.close();
-
     res.render('ai/rag', {
       title: 'Retrieval-Augmented Generation (RAG) Demo',
       ingestedFiles,
