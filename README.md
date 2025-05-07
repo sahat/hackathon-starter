@@ -398,7 +398,7 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 - Sign in or create a Together AI account.
 - Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
 - Copy and paste the generated API key into your `.env` file as `TOGETHERAI_API_KEY` or set it as an environment variable.
-- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your use case and budget and specify it the `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
+- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your use case and budget and specify it as `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
 
 <hr>
 

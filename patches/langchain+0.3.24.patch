@@ -1,17 +1,11 @@
 diff --git a/node_modules/langchain/dist/embeddings/cache_backed.cjs b/node_modules/langchain/dist/embeddings/cache_backed.cjs
-index fcd1a1f..6613dfc 100644
+index fcd1a1f..056c868 100644
 --- a/node_modules/langchain/dist/embeddings/cache_backed.cjs
 +++ b/node_modules/langchain/dist/embeddings/cache_backed.cjs
-@@ -66,16 +66,22 @@ class CacheBackedEmbeddings extends embeddings_1.Embeddings {
+@@ -66,16 +66,16 @@ class CacheBackedEmbeddings extends embeddings_1.Embeddings {
              writable: true,
              value: void 0
          });
-+        Object.defineProperty(this, "queryEmbeddingStore", {
-+            enumerable: true,
-+            configurable: true,
-+            writable: true,
-+            value: fields.queryEmbeddingStore ?? null
-+        });
 +
          this.underlyingEmbeddings = fields.underlyingEmbeddings;
          this.documentEmbeddingStore = fields.documentEmbeddingStore;
@@ -29,7 +23,7 @@ index fcd1a1f..6613dfc 100644
       *
       * If the cache has an eviction policy, we may need to be a bit more careful
       * about sharing the cache between documents and queries. Generally,
-@@ -85,6 +91,15 @@ class CacheBackedEmbeddings extends embeddings_1.Embeddings {
+@@ -85,6 +85,15 @@ class CacheBackedEmbeddings extends embeddings_1.Embeddings {
       * @returns The embedding for the given text.
       */
      async embedQuery(document) {
@@ -45,7 +39,7 @@ index fcd1a1f..6613dfc 100644
          return this.underlyingEmbeddings.embedQuery(document);
      }
      /**
-@@ -123,6 +138,7 @@ class CacheBackedEmbeddings extends embeddings_1.Embeddings {
+@@ -123,6 +132,7 @@ class CacheBackedEmbeddings extends embeddings_1.Embeddings {
       * @param underlyingEmbeddings Embeddings used to populate the cache for new documents.
       * @param documentEmbeddingStore Stores raw document embedding values. Keys are hashes of the document content.
       * @param options.namespace Optional namespace for store keys.
@@ -53,7 +47,7 @@ index fcd1a1f..6613dfc 100644
       * @returns A new CacheBackedEmbeddings instance.
       */
      static fromBytesStore(underlyingEmbeddings, documentEmbeddingStore, options) {
-@@ -134,9 +150,18 @@ class CacheBackedEmbeddings extends embeddings_1.Embeddings {
+@@ -134,9 +144,18 @@ class CacheBackedEmbeddings extends embeddings_1.Embeddings {
              valueSerializer: (value) => encoder.encode(JSON.stringify(value)),
              valueDeserializer: (serializedValue) => JSON.parse(decoder.decode(serializedValue)),
          });
