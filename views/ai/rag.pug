@@ -3,7 +3,7 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fas.fa-robot.iconpadding
+      i.fas.fa-search.iconpadding
       | Retrieval-Augmented Generation (RAG)
 
   .btn-group.d-flex(role='group')
@@ -21,6 +21,39 @@ block content
       | LangChain.js
 
   .container
+    if ragResponse || llmResponse
+      .row.g-4.mt-1
+        .col-md-12
+          .card.shadow-sm
+            .card-body.bg-light
+              .text-left
+                strong Question Asked:
+                | &nbsp;
+                = question
+
+      .row.g-4.mt-1
+        if ragResponse
+          .col-md-6
+            .card.shadow-sm
+              .card-body.bg-light
+                h3.text-center
+                  i.fas.fa-search.fa-2xs.iconpadding
+                  i.fas.fa-arrow-right.fa-2xs.iconpadding
+                  i.fas.fa-robot.fa-sm.iconpadding
+                  | RAG LLM Response
+
+                .response-box
+                  pre.text-wrap= ragResponse
+        if llmResponse
+          .col-md-6
+            .card.shadow-sm
+              .card-body.bg-light
+                h3.text-center
+                  i.fas.fa-robot.fa-sm.iconpadding
+                  | No-RAG LLM Response
+                .response-box
+                  pre.text-wrap= llmResponse
+
     .row.g-4.mt-1
       .col-md-6
         .card.shadow-sm
@@ -37,8 +70,10 @@ block content
                       td.text-center= file
             else
               p.text-muted.text-center No files ingested yet.
-            p.text-center
-              | You can add files to the 'rag_input' folder on the server and process them for RAG.
+            .text-center.small
+              | You can add files to the&nbsp;
+              span.text-monospace.fst-italic rag_input
+              | &nbsp;folder on the server and process them for RAG.
 
             form(action='/ai/rag/ingest', method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
@@ -50,42 +85,22 @@ block content
         .card.shadow-sm
           .card-body.bg-light
             h3.text-center Ask a Question
-            p.text-left Try asking a question about information in the ingested RAG documents that was not part of the LLM's training data. For example,
-            ul.list-group.list-group-flush
-              li.list-group-item How much did Amazon make in 2024?
-              li.list-group-item How much debt did Amazon have at the end of 2024?
-              li.list-group-item How much was Microsoft's advertising expense in fiscal year 2024?
-              li.list-group-item What is the total amount of stock Microsoft gave to its employees in fiscal year 2024?
-            br
+            p.text-left Try asking a question about information in the ingested RAG documents that was not part of the LLM's training data.
+            .fw-bold Example Questions:
+            ul.ms-3.list-unstyled
+              li How much did Amazon make in 2024?
+              li How much debt did Amazon have at the end of 2024?
+              li How much was Microsoft's advertising expense in fiscal year 2024?
+              li What is the total amount of stock Microsoft gave to its employees in fiscal year 2024?
             form(action='/ai/rag/ask', method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
               .form-group
-                label(for='question') Your Question:
-                textarea#question.form-control(name='question', rows='3', maxlength=maxInputLength, autofocus, required)= question
+                strong
+                  label(for='question') Your Question:
+                textarea#question.form-control(name='question', rows='3', maxlength=maxInputLength, required)= question
               button#ask-btn.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
                 i.fas.fa-paper-plane.fa-sm.iconpadding
                 | Ask
-
-    if ragResponse || llmResponse
-      .row.g-4.mt-1
-        if ragResponse
-          .col-md-6
-            .card.shadow-sm
-              .card-body.bg-light
-                h3.text-center
-                  i.fas.fa-database.fa-sm.iconpadding
-                  | RAG LLM Response
-                .response-box
-                  pre.text-wrap= ragResponse
-        if llmResponse
-          .col-md-6
-            .card.shadow-sm
-              .card-body.bg-light
-                h3.text-center
-                  i.fas.fa-brain.fa-sm.iconpadding
-                  | No-RAG LLM Response
-                .response-box
-                  pre.text-wrap= llmResponse
 
     hr.border-primary.my-4
 
