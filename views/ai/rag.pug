@@ -1,0 +1,179 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fas.fa-search.iconpadding
+      | Retrieval-Augmented Generation (RAG)
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://api.together.ai/', target='_blank')
+      i.fas.fa-hexagon-nodes.fa-sm.iconpadding
+      | Together.ai Inference API
+    a.btn.btn-primary.w-100(href='https://huggingface.co/docs/api-inference/index', target='_blank')
+      i.fas.fa-arrow-up-1-9.fa-sm.iconpadding
+      | Hugging Face Inference API
+    a.btn.btn-primary.w-100(href='https://www.mongodb.com/docs/atlas/atlas-vector-search/', target='_blank')
+      i.fas.fa-database.fa-sm.iconpadding
+      | MongoDB Vector Search
+    a.btn.btn-primary.w-100(href='https://js.langchain.com/docs/integrations/vectorstores/mongodb_atlas', target='_blank')
+      i.fas.fa-link.fa-sm.iconpadding
+      | LangChain.js
+
+  .container
+    if ragResponse || llmResponse
+      .row.g-4.mt-1
+        .col-md-12
+          .card.shadow-sm
+            .card-body.bg-light
+              .text-left
+                strong Question Asked:
+                | &nbsp;
+                = question
+
+      .row.g-4.mt-1
+        if ragResponse
+          .col-md-6
+            .card.shadow-sm
+              .card-body.bg-light
+                h3.text-center
+                  i.fas.fa-search.fa-2xs.iconpadding
+                  i.fas.fa-arrow-right.fa-2xs.iconpadding
+                  i.fas.fa-robot.fa-sm.iconpadding
+                  | RAG LLM Response
+
+                .response-box
+                  pre.text-wrap= ragResponse
+        if llmResponse
+          .col-md-6
+            .card.shadow-sm
+              .card-body.bg-light
+                h3.text-center
+                  i.fas.fa-robot.fa-sm.iconpadding
+                  | No-RAG LLM Response
+                .response-box
+                  pre.text-wrap= llmResponse
+
+    .row.g-4.mt-1
+      .col-md-6
+        .card.shadow-sm
+          .card-body.bg-light
+            h3.text-center Ingested Files
+            if ingestedFiles && ingestedFiles.length > 0
+              table.table.table-striped.table-bordered
+                thead
+                  tr
+                    th.text-center File Name
+                tbody
+                  each file in ingestedFiles
+                    tr
+                      td.text-center= file
+            else
+              p.text-muted.text-center No files ingested yet.
+            .text-center.small
+              | You can add files to the&nbsp;
+              span.text-monospace.fst-italic rag_input
+              | &nbsp;folder on the server and process them for RAG.
+
+            form(action='/ai/rag/ingest', method='POST')
+              input(type='hidden', name='_csrf', value=_csrf)
+              button#ingest-btn.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
+                i.fas.fa-sync.fa-sm.iconpadding
+                | Ingest Files
+
+      .col-md-6
+        .card.shadow-sm
+          .card-body.bg-light
+            h3.text-center Ask a Question
+            p.text-left Try asking a question about information in the ingested RAG documents that was not part of the LLM's training data.
+            .fw-bold Example Questions:
+            ul.ms-3.list-unstyled
+              li How much did Amazon make in 2024?
+              li How much debt did Amazon have at the end of 2024?
+              li How much was Microsoft's advertising expense in fiscal year 2024?
+              li What is the total amount of stock Microsoft gave to its employees in fiscal year 2024?
+            form(action='/ai/rag/ask', method='POST')
+              input(type='hidden', name='_csrf', value=_csrf)
+              .form-group
+                strong
+                  label(for='question') Your Question:
+                textarea#question.form-control(name='question', rows='3', maxlength=maxInputLength, required)= question
+              button#ask-btn.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
+                i.fas.fa-paper-plane.fa-sm.iconpadding
+                | Ask
+
+    hr.border-primary.my-4
+
+    .card.shadow-sm
+      .card-body.bg-light
+        .row.align-items-top.g-4
+          .col-md-5
+            h4
+              | Boilerplate RAG with Semantic Caching
+            p
+              | You can start with this base RAG implementation and extend it for your project, allowing you to focus on your business logic rather than boilerplate code. For this implementation, we are using:
+              ul
+                li LangChain.js 🦜️🔗 for the pipeline and integrations
+                li BAAI/bge-small-en-v1.5 embedding model through the Hugging Face 🤗 Inference API
+                li Llama-3.3-70B-Instruct-Turbo 🦙 hosted by Together.ai as the LLM
+                li PDF.js for extracting text from PDF files
+                li MongoDB Atlas Vector Search as the vector DB for RAG document storage and LLM caching
+                li MongoDB as the key-value store for embedding caching
+            br
+            br
+            p
+              | The commented source code, including helper functions, is in controllers/ai.js
+          .col-md-7.text-center
+            img.img-fluid.w-100.rounded.mx-auto.d-block(src='https://i.imgur.com/gbr4Pta.png', alt='RAG Demo Block Diagram')
+    hr.border-primary.my-4
+    style.
+      .response-box {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 10px;
+      }
+      pre.text-wrap {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+    script.
+      document.addEventListener('DOMContentLoaded', function () {
+        const ingestBtn = document.getElementById('ingest-btn');
+        const askBtn = document.getElementById('ask-btn');
+        function toggleLoadingEffect(btn, originalIconClass) {
+          const icon = btn.querySelector('i');
+          icon.classList.remove(originalIconClass);
+          icon.classList.add('fas', 'fa-circle', 'loading-icon');
+        }
+        if (ingestBtn) {
+          ingestBtn.addEventListener('click', function () {
+            toggleLoadingEffect(this, 'fa-sync');
+          });
+        }
+        if (askBtn) {
+          askBtn.addEventListener('click', function () {
+            toggleLoadingEffect(this, 'fa-paper-plane');
+          });
+        }
+      });
+
+    style.
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .loading-icon {
+        display: inline-block;
+        animation: spin 1s infinite linear;
+        transform-origin: -20% 40%;
+        position: relative;
+        top: -5px;
+        margin-right: 12px;
+        font-size: 6px;
+      }

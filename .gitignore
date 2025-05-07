@@ -32,6 +32,9 @@ bower_components
 # Uploads
 uploads
 
+# Ingestion folders
+rag_input
+
 # Editors
 .idea
 .vscode

@@ -83,9 +83,13 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
 - File upload
 - Device camera
+- **AI Examples and Boilerplates**
+  - RAG with semantic and embedding caching
+  - Llama Instruct, Llama Vision
+  - OpenAI Moderation
+  - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI, and Hugging Face
 - **API Examples**
 
-  - **AI:** OpenAI Moderation, LLAMA instruct, LLAMA vision (via Together AI serverless foundational models - Deepseek, Llama, Mistral, etc.)
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
   - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
   - **Maps and Location:** Google Maps, HERE Maps
@@ -292,6 +296,14 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <hr>
 
+<img src="https://i.imgur.com/OEVF7HK.png" height="75">
+
+- Go to <a href="https://huggingface.co" target="_blank">https://huggingface.co</a> and create an account.
+- Go to your Account Settings and create a new Access Token. Make sure you have granted the **"Make calls to Inference Provider"** permission to your token.
+- Add your token as `HUGGINGFACE_KEY` to your `.env` file or as an environment variable.
+
+<hr>
+
 <img src="https://i.imgur.com/Lw5Jb7A.png" height="50">
 
 - Go to <a href="https://developer.intuit.com/app/developer/qbo/docs/get-started" target="_blank">https://developer.intuit.com/app/developer/qbo/docs/get-started</a>
@@ -325,6 +337,17 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Create an account
 - Once logged into the dashboard, go to Settings in the bottom left corner of the page. (If there is a bottom pop-up, you may need to close it to see the Settings option.)
 - Go to the API Keys tab and get your Secret API key for the Test Environment. No physical paper mail will be sent out if you use the Test key, but you can see the PDF of what would have been mailed from your app (with some limitations) through the dashboard. If you use the Live key, they will actually print a physical letter, put it in an envelope with postage, place it in a USPS mailbox, and bill you for it.
+
+<hr>
+
+<img src="https://i.imgur.com/iCsCgp6.png" height="75">
+
+The OpenAI moderation API for checking harmful inputs is free to use as long as you have paid credits in your OpenAI developer account. The cost of using their other models depends on the model, as well as the input and output size of the API call.
+
+- Visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a>
+- Sign in or create an OpenAI account.
+- Click on **Create new secret key** to generate an API key.
+- Copy and paste the generated API key into your `.env` file as `OPENAI_API_KEY` or set it as an environment variable.
 
 <hr>
 
@@ -366,6 +389,16 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Click on your profile and click on Account Settings
 - Then click on **API Keys**
 - Copy the **Secret Key**. and add this into `.env` file
+
+<hr>
+
+<img src="https://i.imgur.com/dOCkJxT.png" height="50">
+
+- Visit <a href="https://www.together.ai" target="_blank">Together AI</a>
+- Sign in or create a Together AI account.
+- Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
+- Copy and paste the generated API key into your `.env` file as `TOGETHERAI_API_KEY` or set it as an environment variable.
+- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your use case and budget and specify it as `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
 
 <hr>
 
@@ -415,27 +448,6 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <hr>
 
-<img src="https://i.imgur.com/iCsCgp6.png" height="75">
-
-The OpenAI moderation API for checking harmful inputs is free to use as long as you have paid credits in your OpenAI developer account. The cost of using their other models depends on the model, as well as the input and output size of the API call.
-
-- Visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a>
-- Sign in or create an OpenAI account.
-- Click on **Create new secret key** to generate an API key.
-- Copy and paste the generated API key into your `.env` file as `OPENAI_API_KEY` or set it as an environment variable.
-
-<hr>
-
-<img src="https://i.imgur.com/dOCkJxT.png" height="50">
-
-- Visit <a href="https://www.together.ai" target="_blank">Together AI</a>
-- Sign in or create a Together AI account.
-- Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
-- Copy and paste the generated API key into your `.env` file as `TOGETHERAI_API_KEY` or set it as an environment variable.
-- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your usecase and budget and specify it the `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
-
-<hr>
-
 <img src="https://i.imgur.com/QMjwCk6.png" height="50">
 
 - Sign in at <a href="https://developer.x.com/" target="_blank">https://developer.x.com/</a>
@@ -481,6 +493,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **config**/morgan.js             | Configuration for request logging with morgan.                       |
 | **config**/nodemailer.js         | Configuration and helper function for sending email with nodemailer. |
 | **config**/passport.js           | Passport Local and OAuth strategies, plus login middleware.          |
+| **controllers**/ai.js            | Controller for /ai route and all ai examples and boilerplates.       |
 | **controllers**/api.js           | Controller for /api route and all api examples.                      |
 | **controllers**/contact.js       | Controller for contact form.                                         |
 | **controllers**/home.js          | Controller for home page (index).                                    |
@@ -490,9 +503,10 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **public**/**js**/application.js | Specify client-side JavaScript dependencies.                         |
 | **public**/**js**/app.js         | Place your client-side JavaScript here.                              |
 | **public**/**css**/main.scss     | Main stylesheet for your app.                                        |
-| **test**/\*.js                   | Unit tests                                                           |
+| **test**/\*.js                   | Unit tests.                                                          |
 | **views/account**/               | Templates for _login, password reset, signup, profile_.              |
-| **views/api**/                   | Templates for API Examples.                                          |
+| **views/ai**/                    | Templates for AI examples and boilerplates.                          |
+| **views/api**/                   | Templates for API examples.                                          |
 | **views/partials**/flash.pug     | Error, info and success flash notifications.                         |
 | **views/partials**/header.pug    | Navbar partial template.                                             |
 | **views/partials**/footer.pug    | Footer partial template.                                             |
@@ -500,11 +514,11 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **views**/home.pug               | Home page template.                                                  |
 | .dockerignore                    | Folder and files ignored by docker usage.                            |
 | .env.example                     | Your API keys, tokens, passwords and database URI.                   |
-| eslint.config.mjs                | Rules for eslint linter.                                             |
 | .gitignore                       | Folder and files ignored by git.                                     |
 | app.js                           | The main application file.                                           |
 | docker-compose.yml               | Docker compose configuration file.                                   |
 | Dockerfile                       | Docker configuration file.                                           |
+| eslint.config.mjs                | Rules for eslint linter.                                             |
 | package.json                     | NPM dependencies.                                                    |
 | package-lock.json                | Contains exact versions of NPM dependencies in package.json.         |
 
@@ -525,6 +539,11 @@ Required to run the project before your modifications
 | @fortawesome/fontawesome-free | Symbol and Icon library.                                              |
 | @googleapis/drive             | Google Drive API integration library.                                 |
 | @googleapis/sheets            | Google Sheets API integration library.                                |
+| @huggingface/inference        | Client library for Hugging Face Inference providers                   |
+| @langchain/community          | Third party integrations for Langchain                                |
+| @langchain/core               | Base LangChain abstractions and Expression Language                   |
+| @langchain/mongodb            | MongoDB integrations for LangChain                                    |
+| @langchain/textsplitters      | LangChain text splitters for RAG pipelines                            |
 | @lob/lob-typescript-sdk       | Lob (USPS mailing / physical mailing service) library.                |
 | @naandalist/patch-package     | Fix broken node modules ahead of fixes by maintainers.                |
 | @node-rs/bcrypt               | Library for hashing and salting user passwords.                       |
@@ -545,10 +564,12 @@ Required to run the project before your modifications
 | express-rate-limit            | Rate limiting middleware for abuse protection.                        |
 | express-session               | Simple session middleware for Express.                                |
 | jquery                        | Front-end JS library to interact with HTML elements.                  |
+| langchain                     | Framework for developing LLM applications                             |
 | lastfm                        | Last.fm API library.                                                  |
 | lusca                         | CSRF middleware.                                                      |
 | mailchecker                   | Verifies that an email address is valid and not a disposable address. |
 | moment                        | Parse, validate, compute dates and times.                             |
+| mongodb                       | MongoDB driver                                                        |
 | mongoose                      | MongoDB ODM.                                                          |
 | morgan                        | HTTP request logger middleware for node.js.                           |
 | multer                        | Node.js middleware for handling `multipart/form-data`.                |
@@ -563,6 +584,7 @@ Required to run the project before your modifications
 | passport-oauth2-refresh       | A library to refresh OAuth 2.0 access tokens using refresh tokens.    |
 | passport-openidconnect        | Sign-in with OpenID Connect                                           |
 | passport-steam-openid         | OpenID 2.0 Steam plugin.                                              |
+| pdfjs-dist                    | PDF parser                                                            |
 | pug                           | Template engine for Express.                                          |
 | sass                          | Sass compiler to generate CSS with superpowers.                       |
 | sinon                         | Test spies, stubs and mocks for JavaScript.                           |
@@ -581,6 +603,7 @@ Required during code development for testing, Hygiene, code styling, etc.
 | @eslint/compat                  | Compatibility utilities for ESLin (eslint v8 support in v9).                |
 | @eslint/eslintrc                | Support for legacy ESLintRC config file format for ESLint.                  |
 | @eslint/js                      | ESLint JavaScript language implementation.                                  |
+| @prettier/plugin-pug            | Prettier plugin for formatting pug templates                                |
 | c8                              | Coverage test.                                                              |
 | chai                            | BDD/TDD assertion library.                                                  |
 | eslint-config-airbnb-base-ex... | Replacement for eslint-config-airbnb-base pending its upgrade to eslint v9. |
@@ -704,7 +727,9 @@ mongoose.connection.on('error', (err) => {
 You need to have a MongoDB server running before launching `app.js`. You can download MongoDB [here](https://www.mongodb.com/try/download/community), or install it via a package manager.
 Windows users, read [Install MongoDB on Windows](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows//).
 
-**Tip:** If you are always connected to the internet, you could just use [MongoDB Atlas](https://www.mongodb.com) instead of downloading and installing MongoDB locally. You will only need to update database credentials in `.env` file.
+**Tip:** If you are always connected to the internet, you could just use [MongoDB Atlas](https://www.mongodb.com) instead of downloading and installing MongoDB locally. You will only need to update the database credentials in the `.env` file.
+
+**NOTE:** MongoDB Atlas (cloud database) is required for vector store, index, and search features used in AI integrations. These features are NOT available in locally installed MongoDBs.
 
 ### I get an error when I deploy my app, why?
 
@@ -1373,9 +1398,9 @@ Using a local instance on your laptop with ngrok is a good solution for your dem
 - Fill in your information then hit **Create your Atlas account**
 - You will be redirected to Create New Cluster page.
 - Select a **Cloud Provider and Region**
-- Select cluster Tier to Free forever **Shared** Cluster
+- Set the cluster Tier to Free Forever **Shared** Cluster
 - Give Cluster a name (default: Cluster0)
-- Click on green **:zap:Create Cluster button**
+- Click on the green **:zap:Create Cluster button**
 - Now, to access your database you need to create a DB user. To create a new MongoDB user, from the **Clusters view**, select the **Security tab**
 - Under the **MongoDB Users** tab, click on **+Add New User**
 - Fill in a username and password and give it either **Atlas Admin** User Privilege

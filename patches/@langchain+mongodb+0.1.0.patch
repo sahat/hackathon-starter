@@ -1,0 +1,107 @@
+diff --git a/node_modules/@langchain/mongodb/dist/index.cjs b/node_modules/@langchain/mongodb/dist/index.cjs
+index 3b3fff7..8c43aec 100644
+--- a/node_modules/@langchain/mongodb/dist/index.cjs
++++ b/node_modules/@langchain/mongodb/dist/index.cjs
+@@ -17,3 +17,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ __exportStar(require("./chat_history.cjs"), exports);
+ __exportStar(require("./vectorstores.cjs"), exports);
+ __exportStar(require("./storage.cjs"), exports);
++__exportStar(require("./semantic_cache.cjs"), exports);
+diff --git a/node_modules/@langchain/mongodb/dist/semantic_cache.cjs b/node_modules/@langchain/mongodb/dist/semantic_cache.cjs
+new file mode 100644
+index 0000000..7c87375
+--- /dev/null
++++ b/node_modules/@langchain/mongodb/dist/semantic_cache.cjs
+@@ -0,0 +1,92 @@
++const { BaseCache } = require("@langchain/core/caches");
++
++class MongoDBAtlasSemanticCache extends BaseCache {
++    constructor(collection, embeddingModel, {
++        indexName = "default", // Optional index name, defaults to "default"
++        scoreThreshold = null, // Optional similarity score filter
++        waitUntilReady = null // Optional delay for indexing readiness
++    } = {}) {
++        super();
++        this.collection = collection;
++        this.embeddingModel = embeddingModel;
++        this.indexName = indexName;
++        this.scoreThreshold = scoreThreshold;
++        this.waitUntilReady = waitUntilReady;
++    }
++
++    async lookup(prompt, llmString) {
++        const embedding = MongoDBAtlasSemanticCache.fixArrayPrecision(await this.getEmbedding(prompt));
++        const searchQuery = {
++          queryVector: embedding,
++          index: this.indexName,
++          path: "embedding",
++          limit: 1,
++          numCandidates: 20,
++        };
++        const searchResponse = await this.collection.aggregate([
++          { $vectorSearch: searchQuery },
++          { $set: { score: { $meta: "vectorSearchScore" } } },
++          { $match: { llm_string: MongoDBAtlasSemanticCache.extractModelName(llmString ?? "") } },
++          { $limit: 1 }
++        ]).toArray();
++        if (searchResponse.length === 0 || (this.scoreThreshold !== null && searchResponse[0].score < this.scoreThreshold)) {
++            return null;
++        }
++        return searchResponse[0].return_val;
++      }
++
++    async update(prompt, llmString, returnVal) {
++        const embedding = await this.getEmbedding(prompt);
++        await this.collection.insertOne({
++            prompt,
++            llm_string: MongoDBAtlasSemanticCache.extractModelName(llmString),
++            return_val: returnVal,
++            embedding
++        });
++        // Wait for indexing if a waitUntilReady delay is specified
++        if (this.waitUntilReady) {
++            await new Promise(resolve => setTimeout(resolve, this.waitUntilReady * 1000)); // Convert float to milliseconds
++        }
++    }
++
++    async getEmbedding(text) {
++        return await this.embeddingModel.embedQuery(text);
++    }
++
++    async clear(filters = {}) {
++        await this.collection.deleteMany(filters);
++    }
++
++    static extractModelName(llmString) {
++        let safeLLMString = "unknown_model"; // Default fallback
++        const match = llmString.match(/(?:^|,)model_name:"([^"]+)"|(?:^|,)model:"([^"]+)"/);
++        if (match) {
++            safeLLMString = match[1] ?? match[2]; // Prioritize model_name, fallback to model
++        }
++        return safeLLMString;
++    }
++
++    /**
++     * Copied from vectorestores.cjs
++     * 
++     * Static method to fix the precision of the array that ensures that
++     * every number in this array is always float when casted to other types.
++     * This is needed since MongoDB Atlas Vector Search does not cast integer
++     * inside vector search to float automatically.
++     * This method shall introduce a hint of error but should be safe to use
++     * since introduced error is very small, only applies to integer numbers
++     * returned by embeddings, and most embeddings shall not have precision
++     * as high as 15 decimal places.
++     * @param array Array of number to be fixed.
++     * @returns
++     */
++    static fixArrayPrecision(array) {
++        if (!Array.isArray(array)) {
++            console.error("fixArrayPrecision received an invalid input:", array);
++            return [];
++        }
++        return array.map((value) => (Number.isInteger(value) ? value + 0.000000000000001 : value));
++    }
++}
++
++exports.MongoDBAtlasSemanticCache = MongoDBAtlasSemanticCache;

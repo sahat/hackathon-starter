@@ -66,6 +66,7 @@ else numberOfProxies = 0;
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
+const aiController = require('./controllers/ai');
 const contactController = require('./controllers/contact');
 
 /**
@@ -231,12 +232,20 @@ app.get('/api/chart', apiController.getChart);
 app.get('/api/google/sheets', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getGoogleSheets);
 app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getQuickbooks);
 app.get('/api/trakt', apiController.getTrakt);
+
+/**
+ * AI Integrations and Boilerplate example routes.
+ */
+app.get('/ai', aiController.getAi);
 app.get('/api/openai-moderation', apiController.getOpenAIModeration);
 app.post('/api/openai-moderation', apiController.postOpenAIModeration);
 app.get('/api/togetherai-classifier', apiController.getTogetherAIClassifier);
 app.post('/api/togetherai-classifier', apiController.postTogetherAIClassifier);
 app.get('/api/togetherai-camera', lusca({ csrf: true }), apiController.getTogetherAICamera);
 app.post('/api/togetherai-camera', strictLimiter, apiController.imageUploadMiddleware, lusca({ csrf: true }), apiController.postTogetherAICamera);
+app.get('/ai/rag', aiController.getRag);
+app.post('/ai/rag/ingest', aiController.postRagIngest);
+app.post('/ai/rag/ask', aiController.postRagAsk);
 
 /**
  * OAuth authentication failure handler (common for all providers)

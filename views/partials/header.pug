@@ -1,42 +1,3 @@
-//.navbar.navbar-light.fixed-top.navbar-expand-lg.bg-light
-//  .container
-//    a.navbar-brand(href='/')
-//      i.fas.fa-cube
-//      | Project name
-//    button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
-//      span.sr-only Toggle navigation
-//      span.navbar-toggler-icon
-//    .collapse.navbar-collapse
-//      ul.nav.navbar-nav
-//        li.nav-item(class=(title === 'Home') ? 'active' : undefined)
-//          a.nav-link(href='/') Home
-//        li.nav-item(class=(title === 'API Examples') ? 'active' : undefined)
-//          a.nav-link(href='/api') API Examples
-//        li.nav-item(class=(title === 'Contact') ? 'active' : undefined)
-//          a.nav-link(href='/contact') Contact
-//      ul.nav.navbar-nav.ml-auto
-//        if !user
-//          li.nav-item(class=(title === 'Login') ? 'active' : undefined)
-//            a.nav-link(href='/login') Login
-//          li.nav-item(class=(title === 'Create Account') ? 'active' : undefined)
-//            a.nav-link(href='/signup') Create Account
-//        else
-//          li.dropdown(class=(title === 'Account Management') ? 'active' : undefined).nav-item
-//            a.dropdown-toggle.nav-link(href='#', data-toggle='dropdown')
-//              if user.profile.picture
-//                img(src=user.profile.picture)
-//              else
-//                img(src=user.gravatar(60))
-//              span= user.profile.name || user.email || user.id
-//              i.caret
-//            div.dropdown-menu
-//              a.dropdown-item(href='/account') My Account
-//              div.dropdown-divider
-//              a.dropdown-item(href='/logout') Logout
-//
-//
-//
-
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
   .container
     a.navbar-brand(href='/')
@@ -49,6 +10,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
       ul.navbar-nav.me-auto.mb-2.mb-lg-0
         li.nav-item
           a.nav-link(class=title === 'Home' ? 'active' : '', href='/') Home
+        li.nav-item
+          a.nav-link(class=title === 'AI Examples' ? 'active' : '', href='/ai') AI Examples
         li.nav-item
           a.nav-link(class=title === 'API Examples' ? 'active' : '', href='/api') API Examples
         li.nav-item
