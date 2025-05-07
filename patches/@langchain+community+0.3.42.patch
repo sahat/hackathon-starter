@@ -1,0 +1,20 @@
+diff --git a/node_modules/@langchain/community/dist/embeddings/hf.cjs b/node_modules/@langchain/community/dist/embeddings/hf.cjs
+index e065fb6..98ed84f 100644
+--- a/node_modules/@langchain/community/dist/embeddings/hf.cjs
++++ b/node_modules/@langchain/community/dist/embeddings/hf.cjs
+@@ -40,6 +40,7 @@ class HuggingFaceInferenceEmbeddings extends embeddings_1.Embeddings {
+         this.apiKey =
+             fields?.apiKey ?? (0, env_1.getEnvironmentVariable)("HUGGINGFACEHUB_API_KEY");
+         this.endpointUrl = fields?.endpointUrl;
++        this.provider = fields?.provider ?? (0, env_1.getEnvironmentVariable)("HUGGINGFACEHUB_PROVIDER");
+         this.client = this.endpointUrl
+             ? new inference_1.HfInference(this.apiKey).endpoint(this.endpointUrl)
+             : new inference_1.HfInference(this.apiKey);
+@@ -50,6 +51,7 @@ class HuggingFaceInferenceEmbeddings extends embeddings_1.Embeddings {
+         return this.caller.call(() => this.client.featureExtraction({
+             model: this.model,
+             inputs: clean,
++            provider: this.provider,
+         }));
+     }
+     /**
