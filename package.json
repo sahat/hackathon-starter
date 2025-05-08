@@ -12,7 +12,7 @@
     "Yashar Fakhari (https://github.com/YasharF)"
   ],
   "scripts": {
-    "clean-install": "rm -rf node_modules && rm -rf package-lock.json && rm -rf tmp && npm install",
+    "clean-install": "node -e \"fs.rmSync('node_modules', { recursive: true, force: true }); fs.rmSync('package-lock.json', { force: true }); fs.rmSync('tmp', { recursive: true, force: true });\" && npm install",
     "lint": "eslint \"**/*.js\" --fix && prettier . --write",
     "lint-check": "eslint \"**/*.js\" && prettier . --check",
     "postinstall": "patch-package && npm run scss",
