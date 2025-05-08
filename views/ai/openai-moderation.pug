@@ -18,7 +18,7 @@ block content
     | This example demonstrates how to use the OpenAI Moderation API to check if a user is providing harmful input (using the omni-moderation-latest model). The API utilizes OpenAI's GPT-based classifiers to assess whether content should be flagged across categories such as hate, violence, and self-harm. The output results provide granular probability scores to reflect the likelihood of content matching the detected category, enabling you to calibrate the moderation based on your use case or context.
 
   .row
-    form(method='POST', action='/api/openai-moderation')
+    form(method='POST', action='/ai/openai-moderation')
       input(type='hidden', name='_csrf', value=_csrf)
       .mb-3
         label(for='inputText') Enter text to check for harmful content:

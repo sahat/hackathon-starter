@@ -18,24 +18,24 @@ block content
       | API Reference
 
   p.text-muted
-    | Analyze a customer message using #{ togetherAiModel } hosted on Together.AI to determine the appropriate department for routing. Our system prompt provides classification instructions and requests the LLM to respond in JSON format, which our application can parse for further actions, including AI Agent creation.
+    | Analyze a customer message using #{ togetherAiModel } hosted on Together.AI to determine the appropriate department for routing. The system prompt provides classification instructions and requests the LLM to respond in JSON format, which the application can parse for further actions.
 
   .row
     .col-md-8.col-lg-6
-      form(method='POST', action='/api/togetherai-classifier')
+      form(method='POST', action='/ai/togetherai-classifier')
         input(type='hidden', name='_csrf', value=_csrf)
         .mb-3
           label(for='inputText') Customer message
           textarea#inputText.form-control(name='inputText', maxlength='300', rows='4', required)= input
           .form-text.text-muted Maximum 300 characters.
-        button.btn.btn-primary(type='submit') Classify
+        button.btn.btn-primary(type='submit') Classify Department
 
       if error
         .alert.alert-danger.mt-3= error
 
       if result
         .mt-4
-          h5.text-secondary.mb-3 Classification (Routing) Results
+          h5.text-secondary.mb-3 Classification (Routing) Result
           .d-flex.align-items-center.mb-2
             i.fas.fa-tag.me-2(style='color: #6f42c1')
             if result.department && result.department !== 'Unknown'

@@ -125,7 +125,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
-  if (req.path === '/api/upload' || req.path === '/api/togetherai-camera') {
+  if (req.path === '/api/upload' || req.path === '/ai/togetherai-camera') {
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
     // WARN: Any path that is not protected by CSRF here should have lusca.csrf() chained
     // in their route handler.
@@ -237,12 +237,12 @@ app.get('/api/trakt', apiController.getTrakt);
  * AI Integrations and Boilerplate example routes.
  */
 app.get('/ai', aiController.getAi);
-app.get('/api/openai-moderation', apiController.getOpenAIModeration);
-app.post('/api/openai-moderation', apiController.postOpenAIModeration);
-app.get('/api/togetherai-classifier', apiController.getTogetherAIClassifier);
-app.post('/api/togetherai-classifier', apiController.postTogetherAIClassifier);
-app.get('/api/togetherai-camera', lusca({ csrf: true }), apiController.getTogetherAICamera);
-app.post('/api/togetherai-camera', strictLimiter, apiController.imageUploadMiddleware, lusca({ csrf: true }), apiController.postTogetherAICamera);
+app.get('/ai/openai-moderation', aiController.getOpenAIModeration);
+app.post('/ai/openai-moderation', aiController.postOpenAIModeration);
+app.get('/ai/togetherai-classifier', aiController.getTogetherAIClassifier);
+app.post('/ai/togetherai-classifier', aiController.postTogetherAIClassifier);
+app.get('/ai/togetherai-camera', lusca({ csrf: true }), aiController.getTogetherAICamera);
+app.post('/ai/togetherai-camera', strictLimiter, aiController.imageUploadMiddleware, lusca({ csrf: true }), aiController.postTogetherAICamera);
 app.get('/ai/rag', aiController.getRag);
 app.post('/ai/rag/ingest', aiController.postRagIngest);
 app.post('/ai/rag/ask', aiController.postRagAsk);
