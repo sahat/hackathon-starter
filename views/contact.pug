@@ -10,7 +10,7 @@ block content
 
   form#contactForm(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
-    if (unknownUser)
+    if unknownUser
       .form-group.row.mb-3
         label.col-md-2.col-form-label.font-weight-bold(for='name') Name
         .col-md-8

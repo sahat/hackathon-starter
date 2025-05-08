@@ -52,7 +52,7 @@ block content
               span.badge.rounded-pill.px-3.py-2(style=`background-color:${color};color:#fff;font-size:1em;min-width:60px;display:inline-block`)= val.toFixed ? val.toFixed(2) : val
         br
         h6 Flagged Categories:
-        if Object.values(result.categories).some(flagged => flagged)
+        if Object.values(result.categories).some((flagged) => flagged)
           ul
             each flagged, cat in result.categories
               if flagged
