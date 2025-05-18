@@ -264,18 +264,31 @@ exports.getQuickbooks = async (req, res) => {
  */
 exports.getNewYorkTimes = async (req, res, next) => {
   const apiKey = process.env.NYT_KEY;
+  const url = `https://api.nytimes.com/svc/books/v3/lists/current/young-adult-hardcover.json?api-key=${apiKey}`;
   try {
-    const response = await fetch(`http://api.nytimes.com/svc/books/v2/lists?list-name=young-adult&api-key=${apiKey}`);
+    const response = await fetch(url);
+    const contentType = response.headers.get('content-type') || '';
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`New York Times API - ${response.status} ${response.statusText} ${JSON.stringify(error.fault)}`);
+      const bodyText = await response.text();
+      console.error(`[NYT API] Error response:\nStatus: ${response.status} ${response.statusText}\nHeaders: ${JSON.stringify([...response.headers])}\nBody (first 500 chars):\n${bodyText.slice(0, 500)}`);
+      throw new Error(`New York Times API - ${response.status} ${response.statusText}`);
+    }
+    if (!contentType.includes('application/json')) {
+      const bodyText = await response.text();
+      console.error(`[NYT API] Unexpected content-type: ${contentType}\nBody (first 500 chars):\n${bodyText.slice(0, 500)}`);
+      throw new Error('NYT API did not return JSON. Check your API key and endpoint.');
     }
     const data = await response.json();
+    if (!data.results || !data.results.books) {
+      console.error('[NYT API] No "results.books" field in response:', data);
+      throw new Error('NYT API response missing "results.books".');
+    }
     res.render('api/nyt', {
       title: 'New York Times API',
-      books: data.results,
+      books: data.results.books,
     });
   } catch (error) {
+    console.error('[NYT API] Exception:', error);
     next(error);
   }
 };
