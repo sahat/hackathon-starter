@@ -1236,8 +1236,6 @@ class Person {
 Math.floor(Date.now() / 1000);
 ```
 
-
-
 ```MomentJS
 moment().unix();
 ```
