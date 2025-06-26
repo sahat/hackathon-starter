@@ -80,7 +80,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Verify Email
   - Link multiple OAuth provider accounts to one account
   - Delete Account
-- Contact Form (powered by SMTP via Sendgrid, Mailgun, AWS SES, etc.)
+- Contact Form (powered by SMTP via Mailgun, AWS SES, etc.)
 - File upload
 - Device camera
 - **AI Examples and Boilerplates**
@@ -196,7 +196,6 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 | Provider | Free Tier                  | Website                 |
 | -------- | -------------------------- | ----------------------- |
-| SendGrid | 100 emails/day for free    | https://sendgrid.com    |
 | SMTP2Go  | 1000 emails/month for free | https://www.smtp2go.com |
 | Brevo    | 300 emails/day for free    | https://www.brevo.com   |
 
