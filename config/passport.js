@@ -80,7 +80,7 @@ passport.use(
 /**
  * Common function to handle OAuth2 token processing and saving user data.
  *
- * This function is to handle various senarious that we would run into when it comes to
+ * This function is to handle various scenarios that we would run into when it comes to
  * processing the OAuth2 tokens and saving the user data.
  *
  * If we have an existing tokens:
