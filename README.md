@@ -89,7 +89,6 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - OpenAI Moderation
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI, and Hugging Face
 - **API Examples**
-
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
   - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
   - **Maps and Location:** Google Maps, HERE Maps
@@ -108,7 +107,6 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 ## Prerequisites
 
 - MongoDB (local install OR hosted)
-
   - Local Install: [MongoDB](https://www.mongodb.com/download-center/community)
   - Hosted: No need to install, see the MongoDB Atlas section
 
@@ -162,11 +160,9 @@ _What to get and configure:_
 - API keys for service providers that you need in the API Examples if you are planning to use them.
 
 - MongoDB Atlas
-
   - If you are using MongoDB Atlas instead of a local db, set the MONGODB_URI to your db URI (including your db user/password).
 
 - Email address
-
   - Set SITE_CONTACT_EMAIL as your incoming email address for messages sent to you through the contact form.
   - Set TRANSACTION_EMAIL as the "From" address for emails sent to users through the lost password or email verification emails to users. You may set this to the same address as SITE_CONTACT_EMAIL.
 
