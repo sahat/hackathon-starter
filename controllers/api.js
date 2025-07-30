@@ -1156,21 +1156,20 @@ exports.getGoogleDrive = (req, res) => {
     auth: authObj,
   });
 
-  drive.files.list(
-    {
-      fields: 'files(iconLink, webViewLink, name)',
-    },
-    (err, response) => {
-      if (err && err.message === 'Insufficient Permission') {
-        req.flash('errors', { msg: 'Missing Google Drive access permission. Please unlink and relink your Google account with sufficent permissiosn under your account settings.' });
-        return res.redirect('/api');
-      }
-      res.render('api/google-drive', {
-        title: 'Google Drive API',
-        files: response.data.files,
-      });
-    },
-  );
+  const errorMsgPermission = 'Missing Google Drive access permission. Please unlink and relink your Google account with sufficient permissions under your account settings.';
+  const errorMsgGeneric = 'There was an error while fetching Google Drive data.';
+  drive.files.list({ fields: 'files(iconLink, webViewLink, name)' }, (err, response) => {
+    if (err) {
+      console.error('Google Drive API Error:', err);
+      const msg = err.message === 'Insufficient Permission' ? errorMsgPermission : errorMsgGeneric;
+      req.flash('errors', { msg });
+      return res.redirect('/api');
+    }
+    res.render('api/google-drive', {
+      title: 'Google Drive API',
+      files: response.data.files,
+    });
+  });
 };
 
 exports.getGoogleSheets = (req, res) => {
@@ -1191,22 +1190,20 @@ exports.getGoogleSheets = (req, res) => {
   const re = /spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
   const id = url.match(re)[1];
 
-  sheets.spreadsheets.values.get(
-    {
-      spreadsheetId: id,
-      range: 'Class Data!A1:F',
-    },
-    (err, response) => {
-      if (err && err.message === 'Insufficient Permission') {
-        req.flash('errors', { msg: 'Missing Google sheets access permission. Please unlink and relink your Google account with sufficent permissiosn under your account settings.' });
-        return res.redirect('/api');
-      }
-      res.render('api/google-sheets', {
-        title: 'Google Sheets API',
-        values: response.data.values,
-      });
-    },
-  );
+  const errorMsgPermission = 'Missing Google sheets access permission. Please unlink and relink your Google account with sufficient permissions under your account settings.';
+  const errorMsgGeneric = 'There was an error while fetching Google Sheets data.';
+  sheets.spreadsheets.values.get({ spreadsheetId: id, range: 'Class Data!A1:F' }, (err, response) => {
+    if (err) {
+      console.error('Google Sheets API Error:', err);
+      const msg = err.message === 'Insufficient Permission' ? errorMsgPermission : errorMsgGeneric;
+      req.flash('errors', { msg });
+      return res.redirect('/api');
+    }
+    res.render('api/google-sheets', {
+      title: 'Google Sheets API',
+      values: response.data.values,
+    });
+  });
 };
 
 /**
