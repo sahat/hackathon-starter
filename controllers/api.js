@@ -219,7 +219,7 @@ exports.getGithub = async (req, res, next) => {
 exports.getQuickbooks = async (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'quickbooks');
   const realmId = req.user.quickbooks;
-  const quickbooksAPIMinorVersion = 65;
+  const quickbooksAPIMinorVersion = 75;
   const AccountingBaseUrl = 'https://sandbox-quickbooks.api.intuit.com';
 
   const query = 'select * from Customer';
