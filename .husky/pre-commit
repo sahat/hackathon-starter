@@ -30,5 +30,7 @@ npm run lint
 # Re-stage files after lint fixes (only staged files)
 # Use a portable alternative for xargs
 echo "$STAGED_FILES" | while IFS= read -r file; do
-  git add "$file"
+  if [ -f "$file" ]; then
+    git add "$file"
+  fi
 done
