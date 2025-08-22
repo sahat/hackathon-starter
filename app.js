@@ -67,6 +67,8 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const aiController = require('./controllers/ai');
+const langGraphController = require('./controllers/langgraph');
+
 const contactController = require('./controllers/contact');
 
 /**
@@ -247,6 +249,9 @@ app.post('/ai/togetherai-camera', strictLimiter, aiController.imageUploadMiddlew
 app.get('/ai/rag', aiController.getRag);
 app.post('/ai/rag/ingest', aiController.postRagIngest);
 app.post('/ai/rag/ask', aiController.postRagAsk);
+app.get('/ai/langgraph', langGraphController.getLangGraph);
+app.get('/ai/langgraph/chat', langGraphController.getLangGraphChat);
+app.post('/ai/langgraph/reset', langGraphController.postLangGraphReset);
 
 /**
  * OAuth authentication failure handler (common for all providers)
