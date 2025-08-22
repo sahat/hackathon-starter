@@ -71,6 +71,8 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const aiController = require('./controllers/ai');
+const aiAgentController = require('./controllers/ai-agent');
+
 const contactController = require('./controllers/contact');
 const webauthnController = require('./controllers/webauthn');
 
@@ -266,6 +268,9 @@ app.post('/ai/llm-camera', strictLimiter, aiController.imageUploadMiddleware, lu
 app.get('/ai/rag', aiController.getRag);
 app.post('/ai/rag/ingest', aiController.postRagIngest);
 app.post('/ai/rag/ask', aiController.postRagAsk);
+app.get('/ai/ai-agent', aiAgentController.getAIAgent);
+app.get('/ai/ai-agent/chat', aiAgentController.getAIAgentChat);
+app.post('/ai/ai-agent/reset', aiAgentController.postAIAgentReset);
 
 /**
  * OAuth authentication failure handler (common for all providers)

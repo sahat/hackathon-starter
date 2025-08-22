@@ -1,0 +1,372 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    .row
+      .col-12
+        h2 AI Agent Customer Service
+
+        .row
+          .col-md-8
+            // Chat area
+            .card
+              .card-header
+                h5.mb-0 Customer Service Chat
+              .card-body
+                #chat-messages.mb-3(style='height: 400px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 0.375rem; padding: 1rem')
+                  .text-muted.mb-3
+                    p Welcome! I'm your AI customer service representative. I can help you with:
+                    ul.small
+                      li Order tracking and status
+                      li Returns and refunds
+                      li Replacements for damaged items
+                      li Order cancellations
+                      li Payment and billing issues
+                    p.mt-2 Try asking about order #1234 or mention any customer service issue!
+
+                // Input area
+                .input-group
+                  input#message-input.form-control(type='text', placeholder='Type your message...')
+                  button#send-button.btn.btn-primary Send
+
+          .col-md-4
+            // Status and controls area
+            .card
+              .card-header
+                h6.mb-0 System Status
+              .card-body
+                .mb-3
+                  strong Status:
+                  span#status Ready
+
+                #status-messages.mb-3(style='height: 150px; overflow-y: auto; border: 1px solid #e9ecef; border-radius: 0.375rem; padding: 0.75rem; background-color: #f8f9fa')
+                  .text-muted.small No status messages yet
+
+                h6.mb-2 Raw Stream Data
+                #raw-data.mb-3(style='height: 200px; overflow-y: auto; border: 1px solid #e9ecef; border-radius: 0.375rem; padding: 0.75rem; background-color: #f1f3f4; font-family: monospace; font-size: 0.8em')
+                  .text-muted.small No raw data yet
+
+                button#reset-button.btn.btn-secondary.w-100 Reset Session
+
+    // Developer Documentation Section
+    .row.mt-5
+      .col-12
+        .card.border-info
+          .card-header.bg-info.text-white
+            h5.mb-0
+              i.fas.fa-code.me-2
+              | 🛠️ Developer Guide: AI Agent Boilerplate
+          .card-body
+            .row
+              .col-md-6
+                h6.text-primary
+                  i.fas.fa-info-circle.me-1
+                  | What is this?
+                p This is a
+                  |
+                  strong LangChain v1 ReAct Agent
+                  | demo built with:
+                ul.small
+                  li
+                    code createAgent
+                    | from the
+                    code langchain
+                    | package
+                  li
+                    strong Groq
+                    | as the LLM provider (fast inference with Llama 3.3 70B)
+                  li
+                    strong Server-Sent Events (SSE)
+                    | for real-time streaming
+                  li
+                    strong Middleware
+                    | for observability (the status updates you see)
+                  li
+                    strong MemorySaver
+                    | for conversation persistence across messages
+
+                h6.text-primary.mt-3
+                  i.fas.fa-cogs.me-1
+                  | How it works
+                ol.small
+                  li User sends a message via the chat input
+                  li Backend creates/uses a persistent agent with tools
+                  li Agent decides which tools to call based on the query
+                  li
+                    strong Middleware
+                    | emits status updates at each stage (beforeModel, afterModel, wrapToolCall)
+                  li
+                    strong Tools
+                    | emit progress via
+                    code config.writer
+                    | during execution
+                  li Results stream back to the UI in real-time
+
+              .col-md-6
+                h6.text-success
+                  i.fas.fa-rocket.me-1
+                  | Quick Start for Your Hackathon
+                .alert.alert-light.small
+                  strong Step 1: Define Your Domain
+                  p.mb-2 Replace the customer service scenario with your business problem. Edit the
+                    |
+                    code systemPrompt
+                    | in
+                    code controllers/ai-agent.js
+
+                  strong Step 2: Create Your Tools
+                  p.mb-2 Tools are how your agent interacts with the world. Look for
+                    |
+                    code tool()
+                    | definitions and create your own:
+                  pre.bg-dark.text-light.p-2(style='font-size: 0.75em; border-radius: 4px')
+                    | const myTool = tool(
+                    |
+                    | async ({ param }, config) => {
+                    |
+                    | config.writer?.({ type: 'progress',
+                    |
+                    | message: 'Working...' });
+                    |
+                    | // Your API call or logic here
+                    |
+                    | return JSON.stringify(result);
+                    |
+                    | },
+                    |
+                    | {
+                    |
+                    | name: 'my_tool',
+                    |
+                    | description: 'What this tool does',
+                    |
+                    | schema: z.object({
+                    |
+                    | param: z.string().describe('...')
+                    |
+                    | })
+                    |
+                    | }
+                    | );
+
+                  strong Step 3: Add to Agent
+                  p.mb-0 Add your tools to the
+                    |
+                    code tools
+                    | array in
+                    code createCustomerServiceAgent()
+
+            hr
+
+            .row
+              .col-md-4
+                h6.text-warning
+                  i.fas.fa-lightbulb.me-1
+                  | Hackathon Ideas
+                ul.small.mb-0
+                  li
+                    strong Healthcare:
+                    | Symptom checker, appointment booking
+                  li
+                    strong Finance:
+                    | Expense tracking, budget advisor
+                  li
+                    strong HR:
+                    | Interview scheduler, policy Q&A
+                  li
+                    strong Legal:
+                    | Contract analyzer, compliance checker
+                  li
+                    strong Real Estate:
+                    | Property search, mortgage calculator
+
+              .col-md-4
+                h6.text-danger
+                  i.fas.fa-file-code.me-1
+                  | Key Files
+                ul.small.mb-0
+                  li
+                    code controllers/ai-agent.js
+                    br
+                    span.text-muted Agent logic, tools, middleware
+                  li
+                    code views/ai/ai-agent.pug
+                    br
+                    span.text-muted This UI (customize it!)
+                  li
+                    code app.js
+                    br
+                    span.text-muted Routes: /ai/ai-agent/*
+
+              .col-md-4
+                h6.text-info
+                  i.fas.fa-book.me-1
+                  | Learn More
+                ul.small.mb-0
+                  li
+                    a(href='https://docs.langchain.com/oss/javascript/langchain/agents', target='_blank') LangChain Agents Docs
+                  li
+                    a(href='https://docs.langchain.com/oss/javascript/langchain/tools', target='_blank') Creating Tools
+                  li
+                    a(href='https://docs.langchain.com/oss/javascript/releases/langchain-v1', target='_blank') Middleware Guide
+                  li
+                    a(href='https://console.groq.com/', target='_blank') Groq Console (API Keys)
+
+            .alert.alert-info.mt-3.mb-0.small
+              strong 💡 Pro Tip:
+              | The
+              code observabilityMiddleware
+              | in ai-agent.js shows how to add custom status updates. Use
+              code config.writer
+              | inside your tools to emit real-time progress to users!
+
+  script.
+    let sessionId = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await resetSession();
+
+      document.getElementById('send-button').addEventListener('click', sendMessage);
+      document.getElementById('message-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+      });
+      document.getElementById('reset-button').addEventListener('click', resetSession);
+    });
+
+    async function resetSession() {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const response = await fetch('/ai/ai-agent/reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ _csrf: csrfToken }),
+      });
+      const data = await response.json();
+      sessionId = data.sessionId;
+
+      document.getElementById('chat-messages').innerHTML = `
+        <div class="text-muted mb-3">
+          <p>Welcome! I'm your AI customer service representative. I can help you with:</p>
+          <ul class="small">
+            <li>Order tracking and status</li>
+            <li>Returns and refunds</li>
+            <li>Replacements for damaged items</li>
+            <li>Order cancellations</li>
+            <li>Payment and billing issues</li>
+          </ul>
+          <p class="mt-2">Try asking about order #1234 or mention any customer service issue!</p>
+        </div>
+      `;
+      document.getElementById('status').textContent = 'Ready';
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('message-input');
+      const message = input.value.trim();
+      if (!message) return;
+
+      // Add user message
+      addMessage('You: ' + message);
+      input.value = '';
+      document.getElementById('status').textContent = 'Processing...';
+
+      // Simple EventSource with CSRF token from meta tag
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const url = `/ai/ai-agent/chat?sessionId=${sessionId}&message=${encodeURIComponent(message)}&_csrf=${encodeURIComponent(csrfToken)}`;
+      const eventSource = new EventSource(url);
+
+      eventSource.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+
+        if (data.type === 'chunk') {
+          // Add raw data to debug panel
+          addRawData(JSON.stringify(data, null, 2));
+
+          // Filter for final user-facing messages only
+          // Note: createAgent in LangChain v1 uses 'model_request' node name
+          if (data.content.model_request && data.content.model_request.messages) {
+            data.content.model_request.messages.forEach((msg) => {
+              // LangChain v1 uses msg.kwargs.content structure
+              const content = (msg.kwargs && msg.kwargs.content) || msg.content || msg.text || '';
+              const toolCalls = (msg.kwargs && msg.kwargs.tool_calls) || msg.tool_calls || [];
+              const contentStr = typeof content === 'string' ? content : JSON.stringify(content);
+
+              // Only show messages that have actual content (not tool call requests)
+              if (contentStr && contentStr.trim().length > 0 && toolCalls.length === 0) {
+                // This is the final response from the agent
+                addMessage('AI: ' + contentStr);
+              }
+            });
+          }
+        } else if (data.type === 'status') {
+          addStatusMessage('Status: ' + data.message);
+        } else if (data.type === 'done') {
+          document.getElementById('status').textContent = 'Ready';
+          eventSource.close();
+        }
+      };
+    }
+
+    function addMessage(text) {
+      const messages = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.style.marginBottom = '10px';
+
+      // Convert \n to <br> tags for proper line breaks
+      const formattedText = text.replace(/\n/g, '<br>');
+      div.innerHTML = formattedText;
+
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function addStatusMessage(text) {
+      const statusMessages = document.getElementById('status-messages');
+      const div = document.createElement('div');
+      div.style.marginBottom = '5px';
+      div.className = 'small text-muted';
+
+      // Add timestamp
+      const timestamp = new Date().toLocaleTimeString();
+      div.textContent = `[${timestamp}] ${text}`;
+
+      statusMessages.appendChild(div);
+      statusMessages.scrollTop = statusMessages.scrollHeight;
+
+      // Clear "No status messages yet" if it exists
+      const placeholder = statusMessages.querySelector('.text-muted.small');
+      if (placeholder && placeholder.textContent === 'No status messages yet') {
+        placeholder.remove();
+      }
+    }
+
+    function addRawData(text) {
+      const rawData = document.getElementById('raw-data');
+      const div = document.createElement('div');
+      div.style.marginBottom = '10px';
+      div.style.borderBottom = '1px solid #ddd';
+      div.style.paddingBottom = '5px';
+
+      // Add timestamp
+      const timestamp = new Date().toLocaleTimeString();
+      const header = document.createElement('div');
+      header.style.fontWeight = 'bold';
+      header.style.color = '#666';
+      header.textContent = `[${timestamp}] Chunk:`;
+
+      const content = document.createElement('pre');
+      content.style.margin = '5px 0 0 0';
+      content.style.whiteSpace = 'pre-wrap';
+      content.style.fontSize = '0.75em';
+      content.textContent = text;
+
+      div.appendChild(header);
+      div.appendChild(content);
+      rawData.appendChild(div);
+      rawData.scrollTop = rawData.scrollHeight;
+
+      // Clear "No raw data yet" if it exists
+      const placeholder = rawData.querySelector('.text-muted.small');
+      if (placeholder && placeholder.textContent === 'No raw data yet') {
+        placeholder.remove();
+      }
+    }
