@@ -1,0 +1,30 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'thursday'
+    target-branch: 'master'
+    open-pull-requests-limit: 3
+    versioning-strategy: increase
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    groups:
+      major-updates:
+        update-types: ['major']
+      minor-updates:
+        update-types: ['minor']
+      patch-updates:
+        update-types: ['patch']
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    target-branch: 'master'
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
