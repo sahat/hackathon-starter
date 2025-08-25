@@ -5,6 +5,7 @@ updates:
     schedule:
       interval: 'weekly'
       day: 'thursday'
+      time: '11:00'
     target-branch: 'master'
     open-pull-requests-limit: 3
     versioning-strategy: increase
