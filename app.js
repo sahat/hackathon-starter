@@ -352,7 +352,10 @@ app.listen(app.get('port'), () => {
 
   if (!BASE_URL.startsWith('http://localhost')) {
     console.log(
-      `The BASE_URL env variable is set to ${BASE_URL}. If you directly test the application through http://localhost:${app.get('port')} instead of the BASE_URL, it may cause a CSRF mismatch or an Oauth authentication failure. To avoid the issues, change the BASE_URL or configure your proxy to match it.\n`,
+      `The BASE_URL environment variable is set to ${BASE_URL}.
+If you open the app directly at http://localhost:${app.get('port')} instead of via your HTTPS-terminating endpoint (e.g., ngrok, Cloudflare, or similar), CSRF checks may fail and OAuth sign-in will be rejected due to a redirect mismatch.
+To avoid this, set BASE_URL to the HTTPS endpoint and always access the app through it in your browser.
+`,
     );
   } else if (app.get('port') !== port) {
     console.warn(`WARNING: The BASE_URL environment variable and the App have a port mismatch. If you plan to view the app in your browser using the localhost address, you may need to adjust one of the ports to make them match. BASE_URL: ${BASE_URL}\n`);
