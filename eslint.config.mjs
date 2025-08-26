@@ -4,7 +4,7 @@ import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import eslintPluginImport from 'eslint-plugin-import';
 
 export default [
-  eslintConfigPrettier,
+  eslintConfigPrettier, // Disable Prettier‑handled style rules - prettier owns styling
   {
     plugins: {
       'chai-friendly': chaiFriendly,
@@ -27,25 +27,38 @@ export default [
       'import/order': ['error', { groups: [['builtin', 'external', 'internal']], distinctGroup: true }],
       'import/no-duplicates': 'error',
       'import/prefer-default-export': 'error',
+      'import/no-named-as-default': 'error',
+      'import/no-named-as-default-member': 'error',
 
-      // Airbnb-style quality rules
+      // Quality rules (Airbnb-style, non-style)
+      'class-methods-use-this': 'error',
+      //'consistent-return': 'error',
+      'default-case': 'error',
+      'default-param-last': 'error',
+      'dot-location': ['error', 'property'],
+      'no-cond-assign': ['error', 'except-parens'],
+      'no-constant-condition': 'error',
+      'no-constructor-return': 'error',
+      'no-empty-function': ['error', { allow: ['arrowFunctions'] }],
+      //'no-param-reassign': ['error', { props: true }],
+      //'no-shadow': ['error', { builtinGlobals: false }],
+      'no-throw-literal': 'error',
+      'no-useless-concat': 'error',
+      'prefer-const': 'error',
+      'prefer-destructuring': ['error', { object: true, array: false }],
+      yoda: ['error', 'never'],
+      'no-use-before-define': ['error', { functions: false, classes: true, variables: true }],
+      'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+
+      // Logic and safety
       'global-require': 'error',
       strict: ['error', 'never'],
       'arrow-body-style': ['error', 'as-needed'],
       'arrow-parens': ['error', 'always'],
-      'brace-style': ['error', '1tbs'],
-      'eol-last': ['error', 'always'],
-      'object-curly-spacing': ['error', 'always'],
-      'quote-props': ['error', 'as-needed'],
-      semi: ['error', 'always'],
-      'space-before-blocks': ['error', 'always'],
-      'space-in-parens': ['error', 'never'],
-
-      // Logic and safety
       curly: ['error', 'multi-line'],
       'dot-notation': 'error',
       eqeqeq: ['error', 'always', { null: 'ignore' }],
-      'no-alert': ['warn'],
+      'no-alert': 'warn',
       'no-else-return': ['error', { allowElseIf: false }],
       'no-eval': 'error',
       'no-loop-func': 'error',

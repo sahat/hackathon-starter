@@ -583,7 +583,7 @@ const extractClassifierResponse = (content) => {
       const jsonStringMatch = content.match(/{.*}/s);
       if (jsonStringMatch) {
         const parsed = JSON.parse(jsonStringMatch[0].replace(/'/g, '"'));
-        department = parsed.department;
+        ({ department } = parsed);
       }
     } catch (err) {
       console.log('Failed to parse JSON from TogetherAI API response:', err);
