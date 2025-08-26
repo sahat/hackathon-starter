@@ -98,7 +98,7 @@ async function saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenE
     let user = await User.findById(req.user._id);
     if (!user) {
       // If user is not found in DB, use the one from the request because we are creating a new user
-      user = req.user;
+      ({ user } = req);
     }
     const providerToken = user.tokens.find((token) => token.kind === providerName);
     if (providerToken) {
