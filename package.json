@@ -36,7 +36,7 @@
     "@octokit/rest": "^22.0.0",
     "@passport-js/passport-twitter": "^1.0.10",
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.7",
+    "bootstrap": "^5.3.8",
     "bootstrap-social": "github:SeattleDevs/bootstrap-social",
     "bowser": "^2.12.1",
     "chart.js": "^4.5.0",
