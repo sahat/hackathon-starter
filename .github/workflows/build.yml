@@ -45,3 +45,75 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh pr merge --squash ${{ github.event.pull_request.number }}
+
+  Sync-patches-after-dependabot-automerge:
+    needs: [dependabot-automerge]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: master
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+
+      - name: Rename patch-package files to match current versions
+        shell: bash
+        run: |
+          shopt -s nullglob
+
+          get_version() {
+            jq -r ".dependencies[\"$1\"] // .devDependencies[\"$1\"]" package.json
+          }
+
+          CHANGED=0
+
+          for PATCH in patches/*.patch; do
+            BASE=$(basename "$PATCH" .patch)
+
+            NAME_WITHOUT_VERSION="${BASE%+*}"
+            if [[ "$NAME_WITHOUT_VERSION" == @*+* ]]; then
+              PACKAGE="${NAME_WITHOUT_VERSION/+//}"
+            else
+              PACKAGE="$NAME_WITHOUT_VERSION"
+            fi
+
+            VERSION=$(get_version "$PACKAGE")
+
+            if [ "$VERSION" == "null" ]; then
+              echo "Skipping $PACKAGE — not found in package.json"
+              continue
+            fi
+
+            VERSION="${VERSION#^}"
+            NEW_NAME="$(echo "$PACKAGE" | sed 's|/|+|g')+${VERSION}.patch"
+
+            if [ "$BASE.patch" != "$NEW_NAME" ]; then
+              echo "Renaming $BASE.patch -> $NEW_NAME"
+              git mv "$PATCH" "patches/$NEW_NAME"
+              CHANGED=1
+            fi
+          done
+
+          echo "CHANGED=$CHANGED" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        if: ${{ env.CHANGED == '1' }}
+        run: npm ci
+
+      - name: Run tests
+        if: ${{ env.CHANGED == '1' }}
+        run: npm test
+
+      - name: Commit and push patch renames
+        if: ${{ env.CHANGED == '1' }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add patches/
+          git commit -m "chore: sync patch-package filenames with current versions"
+          git push
