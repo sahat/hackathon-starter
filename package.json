@@ -25,7 +25,7 @@
     "@fortawesome/fontawesome-free": "^7.0.1",
     "@googleapis/drive": "^17.0.0",
     "@googleapis/sheets": "^12.0.0",
-    "@huggingface/inference": "^4.7.1",
+    "@huggingface/inference": "^4.8.0",
     "@langchain/community": "^0.3.56",
     "@langchain/core": "^0.3.77",
     "@langchain/mongodb": "0.1.0",
