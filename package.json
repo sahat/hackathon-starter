@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.0.1",
-    "@googleapis/drive": "^15.0.0",
-    "@googleapis/sheets": "^11.1.0",
+    "@googleapis/drive": "^17.0.0",
+    "@googleapis/sheets": "^12.0.0",
     "@huggingface/inference": "^4.7.1",
     "@langchain/community": "^0.3.55",
     "@langchain/core": "^0.3.75",
