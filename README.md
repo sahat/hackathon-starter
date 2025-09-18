@@ -2,6 +2,20 @@
 Hackathon Starter
 =======================
 
+# ES2 - Integrantes do Grupo
+
+Este repositório pertence à disciplina **Engenharia de Software 2 (ES2)**.  
+Abaixo estão listados os integrantes do grupo e seus respectivos perfis no GitHub.
+
+## Integrantes
+
+- [Artur Kioshi de Almeida Nacafucasaco](https://github.com/ArturKioshi)
+- [Breno Dias Arantes dos Santos](https://github.com/breninhoinho)
+- [Pedro Marchi Nunes]([https://github.com/usuario3](https://github.com/PedroMarchiN))
+- [Leonardo Ryuiti Miasiro]([https://github.com/usuario4](https://github.com/LeonardoMiasiro))
+
+
+
 **Live Demo**: [Link](https://hackathon-starter-1.ydftech.com)
 
 Jump to [What's new?](https://github.com/sahat/hackathon-starter/blob/master/CHANGELOG.md)
