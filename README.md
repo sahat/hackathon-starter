@@ -11,8 +11,8 @@ Abaixo estão listados os integrantes do grupo e seus respectivos perfis no GitH
 
 - [Artur Kioshi de Almeida Nacafucasaco](https://github.com/ArturKioshi)
 - [Breno Dias Arantes dos Santos](https://github.com/breninhoinho)
-- [Pedro Marchi Nunes]([https://github.com/usuario3](https://github.com/PedroMarchiN))
-- [Leonardo Ryuiti Miasiro]([https://github.com/usuario4](https://github.com/LeonardoMiasiro))
+- [Pedro Marchi Nunes](https://github.com/usuario3](https://github.com/PedroMarchiN))
+- [Leonardo Ryuiti Miasiro](https://github.com/usuario4](https://github.com/LeonardoMiasiro))
 
 
 
