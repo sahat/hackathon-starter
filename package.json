@@ -43,7 +43,7 @@
     "cheerio": "^1.1.2",
     "compression": "^1.8.1",
     "connect-mongo": "^5.1.0",
-    "dotenv": "^17.2.1",
+    "dotenv": "^17.2.2",
     "errorhandler": "^1.5.1",
     "express": "^5.1.0",
     "express-flash": "^0.0.2",
@@ -72,7 +72,7 @@
     "passport-steam-openid": "^1.1.7",
     "pdfjs-dist": "^5.4.149",
     "pug": "^3.0.3",
-    "sass": "^1.93.0",
+    "sass": "^1.93.1",
     "stripe": "^18.5.0",
     "twilio": "^5.9.0",
     "twitch-passport": "^1.0.6",
@@ -98,9 +98,10 @@
     "supertest": "^7.1.4"
   },
   "overrides": {
-    "dotenv": "^17.2.1",
+    "dotenv": "^17.2.2",
     "fetch-blob": "github:SeattleDevs/fetch-blob",
-    "formdata-node": "^6.0.3"
+    "formdata-node": "^6.0.3",
+    "tmp": "0.2.4"
   },
   "engines": {
     "node": ">=22.16.0"

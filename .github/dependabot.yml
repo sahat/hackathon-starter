@@ -7,7 +7,7 @@ updates:
       day: 'thursday'
       time: '11:00'
     target-branch: 'master'
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 10
     versioning-strategy: increase
     commit-message:
       prefix: 'chore'
