@@ -55,7 +55,7 @@
     "lusca": "^1.7.0",
     "mailchecker": "^6.0.18",
     "moment": "^2.30.1",
-    "mongodb": "^6.19.0",
+    "mongodb": "^6.20.0",
     "mongoose": "^8.18.1",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
