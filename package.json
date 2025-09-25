@@ -74,7 +74,7 @@
     "pug": "^3.0.3",
     "sass": "^1.93.2",
     "stripe": "^18.5.0",
-    "twilio": "^5.9.0",
+    "twilio": "^5.10.1",
     "twitch-passport": "^1.0.6",
     "validator": "^13.15.15"
   },
