@@ -1443,3 +1443,37 @@ exports.getTrakt = async (req, res, next) => {
     next(error);
   }
 };
+
+/*
+ * GET /api/wikipedia
+ * wikipedia.org API Example.
+ * - Uses wikipedia'a API to extract text, images, data and display in the api/wikipedia page
+ * - Allow users to search content and dispay its data etracted from wikipedia page
+ */
+
+exports.getWikipedia = async (req, res) => {
+  const query = req.query.q || '';
+  let result = null;
+  let error = null;
+  if (query) {
+    try {
+      const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=extracts|pageimages&titles=${encodeURIComponent(query)}&explaintext=true&pithumbsize=400`);
+      if (!response.ok) {
+        error = "Couldn't process the term.";
+      } else {
+        const data = await response.json();
+        const pageId = Object.keys(data.query.pages)[0];
+        result = data.query.pages[pageId];
+      }
+    } catch (err) {
+      console.log('Wikipedia API Error:', err);
+      error = "Failed to fetch result from Wikipedia's API";
+    }
+  }
+  res.render('api/wikipedia', {
+    title: 'Wikipedia',
+    result,
+    error,
+    input: query,
+  });
+};
