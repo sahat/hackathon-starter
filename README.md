@@ -1358,25 +1358,81 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 
 ## Docker
 
-You will need to install docker and docker-compose on your system. If you are using WSL, you will need to install Docker Desktop on Windows and docker-compose on WSL.
+You can run this project with Docker, which saves you from having to install Node.js or MongoDB locally. 
 
-- [Docker installation](https://docs.docker.com/engine/installation/)
+### Prerequisites
 
-After installing docker, start the application with the following commands :
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+### Running the Application
+
+Since most OAuth providers require an HTTPS callback URL, the Docker setup uses ngrok to create a secure tunnel. This means there's a specific start-up order to follow to get everything working together.
+
+**Step 1: Create your `.env` file**
+
+First, create a `.env` file for your secrets. You can just copy the example file to get started:
+
+```bash
+cp .env.example .env
+```
+
+**Step 2: Set up `ngrok`**
+
+[Sign up for ngrok](https://dashboard.ngrok.com/signup) to get an authtoken. Add this token to your `.env` file:
 
 ```
-# To build the project while suppressing most of the build messages
-docker-compose build web
-
-# To build the project without suppressing the build messages or using cached data
-docker-compose build --no-cache --progress=plain web
-
-# To start the application (or to restart after making changes to the source code)
-docker-compose up web
-
+NGROK_AUTHTOKEN=your_ngrok_authtoken
 ```
 
-To view the app, find your docker IP address + port 8080 ( this will typically be `http://localhost:8080/` ). To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.
+Then, start the `mongo` and `ngrok` containers:
+
+```bash
+docker compose up mongo ngrok -d
+```
+
+**Step 3: Get your Public URL**
+
+Open the ngrok dashboard at [http://localhost:4040](http://localhost:4040) to find your public HTTPS URL. It will look something like `https://<random-string>.ngrok.io`.
+
+**Step 4: Update `.env` with your URL and API Keys**
+
+Now, go back to your `.env` file and:
+1.  Set `BASE_URL` to your public ngrok URL.
+2.  Add the API keys for any services you want to use, like GitHub.
+
+Your `.env` file should now look something like this:
+
+```
+BASE_URL=https://<random-string>.ngrok.io
+GITHUB_ID=your_github_client_id
+GITHUB_SECRET=your_github_client_secret
+NGROK_AUTHTOKEN=your_ngrok_authtoken
+```
+
+**Step 5: Update your OAuth App**
+
+In your OAuth provider's settings (e.g., your GitHub developer settings), update the **Authorization callback URL** to use your new ngrok URL. For GitHub, it would be:
+
+`https://<random-string>.ngrok.io/auth/github/callback`
+
+**Step 6: Run the App!**
+
+Finally, start the web app itself. This will build the container and connect it to the other services.
+
+```bash
+docker compose up web --build -d
+```
+
+That's it! Your app should now be running at your public ngrok URL.
+
+### Stopping the Application
+
+To shut everything down, run:
+
+```bash
+docker compose down -v
+```
 
 ## Deployment
 

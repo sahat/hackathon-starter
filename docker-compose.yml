@@ -2,13 +2,28 @@ version: '3.8'
 services:
   mongo:
     image: mongo
+    volumes:
+      - mongo-data:/data/db
   web:
     build: .
     ports:
       - '8080:8080'
+    env_file:
+      - .env
     environment:
       - MONGODB_URI=mongodb://mongo:27017/test
-    links:
-      - mongo
+
     depends_on:
       - mongo
+  ngrok:
+    image: ngrok/ngrok:latest
+    ports:
+      - '4040:4040'
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command: 'http web:8080'
+    depends_on:
+      - web
+
+volumes:
+  mongo-data:
