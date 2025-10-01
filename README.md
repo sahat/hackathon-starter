@@ -1358,25 +1358,125 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 
 ## Docker
 
-You will need to install docker and docker-compose on your system. If you are using WSL, you will need to install Docker Desktop on Windows and docker-compose on WSL.
+You will need to install Docker (and Docker Desktop if on macOS/Windows). If you use WSL2, install Docker Desktop on Windows and enable the WSL2 integration.
 
-- [Docker installation](https://docs.docker.com/engine/installation/)
+- Docker: https://docs.docker.com/get-docker/
 
-After installing docker, start the application with the following commands :
+### Quick start (local only)
 
 ```
-# To build the project while suppressing most of the build messages
+# Build the images
+#   - use --no-cache --progress=plain to troubleshoot build output
+#   - NODE_ENV is set to development in Dockerfile; dev deps will be installed
+#   - the compose file builds and starts MongoDB for you
+
 docker-compose build web
 
-# To build the project without suppressing the build messages or using cached data
-docker-compose build --no-cache --progress=plain web
+# Start the stack (web + mongo)
+#   - Ctrl+C to stop; use -d to run in the background
 
-# To start the application (or to restart after making changes to the source code)
 docker-compose up web
+# or
+# docker-compose up -d web
 
+# View logs (if using -d)
+# docker-compose logs -f web
 ```
 
-To view the app, find your docker IP address + port 8080 ( this will typically be `http://localhost:8080/` ). To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.
+To view the app, open `http://localhost:8080/`.
+
+Notes:
+- To change the port, update the mapping in `docker-compose.yml` (`8080:8080`) and keep app listening on port 8080 inside the container, or also change `EXPOSE` in `Dockerfile` and the app port in `app.js` accordingly.
+- The compose file sets `MONGODB_URI=mongodb://mongo:27017/test`, so the app connects to the bundled MongoDB container. If you prefer MongoDB Atlas, override `MONGODB_URI` via environment or `.env` (see below).
+
+### Using your own credentials (env vars)
+
+For secrets, do NOT hardcode them into the image. Use one of:
+
+- Put values into `.env` at the project root and mount it into the container: the Dockerfile already copies `.env.example` for reference. For local development with compose, the simplest approach is to copy and edit:
+
+```
+cp .env.example .env
+# edit .env and set BASE_URL, OAuth client IDs/secrets, SMTP, etc.
+```
+
+Then pass the env file to the container via compose. Add (or verify) in `docker-compose.yml` under `web`:
+
+```
+    env_file:
+      - .env
+```
+
+Alternatively, you can inject individual variables with `environment:` or `docker run -e KEY=value`.
+
+Minimum variables you will likely need for login with a provider:
+- `BASE_URL` — the public HTTPS URL your app is reachable at (required by most OAuth providers)
+- Provider-specific keys, e.g. `GITHUB_ID`, `GITHUB_SECRET` (or Facebook: `FACEBOOK_ID`, `FACEBOOK_SECRET`)
+
+When running locally without HTTPS, some providers will reject callbacks. Use an HTTPS tunnel as shown below.
+
+### Enable HTTPS locally (ngrok)
+
+Many OAuth providers require HTTPS for callbacks. Use ngrok (free) to get an HTTPS URL that forwards to your local container.
+
+1) Install ngrok and start a tunnel to port 8080:
+```
+ngrok http 8080
+```
+You will see a forwarding URL like `https://abc123.ngrok-free.app`. Keep ngrok running.
+
+2) Set your app `BASE_URL` to the ngrok URL (no trailing slash). For example in `.env`:
+```
+BASE_URL=https://abc123.ngrok-free.app
+```
+Ensure your compose service loads `.env` (see `env_file` above), then restart the web container:
+```
+docker-compose up -d --force-recreate web
+```
+
+3) Always access the app via the ngrok URL in your browser when testing OAuth. If you use `http://localhost:8080`, you may hit CSRF/OAuth redirect mismatches.
+
+Tip: If you prefer Cloudflare Tunnel or another HTTPS proxy, the steps are analogous. Always update `BASE_URL` to match the public HTTPS origin and restart the container.
+
+### Configure an OAuth provider (example: GitHub)
+
+Follow these steps to securely use your own GitHub credentials while running in Docker with ngrok:
+
+1) Create a GitHub OAuth App:
+- Go to GitHub → Settings → Developer settings → OAuth Apps → New OAuth App
+- Homepage URL: your `BASE_URL` (e.g. `https://abc123.ngrok-free.app`)
+- Authorization callback URL: `${BASE_URL}/auth/github/callback` (e.g. `https://abc123.ngrok-free.app/auth/github/callback`)
+
+2) Add credentials to your environment (do not commit secrets):
+```
+# in .env
+GITHUB_ID=your_client_id
+GITHUB_SECRET=your_client_secret
+BASE_URL=https://abc123.ngrok-free.app
+```
+If using MongoDB Atlas, also set `MONGODB_URI` to your Atlas URI.
+
+3) Restart the app so changes take effect:
+```
+docker-compose up -d --force-recreate web
+```
+
+4) Test the flow:
+- Open the ngrok URL in your browser
+- Go to Login → Sign in with GitHub
+- Approve the OAuth prompt
+- You should be redirected back to the app, logged in
+
+### Verify API example works
+
+After logging in, visit `API Examples` from the navbar and try an example that needs your configured provider (e.g. GitHub API). If you see permission errors, confirm your OAuth scopes and that `BASE_URL` and callback URL match exactly.
+
+### Troubleshooting
+
+- If `mongoose` fails to connect: ensure the `mongo` service is up (`docker-compose ps`) and `MONGODB_URI` matches `mongodb://mongo:27017/test` unless using Atlas.
+- OAuth redirect mismatch: confirm `BASE_URL` matches your tunnel URL and that you are using the same origin in your browser.
+- Stale env values: containers cache old env; recreate the `web` service after env changes: `docker-compose up -d --force-recreate web`.
+- Port conflicts: if 8080 is in use on your host, change the left-hand side of the port mapping in `docker-compose.yml` to another free host port (e.g. `3000:8080`).
 
 ## Deployment
 
