@@ -1,0 +1,41 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-wikipedia-w.fa-sm.iconpadding(style='color: #000')
+      | Wikipedia API
+
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://en.wikipedia.org/api/rest_v1/', target='_blank')
+      i.far.fa-check-square.fa-sm.iconpadding
+      | Wikipedia REST API
+    a.btn.btn-primary.w-100(href='https://www.mediawiki.org/wiki/API:REST_API', target='_blank')
+      i.fas.fa-code-branch.fa-sm.iconpadding
+      | API Documentation
+
+  form(method='GET', action='/api/wikipedia')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.mb-3
+      label(for='query') Search Wikipedia
+      input#query.form-control(type='text', name='q', placeholder='Enter search term...', value=query)
+    button.btn.btn-primary(type='submit') Search
+
+  if query && articles.length > 0
+    h3 Search Results for "#{ query }"
+    .row
+      each article in articles
+        .col-md-6.mb-4
+          .card
+            if article.thumbnail
+              img.card-img-top(src=article.thumbnail, alt=article.title, style='height: 200px; object-fit: cover')
+            .card-body
+              h5.card-title= article.title
+              if article.description
+                p.card-text.text-muted= article.description
+              if article.excerpt
+                p.card-text= article.excerpt
+              a.btn.btn-primary(href=article.url, target='_blank') Read on Wikipedia
+  else if query && articles.length === 0
+    .alert.alert-info
+      | No results found for "#{ query }". Try a different search term.

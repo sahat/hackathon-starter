@@ -1443,3 +1443,61 @@ exports.getTrakt = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * GET /api/wikipedia
+ * Wikipedia API example.
+ */
+exports.getWikipedia = async (req, res, next) => {
+  const query = req.query.q;
+  if (!query) {
+    return res.render('api/wikipedia', {
+      title: 'Wikipedia API',
+      articles: [],
+      query: '',
+    });
+  }
+
+  const searchUrl = `https://en.wikipedia.org/api/rest_v1/page/search/${encodeURIComponent(query)}`;
+  const headers = {
+    'User-Agent': 'Hackathon-Starter/1.0 (https://github.com/sahat/hackathon-starter)',
+  };
+
+  try {
+    const response = await fetch(searchUrl, { headers });
+    const contentType = response.headers.get('content-type') || '';
+    if (!response.ok) {
+      const bodyText = await response.text();
+      console.error(`[Wikipedia API] Error response:\nStatus: ${response.status} ${response.statusText}\nHeaders: ${JSON.stringify([...response.headers])}\nBody (first 500 chars):\n${bodyText.slice(0, 500)}`);
+      throw new Error(`Wikipedia API - ${response.status} ${response.statusText}`);
+    }
+    if (!contentType.includes('application/json')) {
+      const bodyText = await response.text();
+      console.error(`[Wikipedia API] Unexpected content-type: ${contentType}\nBody (first 500 chars):\n${bodyText.slice(0, 500)}`);
+      throw new Error('Wikipedia API did not return JSON.');
+    }
+    const data = await response.json();
+    if (!data.pages) {
+      console.error('[Wikipedia API] No "pages" field in response:', data);
+      throw new Error('Wikipedia API response missing "pages".');
+    }
+
+    // Get first 10 results
+    const articles = data.pages.slice(0, 10).map((page) => ({
+      title: page.title || '',
+      description: page.description || '',
+      excerpt: page.excerpt || '',
+      thumbnail: page.thumbnail ? page.thumbnail.source : null,
+      url: `https://en.wikipedia.org/wiki/${encodeURIComponent(page.title)}`,
+    }));
+
+    res.render('api/wikipedia', {
+      title: 'Wikipedia API',
+      articles,
+      query,
+    });
+  } catch (error) {
+    console.error('[Wikipedia API] Exception:', error);
+    next(error);
+  }
+};

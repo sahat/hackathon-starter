@@ -90,7 +90,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
-  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
+  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping, Wikipedia
   - **Maps and Location:** Google Maps, HERE Maps
   - **Productivity:** Google Drive, Google Sheets
 
