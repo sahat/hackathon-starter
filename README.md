@@ -1410,6 +1410,54 @@ Using a local instance on your laptop with ngrok is a good solution for your dem
 
 If you are starting with this boilerplate to build an application for prod deployment, or if after your hackathon you would like to get your project hardened for production use, see [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md).
 
+## Testing
+
+We use Playwright for end-to-end (E2E) tests. These tests run the application in a real browser and validate that API example pages render as expected.
+
+### Running E2E Tests
+
+1. Install dependencies (if not already installed):
+
+```bash
+npm install
+```
+
+2. Run the application (in one terminal):
+
+```bash
+npm start
+```
+
+3. In a separate terminal, run the E2E tests:
+
+```bash
+npm run test:e2e
+```
+
+This will launch a real browser, navigate to an API example page (e.g., GitHub API), trigger a live API request, and assert that expected DOM elements are present.
+If the GitHub API rate limit is reached, the test will instead assert that an appropriate error message is displayed.
+
+### Adding new tests
+
+1. Place new Playwright test files under the test/e2e/ directory.
+
+2. Use the provided github-api.spec.js test as a reference.
+
+3. Each test should:
+   - Launch the app in a browser.
+
+   - Navigate to an API example page (e.g., Foursquare, Twitter).
+
+   - Trigger a live API call (no mocking).
+
+   - Assert that expected content or error handling is displayed.
+
+### Notes
+
+- E2E tests require network access and will fail without an internet connection.
+
+- API providers may enforce rate limits. Tests are written to detect and validate error messages in such cases.
+
 ## Changelog
 
 You can find the changelog for the project in: [CHANGELOG.md](https://github.com/sahat/hackathon-starter/blob/master/CHANGELOG.md)
