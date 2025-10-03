@@ -1,5 +1,7 @@
 FROM node:22-slim
 
+RUN apt-get update && apt-get install -y libcurl4
+
 WORKDIR /starter
 ENV NODE_ENV development
 
