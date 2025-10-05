@@ -1412,51 +1412,41 @@ If you are starting with this boilerplate to build an application for prod deplo
 
 ## Testing
 
-We use Playwright for end-to-end (E2E) tests. These tests run the application in a real browser and validate that API example pages render as expected.
+We use Playwright for end-to-end (E2E) tests. These are short, practical guides for adding a test after a hackathon so you can safely move a prototype into production.
 
-### Running E2E Tests
+### Quick: run the existing E2E tests
 
-1. Install dependencies (if not already installed):
+1. Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Run the application (in one terminal):
+2. Start the app (terminal A):
 
 ```bash
 npm start
 ```
 
-3. In a separate terminal, run the E2E tests:
+3. Run E2E tests (terminal B):
 
 ```bash
 npm run test:e2e
 ```
 
-This will launch a real browser, navigate to an API example page (e.g., GitHub API), trigger a live API request, and assert that expected DOM elements are present.
-If the GitHub API rate limit is reached, the test will instead assert that an appropriate error message is displayed.
+The tests run the app in a real browser and exercise real API calls. If a provider rate limit is hit, tests should assert the app shows an appropriate error message.
 
-### Adding new tests
+### Add or update tests (post-hackathon checklist)
 
-1. Place new Playwright test files under the test/e2e/ directory.
-
-2. Use the provided github-api.spec.js test as a reference.
-
-3. Each test should:
-   - Launch the app in a browser.
-
-   - Navigate to an API example page (e.g., Foursquare, Twitter).
-
-   - Trigger a live API call (no mocking).
-
-   - Assert that expected content or error handling is displayed.
+- Put new Playwright tests in `test/e2e/`.
+- Use the existing `test/e2e/github-api.e2e.test.js` as the canonical example: start the app, navigate to the page for your feature, trigger the UI flow, and assert either the expected content or the proper error handling.
+- Keep tests deterministic where possible; for CI you may choose to mock or record external API responses, but the default examples hit live APIs.
+- Remove or update any tests that reference views or features you removed from your project — obsolete tests will fail and should be deleted.
 
 ### Notes
 
-- E2E tests require network access and will fail without an internet connection.
-
-- API providers may enforce rate limits. Tests are written to detect and validate error messages in such cases.
+- Tests require network access and can be affected by third-party rate limits.
+- Aim for one happy-path E2E test per critical feature plus 1–2 error-handling checks.
 
 ## Changelog
 
