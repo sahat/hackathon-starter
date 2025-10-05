@@ -26,6 +26,8 @@ jobs:
       - run: npm install
       - run: npm run lint-check
       - run: npm run test
+      - if: ${{ github.repository == 'sahat/hackathon-starter' }}
+        run: npm run test:e2e
 
   dependabot-automerge:
     needs: [build]
@@ -111,6 +113,10 @@ jobs:
       - name: Run tests
         if: ${{ env.CHANGED == '1' }}
         run: npm test
+
+      - name: Run e2e tests
+        if: ${{ env.CHANGED == '1' && github.repository == 'sahat/hackathon-starter' }}
+        run: npm run test:e2e
 
       - name: Commit and push patch renames
         if: ${{ env.CHANGED == '1' }}

@@ -15,7 +15,6 @@ const googlesheets = require('@googleapis/sheets');
 const validator = require('validator');
 const { Configuration: LobConfiguration, LetterEditable, LettersApi, ZipEditable, ZipLookupsApi } = require('@lob/lob-typescript-sdk');
 const fs = require('fs');
-// ...existing code...
 
 /**
  * GET /api

@@ -60,11 +60,11 @@ test.describe('GitHub API Integration', () => {
     expect(response.ok()).toBeTruthy();
 
     await expect(page.locator('.card-body h4')).toContainText('hackathon-starter');
-    await expect(page.locator('li.list-inline-item', { hasText: 'Stars:' })).toContainText('35110');
-    await expect(page.locator('li.list-inline-item', { hasText: 'Forks:' })).toContainText('8176');
-    await expect(page.locator('li.list-inline-item', { hasText: 'Watchers:' })).toContainText('35110');
-    await expect(page.locator('li.list-inline-item', { hasText: 'License:' })).toContainText('MIT License');
-    await expect(page.locator('li.list-inline-item', { hasText: 'Visibility:' })).toContainText('public');
-    await expect(page.locator('li.list-inline-item', { hasText: 'Open Issues:' })).toContainText('20');
+    await expect(page.locator('li.list-inline-item', { hasText: 'Stars:' })).toContainText(/\d{4,}/); // at least 4 digits
+    await expect(page.locator('li.list-inline-item', { hasText: 'Forks:' })).toContainText(/\d{3,}/); // at least 3 digits
+    await expect(page.locator('li.list-inline-item', { hasText: 'Watchers:' })).toContainText(/\d{4,}/); // at least 4 digits
+    await expect(page.locator('li.list-inline-item', { hasText: 'Open Issues:' })).toContainText(/\d+/); // at least 1 digit
+    await expect(page.locator('li.list-inline-item', { hasText: 'License:' })).toContainText(/MIT/i);
+    await expect(page.locator('li.list-inline-item', { hasText: 'Visibility:' })).toContainText(/public/i);
   });
 });

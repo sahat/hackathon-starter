@@ -498,7 +498,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **public**/**js**/application.js | Specify client-side JavaScript dependencies.                         |
 | **public**/**js**/app.js         | Place your client-side JavaScript here.                              |
 | **public**/**css**/main.scss     | Main stylesheet for your app.                                        |
-| **test**/\*.js                   | Unit tests.                                                          |
+| **test**/\*.js                   | Tests, related configs and helpers.                                  |
 | **views/account**/               | Templates for _login, password reset, signup, profile_.              |
 | **views/ai**/                    | Templates for AI examples and boilerplates.                          |
 | **views/api**/                   | Templates for API examples.                                          |
@@ -598,6 +598,7 @@ Required during code development for testing, Hygiene, code styling, etc.
 | @eslint/compat                  | Compatibility utilities for ESLin (eslint v8 support in v9).                |
 | @eslint/eslintrc                | Support for legacy ESLintRC config file format for ESLint.                  |
 | @eslint/js                      | ESLint JavaScript language implementation.                                  |
+| @playwright/test                | Automated end-to-end web testing framework (supports headless web browsers) |
 | @prettier/plugin-pug            | Prettier plugin for formatting pug templates                                |
 | c8                              | Coverage test.                                                              |
 | chai                            | BDD/TDD assertion library.                                                  |
@@ -1412,41 +1413,21 @@ If you are starting with this boilerplate to build an application for prod deplo
 
 ## Testing
 
-We use Playwright for end-to-end (E2E) tests. These are short, practical guides for adding a test after a hackathon so you can safely move a prototype into production.
+Hackathon Starter includes both unit tests and end-to-end (E2E) tests.
 
-### Quick: run the existing E2E tests
+- **Unit tests** focus on core functionality, such as user account management.
+- **E2E tests** use [Playwright](https://playwright.dev/) to run the application in a headless Chrome browser, making live API calls and verifying rendered views. These tests are located in `test/e2e/`.
 
-1. Install dependencies:
+The provided E2E tests cover the example API integrations included in the starter project. You can use these as **examples or templates** when creating your own test files, adapting them to match your project's specific views and workflows.
 
-```bash
-npm install
-```
+During a hackathon, you typically don't need to worry about E2E tests; they can slow you down when you're focused on rapid prototyping. However, if you plan to launch your project for real-world use, adding and maintaining E2E tests is strongly recommended. They help ensure that future changes don't unintentionally break existing functionality.
 
-2. Start the app (terminal A):
-
-```bash
-npm start
-```
-
-3. Run E2E tests (terminal B):
+You can run the tests using:
 
 ```bash
+npm test           # or "npm run test" for unit tests - core functions
 npm run test:e2e
 ```
-
-The tests run the app in a real browser and exercise real API calls. If a provider rate limit is hit, tests should assert the app shows an appropriate error message.
-
-### Add or update tests (post-hackathon checklist)
-
-- Put new Playwright tests in `test/e2e/`.
-- Use the existing `test/e2e/github-api.e2e.test.js` as the canonical example: start the app, navigate to the page for your feature, trigger the UI flow, and assert either the expected content or the proper error handling.
-- Keep tests deterministic where possible; for CI you may choose to mock or record external API responses, but the default examples hit live APIs.
-- Remove or update any tests that reference views or features you removed from your project — obsolete tests will fail and should be deleted.
-
-### Notes
-
-- Tests require network access and can be affected by third-party rate limits.
-- Aim for one happy-path E2E test per critical feature plus 1–2 error-handling checks.
 
 ## Changelog
 
