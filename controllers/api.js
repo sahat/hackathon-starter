@@ -216,6 +216,88 @@ exports.getGithub = async (req, res, next) => {
   }
 };
 
+/**
+ * GET /api/imgur
+ * Imgur API example.
+ */
+exports.getImgur = async (req, res, next) => {
+  try {
+    const clientId = process.env.IMGUR_CLIENT_ID;
+
+    if (!clientId) {
+      return res.render('api/imgur', {
+        title: 'Imgur API',
+        error: 'IMGUR_CLIENT_ID environment variable is not set. Please obtain a Client ID from https://api.imgur.com/oauth2/addclient',
+        images: [],
+        galleries: [],
+        tags: [],
+      });
+    }
+
+    const headers = {
+      Authorization: `Client-ID ${clientId}`,
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      // Fetch gallery images (top viral images)
+      const [galleryResponse, tagsResponse] = await Promise.all([
+        fetch('https://api.imgur.com/3/gallery/hot/viral/0.json?showViral=true&mature=false&album_previews=true', {
+          headers,
+        }),
+        fetch('https://api.imgur.com/3/tags', {
+          headers,
+        }),
+      ]);
+
+      let galleryData = { data: [] };
+      let tagsData = { data: { tags: [] } };
+
+      if (galleryResponse.ok) {
+        galleryData = await galleryResponse.json();
+      }
+
+      if (tagsResponse.ok) {
+        tagsData = await tagsResponse.json();
+      }
+
+      // Filter and limit results for better performance
+      const galleries = galleryData.data
+        .filter((item) => item.images && item.images.length > 0)
+        .slice(0, 10)
+        .map((item) => ({
+          id: item.id,
+          title: item.title || 'Untitled',
+          description: item.description || '',
+          views: item.views || 0,
+          ups: item.ups || 0,
+          downs: item.downs || 0,
+          score: item.score || 0,
+          link: item.link,
+          images: item.images.slice(0, 3), // Limit to first 3 images per gallery
+        }));
+
+      const tags = tagsData.data.tags.slice(0, 20);
+
+      res.render('api/imgur', {
+        title: 'Imgur API',
+        galleries,
+        tags,
+        error: null,
+      });
+    } catch (apiError) {
+      res.render('api/imgur', {
+        title: 'Imgur API',
+        error: `Failed to fetch data from Imgur API: ${apiError.message}`,
+        galleries: [],
+        tags: [],
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getQuickbooks = async (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'quickbooks');
   const realmId = req.user.quickbooks;

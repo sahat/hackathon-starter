@@ -90,7 +90,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
-  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
+  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Imgur, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
   - **Maps and Location:** Google Maps, HERE Maps
   - **Productivity:** Google Drive, Google Sheets
 
@@ -288,6 +288,22 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Sign up for the Base plan. The Base plan require a credit card to start, but you get 30,000 map renders for free each month.
 - Create JAVASCRIPT/REST credentials. Copy and paste the API key into the `.env` file as HERE_API_KEY, or set it up as an environment variable.
 - **Set up Trusted Domain** - Your credentials will go to the client-side (browser of the users). You need to enable trusted domains and add your test domain address. Otherwise, others may be able to use your credentials on other websites, go through your quota, and potentially leave you with a bill.
+
+<hr>
+
+<img src="https://s.imgur.com/images/favicon-96x96.png" height="75">
+
+- Go to <a href="https://api.imgur.com/oauth2/addclient" target="_blank">https://api.imgur.com/oauth2/addclient</a>
+- Sign in or create an Imgur account
+- Fill out the registration form:
+  - **Application name**: Your app name
+  - **Authorization type**: Select "OAuth 2 authorization without a callback URL"
+  - **Application website**: Your BASE_URL value (i.e. `http://localhost:8080`)
+  - **Email**: Your email address
+  - **Description**: Brief description of your application
+- After registration, you'll receive a **Client ID** and **Client Secret**
+- Copy the **Client ID** and paste it into your `.env` file as `IMGUR_CLIENT_ID`
+- **Note**: For this API example, you only need the Client ID. The Client Secret is used for more advanced OAuth flows.
 
 <hr>
 

@@ -1,0 +1,140 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      img(src='https://s.imgur.com/images/favicon-32x32.png', height=32, style='margin-right: 10px')
+      | Imgur API
+
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://apidocs.imgur.com/', target='_blank')
+      i.far.fa-check-square.fa-sm.iconpadding
+      | Getting Started
+    a.btn.btn-primary.w-100(href='https://api.imgur.com/oauth2/addclient', target='_blank')
+      i.fas.fa-key.fa-sm.iconpadding
+      | Get API Key
+    a.btn.btn-primary.w-100(href='https://apidocs.imgur.com/', target='_blank')
+      i.far.fa-file-alt.fa-sm.iconpadding
+      | API Docs
+
+  if error
+    .alert.alert-danger(role='alert')
+      strong Error:
+      | #{ error }
+      p.mt-2
+        small To use this API example, you need to:
+        ol.mt-2
+          li Visit
+            |
+            a(href='https://api.imgur.com/oauth2/addclient', target='_blank') https://api.imgur.com/oauth2/addclient
+          li Register your application and get a Client ID
+          li Add your Client ID to the <code>IMGUR_CLIENT_ID</code> environment variable
+  else
+    // Popular Tags Section
+    if tags && tags.length > 0
+      .card.mb-4
+        .card-header
+          h4.mb-0
+            i.fas.fa-tags.fa-sm.iconpadding
+            | Popular Tags
+        .card-body
+          .row
+            each tag in tags.slice(0, 15)
+              .col-md-2.col-sm-3.col-4.mb-2
+                .badge.badge-secondary.p-2(style='font-size: 0.9em')= tag.name
+
+    // Gallery Section
+    if galleries && galleries.length > 0
+      .card
+        .card-header
+          h4.mb-0
+            i.fas.fa-images.fa-sm.iconpadding
+            | Hot Viral Gallery
+            small.text-muted.ml-2 (Top 10 Galleries)
+        .card-body
+          each gallery in galleries
+            .card.mb-4
+              .card-header
+                .row.align-items-center
+                  .col-md-8
+                    h5.mb-0= gallery.title
+                    if gallery.description
+                      p.text-muted.mb-0= gallery.description.length > 100 ? gallery.description.substring(0, 100) + '...' : gallery.description
+                  .col-md-4.text-right
+                    .row
+                      .col-4
+                        small.text-success
+                          i.fas.fa-eye
+                          | #{ gallery.views.toLocaleString() }
+                      .col-4
+                        small.text-primary
+                          i.fas.fa-thumbs-up
+                          | #{ gallery.ups.toLocaleString() }
+                      .col-4
+                        small.text-warning
+                          i.fas.fa-star
+                          | #{ gallery.score }
+              .card-body
+                if gallery.images && gallery.images.length > 0
+                  .row
+                    each image in gallery.images
+                      .col-md-4.mb-3
+                        .card
+                          if image.type && image.type.startsWith('image/')
+                            img.card-img-top(src=image.link, alt=image.title || 'Image', style='height: 200px; object-fit: cover')
+                          else if image.type && image.type.startsWith('video/')
+                            .bg-dark.d-flex.align-items-center.justify-content-center(style='height: 200px')
+                              i.fas.fa-play-circle.fa-3x.text-white
+                          .card-body.p-2
+                            if image.title
+                              h6.card-title.mb-1= image.title.length > 30 ? image.title.substring(0, 30) + '...' : image.title
+                            small.text-muted= image.type || 'unknown'
+                            br
+                            small.text-info
+                              if image.width && image.height
+                                | #{ image.width }x#{ image.height }
+                a.btn.btn-outline-primary.btn-sm(href=gallery.link, target='_blank')
+                  i.fas.fa-external-link-alt.fa-sm.iconpadding
+                  | View on Imgur
+            hr
+    else
+      .alert.alert-info(role='alert')
+        i.fas.fa-info-circle.fa-sm.iconpadding
+        |
+        | No gallery data available at the moment. This could be due to API limits or temporary issues.
+
+  .card.mt-4
+    .card-header
+      h5.mb-0
+        i.fas.fa-info-circle.fa-sm.iconpadding
+        | About Imgur API
+    .card-body
+      p
+        | The Imgur API allows applications to access Imgur's vast collection of images and galleries.
+        | This example demonstrates fetching popular viral content and trending tags using a Client ID.
+      ul
+        li
+          strong Gallery Data:
+          |
+          | Shows the most popular viral galleries with their images, view counts, and scores
+        li
+          strong Tags:
+          |
+          | Displays currently trending tags on the platform
+        li
+          strong Rate Limits:
+          |
+          | The API has rate limits - this example uses basic endpoints that don't require user authentication
+
+  script.
+    // Add some basic interactivity to images
+    document.addEventListener('DOMContentLoaded', function () {
+      const images = document.querySelectorAll('.card-img-top');
+      images.forEach((img) => {
+        img.addEventListener('click', function () {
+          window.open(this.src, '_blank');
+        });
+        img.style.cursor = 'pointer';
+        img.title = 'Click to view full size';
+      });
+    });

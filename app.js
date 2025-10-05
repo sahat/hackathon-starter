@@ -218,6 +218,7 @@ app.get('/api/foursquare', apiController.getFoursquare);
 app.get('/api/tumblr', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getTumblr);
 app.get('/api/facebook', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook);
 app.get('/api/github', apiController.getGithub);
+app.get('/api/imgur', apiController.getImgur);
 app.get('/api/twitch', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getTwitch);
 app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
