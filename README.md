@@ -458,32 +458,6 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 
 <hr>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/PubChem_logo.svg" height="75">
-
-**PubChem** is a free chemistry database maintained by the National Center for Biotechnology Information (NCBI). The PubChem API integration in this project demonstrates how to fetch comprehensive chemical information including molecular properties, safety data, experimental properties, and chemical classifications.
-
-**Features demonstrated:**
-
-- Fetch basic compound information and molecular properties
-- Retrieve chemical synonyms and alternative names
-- Access safety and hazard information
-- Get experimental properties (boiling point, melting point, solubility, etc.)
-- Display 2D chemical structure images
-- Search for similar compounds
-- Chemical classification data
-
-**API Endpoints used:**
-
-- PUG REST API for compound data and properties
-- PUG-View API for experimental and safety information
-- Image API for 2D structure visualization
-
-**No API key required** - PubChem provides free access to their chemical database.
-
-The example uses Aspirin (CID: 2244) to demonstrate the various types of chemical information available through the PubChem API. The integration shows how to handle multiple concurrent API calls and process complex nested JSON responses from different PubChem endpoints.
-
-<hr>
-
 ## Web Analytics
 
 This project supports integrating web analytics tools such as Google Analytics 4 and Facebook Pixel, along with Open Graph metadata for social sharing. Below are instructions to help you set up these features in your application.
