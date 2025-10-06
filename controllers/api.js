@@ -286,9 +286,10 @@ exports.getImgur = async (req, res, next) => {
         error: null,
       });
     } catch (apiError) {
+      console.error('Imgur API Error:', apiError);
       res.render('api/imgur', {
         title: 'Imgur API',
-        error: `Failed to fetch data from Imgur API: ${apiError.message}`,
+        error: 'There was an issue fetching data from Imgur. Please try again later.',
         galleries: [],
         tags: [],
       });
