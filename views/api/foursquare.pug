@@ -36,7 +36,7 @@ block content
             td.d-xs.d-sm= venue.categories && venue.categories.length > 0 ? venue.categories[0].name : 'N/A'
             td.d-xs= venue.location.formatted_address || 'N/A'
             td.d-xs= venue.distance
-            td.d-xs= venue.closed_bucket || 'Unknown'
+            td.d-xs= venue.date_closed ? 'Closed' : 'Unknown'
     br
   h3.text-primary Venue Details
   p
@@ -46,7 +46,7 @@ block content
       |
       | is a #{ venueDetail.categories[0].name }
     |
-    | located at #{ venueDetail.location.address || 'N/A' }, #{ venueDetail.location.locality || 'N/A' }, #{ venueDetail.location.region || 'N/A' }. (longitude: #{ venueDetail.geocodes.main.longitude }, latitude: #{ venueDetail.geocodes.main.latitude })
+    | located at #{ venueDetail.location.address || 'N/A' }, #{ venueDetail.location.locality || 'N/A' }, #{ venueDetail.location.region || 'N/A' }. (longitude: #{ venueDetail.longitude }, latitude: #{ venueDetail.latitude })
     if venueDetail.related_places
       if venueDetail.related_places.children && venueDetail.related_places.children.length > 0
         p Related venues or businesses to #{ venueDetail.name }, which are mostly in the same building or the immediate area are:

@@ -220,13 +220,12 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://imgur.com/2P4UMvC.png" height="75">
 
-- Go to <a href="https://developer.foursquare.com" target="_blank">Foursquare for Developers</a> and log in
-- Click on **My Apps** in the top menu
-- Click the **Create A New App** button
-- Enter _App Name_, _Welcome page url_,
-- For **Redirect URI**: your BASE_URL value followed by /auth/foursquare/callback (i.e. `http://localhost:8080/auth/foursquare/callback` )
-- Click **Save Changes**
-- Copy and paste _Client ID_ and _Client Secret_ keys into `.env` file
+- Go to <a href="https://foursquare.com/developer/" target="_blank">Foursquare for Developers</a> and log in
+- Click on **Create New Project** button
+- Enter your project details and create the project
+- Navigate to your project and generate a Service Key
+- Copy the Service Key and paste it as `FOURSQUARE_APIKEY` in your `.env` file
+- Note: The Foursquare API now uses Service Keys instead of OAuth for enhanced security
 
 <hr>
 
