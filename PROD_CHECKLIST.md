@@ -35,8 +35,8 @@ The following is a list of various codes that you may not potential be using and
   - key pairs for Github, LinkedIn, Steam
 - package.json
   - @octokit/rest, lastfm, lob, multer, node-linkedin, passport-github2, passport-linkedin-oauth2, passport-oauth, paypal-rest-sdk, stripe, twilio
-- /test/app.js
-  - /api test case
+- /test
+  - Replace E2E and API example tests with new tests for your application
 - views/account/login.pug
   - Some or all of the last form-group set which are the social login choices
 - views/account/profile.pug

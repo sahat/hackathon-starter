@@ -498,7 +498,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **public**/**js**/application.js | Specify client-side JavaScript dependencies.                         |
 | **public**/**js**/app.js         | Place your client-side JavaScript here.                              |
 | **public**/**css**/main.scss     | Main stylesheet for your app.                                        |
-| **test**/\*.js                   | Unit tests.                                                          |
+| **test**/\*.js                   | Tests, related configs and helpers.                                  |
 | **views/account**/               | Templates for _login, password reset, signup, profile_.              |
 | **views/ai**/                    | Templates for AI examples and boilerplates.                          |
 | **views/api**/                   | Templates for API examples.                                          |
@@ -598,6 +598,7 @@ Required during code development for testing, Hygiene, code styling, etc.
 | @eslint/compat                  | Compatibility utilities for ESLin (eslint v8 support in v9).                |
 | @eslint/eslintrc                | Support for legacy ESLintRC config file format for ESLint.                  |
 | @eslint/js                      | ESLint JavaScript language implementation.                                  |
+| @playwright/test                | Automated end-to-end web testing framework (supports headless web browsers) |
 | @prettier/plugin-pug            | Prettier plugin for formatting pug templates                                |
 | c8                              | Coverage test.                                                              |
 | chai                            | BDD/TDD assertion library.                                                  |
@@ -1409,6 +1410,24 @@ Using a local instance on your laptop with ngrok is a good solution for your dem
 ## Production
 
 If you are starting with this boilerplate to build an application for prod deployment, or if after your hackathon you would like to get your project hardened for production use, see [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md).
+
+## Testing
+
+Hackathon Starter includes both unit tests and end-to-end (E2E) tests.
+
+- **Unit tests** focus on core functionality, such as user account management.
+- **E2E tests** use [Playwright](https://playwright.dev/) to run the application in a headless Chrome browser, making live API calls and verifying rendered views. These tests are located in `test/e2e/`.
+
+The provided E2E tests cover the example API integrations included in the starter project. You can use these as **examples or templates** when creating your own test files, adapting them to match your project's specific views and workflows.
+
+During a hackathon, you typically don't need to worry about E2E tests; they can slow you down when you're focused on rapid prototyping. However, if you plan to launch your project for real-world use, adding and maintaining E2E tests is strongly recommended. They help ensure that future changes don't unintentionally break existing functionality.
+
+You can run the tests using:
+
+```bash
+npm test           # or "npm run test" for unit tests - core functions
+npm run test:e2e
+```
 
 ## Changelog
 
