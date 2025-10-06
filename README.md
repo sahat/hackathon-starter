@@ -291,6 +291,23 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <hr>
 
+<img src="https://i.imgur.com/OEVF7HK.png" height="75">
+
+- Go to <a href="https://huggingface.co" target="_blank">https://huggingface.co</a> and create an account.
+- Go to your Account Settings and create a new Access Token. Make sure you have granted the **"Make calls to Inference Provider"** permission to your token.
+- Add your token as `HUGGINGFACE_KEY` to your `.env` file or as an environment variable.
+
+<hr>
+
+<img src="https://i.imgur.com/Lw5Jb7A.png" height="50">
+
+- Go to <a href="https://developer.intuit.com/app/developer/qbo/docs/get-started" target="_blank">https://developer.intuit.com/app/developer/qbo/docs/get-started</a>
+- Use the Sign Up option in the upper right corner of the screen (navbar) to get a free developer account and a sandbox company.
+- Create a new app by going to your Dashboard using the My Apps option in the top nav bar or by going to <a href="https://developer.intuit.com/app/developer/myapps" target="_blank">https://developer.intuit.com/app/developer/myapps</a>
+- In your App, under Development, Keys & OAuth (right nav), find the Client ID and Client Secret for your `.env` file
+
+<hr>
+
 <img src="https://s.imgur.com/images/favicon-96x96.png" height="75">
 
 - Go to <a href="https://api.imgur.com/oauth2/addclient" target="_blank">https://api.imgur.com/oauth2/addclient</a>
@@ -321,24 +338,6 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - After registration, you'll receive a **Client ID** and **Client Secret**
 - Copy the **Client ID** and **Client Secret** and paste them into your `.env` file as `IMGUR_CLIENT_ID` and `IMGUR_CLIENT_SECRET`
 - **Note**: The OAuth integration allows users to authenticate with their Imgur account to access additional features like uploading images to their personal albums, while the basic API functionality (viewing public galleries and tags) works without authentication.
-
-
-<hr>
-
-<img src="https://i.imgur.com/OEVF7HK.png" height="75">
-
-- Go to <a href="https://huggingface.co" target="_blank">https://huggingface.co</a> and create an account.
-- Go to your Account Settings and create a new Access Token. Make sure you have granted the **"Make calls to Inference Provider"** permission to your token.
-- Add your token as `HUGGINGFACE_KEY` to your `.env` file or as an environment variable.
-
-<hr>
-
-<img src="https://i.imgur.com/Lw5Jb7A.png" height="50">
-
-- Go to <a href="https://developer.intuit.com/app/developer/qbo/docs/get-started" target="_blank">https://developer.intuit.com/app/developer/qbo/docs/get-started</a>
-- Use the Sign Up option in the upper right corner of the screen (navbar) to get a free developer account and a sandbox company.
-- Create a new app by going to your Dashboard using the My Apps option in the top nav bar or by going to <a href="https://developer.intuit.com/app/developer/myapps" target="_blank">https://developer.intuit.com/app/developer/myapps</a>
-- In your App, under Development, Keys & OAuth (right nav), find the Client ID and Client Secret for your `.env` file
 
 <hr>
 
