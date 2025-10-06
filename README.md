@@ -458,7 +458,7 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 
 <hr>
 
-<img src="https://pubchem.ncbi.nlm.nih.gov/images/pubchem-logo.svg" height="75">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/PubChem_logo.svg" height="75">
 
 **PubChem** is a free chemistry database maintained by the National Center for Biotechnology Information (NCBI). The PubChem API integration in this project demonstrates how to fetch comprehensive chemical information including molecular properties, safety data, experimental properties, and chemical classifications.
 
