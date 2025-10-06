@@ -1454,24 +1454,7 @@ exports.getPubChem = async (req, res, next) => {
     const aspirinCID = 2244;
 
     // Fetch comprehensive data about Aspirin from PubChem
-    const [
-      compoundData,
-      propertiesData,
-      synonymsData,
-      classificationData,
-      safetyData,
-      imageData,
-      // Experimental Properties
-      physicalDescriptionData,
-      colorFormData,
-      odorData,
-      boilingPointData,
-      meltingPointData,
-      flashPointData,
-      solubilityData,
-      densityData,
-      vaporPressureData,
-    ] = await Promise.all([
+    const [compoundData, propertiesData, synonymsData, classificationData, safetyData, imageData] = await Promise.all([
       // Basic compound information
       fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/JSON`).then((res) => res.json()),
 
@@ -1505,70 +1488,6 @@ exports.getPubChem = async (req, res, next) => {
 
       // 2D Structure image URL
       `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/PNG?image_size=large`,
-
-      // Experimental Properties using PUG-View API
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Physical%20Description`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Physical Description API error:', err);
-          return { error: 'Failed to fetch physical description' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Color%2FForm`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Color/Form API error:', err);
-          return { error: 'Failed to fetch color/form' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Odor`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Odor API error:', err);
-          return { error: 'Failed to fetch odor' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Boiling%20Point`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Boiling Point API error:', err);
-          return { error: 'Failed to fetch boiling point' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Melting%20Point`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Melting Point API error:', err);
-          return { error: 'Failed to fetch melting point' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Flash%20Point`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Flash Point API error:', err);
-          return { error: 'Failed to fetch flash point' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Solubility`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Solubility API error:', err);
-          return { error: 'Failed to fetch solubility' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Density`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Density API error:', err);
-          return { error: 'Failed to fetch density' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Vapor%20Pressure`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Vapor Pressure API error:', err);
-          return { error: 'Failed to fetch vapor pressure' };
-        }),
     ]);
 
     // Search for similar compounds
@@ -1610,101 +1529,6 @@ exports.getPubChem = async (req, res, next) => {
       }
     }
 
-    // Helper function to extract experimental property data
-    const extractExperimentalProperty = (data, propertyName) => {
-      console.log(`Processing ${propertyName}:`, JSON.stringify(data, null, 2));
-
-      if (data.error) {
-        console.log(`${propertyName} has error:`, data.error);
-        return { error: data.error };
-      }
-
-      const record = data.Record;
-      if (!record) {
-        console.log(`${propertyName} - No record found`);
-        return { values: [] };
-      }
-
-      const values = [];
-
-      // Function to recursively search through sections and references
-      const searchSections = (sections) => {
-        if (!sections || !Array.isArray(sections)) return;
-
-        sections.forEach((section) => {
-          // Check if this section has Information array
-          if (section.Information && Array.isArray(section.Information)) {
-            section.Information.forEach((info) => {
-              if (info.Value) {
-                if (info.Value.StringWithMarkup && Array.isArray(info.Value.StringWithMarkup)) {
-                  info.Value.StringWithMarkup.forEach((markup) => {
-                    if (markup.String) {
-                      values.push({
-                        value: markup.String,
-                        reference: info.ReferenceNumber || null,
-                      });
-                    }
-                  });
-                } else if (info.Value.String) {
-                  values.push({
-                    value: info.Value.String,
-                    reference: info.ReferenceNumber || null,
-                  });
-                } else if (typeof info.Value === 'string') {
-                  values.push({
-                    value: info.Value,
-                    reference: info.ReferenceNumber || null,
-                  });
-                }
-              }
-            });
-          }
-
-          // Recursively search nested sections
-          if (section.Section && Array.isArray(section.Section)) {
-            searchSections(section.Section);
-          }
-        });
-      };
-
-      // Search through sections
-      if (record.Section) {
-        searchSections(record.Section);
-      }
-
-      // If no values found in sections, try to extract from references
-      // This is a fallback for when PubChem stores the data differently
-      if (values.length === 0 && record.Reference && Array.isArray(record.Reference)) {
-        // For now, we'll create placeholder values indicating data sources are available
-        // but the specific property values need to be accessed differently
-        const relevantSources = record.Reference.filter((ref) => ref.SourceName && (ref.SourceName.includes('HSDB') || ref.SourceName.includes('DrugBank') || ref.SourceName.includes('CAMEO') || ref.SourceName.includes('NIOSH') || ref.SourceName.includes('OSHA')));
-
-        if (relevantSources.length > 0) {
-          values.push({
-            value: `Data available from ${relevantSources.length} source(s): ${relevantSources.map((s) => s.SourceName).join(', ')}`,
-            reference: 'Multiple sources',
-            isPlaceholder: true,
-          });
-        }
-      }
-
-      console.log(`${propertyName} extracted values:`, values.length);
-      return { values };
-    };
-
-    // Process experimental properties
-    const experimentalProperties = {
-      physicalDescription: extractExperimentalProperty(physicalDescriptionData, 'Physical Description'),
-      colorForm: extractExperimentalProperty(colorFormData, 'Color/Form'),
-      odor: extractExperimentalProperty(odorData, 'Odor'),
-      boilingPoint: extractExperimentalProperty(boilingPointData, 'Boiling Point'),
-      meltingPoint: extractExperimentalProperty(meltingPointData, 'Melting Point'),
-      flashPoint: extractExperimentalProperty(flashPointData, 'Flash Point'),
-      solubility: extractExperimentalProperty(solubilityData, 'Solubility'),
-      density: extractExperimentalProperty(densityData, 'Density'),
-      vaporPressure: extractExperimentalProperty(vaporPressureData, 'Vapor Pressure'),
-    };
-
     res.render('api/pubchem', {
       title: 'PubChem API - Chemical Information',
       compound,
@@ -1715,7 +1539,6 @@ exports.getPubChem = async (req, res, next) => {
       similarCompounds,
       imageUrl: imageData,
       aspirinCID,
-      experimentalProperties,
     });
   } catch (error) {
     console.error('PubChem API Error:', error);
