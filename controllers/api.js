@@ -1490,23 +1490,6 @@ exports.getPubChem = async (req, res, next) => {
       `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/PNG?image_size=large`,
     ]);
 
-    // Search for similar compounds
-    const searchResults = await fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspirin/cids/JSON?name_type=word`).then((res) => res.json());
-
-    // Get details for first 5 search results
-    let similarCompounds = [];
-    if (searchResults.IdentifierList && searchResults.IdentifierList.CID) {
-      const cids = searchResults.IdentifierList.CID.slice(0, 5);
-      const compoundDetails = await Promise.all(
-        cids.map((cid) =>
-          fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/JSON`)
-            .then((res) => res.json())
-            .catch(() => null),
-        ),
-      );
-      similarCompounds = compoundDetails.filter(Boolean);
-    }
-
     // Process and structure the data
     const compound = compoundData.PC_Compounds?.[0] || {};
     const properties = propertiesData.PropertyTable?.Properties?.[0] || {};
@@ -1536,7 +1519,6 @@ exports.getPubChem = async (req, res, next) => {
       synonyms: synonyms.slice(0, 10), // Limit to first 10 synonyms
       classifications,
       safetyInfo,
-      similarCompounds,
       imageUrl: imageData,
       aspirinCID,
     });

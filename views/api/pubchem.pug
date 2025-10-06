@@ -139,34 +139,6 @@ block content
                 if node.Information && node.Information.Name
                   span.badge.badge-info.m-1= node.Information.Name
 
-  // Search Results Section
-  if similarCompounds && similarCompounds.length > 0
-    .card.text-white.bg-primary.mb-4
-      .card-header
-        h6.panel-title.mb-0 Related Compounds (Search Results)
-      .card-body.text-dark.bg-white
-        .row
-          each compound in similarCompounds.slice(0, 5)
-            if compound.PC_Compounds && compound.PC_Compounds[0]
-              - var comp = compound.PC_Compounds[0];
-              - var cid = comp.id && comp.id.id && comp.id.id.cid;
-              - var iupacProp = comp.props && comp.props.find((p) => p.urn && p.urn.label === 'IUPAC Name');
-              - var molFormulaProp = comp.props && comp.props.find((p) => p.urn && p.urn.label === 'Molecular Formula');
-              .col-md-6.col-lg-4.mb-3
-                .card.h-100
-                  .card-body
-                    h6.card-title
-                      if iupacProp && iupacProp.value && iupacProp.value.sval
-                        = iupacProp.value.sval.length > 50 ? iupacProp.value.sval.substring(0, 50) + '...' : iupacProp.value.sval
-                      else
-                        | Compound CID: #{ cid }
-                    if molFormulaProp && molFormulaProp.value && molFormulaProp.value.sval
-                      p.card-text
-                        strong Formula:
-                        | #{ molFormulaProp.value.sval }
-                    if cid
-                      a.btn.btn-sm.btn-outline-primary(href=`https://pubchem.ncbi.nlm.nih.gov/compound/${cid}`, target='_blank') View Details
-
   // Additional Information Section
   .card.text-white.bg-dark.mb-4
     .card-header
