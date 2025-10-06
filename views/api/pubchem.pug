@@ -179,23 +179,3 @@ block content
             li Contact poison control center
             li Do not induce vomiting unless directed
             li Provide supportive care as needed
-
-  // External Links
-  .card.text-white.bg-info.mb-4
-    .card-header
-      h6.panel-title.mb-0 External Resources
-    .card-body.text-dark.bg-white
-      .btn-group.d-flex(role='group')
-        if aspirinCID
-          a.btn.btn-outline-primary.w-100(href=`https://pubchem.ncbi.nlm.nih.gov/compound/${aspirinCID}`, target='_blank')
-            i.fas.fa-external-link-alt.fa-sm.iconpadding
-            | PubChem Page
-        else
-          .alert.alert-danger
-            | Unable to fetch chemical information from PubChem API. Please try again later.
-        a.btn.btn-outline-primary.w-100(href='https://www.drugbank.ca/drugs/DB00945', target='_blank')
-          i.fas.fa-pills.fa-sm.iconpadding
-          | DrugBank
-        a.btn.btn-outline-primary.w-100(href='https://en.wikipedia.org/wiki/Aspirin', target='_blank')
-          i.fab.fa-wikipedia-w.fa-sm.iconpadding
-          | Wikipedia
