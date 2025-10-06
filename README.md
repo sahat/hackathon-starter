@@ -307,6 +307,24 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <hr>
 
+<img src="https://s.imgur.com/images/favicon-96x96.png" height="75">
+
+- Go to <a href="https://api.imgur.com/oauth2/addclient" target="_blank">https://api.imgur.com/oauth2/addclient</a>
+- Sign in or create an Imgur account
+- Fill out the registration form:
+  - **Application name**: Your app name
+  - **Authorization type**: Select "OAuth 2 authorization with a callback URL"
+  - **Authorization callback URL**: your BASE_URL value followed by /auth/imgur/callback (i.e. `http://localhost:8080/auth/imgur/callback`)
+  - **Application website**: Your BASE_URL value (i.e. `http://localhost:8080`)
+  - **Email**: Your email address
+  - **Description**: Brief description of your application
+- After registration, you'll receive a **Client ID** and **Client Secret**
+- Copy the **Client ID** and **Client Secret** and paste them into your `.env` file as `IMGUR_CLIENT_ID` and `IMGUR_CLIENT_SECRET`
+- **Note**: The OAuth integration allows users to authenticate with their Imgur account to access additional features like uploading images to their personal albums, while the basic API functionality (viewing public galleries and tags) works without authentication.
+
+
+<hr>
+
 <img src="https://i.imgur.com/OEVF7HK.png" height="75">
 
 - Go to <a href="https://huggingface.co" target="_blank">https://huggingface.co</a> and create an account.
