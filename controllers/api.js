@@ -224,10 +224,10 @@ exports.getImgur = async (req, res, next) => {
   try {
     const clientId = process.env.IMGUR_CLIENT_ID;
 
-    if (!clientId) {
+    if (!clientId || clientId === 'your-imgur-client-id') {
       return res.render('api/imgur', {
         title: 'Imgur API',
-        error: 'IMGUR_CLIENT_ID environment variable is not set. Please obtain a Client ID from https://api.imgur.com/oauth2/addclient',
+        error: 'IMGUR_CLIENT_ID environment variable is not set or still using placeholder value. Please obtain a Client ID from https://api.imgur.com/oauth2/addclient and update your .env file.',
         images: [],
         galleries: [],
         tags: [],
