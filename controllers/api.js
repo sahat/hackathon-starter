@@ -240,22 +240,31 @@ exports.getImgur = async (req, res, next) => {
     };
 
     try {
-      // Fetch gallery images (top viral images)
-      const [galleryResponse, tagsResponse] = await Promise.all([
-        fetch('https://api.imgur.com/3/gallery/hot/viral/0.json?showViral=true&mature=false&album_previews=true', {
-          headers,
-        }),
-        fetch('https://api.imgur.com/3/tags', {
-          headers,
-        }),
-      ]);
-
+      // Fetch professional topic galleries - try programming first, then fallback to technology
+      const professionalTopics = ['programming', 'technology', 'engineering', 'sciencefair'];
+      let galleryResponse;
       let galleryData = { data: [] };
-      let tagsData = { data: { tags: [] } };
-
-      if (galleryResponse.ok) {
-        galleryData = await galleryResponse.json();
+      
+      // Try professional topics in order until we get content
+      for (const topic of professionalTopics) {
+        galleryResponse = await fetch(`https://api.imgur.com/3/gallery/t/${topic}/top/week/0`, {
+          headers,
+        });
+        
+        if (galleryResponse.ok) {
+          const tempData = await galleryResponse.json();
+          if (tempData.data && tempData.data.length > 0) {
+            galleryData = tempData;
+            break;
+          }
+        }
       }
+      
+      const tagsResponse = await fetch('https://api.imgur.com/3/tags', {
+        headers,
+      });
+
+      let tagsData = { data: { tags: [] } };
 
       if (tagsResponse.ok) {
         tagsData = await tagsResponse.json();
@@ -263,7 +272,7 @@ exports.getImgur = async (req, res, next) => {
 
       // Filter and limit results for better performance
       const galleries = galleryData.data
-        .filter((item) => item.images && item.images.length > 0)
+        .filter((item) => item && (item.images || item.type === 'image/gif' || item.type === 'image/jpeg' || item.type === 'image/png'))
         .slice(0, 10)
         .map((item) => ({
           id: item.id,
@@ -274,7 +283,7 @@ exports.getImgur = async (req, res, next) => {
           downs: item.downs || 0,
           score: item.score || 0,
           link: item.link,
-          images: item.images.slice(0, 3), // Limit to first 3 images per gallery
+          images: item.images ? item.images.slice(0, 3) : [], // Handle single images vs galleries
         }));
 
       const tags = tagsData.data.tags.slice(0, 20);
