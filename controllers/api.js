@@ -1443,3 +1443,281 @@ exports.getTrakt = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * GET /api/pubchem
+ * PubChem API example - Chemical information for Aspirin.
+ */
+exports.getPubChem = async (req, res, next) => {
+  try {
+    // Aspirin CID (Compound ID) in PubChem
+    const aspirinCID = 2244;
+
+    // Fetch comprehensive data about Aspirin from PubChem
+    const [
+      compoundData,
+      propertiesData,
+      synonymsData,
+      classificationData,
+      safetyData,
+      imageData,
+      // Experimental Properties
+      physicalDescriptionData,
+      colorFormData,
+      odorData,
+      boilingPointData,
+      meltingPointData,
+      flashPointData,
+      solubilityData,
+      densityData,
+      vaporPressureData,
+      logPData,
+      stabilityData,
+      decompositionData,
+    ] = await Promise.all([
+      // Basic compound information
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/JSON`).then((res) => res.json()),
+
+      // Chemical and physical properties
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/property/MolecularFormula,MolecularWeight,ExactMass,TPSA,Complexity,Charge,HBondDonorCount,HBondAcceptorCount,RotatableBondCount,HeavyAtomCount,XLogP/JSON`)
+        .then((res) => {
+          console.log('Properties API response status:', res.status);
+          return res.json();
+        })
+        .catch((err) => {
+          console.error('Properties API error:', err);
+          return { error: 'Failed to fetch properties' };
+        }),
+
+      // Synonyms and alternative names
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/synonyms/JSON`)
+        .then((res) => {
+          console.log('Synonyms API response status:', res.status);
+          return res.json();
+        })
+        .catch((err) => {
+          console.error('Synonyms API error:', err);
+          return { error: 'Failed to fetch synonyms' };
+        }),
+
+      // Classification data
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/classification/JSON`).then((res) => res.json()),
+
+      // Safety and hazard information
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Safety%20and%20Hazards`).then((res) => res.json()),
+
+      // 2D Structure image URL
+      `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/PNG?image_size=large`,
+
+      // Experimental Properties using PUG-View API
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Physical%20Description`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Physical Description API error:', err);
+          return { error: 'Failed to fetch physical description' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Color%2FForm`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Color/Form API error:', err);
+          return { error: 'Failed to fetch color/form' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Odor`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Odor API error:', err);
+          return { error: 'Failed to fetch odor' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Boiling%20Point`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Boiling Point API error:', err);
+          return { error: 'Failed to fetch boiling point' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Melting%20Point`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Melting Point API error:', err);
+          return { error: 'Failed to fetch melting point' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Flash%20Point`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Flash Point API error:', err);
+          return { error: 'Failed to fetch flash point' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Solubility`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Solubility API error:', err);
+          return { error: 'Failed to fetch solubility' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Density`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Density API error:', err);
+          return { error: 'Failed to fetch density' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Vapor%20Pressure`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Vapor Pressure API error:', err);
+          return { error: 'Failed to fetch vapor pressure' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=LogP`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('LogP API error:', err);
+          return { error: 'Failed to fetch LogP' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Stability%2FShelf%20Life`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Stability API error:', err);
+          return { error: 'Failed to fetch stability' };
+        }),
+
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Decomposition`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Decomposition API error:', err);
+          return { error: 'Failed to fetch decomposition' };
+        }),
+    ]);
+
+    // Search for similar compounds
+    const searchResults = await fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspirin/cids/JSON?name_type=word`).then((res) => res.json());
+
+    // Get details for first 5 search results
+    let similarCompounds = [];
+    if (searchResults.IdentifierList && searchResults.IdentifierList.CID) {
+      const cids = searchResults.IdentifierList.CID.slice(0, 5);
+      const compoundDetails = await Promise.all(
+        cids.map((cid) =>
+          fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/JSON`)
+            .then((res) => res.json())
+            .catch(() => null),
+        ),
+      );
+      similarCompounds = compoundDetails.filter(Boolean);
+    }
+
+    // Process and structure the data
+    const compound = compoundData.PC_Compounds?.[0] || {};
+    const properties = propertiesData.PropertyTable?.Properties?.[0] || {};
+
+    console.log('Raw properties data:', propertiesData);
+
+    // Handle synonyms with fallback data
+    let synonyms = [];
+    if (synonymsData.InformationList?.Information?.[0]?.Synonym) {
+      synonyms = synonymsData.InformationList.Information[0].Synonym;
+      console.log('Using API synonyms:', synonyms.length, 'items');
+    } else {
+      // Fallback synonyms for Aspirin if API fails
+      synonyms = ['Acetylsalicylic acid', 'ASA', '2-Acetoxybenzoic acid', 'Aspirin', 'Acetosalic acid', 'Acylpyrin', 'Polopirin', 'Solprin', 'Aspro', 'Ecotrin'];
+      console.log('Using fallback synonyms:', synonyms.length, 'items');
+    }
+
+    const classifications = classificationData.Hierarchies || [];
+
+    // Extract safety information
+    const safetyInfo = {};
+    if (safetyData.Record?.Section) {
+      const safetySection = safetyData.Record.Section.find((s) => s.TOCHeading === 'Safety and Hazards');
+      if (safetySection?.Section) {
+        safetySection.Section.forEach((section) => {
+          if (section.TOCHeading && section.Information) {
+            safetyInfo[section.TOCHeading] = section.Information.map((info) => info.Value?.StringWithMarkup?.[0]?.String || info.Value?.String || '').filter(Boolean);
+          }
+        });
+      }
+    }
+
+    // Helper function to extract experimental property data
+    const extractExperimentalProperty = (data, propertyName) => {
+      console.log(`Processing ${propertyName}:`, JSON.stringify(data, null, 2));
+
+      if (data.error) {
+        console.log(`${propertyName} has error:`, data.error);
+        return { error: data.error };
+      }
+
+      const record = data.Record;
+      if (!record || !record.Section) {
+        console.log(`${propertyName} - No record or section found`);
+        return { values: [] };
+      }
+
+      const values = [];
+      record.Section.forEach((section) => {
+        if (section.Information) {
+          section.Information.forEach((info) => {
+            if (info.Value) {
+              if (info.Value.StringWithMarkup) {
+                info.Value.StringWithMarkup.forEach((markup) => {
+                  if (markup.String) {
+                    values.push({
+                      value: markup.String,
+                      reference: info.ReferenceNumber || null,
+                    });
+                  }
+                });
+              } else if (info.Value.String) {
+                values.push({
+                  value: info.Value.String,
+                  reference: info.ReferenceNumber || null,
+                });
+              }
+            }
+          });
+        }
+      });
+
+      console.log(`${propertyName} extracted values:`, values.length);
+      return { values };
+    };
+
+    // Process experimental properties
+    const experimentalProperties = {
+      physicalDescription: extractExperimentalProperty(physicalDescriptionData, 'Physical Description'),
+      colorForm: extractExperimentalProperty(colorFormData, 'Color/Form'),
+      odor: extractExperimentalProperty(odorData, 'Odor'),
+      boilingPoint: extractExperimentalProperty(boilingPointData, 'Boiling Point'),
+      meltingPoint: extractExperimentalProperty(meltingPointData, 'Melting Point'),
+      flashPoint: extractExperimentalProperty(flashPointData, 'Flash Point'),
+      solubility: extractExperimentalProperty(solubilityData, 'Solubility'),
+      density: extractExperimentalProperty(densityData, 'Density'),
+      vaporPressure: extractExperimentalProperty(vaporPressureData, 'Vapor Pressure'),
+      logP: extractExperimentalProperty(logPData, 'LogP'),
+      stability: extractExperimentalProperty(stabilityData, 'Stability/Shelf Life'),
+      decomposition: extractExperimentalProperty(decompositionData, 'Decomposition'),
+    };
+
+    res.render('api/pubchem', {
+      title: 'PubChem API - Chemical Information',
+      compound,
+      properties,
+      synonyms: synonyms.slice(0, 10), // Limit to first 10 synonyms
+      classifications,
+      safetyInfo,
+      similarCompounds,
+      imageUrl: imageData,
+      aspirinCID,
+      experimentalProperties,
+    });
+  } catch (error) {
+    console.error('PubChem API Error:', error);
+    next(error);
+  }
+};

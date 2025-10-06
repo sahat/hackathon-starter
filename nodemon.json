@@ -1,0 +1,10 @@
+{
+  "watch": ["app.js", "controllers/", "models/", "config/", "views/", "public/css/main.scss"],
+  "ext": "js,json,pug,scss",
+  "ignore": ["node_modules/", "public/css/main.css", "tmp/", "test/"],
+  "exec": "npm run scss && node app.js",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "delay": "1000"
+}
