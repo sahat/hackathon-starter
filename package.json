@@ -19,7 +19,6 @@
     "prepare": "husky",
     "scss": "sass --no-source-map --silence-deprecation=import --quiet-deps --load-path=./ --update ./public/css:./public/css",
     "start": "npm run scss && node app.js",
-    "dev": "npm run scss && nodemon app.js",
     "test": "c8 --temp-directory tmp/coverage mocha --timeout=60000 --exit",
     "test:e2e": "playwright test --config=test/playwright.config.js",
     "pretest:e2e": "npx playwright install chromium"
