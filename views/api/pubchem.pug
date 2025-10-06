@@ -35,11 +35,11 @@ block content
                 if properties.MolecularFormula
                   li
                     strong Molecular Formula:
-                    |#{ properties.MolecularFormula }
+                    | #{ properties.MolecularFormula }
                 if properties.MolecularWeight
                   li
                     strong Molecular Weight:
-                    |#{ properties.MolecularWeight } g/mol
+                    | #{ properties.MolecularWeight } g/mol
 
         // Synonyms section
         hr
@@ -67,46 +67,46 @@ block content
               if properties.Complexity
                 li
                   strong Complexity:
-                  |#{ properties.Complexity }
+                  | #{ properties.Complexity }
               if properties.Charge !== undefined
                 li
                   strong Formal Charge:
-                  |#{ properties.Charge }
+                  | #{ properties.Charge }
               if properties.HeavyAtomCount
                 li
                   strong Heavy Atom Count:
-                  |#{ properties.HeavyAtomCount }
+                  | #{ properties.HeavyAtomCount }
               if properties.ExactMass
                 li
                   strong Exact Mass:
-                  |#{ properties.ExactMass } g/mol
+                  | #{ properties.ExactMass } g/mol
               if properties.Volume3D
                 li
                   strong 3D Volume:
-                  |#{ properties.Volume3D } ų
+                  | #{ properties.Volume3D } ų
           .col-md-6
             h6 Physicochemical Properties
             ul.list-unstyled
               if properties.TPSA
                 li
                   strong Topological Polar Surface Area:
-                  |#{ properties.TPSA } Ų
+                  | #{ properties.TPSA } Ų
               if properties.XLogP
                 li
                   strong XLogP (Partition Coefficient):
-                  |#{ properties.XLogP }
+                  | #{ properties.XLogP }
               if properties.HBondDonorCount !== undefined
                 li
                   strong Hydrogen Bond Donors:
-                  |#{ properties.HBondDonorCount }
+                  | #{ properties.HBondDonorCount }
               if properties.HBondAcceptorCount !== undefined
                 li
                   strong Hydrogen Bond Acceptors:
-                  |#{ properties.HBondAcceptorCount }
+                  | #{ properties.HBondAcceptorCount }
               if properties.RotatableBondCount !== undefined
                 li
                   strong Rotatable Bonds:
-                  |#{ properties.RotatableBondCount }
+                  | #{ properties.RotatableBondCount }
 
   // Safety and Hazard Information
   if safetyInfo && Object.keys(safetyInfo).length > 0
@@ -124,6 +124,156 @@ block content
                     li
                       i.fas.fa-exclamation-triangle.fa-sm.text-warning.iconpadding
                       = item
+
+  // Experimental Properties Section
+  if experimentalProperties
+    .card.text-white.bg-success.mb-4
+      .card-header
+        h6.panel-title.mb-0 Experimental Properties
+      .card-body.text-dark.bg-white
+        - var hasAnyData = false;
+        - Object.keys(experimentalProperties).forEach(function(key) { if (experimentalProperties[key] && experimentalProperties[key].values && experimentalProperties[key].values.length > 0) hasAnyData = true; });
+
+        if hasAnyData
+          .row
+            .col-md-6
+              // Physical Properties
+              if experimentalProperties.physicalDescription && experimentalProperties.physicalDescription.values && experimentalProperties.physicalDescription.values.length > 0
+                h6 Physical Description
+                ul.list-unstyled
+                  each item in experimentalProperties.physicalDescription.values.slice(0, 3)
+                    li
+                      i.fas.fa-info-circle.fa-sm.text-info.iconpadding
+                      if item.isPlaceholder
+                        em.text-muted= item.value
+                      else
+                        = item.value
+                      if item.reference && item.reference !== 'Multiple sources'
+                        small.text-muted (Ref: #{ item.reference })
+
+              if experimentalProperties.colorForm && experimentalProperties.colorForm.values && experimentalProperties.colorForm.values.length > 0
+                h6 Color/Form
+                ul.list-unstyled
+                  each item in experimentalProperties.colorForm.values.slice(0, 3)
+                    li
+                      i.fas.fa-palette.fa-sm.text-info.iconpadding
+                      = item.value
+                      if item.reference
+                        small.text-muted (Ref: #{ item.reference })
+
+              if experimentalProperties.odor && experimentalProperties.odor.values && experimentalProperties.odor.values.length > 0
+                h6 Odor
+                ul.list-unstyled
+                  each item in experimentalProperties.odor.values.slice(0, 3)
+                    li
+                      i.fas.fa-nose.fa-sm.text-info.iconpadding
+                      = item.value
+                      if item.reference
+                        small.text-muted (Ref: #{ item.reference })
+
+              if experimentalProperties.solubility && experimentalProperties.solubility.values && experimentalProperties.solubility.values.length > 0
+                h6 Solubility
+                ul.list-unstyled
+                  each item in experimentalProperties.solubility.values.slice(0, 3)
+                    li
+                      i.fas.fa-tint.fa-sm.text-info.iconpadding
+                      = item.value
+                      if item.reference
+                        small.text-muted (Ref: #{ item.reference })
+
+            .col-md-6
+              // Thermal Properties
+              if experimentalProperties.meltingPoint && experimentalProperties.meltingPoint.values && experimentalProperties.meltingPoint.values.length > 0
+                h6 Melting Point
+                ul.list-unstyled
+                  each item in experimentalProperties.meltingPoint.values.slice(0, 3)
+                    li
+                      i.fas.fa-thermometer-half.fa-sm.text-danger.iconpadding
+                      = item.value
+                      if item.reference
+                        small.text-muted (Ref: #{ item.reference })
+
+              if experimentalProperties.boilingPoint && experimentalProperties.boilingPoint.values && experimentalProperties.boilingPoint.values.length > 0
+                h6 Boiling Point
+                ul.list-unstyled
+                  each item in experimentalProperties.boilingPoint.values.slice(0, 3)
+                    li
+                      i.fas.fa-thermometer-full.fa-sm.text-danger.iconpadding
+                      = item.value
+                      if item.reference
+                        small.text-muted (Ref: #{ item.reference })
+
+              if experimentalProperties.flashPoint && experimentalProperties.flashPoint.values && experimentalProperties.flashPoint.values.length > 0
+                h6 Flash Point
+                ul.list-unstyled
+                  each item in experimentalProperties.flashPoint.values.slice(0, 3)
+                    li
+                      i.fas.fa-fire.fa-sm.text-warning.iconpadding
+                      = item.value
+                      if item.reference
+                        small.text-muted (Ref: #{ item.reference })
+
+              if experimentalProperties.density && experimentalProperties.density.values && experimentalProperties.density.values.length > 0
+                h6 Density
+                ul.list-unstyled
+                  each item in experimentalProperties.density.values.slice(0, 3)
+                    li
+                      i.fas.fa-weight.fa-sm.text-info.iconpadding
+                      = item.value
+                      if item.reference
+                        small.text-muted (Ref: #{ item.reference })
+
+          // Additional experimental properties in a second row
+          if (experimentalProperties.vaporPressure && experimentalProperties.vaporPressure.values && experimentalProperties.vaporPressure.values.length > 0) || (experimentalProperties.logP && experimentalProperties.logP.values && experimentalProperties.logP.values.length > 0) || (experimentalProperties.stability && experimentalProperties.stability.values && experimentalProperties.stability.values.length > 0) || (experimentalProperties.decomposition && experimentalProperties.decomposition.values && experimentalProperties.decomposition.values.length > 0)
+            hr
+            .row
+              .col-md-6
+                if experimentalProperties.vaporPressure && experimentalProperties.vaporPressure.values && experimentalProperties.vaporPressure.values.length > 0
+                  h6 Vapor Pressure
+                  ul.list-unstyled
+                    each item in experimentalProperties.vaporPressure.values.slice(0, 3)
+                      li
+                        i.fas.fa-cloud.fa-sm.text-info.iconpadding
+                        = item.value
+                        if item.reference
+                          small.text-muted (Ref: #{ item.reference })
+
+                if experimentalProperties.logP && experimentalProperties.logP.values && experimentalProperties.logP.values.length > 0
+                  h6 LogP (Partition Coefficient)
+                  ul.list-unstyled
+                    each item in experimentalProperties.logP.values.slice(0, 3)
+                      li
+                        i.fas.fa-balance-scale.fa-sm.text-info.iconpadding
+                        = item.value
+                        if item.reference
+                          small.text-muted (Ref: #{ item.reference })
+
+              .col-md-6
+                if experimentalProperties.stability && experimentalProperties.stability.values && experimentalProperties.stability.values.length > 0
+                  h6 Stability/Shelf Life
+                  ul.list-unstyled
+                    each item in experimentalProperties.stability.values.slice(0, 3)
+                      li
+                        i.fas.fa-shield-alt.fa-sm.text-success.iconpadding
+                        = item.value
+                        if item.reference
+                          small.text-muted (Ref: #{ item.reference })
+
+                if experimentalProperties.decomposition && experimentalProperties.decomposition.values && experimentalProperties.decomposition.values.length > 0
+                  h6 Decomposition
+                  ul.list-unstyled
+                    each item in experimentalProperties.decomposition.values.slice(0, 3)
+                      li
+                        i.fas.fa-exclamation-triangle.fa-sm.text-warning.iconpadding
+                        = item.value
+                        if item.reference
+                          small.text-muted (Ref: #{ item.reference })
+        else
+          .alert.alert-info
+            i.fas.fa-info-circle.fa-sm.iconpadding
+            | Experimental properties data is currently not available from the PubChem API for this compound. This may be due to limited experimental data or API response structure changes.
+            br
+            small.text-muted Note: The system is fetching data from multiple PubChem endpoints, but some experimental properties may not be available for all compounds.
 
   // Classifications Section
   if classifications && classifications.length > 0
@@ -163,7 +313,7 @@ block content
                     if molFormulaProp && molFormulaProp.value && molFormulaProp.value.sval
                       p.card-text
                         strong Formula:
-                        |#{ molFormulaProp.value.sval }
+                        | #{ molFormulaProp.value.sval }
                     if cid
                       a.btn.btn-sm.btn-outline-primary(href=`https://pubchem.ncbi.nlm.nih.gov/compound/${cid}`, target='_blank') View Details
 

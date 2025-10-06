@@ -1471,9 +1471,6 @@ exports.getPubChem = async (req, res, next) => {
       solubilityData,
       densityData,
       vaporPressureData,
-      logPData,
-      stabilityData,
-      decompositionData,
     ] = await Promise.all([
       // Basic compound information
       fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/JSON`).then((res) => res.json()),
@@ -1572,27 +1569,6 @@ exports.getPubChem = async (req, res, next) => {
           console.error('Vapor Pressure API error:', err);
           return { error: 'Failed to fetch vapor pressure' };
         }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=LogP`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('LogP API error:', err);
-          return { error: 'Failed to fetch LogP' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Stability%2FShelf%20Life`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Stability API error:', err);
-          return { error: 'Failed to fetch stability' };
-        }),
-
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Decomposition`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Decomposition API error:', err);
-          return { error: 'Failed to fetch decomposition' };
-        }),
     ]);
 
     // Search for similar compounds
@@ -1616,18 +1592,8 @@ exports.getPubChem = async (req, res, next) => {
     const compound = compoundData.PC_Compounds?.[0] || {};
     const properties = propertiesData.PropertyTable?.Properties?.[0] || {};
 
-    console.log('Raw properties data:', propertiesData);
-
-    // Handle synonyms with fallback data
-    let synonyms = [];
-    if (synonymsData.InformationList?.Information?.[0]?.Synonym) {
-      synonyms = synonymsData.InformationList.Information[0].Synonym;
-      console.log('Using API synonyms:', synonyms.length, 'items');
-    } else {
-      // Fallback synonyms for Aspirin if API fails
-      synonyms = ['Acetylsalicylic acid', 'ASA', '2-Acetoxybenzoic acid', 'Aspirin', 'Acetosalic acid', 'Acylpyrin', 'Polopirin', 'Solprin', 'Aspro', 'Ecotrin'];
-      console.log('Using fallback synonyms:', synonyms.length, 'items');
-    }
+    // Handle synonyms from API data
+    const synonyms = synonymsData.InformationList?.Information?.[0]?.Synonym || [];
 
     const classifications = classificationData.Hierarchies || [];
 
@@ -1654,35 +1620,73 @@ exports.getPubChem = async (req, res, next) => {
       }
 
       const record = data.Record;
-      if (!record || !record.Section) {
-        console.log(`${propertyName} - No record or section found`);
+      if (!record) {
+        console.log(`${propertyName} - No record found`);
         return { values: [] };
       }
 
       const values = [];
-      record.Section.forEach((section) => {
-        if (section.Information) {
-          section.Information.forEach((info) => {
-            if (info.Value) {
-              if (info.Value.StringWithMarkup) {
-                info.Value.StringWithMarkup.forEach((markup) => {
-                  if (markup.String) {
-                    values.push({
-                      value: markup.String,
-                      reference: info.ReferenceNumber || null,
-                    });
-                  }
-                });
-              } else if (info.Value.String) {
-                values.push({
-                  value: info.Value.String,
-                  reference: info.ReferenceNumber || null,
-                });
+
+      // Function to recursively search through sections and references
+      const searchSections = (sections) => {
+        if (!sections || !Array.isArray(sections)) return;
+
+        sections.forEach((section) => {
+          // Check if this section has Information array
+          if (section.Information && Array.isArray(section.Information)) {
+            section.Information.forEach((info) => {
+              if (info.Value) {
+                if (info.Value.StringWithMarkup && Array.isArray(info.Value.StringWithMarkup)) {
+                  info.Value.StringWithMarkup.forEach((markup) => {
+                    if (markup.String) {
+                      values.push({
+                        value: markup.String,
+                        reference: info.ReferenceNumber || null,
+                      });
+                    }
+                  });
+                } else if (info.Value.String) {
+                  values.push({
+                    value: info.Value.String,
+                    reference: info.ReferenceNumber || null,
+                  });
+                } else if (typeof info.Value === 'string') {
+                  values.push({
+                    value: info.Value,
+                    reference: info.ReferenceNumber || null,
+                  });
+                }
               }
-            }
+            });
+          }
+
+          // Recursively search nested sections
+          if (section.Section && Array.isArray(section.Section)) {
+            searchSections(section.Section);
+          }
+        });
+      };
+
+      // Search through sections
+      if (record.Section) {
+        searchSections(record.Section);
+      }
+
+      // If no values found in sections, try to extract from references
+      // This is a fallback for when PubChem stores the data differently
+      if (values.length === 0 && record.Reference && Array.isArray(record.Reference)) {
+        // For now, we'll create placeholder values indicating data sources are available
+        // but the specific property values need to be accessed differently
+        const relevantSources = record.Reference.filter((ref) => ref.SourceName && (ref.SourceName.includes('HSDB') || ref.SourceName.includes('DrugBank') || ref.SourceName.includes('CAMEO') || ref.SourceName.includes('NIOSH') || ref.SourceName.includes('OSHA')));
+
+        if (relevantSources.length > 0) {
+          values.push({
+            value: `Data available from ${relevantSources.length} source(s): ${relevantSources.map((s) => s.SourceName).join(', ')}`,
+            reference: 'Multiple sources',
+            isPlaceholder: true,
           });
         }
-      });
+      }
 
       console.log(`${propertyName} extracted values:`, values.length);
       return { values };
@@ -1699,9 +1703,6 @@ exports.getPubChem = async (req, res, next) => {
       solubility: extractExperimentalProperty(solubilityData, 'Solubility'),
       density: extractExperimentalProperty(densityData, 'Density'),
       vaporPressure: extractExperimentalProperty(vaporPressureData, 'Vapor Pressure'),
-      logP: extractExperimentalProperty(logPData, 'LogP'),
-      stability: extractExperimentalProperty(stabilityData, 'Stability/Shelf Life'),
-      decomposition: extractExperimentalProperty(decompositionData, 'Decomposition'),
     };
 
     res.render('api/pubchem', {
