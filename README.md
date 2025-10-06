@@ -90,7 +90,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
-  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
+  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
   - **Maps and Location:** Google Maps, HERE Maps
   - **Productivity:** Google Drive, Google Sheets
 
@@ -455,6 +455,32 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 - Check the box **Allow this application to be used to Sign in with X**
 - Click **Update this X's applications settings**
 - Copy and paste _Consumer Key_ and _Consumer Secret_ keys into `.env` file
+
+<hr>
+
+<img src="https://pubchem.ncbi.nlm.nih.gov/images/pubchem-logo.svg" height="75">
+
+**PubChem** is a free chemistry database maintained by the National Center for Biotechnology Information (NCBI). The PubChem API integration in this project demonstrates how to fetch comprehensive chemical information including molecular properties, safety data, experimental properties, and chemical classifications.
+
+**Features demonstrated:**
+
+- Fetch basic compound information and molecular properties
+- Retrieve chemical synonyms and alternative names
+- Access safety and hazard information
+- Get experimental properties (boiling point, melting point, solubility, etc.)
+- Display 2D chemical structure images
+- Search for similar compounds
+- Chemical classification data
+
+**API Endpoints used:**
+
+- PUG REST API for compound data and properties
+- PUG-View API for experimental and safety information
+- Image API for 2D structure visualization
+
+**No API key required** - PubChem provides free access to their chemical database.
+
+The example uses Aspirin (CID: 2244) to demonstrate the various types of chemical information available through the PubChem API. The integration shows how to handle multiple concurrent API calls and process complex nested JSON responses from different PubChem endpoints.
 
 <hr>
 
