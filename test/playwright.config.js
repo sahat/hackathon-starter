@@ -23,11 +23,10 @@ Object.entries(TEST_ENV_OVERRIDES).forEach(([k, v]) => {
 });
 
 module.exports = defineConfig({
-  testDir: './e2e',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 2,
   outputDir: '../tmp/playwright-artifacts',
   reporter: [['html', { outputFolder: '../tmp/playwright-report', open: 'never' }]],
   use: {
