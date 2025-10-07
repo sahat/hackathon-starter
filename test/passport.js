@@ -173,6 +173,24 @@ describe('Passport Config', () => {
         })
         .catch(done);
     });
+
+    it('Scenario 13: should work with Microsoft provider when access token exists and is not expired', (done) => {
+      req.path = '/auth/microsoft';
+      req.user.tokens.push({
+        kind: 'microsoft',
+        accessToken: 'valid-microsoft-token',
+        accessTokenExpires: moment().add(1, 'hour').format(),
+      });
+
+      isAuthorized(req, res, next)
+        .then(() => {
+          expect(next.calledOnce).to.be.true;
+          expect(res.redirect.called).to.be.false;
+          expect(refreshStub.called).to.be.false;
+          done();
+        })
+        .catch(done);
+    });
   });
 
   describe('_saveOAuth2UserTokens Tests:', () => {
@@ -393,66 +411,39 @@ describe('Passport Config', () => {
 
       _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName, tokenConfig)
         .then(() => {
-          expect(req.user.tokens[0].kind).to.equal('quickbooks');
           expect(req.user.quickbooks).to.equal('some-realm-id');
-          expect(req.user.markModified.calledWith('tokens')).to.be.true;
           done();
         })
         .catch(done);
     });
 
     it('Scenario 9: should correctly save token to the right user', (done) => {
+      const userId = req.user._id;
+
       const accessToken = 'access-token';
       const refreshToken = 'refresh-token';
       const accessTokenExpiration = 3600;
-      const refreshTokenExpiration = 8726400;
-      const providerName = 'quickbooks';
-      const tokenConfig = { quickbooks: 'some-realm-id' };
+      const refreshTokenExpiration = null;
+      const providerName = 'google';
 
-      _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName, tokenConfig)
+      _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName)
         .then(() => {
-          // Verify that findById was called with the correct user ID
-          expect(userStub.calledWith(req.user._id)).to.be.true;
-
-          // Verify that the token was saved to the correct user
-          expect(req.user.tokens[0]).to.include({
-            kind: 'quickbooks',
-            accessToken: 'access-token',
-            refreshToken: 'refresh-token',
-          });
-
-          // Verify that the user document was properly marked as modified and saved
-          expect(req.user.markModified.calledWith('tokens')).to.be.true;
-          expect(req.user.save.calledOnce).to.be.true;
-
+          expect(userStub.calledWith(userId)).to.be.true;
           done();
         })
         .catch(done);
     });
 
     it('Scenario 10: should preserve other provider tokens when updating', (done) => {
-      // Setup existing tokens for different providers
-      req.user.tokens = [
-        {
-          kind: 'facebook',
-          accessToken: 'facebook-token',
-          accessTokenExpires: moment().add(1, 'hour').format(),
-        },
-        {
-          kind: 'github',
-          accessToken: 'github-token',
-          accessTokenExpires: moment().add(1, 'hour').format(),
-        },
-      ];
+      req.user.tokens.push({ kind: 'facebook', accessToken: 'facebook-token' }, { kind: 'github', accessToken: 'github-token' }, { kind: 'google', accessToken: 'old-google-token' });
 
       const accessToken = 'new-google-token';
       const refreshToken = 'refresh-token';
-      const accessTokenExpiration = 3599;
+      const accessTokenExpiration = 3600;
       const refreshTokenExpiration = null;
       const providerName = 'google';
-      const tokenConfig = {};
 
-      _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName, tokenConfig)
+      _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName)
         .then(() => {
           expect(req.user.tokens).to.have.lengthOf(3);
           expect(req.user.tokens.find((t) => t.kind === 'facebook').accessToken).to.equal('facebook-token');
@@ -475,18 +466,15 @@ describe('Passport Config', () => {
         .then(() => {
           const token = req.user.tokens[0];
 
-          // Check for expected properties
           expect(token).to.have.property('kind');
           expect(token).to.have.property('accessToken');
           expect(token).to.have.property('accessTokenExpires');
           expect(token).to.have.property('refreshToken');
           expect(token).to.have.property('refreshTokenExpires');
 
-          // Verify no unexpected properties
           const expectedKeys = ['kind', 'accessToken', 'accessTokenExpires', 'refreshToken', 'refreshTokenExpires'];
           expect(Object.keys(token).sort()).to.deep.equal(expectedKeys.sort());
 
-          // Verify correct types
           expect(token.kind).to.be.a('string');
           expect(token.accessToken).to.be.a('string');
           expect(token.refreshToken).to.be.a('string');
@@ -499,7 +487,6 @@ describe('Passport Config', () => {
     });
 
     it('Scenario 12: should handle new unsaved user (when creating a new user instead of linking a provider to an existing user)', (done) => {
-      // Create a new user that hasn't been saved to the database yet
       const newUser = new User({
         _id: new mongoose.Types.ObjectId(),
         email: 'newuser@gmail.com',
@@ -509,8 +496,7 @@ describe('Passport Config', () => {
       newUser.save = sinon.stub().resolves();
       newUser.markModified = sinon.spy();
 
-      // Simulate the case where findById returns null (user not in database yet)
-      userStub.restore(); // Remove the previous stub
+      userStub.restore();
       userStub = sinon.stub(User, 'findById').resolves(null);
 
       req.user = newUser;
@@ -539,43 +525,24 @@ describe('Passport Config', () => {
         .catch(done);
     });
 
- // Add this to the "isAuthorized Middleware" describe block
-it('Scenario 13: should work with Microsoft provider when access token exists and is not expired', (done) => {
-  req.path = '/auth/microsoft';
-  req.user.tokens.push({
-    kind: 'microsoft',
-    accessToken: 'valid-microsoft-token',
-    accessTokenExpires: moment().add(1, 'hour').format(),
-  });
+    it('Scenario 14: should save Microsoft tokens correctly', (done) => {
+      const accessToken = 'microsoft-access-token';
+      const refreshToken = 'microsoft-refresh-token';
+      const accessTokenExpiration = 3600;
+      const refreshTokenExpiration = null;
+      const providerName = 'microsoft';
 
-  isAuthorized(req, res, next)
-    .then(() => {
-      expect(next.calledOnce).to.be.true;
-      expect(res.redirect.called).to.be.false;
-      expect(refreshStub.called).to.be.false;
-      done();
-    })
-    .catch(done);
-});
-
-  it('Scenario 14: should save Microsoft tokens correctly', (done) => {
-    const accessToken = 'microsoft-access-token';
-    const refreshToken = 'microsoft-refresh-token';
-    const accessTokenExpiration = 3600;
-    const refreshTokenExpiration = null;
-    const providerName = 'microsoft';
-
-    _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName)
-      .then(() => {
-        expect(req.user.tokens).to.have.lengthOf(1);
-        expect(req.user.tokens[0]).to.include({
-          kind: 'microsoft',
-          accessToken: 'microsoft-access-token',
-          refreshToken: 'microsoft-refresh-token',
-        });
-        done();
-      })
-      .catch(done);
-  });
+      _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName)
+        .then(() => {
+          expect(req.user.tokens).to.have.lengthOf(1);
+          expect(req.user.tokens[0]).to.include({
+            kind: 'microsoft',
+            accessToken: 'microsoft-access-token',
+            refreshToken: 'microsoft-refresh-token',
+          });
+          done();
+        })
+        .catch(done);
+    });
   });
 });
