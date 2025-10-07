@@ -1,14 +1,15 @@
-version: '3.8'
 services:
-  mongo:
-    image: mongo
   web:
-    build: .
+    # Build the production image
+    build:
+      context: .
+      dockerfile: ./Dockerfile # Use production Dockerfile (multi-stage optimized)
+    container_name: starter
+
+    # Map container port to host
     ports:
       - '8080:8080'
+
+    # Environment variables
     environment:
-      - MONGODB_URI=mongodb://mongo:27017/test
-    links:
-      - mongo
-    depends_on:
-      - mongo
+      - NODE_ENV=production

@@ -1359,25 +1359,69 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 
 ## Docker
 
-You will need to install docker and docker-compose on your system. If you are using WSL, you will need to install Docker Desktop on Windows and docker-compose on WSL.
+You’ll need to have **Docker** and **Docker Compose** installed on your system.
 
-- [Docker installation](https://docs.docker.com/engine/installation/)
+- [Install Docker Engine](https://docs.docker.com/engine/installation/)
+- [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-After installing docker, start the application with the following commands :
+If you’re using **WSL (Windows Subsystem for Linux)**, install **Docker Desktop** on Windows and **docker-compose** inside WSL.
+
+---
+
+### ⚙️ Development Setup
+
+This project provides a separate setup for local development using `Dockerfile.dev` and `docker-compose.dev.yml`.
+
+```bash
+# Build the development image
+docker compose -f docker-compose.dev.yml build
+
+# Start the development environment
+docker compose -f docker-compose.dev.yml up
+```
+
+> 🧩 The development setup uses hot-reloading for faster iteration during local development.
+
+---
+
+### 🚀 Production Setup
+
+For production or staging environments, use the default `Dockerfile` and `docker-compose.yml`:
+
+```bash
+# Build the production image
+docker compose build
+
+# Start the application
+docker compose up
+```
+
+---
+
+### 🌐 Accessing the App
+
+Once the container is running, the app will be accessible at:
 
 ```
-# To build the project while suppressing most of the build messages
-docker-compose build web
-
-# To build the project without suppressing the build messages or using cached data
-docker-compose build --no-cache --progress=plain web
-
-# To start the application (or to restart after making changes to the source code)
-docker-compose up web
-
+http://localhost:8080/
 ```
 
-To view the app, find your docker IP address + port 8080 ( this will typically be `http://localhost:8080/` ). To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.
+---
+
+✅ **Tip:**  
+You can stop running containers with:
+
+```bash
+docker-compose down
+```
+
+and rebuild everything cleanly with:
+
+```bash
+docker-compose -f docker-compose.dev.yml down --volumes --remove-orphans
+```
+
+:top: <sub>[**back to top**](#table-of-contents)</sub>
 
 ## Deployment
 

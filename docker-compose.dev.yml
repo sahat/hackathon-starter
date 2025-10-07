@@ -1,0 +1,30 @@
+services:
+  # MongoDB service
+  mongo:
+    image: mongo
+    container_name: starter-mongo
+    ports:
+      - '27017:27017' # Expose MongoDB port (optional for local access)
+    volumes:
+      - mongo-data:/data/db # Persist MongoDB data
+
+  # Web / Node.js application service
+  web:
+    build:
+      context: . # Build context is current directory
+      dockerfile: ./Dockerfile.dev # Use development Dockerfile
+    container_name: starter-dev
+    ports:
+      - '8080:8080' # Expose app on localhost:8080
+    volumes:
+      - .:/starter # Mount current directory for live code updates
+      - /starter/node_modules # Keep node_modules inside container to avoid conflicts
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongo:27017/test
+    depends_on:
+      - mongo # Ensure Mongo starts before web
+
+# Named volume to persist MongoDB data
+volumes:
+  mongo-data:
