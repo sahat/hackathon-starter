@@ -227,23 +227,24 @@ test.describe('PubChem API Integration', () => {
     let response;
     let attempts = 0;
     const maxAttempts = 3;
-    
+
     while (attempts < maxAttempts) {
       try {
         response = await request.get('/api/pubchem', {
-          timeout: 30000 // 30 second timeout
+          timeout: 30000, // 30 second timeout
         });
         break; // Success, exit retry loop
       } catch (error) {
-        attempts++;
+        attempts += 1;
         console.log(`Attempt ${attempts} failed:`, error.message);
-        
+
         if (attempts >= maxAttempts) {
           throw error; // Re-throw if all attempts failed
         }
-        
+
         // Wait before retrying (exponential backoff)
-        await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+        const currentAttempt = attempts;
+        await new Promise((resolve) => setTimeout(resolve, 1000 * currentAttempt));
       }
     }
     expect(response.ok()).toBeTruthy();
