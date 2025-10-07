@@ -440,6 +440,7 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 - Sign up for an account.
 - Once logged into the dashboard, expand the link 'show api credentials'
 - Copy your Account Sid and Auth Token
+- Note that you also need to set TWILIO_FROM_NUMBER environment variable to a number you have registered with Twilio and are authorized to send messages from. The +15005550006 placeholder in the .env.example file can be used in the sandbox environment for testing without registering a sending phone number with Twilio.
 
 <hr>
 
