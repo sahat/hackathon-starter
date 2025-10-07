@@ -240,24 +240,14 @@ exports.getImgur = async (req, res, next) => {
     };
 
     try {
-      // Fetch professional topic galleries - try programming first, then fallback to technology
-      const professionalTopics = ['programming', 'technology', 'engineering', 'sciencefair'];
-      let galleryResponse;
-      let galleryData = { data: [] };
+      // Fetch programming topic gallery
+      const galleryResponse = await fetch(`https://api.imgur.com/3/gallery/t/programming/top/week/0`, {
+        headers,
+      });
       
-      // Try professional topics in order until we get content
-      for (const topic of professionalTopics) {
-        galleryResponse = await fetch(`https://api.imgur.com/3/gallery/t/${topic}/top/week/0`, {
-          headers,
-        });
-        
-        if (galleryResponse.ok) {
-          const tempData = await galleryResponse.json();
-          if (tempData.data && tempData.data.length > 0) {
-            galleryData = tempData;
-            break;
-          }
-        }
+      let galleryData = { data: [] };
+      if (galleryResponse.ok) {
+        galleryData = await galleryResponse.json();
       }
       
       const tagsResponse = await fetch('https://api.imgur.com/3/tags', {
