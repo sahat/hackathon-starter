@@ -28,7 +28,8 @@ block content
               .alert.alert-info 2D Structure image not available
           .col-8
             - var iupacName = compound.props.find((p) => p.urn && p.urn.label === 'IUPAC Name');
-            h4= iupacName ? iupacName.value.sval : 'Aspirin'
+            h4 Aspirin
+            h4= iupacName ? iupacName.value.sval : ''
 
             if properties
               ul.list-unstyled
