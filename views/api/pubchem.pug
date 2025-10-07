@@ -147,35 +147,31 @@ block content
       .row
         .col-md-6
           h6 Medical Information
-          p Aspirin (acetylsalicylic acid) is a widely used medication with multiple therapeutic applications:
-          ul
-            li Pain relief (analgesic)
-            li Fever reduction (antipyretic)
-            li Anti-inflammatory effects
-            li Cardiovascular protection (low-dose)
-            li Antiplatelet therapy
+          if compound && compound.props
+            // Display actual medical information if available
+            if safetyInfo && (safetyInfo['Therapeutic Uses'] || safetyInfo['Pharmacology'] || safetyInfo['Medical Uses'])
+              if safetyInfo['Therapeutic Uses'] && safetyInfo['Therapeutic Uses'].length > 0
+                p
+                  strong Therapeutic Uses:
+                  = safetyInfo['Therapeutic Uses'][0]
+              if safetyInfo['Pharmacology'] && safetyInfo['Pharmacology'].length > 0
+                p
+                  strong Pharmacology:
+                  = safetyInfo['Pharmacology'][0]
+              if safetyInfo['Medical Uses'] && safetyInfo['Medical Uses'].length > 0
+                p
+                  strong Medical Uses:
+                  = safetyInfo['Medical Uses'][0]
+            else
+              p No specific medical information available in PubChem safety data.
+          else
+            if properties && Object.keys(properties).length > 0
+              p Chemical compound information available from PubChem database.
+            else
+              p Limited information available from PubChem. Please check PubChem directly for more details.
         .col-md-6
-          h6 Manufacturing & Vendors
-          p Aspirin is manufactured by numerous pharmaceutical companies worldwide through the acetylation of salicylic acid.
-          ul
-            li Major pharmaceutical manufacturers
-            li Available over-the-counter
-            li Various formulations (tablets, capsules, etc.)
-            li Generic and brand name versions
-
-      hr
-      .row
-        .col-md-6
-          h6 Storage & Handling
-          ul
-            li Store in a cool, dry place
-            li Keep container tightly closed
-            li Protect from moisture and light
-            li Keep out of reach of children
-        .col-md-6
-          h6 First Aid Information
-          ul
-            li In case of overdose, seek immediate medical attention
-            li Contact poison control center
-            li Do not induce vomiting unless directed
-            li Provide supportive care as needed
+          h6 Manufacturing Info
+          if manufacturingInfo
+            p= manufacturingInfo
+          else
+            p Manufacturing information not available from PubChem API for this compound.
