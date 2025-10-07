@@ -1,0 +1,178 @@
+extends ../layout
+
+block content
+  h2
+    i.fas.fa-flask.fa-sm.iconpadding
+    | PubChem API - Chemical Information
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest', target='_blank')
+      i.far.fa-check-square.fa-sm.iconpadding
+      | Getting Started
+    a.btn.btn-primary.w-100(href='https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest-tutorial', target='_blank')
+      i.far.fa-file-alt.fa-sm.iconpadding
+      | Documentation
+  br
+
+  // Main Chemical Information Section
+  if compound && compound.props
+    .card.text-white.bg-success.mb-4
+      .card-header
+        h6.panel-title.mb-0 Chemical Information - Aspirin
+      .card-body.text-dark.bg-white
+        .row
+          .col-4
+            if imageUrl
+              img.img-fluid.border.rounded(src=imageUrl, alt='Aspirin 2D Structure', style='max-width: 100%; height: auto')
+            else
+              .alert.alert-info 2D Structure image not available
+          .col-8
+            - var iupacName = compound.props.find((p) => p.urn && p.urn.label === 'IUPAC Name');
+            h4 Aspirin
+            h4= iupacName ? iupacName.value.sval : ''
+
+            if properties
+              ul.list-unstyled
+                if properties.MolecularFormula
+                  li
+                    strong Molecular Formula:
+                    | #{ properties.MolecularFormula }
+                if properties.MolecularWeight
+                  li
+                    strong Molecular Weight:
+                    | #{ properties.MolecularWeight } g/mol
+
+        // Synonyms section
+        hr
+        h5 Synonyms and Alternative Names
+        if synonyms && synonyms.length > 0
+          .row
+            each synonym, index in synonyms
+              if index < 10
+                .col-md-6.col-lg-4
+                  span.badge.bg-secondary.text-white.m-1= synonym
+        else
+          .alert.alert-warning
+            | Synonyms data is not available from the PubChem API.
+
+  // Chemical Properties Section
+  if properties
+    .card.text-white.bg-info.mb-4
+      .card-header
+        h6.panel-title.mb-0 Chemical and Physical Properties
+      .card-body.text-dark.bg-white
+        .row
+          .col-md-6
+            h6 Molecular Properties
+            ul.list-unstyled
+              if properties.Complexity
+                li
+                  strong Complexity:
+                  | #{ properties.Complexity }
+              if properties.Charge !== undefined
+                li
+                  strong Formal Charge:
+                  | #{ properties.Charge }
+              if properties.HeavyAtomCount
+                li
+                  strong Heavy Atom Count:
+                  | #{ properties.HeavyAtomCount }
+              if properties.ExactMass
+                li
+                  strong Exact Mass:
+                  | #{ properties.ExactMass } g/mol
+              if properties.Volume3D
+                li
+                  strong 3D Volume:
+                  | #{ properties.Volume3D } ų
+          .col-md-6
+            h6 Physicochemical Properties
+            ul.list-unstyled
+              if properties.TPSA
+                li
+                  strong Topological Polar Surface Area:
+                  | #{ properties.TPSA } Ų
+              if properties.XLogP
+                li
+                  strong XLogP (Partition Coefficient):
+                  | #{ properties.XLogP }
+              if properties.HBondDonorCount !== undefined
+                li
+                  strong Hydrogen Bond Donors:
+                  | #{ properties.HBondDonorCount }
+              if properties.HBondAcceptorCount !== undefined
+                li
+                  strong Hydrogen Bond Acceptors:
+                  | #{ properties.HBondAcceptorCount }
+              if properties.RotatableBondCount !== undefined
+                li
+                  strong Rotatable Bonds:
+                  | #{ properties.RotatableBondCount }
+
+  // Safety and Hazard Information
+  if safetyInfo && Object.keys(safetyInfo).length > 0
+    .card.text-white.bg-warning.mb-4
+      .card-header
+        h6.panel-title.mb-0 Safety and Hazard Information
+      .card-body.text-dark.bg-white
+        .row
+          each info, category in safetyInfo
+            if info && info.length > 0
+              .col-md-6.mb-3
+                h6= category
+                ul.list-unstyled
+                  each item in info.slice(0, 3)
+                    li
+                      i.fas.fa-exclamation-triangle.fa-sm.text-warning.iconpadding
+                      = item
+
+  // Classifications Section
+  if classifications && classifications.length > 0
+    .card.text-white.bg-secondary.mb-4
+      .card-header
+        h6.panel-title.mb-0 Chemical Classifications
+      .card-body.text-dark.bg-white
+        each classification in classifications.slice(0, 3)
+          if classification.Node && classification.Node.length > 0
+            h6= classification.SourceName || 'Classification'
+            .mb-3
+              each node in classification.Node.slice(0, 5)
+                if node.Information && node.Information.Name
+                  span.badge.badge-info.m-1= node.Information.Name
+
+  // Additional Information Section
+  .card.text-white.bg-dark.mb-4
+    .card-header
+      h6.panel-title.mb-0 Additional Information & Usage
+    .card-body.text-dark.bg-white
+      .row
+        .col-md-6
+          h6 Medical Information
+          if compound && compound.props
+            // Display actual medical information if available
+            if safetyInfo && (safetyInfo['Therapeutic Uses'] || safetyInfo['Pharmacology'] || safetyInfo['Medical Uses'])
+              if safetyInfo['Therapeutic Uses'] && safetyInfo['Therapeutic Uses'].length > 0
+                p
+                  strong Therapeutic Uses:
+                  = safetyInfo['Therapeutic Uses'][0]
+              if safetyInfo['Pharmacology'] && safetyInfo['Pharmacology'].length > 0
+                p
+                  strong Pharmacology:
+                  = safetyInfo['Pharmacology'][0]
+              if safetyInfo['Medical Uses'] && safetyInfo['Medical Uses'].length > 0
+                p
+                  strong Medical Uses:
+                  = safetyInfo['Medical Uses'][0]
+            else
+              p No specific medical information available in PubChem safety data.
+          else
+            if properties && Object.keys(properties).length > 0
+              p Chemical compound information available from PubChem database.
+            else
+              p Limited information available from PubChem. Please check PubChem directly for more details.
+        .col-md-6
+          h6 Manufacturing Info
+          if manufacturingInfo
+            p= manufacturingInfo
+          else
+            p Manufacturing information not available from PubChem API for this compound.
