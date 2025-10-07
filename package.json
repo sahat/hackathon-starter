@@ -20,8 +20,10 @@
     "scss": "sass --no-source-map --silence-deprecation=import --quiet-deps --load-path=./ --update ./public/css:./public/css",
     "start": "npm run scss && node app.js",
     "test": "c8 --temp-directory tmp/coverage mocha --timeout=60000 --exit",
-    "test:e2e": "playwright test --config=test/playwright.config.js",
-    "pretest:e2e": "npx playwright install chromium"
+    "test:e2e": "playwright test --config=test/playwright.config.js test/e2e/*.e2e.test.js",
+    "test:e2e-nokey": "playwright test --config=test/playwright.config.js test/e2e-nokey/*.e2e.test.js",
+    "pretest:e2e": "npx playwright install chromium",
+    "pretest:e2e-nokey": "npx playwright install chromium"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",

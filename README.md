@@ -1416,7 +1416,7 @@ If you are starting with this boilerplate to build an application for prod deplo
 Hackathon Starter includes both unit tests and end-to-end (E2E) tests.
 
 - **Unit tests** focus on core functionality, such as user account management.
-- **E2E tests** use [Playwright](https://playwright.dev/) to run the application in a headless Chrome browser, making live API calls and verifying rendered views. These tests are located in `test/e2e/`.
+- **E2E tests** use [Playwright](https://playwright.dev/) to run the application in a headless Chrome browser, making live API calls and verifying rendered views. These tests are located in `test/e2e/` and `test/e2e-nokey/`. For running nokey tests, you don't need to obtain any API keys.
 
 The provided E2E tests cover the example API integrations included in the starter project. You can use these as **examples or templates** when creating your own test files, adapting them to match your project's specific views and workflows.
 
@@ -1427,6 +1427,7 @@ You can run the tests using:
 ```bash
 npm test           # or "npm run test" for unit tests - core functions
 npm run test:e2e
+npm run test:e2e-nokey
 ```
 
 ## Changelog
