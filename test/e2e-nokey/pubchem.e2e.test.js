@@ -223,8 +223,29 @@ test.describe('PubChem API Integration', () => {
     await expect(page).toHaveTitle(/PubChem API/);
     await expect(page.locator('h2')).toContainText('PubChem API - Chemical Information');
 
-    // Testing PubChem API `/api/pubchem`
-    const response = await request.get(`/api/pubchem`);
+    // Testing PubChem API `/api/pubchem` with retry logic for ECONNRESET errors
+    let response;
+    let attempts = 0;
+    const maxAttempts = 3;
+    
+    while (attempts < maxAttempts) {
+      try {
+        response = await request.get('/api/pubchem', {
+          timeout: 30000 // 30 second timeout
+        });
+        break; // Success, exit retry loop
+      } catch (error) {
+        attempts++;
+        console.log(`Attempt ${attempts} failed:`, error.message);
+        
+        if (attempts >= maxAttempts) {
+          throw error; // Re-throw if all attempts failed
+        }
+        
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+      }
+    }
     expect(response.ok()).toBeTruthy();
 
     // Test that the main chemical information card is present
