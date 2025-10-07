@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema(
     facebook: String,
     github: String,
     google: String,
+    imgur: String,
     linkedin: String,
     quickbooks: String,
     steam: String,

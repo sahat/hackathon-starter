@@ -283,6 +283,10 @@ app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
+app.get('/auth/imgur', passport.authenticate('oauth2'));
+app.get('/auth/imgur/callback', passport.authenticate('oauth2', { failureRedirect: '/auth/failure' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
 app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');

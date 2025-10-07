@@ -244,12 +244,12 @@ exports.getImgur = async (req, res, next) => {
       const galleryResponse = await fetch(`https://api.imgur.com/3/gallery/t/programming/top/week/0`, {
         headers,
       });
-      
+
       let galleryData = { data: [] };
       if (galleryResponse.ok) {
         galleryData = await galleryResponse.json();
       }
-      
+
       const tagsResponse = await fetch('https://api.imgur.com/3/tags', {
         headers,
       });

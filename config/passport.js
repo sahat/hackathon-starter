@@ -295,6 +295,74 @@ passport.use(
 );
 
 /**
+ * Sign in with Imgur.
+ */
+passport.use(
+  new OAuth2Strategy(
+    {
+      authorizationURL: 'https://api.imgur.com/oauth2/authorize',
+      tokenURL: 'https://api.imgur.com/oauth2/token',
+      clientID: process.env.IMGUR_CLIENT_ID,
+      clientSecret: process.env.IMGUR_CLIENT_SECRET,
+      callbackURL: `${process.env.BASE_URL}/auth/imgur/callback`,
+      state: generateState(),
+      passReqToCallback: true,
+    },
+    async (req, accessToken, refreshToken, params, profile, done) => {
+      try {
+        // Get user profile from Imgur API
+        const response = await fetch('https://api.imgur.com/3/account/me', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch Imgur user profile');
+        }
+
+        const userData = await response.json();
+        const imgurProfile = userData.data;
+
+        if (req.user) {
+          const existingUser = await User.findOne({
+            imgur: { $eq: imgurProfile.id },
+          });
+          if (existingUser && existingUser.id !== req.user.id) {
+            req.flash('errors', {
+              msg: 'There is another account in our system linked to your Imgur account. Please delete the duplicate account before linking Imgur to your current account.',
+            });
+            if (req.session) req.session.returnTo = undefined;
+            return done(null, req.user);
+          }
+          const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'imgur');
+          user.imgur = imgurProfile.id;
+          user.profile.name = user.profile.name || imgurProfile.url;
+          user.profile.picture = user.profile.picture || imgurProfile.avatar;
+          await user.save();
+          req.flash('info', { msg: 'Imgur account has been linked.' });
+          return done(null, user);
+        }
+        const existingUser = await User.findOne({
+          imgur: { $eq: imgurProfile.id },
+        });
+        if (existingUser) {
+          return done(null, existingUser);
+        }
+        // Imgur doesn't provide email in their API, so we can't auto-link accounts
+        // Users will need to manually link their Imgur account after signing up
+        req.flash('errors', {
+          msg: 'Imgur does not provide email addresses. Please create an account or sign in with your email, then link your Imgur account in your profile settings.',
+        });
+        return done(null, false);
+      } catch (err) {
+        return done(err);
+      }
+    },
+  ),
+);
+
+/**
  * Sign in with X.
  */
 passport.use(
