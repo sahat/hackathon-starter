@@ -87,3 +87,14 @@ describe('GET /random-url', () => {
     request(app).get('/reset').expect(404, done);
   });
 });
+describe('GET /auth/microsoft', () => {
+  it('should return 302 redirect to Microsoft', (done) => {
+    request(app).get('/auth/microsoft').expect(302, done);
+  });
+});
+
+describe('GET /auth/microsoft/callback', () => {
+  it('should handle Microsoft callback', (done) => {
+    request(app).get('/auth/microsoft/callback').expect(302, done);
+  });
+});

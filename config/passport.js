@@ -847,6 +847,125 @@ passport.use('discord', discordStrategyConfig);
 refresh.use('discord', discordStrategyConfig);
 
 /**
+ * Sign in with Microsoft.
+ */
+const microsoftStrategyConfig = new OAuth2Strategy(
+  {
+    authorizationURL: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+    tokenURL: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+    clientID: process.env.MICROSOFT_CLIENT_ID,
+    clientSecret: process.env.MICROSOFT_CLIENT_SECRET,
+    callbackURL: `${process.env.BASE_URL}/auth/microsoft/callback`,
+    scope: ['https://graph.microsoft.com/User.Read'],
+    state: generateState(),
+    passReqToCallback: true,
+  },
+  async (req, accessToken, refreshToken, params, done) => {
+    try {
+      console.log('Microsoft OAuth callback started');
+      console.log('Access token received:', !!accessToken);
+      console.log('Params:', params);
+
+      // Get user profile from Microsoft Graph API
+      const response = await fetch('https://graph.microsoft.com/v1.0/me', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      console.log('Microsoft Graph API response status:', response.status);
+      
+      if (!response.ok) {
+        console.log('Microsoft Graph API error:', response.status, response.statusText);
+        const errorText = await response.text();
+        console.log('Error details:', errorText);
+        return done(null, false, { message: 'Failed to fetch user profile from Microsoft.' });
+      }
+      
+      const profile = await response.json();
+      console.log('Microsoft profile received:', {
+        id: profile.id,
+        displayName: profile.displayName,
+        email: profile.mail || profile.userPrincipalName
+      });
+      
+      if (!profile || !profile.id) {
+        console.log('No profile or ID received from Microsoft');
+        return done(null, false, { message: 'No profile information received from Microsoft.' });
+      }
+
+      // Check if user is already logged in (linking account)
+      if (req.user) {
+        console.log('User is already logged in, linking account');
+        const existingUser = await User.findOne({
+          microsoft: { $eq: profile.id },
+        });
+        if (existingUser && existingUser.id !== req.user.id) {
+          console.log('Microsoft account already linked to different user');
+          req.flash('errors', {
+            msg: 'There is another account in our system linked to your Microsoft account. Please delete the duplicate account before linking Microsoft to your current account.',
+          });
+          if (req.session) req.session.returnTo = undefined;
+          return done(null, req.user);
+        }
+        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'microsoft');
+        user.microsoft = profile.id;
+        user.profile.name = user.profile.name || profile.displayName;
+        user.profile.picture = user.profile.picture || (profile.photo && profile.photo.url);
+        await user.save();
+        console.log('Microsoft account linked successfully');
+        req.flash('info', { msg: 'Microsoft account has been linked.' });
+        return done(null, user);
+      }
+
+      // Check if user already exists with this Microsoft ID
+      console.log('Checking for existing user with Microsoft ID');
+      const existingUser = await User.findOne({ microsoft: { $eq: profile.id } });
+      if (existingUser) {
+        console.log('Found existing user with Microsoft ID');
+        return done(null, existingUser);
+      }
+
+      // Get email from profile
+      const emailFromProvider = profile.mail || profile.userPrincipalName;
+      const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
+      console.log('Email from provider:', emailFromProvider, 'normalized:', normalizedEmail);
+      
+      // Check if user exists with this email
+      const existingEmailUser = await User.findOne({
+        email: { $eq: normalizedEmail },
+      });
+      if (existingEmailUser) {
+        console.log('Found existing user with same email');
+        req.flash('errors', {
+          msg: `Unable to sign in with Microsoft at this time. If you have an existing account in our system, please sign in by email and link your account to Microsoft in your user profile settings.`,
+        });
+        return done(null, false);
+      }
+
+      // Create new user
+      console.log('Creating new user');
+      const user = new User();
+      user.email = normalizedEmail;
+      user.microsoft = profile.id;
+      req.user = user; // Set req.user so saveOAuth2UserTokens can use it
+      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'microsoft');
+      user.profile.name = profile.displayName;
+      user.profile.picture = profile.photo && profile.photo.url;
+      await user.save();
+      console.log('New user created successfully');
+      return done(null, user);
+    } catch (err) {
+      console.error('Microsoft OAuth error:', err);
+      return done(err);
+    }
+  }
+);
+passport.use('microsoft', microsoftStrategyConfig);
+refresh.use('microsoft', microsoftStrategyConfig);
+
+/**
  * Login Required middleware.
  */
 exports.isAuthenticated = (req, res, next) => {

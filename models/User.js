@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema(
     tumblr: String,
     twitch: String,
     x: String,
+    microsoft: String,
 
     tokens: Array,
 

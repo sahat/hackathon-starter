@@ -538,5 +538,44 @@ describe('Passport Config', () => {
         })
         .catch(done);
     });
+
+ // Add this to the "isAuthorized Middleware" describe block
+it('Scenario 13: should work with Microsoft provider when access token exists and is not expired', (done) => {
+  req.path = '/auth/microsoft';
+  req.user.tokens.push({
+    kind: 'microsoft',
+    accessToken: 'valid-microsoft-token',
+    accessTokenExpires: moment().add(1, 'hour').format(),
+  });
+
+  isAuthorized(req, res, next)
+    .then(() => {
+      expect(next.calledOnce).to.be.true;
+      expect(res.redirect.called).to.be.false;
+      expect(refreshStub.called).to.be.false;
+      done();
+    })
+    .catch(done);
+});
+
+  it('Scenario 14: should save Microsoft tokens correctly', (done) => {
+    const accessToken = 'microsoft-access-token';
+    const refreshToken = 'microsoft-refresh-token';
+    const accessTokenExpiration = 3600;
+    const refreshTokenExpiration = null;
+    const providerName = 'microsoft';
+
+    _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName)
+      .then(() => {
+        expect(req.user.tokens).to.have.lengthOf(1);
+        expect(req.user.tokens[0]).to.include({
+          kind: 'microsoft',
+          accessToken: 'microsoft-access-token',
+          refreshToken: 'microsoft-refresh-token',
+        });
+        done();
+      })
+      .catch(done);
+  });
   });
 });

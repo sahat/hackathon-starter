@@ -302,6 +302,10 @@ app.get('/auth/discord', passport.authenticate('discord'));
 app.get('/auth/discord/callback', passport.authenticate('discord', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
+app.get('/auth/microsoft', passport.authenticate('microsoft'));
+app.get('/auth/microsoft/callback', passport.authenticate('microsoft', { failureRedirect: '/auth/failure' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
 
 /**
  * OAuth authorization routes. (API examples)

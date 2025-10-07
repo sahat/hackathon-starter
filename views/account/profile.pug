@@ -156,3 +156,8 @@ block content
         p.mb-1: a.text-danger(href='/account/unlink/x') Unlink your X account
       else
         p.mb-1: a(href='/auth/x') Link your X account
+    .offset-sm-3.col-md-7.pl-2
+      if user.microsoft
+        p.mb-1: a.text-danger(href='/account/unlink/microsoft') Unlink your Microsoft account
+      else
+        p.mb-1: a(href='/auth/microsoft') Link your Microsoft account
