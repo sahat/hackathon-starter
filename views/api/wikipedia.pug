@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-wikipedia-w.me-2
+      | Wikipedia
+
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://en.wikipedia.org/wiki/Main_Page', target='_blank')
+      i.fas.fa-globe.fa-sm.iconpadding
+      | Wikipedia Homepage
+    a.btn.btn-primary.w-100(href='https://www.mediawiki.org/wiki/API:Main_page', target='_blank')
+      i.fas.fa-book.fa-sm.iconpadding
+      | Wikipedia API Docs
+
+  h3 Search Wikipedia
+  .row
+    .col-md-6
+      form(role='form', method='GET', action='/api/wikipedia')
+        .form-group.mb-3
+          label.col-form-label.font-weight-bold Search Term
+          input.form-control(type='text', name='q', placeholder='Enter a topic to search', required)
+        button.btn.btn-primary.mt-2(type='submit') Search
+
+  if result
+    .row.mt-4
+      .col-md-12
+        h4= result.title
+        if result.thumbnail
+          img.img-fluid.mb-2.border.rounded(src=result.thumbnail.source, alt=result.title)
+          p= 'img: ' + result.pageimage
+          br
+        if result.extract
+          .text-break(style='white-space: pre-wrap')= result.extract
+        .text-break(style='white-space: pre-wrap')= `No more information avilable on ${result.title}`
+
+  if error
+    .alert.alert-danger.mt-4
+      | #{ error }
