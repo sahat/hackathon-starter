@@ -458,6 +458,25 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 
 <hr>
 
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" height="50">
+
+- Go to <a href="https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank">Azure Portal - App registrations</a>
+- Sign in with your Microsoft account
+- Click **New registration**
+- Enter your application name
+- For **Supported account types**, select **Accounts in any organizational directory (Any Azure AD directory - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)**
+- For **Redirect URI**, select **Web** and enter your BASE_URL value followed by `/auth/microsoft/callback` (i.e. `http://localhost:8080/auth/microsoft/callback`)
+- Click **Register**
+- On the app overview page, copy the **Application (client) ID** and paste it into your `.env` file as `MICROSOFT_CLIENT_ID`
+- Click on **Certificates & secrets** in the left sidebar
+- Under **Client secrets**, click **New client secret**
+- Add a description and select an expiration period
+- Click **Add**
+- Copy the **Value** (not the Secret ID) immediately and paste it into your `.env` file as `MICROSOFT_CLIENT_SECRET`
+  - **Important**: The secret value is only shown once. If you lose it, you'll need to create a new one.
+
+<hr>
+
 ## Web Analytics
 
 This project supports integrating web analytics tools such as Google Analytics 4 and Facebook Pixel, along with Open Graph metadata for social sharing. Below are instructions to help you set up these features in your application.

@@ -869,27 +869,27 @@ const microsoftStrategyConfig = new OAuth2Strategy(
       // Get user profile from Microsoft Graph API
       const response = await fetch('https://graph.microsoft.com/v1.0/me', {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
       });
-      
+
       console.log('Microsoft Graph API response status:', response.status);
-      
+
       if (!response.ok) {
         console.log('Microsoft Graph API error:', response.status, response.statusText);
         const errorText = await response.text();
         console.log('Error details:', errorText);
         return done(null, false, { message: 'Failed to fetch user profile from Microsoft.' });
       }
-      
+
       const profile = await response.json();
       console.log('Microsoft profile received:', {
         id: profile.id,
         displayName: profile.displayName,
-        email: profile.mail || profile.userPrincipalName
+        email: profile.mail || profile.userPrincipalName,
       });
-      
+
       if (!profile || !profile.id) {
         console.log('No profile or ID received from Microsoft');
         return done(null, false, { message: 'No profile information received from Microsoft.' });
@@ -931,7 +931,7 @@ const microsoftStrategyConfig = new OAuth2Strategy(
       const emailFromProvider = profile.mail || profile.userPrincipalName;
       const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
       console.log('Email from provider:', emailFromProvider, 'normalized:', normalizedEmail);
-      
+
       // Check if user exists with this email
       const existingEmailUser = await User.findOne({
         email: { $eq: normalizedEmail },
@@ -960,7 +960,7 @@ const microsoftStrategyConfig = new OAuth2Strategy(
       console.error('Microsoft OAuth error:', err);
       return done(err);
     }
-  }
+  },
 );
 passport.use('microsoft', microsoftStrategyConfig);
 refresh.use('microsoft', microsoftStrategyConfig);
