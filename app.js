@@ -218,7 +218,7 @@ app.get('/api/foursquare', apiController.getFoursquare);
 app.get('/api/tumblr', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getTumblr);
 app.get('/api/facebook', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook);
 app.get('/api/github', apiController.getGithub);
-app.get('/api/imgur', apiController.getImgur);
+app.get('/api/imgur', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getImgur);
 app.get('/api/twitch', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getTwitch);
 app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
@@ -284,10 +284,6 @@ app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
-app.get('/auth/imgur', passport.authenticate('oauth2'));
-app.get('/auth/imgur/callback', passport.authenticate('oauth2', { failureRedirect: '/auth/failure' }), (req, res) => {
-  res.redirect(req.session.returnTo || '/');
-});
 app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
@@ -312,6 +308,10 @@ app.get('/auth/discord/callback', passport.authenticate('discord', { failureRedi
 /**
  * OAuth authorization routes. (API examples)
  */
+app.get('/auth/imgur', passport.authorize('imgur'));
+app.get('/auth/imgur/callback', passport.authorize('imgur', { failureRedirect: '/auth/failure' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
 app.get('/auth/tumblr', passport.authorize('tumblr'));
 app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
