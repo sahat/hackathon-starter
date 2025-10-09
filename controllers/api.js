@@ -1443,3 +1443,111 @@ exports.getTrakt = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * GET /api/pubchem
+ * PubChem API example - Chemical information for Aspirin.
+ */
+exports.getPubChem = async (req, res, next) => {
+  try {
+    // Aspirin CID (Compound ID) in PubChem
+    const aspirinCID = 2244;
+
+    // Fetch comprehensive data about Aspirin from PubChem
+    const [compoundData, propertiesData, synonymsData, classificationData, safetyData, manufacturingData, imageData] = await Promise.all([
+      // Basic compound information
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/JSON`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Basic compound information API error:', err);
+          return { error: 'Failed to Basic compound information' };
+        }),
+
+      // Chemical and physical properties
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/property/MolecularFormula,MolecularWeight,ExactMass,TPSA,Complexity,Charge,HBondDonorCount,HBondAcceptorCount,RotatableBondCount,HeavyAtomCount,XLogP/JSON`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Chemical and physical properties API error:', err);
+          return { error: 'Failed to fetch Chemical and Physical properties' };
+        }),
+
+      // Synonyms and alternative names
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/synonyms/JSON`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Synonyms and Alternative Names API error:', err);
+          return { error: 'Failed to fetch Synonyms and Alternative names' };
+        }),
+
+      // Classification data
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/classification/JSON`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Classification API error:', err);
+          return { error: 'Failed to fetch Classification Data' };
+        }),
+
+      // Safety and hazard information
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Safety%20and%20Hazards`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Safety and hazard information API error:', err);
+          return { error: 'Failed to fetch Safety and Hazard information' };
+        }),
+
+      // Manufacturing and use information
+      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${aspirinCID}/JSON?heading=Use%20and%20Manufacturing`)
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Manufacturing and use information API error:', err);
+          return { error: 'Failed to fetch Manufacturing and use information' };
+        }),
+
+      // 2D Structure image URL
+      `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/PNG?image_size=large`,
+    ]);
+
+    // Process and structure the data
+    const compound = compoundData?.PC_Compounds?.[0] || {};
+    const properties = propertiesData?.PropertyTable?.Properties?.[0] || {};
+
+    // Handle synonyms from API data
+    const synonyms = synonymsData?.InformationList?.Information?.[0]?.Synonym || [];
+
+    const classifications = classificationData?.Hierarchies || [];
+
+    // Extract safety information
+    const safetyInfo = {};
+    if (safetyData?.Record?.Section) {
+      const safetySection = safetyData.Record.Section.find((s) => s.TOCHeading === 'Safety and Hazards');
+      if (safetySection?.Section) {
+        safetySection.Section.forEach((section) => {
+          if (section.TOCHeading && section.Information) {
+            safetyInfo[section.TOCHeading] = section.Information.map((info) => info.Value?.StringWithMarkup?.[0]?.String || info.Value?.String || '').filter(Boolean);
+          }
+        });
+      }
+    }
+
+    // Extract manufacturing information
+    const manufacturingInfo =
+      manufacturingData?.Record?.Section?.find((s) => /use.*manufacturing/i.test(s.TOCHeading))?.Section?.find((sub) => /methods.*manufacturing/i.test(sub.TOCHeading))?.Information?.[0]?.Value?.StringWithMarkup?.[0]?.String ||
+      manufacturingData?.Record?.Section?.find((s) => /use.*manufacturing/i.test(s.TOCHeading))?.Section?.find((sub) => /methods.*manufacturing/i.test(sub.TOCHeading))?.Information?.[0]?.Value?.String ||
+      null;
+
+    res.render('api/pubchem', {
+      title: 'PubChem API - Chemical Information',
+      compound,
+      properties,
+      synonyms: synonyms.slice(0, 10), // Limit to first 10 synonyms
+      classifications,
+      safetyInfo,
+      manufacturingInfo,
+      imageUrl: imageData,
+      aspirinCID,
+    });
+  } catch (error) {
+    console.error('PubChem API Error:', error);
+    next(error);
+  }
+};
