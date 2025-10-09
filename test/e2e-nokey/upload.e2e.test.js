@@ -2,236 +2,306 @@ const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
 
-test.describe('RAG File Upload Integration', () => {
-  // Helper function to clean up test files
-  const cleanupTestFiles = () => {
-    const ragInputDir = path.join(__dirname, '../../rag_input');
-    const ingestedDir = path.join(ragInputDir, 'ingested');
-
-    // Clean up test files from both directories
-    [ragInputDir, ingestedDir].forEach((dir) => {
-      if (fs.existsSync(dir)) {
-        const files = fs.readdirSync(dir).filter((f) => f.startsWith('test-'));
-        files.forEach((file) => {
-          const filePath = path.join(dir, file);
-          if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
-          }
-        });
-      }
-    });
-  };
-
-  test.beforeEach(async () => {
-    // Clean up any existing test files before each test
-    cleanupTestFiles();
-  });
-
-  test.afterEach(async () => {
-    // Clean up test files after each test
-    cleanupTestFiles();
-  });
-
-  test('should navigate to RAG page and display basic elements', async ({ page }) => {
-    // Navigate to RAG page
-    await page.goto('/ai/rag');
+test.describe('File Upload API Integration', () => {
+  test('should load upload page with correct elements', async ({ page }) => {
+    // Navigate to upload page
+    await page.goto('/api/upload');
     await page.waitForLoadState('networkidle');
 
     // Basic page checks
-    await expect(page).toHaveTitle(/Retrieval-Augmented Generation/);
-    await expect(page.locator('h2')).toContainText('Retrieval-Augmented Generation (RAG)');
+    await expect(page).toHaveTitle(/File Upload/);
+    await expect(page.locator('h2')).toContainText('File Upload');
 
-    // Check for main sections
-    await expect(page.locator('text=Ingested Files')).toBeVisible();
-    await expect(page.locator('text=Ask a Question')).toBeVisible();
+    // Check for documentation links
+    await expect(page.locator('a[href*="multer"]')).toBeVisible();
+    await expect(page.locator('a[href*="codepen"]')).toBeVisible();
+    await expect(page.locator('text=/Multer Documentation/i')).toBeVisible();
+    await expect(page.locator('text=/Customize File Upload/i')).toBeVisible();
 
-    // Check for ingest button
-    await expect(page.locator('#ingest-btn')).toBeVisible();
-    await expect(page.locator('#ingest-btn')).toContainText('Ingest Files');
+    // Check form elements
+    await expect(page.locator('h3')).toContainText('File Upload Form');
+    await expect(page.locator('form[enctype="multipart/form-data"]')).toBeVisible();
+    await expect(page.locator('input[type="file"][name="myFile"]')).toBeVisible();
+    await expect(page.locator('input[name="_csrf"]')).toBeAttached(); // CSRF is hidden, so check for presence
+    await expect(page.locator('button[type="submit"]')).toContainText('Submit');
 
-    // Check for ask button
-    await expect(page.locator('#ask-btn')).toBeVisible();
-    await expect(page.locator('#ask-btn')).toContainText('Ask');
-
-    // Check for external API links
-    await expect(page.locator('a[href*="together.ai"]')).toBeVisible();
-    await expect(page.locator('a[href*="huggingface.co"]')).toBeVisible();
-    await expect(page.locator('a[href*="mongodb.com"]')).toBeVisible();
-    await expect(page.locator('a[href*="langchain.com"]')).toBeVisible();
+    // Check informational text
+    await expect(page.locator('text=/uploads.*directory/i')).toBeVisible();
   });
 
-  test('should handle empty directory ingestion', async ({ page }) => {
-    // Ensure rag_input directory is empty
-    cleanupTestFiles();
-
-    // Navigate to RAG page
-    await page.goto('/ai/rag');
+  test('should upload a small file successfully', async ({ page }) => {
+    await page.goto('/api/upload');
     await page.waitForLoadState('networkidle');
 
-    // Click ingest button with no files
-    await page.click('#ingest-btn');
-    await page.waitForLoadState('networkidle');
+    // Create a small test file
+    const testContent = 'This is a test file for upload functionality.';
+    const testFilePath = path.join(__dirname, 'small-test.txt');
 
-    // Wait for any alert to appear and check for flash messages
-    await page.waitForTimeout(1000); // Give time for flash messages to render
+    try {
+      fs.writeFileSync(testFilePath, testContent);
 
-    // Should show info message about no files or success message
-    // Note: Info messages use .alert-primary class in this app
-    const infoAlert = page.locator('.alert-primary');
-    const successAlert = page.locator('.alert-success');
-    const errorAlert = page.locator('.alert-danger');
+      // Verify CSRF token is present
+      const csrfInput = page.locator('input[name="_csrf"]');
+      await expect(csrfInput).toBeAttached();
 
-    // Check for any kind of feedback message
-    const hasInfo = (await infoAlert.count()) > 0;
-    const hasSuccess = (await successAlert.count()) > 0;
-    const hasError = (await errorAlert.count()) > 0;
+      // Upload the file
+      const fileInput = page.locator('input[type="file"][name="myFile"]');
+      await fileInput.setInputFiles(testFilePath);
 
-    // At least one type of alert should be present
-    expect(hasInfo || hasSuccess || hasError).toBeTruthy();
+      // Submit form and wait for response
+      const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
 
-    if (hasInfo) {
-      await expect(infoAlert).toContainText(/No PDF files found|no files|empty|input directory/i);
-    } else if (hasSuccess) {
-      console.log('Success message shown - files may have been processed previously');
-    } else if (hasError) {
-      console.log('Error message shown - this is also acceptable for empty directory scenario');
-    }
-  });
-
-  test('should validate question submission functionality', async ({ page }) => {
-    // Navigate to RAG page
-    await page.goto('/ai/rag');
-    await page.waitForLoadState('networkidle');
-
-    // Clear the question textarea to ensure it's empty and bypass client-side validation
-    await page.fill('#question', '');
-
-    // Remove the required attribute to bypass client-side validation and test server-side validation
-    await page.evaluate(() => {
-      const questionField = document.getElementById('question');
-      if (questionField) {
-        questionField.removeAttribute('required');
+      // Handle rate limiting gracefully
+      if (response.status() === 429) {
+        console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
+        return; // Exit test early as rate limit is valid behavior
       }
-    });
 
-    // Try to submit empty question by clicking the ask button
-    await page.click('#ask-btn');
+      // Verify redirect response
+      expect(response.status()).toBe(302);
 
-    // Wait for redirect to complete and flash messages to render
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(3000); // Increased wait time for flash message rendering
+      // Wait for redirect to complete
+      await page.waitForURL('/api/upload');
+      await page.waitForLoadState('networkidle');
 
-    // Check for any type of alert that might appear
-    const errorAlert = page.locator('.alert-danger');
-    const warningAlert = page.locator('.alert-warning');
-    const infoAlert = page.locator('.alert-primary');
-    const successAlert = page.locator('.alert-success');
-
-    // Check if any alert is present
-    const hasError = (await errorAlert.count()) > 0;
-    const hasWarning = (await warningAlert.count()) > 0;
-    const hasInfo = (await infoAlert.count()) > 0;
-    const hasSuccess = (await successAlert.count()) > 0;
-
-    console.log(`Alert counts - Error: ${await errorAlert.count()}, Warning: ${await warningAlert.count()}, Info: ${await infoAlert.count()}, Success: ${await successAlert.count()}`);
-
-    // At least one type of alert should be present for validation feedback
-    expect(hasError || hasWarning || hasInfo || hasSuccess).toBeTruthy();
-
-    // If any alert is found, log its content for debugging
-    if (hasError) {
-      const errorText = await errorAlert.textContent();
-      console.log('Error message found:', errorText);
-    } else if (hasWarning) {
-      const warningText = await warningAlert.textContent();
-      console.log('Warning message found:', warningText);
-    } else if (hasInfo) {
-      const infoText = await infoAlert.textContent();
-      console.log('Info message found:', infoText);
-    } else if (hasSuccess) {
-      const successText = await successAlert.textContent();
-      console.log('Success message found:', successText);
+      // Check for success message
+      const successAlert = page.locator('.alert.alert-success');
+      await expect(successAlert).toBeVisible({ timeout: 10000 });
+      await expect(successAlert).toContainText(/uploaded successfully/i);
+    } finally {
+      // Clean up test file
+      if (fs.existsSync(testFilePath)) {
+        fs.unlinkSync(testFilePath);
+      }
     }
   });
 
-  test('should handle question submission with no ingested files', async ({ page }) => {
-    // Ensure no files are ingested
-    cleanupTestFiles();
-
-    // Navigate to RAG page
-    await page.goto('/ai/rag');
+  test('should handle file size limit exceeded error', async ({ page }) => {
+    await page.goto('/api/upload');
     await page.waitForLoadState('networkidle');
 
-    // Fill in a question
-    await page.fill('#question', 'What is the content of the documents?');
+    // Create a file larger than 1MB (1024 * 1024 bytes)
+    const largeContent = 'A'.repeat(1024 * 1024 + 1000); // Slightly over 1MB
+    const largeFilePath = path.join(__dirname, 'large-test-file.txt');
 
-    // Submit question
-    await page.click('#ask-btn');
-    await page.waitForLoadState('networkidle');
-
-    // Should show error about no indexed files
-    const errorAlert = page.locator('.alert-danger');
-    await expect(errorAlert).toBeVisible();
-    await expect(errorAlert).toContainText(/No files have been indexed for RAG/i);
-  });
-
-  test('should validate question length limit', async ({ page }) => {
-    // Navigate to RAG page
-    await page.goto('/ai/rag');
-    await page.waitForLoadState('networkidle');
-
-    // Check that textarea has maxlength attribute
-    const questionTextarea = page.locator('#question');
-    await expect(questionTextarea).toHaveAttribute('maxlength', '500');
-
-    // Fill in a long question (over 500 characters)
-    const longQuestion = 'A'.repeat(600);
-    await page.fill('#question', longQuestion);
-
-    // Verify the input is truncated to 500 characters
-    const actualValue = await questionTextarea.inputValue();
-    expect(actualValue.length).toBeLessThanOrEqual(500);
-  });
-
-  test('should display example questions', async ({ page }) => {
-    // Navigate to RAG page
-    await page.goto('/ai/rag');
-    await page.waitForLoadState('networkidle');
-
-    // Check for example questions section
-    await expect(page.locator('text=Example Questions')).toBeVisible();
-
-    // Verify specific example questions are present
-    await expect(page.locator('text=How much did Amazon make in 2024?')).toBeVisible();
-    await expect(page.locator('text=How much debt did Amazon have at the end of 2024?')).toBeVisible();
-    await expect(page.locator("text=Microsoft's advertising expense")).toBeVisible();
-    await expect(page.locator('text=stock Microsoft gave to its employees')).toBeVisible();
-  });
-
-  test('should display RAG architecture information', async ({ page }) => {
-    // Navigate to RAG page
-    await page.goto('/ai/rag');
-    await page.waitForLoadState('networkidle');
-
-    // Check for architecture section - be more flexible with text matching
-    const hasArchitectureHeading = (await page.locator('text=Boilerplate RAG').count()) > 0 || (await page.locator('text=RAG').count()) > 0;
-    expect(hasArchitectureHeading).toBeTruthy();
-
-    // Verify some technology stack information is present (not all may be visible)
-    const techElements = ['LangChain', 'bge-small', 'Llama', 'PDF', 'MongoDB'];
-
-    let foundTech = 0;
-    for (const tech of techElements) {
-      const count = await page.locator(`text=${tech}`).count();
-      if (count > 0) foundTech += 1;
+    // Clean up any existing test file
+    if (fs.existsSync(largeFilePath)) {
+      fs.unlinkSync(largeFilePath);
     }
 
-    // Expect at least 2 technology elements to be present
-    expect(foundTech).toBeGreaterThanOrEqual(2);
+    fs.writeFileSync(largeFilePath, largeContent);
 
-    // Check for block diagram (may not always be present)
-    const blockDiagram = page.locator('img[alt*="RAG"], img[alt*="diagram"], img[src*="rag"], img[src*="diagram"]');
-    // Don't require the diagram to be present, just check if it exists
-    console.log(`Block diagram found: ${(await blockDiagram.count()) > 0}`);
+    try {
+      // Verify CSRF token is present
+      const csrfInput = page.locator('input[name="_csrf"]');
+      await expect(csrfInput).toBeAttached();
+
+      // Upload the large file
+      const fileInput = page.locator('input[type="file"][name="myFile"]');
+      await fileInput.setInputFiles(largeFilePath);
+
+      // Submit form and wait for response
+      const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
+
+      // Handle rate limiting gracefully
+      if (response.status() === 429) {
+        console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
+        return; // Exit test early as rate limit is valid behavior
+      }
+
+      // Verify redirect response
+      expect(response.status()).toBe(302);
+
+      // Wait for redirect to complete
+      await page.waitForURL('/api/upload');
+      await page.waitForLoadState('networkidle');
+
+      // Check for error message about file size
+      const errorAlert = page.locator('.alert.alert-danger');
+      await expect(errorAlert).toBeVisible({ timeout: 10000 });
+      await expect(errorAlert).toContainText(/file size.*too large.*1MB/i);
+    } finally {
+      // Clean up test file
+      if (fs.existsSync(largeFilePath)) {
+        fs.unlinkSync(largeFilePath);
+      }
+    }
+  });
+
+  test('should handle form submission without file', async ({ page }) => {
+    await page.goto('/api/upload');
+    await page.waitForLoadState('networkidle');
+
+    // Verify CSRF token is present
+    const csrfInput = page.locator('input[name="_csrf"]');
+    await expect(csrfInput).toBeAttached();
+
+    // Submit form and wait for response
+    const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
+
+    // Handle rate limiting gracefully
+    if (response.status() === 429) {
+      console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
+      return; // Exit test early as rate limit is valid behavior
+    }
+
+    // Verify redirect response
+    expect(response.status()).toBe(302);
+
+    // Wait for redirect to complete
+    await page.waitForURL('/api/upload');
+    await page.waitForLoadState('networkidle');
+
+    // Should redirect back to upload page (no file selected is handled gracefully)
+    await expect(page.locator('h2')).toContainText('File Upload');
+  });
+
+  test('should upload different file types successfully', async ({ page }) => {
+    const testFiles = [
+      { name: 'test.txt', content: 'Hello World!', type: 'text/plain' },
+      { name: 'test.json', content: '{"test": true}', type: 'application/json' },
+      { name: 'test.csv', content: 'name,value\ntest,123', type: 'text/csv' },
+    ];
+
+    for (const testFile of testFiles) {
+      try {
+        // Create test file
+        const testFilePath = path.join(__dirname, testFile.name);
+        fs.writeFileSync(testFilePath, testFile.content);
+
+        await page.goto('/api/upload');
+        await page.waitForLoadState('networkidle');
+
+        // Verify CSRF token is present
+        const csrfInput = page.locator('input[name="_csrf"]');
+        await expect(csrfInput).toBeAttached();
+
+        // Upload file
+        const fileInput = page.locator('input[type="file"][name="myFile"]');
+        await fileInput.setInputFiles(testFilePath);
+
+        // Submit form and wait for response
+        const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
+
+        // Handle rate limiting gracefully
+        if (response.status() === 429) {
+          console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
+          return; // Exit test early as rate limit is valid behavior
+        }
+
+        // Verify redirect response
+        expect(response.status()).toBe(302);
+
+        // Wait for redirect to complete
+        await page.waitForURL('/api/upload');
+        await page.waitForLoadState('networkidle');
+
+        // Check for success message
+        const successAlert = page.locator('.alert.alert-success');
+        await expect(successAlert).toBeVisible({ timeout: 10000 });
+        await expect(successAlert).toContainText(/uploaded successfully/i);
+      } finally {
+        // Clean up test file
+        const testFilePath = path.join(__dirname, testFile.name);
+        if (fs.existsSync(testFilePath)) {
+          fs.unlinkSync(testFilePath);
+        }
+      }
+    }
+  });
+
+  test('should maintain CSRF protection', async ({ page }) => {
+    await page.goto('/api/upload');
+    await page.waitForLoadState('networkidle');
+
+    // Verify CSRF token is present
+    const csrfInput = page.locator('input[name="_csrf"]');
+    await expect(csrfInput).toBeAttached(); // CSRF is hidden, so check for presence
+
+    const csrfValue = await csrfInput.getAttribute('value');
+    expect(csrfValue).toBeTruthy();
+    expect(csrfValue.length).toBeGreaterThan(0);
+
+    // Verify form has correct enctype for file uploads
+    const form = page.locator('form[enctype="multipart/form-data"]');
+    await expect(form).toBeVisible();
+    await expect(form).toHaveAttribute('method', 'POST');
+  });
+
+  test('should handle upload with maximum allowed file size', async ({ page }) => {
+    await page.goto('/api/upload');
+    await page.waitForLoadState('networkidle');
+
+    // Create a file exactly at the 1MB limit (1024 * 1024 bytes)
+    const maxContent = 'A'.repeat(1024 * 1024 - 100); // Slightly under 1MB to account for headers
+    const maxFilePath = path.join(__dirname, 'max-size-test.txt');
+
+    try {
+      fs.writeFileSync(maxFilePath, maxContent);
+
+      // Verify CSRF token is present
+      const csrfInput = page.locator('input[name="_csrf"]');
+      await expect(csrfInput).toBeAttached();
+
+      // Upload the file
+      const fileInput = page.locator('input[type="file"][name="myFile"]');
+      await fileInput.setInputFiles(maxFilePath);
+
+      // Submit form and wait for response
+      const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
+
+      // Handle rate limiting gracefully
+      if (response.status() === 429) {
+        console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
+        return; // Exit test early as rate limit is valid behavior
+      }
+
+      // Verify redirect response
+      expect(response.status()).toBe(302);
+
+      // Wait for redirect to complete
+      await page.waitForURL('/api/upload');
+      await page.waitForLoadState('networkidle');
+
+      // Check for success message (should work for files at the limit)
+      const successAlert = page.locator('.alert.alert-success');
+      await expect(successAlert).toBeVisible({ timeout: 10000 });
+      await expect(successAlert).toContainText(/uploaded successfully/i);
+    } finally {
+      // Clean up test file
+      if (fs.existsSync(maxFilePath)) {
+        fs.unlinkSync(maxFilePath);
+      }
+    }
+  });
+
+  test('should display proper page structure and navigation', async ({ page }) => {
+    await page.goto('/api/upload');
+    await page.waitForLoadState('networkidle');
+
+    // Check page title and header
+    await expect(page).toHaveTitle(/Hackathon Starter/);
+    await expect(page.locator('h2')).toContainText('File Upload');
+    await expect(page.locator('i.fas.fa-upload')).toBeVisible();
+
+    // Check documentation links
+    const multerLink = page.locator('a[href*="multer"]');
+    await expect(multerLink).toBeVisible();
+    await expect(multerLink).toContainText('Multer Documentation');
+
+    const customizeLink = page.locator('a[href*="codepen"]');
+    await expect(customizeLink).toBeVisible();
+    await expect(customizeLink).toContainText('Customize File Upload');
+
+    // Check form structure - be more specific with selectors
+    await expect(page.locator('.row > .col-md-6')).toBeVisible(); // Direct child selector
+    await expect(page.locator('.form-group.mb-3')).toBeVisible();
+    await expect(page.locator('label.col-form-label.font-weight-bold')).toContainText('File Input');
+
+    // Check form elements
+    await expect(page.locator('form[enctype="multipart/form-data"]')).toBeVisible();
+    await expect(page.locator('input[type="file"][name="myFile"]')).toBeVisible();
+    await expect(page.locator('input[name="_csrf"]')).toBeAttached();
+    await expect(page.locator('button[type="submit"]')).toContainText('Submit');
   });
 });
