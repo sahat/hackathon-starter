@@ -13,3 +13,7 @@ services:
     # Environment variables
     environment:
       - NODE_ENV=production
+
+    # Environment variables from .env file
+    env_file:
+      - .env

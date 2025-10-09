@@ -22,6 +22,8 @@ services:
     environment:
       - NODE_ENV=development
       - MONGODB_URI=mongodb://mongo:27017/test
+    env_file:
+      - .env     # Environment variables from .env file
     depends_on:
       - mongo # Ensure Mongo starts before web
 
