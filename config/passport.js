@@ -342,16 +342,8 @@ const imgurStrategyConfig = new OAuth2Strategy(
         req.flash('info', { msg: 'Imgur account has been linked.' });
         return done(null, user);
       }
-      const existingUser = await User.findOne({
-        imgur: { $eq: imgurProfile.id },
-      });
-      if (existingUser) {
-        return done(null, existingUser);
-      }
-      // Imgur doesn't provide email in their API, so we can't auto-link accounts
-      // Users will need to manually link their Imgur account after signing up
       req.flash('errors', {
-        msg: 'Imgur does not provide email addresses. Please create an account or sign in with your email, then link your Imgur account in your profile settings.',
+        msg: 'Imgur can only be used to link to an existing account. Please sign in with your email first, then link your Imgur account in your profile settings.',
       });
       return done(null, false);
     } catch (err) {

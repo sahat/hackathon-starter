@@ -221,78 +221,75 @@ exports.getGithub = async (req, res, next) => {
  * Imgur API example.
  */
 exports.getImgur = async (req, res, next) => {
+  const limit = 10;
+  let authFailure = null;
+  let userInfo = null;
+  let userImages = [];
+  let userAlbums = [];
+  let galleries = [];
+  let tags = [];
+
+  // Determine Imgur token if user is logged in and has linked Imgur
+  let imgurToken = null;
+  if (req.user && req.user.tokens) {
+    const tokenObj = req.user.tokens.find((token) => token.kind === 'imgur');
+    if (tokenObj) {
+      imgurToken = tokenObj.accessToken;
+    }
+  }
+
+  // Only fetch user info/data if logged in and linked Imgur
+  if (req.user) {
+    if (!imgurToken) {
+      authFailure = 'NotImgurAuthorized';
+    }
+  } else {
+    authFailure = 'NotLoggedIn';
+  }
+
+  const clientId = process.env.IMGUR_CLIENT_ID;
+
+  if (!clientId || clientId === 'your-imgur-client-id') {
+    return res.render('api/imgur', {
+      title: 'Imgur API',
+      error: 'IMGUR_CLIENT_ID environment variable is not set or still using placeholder value. Please obtain a Client ID from https://api.imgur.com/oauth2/addclient and update your .env file.',
+      galleries: [],
+      tags: [],
+      userInfo: null,
+      userImages: [],
+      userAlbums: [],
+      authFailure,
+      limit,
+    });
+  }
+
   try {
-    const clientId = process.env.IMGUR_CLIENT_ID;
-
-    if (!clientId || clientId === 'your-imgur-client-id') {
-      return res.render('api/imgur', {
-        title: 'Imgur API',
-        error: 'IMGUR_CLIENT_ID environment variable is not set or still using placeholder value. Please obtain a Client ID from https://api.imgur.com/oauth2/addclient and update your .env file.',
-        images: [],
-        galleries: [],
-        tags: [],
-      });
+    if (imgurToken) {
+      userInfo = await fetchImgurUserProfile(imgurToken);
+      userImages = await fetchImgurUserImages(imgurToken, limit);
+      userAlbums = await fetchImgurUserAlbums(imgurToken, limit);
     }
 
-    const headers = {
-      Authorization: `Client-ID ${clientId}`,
-      'Content-Type': 'application/json',
-    };
+    galleries = await fetchImgurPublicGalleries(clientId, limit);
+    tags = await fetchImgurTags(clientId, 20);
+  } catch (error) {
+    console.log('Imgur API Error:', error);
+    galleries = [];
+    tags = [];
+  }
 
-    try {
-      // Fetch programming topic gallery
-      const galleryResponse = await fetch(`https://api.imgur.com/3/gallery/t/programming/top/week/0`, {
-        headers,
-      });
-
-      let galleryData = { data: [] };
-      if (galleryResponse.ok) {
-        galleryData = await galleryResponse.json();
-      }
-
-      const tagsResponse = await fetch('https://api.imgur.com/3/tags', {
-        headers,
-      });
-
-      let tagsData = { data: { tags: [] } };
-
-      if (tagsResponse.ok) {
-        tagsData = await tagsResponse.json();
-      }
-
-      // Filter and limit results for better performance
-      const galleries = galleryData.data
-        .filter((item) => item && (item.images || item.type === 'image/gif' || item.type === 'image/jpeg' || item.type === 'image/png'))
-        .slice(0, 10)
-        .map((item) => ({
-          id: item.id,
-          title: item.title || 'Untitled',
-          description: item.description || '',
-          views: item.views || 0,
-          ups: item.ups || 0,
-          downs: item.downs || 0,
-          score: item.score || 0,
-          link: item.link,
-          images: item.images ? item.images.slice(0, 3) : [], // Handle single images vs galleries
-        }));
-
-      const tags = tagsData.data.tags.slice(0, 20);
-
-      res.render('api/imgur', {
-        title: 'Imgur API',
-        galleries,
-        tags,
-        error: null,
-      });
-    } catch (apiError) {
-      console.error('Imgur API Error:', apiError);
-      res.render('api/imgur', {
-        title: 'Imgur API',
-        error: 'There was an issue fetching data from Imgur. Please try again later.',
-        galleries: [],
-        tags: [],
-      });
-    }
+  try {
+    res.render('api/imgur', {
+      title: 'Imgur API',
+      galleries,
+      tags,
+      userInfo,
+      userImages,
+      userAlbums,
+      authFailure,
+      limit,
+      error: null,
+    });
   } catch (error) {
     next(error);
   }
@@ -1287,6 +1284,93 @@ exports.getGoogleSheets = (req, res) => {
     });
   });
 };
+
+/**
+ * Imgur API Helpers
+ */
+async function fetchImgurUserProfile(imgurToken) {
+  const response = await fetch('https://api.imgur.com/3/account/me', {
+    headers: {
+      Authorization: `Bearer ${imgurToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) return null;
+  const userData = await response.json();
+  return userData.data;
+}
+
+async function fetchImgurUserImages(imgurToken, limit) {
+  const response = await fetch(`https://api.imgur.com/3/account/me/images/0`, {
+    headers: {
+      Authorization: `Bearer ${imgurToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) return [];
+  const userImagesData = await response.json();
+  return userImagesData.data.slice(0, limit);
+}
+
+async function fetchImgurUserAlbums(imgurToken, limit) {
+  const response = await fetch(`https://api.imgur.com/3/account/me/albums/0`, {
+    headers: {
+      Authorization: `Bearer ${imgurToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) return [];
+  const userAlbumsData = await response.json();
+  return userAlbumsData.data.slice(0, limit);
+}
+
+async function fetchImgurPublicGalleries(clientId, limit) {
+  const response = await fetch(`https://api.imgur.com/3/gallery/t/programming/top/week/0`, {
+    headers: {
+      Authorization: `Client-ID ${clientId}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  let galleryData = { data: [] };
+  if (response.ok) {
+    galleryData = await response.json();
+  }
+
+  return galleryData.data
+    .filter((item) => item && (item.images || item.type === 'image/gif' || item.type === 'image/jpeg' || item.type === 'image/png'))
+    .slice(0, limit)
+    .map((item) => ({
+      id: item.id,
+      title: item.title || 'Untitled',
+      description: item.description || '',
+      views: item.views || 0,
+      ups: item.ups || 0,
+      downs: item.downs || 0,
+      score: item.score || 0,
+      link: item.link,
+      images: item.images ? item.images.slice(0, 3) : [], // Handle single images vs galleries
+    }));
+}
+
+async function fetchImgurTags(clientId, limit) {
+  const response = await fetch('https://api.imgur.com/3/tags', {
+    headers: {
+      Authorization: `Client-ID ${clientId}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  let tagsData = { data: { tags: [] } };
+  if (response.ok) {
+    tagsData = await response.json();
+  }
+
+  return tagsData.data.tags.slice(0, limit);
+}
 
 /**
  * Trakt.tv API Helpers

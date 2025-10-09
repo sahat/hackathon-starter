@@ -1,10 +1,9 @@
 extends ../layout
 
 block content
-  .pb-2.mt-2.mb-4.border-bottom
-    h2
-      img(src='https://s.imgur.com/images/favicon-32x32.png', height=32, style='margin-right: 10px')
-      | Imgur API
+  h2
+    img(src='https://s.imgur.com/images/favicon-32x32.png', height=32, style='margin-right: 10px')
+    | Imgur API
 
   .btn-group.mb-4.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://apidocs.imgur.com/', target='_blank')
@@ -30,47 +29,124 @@ block content
           li Register your application and get a Client ID
           li Add your Client ID to the <code>IMGUR_CLIENT_ID</code> environment variable
   else
-    // Popular Tags
-    if tags && tags.length > 0
-      h3
-        i.fas.fa-tags.fa-sm.iconpadding
-        | Popular Tags
-      each tag in tags.slice(0, 10)
-        span.badge.badge-secondary.mr-2.mb-2= tag.name
-      br
-      br
+    // Your Imgur Profile Section
+    if userInfo
+      .card.text-white.bg-success.mb-4
+        .card-header
+          h6.panel-title.mb-0 Your Imgur Profile
+        .card-body.text-dark.bg-white
+          .row
+            .col-3
+              img.img-thumbnail(src=userInfo.avatar, alt='User Avatar')
+            .col-9
+              h4 #{ userInfo.url }
+              ul.list-unstyled
+                li
+                  strong User ID:
+                  |
+                  | #{ userInfo.id }
+                li
+                  strong Reputation:
+                  |
+                  | #{ userInfo.reputation ? userInfo.reputation.toLocaleString() : 'N/A' }
+                li
+                  strong Created:
+                  |
+                  | #{ userInfo.created ? new Date(userInfo.created * 1000).toLocaleDateString() : 'N/A' }
+                li
+                  strong Profile URL:
+                  |
+                  |
+                  a(href=`https://imgur.com/user/${userInfo.url}`, target='_blank') https://imgur.com/user/#{ userInfo.url }
 
-    // Professional Topic Galleries
-    if galleries && galleries.length > 0
-      h3
-        i.fas.fa-images.fa-sm.iconpadding
-        | Professional Topic Galleries
-      table.table.table-striped.table-bordered
-        thead
-          tr
-            th Title
-            th Views
-            th Score
-            th Images
-            th Link
-        tbody
-          each gallery in galleries.slice(0, 5)
-            tr
-              td
-                strong= gallery.title
-                if gallery.description
+          if userImages && userImages.length > 0
+            hr
+            h5 My Recent Images (up to #{ limit })
+            .row
+              each image in userImages.slice(0, 6)
+                .col-md-4.mb-3
+                  .card
+                    img.card-img-top(src=image.link, alt=image.title || 'Image', style='height: 200px; object-fit: cover')
+                    .card-body.p-2
+                      if image.title
+                        h6.card-title= image.title
+                      small.text-muted= image.views ? `${image.views.toLocaleString()} views` : 'No views'
+
+          if userAlbums && userAlbums.length > 0
+            hr
+            h5 My Recent Albums (up to #{ limit })
+            ul.list-unstyled
+              each album in userAlbums.slice(0, 5)
+                li.mb-2
+                  strong
+                    a(href=`https://imgur.com/a/${album.id}`, target='_blank') #{ album.title || 'Untitled Album' }
                   br
-                  small.text-muted= gallery.description.length > 60 ? gallery.description.substring(0, 60) + '...' : gallery.description
-              td= gallery.views.toLocaleString()
-              td= gallery.score
-              td= gallery.images ? gallery.images.length : 0
-              td
-                a.btn.btn-sm.btn-outline-primary(href=gallery.link, target='_blank') View
+                  small.text-muted
+                    | #{ album.images_count || 0 } images • #{ album.views ? album.views.toLocaleString() : 0 } views
+                  if album.description
+                    br
+                    small= album.description.length > 100 ? album.description.substring(0, 100) + '...' : album.description
+
     else
-      .alert.alert-info(role='alert')
-        | No gallery data available at the moment.
+      .alert.alert-warning
+        if authFailure === 'NotLoggedIn'
+          | Please log in to access your Imgur profile information.
+        else if authFailure === 'NotImgurAuthorized'
+          | You are logged in but have not linked your Imgur account.
+          |
+          a(href='/auth/imgur') Link your Imgur account
+          |
+          | to access your Imgur profile information.
+        else
+          | Unable to fetch user information. Please ensure you are authenticated.
+
+    // Public API Examples
+    .card.text-white.bg-primary.mb-4
+      .card-header
+        h6.panel-title.mb-0 Public Content Examples
+      .card-body.text-dark.bg-white
+        // Popular Tags
+        if tags && tags.length > 0
+          h5
+            i.fas.fa-tags.fa-sm.iconpadding
+            | Popular Tags
+          each tag in tags.slice(0, 10)
+            span.badge.badge-secondary.mr-2.mb-2= tag.name
+          br
+          br
+
+        // Programming Topic Galleries  
+        if galleries && galleries.length > 0
+          h5
+            i.fas.fa-images.fa-sm.iconpadding
+            | Programming Topic Galleries
+          table.table.table-striped.table-bordered
+            thead
+              tr
+                th Title
+                th Views
+                th Score
+                th Images
+                th Link
+            tbody
+              each gallery in galleries.slice(0, 5)
+                tr
+                  td
+                    strong= gallery.title
+                    if gallery.description
+                      br
+                      small.text-muted= gallery.description.length > 60 ? gallery.description.substring(0, 60) + '...' : gallery.description
+                  td= gallery.views ? gallery.views.toLocaleString() : 'N/A'
+                  td= gallery.score || 0
+                  td= gallery.images ? gallery.images.length : gallery.is_album ? 'Album' : '1'
+                  td
+                    a.btn.btn-sm.btn-outline-primary(href=gallery.link, target='_blank') View
+        else
+          .alert.alert-info(role='alert')
+            | No gallery data available at the moment.
 
   hr
   p
-    | This example demonstrates the Imgur API by fetching content from professional topics (programming, technology, engineering) and trending tags.
-    | The API uses a Client ID for authentication and has rate limits for requests.
+    | This example demonstrates the Imgur API by fetching public content from programming topics and trending tags.
+    | When logged in and linked to Imgur, you can also view your personal profile information, images, and albums.
+    | The API uses a Client ID for public requests and OAuth tokens for authenticated requests.

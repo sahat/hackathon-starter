@@ -122,6 +122,11 @@ block content
       else
         p.mb-1: a(href='/auth/google') Link your Google account
     .offset-sm-3.col-md-7.pl-2
+      if user.imgur
+        p.mb-1: a.text-danger(href='/account/unlink/imgur') Unlink your Imgur account
+      else
+        p.mb-1: a(href='/auth/imgur') Link your Imgur account
+    .offset-sm-3.col-md-7.pl-2
       if user.linkedin
         p.mb-1: a.text-danger(href='/account/unlink/linkedin') Unlink your LinkedIn account
       else
