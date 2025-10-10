@@ -40,7 +40,7 @@ module.exports = defineConfig({
     },
   ],
   webServer: {
-    command: 'node ./helpers/start-with-memory-db.js',
+    command: 'node ./tools/start-with-memory-db.js',
     url: process.env.BASE_URL,
     reuseExistingServer: !process.env.CI,
     env: { ...process.env, ...TEST_ENV_OVERRIDES },
