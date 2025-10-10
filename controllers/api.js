@@ -33,22 +33,23 @@ exports.getApi = (req, res) => {
 exports.getFoursquare = async (req, res, next) => {
   try {
     const headers = {
-      Authorization: `${process.env.FOURSQUARE_APIKEY}`,
+      Authorization: `Bearer ${process.env.FOURSQUARE_APIKEY}`,
+      'X-Places-Api-Version': '2025-06-17',
     };
 
     const [trendingVenuesRes, venueDetailRes, venuePhotosRes] = await Promise.all([
-      fetch('https://api.foursquare.com/v3/places/search?ll=47.609657,-122.342148&limit=10', {
+      fetch('https://places-api.foursquare.com/places/search?ll=47.609657,-122.342148&limit=10', {
         headers,
       }).then((res) => res.json()),
-      fetch('https://api.foursquare.com/v3/places/427ea800f964a520b1211fe3', {
+      fetch('https://places-api.foursquare.com/places/427ea800f964a520b1211fe3', {
         headers,
       }).then((res) => res.json()),
-      fetch('https://api.foursquare.com/v3/places/427ea800f964a520b1211fe3/photos', {
+      fetch('https://places-api.foursquare.com/places/427ea800f964a520b1211fe3/photos', {
         headers,
       }).then((res) => res.json()),
     ]);
     res.render('api/foursquare', {
-      title: 'Foursquare API (v3)',
+      title: 'Foursquare Places API',
       trendingVenues: trendingVenuesRes.results,
       venueDetail: venueDetailRes,
       venuePhotos: venuePhotosRes.slice(0, 9), // Limit the photos to 9
