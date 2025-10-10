@@ -24,9 +24,7 @@ test.describe('Google Maps API Integration', () => {
     await expect(mapContainer).toHaveCSS('height', '500px');
 
     // Check for description text (complete sentence) - use more specific selector
-    await expect(page.locator('p').first()).toContainText(
-      'This example uses custom markers with Font Awesome icons, a custom map control (Center Map), and restricted navigation boundaries.'
-    );
+    await expect(page.locator('p').first()).toContainText('This example uses custom markers with Font Awesome icons, a custom map control (Center Map), and restricted navigation boundaries.');
   });
 
   test('should load Google Maps JavaScript API script', async ({ page }) => {
@@ -34,9 +32,7 @@ test.describe('Google Maps API Integration', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for the main Google Maps API script (with key parameter)
-    const mainMapsScript = page.locator(
-      'script[src*="maps.googleapis.com/maps/api/js"][src*="key="]'
-    );
+    const mainMapsScript = page.locator('script[src*="maps.googleapis.com/maps/api/js"][src*="key="]');
     await expect(mainMapsScript).toHaveCount(1);
 
     // Verify the main script has required parameters
@@ -124,26 +120,27 @@ test.describe('Google Maps API Integration', () => {
 
     // Check for Google Maps error display - both title AND message must be present
     console.log('Checking for Google Maps error display...');
-    
-    const errorTitle = await page.locator('.gm-err-title').textContent().catch(() => '');
-    const errorMessage = await page.locator('.gm-err-message').textContent().catch(() => '');
-    
+
+    const errorTitle = await page
+      .locator('.gm-err-title')
+      .textContent()
+      .catch(() => '');
+    const errorMessage = await page
+      .locator('.gm-err-message')
+      .textContent()
+      .catch(() => '');
+
     // Both title and message must be present for complete error validation
     expect(errorTitle).toBeTruthy();
     expect(errorMessage).toBeTruthy();
-    
+
     console.log(`Complete Google Maps error display found:`);
     console.log(`   Title: "${errorTitle}"`);
     console.log(`   Message: "${errorMessage}"`);
 
     // Also verify console errors related to Maps API
-    const mapsApiErrors = consoleErrors.filter(
-      (error) =>
-        error.includes('Google Maps') ||
-        error.includes('maps.googleapis.com') ||
-        error.includes('API key')
-    );
-    
+    const mapsApiErrors = consoleErrors.filter((error) => error.includes('Google Maps') || error.includes('maps.googleapis.com') || error.includes('API key'));
+
     // Should have either no console errors (clean failure) or Maps-related errors
     expect(consoleErrors.length === 0 || mapsApiErrors.length > 0).toBeTruthy();
     console.log(`Console errors: ${consoleErrors.length}, Maps-related: ${mapsApiErrors.length}`);
@@ -153,10 +150,7 @@ test.describe('Google Maps API Integration', () => {
     await page.goto('/api/google-maps');
     await page.waitForLoadState('networkidle');
 
-    const mapLoaded = await page.waitForFunction(
-      () => window.google && window.google.maps && window.map && window.map !== null,
-      { timeout: 8000 }
-    );
+    const mapLoaded = await page.waitForFunction(() => window.google && window.google.maps && window.map && window.map !== null, { timeout: 8000 });
     expect(mapLoaded).toBeTruthy();
 
     await page.waitForTimeout(1000);
@@ -175,12 +169,7 @@ test.describe('Google Maps API Integration', () => {
     await markers.first().click();
     await page.waitForTimeout(1000);
 
-    const infoWindow = await page.evaluate(
-      () =>
-        document.querySelector('.info-window') !== null ||
-        document.querySelector('.gm-ui-hover-effect') !== null ||
-        document.querySelector('[class*="info"]') !== null
-    );
+    const infoWindow = await page.evaluate(() => document.querySelector('.info-window') !== null || document.querySelector('.gm-ui-hover-effect') !== null || document.querySelector('[class*="info"]') !== null);
     expect(infoWindow).toBe(true);
 
     await expect(page.locator('#map')).toBeVisible();
@@ -190,14 +179,7 @@ test.describe('Google Maps API Integration', () => {
     await page.goto('/api/google-maps');
     await page.waitForLoadState('networkidle');
 
-    await page.waitForFunction(
-      () =>
-        window.google &&
-        window.google.maps &&
-        window.map &&
-        document.querySelectorAll('.custom-marker').length > 0,
-      { timeout: 8000 }
-    );
+    await page.waitForFunction(() => window.google && window.google.maps && window.map && document.querySelectorAll('.custom-marker').length > 0, { timeout: 8000 });
 
     const cityIcon = await page.locator('i.fas.fa-city').count();
     const landmarkIcon = await page.locator('i.fas.fa-landmark').count();
@@ -226,7 +208,7 @@ test.describe('Google Maps API Integration', () => {
       const markerData = [
         { title: 'San Francisco', content: 'cultural, commercial, and financial center', icon: 'fa-city' },
         { title: 'Financial District', content: 'business and financial hub', icon: 'fa-landmark' },
-        { title: "Fisherman's Wharf", content: 'seafood restaurants', icon: 'fa-fish' }
+        { title: "Fisherman's Wharf", content: 'seafood restaurants', icon: 'fa-fish' },
       ];
 
       for (let i = 0; i < markerData.length; i++) {
