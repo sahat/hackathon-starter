@@ -53,7 +53,7 @@ test.describe('Twilio API Integration',async ()=> {
             await expect(messageInput).toHaveValue('Test Message');
 
             const submitButton = page.locator('button[type="submit"]');
-            await submitButton.click();
+            await submitButton.click();1
 
             await page.waitForLoadState('networkidle');
 
@@ -74,10 +74,12 @@ test.describe('Twilio API Integration',async ()=> {
         }
     });
 
-
-    for (const testNumber of testNumbers) {
+    
+    
+    testNumbers.forEach((testNumber) => {
         test(`Send SMS to ${testNumber.number} (${testNumber.description})`, async ({ page }) => {
-            test.skip(!twilioConfigured, 'Twilio not configured, skipping test.');
+            const isTwilioConfigured = twilioConfigured;
+            test.skip(!isTwilioConfigured, 'Twilio not configured, skipping test.');
 
             const numberInput = page.locator('input[name="number"]');
             await numberInput.fill(testNumber.number);
@@ -114,6 +116,6 @@ test.describe('Twilio API Integration',async ()=> {
                 }
             }
         });
-    }
+    });
 
 })
