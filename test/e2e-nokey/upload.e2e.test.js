@@ -51,12 +51,6 @@ test.describe('File Upload API Integration', () => {
       // Submit form and wait for response
       const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
 
-      // Handle rate limiting gracefully
-      if (response.status() === 429) {
-        console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
-        return; // Exit test early as rate limit is valid behavior
-      }
-
       // Verify redirect response
       expect(response.status()).toBe(302);
 
@@ -103,12 +97,6 @@ test.describe('File Upload API Integration', () => {
       // Submit form and wait for response
       const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
 
-      // Handle rate limiting gracefully
-      if (response.status() === 429) {
-        console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
-        return; // Exit test early as rate limit is valid behavior
-      }
-
       // Verify redirect response
       expect(response.status()).toBe(302);
 
@@ -138,12 +126,6 @@ test.describe('File Upload API Integration', () => {
 
     // Submit form and wait for response
     const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
-
-    // Handle rate limiting gracefully
-    if (response.status() === 429) {
-      console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
-      return; // Exit test early as rate limit is valid behavior
-    }
 
     // Verify redirect response
     expect(response.status()).toBe(302);
@@ -182,12 +164,6 @@ test.describe('File Upload API Integration', () => {
 
         // Submit form and wait for response
         const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
-
-        // Handle rate limiting gracefully
-        if (response.status() === 429) {
-          console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
-          return; // Exit test early as rate limit is valid behavior
-        }
 
         // Verify redirect response
         expect(response.status()).toBe(302);
@@ -249,12 +225,6 @@ test.describe('File Upload API Integration', () => {
 
       // Submit form and wait for response
       const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
-
-      // Handle rate limiting gracefully
-      if (response.status() === 429) {
-        console.log('Rate limit reached (429) - this is expected behavior for upload endpoint');
-        return; // Exit test early as rate limit is valid behavior
-      }
 
       // Verify redirect response
       expect(response.status()).toBe(302);
