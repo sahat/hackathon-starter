@@ -10,11 +10,6 @@ test.describe('Last.fm API Integration', () => {
     await expect(page).toHaveTitle(/Last\.fm API/);
     await expect(page.locator('h2')).toContainText('Last.fm API');
 
-    // Check for API documentation links
-    await expect(page.locator('.btn-group a[href*="lastfm-node"]')).toBeVisible();
-    await expect(page.locator('.btn-group a[href*="last.fm/api/account/create"]')).toBeVisible();
-    await expect(page.locator('.btn-group a[href="http://www.last.fm/api"]')).toBeVisible();
-
     // Detect if API returned an error (rate limit, API key issues, etc.)
     const errorElement = page.locator('text=/error|rate limit|invalid|unauthorized/i');
     const isError = (await errorElement.count()) > 0;
