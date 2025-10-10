@@ -422,7 +422,7 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 
 <img src="https://www.freepnglogos.com/uploads/twitch-logo-image-hd-31.png" height="75">
 
-- Visit the <a href="https://dev.twitch.tv/dashboard/apps" target="_blank">Twitch developer dashboard</a>
+- Visit the <a href="https://dev.twitch.tv/console" target="_blank">Twitch developer console</a>
 - If prompted, authorize the dashboard to access your twitch account
 - In the Console, click on Register Your Application
 - Enter the name of your application
@@ -1390,7 +1390,7 @@ Using a local instance on your laptop with ngrok is a good solution for your dem
 
 <img src="https://www.mongodb.com/assets/images/global/MongoDB_Logo_Dark.svg" width="200">
 
-- Go to [https://www.mongodb.com/](https://www.mongodb.com/)
+- Go to [mongodb.com](https://www.mongodb.com/)
 - Click the green **Try free** button
 - Fill in your information then hit **Create your Atlas account**
 - You will be redirected to Create New Cluster page.

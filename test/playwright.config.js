@@ -26,7 +26,7 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : 2,
+  workers: process.env.CI ? 1 : 1,
   outputDir: '../tmp/playwright-artifacts',
   reporter: [['html', { outputFolder: '../tmp/playwright-report', open: 'never' }]],
   use: {
@@ -40,7 +40,7 @@ module.exports = defineConfig({
     },
   ],
   webServer: {
-    command: 'node ./helpers/start-with-memory-db.js',
+    command: 'node ./tools/start-with-memory-db.js',
     url: process.env.BASE_URL,
     reuseExistingServer: !process.env.CI,
     env: { ...process.env, ...TEST_ENV_OVERRIDES },

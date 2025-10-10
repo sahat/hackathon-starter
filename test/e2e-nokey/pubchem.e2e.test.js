@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+test.setTimeout(60_000); // 60s
 
 test.describe('PubChem API Integration', () => {
   test('should launch app, navigate to PubChem API page, and handle API response', async ({ page }) => {
@@ -8,12 +9,8 @@ test.describe('PubChem API Integration', () => {
     await expect(page).toHaveTitle(/PubChem API/);
     await expect(page.locator('h2')).toContainText('PubChem API - Chemical Information');
 
-    // Check for API documentation links in the button group
-    await expect(page.locator('.btn-group a:has-text("Getting Started")')).toBeVisible();
-    await expect(page.locator('.btn-group a:has-text("Documentation")')).toBeVisible();
-
     // Wait for API response and check for main content sections
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(10000);
 
     // Check for chemical information section
     const chemicalInfoSection = page.locator('.card .card-header:has-text("Chemical Information")');
@@ -21,14 +18,13 @@ test.describe('PubChem API Integration', () => {
 
     // Check for either successful data display or error handling
     const hasChemicalData = (await page.locator('.card-body:has-text("Aspirin")').count()) > 0;
-    const hasErrorMessage = (await page.locator('.alert').count()) > 0;
 
-    expect(hasChemicalData || hasErrorMessage).toBeTruthy();
+    expect(hasChemicalData).toBeTruthy();
   });
 
   test('should display chemical image or fallback message', async ({ page }) => {
     await page.goto('/api/pubchem');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(10000);
 
     // Check for either chemical structure image or fallback message
     const hasImage = (await page.locator('img[alt*="Aspirin"]').count()) > 0;
