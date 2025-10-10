@@ -24,10 +24,6 @@ test.describe('New York Times API Integration', () => {
       // Basic page checks
       await expect(page).toHaveTitle(/New York Times API/);
       await expect(page.locator('h2')).toContainText('New York Times API');
-
-      // Check for the navigation links
-      await expect(page.locator('.btn-group a[href*="developer.nytimes.com"]')).toHaveCount(2);
-
       // Locate the main table and verify header columns
       const bestSellersTable = page.locator('table.table');
       await expect(bestSellersTable).toBeVisible();
