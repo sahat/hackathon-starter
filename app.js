@@ -33,15 +33,14 @@ const secureTransfer = process.env.BASE_URL.startsWith('https');
 // Global Rate Limiter Config
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 2000, // Limit each IP to 200 requests per `window` (here, per 15 minutes)
+  max: 200, // Limit each IP to 200 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
-
 // Strict Auth Rate Limiter Config for signup, password recover, account verification, login by email
 const strictLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 1000, // 1000 attempts per hour
+  max: 5, // 5 attempts per hour
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -49,12 +48,14 @@ const strictLimiter = rateLimit({
 // Login Rate Limiter Config
 const loginLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 1000, // 10 attempts per hour
+  max: 10, // 10 attempts per hour
   standardHeaders: true,
   legacyHeaders: false,
 });
 
-//  for more info.
+// This logic for numberOfProxies works for local testing, ngrok use, single host deployments
+// behind cloudflare, etc. You may need to change it for more complex network settings.
+// See readme.md for more info.
 let numberOfProxies;
 if (secureTransfer) numberOfProxies = 1;
 else numberOfProxies = 0;
