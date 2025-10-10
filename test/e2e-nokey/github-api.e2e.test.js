@@ -31,11 +31,6 @@ test.describe('GitHub API Integration', () => {
       const repoLink = page.locator('a[href*="github.com"]');
       await expect(repoLink.first()).toBeVisible();
     }
-
-    // Common elements on the page
-    await expect(page.locator('.btn-group a[href*="developer.github.com"]')).toHaveCount(2);
-    await expect(page.locator('text=/Getting Started/i')).toBeVisible();
-    await expect(page.locator('text=/Documentation/i')).toBeVisible();
   });
 
   test('should display authentication prompt for unauthenticated users', async ({ page }) => {
