@@ -1,6 +1,8 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Together AI Classifier Integration', () => {
+  test.describe.configure({ mode: 'serial' });
+
   test('should launch app, navigate to Together AI Classifier page, and handle API response', async ({ page }) => {
     // Navigate to Together AI Classifier page
     await page.goto('/ai/togetherai-classifier');
@@ -10,26 +12,13 @@ test.describe('Together AI Classifier Integration', () => {
     await expect(page).toHaveTitle(/Together/);
     await expect(page.locator('h2')).toContainText('Together AI');
 
-    // Detect if API returned an error (missing API key, etc.)
-    const errorElement = page.locator('.alert.alert-danger');
-    const isError = (await errorElement.count()) > 0;
+    // Verify form elements
+    const textarea = page.locator('textarea#inputText');
+    await expect(textarea).toBeVisible();
 
-    if (isError) {
-      // Verify error handling works
-      console.log('TogetherAI API key not configured - testing error handling');
-      await expect(errorElement).toContainText(/API key|not set|Failed/i);
-    } else {
-      // Verify normal content rendering
-      console.log('TogetherAI API key is configured - testing content display');
-
-      // Verify form elements
-      const textarea = page.locator('textarea#inputText');
-      await expect(textarea).toBeVisible();
-
-      const submitButton = page.locator('button[type="submit"]');
-      await expect(submitButton).toBeVisible();
-      await expect(submitButton).toContainText('Classify Department');
-    }
+    const submitButton = page.locator('button[type="submit"]');
+    await expect(submitButton).toBeVisible();
+    await expect(submitButton).toContainText('Classify Department');
 
     // Common elements on the page
     await expect(page.locator('.btn-group a[href*="together.ai"]')).toHaveCount(3);
