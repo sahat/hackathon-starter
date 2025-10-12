@@ -1,0 +1,70 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-wikipedia-w.me-2
+      | Wikipedia
+
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='/api/wikipedia')
+      i.fas.fa-globe.fa-sm.iconpadding
+      | Wikipedia Search
+    a.btn.btn-primary.w-100(href='/api/wikipedia-example')
+      i.fas.fa-book.fa-sm.iconpadding
+      | Wikipedia Content Example
+
+  h3 Search Wikipedia
+  .row
+    .col-md-6
+      form(role='form', method='GET', action='/api/wikipedia')
+        .form-group.mb-3
+          label.col-form-label.font-weight-bold Search Term
+          input.form-control(type='text', name='q', placeholder='Search term', value=query || '', required)
+        button.btn.btn-primary.mt-2(type='submit')
+          i.fas.fa-search.me-2
+          | Search
+
+  if query
+    if error
+      .alert.alert-danger.mt-4 #{ error }
+    else if searchResults && !pageTitle
+      .mt-4
+        h4.mb-3 Search Results for "#{ query }"
+        .list-group
+          each result in searchResults
+            a.list-group-item.list-group-item-action(href=`/api/wikipedia?q=${encodeURIComponent(query)}&show=${encodeURIComponent(result.title)}`)
+              i.fas.fa-search.me-2.text-primary
+              strong= result.title
+              if result.snippet
+                br
+                small.text-muted= result.snippet
+    else if pageTitle
+      .mt-4
+        h3.mb-3 #{ pageTitle }
+
+        if pageFirstImage
+          img.img-fluid.mb-3.border.rounded(src=pageFirstImage, alt=pageTitle)
+        if wikiLink
+          p.text-muted
+            | Original Wikipedia Page -
+            a(href=wikiLink, target='_blank') #{ wikiLink }
+        if pageFirstSectionText
+          p.text-break(style='white-space: pre-wrap')= pageFirstSectionText
+        else
+          p.text-muted No extract found for this topic.
+
+        if pageSections && pageSections.length
+          h5.mt-4 Sections
+          ul.list-group
+            each section in pageSections
+              li.list-group-item
+                a(href=`https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}#${encodeURIComponent(section.replace(/\s+/g, '_'))}`, target='_blank')
+                  i.fas.fa-link.me-2
+                  | #{ section }
+        else
+          p.text-muted.mt-3 No sections found for this page.
+    else
+      p.text-muted.mt-4 No results found for "#{ query }".
+  else
+    p.text-muted.mt-4 Enter a topic above to view Wikipedia details.

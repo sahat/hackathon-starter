@@ -1,0 +1,41 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-wikipedia-w.me-2
+      | Wikipedia
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='/api/wikipedia')
+      i.fas.fa-globe.fa-sm.iconpadding
+      | Wikipedia Search
+    a.btn.btn-primary.w-100(href='/api/wikipedia-example')
+      i.fas.fa-book.fa-sm.iconpadding
+      | Wikipedia Content Example
+  if error
+    .alert.alert-danger.mt-4 #{ error }
+  else
+    .mt-4
+      h3.mb-3 #{ pageTitle }
+
+      if nodejsFirstImage
+        img.img-fluid.mb-3.border.rounded(src=nodejsFirstImage, alt=pageTitle)
+      p.text-muted
+        | Original Wikipedia Page -
+        a(href=wikiLink, target='_blank') #{ wikiLink }
+
+      if nodejsFirstSectionText
+        p.text-break(style='white-space: pre-wrap')= nodejsFirstSectionText
+      else
+        p.text-muted No extract found for this topic.
+
+      if nodejsSections && nodejsSections.length
+        h5.mt-4 Sections
+        ul.list-group
+          each section in nodejsSections
+            li.list-group-item
+              a(href=`https://en.wikipedia.org/wiki/${encodeURIComponent(input)}#${encodeURIComponent(section.replace(/\s+/g, '_'))}`, target='_blank')
+                i.fas.fa-link.me-2
+                | #{ section }
+      else
+        p.text-muted.mt-3 No sections found for Nodejspage.
