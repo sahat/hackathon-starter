@@ -33,6 +33,7 @@
     "@huggingface/inference": "^4.11.1",
     "@langchain/community": "^0.3.57",
     "@langchain/core": "^0.3.78",
+    "@langchain/langgraph": "^0.4.9",
     "@langchain/mongodb": "0.1.0",
     "@langchain/textsplitters": "^0.1.0",
     "@lob/lob-typescript-sdk": "^1.3.5",

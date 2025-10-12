@@ -1,0 +1,203 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    .row
+      .col-12
+        h2 LangGraph AI Customer Service
+
+        .row
+          .col-md-8
+            // Chat area
+            .card
+              .card-header
+                h5.mb-0 Customer Service Chat
+              .card-body
+                #chat-messages.mb-3(style='height: 400px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 0.375rem; padding: 1rem')
+                  .text-muted.mb-3
+                    p Welcome! I'm your AI customer service representative. I can help you with:
+                    ul.small
+                      li Order tracking and status
+                      li Returns and refunds
+                      li Replacements for damaged items
+                      li Order cancellations
+                      li Payment and billing issues
+                    p.mt-2 Try asking about order #1234 or mention any customer service issue!
+
+                // Input area
+                .input-group
+                  input#message-input.form-control(type='text', placeholder='Type your message...')
+                  button#send-button.btn.btn-primary Send
+
+          .col-md-4
+            // Status and controls area
+            .card
+              .card-header
+                h6.mb-0 System Status
+              .card-body
+                .mb-3
+                  strong Status:
+                  span#status Ready
+
+                #status-messages.mb-3(style='height: 150px; overflow-y: auto; border: 1px solid #e9ecef; border-radius: 0.375rem; padding: 0.75rem; background-color: #f8f9fa')
+                  .text-muted.small No status messages yet
+
+                h6.mb-2 Raw Stream Data
+                #raw-data.mb-3(style='height: 200px; overflow-y: auto; border: 1px solid #e9ecef; border-radius: 0.375rem; padding: 0.75rem; background-color: #f1f3f4; font-family: monospace; font-size: 0.8em')
+                  .text-muted.small No raw data yet
+
+                button#reset-button.btn.btn-secondary.w-100 Reset Session
+
+  script.
+    let sessionId = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await resetSession();
+
+      document.getElementById('send-button').addEventListener('click', sendMessage);
+      document.getElementById('message-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+      });
+      document.getElementById('reset-button').addEventListener('click', resetSession);
+    });
+
+    async function resetSession() {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const response = await fetch('/ai/langgraph/reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ _csrf: csrfToken }),
+      });
+      const data = await response.json();
+      sessionId = data.sessionId;
+
+      document.getElementById('chat-messages').innerHTML = `
+        <div class="text-muted mb-3">
+          <p>Welcome! I'm your AI customer service representative. I can help you with:</p>
+          <ul class="small">
+            <li>Order tracking and status</li>
+            <li>Returns and refunds</li>
+            <li>Replacements for damaged items</li>
+            <li>Order cancellations</li>
+            <li>Payment and billing issues</li>
+          </ul>
+          <p class="mt-2">Try asking about order #1234 or mention any customer service issue!</p>
+        </div>
+      `;
+      document.getElementById('status').textContent = 'Ready';
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('message-input');
+      const message = input.value.trim();
+      if (!message) return;
+
+      // Add user message
+      addMessage('You: ' + message);
+      input.value = '';
+      document.getElementById('status').textContent = 'Processing...';
+
+      // Simple EventSource with CSRF token from meta tag
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const url = `/ai/langgraph/chat?sessionId=${sessionId}&message=${encodeURIComponent(message)}&_csrf=${encodeURIComponent(csrfToken)}`;
+      const eventSource = new EventSource(url);
+
+      eventSource.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+
+        if (data.type === 'chunk') {
+          // Add raw data to debug panel
+          addRawData(JSON.stringify(data, null, 2));
+
+          // Filter for final user-facing messages only
+          if (data.content.agent && data.content.agent.messages) {
+            data.content.agent.messages.forEach((msg) => {
+              if (msg.kwargs && msg.kwargs.content) {
+                const content = msg.kwargs.content;
+
+                // Extract only the final user-facing response after "assistantfinal"
+                if (content.includes('assistantfinal')) {
+                  const finalContent = content.split('assistantfinal')[1];
+                  if (finalContent && finalContent.trim()) {
+                    addMessage('AI: ' + finalContent.trim());
+                  }
+                } else if (!content.includes('analysis') && !content.includes('assistantcommentary') && !content.includes('json{') && !content.includes('to=functions.') && content.trim().length > 0) {
+                  // Show content that doesn't contain internal reasoning
+                  addMessage('AI: ' + content);
+                }
+              }
+            });
+          }
+        } else if (data.type === 'status') {
+          addStatusMessage('Status: ' + data.message);
+        } else if (data.type === 'done') {
+          document.getElementById('status').textContent = 'Ready';
+          eventSource.close();
+        }
+      };
+    }
+
+    function addMessage(text) {
+      const messages = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.style.marginBottom = '10px';
+
+      // Convert \n to <br> tags for proper line breaks
+      const formattedText = text.replace(/\n/g, '<br>');
+      div.innerHTML = formattedText;
+
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function addStatusMessage(text) {
+      const statusMessages = document.getElementById('status-messages');
+      const div = document.createElement('div');
+      div.style.marginBottom = '5px';
+      div.className = 'small text-muted';
+
+      // Add timestamp
+      const timestamp = new Date().toLocaleTimeString();
+      div.textContent = `[${timestamp}] ${text}`;
+
+      statusMessages.appendChild(div);
+      statusMessages.scrollTop = statusMessages.scrollHeight;
+
+      // Clear "No status messages yet" if it exists
+      const placeholder = statusMessages.querySelector('.text-muted.small');
+      if (placeholder && placeholder.textContent === 'No status messages yet') {
+        placeholder.remove();
+      }
+    }
+
+    function addRawData(text) {
+      const rawData = document.getElementById('raw-data');
+      const div = document.createElement('div');
+      div.style.marginBottom = '10px';
+      div.style.borderBottom = '1px solid #ddd';
+      div.style.paddingBottom = '5px';
+
+      // Add timestamp
+      const timestamp = new Date().toLocaleTimeString();
+      const header = document.createElement('div');
+      header.style.fontWeight = 'bold';
+      header.style.color = '#666';
+      header.textContent = `[${timestamp}] Chunk:`;
+
+      const content = document.createElement('pre');
+      content.style.margin = '5px 0 0 0';
+      content.style.whiteSpace = 'pre-wrap';
+      content.style.fontSize = '0.75em';
+      content.textContent = text;
+
+      div.appendChild(header);
+      div.appendChild(content);
+      rawData.appendChild(div);
+      rawData.scrollTop = rawData.scrollHeight;
+
+      // Clear "No raw data yet" if it exists
+      const placeholder = rawData.querySelector('.text-muted.small');
+      if (placeholder && placeholder.textContent === 'No raw data yet') {
+        placeholder.remove();
+      }
+    }
