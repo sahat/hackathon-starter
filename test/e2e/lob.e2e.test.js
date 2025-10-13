@@ -21,6 +21,7 @@ async function navigateToLobPage(page) {
 }
 
 test.describe('Lob API Integration', () => {
+  test.describe.configure({ mode: 'serial' });
   test('should validate ZIP code API response format', async ({ page }) => {
     await navigateToLobPage(page);
 
