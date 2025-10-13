@@ -30,17 +30,21 @@ const secureTransfer = process.env.BASE_URL.startsWith('https');
  * based on your application's needs and the expected traffic patterns.
  * Also, consider adding a proxy such as cloudflare for production.
  */
+const RATE_LIMIT_GLOBAL = parseInt(process.env.RATE_LIMIT_GLOBAL, 10) || 200; // Default to 200 per 15 min if env variable not set
+const RATE_LIMIT_STRICT = parseInt(process.env.RATE_LIMIT_STRICT, 10) || 5; // Default to 5 per hr if env variable not set
+const RATE_LIMIT_LOGIN = parseInt(process.env.RATE_LIMIT_LOGIN, 10) || 10; // Default to 10 per hr if env variable not set
+
 // Global Rate Limiter Config
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200, // Limit each IP to 200 requests per `window` (here, per 15 minutes)
+  max: RATE_LIMIT_GLOBAL, // requests per 15 minutes
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 // Strict Auth Rate Limiter Config for signup, password recover, account verification, login by email
 const strictLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 5, // 5 attempts per hour
+  max: RATE_LIMIT_STRICT, // attempts per hour
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -48,7 +52,7 @@ const strictLimiter = rateLimit({
 // Login Rate Limiter Config
 const loginLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // 10 attempts per hour
+  max: RATE_LIMIT_LOGIN, // attempts per hour
   standardHeaders: true,
   legacyHeaders: false,
 });
