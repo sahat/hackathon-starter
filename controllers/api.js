@@ -1257,7 +1257,7 @@ function traktUrlToFilename(url) {
  * Fetch and cache Trakt image, return the static path for <img src="">
  */
 async function fetchAndCacheTraktImage(imageUrl) {
-  const imageCacheDir = 'tmp/image-cache';
+  const imageCacheDir = path.join(__dirname, '..', 'tmp', 'image-cache');
   if (!imageUrl) return null;
   const filename = traktUrlToFilename(imageUrl);
   if (!filename) return null;
@@ -1277,7 +1277,7 @@ async function fetchAndCacheTraktImage(imageUrl) {
     const response = await fetch(imageUrl);
     if (!response.ok) return null;
     const buffer = Buffer.from(await response.arrayBuffer());
-    const absPath = `${imageCacheDir}/${filename}`;
+    const absPath = path.join(imageCacheDir, filename);
     try {
       fs.writeFileSync(absPath, buffer);
     } catch (writeErr) {
