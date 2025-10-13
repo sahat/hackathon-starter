@@ -1421,15 +1421,120 @@ Hackathon Starter includes both unit tests and end-to-end (E2E) tests.
 
 The provided E2E tests cover the example API integrations included in the starter project. You can use these as **examples or templates** when creating your own test files, adapting them to match your project's specific views and workflows.
 
+### Authentication Testing with Playwright
+
+For testing authenticated features (like GitHub OAuth integration), Hackathon Starter includes a special authentication setup system that captures real browser sessions and reuses them in tests.
+
+#### Setting Up Authentication for Tests
+
+1. **First, ensure your app is running and you have GitHub OAuth configured:**
+   ```bash
+   npm start  # App should be running on localhost:8080
+   ```
+
+2. **Run the authentication setup script:**
+   ```bash
+   node test/helpers/playwright-auth-setup.js
+   ```
+   
+   This will:
+   - Open Brave browser (or fall back to Chromium)
+   - Navigate to your local app
+   - Ask you to manually log in with GitHub
+   - Capture your authenticated session
+   - Output a base64 session string
+
+3. **Set the session as an environment variable:**
+   
+   **Option A: Using PowerShell (recommended for Windows):**
+   ```powershell
+   $env:PLAYWRIGHT_AUTH_SESSION="your_captured_session_string_here"
+   ```
+   
+   **Option B: Add to your `.env` file (persistent):**
+   ```env
+   PLAYWRIGHT_AUTH_SESSION=your_captured_session_string_here
+   ```
+
+4. **Run the authenticated tests:**
+   ```bash
+   npx playwright test test/e2e/github-authenticated.e2e.test.js
+   ```
+
+#### What the GitHub Authentication Tests Cover
+
+The `github-authenticated.e2e.test.js` file tests GitHub OAuth integration features:
+
+- ✅ **Authenticated home page access** - Verifies user is logged in
+- ✅ **GitHub profile information** - Tests `/api/github` endpoint
+- ✅ **GitHub API authentication** - Ensures no unauthorized errors
+- ✅ **Session persistence** - Confirms login state is maintained
+- ✅ **Logout functionality** - Tests the logout process
+
+These tests use your **persistent MongoDB instance** (not in-memory) and require actual GitHub OAuth credentials to be configured in your `.env` file.
+
+#### Authentication Setup Features
+
+The `playwright-auth-setup.js` helper provides:
+
+- **Multi-browser support** - Prefers Brave, falls back to Chromium
+- **Automatic session capture** - Saves cookies and storage state
+- **Flexible verification** - Multiple methods to detect successful login
+- **Debug information** - Detailed logging for troubleshooting
+- **Cross-platform compatibility** - Works on Windows, macOS, and Linux
+
+#### Troubleshooting Authentication Tests
+
+If authentication tests fail:
+
+1. **Verify your session is set:**
+   ```bash
+   # PowerShell
+   echo $env:PLAYWRIGHT_AUTH_SESSION
+   
+   # Or check if it's in your .env file
+   ```
+
+2. **Ensure GitHub OAuth is properly configured** in your `.env`:
+   ```env
+   GITHUB_ID=your_github_app_client_id
+   GITHUB_SECRET=your_github_app_client_secret
+   ```
+
+3. **Re-capture your session** if it's expired:
+   ```bash
+   node test/helpers/playwright-auth-setup.js
+   ```
+
+4. **Check that your app is running** on the correct port (default: 8080)
+
 During a hackathon, you typically don't need to worry about E2E tests; they can slow you down when you're focused on rapid prototyping. However, if you plan to launch your project for real-world use, adding and maintaining E2E tests is strongly recommended. They help ensure that future changes don't unintentionally break existing functionality.
 
 You can run the tests using:
 
 ```bash
 npm test           # or "npm run test" for unit tests - core functions
-npm run test:e2e
-npm run test:e2e-nokey
+npm run test:e2e   # All E2E tests including authentication tests
+npm run test:e2e-nokey  # E2E tests that don't require API keys
+
+# Run specific authentication tests
+npx playwright test test/e2e/github-authenticated.e2e.test.js
+
+# Run authentication setup
+node test/helpers/playwright-auth-setup.js
 ```
+
+### Test Structure
+
+| Test File                                    | Description                                           | Requirements |
+| -------------------------------------------- | ----------------------------------------------------- | ------------ |
+| `test/*.js`                                  | Unit tests for core functionality                     | None         |
+| `test/e2e-nokey/*.js`                        | E2E tests that work without API keys                  | None         |
+| `test/e2e/*.js`                              | E2E tests requiring API keys                          | API keys     |
+| `test/e2e/github-authenticated.e2e.test.js`  | GitHub OAuth authentication workflow tests            | GitHub OAuth + Session |
+| `test/helpers/playwright-auth-setup.js`      | Authentication session capture utility                | GitHub OAuth |
+
+**Note:** The authentication tests require both GitHub OAuth configuration and a persistent MongoDB instance. They cannot use in-memory databases due to session persistence requirements.
 
 ## Changelog
 
