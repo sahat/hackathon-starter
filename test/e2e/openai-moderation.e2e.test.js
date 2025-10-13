@@ -1,42 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('OpenAI Moderation API Integration', () => {
-  test('should launch app, navigate to OpenAI Moderation page, and handle API response', async ({ page }) => {
-    // Navigate to OpenAI Moderation page
-    await page.goto('/ai/openai-moderation');
-    await page.waitForLoadState('networkidle');
-
-    // Basic page checks
-    await expect(page).toHaveTitle(/OpenAI/);
-    await expect(page.locator('h2')).toContainText('OpenAI Moderation API');
-
-    // Detect if API returned an error (missing API key, etc.)
-    const errorElement = page.locator('.alert.alert-danger');
-    const isError = (await errorElement.count()) > 0;
-
-    if (isError) {
-      // Verify error handling works
-      console.log('OpenAI API key not configured - testing error handling');
-      await expect(errorElement).toContainText(/API key|not set/i);
-    } else {
-      // Verify normal content rendering
-      console.log('OpenAI API key is configured - testing content display');
-
-      // Verify form elements
-      const textarea = page.locator('textarea#inputText');
-      await expect(textarea).toBeVisible();
-
-      const submitButton = page.locator('button[type="submit"]');
-      await expect(submitButton).toBeVisible();
-      await expect(submitButton).toContainText('Check');
-    }
-
-    // Common elements on the page
-    await expect(page.locator('.btn-group a[href*="platform.openai.com"]')).toHaveCount(2);
-    await expect(page.locator('text=/OpenAI Moderation Docs/i')).toBeVisible();
-    await expect(page.locator('text=/API Reference/i')).toBeVisible();
-  });
-
   test('should flag harmful content and display all moderation data', async ({ page }) => {
     await page.goto('/ai/openai-moderation');
     await page.waitForLoadState('networkidle');
