@@ -1559,15 +1559,25 @@ exports.getPubChem = async (req, res, next) => {
  * - Allow users to search content and dispay its data etracted from wikipedia page
  */
 exports.getWikipedia = async (req, res) => {
-  const query = req.query.q?.trim() || '';
-  let error = null;
+  const validationErrors = [];
+  const query = validator.trim(req.query.q || '');
 
-  let pageTitle = '';
-  let pageSections = [];
-  let pageFirstSectionText = '';
-  let pageFirstImage = null;
-  let searchResults = [];
-  let wikiLink = '';
+  // enforce max length
+  if (query.length && !validator.isLength(query, { max: 200 })) {
+    validationErrors.push({ msg: 'Search term must be less than 200 characters.' });
+  }
+
+  const allowedPunctuation = " \\-_,.()'"; // allow space and punctuation
+  if (query.length && !validator.isAlphanumeric(query, 'en-US', { ignore: allowedPunctuation })) {
+    validationErrors.push({ msg: 'Search term contains invalid characters.' });
+  }
+
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
+    return res.redirect('/api/wikipedia');
+  }
+
+  let error = null;
 
   //function to search wikipedia for the term or word
   const searchWikipedia = async (term) => {
@@ -1604,7 +1614,6 @@ exports.getWikipedia = async (req, res) => {
     const data = await response.json();
     const pageObj = data.query && data.query.pages ? Object.values(data.query.pages)[0] : null;
     if (pageObj && pageObj.extract) {
-      pageTitle = pageObj.title;
       return pageObj.extract.length > 1000 ? `${pageObj.extract.slice(0, 1000)}...` : pageObj.extract;
     }
     return '';
@@ -1624,36 +1633,26 @@ exports.getWikipedia = async (req, res) => {
     return null;
   };
 
+  // Node.js content example variables
+  const pageTitle = 'Node.js';
+  const wikiLink = `https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}`;
+
+  let searchResults = [];
+  let pageSections = [];
+  let pageFirstSectionText = '';
+  let pageFirstImage = null;
+
   try {
     if (query) {
-      //search wikipedia for results
       searchResults = await searchWikipedia(query);
-      //finding if the result has a exact match to the query
-      const exactMatch = searchResults.find((result) => result.title.toLowerCase() === query.toLowerCase());
-
-      //show the exact match result
-      if (exactMatch) {
-        pageTitle = exactMatch.title;
-        wikiLink = `https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}`;
-        pageSections = await getPageSections(pageTitle);
-        pageFirstSectionText = await getPageExtract(pageTitle);
-        pageFirstImage = await getPageImage(pageTitle);
-      }
-      //show a result page based on user click of similar result for a term
-      if (req.query.show) {
-        const titleToShow = req.query.show;
-        wikiLink = `https://en.wikipedia.org/wiki/${encodeURIComponent(titleToShow)}`;
-        pageSections = await getPageSections(titleToShow);
-        pageFirstSectionText = await getPageExtract(titleToShow);
-        pageFirstImage = await getPageImage(titleToShow);
-        pageTitle = titleToShow;
-      }
     }
+    pageSections = await getPageSections(pageTitle);
+    pageFirstSectionText = await getPageExtract(pageTitle);
+    pageFirstImage = await getPageImage(pageTitle);
   } catch (err) {
     console.error('Wikipedia Error:', err);
     error = `Error fetching data for "${query}".`;
   }
-
   res.render('api/wikipedia', {
     title: 'Wikipedia',
     query,
@@ -1664,78 +1663,5 @@ exports.getWikipedia = async (req, res) => {
     pageFirstImage,
     pageTitle,
     error,
-  });
-};
-
-/*
- * GET /api/wikipedia-example
- * Content Page Example of Wikipedia page with Node.js.
- * - Uses wikipedia'a API to extract text, images, data on Node.js and display in the api/wikipedia-example page
- */
-
-exports.getWikipediaExample = async (req, res) => {
-  //static wikipedia content page - Node.js
-  const pageTitle = 'Node.js';
-  let nodejsSections = [];
-  let nodejsFirstSectionText = '';
-  let nodejsFirstImage = null;
-  let nodejsError = null;
-  const wikiLink = `https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}`;
-
-  //function to get page sections of the title - Node.js
-  const getNodeSections = async () => {
-    const url = `https://en.wikipedia.org/w/api.php?action=parse&format=json&origin=*&page=${encodeURIComponent(pageTitle)}&prop=sections`;
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error('Failed to fetch sections');
-    const data = await resp.json();
-    if (data.parse && data.parse.sections) {
-      return data.parse.sections.map((s) => s.line);
-    }
-    return [];
-  };
-
-  //function to get Node.js page 1st paragraph text i.e., <1000 words
-  const getNodeExtract = async () => {
-    const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=extracts&explaintext=1&titles=${encodeURIComponent(pageTitle)}&exsectionformat=plain&exintro=1`;
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error('Failed to fetch extract');
-    const data = await resp.json();
-    const pageObj = data.query && data.query.pages ? Object.values(data.query.pages)[0] : null;
-    if (pageObj && pageObj.extract) {
-      return pageObj.extract.length > 1000 ? `${pageObj.extract.slice(0, 1000)}...` : pageObj.extract;
-    }
-    return '';
-  };
-
-  //function to get Node.js thumbnail or original Image
-  const getNodeImage = async () => {
-    const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&titles=${encodeURIComponent(pageTitle)}&pithumbsize=400`;
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error('Failed to fetch image');
-    const data = await resp.json();
-    const pageObj = data.query && data.query.pages ? Object.values(data.query.pages)[0] : null;
-    if (pageObj && pageObj.thumbnail && pageObj.thumbnail.source) {
-      return pageObj.thumbnail.source;
-    }
-    return null;
-  };
-
-  try {
-    nodejsSections = await getNodeSections();
-    nodejsFirstSectionText = await getNodeExtract();
-    nodejsFirstImage = await getNodeImage();
-  } catch (error) {
-    console.log('Wikipedia Node.js Content Page Error:', error);
-    nodejsError = 'Error occured during retrieval of Node.js content from wikipedia.';
-  }
-
-  res.render('api/wikipedia-example', {
-    title: 'Wikipedia',
-    pageTitle,
-    wikiLink,
-    nodejsSections,
-    nodejsFirstImage,
-    nodejsFirstSectionText,
-    nodejsError,
   });
 };
