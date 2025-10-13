@@ -16,6 +16,9 @@ if (!originalMongoUri && result && result.parsed && result.parsed.MONGODB_URI) {
 const TEST_ENV_OVERRIDES = {
   BASE_URL: 'http://127.0.0.1:8080',
   SESSION_SECRET: process.env.SESSION_SECRET || 'test_session_secret',
+  RATE_LIMIT_GLOBAL: '500',
+  RATE_LIMIT_STRICT: '20',
+  RATE_LIMIT_LOGIN: '50',
 };
 
 Object.entries(TEST_ENV_OVERRIDES).forEach(([k, v]) => {
@@ -26,7 +29,7 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : 1,
+  workers: process.env.CI ? 1 : 4,
   outputDir: '../tmp/playwright-artifacts',
   reporter: [['html', { outputFolder: '../tmp/playwright-report', open: 'never' }]],
   use: {
