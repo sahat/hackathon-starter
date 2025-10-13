@@ -9,10 +9,10 @@ const errorHandler = require('errorhandler');
 const lusca = require('lusca');
 const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo');
-const flash = require('express-flash');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const rateLimit = require('express-rate-limit');
+const { format } = require('util');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -123,7 +123,50 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
+
+/**
+ * Flash Middlware.
+ */
+const flash = (req, res, next) => {
+  if (req.flash) return next();
+  req.flash = function (type, msg) {
+    if (!req.session) throw new Error('req.flash() requires sessions');
+    const msgs = (req.session.flash = req.session.flash || {});
+
+    if (type && msg) {
+      // handle formatted messages
+      if (arguments.length > 2) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        msg = format.apply(undefined, args);
+      }
+      // handle array of messages
+      else if (Array.isArray(msg)) {
+        msg.forEach((val) => {
+          (msgs[type] = msgs[type] || []).push(val);
+        });
+        return msgs[type].length;
+      }
+      (msgs[type] = msgs[type] || []).push(msg);
+      return msgs[type];
+    }
+    if (type) {
+      const arr = msgs[type];
+      delete msgs[type];
+      return arr || [];
+    }
+
+    req.session.flash = {};
+    return msgs;
+  };
+
+  const { render } = res;
+  res.render = function () {
+    res.locals.messages = req.flash();
+    render.apply(res, arguments);
+  };
+  next();
+};
+app.use(flash);
 app.use((req, res, next) => {
   if (req.path === '/api/upload' || req.path === '/ai/togetherai-camera') {
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
@@ -366,4 +409,4 @@ To avoid this, set BASE_URL to the HTTPS endpoint and always access the app thro
   console.log('Press CTRL-C to stop.');
 });
 
-module.exports = app;
+module.exports = { app, flash };
