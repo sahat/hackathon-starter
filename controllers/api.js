@@ -1076,8 +1076,24 @@ exports.getLob = async (req, res, next) => {
   });
 
   try {
-    const uspsLetter = await new LettersApi(config).create(letterData);
+    const lettersApi = new LettersApi(config);
     const zipDetails = await new ZipLookupsApi(config).lookup(zipData);
+    const uspsLetter = await lettersApi.create(letterData);
+    await new Promise((resolve) => setTimeout(resolve, 3100)); // wait for the PDF letter to be generated
+
+    // Sometimes Lob's letter URL is invalid, takes longer and we need to retry
+    let attempts = 0;
+    while (attempts < 3) {
+      const urlToCheck = uspsLetter.url || uspsLetter._url;
+      const res = await fetch(urlToCheck, { method: 'GET' });
+      if (res.ok) break; // URL is reachable
+      console.log(`Lob letter URL not valid, requesting again ... (${attempts + 1}/3)`);
+      attempts += 1;
+      await new Promise((resolve) => setTimeout(resolve, 5000)); //wait for 5 seconds before retry
+      const fresh = await lettersApi.get(uspsLetter.id);
+      Object.assign(uspsLetter, fresh);
+    }
+
     res.render('api/lob', {
       title: 'Lob API',
       zipDetails,
