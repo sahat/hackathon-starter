@@ -43,7 +43,10 @@ module.exports = defineConfig({
     },
   ],
   webServer: {
-    command: 'node ./tools/start-with-memory-db.js',
+    // Pipe web server stdout/stderr through `tee` so output still appears in the console
+    // and also write a fixed, deterministic log file that tests can inspect.
+    // Using a fixed file keeps the test simple; it will be overwritten each run.
+    command: 'node ./tools/start-with-memory-db.js 2>&1 | tee ../tmp/playwright-webserver.log',
     url: process.env.BASE_URL,
     reuseExistingServer: !process.env.CI,
     env: { ...process.env, ...TEST_ENV_OVERRIDES },
