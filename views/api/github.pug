@@ -2,15 +2,15 @@ extends ../layout
 
 block content
   h2
-    i.fab.fa-github.fa-sm.iconpadding
+    i.fab.fa-github.fa-sm.me-2
     | GitHub API
 
   .btn-group.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://docs.github.com/get-started', target='_blank')
-      i.far.fa-check-square.fa-sm.iconpadding
+      i.far.fa-check-square.fa-sm.me-2
       | Getting Started
     a.btn.btn-primary.w-100(href='http://developer.github.com/v3/', target='_blank')
-      i.far.fa-file-alt.fa-sm.iconpadding
+      i.far.fa-file-alt.fa-sm.me-2
       | Documentation
   br
   // Your GitHub Profile Section
@@ -147,22 +147,22 @@ block content
           p= repo.description
           ul.list-inline
             li.list-inline-item
-              i.far.fa-star.fa-sm.iconpadding
+              i.far.fa-star.fa-sm.me-2
               | Stars: #{ repo.stargazers_count }
             li.list-inline-item
-              i.fas.fa-code-branch.fa-sm.iconpadding
+              i.fas.fa-code-branch.fa-sm.me-2
               | Forks: #{ repo.forks_count }
             li.list-inline-item
-              i.far.fa-eye-slash.fa-sm.iconpadding
+              i.far.fa-eye-slash.fa-sm.me-2
               | Watchers: #{ repo.watchers_count }
             li.list-inline-item
-              i.fas.fa-book.fa-sm.iconpadding
+              i.fas.fa-book.fa-sm.me-2
               | License: #{ repo.license ? repo.license.name : 'None' }
             li.list-inline-item
-              i.far.fa-eye.fa-sm.iconpadding
+              i.far.fa-eye.fa-sm.me-2
               | Visibility: #{ repo.visibility }
             li.list-inline-item
-              i.fas.fa-exclamation-circle.fa-sm.iconpadding
+              i.fas.fa-exclamation-circle.fa-sm.me-2
               | Open Issues: #{ repo.open_issues_count }
 
           strong Topics:
