@@ -3,11 +3,11 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fab.fa-twitch.fa-sm.iconpadding
+      i.fab.fa-twitch.fa-sm.me-2
       | Twitch API
   .btn-group.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://dev.twitch.tv/docs/api', target='_blank')
-      i.far.fa-check-square.fa-sm.iconpadding
+      i.far.fa-check-square.fa-sm.me-2
       | API Overview
 
   br
@@ -45,7 +45,7 @@ block content
           if otherTwitchStreamStatus.type === 'live'
             br
             span.status.text-success
-              i.fas.fa-circle.iconpadding
+              i.fas.fa-circle.me-2
               |
               | Currently Online
             |

@@ -1,0 +1,79 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-wikipedia-w.me-2
+      | Wikipedia
+
+  .btn-group.mb-4.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://api.wikimedia.org/wiki/Getting_started_with_Wikimedia_APIs')
+      i.fas.fa-globe.fa-sm.me-2
+      | Getting Started
+    a.btn.btn-primary.w-100(href='https://api.wikimedia.org/wiki/API_catalog')
+      i.fas.fa-folder-tree.fa-sm.me-2
+      | Wikipedia API Catalog
+
+  .card.text-white.bg-success.mb-4
+    .card-header
+      h6.panel-title.mb-0 Content Example: Node.js
+    .card-body.text-dark.bg-white
+      .row
+        .col-md-4
+          if pageFirstImage
+            img.img-fluid.mb-3.border.rounded(src=pageFirstImage, alt=pageTitle)
+        .col-md-8
+          h3.mb-2 #{ pageTitle }
+          if wikiLink
+            p.text-muted.mb-3
+              | Original Wikipedia Page -
+              a(href=wikiLink, target='_blank', rel='noopener') #{ wikiLink }
+          if error
+            .alert.alert-danger.mt-3 #{ error }
+          else if pageFirstSectionText
+            p.text-break(style='white-space: pre-wrap')= pageFirstSectionText
+          else
+            p.text-muted No extract found for this topic.
+
+          if pageSections && pageSections.length
+            h5.mt-4 Sections
+            p
+              each section, idx in pageSections
+                a(href=`${wikiLink}#${encodeURIComponent(section.replace(/\s+/g, '_'))}`, target='_blank', rel='noopener') #{ section }
+                if idx < pageSections.length - 1
+                  | ,
+          else
+            p.text-muted.mt-3 No sections found for this page.
+
+  // Search UI card
+  .card.text-white.bg-info.mb-4
+    .card-header
+      h6.panel-title.mb-0 Search Wikipedia
+    .card-body.text-dark.bg-white
+      .row
+        .col-md-8
+          form(role='form', method='GET', action='/api/wikipedia')
+            .form-group.mb-3
+              label.col-form-label.font-weight-bold Search Term
+              input.form-control(type='text', name='q', placeholder='Search term', value=query || '', required)
+            button.btn.btn-primary.mt-2(type='submit')
+              i.fas.fa-search.me-2
+              | Search
+
+      // Results area (combined into the same card)
+      if query
+        if error
+          .alert.alert-danger.mt-3 #{ error }
+        else if searchResults && searchResults.length
+          hr
+          h6.mb-3 Results for "#{ query }"
+          .list-group
+            each result in searchResults
+              a.list-group-item.list-group-item-action(href=`https://en.wikipedia.org/wiki/${encodeURIComponent(result.title)}`, target='_blank', rel='noopener')
+                i.fas.fa-file-alt.me-2.text-primary
+                strong= result.title
+                if result.snippet
+                  br
+                  small.text-muted= result.snippet
+        else
+          .alert.alert-warning.mt-3 No results found for "#{ query }".

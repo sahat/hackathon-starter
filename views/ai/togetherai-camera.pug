@@ -3,15 +3,15 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fas.fa-camera.fa-sm.iconpadding
+      i.fas.fa-camera.fa-sm.me-2
       | Together AI LLama Vision + User Camera
 
   .btn-group.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://api.together.ai', target='_blank')
-      i.fas.fa-table-columns.fa-sm.iconpadding
+      i.fas.fa-table-columns.fa-sm.me-2
       | Together AI Dashboard
     a.btn.btn-primary.w-100(href='https://docs.together.ai/docs/vision-api', target='_blank')
-      i.fas.fa-code.fa-sm.iconpadding
+      i.fas.fa-code.fa-sm.me-2
       | API Reference
   br
   p.lead Take a picture with your device camera and send it to Together AI to analyze with #{ togetherAiModel } model.

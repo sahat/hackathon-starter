@@ -3,14 +3,14 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fab.fa-paypal.fa-sm.iconpadding(style='color: #1b4a7d')
+      i.fab.fa-paypal.fa-sm.me-2(style='color: #1b4a7d')
       | PayPal API
   .btn-group.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://developer.paypal.com/docs/checkout/', target='_blank')
-      i.far.fa-check-square.fa-sm.iconpadding
+      i.far.fa-check-square.fa-sm.me-2
       | Checkout API
     a.btn.btn-primary.w-100(href='https://developer.paypal.com/docs/api/orders/v2/', target='_blank')
-      i.fas.fa-code.fa-sm.iconpadding
+      i.fas.fa-code.fa-sm.me-2
       | Payments API
   h3 Sample Payment
   if result

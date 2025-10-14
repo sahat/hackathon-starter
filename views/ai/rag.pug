@@ -3,21 +3,21 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fas.fa-search.iconpadding
+      i.fas.fa-search.me-2
       | Retrieval-Augmented Generation (RAG)
 
   .btn-group.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://api.together.ai/', target='_blank')
-      i.fas.fa-hexagon-nodes.fa-sm.iconpadding
+      i.fas.fa-hexagon-nodes.fa-sm.me-2
       | Together.ai Inference API
     a.btn.btn-primary.w-100(href='https://huggingface.co/docs/api-inference/index', target='_blank')
-      i.fas.fa-arrow-up-1-9.fa-sm.iconpadding
+      i.fas.fa-arrow-up-1-9.fa-sm.me-2
       | Hugging Face Inference API
     a.btn.btn-primary.w-100(href='https://www.mongodb.com/docs/atlas/atlas-vector-search/', target='_blank')
-      i.fas.fa-database.fa-sm.iconpadding
+      i.fas.fa-database.fa-sm.me-2
       | MongoDB Vector Search
     a.btn.btn-primary.w-100(href='https://js.langchain.com/docs/integrations/vectorstores/mongodb_atlas', target='_blank')
-      i.fas.fa-link.fa-sm.iconpadding
+      i.fas.fa-link.fa-sm.me-2
       | LangChain.js
 
   .container
@@ -37,9 +37,9 @@ block content
             .card.shadow-sm
               .card-body.bg-light
                 h3.text-center
-                  i.fas.fa-search.fa-2xs.iconpadding
-                  i.fas.fa-arrow-right.fa-2xs.iconpadding
-                  i.fas.fa-robot.fa-sm.iconpadding
+                  i.fas.fa-search.fa-2xs.me-2
+                  i.fas.fa-arrow-right.fa-2xs.me-2
+                  i.fas.fa-robot.fa-sm.me-2
                   | RAG LLM Response
 
                 .response-box
@@ -49,7 +49,7 @@ block content
             .card.shadow-sm
               .card-body.bg-light
                 h3.text-center
-                  i.fas.fa-robot.fa-sm.iconpadding
+                  i.fas.fa-robot.fa-sm.me-2
                   | No-RAG LLM Response
                 .response-box
                   pre.text-wrap= llmResponse
@@ -78,7 +78,7 @@ block content
             form(action='/ai/rag/ingest', method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
               button#ingest-btn.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
-                i.fas.fa-sync.fa-sm.iconpadding
+                i.fas.fa-sync.fa-sm.me-2
                 | Ingest Files
 
       .col-md-6
@@ -99,7 +99,7 @@ block content
                   label(for='question') Your Question:
                 textarea#question.form-control(name='question', rows='3', maxlength=maxInputLength, required)= question
               button#ask-btn.btn.btn-primary.btn-lg.w-100.mt-3(type='submit')
-                i.fas.fa-paper-plane.fa-sm.iconpadding
+                i.fas.fa-paper-plane.fa-sm.me-2
                 | Ask
 
     hr.border-primary.my-4
