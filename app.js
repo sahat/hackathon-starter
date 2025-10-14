@@ -237,6 +237,7 @@ app.get('/api/google/sheets', passportConfig.isAuthenticated, passportConfig.isA
 app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getQuickbooks);
 app.get('/api/trakt', apiController.getTrakt);
 app.get('/api/pubchem', apiController.getPubChem);
+app.get('/api/wikipedia', apiController.getWikipedia);
 
 /**
  * AI Integrations and Boilerplate example routes.
