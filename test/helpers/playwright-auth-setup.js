@@ -1,30 +1,32 @@
 const { chromium } = require('playwright');
-const path = require('path');
-const os = require('os');
+const { join } = require('path');
+const { platform, homedir } = require('os');
+const fs = require('fs');
 
 require('dotenv').config({ path: '../../.env' });
 
 // Function to find Brave browser executable path
 function getBravePath() {
-  const platform = os.platform();
+  const currentPlatform = platform();
   
-  if (platform === 'win32') {
+  if (currentPlatform === 'win32') {
     // Common Brave paths on Windows
     const possiblePaths = [
       'C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe',
       'C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser\\Application\\brave.exe',
-      `${os.homedir()}\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe`,
-      `${os.homedir()}\\AppData\\Local\\BraveSoftware\\Brave-Browser-Beta\\Application\\brave.exe`,
-      `${os.homedir()}\\AppData\\Local\\BraveSoftware\\Brave-Browser-Dev\\Application\\brave.exe`,
+      `${homedir()}\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe`,
+      `${homedir()}\\AppData\\Local\\BraveSoftware\\Brave-Browser-Beta\\Application\\brave.exe`,
+      `${homedir()}\\AppData\\Local\\BraveSoftware\\Brave-Browser-Dev\\Application\\brave.exe`,
     ];
     
-    const fs = require('fs');
     for (const bravePath of possiblePaths) {
       if (fs.existsSync(bravePath)) {
         return bravePath;
       }
     }
-  } else if (platform === 'darwin') {
+  }
+  
+  if (currentPlatform === 'darwin') {
     // macOS paths
     const possiblePaths = [
       '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',
@@ -32,13 +34,14 @@ function getBravePath() {
       '/Applications/Brave Browser Dev.app/Contents/MacOS/Brave Browser Dev',
     ];
     
-    const fs = require('fs');
     for (const bravePath of possiblePaths) {
       if (fs.existsSync(bravePath)) {
         return bravePath;
       }
     }
-  } else if (platform === 'linux') {
+  }
+  
+  if (currentPlatform === 'linux') {
     // Linux paths
     const possiblePaths = [
       '/usr/bin/brave-browser',
@@ -47,7 +50,6 @@ function getBravePath() {
       '/opt/brave.com/brave/brave-browser',
     ];
     
-    const fs = require('fs');
     for (const bravePath of possiblePaths) {
       if (fs.existsSync(bravePath)) {
         return bravePath;
@@ -60,36 +62,38 @@ function getBravePath() {
 
 // Function to get Brave user data directory
 function getBraveUserDataPath() {
-  const platform = os.platform();
+  const currentPlatform = platform();
   
-  if (platform === 'win32') {
-    return path.join(os.homedir(), 'AppData', 'Local', 'BraveSoftware', 'Brave-Browser', 'User Data');
-  } else if (platform === 'darwin') {
-    return path.join(os.homedir(), 'Library', 'Application Support', 'BraveSoftware', 'Brave-Browser');
-  } else if (platform === 'linux') {
-    return path.join(os.homedir(), '.config', 'BraveSoftware', 'Brave-Browser');
+  if (currentPlatform === 'win32') {
+    return join(homedir(), 'AppData', 'Local', 'BraveSoftware', 'Brave-Browser', 'User Data');
+  }
+  if (currentPlatform === 'darwin') {
+    return join(homedir(), 'Library', 'Application Support', 'BraveSoftware', 'Brave-Browser');
+  }
+  if (currentPlatform === 'linux') {
+    return join(homedir(), '.config', 'BraveSoftware', 'Brave-Browser');
   }
   
   return null;
 }
 
 async function setupAuth() {
-  console.log('Setting up authentication session for Hackathon Starter...\n');
+  console.log('🚀 Setting up authentication session for Hackathon Starter...\n');
 
   const bravePath = getBravePath();
   const braveUserDataPath = getBraveUserDataPath();
   
   if (!bravePath) {
-    console.log('Brave browser not found. Available options:');
+    console.log('❌ Brave browser not found. Available options:');
     console.log('1. Install Brave browser from https://brave.com/');
     console.log('2. Or modify this script to use a different browser');
     console.log('\nFalling back to Chromium...\n');
   } else {
-    console.log(`Found Brave browser at: ${bravePath}`);
+    console.log(`✅ Found Brave browser at: ${bravePath}`);
     if (braveUserDataPath) {
-      console.log(`Using Brave user data from: ${braveUserDataPath}`);
+      console.log(`✅ Using Brave user data from: ${braveUserDataPath}`);
     }
-    console.log('This will use your existing Brave profile with saved passwords\n');
+    console.log('📝 This will use your existing Brave profile with saved passwords\n');
   }
 
   const browser = await chromium.launch({ 
@@ -122,14 +126,14 @@ async function setupAuth() {
   const page = await context.newPage();
 
   try {
-    console.log('Navigating to local app...');
+    console.log('📍 Navigating to local app...');
     await page.goto('http://localhost:8080');
 
     // Wait for the page to load
     await page.waitForLoadState('networkidle');
 
     // Check if we're already logged in
-    console.log('Checking if already logged in...');
+    console.log('🔍 Checking if already logged in...');
     
     let isAlreadyLoggedIn = false;
     const loginIndicators = [
@@ -144,37 +148,37 @@ async function setupAuth() {
     for (const selector of loginIndicators) {
       try {
         await page.waitForSelector(selector, { timeout: 1000 });
-        console.log(`Already logged in! Found: ${selector}`);
+        console.log(`✅ Already logged in! Found: ${selector}`);
         isAlreadyLoggedIn = true;
         break;
-      } catch (error) {
+      } catch {
         continue;
       }
     }
 
     if (!isAlreadyLoggedIn) {
       // Click on Login/Sign in button
-      console.log('Looking for login button...');
+      console.log('🔐 Looking for login button...');
       await page.click('a[href="/login"]');
 
       // Wait for login page to load
       await page.waitForLoadState('networkidle');
 
-      console.log('\n MANUAL ACTION REQUIRED:');
+      console.log('\n⚠️  MANUAL ACTION REQUIRED:');
       console.log('1. Please log in with your GitHub account in the Brave browser window');
       console.log('   (Your saved passwords should be available)');
       console.log('2. Make sure you are redirected to the dashboard/home page');
       console.log('3. Press Enter in this terminal when login is complete...\n');
 
       // Wait for user input
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         process.stdin.once('data', () => {
           resolve();
         });
       });
 
       // Verify login after manual action
-      console.log('Verifying login status...');
+      console.log('✅ Verifying login status...');
       
       let isLoggedIn = false;
       
@@ -182,11 +186,11 @@ async function setupAuth() {
       for (const selector of loginIndicators) {
         try {
           await page.waitForSelector(selector, { timeout: 2000 });
-          console.log(`Found login indicator: ${selector}`);
+          console.log(`✅ Found login indicator: ${selector}`);
           isLoggedIn = true;
           break;
-        } catch (error) {
-          console.log(`Not found: ${selector}`);
+        } catch {
+          console.log(`❌ Not found: ${selector}`);
           continue;
         }
       }
@@ -200,22 +204,22 @@ async function setupAuth() {
         
         // Check if we're no longer on login page
         if (!currentUrl.includes('/login')) {
-          console.log('URL indicates successful login (not on /login page)');
+          console.log('✅ URL indicates successful login (not on /login page)');
           isLoggedIn = true;
         }
         
         // Check for user-specific content in the page
         if (pageContent.includes('logout') || pageContent.includes('account') || pageContent.includes('profile')) {
-          console.log('Page content indicates successful login');
+          console.log('✅ Page content indicates successful login');
           isLoggedIn = true;
         }
       }
 
       if (!isLoggedIn) {
-        console.log('\n Could not verify login automatically.');
+        console.log('\n⚠️  Could not verify login automatically.');
         console.log('Please confirm: Are you successfully logged in? (y/n)');
         
-        const confirmation = await new Promise(resolve => {
+        const confirmation = await new Promise((resolve) => {
           process.stdin.once('data', (data) => {
             resolve(data.toString().trim().toLowerCase());
           });
@@ -225,11 +229,11 @@ async function setupAuth() {
           throw new Error('Login verification failed. Please ensure you are logged in and try again.');
         }
         
-        console.log('Login confirmed manually');
+        console.log('✅ Login confirmed manually');
       }
     }
     
-    console.log('Login verified! Capturing session...');
+    console.log('✅ Login verified! Capturing session...');
 
     // Get all cookies and storage state
     const cookies = await context.cookies();
@@ -237,7 +241,7 @@ async function setupAuth() {
 
     // Create a session object with all necessary data
     const sessionData = {
-      cookies: cookies,
+      cookies,
       origins: storageState.origins,
       timestamp: new Date().toISOString(),
       url: page.url(),
@@ -247,11 +251,11 @@ async function setupAuth() {
     // Convert to base64 string for environment variable
     const sessionString = Buffer.from(JSON.stringify(sessionData)).toString('base64');
 
-    console.log('\n Session captured successfully!');
-    console.log('\n SETUP INSTRUCTIONS:');
+    console.log('\n🎉 Session captured successfully!');
+    console.log('\n📋 SETUP INSTRUCTIONS:');
     console.log('='.repeat(50));
     console.log('\n1. Copy the session data below:');
-    console.log('\n' + '='.repeat(20) + ' SESSION DATA ' + '='.repeat(20));
+    console.log(`\n${'='.repeat(20)} SESSION DATA ${'='.repeat(20)}`);
     console.log(sessionString);
     console.log('='.repeat(53));
     
@@ -274,13 +278,12 @@ await restoreAuthSession(context);
 `);
 
     // Save to a local file as backup
-    const fs = require('fs');
-    const authFile = path.join(__dirname, 'auth-session.json');
+    const authFile = join(__dirname, 'auth-session.json');
     fs.writeFileSync(authFile, JSON.stringify(sessionData, null, 2));
-    console.log(`\n Session also saved to: ${authFile}`);
+    console.log(`\n💾 Session also saved to: ${authFile}`);
 
     // Debug info
-    console.log(`\n Debug Info:`);
+    console.log('\n🔍 Debug Info:');
     console.log(`- Browser: ${bravePath ? 'Brave' : 'Chromium'}`);
     console.log(`- Using existing profile: ${braveUserDataPath ? 'Yes' : 'No'}`);
     console.log(`- Cookies captured: ${cookies.length}`);
@@ -288,22 +291,22 @@ await restoreAuthSession(context);
     console.log(`- Final URL: ${page.url()}`);
 
   } catch (error) {
-    console.error(' Error during authentication setup:', error.message);
+    console.error('❌ Error during authentication setup:', error.message);
     
     // Provide additional debug info
     try {
       const currentUrl = page.url();
       const title = await page.title();
-      console.log(`\n Debug Info:`);
+      console.log('\n🔍 Debug Info:');
       console.log(`- Current URL: ${currentUrl}`);
       console.log(`- Page Title: ${title}`);
       
       // List all links on the page for debugging
-      const links = await page.$$eval('a', links => 
-        links.map(link => ({ href: link.href, text: link.textContent.trim() }))
+      const links = await page.$$eval('a', (linkElements) => 
+        linkElements.map((link) => ({ href: link.href, text: link.textContent.trim() }))
       );
-      console.log(`- Available links:`, links.slice(0, 10)); // Show first 10 links
-    } catch (debugError) {
+      console.log('- Available links:', links.slice(0, 10)); // Show first 10 links
+    } catch {
       console.log('Could not gather debug info');
     }
     
@@ -345,12 +348,12 @@ async function restoreAuthSession(context) {
       }, session.origins);
     }
     
-    console.log(' Authentication session restored');
+    console.log('✅ Authentication session restored');
     console.log(`- Restored ${session.cookies.length} cookies`);
     console.log(`- Session captured at: ${session.timestamp}`);
     
   } catch (error) {
-    throw new Error('Failed to restore authentication session: ' + error.message);
+    throw new Error(`Failed to restore authentication session: ${error.message}`);
   }
 }
 
