@@ -222,57 +222,36 @@ test.describe('Last.fm API Integration', () => {
     await page.goto('/api/lastfm');
     await page.waitForLoadState('networkidle');
 
-    // Detect if we have successful API response
+    // Test artist name display
     const artistName = page.locator('h3');
-    const hasArtistData = (await artistName.count()) > 0;
+    await expect(artistName).toBeVisible();
+    await expect(artistName).toContainText(/\w+/); // Should contain at least one word
 
-    if (hasArtistData) {
-      // Test artist name display
-      await expect(artistName).toBeVisible();
-      await expect(artistName).toContainText(/\w+/); // Should contain at least one word
+    // Test album images have proper src attributes
+    const albumImages = page.locator('img[src*="lastfm"], img[src*="last.fm"]');
+    const firstImage = albumImages.first();
+    await expect(firstImage).toHaveAttribute('width', '240');
+    await expect(firstImage).toHaveAttribute('height', '240');
 
-      // Test album images have proper src attributes
-      const albumImages = page.locator('img[src*="lastfm"], img[src*="last.fm"]');
-      if ((await albumImages.count()) > 0) {
-        const firstImage = albumImages.first();
-        await expect(firstImage).toHaveAttribute('width', '240');
-        await expect(firstImage).toHaveAttribute('height', '240');
-      }
+    // Test tag formatting
+    const tagElements = page.locator('span.label.label-primary');
+    const firstTag = tagElements.first();
+    await expect(firstTag.locator('i.fas.fa-tag')).toBeVisible();
+    await expect(firstTag).toContainText(/\w+/); // Should contain text
 
-      // Test tag formatting
-      const tagElements = page.locator('span.label.label-primary');
-      if ((await tagElements.count()) > 0) {
-        const firstTag = tagElements.first();
-        await expect(firstTag.locator('i.fas.fa-tag')).toBeVisible();
-        await expect(firstTag).toContainText(/\w+/); // Should contain text
-      }
+    // Test track list structure
+    const trackItems = page.locator('ol li');
+    const firstTrack = trackItems.first();
+    await expect(firstTrack).toBeVisible();
 
-      // Test track list structure
-      const trackList = page.locator('ol');
-      if ((await trackList.count()) > 0) {
-        const trackItems = page.locator('ol li');
-        const firstTrack = trackItems.first();
-        await expect(firstTrack).toBeVisible();
+    const trackLink = firstTrack.locator('a');
+    await expect(trackLink).toHaveAttribute('href', /last\.fm/);
 
-        const trackLink = firstTrack.locator('a');
-        if ((await trackLink.count()) > 0) {
-          await expect(trackLink).toHaveAttribute('href', /last\.fm/);
-        }
-      }
-
-      // Test similar artists structure
-      const similarArtistsList = page.locator('ul.list-unstyled.list-inline');
-      if ((await similarArtistsList.count()) > 0) {
-        const artistItems = page.locator('ul.list-unstyled.list-inline li');
-        if ((await artistItems.count()) > 0) {
-          const firstArtist = artistItems.first();
-          const artistLink = firstArtist.locator('a');
-          if ((await artistLink.count()) > 0) {
-            await expect(artistLink).toHaveAttribute('href', /last\.fm/);
-            await expect(artistLink).toContainText(/\w+/); // Should contain text
-          }
-        }
-      }
-    }
+    // Test similar artists structure
+    const artistItems = page.locator('ul.list-unstyled.list-inline li');
+    const firstArtist = artistItems.first();
+    const artistLink = firstArtist.locator('a');
+    await expect(artistLink).toHaveAttribute('href', /last\.fm/);
+    await expect(artistLink).toContainText(/\w+/); // Should contain text
   });
 });
