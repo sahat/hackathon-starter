@@ -3,15 +3,15 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fab.fa-cc-stripe.fa-sm.iconpadding
+      i.fab.fa-cc-stripe.fa-sm.me-2
       | Stripe API
 
   .btn-group.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://stripe.com/docs/api', target='_blank')
-      i.fas.fa-code.fa-sm.iconpadding
+      i.fas.fa-code.fa-sm.me-2
       | API Reference
     a.btn.btn-primary.w-100(href='https://manage.stripe.com/account/apikeys', target='_blank')
-      i.fas.fa-cog.fa-sm.iconpadding
+      i.fas.fa-cog.fa-sm.me-2
       | Get API Keys
 
   br
@@ -21,7 +21,7 @@ block content
     script.stripe-button(src='https://checkout.stripe.com/checkout.js', data-key=publishableKey, data-image='https://static.tumblr.com/nljhkjv/z0Jlpk23i/logo', data-name='Hackathon Starter', data-description='Caramel Macchiato ($3.95)', data-amount='395')
 
   h3
-    i.far.fa-credit-card.fa-sm.iconpadding
+    i.far.fa-credit-card.fa-sm.me-2
     | Test Cards
   p In test mode, you can use these test cards to simulate a successful transaction:
 

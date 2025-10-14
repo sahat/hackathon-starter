@@ -3,12 +3,12 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fab.fa-tumblr-square.fa-sm.iconpadding
+      i.fab.fa-tumblr-square.fa-sm.me-2
       | Tumblr API
 
   .btn-group.mb-4.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://www.tumblr.com/docs/en/api/v2', target='_blank')
-      i.far.fa-check-square.fa-sm.iconpadding
+      i.far.fa-check-square.fa-sm.me-2
       | API Docs
 
   .card.text-white.bg-success.mb-4
@@ -20,10 +20,10 @@ block content
           h5 Name: #{ userInfo.name }
           ul.list-inline
             li.list-inline-item
-              i.fas.fa-users.fa-sm.iconpadding
+              i.fas.fa-users.fa-sm.me-2
               | Following: #{ userInfo.following }
             li.list-inline-item
-              i.far.fa-heart.fa-sm.iconpadding
+              i.far.fa-heart.fa-sm.me-2
               | Likes: #{ userInfo.likes }
 
   .card.text-white.bg-primary.mb-4
@@ -40,10 +40,10 @@ block content
           br
           ul.list-inline
             li.list-inline-item
-              i.far.fa-heart.fa-sm.iconpadding
+              i.far.fa-heart.fa-sm.me-2
               | Likes: #{ blog.likes }
             li.list-inline-item
-              i.fas.fa-file-alt.fa-sm.iconpadding
+              i.fas.fa-file-alt.fa-sm.me-2
               | Posts: #{ blog.posts }
             li.list-inline-item
               | Latest Post: #{ new Date(blog.updated * 1000).toLocaleString() }
