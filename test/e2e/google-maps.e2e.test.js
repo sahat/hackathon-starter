@@ -52,40 +52,12 @@ test.describe('Google Maps API Integration', () => {
 
     // Check if Google Maps API loaded by looking for map tiles
     const mapTileImages = await page.locator('#map img[src*="googleapis.com/maps/vt"]').count();
-    console.log(`Found ${mapTileImages} map tile images`);
+    expect(mapTileImages).toBeGreaterThan(0);
 
     // Verify map container is properly sized and positioned
     const mapContainer = page.locator('#map');
     await expect(mapContainer).toBeVisible();
     await expect(mapContainer).toHaveCSS('height', '500px');
-
-    if (mapTileImages > 0) {
-      console.log('Google Maps API loaded successfully - verifying map content');
-
-      // Check for Google Maps attribution
-      const googleAttribution = await page.locator('a[href*="maps.google.com"]').count();
-      expect(googleAttribution).toBeGreaterThan(0);
-
-      // Verify map has proper Google branding
-      const googleLogo = await page.locator('img[alt="Google"]').count();
-      expect(googleLogo).toBeGreaterThan(0);
-
-      // Check for custom markers
-      const customMarkers = await page.locator('.custom-marker').count();
-      expect(customMarkers).toBeGreaterThanOrEqual(3);
-      console.log(`Found ${customMarkers} custom markers`);
-
-      // Verify markers have correct labels
-      await expect(page.locator('text=San Francisco')).toBeVisible();
-      await expect(page.locator('text=Financial District')).toBeVisible();
-      await expect(page.locator("text=Fisherman's Wharf")).toBeVisible();
-
-      console.log('Map loaded successfully - San Francisco markers should be visible');
-    } else {
-      console.log('Google Maps API failed to load tiles - checking basic page structure');
-      await expect(page.locator('#map')).toBeVisible();
-      await expect(page.locator('h2')).toContainText('Google Maps JavaScript API');
-    }
   });
 
   test('should handle Google Maps API error scenarios comprehensively', async ({ page }) => {
@@ -101,7 +73,6 @@ test.describe('Google Maps API Integration', () => {
     await page.route('**/maps.googleapis.com/maps/api/js**', async (route) => {
       const url = new URL(route.request().url());
       url.searchParams.set('key', 'INVALID_API_KEY_FOR_TESTING');
-      console.log('Intercepted Maps API request, using invalid key for testing');
       await route.continue({ url: url.toString() });
     });
 
@@ -115,11 +86,7 @@ test.describe('Google Maps API Integration', () => {
 
     // Verify no map tiles loaded (due to invalid API key)
     const mapTileImages = await page.locator('#map img[src*="googleapis.com/maps/vt"]').count();
-    console.log(`Found ${mapTileImages} map tile images`);
     expect(mapTileImages).toBe(0);
-
-    // Check for Google Maps error display - both title AND message must be present
-    console.log('Checking for Google Maps error display...');
 
     const errorTitle = await page
       .locator('.gm-err-title')
@@ -134,16 +101,11 @@ test.describe('Google Maps API Integration', () => {
     expect(errorTitle).toBeTruthy();
     expect(errorMessage).toBeTruthy();
 
-    console.log(`Complete Google Maps error display found:`);
-    console.log(`   Title: "${errorTitle}"`);
-    console.log(`   Message: "${errorMessage}"`);
-
     // Also verify console errors related to Maps API
     const mapsApiErrors = consoleErrors.filter((error) => error.includes('Google Maps') || error.includes('maps.googleapis.com') || error.includes('API key'));
 
     // Should have either no console errors (clean failure) or Maps-related errors
     expect(consoleErrors.length === 0 || mapsApiErrors.length > 0).toBeTruthy();
-    console.log(`Console errors: ${consoleErrors.length}, Maps-related: ${mapsApiErrors.length}`);
   });
 
   test('should display map controls and interactive elements', async ({ page }) => {
@@ -164,7 +126,6 @@ test.describe('Google Maps API Integration', () => {
     const markers = page.locator('.custom-marker');
     const markerCount = await markers.count();
     expect(markerCount).toBeGreaterThan(0);
-    console.log(`Found ${markerCount} markers`);
 
     await markers.first().click();
     await page.waitForTimeout(1000);
@@ -188,13 +149,11 @@ test.describe('Google Maps API Integration', () => {
     expect(cityIcon).toBeGreaterThanOrEqual(1);
     expect(landmarkIcon).toBeGreaterThanOrEqual(1);
     expect(fishIcon).toBeGreaterThanOrEqual(1);
-    console.log(`Icons found - City: ${cityIcon}, Landmark: ${landmarkIcon}, Fish: ${fishIcon}`);
 
     const markerLabels = ['San Francisco', 'Financial District', "Fisherman's Wharf"];
     for (const label of markerLabels) {
       const labelElement = await page.locator(`text=${label}`).count();
       expect(labelElement).toBeGreaterThanOrEqual(1);
-      console.log(`Label "${label}" found: ${labelElement} times`);
     }
   });
 
@@ -230,7 +189,7 @@ test.describe('Google Maps API Integration', () => {
           return false;
         }, markerData[i]);
 
-        console.log(`Marker ${i + 1} (${markerData[i].title}) clicked, info window visible: ${infoWindowVisible}`);
+        expect(infoWindowVisible).toBe(true);
       }
     }
   });
