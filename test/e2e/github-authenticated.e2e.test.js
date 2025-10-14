@@ -19,7 +19,7 @@ test.describe('GitHub Authentication Tests', () => {
 
     context = await browser.newContext();
     await restoreAuthSession(context);
-    
+
     page = await context.newPage();
     console.log('✅ Session restored and page created');
   });
@@ -32,15 +32,9 @@ test.describe('GitHub Authentication Tests', () => {
   test('should access authenticated home page with user info', async () => {
     await page.goto(BASE_URL);
     await page.waitForLoadState('networkidle');
-    
-    const loggedInElements = [
-      'a[href="/logout"]',
-      'a[href="/account"]', 
-      '.navbar .dropdown-toggle',
-      'text=Logout',
-      'text=Account'
-    ];
-    
+
+    const loggedInElements = ['a[href="/logout"]', 'a[href="/account"]', '.navbar .dropdown-toggle', 'text=Logout', 'text=Account'];
+
     let isLoggedIn = false;
     for (const selector of loggedInElements) {
       try {
@@ -52,7 +46,7 @@ test.describe('GitHub Authentication Tests', () => {
         continue;
       }
     }
-    
+
     expect(isLoggedIn).toBeTruthy();
     expect(page.url()).not.toContain('/login');
   });
@@ -60,9 +54,9 @@ test.describe('GitHub Authentication Tests', () => {
   test('should access GitHub profile information', async () => {
     await page.goto(`${BASE_URL}/api/github`);
     await page.waitForLoadState('networkidle');
-    
+
     const content = await page.textContent('body');
-    
+
     expect(content).toMatch(/login|avatar_url|html_url|public_repos/i);
     expect(content).not.toContain('Unauthorized');
     expect(content).not.toContain('Access token not found');
@@ -72,9 +66,9 @@ test.describe('GitHub Authentication Tests', () => {
     const response = await page.goto(`${BASE_URL}/api/github`);
     expect(response.status()).not.toBe(401);
     expect(response.status()).not.toBe(403);
-    
+
     const content = await page.textContent('body');
-    
+
     try {
       const jsonContent = JSON.parse(content);
       expect(jsonContent).toHaveProperty('login');
@@ -88,17 +82,17 @@ test.describe('GitHub Authentication Tests', () => {
   test('should access API GitHub user repositories', async () => {
     await page.goto(`${BASE_URL}/api/github`);
     await page.waitForLoadState('networkidle');
-    
+
     const content = await page.textContent('body');
-    
+
     try {
       const githubData = JSON.parse(content);
-      
+
       expect(githubData).toHaveProperty('login');
       expect(githubData).toHaveProperty('avatar_url');
       expect(githubData).toHaveProperty('html_url');
       expect(typeof githubData.public_repos).toBe('number');
-      
+
       console.log(`✅ GitHub user: ${githubData.login}`);
       console.log(`✅ Public repos: ${githubData.public_repos}`);
     } catch {
@@ -111,18 +105,14 @@ test.describe('GitHub Authentication Tests', () => {
   test('should be able to logout and require re-authentication', async () => {
     await page.goto(`${BASE_URL}/`);
     await page.waitForLoadState('networkidle');
-    
-    const logoutSelectors = [
-      'a[href="/logout"]',
-      'text=Logout',
-      'text=Sign out'
-    ];
-    
+
+    const logoutSelectors = ['a[href="/logout"]', 'text=Logout', 'text=Sign out'];
+
     let loggedOut = false;
     for (const selector of logoutSelectors) {
       try {
         const logoutElement = page.locator(selector).first();
-        if (await logoutElement.count() > 0) {
+        if ((await logoutElement.count()) > 0) {
           await logoutElement.click();
           loggedOut = true;
           break;
@@ -131,21 +121,20 @@ test.describe('GitHub Authentication Tests', () => {
         continue;
       }
     }
-    
+
     if (loggedOut) {
       await page.waitForLoadState('networkidle');
-      
-      const isLoggedOut = page.url().includes('/login') || 
-                         await page.locator('a[href="/login"]').count() > 0;
-      
+
+      const isLoggedOut = page.url().includes('/login') || (await page.locator('a[href="/login"]').count()) > 0;
+
       expect(isLoggedOut).toBeTruthy();
-      
+
       await page.goto(`${BASE_URL}/account`);
       await page.waitForLoadState('networkidle');
-      
+
       const redirectedToLogin = page.url().includes('/login');
       expect(redirectedToLogin).toBeTruthy();
-      
+
       console.log('✅ Logout successful, protected routes now require authentication');
     } else {
       console.log('⚠️ Logout button not found, skipping logout test');
@@ -159,12 +148,10 @@ test.describe('Session Debugging', () => {
     console.log(`- BASE_URL: ${BASE_URL}`);
     console.log(`- MONGODB_URI: ${MONGODB_URI}`);
     console.log(`- Session env var exists: ${!!process.env.PLAYWRIGHT_AUTH_SESSION}`);
-    
+
     if (process.env.PLAYWRIGHT_AUTH_SESSION) {
       try {
-        const sessionData = JSON.parse(
-          Buffer.from(process.env.PLAYWRIGHT_AUTH_SESSION, 'base64').toString()
-        );
+        const sessionData = JSON.parse(Buffer.from(process.env.PLAYWRIGHT_AUTH_SESSION, 'base64').toString());
         console.log(`- Session timestamp: ${sessionData.timestamp}`);
         console.log(`- Cookies count: ${sessionData.cookies?.length || 0}`);
         console.log(`- Origins count: ${sessionData.origins?.length || 0}`);
@@ -172,7 +159,7 @@ test.describe('Session Debugging', () => {
         console.log(`- Session parse error: ${parseError.message}`);
       }
     }
-    
+
     try {
       if (mongoose.connection.readyState === 0) {
         await mongoose.connect(MONGODB_URI);

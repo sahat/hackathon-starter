@@ -1,0 +1,18 @@
+{
+  "cookies": [
+    {
+      "name": "startercookie",
+      "value": "s%3AUrnDqlMzPmrk8ydZHdgde3UzOn1mkJqM.ihGgnCSydhcNszhwLQPK1Oz%2FS6v3Nn6Tbs3ec0Nvdi4",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1761623321.957508,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [],
+  "timestamp": "2025-10-14T03:48:48.410Z",
+  "url": "http://localhost:8080/",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+}

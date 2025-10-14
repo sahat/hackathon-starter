@@ -8,7 +8,7 @@ require('dotenv').config({ path: '../../.env' });
 // Function to find Brave browser executable path
 function getBravePath() {
   const currentPlatform = platform();
-  
+
   if (currentPlatform === 'win32') {
     // Common Brave paths on Windows
     const possiblePaths = [
@@ -18,52 +18,43 @@ function getBravePath() {
       `${homedir()}\\AppData\\Local\\BraveSoftware\\Brave-Browser-Beta\\Application\\brave.exe`,
       `${homedir()}\\AppData\\Local\\BraveSoftware\\Brave-Browser-Dev\\Application\\brave.exe`,
     ];
-    
+
     for (const bravePath of possiblePaths) {
       if (fs.existsSync(bravePath)) {
         return bravePath;
       }
     }
   }
-  
+
   if (currentPlatform === 'darwin') {
     // macOS paths
-    const possiblePaths = [
-      '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',
-      '/Applications/Brave Browser Beta.app/Contents/MacOS/Brave Browser Beta',
-      '/Applications/Brave Browser Dev.app/Contents/MacOS/Brave Browser Dev',
-    ];
-    
+    const possiblePaths = ['/Applications/Brave Browser.app/Contents/MacOS/Brave Browser', '/Applications/Brave Browser Beta.app/Contents/MacOS/Brave Browser Beta', '/Applications/Brave Browser Dev.app/Contents/MacOS/Brave Browser Dev'];
+
     for (const bravePath of possiblePaths) {
       if (fs.existsSync(bravePath)) {
         return bravePath;
       }
     }
   }
-  
+
   if (currentPlatform === 'linux') {
     // Linux paths
-    const possiblePaths = [
-      '/usr/bin/brave-browser',
-      '/usr/bin/brave',
-      '/snap/bin/brave',
-      '/opt/brave.com/brave/brave-browser',
-    ];
-    
+    const possiblePaths = ['/usr/bin/brave-browser', '/usr/bin/brave', '/snap/bin/brave', '/opt/brave.com/brave/brave-browser'];
+
     for (const bravePath of possiblePaths) {
       if (fs.existsSync(bravePath)) {
         return bravePath;
       }
     }
   }
-  
+
   return null;
 }
 
 // Function to get Brave user data directory
 function getBraveUserDataPath() {
   const currentPlatform = platform();
-  
+
   if (currentPlatform === 'win32') {
     return join(homedir(), 'AppData', 'Local', 'BraveSoftware', 'Brave-Browser', 'User Data');
   }
@@ -73,7 +64,7 @@ function getBraveUserDataPath() {
   if (currentPlatform === 'linux') {
     return join(homedir(), '.config', 'BraveSoftware', 'Brave-Browser');
   }
-  
+
   return null;
 }
 
@@ -82,7 +73,7 @@ async function setupAuth() {
 
   const bravePath = getBravePath();
   const braveUserDataPath = getBraveUserDataPath();
-  
+
   if (!bravePath) {
     console.log('❌ Brave browser not found. Available options:');
     console.log('1. Install Brave browser from https://brave.com/');
@@ -96,7 +87,7 @@ async function setupAuth() {
     console.log('📝 This will use your existing Brave profile with saved passwords\n');
   }
 
-  const browser = await chromium.launch({ 
+  const browser = await chromium.launch({
     headless: false,
     slowMo: 1000,
     executablePath: bravePath, // Use Brave if found, otherwise default Chromium
@@ -108,21 +99,21 @@ async function setupAuth() {
       '--no-first-run',
       '--no-default-browser-check',
       '--disable-default-apps',
-      '--disable-popup-blocking'
-    ]
+      '--disable-popup-blocking',
+    ],
   });
-  
+
   // Create context with existing user data to preserve login state
   const context = await browser.newContext({
     // Use existing user data to preserve saved passwords and login state
     ...(braveUserDataPath && {
-      storageState: undefined // Let it use the default profile data
+      storageState: undefined, // Let it use the default profile data
     }),
     // Additional context options to mimic real browser usage
     viewport: { width: 1280, height: 720 },
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
   });
-  
+
   const page = await context.newPage();
 
   try {
@@ -134,16 +125,9 @@ async function setupAuth() {
 
     // Check if we're already logged in
     console.log('🔍 Checking if already logged in...');
-    
+
     let isAlreadyLoggedIn = false;
-    const loginIndicators = [
-      'a[href="/logout"]',
-      'a[href="/account"]',
-      '.navbar .dropdown-toggle',
-      'text=Sign out',
-      'text=Logout',
-      'text=Account'
-    ];
+    const loginIndicators = ['a[href="/logout"]', 'a[href="/account"]', '.navbar .dropdown-toggle', 'text=Sign out', 'text=Logout', 'text=Account'];
 
     for (const selector of loginIndicators) {
       try {
@@ -179,9 +163,9 @@ async function setupAuth() {
 
       // Verify login after manual action
       console.log('✅ Verifying login status...');
-      
+
       let isLoggedIn = false;
-      
+
       // Try to find any login indicator
       for (const selector of loginIndicators) {
         try {
@@ -199,15 +183,15 @@ async function setupAuth() {
       if (!isLoggedIn) {
         const currentUrl = page.url();
         const pageContent = await page.content();
-        
+
         console.log(`Current URL: ${currentUrl}`);
-        
+
         // Check if we're no longer on login page
         if (!currentUrl.includes('/login')) {
           console.log('✅ URL indicates successful login (not on /login page)');
           isLoggedIn = true;
         }
-        
+
         // Check for user-specific content in the page
         if (pageContent.includes('logout') || pageContent.includes('account') || pageContent.includes('profile')) {
           console.log('✅ Page content indicates successful login');
@@ -218,21 +202,21 @@ async function setupAuth() {
       if (!isLoggedIn) {
         console.log('\n⚠️  Could not verify login automatically.');
         console.log('Please confirm: Are you successfully logged in? (y/n)');
-        
+
         const confirmation = await new Promise((resolve) => {
           process.stdin.once('data', (data) => {
             resolve(data.toString().trim().toLowerCase());
           });
         });
-        
+
         if (confirmation !== 'y' && confirmation !== 'yes') {
           throw new Error('Login verification failed. Please ensure you are logged in and try again.');
         }
-        
+
         console.log('✅ Login confirmed manually');
       }
     }
-    
+
     console.log('✅ Login verified! Capturing session...');
 
     // Get all cookies and storage state
@@ -245,7 +229,7 @@ async function setupAuth() {
       origins: storageState.origins,
       timestamp: new Date().toISOString(),
       url: page.url(),
-      userAgent: await page.evaluate(() => navigator.userAgent)
+      userAgent: await page.evaluate(() => navigator.userAgent),
     };
 
     // Convert to base64 string for environment variable
@@ -258,17 +242,17 @@ async function setupAuth() {
     console.log(`\n${'='.repeat(20)} SESSION DATA ${'='.repeat(20)}`);
     console.log(sessionString);
     console.log('='.repeat(53));
-    
+
     console.log('\n2. Set it as an environment variable:');
     console.log('\nFor Windows Command Prompt:');
     console.log(`set PLAYWRIGHT_AUTH_SESSION=${sessionString}`);
-    
+
     console.log('\nFor Windows PowerShell:');
     console.log(`$env:PLAYWRIGHT_AUTH_SESSION="${sessionString}"`);
-    
+
     console.log('\nFor .env file (recommended):');
     console.log(`PLAYWRIGHT_AUTH_SESSION=${sessionString}`);
-    
+
     console.log('\n3. In your test files, use this helper to restore the session:');
     console.log(`
 const { restoreAuthSession } = require('./helpers/playwright-auth-setup');
@@ -289,10 +273,9 @@ await restoreAuthSession(context);
     console.log(`- Cookies captured: ${cookies.length}`);
     console.log(`- Storage origins: ${storageState.origins.length}`);
     console.log(`- Final URL: ${page.url()}`);
-
   } catch (error) {
     console.error('❌ Error during authentication setup:', error.message);
-    
+
     // Provide additional debug info
     try {
       const currentUrl = page.url();
@@ -300,16 +283,14 @@ await restoreAuthSession(context);
       console.log('\n🔍 Debug Info:');
       console.log(`- Current URL: ${currentUrl}`);
       console.log(`- Page Title: ${title}`);
-      
+
       // List all links on the page for debugging
-      const links = await page.$$eval('a', (linkElements) => 
-        linkElements.map((link) => ({ href: link.href, text: link.textContent.trim() }))
-      );
+      const links = await page.$$eval('a', (linkElements) => linkElements.map((link) => ({ href: link.href, text: link.textContent.trim() })));
       console.log('- Available links:', links.slice(0, 10)); // Show first 10 links
     } catch {
       console.log('Could not gather debug info');
     }
-    
+
     process.exit(1);
   } finally {
     await browser.close();
@@ -319,17 +300,17 @@ await restoreAuthSession(context);
 // Helper function to restore session (for use in tests)
 async function restoreAuthSession(context) {
   const sessionData = process.env.PLAYWRIGHT_AUTH_SESSION;
-  
+
   if (!sessionData) {
     throw new Error('PLAYWRIGHT_AUTH_SESSION environment variable not found. Please run the auth setup first.');
   }
 
   try {
     const session = JSON.parse(Buffer.from(sessionData, 'base64').toString());
-    
+
     // Add cookies
     await context.addCookies(session.cookies);
-    
+
     // Restore localStorage and sessionStorage if available
     if (session.origins && session.origins.length > 0) {
       await context.addInitScript((origins) => {
@@ -347,11 +328,10 @@ async function restoreAuthSession(context) {
         }
       }, session.origins);
     }
-    
+
     console.log('✅ Authentication session restored');
     console.log(`- Restored ${session.cookies.length} cookies`);
     console.log(`- Session captured at: ${session.timestamp}`);
-    
   } catch (error) {
     throw new Error(`Failed to restore authentication session: ${error.message}`);
   }
