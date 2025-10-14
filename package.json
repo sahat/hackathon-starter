@@ -36,7 +36,6 @@
     "@langchain/mongodb": "0.1.1",
     "@langchain/textsplitters": "^0.1.0",
     "@lob/lob-typescript-sdk": "^1.3.5",
-    "@naandalist/patch-package": "^8.1.5",
     "@node-rs/bcrypt": "^1.10.7",
     "@octokit/rest": "^22.0.0",
     "@passport-js/passport-twitter": "^1.0.10",
@@ -75,6 +74,7 @@
     "passport-oauth2-refresh": "^2.2.0",
     "passport-openidconnect": "^0.1.2",
     "passport-steam-openid": "^1.1.7",
+    "patch-package": "^8.0.1",
     "pdfjs-dist": "^5.4.296",
     "pug": "^3.0.3",
     "sass": "^1.93.2",
@@ -106,8 +106,7 @@
   "overrides": {
     "dotenv": "^17.2.3",
     "fetch-blob": "github:SeattleDevs/fetch-blob",
-    "formdata-node": "^6.0.3",
-    "tmp": "0.2.4"
+    "formdata-node": "^6.0.3"
   },
   "engines": {
     "node": ">=22.16.0"
