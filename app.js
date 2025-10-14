@@ -129,41 +129,21 @@ app.use(passport.session());
  */
 const flash = (req, res, next) => {
   if (req.flash) return next();
-  req.flash = function (type, msg) {
-    if (!req.session) throw new Error('req.flash() requires sessions');
-    const msgs = (req.session.flash = req.session.flash || {});
-
-    if (type && msg) {
-      // handle formatted messages
-      if (arguments.length > 2) {
-        const args = Array.prototype.slice.call(arguments, 1);
-        msg = format.apply(undefined, args);
-      }
-      // handle array of messages
-      else if (Array.isArray(msg)) {
-        msg.forEach((val) => {
-          (msgs[type] = msgs[type] || []).push(val);
-        });
-        return msgs[type].length;
-      }
-      (msgs[type] = msgs[type] || []).push(msg);
-      return msgs[type];
-    }
-    if (type) {
-      const arr = msgs[type];
-      delete msgs[type];
-      return arr || [];
-    }
-
-    req.session.flash = {};
-    return msgs;
+  req.flash = (type, message, ...args) => {
+    const flashMessages = (req.session.flash ||= {});
+    if (!type) return ((req.session.flash = {}), { ...flashMessages });
+    if (!message) return ((retrieved = flashMessages[type] || []), delete flashMessages[type], retrieved);
+    const arr = (flashMessages[type] ||= []);
+    if (args.length) arr.push(format(message, ...args));
+    else if (Array.isArray(message)) return (arr.push(...message), arr.length);
+    else arr.push(message);
+    return arr;
   };
-
-  const { render } = res;
-  res.render = function () {
-    res.locals.messages = req.flash();
-    render.apply(res, arguments);
-  };
+  res.render = ((r) =>
+    function (...args) {
+      res.locals.messages = req.flash();
+      return r.apply(this, args);
+    })(res.render);
   next();
 };
 app.use(flash);
