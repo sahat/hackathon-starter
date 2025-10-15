@@ -494,6 +494,81 @@ passport.use(
 );
 
 /**
+ * Sign in with Microsoft using OAuth2Strategy.
+ */
+const microsoftStrategyConfig = new OAuth2Strategy(
+  {
+    authorizationURL: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+    tokenURL: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+    clientID: process.env.MICROSOFT_CLIENT_ID,
+    clientSecret: process.env.MICROSOFT_CLIENT_SECRET,
+    callbackURL: `${process.env.BASE_URL}/auth/microsoft/callback`,
+    scope: ['openid', 'profile', 'email', 'User.Read'].join(' '),
+    state: generateState(),
+    passReqToCallback: true,
+  },
+  async (req, accessToken, refreshToken, params, profile, done) => {
+    try {
+      // Fetch Microsoft profile using accessToken
+      const response = await fetch('https://graph.microsoft.com/v1.0/me', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (!response.ok) {
+        return done(new Error('Failed to fetch Microsoft profile'));
+      }
+      const microsoftProfile = await response.json();
+      if (req.user) {
+        const existingUser = await User.findOne({ microsoft: { $eq: microsoftProfile.id } });
+        if (existingUser && existingUser.id !== req.user.id) {
+          req.flash('errors', {
+            msg: 'There is another account in our system linked to your Microsoft account. Please delete the duplicate account before linking Microsoft to your current account.',
+          });
+          if (req.session) req.session.returnTo = undefined;
+          return done(null, req.user);
+        }
+        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'microsoft');
+        user.microsoft = microsoftProfile.id;
+        user.profile.name = user.profile.name || microsoftProfile.displayName;
+        user.profile.picture = user.profile.picture || undefined;
+        await user.save();
+        req.flash('info', { msg: 'Microsoft account has been linked.' });
+        return done(null, user);
+      }
+      const existingUser = await User.findOne({ microsoft: { $eq: microsoftProfile.id } });
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      const emailFromProvider = microsoftProfile.mail || microsoftProfile.userPrincipalName;
+      const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
+      const existingEmailUser = await User.findOne({
+        email: { $eq: normalizedEmail },
+      });
+      if (existingEmailUser) {
+        req.flash('errors', {
+          msg: `Unable to sign in with Microsoft at this time. If you have an existing account in our system, please sign in by email and link your account to Microsoft in your user profile settings.`,
+        });
+        return done(null, false);
+      }
+      const user = new User();
+      user.email = normalizedEmail;
+      user.microsoft = microsoftProfile.id;
+      req.user = user;
+      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'microsoft');
+      user.profile.name = microsoftProfile.displayName;
+      user.profile.picture = undefined;
+      await user.save();
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  },
+);
+passport.use('microsoft', microsoftStrategyConfig);
+refresh.use('microsoft', microsoftStrategyConfig);
+
+/**
  * Twitch API OAuth.
  */
 const twitchStrategyConfig = new TwitchStrategy(
