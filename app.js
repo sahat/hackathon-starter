@@ -131,11 +131,21 @@ const flash = (req, res, next) => {
   if (req.flash) return next();
   req.flash = (type, message, ...args) => {
     const flashMessages = (req.session.flash ||= {});
-    if (!type) return ((req.session.flash = {}), { ...flashMessages });
-    if (!message) return ((retrieved = flashMessages[type] || []), delete flashMessages[type], retrieved);
+    if (!type) {
+      req.session.flash = {};
+      return {...flashMessages};
+    }
+    if (!message) {
+      const retrieved = flashMessages[type] || [];
+      delete flashMessages[type];
+      return retrieved;
+    }
     const arr = (flashMessages[type] ||= []);
     if (args.length) arr.push(format(message, ...args));
-    else if (Array.isArray(message)) return (arr.push(...message), arr.length);
+    else if (Array.isArray(message)) {
+      arr.push(...message);
+      return arr.length;
+    }
     else arr.push(message);
     return arr;
   };
