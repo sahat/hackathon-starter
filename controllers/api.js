@@ -1681,3 +1681,58 @@ exports.getWikipedia = async (req, res) => {
     error,
   });
 };
+
+/**
+ * GET /api/tenor
+ * Tenor GIF API integration example
+ */
+exports.getTenor = async (req, res, next) => {
+  const searchTerm = req.query.search || 'excited';
+  const limit = req.query.limit || 20;
+  
+  try {
+    // Check if API key is configured
+    if (!process.env.TENOR_API_KEY) {
+      return res.render('api/tenor', {
+        title: 'Tenor',
+        error: 'Tenor API key not configured. Please add TENOR_API_KEY to your .env file.',
+        gifs: [],
+        searchTerm: searchTerm
+      });
+    }
+
+    // Make request to Tenor API v2
+    const response = await fetch(`https://tenor.googleapis.com/v2/search?q=${encodeURIComponent(searchTerm)}&key=${process.env.TENOR_API_KEY}&client_key=hackathon_starter&limit=${limit}&media_filter=gif`);
+    
+    if (!response.ok) {
+      throw new Error(`Tenor API error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    const gifs = data.results.map(gif => ({
+      id: gif.id,
+      title: gif.content_description || 'GIF',
+      url: gif.media_formats.gif.url,
+      previewUrl: gif.media_formats.tinygif.url,
+      width: gif.media_formats.gif.dims[0],
+      height: gif.media_formats.gif.dims[1]
+    }));
+
+    res.render('api/tenor', {
+      title: 'Tenor',
+      gifs: gifs,
+      searchTerm: searchTerm,
+      error: null
+    });
+
+  } catch (error) {
+    console.error('Tenor API Error:', error.message);
+    res.render('api/tenor', {
+      title: 'Tenor',
+      error: `Error fetching GIFs: ${error.message}`,
+      gifs: [],
+      searchTerm: searchTerm
+    });
+  }
+};

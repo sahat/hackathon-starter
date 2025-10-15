@@ -1,0 +1,67 @@
+extends ../layout
+
+block content
+  .page-header
+    h2
+      i.fab.fa-giphy
+      |  Tenor API
+  
+  .card.mb-4
+    .card-body
+      h4 Search GIFs
+      p Search for GIFs using the Tenor API
+      
+      form(method='GET', action='/api/tenor')
+        .row
+          .col-sm-8
+            input.form-control(type='text', name='search', placeholder='Search for GIFs (e.g., excited, happy, dance)...', value=searchTerm)
+          .col-sm-4
+            button.btn.btn-primary.btn-block(type='submit')
+              i.fa.fa-search
+              |  Search
+
+  if error
+    .alert.alert-danger(role='alert')
+      strong
+        i.fa.fa-exclamation-triangle
+        |  Error: 
+      | #{error}
+      if error.includes('not configured')
+        hr
+        p.mb-0
+          strong How to get a Tenor API key:
+          br
+          | 1. Go to 
+          a(href='https://console.cloud.google.com/', target='_blank', rel='noopener') Google Cloud Console
+          br
+          | 2. Create a new project or select an existing one
+          br
+          | 3. Enable the Tenor API v2
+          br
+          | 4. Go to Credentials and create an API key
+          br
+          | 5. Add the key to your .env file as 
+          code TENOR_API_KEY
+
+  if gifs && gifs.length > 0
+    h3 Search Results for "#{searchTerm}"
+    .row
+      each gif in gifs
+        .col-lg-3.col-md-4.col-sm-6.mb-4
+          .card.h-100
+            img.card-img-top(src=gif.previewUrl, alt=gif.title, loading='lazy', style='cursor: pointer; width: 100%; height: auto;', data-gif-url=gif.url, title='Click to view full size')
+            .card-body.p-2
+              p.card-text.small.text-muted.mb-0.text-truncate(title=gif.title)= gif.title
+
+  else if !error
+    .alert.alert-info(role='alert')
+      i.fa.fa-info-circle
+      |  No GIFs found for "#{searchTerm}". Try a different search term.
+
+  script.
+    document.querySelectorAll('img[data-gif-url]').forEach(img => {
+      img.addEventListener('click', function() {
+        const fullUrl = this.getAttribute('data-gif-url');
+        window.open(fullUrl, '_blank');
+      });
+    });
