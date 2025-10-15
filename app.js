@@ -133,7 +133,7 @@ const flash = (req, res, next) => {
     const flashMessages = (req.session.flash ||= {});
     if (!type) {
       req.session.flash = {};
-      return {...flashMessages};
+      return { ...flashMessages };
     }
     if (!message) {
       const retrieved = flashMessages[type] || [];
@@ -145,8 +145,7 @@ const flash = (req, res, next) => {
     else if (Array.isArray(message)) {
       arr.push(...message);
       return arr.length;
-    }
-    else arr.push(message);
+    } else arr.push(message);
     return arr;
   };
   res.render = ((r) =>
