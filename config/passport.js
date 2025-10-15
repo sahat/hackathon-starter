@@ -519,17 +519,6 @@ const microsoftStrategyConfig = new OAuth2Strategy(
         return done(new Error('Failed to fetch Microsoft profile'));
       }
       const microsoftProfile = await response.json();
-      console.log('Microsoft Profile Data:', {
-        id: microsoftProfile.id,
-        displayName: microsoftProfile.displayName,
-        mail: microsoftProfile.mail,
-        userPrincipalName: microsoftProfile.userPrincipalName,
-      });
-      console.log('Microsoft Token Params:', {
-        expires_in: params.expires_in,
-        refresh_token_expires_in: params.refresh_token_expires_in,
-        ext_expires_in: params.ext_expires_in,
-      });
 
       // Fetch profile picture
       let profilePictureUrl;
@@ -546,7 +535,6 @@ const microsoftStrategyConfig = new OAuth2Strategy(
         }
       } catch (photoErr) {
         // Profile picture not available, continue without it
-        console.log('Microsoft profile picture not available');
       }
       if (req.user) {
         const existingUser = await User.findOne({ microsoft: { $eq: microsoftProfile.id } });
