@@ -163,9 +163,9 @@ API example changes:
 - Fix button formatting issues when applying themes (thanks to @peterblazejewicz)
 - Fixed drop down menu to show correct formatting from the theme (thanks to @jonasroslund)
 - Config mongoose to use the new Server Discovery and Monitoring
-- Fix validation bug in Twitter, Pinterest, and Twilio API examples
-- Fix HERE icon in the API examples
-- Fix minor issues in Stripe and Lob API examples
+- Fix validation bug in Twitter, Pinterest, and Twilio twitch
+- Fix HERE icon in the twitch
+- Fix minor issues in Stripe and Lob twitch
 - Update dependencies
 - Update documentation (thanks in part to @noftaly, @yanivm)
 
@@ -219,7 +219,7 @@ API example changes:
 - Remove Mozilla Persona information from README since it has been deprecated
 - Remove utils
 - Remove GSDK since it does not support Bootstrap 4(thanks to @laurenquinn5924)
-- Adding additional tests to cover some of the API examples
+- Adding additional tests to cover some of the twitch
 - Add prod-checklist.md
 - Update dependencies
 - Update documentation (thanks in part to @GregBrimble)
@@ -534,7 +534,7 @@ API example changes:
 - Updated and clarified some comments
 - Updated the Remove Auth message in `setup.js`
 - Cleaned up `styles.less`
-- Redesigned API Examples page
+- Redesigned twitch page
 - Updated Last.fm API example
 - Updated Steam API example
 - Updated Instagram API example
@@ -550,7 +550,7 @@ API example changes:
 ### 2.1.3 (June 3, 2014)
 
 - Font Awesome 4.1
-- Updated icons on some API examples
+- Updated icons on some twitch
 - Use LESS files for _bootstrap-social_ and _font-awesome_
 
 ### 2.1.2 (June 2, 2014)
@@ -615,7 +615,7 @@ January 2014 and over a **120** issues and pull requests from **28** contributor
 - Added Clockwork SMS example
 - Nicer Facebook API example
 - Pre-populated secrets.js with API keys (not linked to my personal accounts)
-- Grid layout with company logos on API Examples page
+- Grid layout with company logos on twitch page
 - Added tests (Mocha, Chai, Supertest)
 - Gravatar pictures in Navbar and Profile page
 - Tracks last visited URL before signing in to redirect back to original destination
