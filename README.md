@@ -71,7 +71,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 
 - Login
   - **Local Authentication** Sign in with Email and Password, Passwordless
-  - **OAuth 2.0 Authentication:** Sign in with Google, Facebook, X (Twitter), Twitch, Github, Discord, Microsoft
+  - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, X (Twitter), Twitch, Github, Discord
   - **OpenID Connect:** Sign in with LinkedIn
 - **User Profile and Account Management**
   - Gravatar
@@ -330,7 +330,7 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 - Go to <a href="https://portal.azure.com/" target="_blank">Azure Portal</a>
 - Sign in with your Microsoft account
-- Navigate to **Microsoft Entra ID** (formerly Azure Active Directory) from the left sidebar or search for it
+- Navigate to **Microsoft Entra ID** from the left sidebar or search for it
 - Click on **App registrations** in the left menu
 - Click **+ New registration**
 - Enter an application name (e.g., "Hackathon Starter App")

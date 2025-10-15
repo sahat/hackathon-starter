@@ -519,6 +519,35 @@ const microsoftStrategyConfig = new OAuth2Strategy(
         return done(new Error('Failed to fetch Microsoft profile'));
       }
       const microsoftProfile = await response.json();
+      console.log('Microsoft Profile Data:', {
+        id: microsoftProfile.id,
+        displayName: microsoftProfile.displayName,
+        mail: microsoftProfile.mail,
+        userPrincipalName: microsoftProfile.userPrincipalName,
+      });
+      console.log('Microsoft Token Params:', {
+        expires_in: params.expires_in,
+        refresh_token_expires_in: params.refresh_token_expires_in,
+        ext_expires_in: params.ext_expires_in,
+      });
+
+      // Fetch profile picture
+      let profilePictureUrl;
+      try {
+        const photoResponse = await fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        if (photoResponse.ok) {
+          // Microsoft has a profile picture
+          // Use the photo metadata endpoint to get a URL we can reference
+          profilePictureUrl = `https://graph.microsoft.com/v1.0/me/photo/$value`;
+        }
+      } catch (photoErr) {
+        // Profile picture not available, continue without it
+        console.log('Microsoft profile picture not available');
+      }
       if (req.user) {
         const existingUser = await User.findOne({ microsoft: { $eq: microsoftProfile.id } });
         if (existingUser && existingUser.id !== req.user.id) {
@@ -528,10 +557,10 @@ const microsoftStrategyConfig = new OAuth2Strategy(
           if (req.session) req.session.returnTo = undefined;
           return done(null, req.user);
         }
-        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'microsoft');
+        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.refresh_token_expires_in, 'microsoft');
         user.microsoft = microsoftProfile.id;
         user.profile.name = user.profile.name || microsoftProfile.displayName;
-        user.profile.picture = user.profile.picture || undefined;
+        user.profile.picture = user.profile.picture || profilePictureUrl;
         await user.save();
         req.flash('info', { msg: 'Microsoft account has been linked.' });
         return done(null, user);
@@ -555,9 +584,9 @@ const microsoftStrategyConfig = new OAuth2Strategy(
       user.email = normalizedEmail;
       user.microsoft = microsoftProfile.id;
       req.user = user;
-      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'microsoft');
+      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.refresh_token_expires_in, 'microsoft');
       user.profile.name = microsoftProfile.displayName;
-      user.profile.picture = undefined;
+      user.profile.picture = profilePictureUrl;
       await user.save();
       return done(null, user);
     } catch (err) {

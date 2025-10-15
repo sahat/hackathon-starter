@@ -122,15 +122,15 @@ block content
       else
         p.mb-1: a(href='/auth/google') Link your Google account
     .offset-sm-3.col-md-7.pl-2
-      if user.linkedin
-        p.mb-1: a.text-danger(href='/account/unlink/linkedin') Unlink your LinkedIn account
-      else
-        p.mb-1: a(href='/auth/linkedin') Link your LinkedIn account
-    .offset-sm-3.col-md-7.pl-2
       if user.microsoft
         p.mb-1: a.text-danger(href='/account/unlink/microsoft') Unlink your Microsoft account
       else
         p.mb-1: a(href='/auth/microsoft') Link your Microsoft account
+    .offset-sm-3.col-md-7.pl-2
+      if user.linkedin
+        p.mb-1: a.text-danger(href='/account/unlink/linkedin') Unlink your LinkedIn account
+      else
+        p.mb-1: a(href='/auth/linkedin') Link your LinkedIn account
     .offset-sm-3.col-md-7.pl-2
       if user.quickbooks
         p.mb-1: a.text-danger(href='/account/unlink/quickbooks') Unlink your QuickBooks account
