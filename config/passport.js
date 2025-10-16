@@ -14,32 +14,8 @@ const OpenIDConnectStrategy = require('passport-openidconnect');
 const { OAuth } = require('oauth');
 const moment = require('moment');
 const validator = require('validator');
-const fs = require('fs').promises;
-const path = require('path');
 
 const User = require('../models/User');
-
-/**
- * Helper function to save profile picture to filesystem since microsoft does not provide a profile picture url
- * @param {Buffer} imageBuffer - The image buffer to save
- * @param {string} contentType - The content type of the image
- * @param {string} microsoftId - The Microsoft ID of the user
- * @returns {Promise<string>} The URL path of the saved image
- */
-async function saveProfilePictureToFile(imageBuffer, contentType, microsoftId) {
-  try {
-    const extension = contentType.split('/')[1] || 'png';
-    const filename = `microsoft-${microsoftId}.${extension}`;
-    const filepath = path.join(__dirname, '../uploads/avatars', filename);
-    await fs.mkdir(path.dirname(filepath), { recursive: true });
-
-    // Save file (overwrites if exists)
-    await fs.writeFile(filepath, Buffer.from(imageBuffer));
-    return `/uploads/avatars/${filename}`;
-  } catch (error) {
-    throw error;
-  }
-}
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -544,25 +520,6 @@ const microsoftStrategyConfig = new OAuth2Strategy(
       }
       const microsoftProfile = await response.json();
 
-      // Fetch profile picture
-      let profilePictureUrl;
-      try {
-        const photoResponse = await fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        if (photoResponse.ok) {
-          // Microsoft has a profile picture
-          const imageBuffer = await photoResponse.arrayBuffer();
-          const contentType = photoResponse.headers.get('content-type') || 'image/png';
-
-          // Save to filesystem and get URL path
-          profilePictureUrl = await saveProfilePictureToFile(imageBuffer, contentType, microsoftProfile.id);
-        }
-      } catch (error) {
-        throw error;
-      }
       if (req.user) {
         const existingUser = await User.findOne({ microsoft: { $eq: microsoftProfile.id } });
         if (existingUser && existingUser.id !== req.user.id) {
@@ -575,18 +532,12 @@ const microsoftStrategyConfig = new OAuth2Strategy(
         const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.refresh_token_expires_in, 'microsoft');
         user.microsoft = microsoftProfile.id;
         user.profile.name = user.profile.name || microsoftProfile.displayName;
-        user.profile.picture = user.profile.picture || profilePictureUrl;
         await user.save();
         req.flash('info', { msg: 'Microsoft account has been linked.' });
         return done(null, user);
       }
       const existingUser = await User.findOne({ microsoft: { $eq: microsoftProfile.id } });
       if (existingUser) {
-        // Only update profile picture if we got a new one from Microsoft
-        if (profilePictureUrl) {
-          existingUser.profile.picture = profilePictureUrl;
-        }
-        await existingUser.save();
         return done(null, existingUser);
       }
       const emailFromProvider = microsoftProfile.mail || microsoftProfile.userPrincipalName;
@@ -606,10 +557,6 @@ const microsoftStrategyConfig = new OAuth2Strategy(
       req.user = user;
       await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.refresh_token_expires_in, 'microsoft');
       user.profile.name = microsoftProfile.displayName;
-      // Only set profile picture if Microsoft provided one
-      if (profilePictureUrl) {
-        user.profile.picture = profilePictureUrl;
-      }
       await user.save();
       return done(null, user);
     } catch (err) {

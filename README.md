@@ -328,21 +328,13 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" height="50">
 
-- Go to <a href="https://portal.azure.com/" target="_blank">Azure Portal</a>
-- Sign in with your Microsoft account
-- Navigate to **Microsoft Entra ID** from the left sidebar or search for it
-- Click on **App registrations** in the left menu
-- Click **+ New registration**
-- Enter an application name (e.g., "Hackathon Starter App")
-- Under **Supported account types**, select **Accounts in any organizational directory and personal Microsoft accounts**
-- For **Redirect URI**, select **Web** and enter your BASE_URL value followed by /auth/microsoft/callback (i.e. `http://localhost:8080/auth/microsoft/callback`)
-- Click **Register**
-- On the application overview page, copy the **Application (client) ID** and paste it into `.env` file as `MICROSOFT_CLIENT_ID`
-- Click on **Certificates & secrets** in the left menu
-- Under **Client secrets**, click **+ New client secret**
-- Add a description and select an expiration period
-- Click **Add**
-- Copy the secret **Value** (not the Secret ID) immediately and paste it into `.env` file as `MICROSOFT_CLIENT_SECRET` (you won't be able to see it again)
+- Go to <a href="https://portal.azure.com/" target="_blank">Azure Portal</a>, sign in, and navigate to **Microsoft Entra ID**
+- Click **App registrations** > **+ New registration**
+- Enter an application name (e.g., "Hackathon Starter App") and select **Accounts in any organizational directory and personal Microsoft accounts**
+- Set **Redirect URI** to **Web** with your BASE_URL followed by `/auth/microsoft/callback` (e.g., `http://localhost:8080/auth/microsoft/callback`)
+- Click **Register**, then copy the **Application (client) ID** to `.env` as `MICROSOFT_CLIENT_ID`
+- Go to **Certificates & secrets** > **+ New client secret**, add a description and expiration, then click **Add**
+- Copy the secret **Value** immediately to `.env` as `MICROSOFT_CLIENT_SECRET` (won't be visible again)
 
 <hr>
 
