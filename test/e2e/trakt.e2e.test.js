@@ -104,24 +104,18 @@ test.describe('Trakt.tv API Integration', () => {
 
     // Check for movie poster image
     const posterImage = topTrendingCard.locator('img');
-    const posterExists = (await posterImage.count()) > 0;
+    await expect(posterImage).toBeVisible();
 
-    if (posterExists) {
-      await expect(posterImage).toBeVisible();
+    // Verify image has src attribute
+    const imgSrc = await posterImage.getAttribute('src');
+    expect(imgSrc).toBeTruthy();
 
-      // Verify image has src attribute
-      const imgSrc = await posterImage.getAttribute('src');
-      expect(imgSrc).toBeTruthy();
-    }
-
-    // Check for trailer link if present
-    const trailerLink = topTrendingCard.locator('a[href*="youtube"]');
-    const trailerExists = (await trailerLink.count()) > 0;
-
-    if (trailerExists) {
-      await expect(trailerLink).toBeVisible();
-      await expect(trailerLink).toContainText('Watch Trailer');
-    }
+    // Check for trailer embed (the template renders an <iframe> inside a .ratio-16x9 wrapper)
+    const trailerIframe = topTrendingCard.locator('.ratio-16x9 iframe, iframe');
+    await expect(trailerIframe.first()).toBeVisible();
+    const iframeSrc = await trailerIframe.first().getAttribute('src');
+    expect(iframeSrc).toBeTruthy();
+    expect(iframeSrc).toMatch(/youtu/);
   });
 
   test('should display movie year and tagline', async ({ page }) => {
@@ -131,43 +125,14 @@ test.describe('Trakt.tv API Integration', () => {
     const topTrendingCard = page.locator('.card.text-white.bg-primary');
     await expect(topTrendingCard).toBeVisible();
 
-    // Check for movie year (usually in a paragraph with mb-1 text-muted classes)
-    const yearElement = topTrendingCard.locator('p.mb-1.text-muted');
-    const yearExists = (await yearElement.count()) > 0;
+    const yearElement = topTrendingCard.locator('span.text-muted');
+    await expect(yearElement.first()).toBeVisible();
 
-    if (yearExists) {
-      await expect(yearElement.first()).toBeVisible();
+    const yearText = await yearElement.first().textContent();
+    expect(yearText).toMatch(/\b(19|20)\d{2}\b/);
 
-      // Check if year text contains a 4-digit number (optional validation)
-      const yearText = await yearElement.first().textContent();
-      if (yearText && yearText.trim()) {
-        const yearMatch = yearText.match(/\b(19|20)\d{2}\b/);
-        // Only validate year format if we find a year pattern, otherwise just log
-        if (yearMatch) {
-          expect(yearMatch).toBeTruthy();
-        } else {
-          console.log(`Year element found but no year pattern detected: "${yearText}"`);
-        }
-      }
-    }
-
-    // Check for tagline if present
-    const taglineElements = topTrendingCard.locator('p.text-muted');
-    const taglineCount = await taglineElements.count();
-
-    if (taglineCount > 0) {
-      // Look for tagline (usually italic text)
-      for (let i = 0; i < taglineCount; i++) {
-        const tagline = taglineElements.nth(i);
-        const taglineText = await tagline.textContent();
-
-        // Skip if it's just the year
-        if (taglineText && !taglineText.match(/^\s*(19|20)\d{2}\s*$/)) {
-          await expect(tagline).toBeVisible();
-          break;
-        }
-      }
-    }
+    const tagline = topTrendingCard.locator('p.mb-1.text-muted');
+    await expect(tagline.first()).toBeVisible();
   });
 
   test('should validate trending movies data structure', async ({ page }) => {

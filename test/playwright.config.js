@@ -16,6 +16,9 @@ if (!originalMongoUri && result && result.parsed && result.parsed.MONGODB_URI) {
 const TEST_ENV_OVERRIDES = {
   BASE_URL: 'http://127.0.0.1:8080',
   SESSION_SECRET: process.env.SESSION_SECRET || 'test_session_secret',
+  RATE_LIMIT_GLOBAL: '500',
+  RATE_LIMIT_STRICT: '20',
+  RATE_LIMIT_LOGIN: '50',
 };
 
 Object.entries(TEST_ENV_OVERRIDES).forEach(([k, v]) => {
@@ -26,7 +29,7 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : 1,
+  workers: process.env.CI ? 1 : 4,
   outputDir: '../tmp/playwright-artifacts',
   reporter: [['html', { outputFolder: '../tmp/playwright-report', open: 'never' }]],
   use: {
@@ -37,10 +40,19 @@ module.exports = defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: ['e2e/*.e2e.test.js'],
+    },
+    {
+      name: 'chromium-nokey',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: ['e2e-nokey/*.e2e.test.js'],
     },
   ],
   webServer: {
-    command: 'node ./tools/start-with-memory-db.js',
+    // Pipe web server stdout/stderr through `tee` so output still appears in the console
+    // and also write a fixed, deterministic log file that tests can inspect.
+    // Using a fixed file keeps the test simple; it will be overwritten each run.
+    command: 'node ./tools/start-with-memory-db.js 2>&1 | tee ../tmp/playwright-webserver.log',
     url: process.env.BASE_URL,
     reuseExistingServer: !process.env.CI,
     env: { ...process.env, ...TEST_ENV_OVERRIDES },

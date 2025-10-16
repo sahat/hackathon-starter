@@ -1,28 +1,10 @@
 const { test, expect } = require('@playwright/test');
 
-/**
- * Helper function to navigate to Lob API page and check for errors
- * @param {import('@playwright/test').Page} page - Playwright page object
- * @throws {Error} If API key is not configured
- */
-async function navigateToLobPage(page) {
-  await page.goto('/api/lob');
-  await page.waitForLoadState('networkidle');
-
-  // Detect if API returned an error (missing API key, etc.)
-  const errorElement = page.locator('.alert.alert-danger');
-  const isError = (await errorElement.count()) > 0;
-
-  if (isError) {
-    // Fail the test if API key is missing
-    const errorText = await errorElement.textContent();
-    throw new Error(`Lob API key is not configured. Test failed to ensure CI notices missing configuration. Error: ${errorText}`);
-  }
-}
-
 test.describe('Lob API Integration', () => {
+  test.describe.configure({ mode: 'serial' });
   test('should validate ZIP code API response format', async ({ page }) => {
-    await navigateToLobPage(page);
+    await page.goto('/api/lob');
+    await page.waitForLoadState('networkidle');
 
     // Check for valid ZIP code pattern (5 digits)
     await expect(page.locator('h3').filter({ hasText: 'Details of zip code:' })).toContainText(/Details of zip code: \d{5}/);
@@ -66,7 +48,8 @@ test.describe('Lob API Integration', () => {
   });
 
   test('should validate USPS Letter API response format', async ({ page }) => {
-    await navigateToLobPage(page);
+    await page.goto('/api/lob');
+    await page.waitForLoadState('networkidle');
 
     // Verify letter ID format (should be alphanumeric with specific pattern)
     const letterIdText = await page.locator('text=Letter ID:').textContent();
@@ -82,7 +65,8 @@ test.describe('Lob API Integration', () => {
   });
 
   test('should validate PDF generation and file properties', async ({ page }) => {
-    await navigateToLobPage(page);
+    await page.goto('/api/lob');
+    await page.waitForLoadState('networkidle');
 
     // Verify PDF URL format and validate PDF file
     const pdfObject = page.locator('#pdfviewer object');

@@ -10,27 +10,15 @@ test.describe('GitHub API Integration', () => {
     await expect(page).toHaveTitle(/GitHub API/);
     await expect(page.locator('h2')).toContainText('GitHub API');
 
-    // Detect if API returned an error (rate limit, 403, etc.)
-    const errorElement = page.locator('text=/error|rate limit|403/i');
-    const isError = (await errorElement.count()) > 0;
+    const repoSection = page.locator('.card.text-white.bg-primary');
+    await expect(repoSection).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('.card-header h6')).toContainText('Repository Lookup Example');
 
-    if (isError) {
-      // Verify error handling works
-      console.log('GitHub API rate limit reached - testing error handling');
-      await expect(page.locator('body')).toContainText(/error|rate limit|403/i);
-    } else {
-      // Verify normal content rendering
-      console.log('GitHub API call succeeded - testing content display');
-      const repoSection = page.locator('.card.text-white.bg-primary');
-      await expect(repoSection).toBeVisible({ timeout: 10000 });
-      await expect(page.locator('.card-header h6')).toContainText('Repository Lookup Example');
+    const repoContent = page.locator('.card-body.text-dark.bg-white');
+    await expect(repoContent).toBeVisible();
 
-      const repoContent = page.locator('.card-body.text-dark.bg-white');
-      await expect(repoContent).toBeVisible();
-
-      const repoLink = page.locator('a[href*="github.com"]');
-      await expect(repoLink.first()).toBeVisible();
-    }
+    const repoLink = page.locator('a[href*="github.com"]');
+    await expect(repoLink.first()).toBeVisible();
   });
 
   test('should display authentication prompt for unauthenticated users', async ({ page }) => {

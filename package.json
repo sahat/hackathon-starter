@@ -19,9 +19,9 @@
     "prepare": "husky",
     "scss": "sass --no-source-map --silence-deprecation=import --quiet-deps --load-path=./ --update ./public/css:./public/css",
     "start": "npm run scss && node app.js",
-    "test": "c8 --temp-directory tmp/coverage mocha --timeout=60000 --exit --exclude 'test/*links.test.js'",
-    "test:e2e": "playwright test --config=test/playwright.config.js test/e2e/*.e2e.test.js",
-    "test:e2e-nokey": "playwright test --config=test/playwright.config.js test/e2e-nokey/*.e2e.test.js",
+    "test": "c8 --temp-directory tmp/coverage mocha --timeout=60000 --exit --exclude \"test/*links.test.js\"",
+    "test:e2e": "playwright test --config=test/playwright.config.js --project=chromium",
+    "test:e2e-nokey": "playwright test --config=test/playwright.config.js --project=chromium-nokey",
     "pretest:e2e": "npx playwright install chromium",
     "pretest:e2e-nokey": "npx playwright install chromium",
     "test:image-link": "mocha --timeout 300000 \"test/*links.test.js\""
@@ -33,10 +33,9 @@
     "@huggingface/inference": "^4.11.1",
     "@langchain/community": "^0.3.57",
     "@langchain/core": "^0.3.78",
-    "@langchain/mongodb": "0.1.0",
+    "@langchain/mongodb": "0.1.1",
     "@langchain/textsplitters": "^0.1.0",
     "@lob/lob-typescript-sdk": "^1.3.5",
-    "@naandalist/patch-package": "^8.1.5",
     "@node-rs/bcrypt": "^1.10.7",
     "@octokit/rest": "^22.0.0",
     "@passport-js/passport-twitter": "^1.0.10",
@@ -44,7 +43,7 @@
     "bootstrap": "^5.3.8",
     "bootstrap-social": "github:SeattleDevs/bootstrap-social",
     "bowser": "^2.12.1",
-    "chart.js": "^4.5.0",
+    "chart.js": "^4.5.1",
     "cheerio": "^1.1.2",
     "compression": "^1.8.1",
     "connect-mongo": "^5.1.0",
@@ -54,7 +53,7 @@
     "express-rate-limit": "^8.1.0",
     "express-session": "^1.18.2",
     "jquery": "^3.7.1",
-    "langchain": "0.3.35",
+    "langchain": "0.3.36",
     "lastfm": "^0.9.4",
     "lusca": "^1.7.0",
     "mailchecker": "^6.0.18",
@@ -74,6 +73,7 @@
     "passport-oauth2-refresh": "^2.2.0",
     "passport-openidconnect": "^0.1.2",
     "passport-steam-openid": "^1.1.7",
+    "patch-package": "^8.0.1",
     "pdfjs-dist": "^5.4.296",
     "pug": "^3.0.3",
     "sass": "^1.93.2",
@@ -105,8 +105,7 @@
   "overrides": {
     "dotenv": "^17.2.3",
     "fetch-blob": "github:SeattleDevs/fetch-blob",
-    "formdata-node": "^6.0.3",
-    "tmp": "0.2.4"
+    "formdata-node": "^6.0.3"
   },
   "engines": {
     "node": ">=22.16.0"

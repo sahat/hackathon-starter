@@ -1076,8 +1076,24 @@ exports.getLob = async (req, res, next) => {
   });
 
   try {
-    const uspsLetter = await new LettersApi(config).create(letterData);
+    const lettersApi = new LettersApi(config);
     const zipDetails = await new ZipLookupsApi(config).lookup(zipData);
+    const uspsLetter = await lettersApi.create(letterData);
+    await new Promise((resolve) => setTimeout(resolve, 3100)); // wait for the PDF letter to be generated
+
+    // Sometimes Lob's letter URL is invalid, takes longer and we need to retry
+    let attempts = 0;
+    while (attempts < 3) {
+      const urlToCheck = uspsLetter.url || uspsLetter._url;
+      const res = await fetch(urlToCheck, { method: 'GET' });
+      if (res.ok) break; // URL is reachable
+      console.log(`Lob letter URL not valid, requesting again ... (${attempts + 1}/3)`);
+      attempts += 1;
+      await new Promise((resolve) => setTimeout(resolve, 5000)); //wait for 5 seconds before retry
+      const fresh = await lettersApi.get(uspsLetter.id);
+      Object.assign(uspsLetter, fresh);
+    }
+
     res.render('api/lob', {
       title: 'Lob API',
       zipDetails,
@@ -1241,7 +1257,7 @@ function traktUrlToFilename(url) {
  * Fetch and cache Trakt image, return the static path for <img src="">
  */
 async function fetchAndCacheTraktImage(imageUrl) {
-  const imageCacheDir = 'tmp/image-cache';
+  const imageCacheDir = path.join(__dirname, '..', 'tmp', 'image-cache');
   if (!imageUrl) return null;
   const filename = traktUrlToFilename(imageUrl);
   if (!filename) return null;
@@ -1261,7 +1277,7 @@ async function fetchAndCacheTraktImage(imageUrl) {
     const response = await fetch(imageUrl);
     if (!response.ok) return null;
     const buffer = Buffer.from(await response.arrayBuffer());
-    const absPath = `${imageCacheDir}/${filename}`;
+    const absPath = path.join(imageCacheDir, filename);
     try {
       fs.writeFileSync(absPath, buffer);
     } catch (writeErr) {
@@ -1550,4 +1566,118 @@ exports.getPubChem = async (req, res, next) => {
     console.error('PubChem API Error:', error);
     next(error);
   }
+};
+
+/*
+ * GET /api/wikipedia
+ * wikipedia.org API Example.
+ * - Uses wikipedia'a API to extract text, images, data and display in the api/wikipedia page
+ * - Allow users to search content and dispay its data etracted from wikipedia page
+ */
+exports.getWikipedia = async (req, res) => {
+  const validationErrors = [];
+  const query = validator.trim(req.query.q || '');
+
+  // enforce max length
+  if (query.length && !validator.isLength(query, { max: 200 })) {
+    validationErrors.push({ msg: 'Search term must be less than 200 characters.' });
+  }
+
+  const allowedPunctuation = " \\-_,.()'"; // allow space and punctuation
+  if (query.length && !validator.isAlphanumeric(query, 'en-US', { ignore: allowedPunctuation })) {
+    validationErrors.push({ msg: 'Search term contains invalid characters.' });
+  }
+
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
+    return res.redirect('/api/wikipedia');
+  }
+
+  let error = null;
+
+  //function to search wikipedia for the term or word
+  const searchWikipedia = async (term) => {
+    const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(term)}&srlimit=10`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to search Wikipedia');
+    const data = await response.json();
+    if (data.query && data.query.search) {
+      return data.query.search.map((result) => ({
+        title: result.title,
+        snippet: result.snippet.replace(/<\/?[^>]+(>|$)/g, ''), //regex to remove html tags,
+      }));
+    }
+    return [];
+  };
+
+  //function to get page sections of the title or term page
+  const getPageSections = async (title) => {
+    const url = `https://en.wikipedia.org/w/api.php?action=parse&format=json&origin=*&page=${encodeURIComponent(title)}&prop=sections`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch sections');
+    const data = await response.json();
+    if (data.parse && data.parse.sections) {
+      return data.parse.sections.map((s) => s.line);
+    }
+    return [];
+  };
+
+  //function to get title's page 1st paragraph text i.e., <1000 words
+  const getPageExtract = async (title) => {
+    const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=extracts&explaintext=1&titles=${encodeURIComponent(title)}&exintro=1`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch extract');
+    const data = await response.json();
+    const pageObj = data.query && data.query.pages ? Object.values(data.query.pages)[0] : null;
+    if (pageObj && pageObj.extract) {
+      return pageObj.extract.length > 1000 ? `${pageObj.extract.slice(0, 1000)}...` : pageObj.extract;
+    }
+    return '';
+  };
+
+  //function to get image based on title page of wikipedia if available
+  const getPageImage = async (title) => {
+    const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages|pageterms&titles=${encodeURIComponent(title)}&pithumbsize=400`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('Failed to fetch image');
+    const data = await resp.json();
+    const pageObj = data.query && data.query.pages ? Object.values(data.query.pages)[0] : null;
+    if (pageObj) {
+      if (pageObj.thumbnail && pageObj.thumbnail.source) return pageObj.thumbnail.source;
+      if (pageObj.original && pageObj.original.source) return pageObj.original.source;
+    }
+    return null;
+  };
+
+  // Node.js content example variables
+  const pageTitle = 'Node.js';
+  const wikiLink = `https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}`;
+
+  let searchResults = [];
+  let pageSections = [];
+  let pageFirstSectionText = '';
+  let pageFirstImage = null;
+
+  try {
+    if (query) {
+      searchResults = await searchWikipedia(query);
+    }
+    pageSections = await getPageSections(pageTitle);
+    pageFirstSectionText = await getPageExtract(pageTitle);
+    pageFirstImage = await getPageImage(pageTitle);
+  } catch (err) {
+    console.error('Wikipedia Error:', err);
+    error = `Error fetching data for "${query}".`;
+  }
+  res.render('api/wikipedia', {
+    title: 'Wikipedia',
+    query,
+    wikiLink,
+    searchResults,
+    pageSections,
+    pageFirstSectionText,
+    pageFirstImage,
+    pageTitle,
+    error,
+  });
 };
