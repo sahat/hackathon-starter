@@ -1,65 +1,73 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Last.fm API Integration', () => {
-  test('should launch app, navigate to Last.fm API page, and handle API response', async ({ page }) => {
-    // Navigate to Last.fm API page
-    await page.goto('/api/lastfm');
-    await page.waitForLoadState('networkidle');
+  let sharedPage;
 
+  test.beforeAll(async ({ browser }) => {
+    sharedPage = await browser.newPage();
+    await sharedPage.goto('/api/lastfm');
+    await sharedPage.waitForLoadState('networkidle');
+  });
+
+  test.afterAll(async () => {
+    if (sharedPage) await sharedPage.close();
+  });
+
+  test('should launch app, navigate to Last.fm API page, and handle API response', async () => {
     // Basic page checks
-    await expect(page).toHaveTitle(/Last\.fm API/);
-    await expect(page.locator('h2')).toContainText('Last.fm API');
+    await expect(sharedPage).toHaveTitle(/Last\.fm API/);
+    await expect(sharedPage.locator('h2')).toContainText('Last.fm API');
 
     // Check artist name (should be "Roniit" based on controller)
-    const artistName = page.locator('h3');
+    const artistName = sharedPage.locator('h3');
     await expect(artistName).toBeVisible({ timeout: 10000 });
     await expect(artistName).toContainText('Roniit');
 
     // Check Top Albums section
-    const topAlbumsHeading = page.locator('h4', { hasText: 'Top Albums' });
+    const topAlbumsHeading = sharedPage.locator('h4', { hasText: 'Top Albums' });
     await expect(topAlbumsHeading).toBeVisible();
 
     // Check for album images (should have at least one)
-    const albumImages = page.locator('img[src*="lastfm"]');
+    const albumImages = sharedPage.locator('img[src*="lastfm"]');
     await expect(albumImages.first()).toBeVisible();
 
     // Check Tags section
-    const tagsHeading = page.locator('h4', { hasText: 'Tags' });
+    const tagsHeading = sharedPage.locator('h4', { hasText: 'Tags' });
     await expect(tagsHeading).toBeVisible();
 
     // Check for tag elements
-    const tagElements = page.locator('span.label.label-primary');
+    const tagElements = sharedPage.locator('span.label.label-primary');
     await expect(tagElements.first()).toBeVisible();
 
     // Check Biography section
-    const biographyHeading = page.locator('h4', { hasText: 'Biography' });
+    const biographyHeading = sharedPage.locator('h4', { hasText: 'Biography' });
     await expect(biographyHeading).toBeVisible();
 
     // Biography should either have content or "No biography" message
-    const biographyContent = page.locator('h4:has-text("Biography") + p');
+    const biographyContent = sharedPage.locator('h4:has-text("Biography") + p');
     await expect(biographyContent).toBeVisible();
 
     // Check Top Tracks section
-    const topTracksHeading = page.locator('h4', { hasText: 'Top Tracks' });
+    const topTracksHeading = sharedPage.locator('h4', { hasText: 'Top Tracks' });
     await expect(topTracksHeading).toBeVisible();
 
     // Check for track list (ordered list)
-    const trackList = page.locator('ol');
+    const trackList = sharedPage.locator('ol');
     await expect(trackList).toBeVisible();
 
     // Check for track links
-    const trackLinks = page.locator('ol li a[href*="last.fm"]');
+    const trackLinks = sharedPage.locator('ol li a[href*="last.fm"]');
     await expect(trackLinks.first()).toBeVisible();
 
     // Check Similar Artists section
-    const similarArtistsHeading = page.locator('h4', { hasText: 'Similar Artists' });
+    const similarArtistsHeading = sharedPage.locator('h4', { hasText: 'Similar Artists' });
     await expect(similarArtistsHeading).toBeVisible();
 
     // Check for similar artist links
-    const similarArtistsList = page.locator('ul.list-unstyled.list-inline');
+    const similarArtistsList = sharedPage.locator('ul.list-unstyled.list-inline');
     await expect(similarArtistsList).toBeVisible();
 
-    const similarArtistLinks = page.locator('ul.list-unstyled.list-inline li a[href*="last.fm"]');
+    const similarArtistLinks = sharedPage.locator('ul.list-unstyled.list-inline li a[href*="last.fm"]');
     await expect(similarArtistLinks.first()).toBeVisible();
   });
 
