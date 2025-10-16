@@ -3,18 +3,18 @@ extends ../layout
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
-      i.fas.fa-phone.fa-sm.iconpadding(style='color: #f00')
+      i.fas.fa-phone.fa-sm.me-2(style='color: #f00')
       | Twilio API
 
   .btn-group.mb-4.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://www.twilio.com/docs/libraries/reference/twilio-node/', target='_blank')
-      i.far.fa-check-square.fa-sm.iconpadding
+      i.far.fa-check-square.fa-sm.me-2
       | Twilio Node
     a.btn.btn-primary.w-100(href='https://www.twilio.com/docs/sms/debugging-tools', target='_blank')
-      i.fas.fa-laptop.fa-sm.iconpadding
+      i.fas.fa-laptop.fa-sm.me-2
       | Twilio Debugging Tools
     a.btn.btn-primary.w-100(href='https://www.twilio.com/docs/api/rest', target='_blank')
-      i.fas.fa-code-branch.fa-sm.iconpadding
+      i.fas.fa-code-branch.fa-sm.me-2
       | REST API
 
   if isSandbox
@@ -25,7 +25,7 @@ block content
       b= ` ${fromNumber}`
       | . No actual SMS will be sent.
       p
-      i.fas.fa-hand-point-right.fa-sm.iconpadding
+      i.fas.fa-hand-point-right.fa-sm.me-2
       |
       | Tip: Ensure you are using Test credentials instead of Live credentials during development to avoid charges for using sandbox numbers as they are invalid for production use. See
       a(href='https://console.twilio.com/us1/account/keys-credentials/api-keys', target='_blank') Auth Tokens page of your Console
@@ -95,5 +95,5 @@ block content
           .col-md-4
           .col-md-6
             button.btn.btn-primary(type='submit')
-              i.fas.fa-location-arrow.fa-sm.iconpadding
+              i.fas.fa-location-arrow.fa-sm.me-2
               | Send Message

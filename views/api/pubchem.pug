@@ -2,15 +2,15 @@ extends ../layout
 
 block content
   h2
-    i.fas.fa-flask.fa-sm.iconpadding
+    i.fas.fa-flask.fa-sm.me-2
     | PubChem API - Chemical Information
 
   .btn-group.d-flex(role='group')
     a.btn.btn-primary.w-100(href='https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest', target='_blank')
-      i.far.fa-check-square.fa-sm.iconpadding
+      i.far.fa-check-square.fa-sm.me-2
       | Getting Started
     a.btn.btn-primary.w-100(href='https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest-tutorial', target='_blank')
-      i.far.fa-file-alt.fa-sm.iconpadding
+      i.far.fa-file-alt.fa-sm.me-2
       | Documentation
   br
 
@@ -123,7 +123,7 @@ block content
                 ul.list-unstyled
                   each item in info.slice(0, 3)
                     li
-                      i.fas.fa-exclamation-triangle.fa-sm.text-warning.iconpadding
+                      i.fas.fa-exclamation-triangle.fa-sm.text-warning.me-2
                       = item
 
   // Classifications Section
