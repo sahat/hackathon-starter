@@ -533,7 +533,7 @@ const microsoftStrategyConfig = new OAuth2Strategy(
           // Use the photo metadata endpoint to get a URL we can reference
           profilePictureUrl = `https://graph.microsoft.com/v1.0/me/photo/$value`;
         }
-      } catch (photoErr) {
+      } catch {
         // Profile picture not available, continue without it
       }
       if (req.user) {
