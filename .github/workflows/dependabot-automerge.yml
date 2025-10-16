@@ -13,7 +13,6 @@ jobs:
   dependabot-automerge:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'pull_request' &&
       contains(toJson(github.event.workflow_run.pull_requests), 'dependabot[bot]') &&
       contains(toJson(github.event.workflow_run.pull_requests), 'master')
     runs-on: ubuntu-latest
