@@ -10,70 +10,57 @@ test.describe('Last.fm API Integration', () => {
     await expect(page).toHaveTitle(/Last\.fm API/);
     await expect(page.locator('h2')).toContainText('Last.fm API');
 
-    // Detect if API returned an error (rate limit, API key issues, etc.)
-    const errorElement = page.locator('text=/error|rate limit|invalid|unauthorized/i');
-    const isError = (await errorElement.count()) > 0;
+    // Check artist name (should be "Roniit" based on controller)
+    const artistName = page.locator('h3');
+    await expect(artistName).toBeVisible({ timeout: 10000 });
+    await expect(artistName).toContainText('Roniit');
 
-    if (isError) {
-      // Verify error handling works
-      console.log('Last.fm API error detected - testing error handling');
-      await expect(page.locator('body')).toContainText(/error|rate limit|invalid|unauthorized/i);
-    } else {
-      // Verify normal content rendering - artist name should be visible
-      console.log('Last.fm API call succeeded - testing content display');
+    // Check Top Albums section
+    const topAlbumsHeading = page.locator('h4', { hasText: 'Top Albums' });
+    await expect(topAlbumsHeading).toBeVisible();
 
-      // Check artist name (should be "Roniit" based on controller)
-      const artistName = page.locator('h3');
-      await expect(artistName).toBeVisible({ timeout: 10000 });
-      await expect(artistName).toContainText('Roniit');
+    // Check for album images (should have at least one)
+    const albumImages = page.locator('img[src*="lastfm"]');
+    await expect(albumImages.first()).toBeVisible();
 
-      // Check Top Albums section
-      const topAlbumsHeading = page.locator('h4', { hasText: 'Top Albums' });
-      await expect(topAlbumsHeading).toBeVisible();
+    // Check Tags section
+    const tagsHeading = page.locator('h4', { hasText: 'Tags' });
+    await expect(tagsHeading).toBeVisible();
 
-      // Check for album images (should have at least one)
-      const albumImages = page.locator('img[src*="lastfm"]');
-      await expect(albumImages.first()).toBeVisible();
+    // Check for tag elements
+    const tagElements = page.locator('span.label.label-primary');
+    await expect(tagElements.first()).toBeVisible();
 
-      // Check Tags section
-      const tagsHeading = page.locator('h4', { hasText: 'Tags' });
-      await expect(tagsHeading).toBeVisible();
+    // Check Biography section
+    const biographyHeading = page.locator('h4', { hasText: 'Biography' });
+    await expect(biographyHeading).toBeVisible();
 
-      // Check for tag elements
-      const tagElements = page.locator('span.label.label-primary');
-      await expect(tagElements.first()).toBeVisible();
+    // Biography should either have content or "No biography" message
+    const biographyContent = page.locator('h4:has-text("Biography") + p');
+    await expect(biographyContent).toBeVisible();
 
-      // Check Biography section
-      const biographyHeading = page.locator('h4', { hasText: 'Biography' });
-      await expect(biographyHeading).toBeVisible();
+    // Check Top Tracks section
+    const topTracksHeading = page.locator('h4', { hasText: 'Top Tracks' });
+    await expect(topTracksHeading).toBeVisible();
 
-      // Biography should either have content or "No biography" message
-      const biographyContent = page.locator('h4:has-text("Biography") + p');
-      await expect(biographyContent).toBeVisible();
+    // Check for track list (ordered list)
+    const trackList = page.locator('ol');
+    await expect(trackList).toBeVisible();
 
-      // Check Top Tracks section
-      const topTracksHeading = page.locator('h4', { hasText: 'Top Tracks' });
-      await expect(topTracksHeading).toBeVisible();
+    // Check for track links
+    const trackLinks = page.locator('ol li a[href*="last.fm"]');
+    await expect(trackLinks.first()).toBeVisible();
 
-      // Check for track list (ordered list)
-      const trackList = page.locator('ol');
-      await expect(trackList).toBeVisible();
+    // Check Similar Artists section
+    const similarArtistsHeading = page.locator('h4', { hasText: 'Similar Artists' });
+    await expect(similarArtistsHeading).toBeVisible();
 
-      // Check for track links
-      const trackLinks = page.locator('ol li a[href*="last.fm"]');
-      await expect(trackLinks.first()).toBeVisible();
+    // Check for similar artist links
+    const similarArtistsList = page.locator('ul.list-unstyled.list-inline');
+    await expect(similarArtistsList).toBeVisible();
 
-      // Check Similar Artists section
-      const similarArtistsHeading = page.locator('h4', { hasText: 'Similar Artists' });
-      await expect(similarArtistsHeading).toBeVisible();
-
-      // Check for similar artist links
-      const similarArtistsList = page.locator('ul.list-unstyled.list-inline');
-      await expect(similarArtistsList).toBeVisible();
-
-      const similarArtistLinks = page.locator('ul.list-unstyled.list-inline li a[href*="last.fm"]');
-      await expect(similarArtistLinks.first()).toBeVisible();
-    }
+    const similarArtistLinks = page.locator('ul.list-unstyled.list-inline li a[href*="last.fm"]');
+    await expect(similarArtistLinks.first()).toBeVisible();
   });
 
   test('should display correct page structure and navigation elements', async ({ page }) => {

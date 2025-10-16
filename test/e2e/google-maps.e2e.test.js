@@ -40,10 +40,6 @@ test.describe('Google Maps API Integration', () => {
     expect(scriptSrc).toContain('key=');
     expect(scriptSrc).toContain('libraries=marker');
     expect(scriptSrc).toContain('loading=async');
-
-    // Check for polyfill script
-    const polyfillScript = page.locator('script[src*="polyfill.io"]');
-    await expect(polyfillScript).toHaveCount(1);
   });
 
   test('should initialize map and custom elements', async ({ page }) => {
