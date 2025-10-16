@@ -30,7 +30,7 @@
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@googleapis/drive": "^18.0.0",
     "@googleapis/sheets": "^12.0.0",
-    "@huggingface/inference": "^4.11.1",
+    "@huggingface/inference": "^4.11.3",
     "@langchain/community": "^0.3.57",
     "@langchain/core": "^0.3.78",
     "@langchain/mongodb": "0.1.1",
@@ -79,7 +79,7 @@
     "pug": "^3.0.3",
     "sass": "^1.93.2",
     "stripe": "^19.1.0",
-    "twilio": "^5.10.2",
+    "twilio": "^5.10.3",
     "twitch-passport": "^1.0.6",
     "validator": "^13.15.15"
   },
