@@ -40,6 +40,12 @@ module.exports = defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: ['e2e/*.e2e.test.js'],
+    },
+    {
+      name: 'chromium-nokey',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: ['e2e-nokey/*.e2e.test.js'],
     },
   ],
   webServer: {
