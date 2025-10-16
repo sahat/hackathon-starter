@@ -12,7 +12,7 @@ const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const rateLimit = require('express-rate-limit');
-const { format } = require('util');
+const { flash } = require('./config/flash');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -127,38 +127,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-/**
- * Flash Middlware.
- */
-const flash = (req, res, next) => {
-  if (req.flash) return next();
-  req.flash = (type, message, ...args) => {
-    const flashMessages = (req.session.flash ||= {});
-    if (!type) {
-      req.session.flash = {};
-      return { ...flashMessages };
-    }
-    if (!message) {
-      const retrieved = flashMessages[type] || [];
-      delete flashMessages[type];
-      return retrieved;
-    }
-    const arr = (flashMessages[type] ||= []);
-    if (args.length) arr.push(format(message, ...args));
-    else if (Array.isArray(message)) {
-      arr.push(...message);
-      return arr.length;
-    } else arr.push(message);
-    return arr;
-  };
-  res.render = ((r) =>
-    function (...args) {
-      res.locals.messages = req.flash();
-      return r.apply(this, args);
-    })(res.render);
-  next();
-};
 app.use(flash);
 app.use((req, res, next) => {
   if (req.path === '/api/upload' || req.path === '/ai/togetherai-camera') {
@@ -403,4 +371,4 @@ To avoid this, set BASE_URL to the HTTPS endpoint and always access the app thro
   console.log('Press CTRL-C to stop.');
 });
 
-module.exports = { app, flash };
+module.exports = app;

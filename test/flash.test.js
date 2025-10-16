@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { flash } = require('../app');
+const { flash } = require('../config/flash');
 
 describe('flash middleware core tests', () => {
   let req, res, next;
