@@ -1,16 +1,25 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Wikipedia Example', () => {
-  test('should display Content Example: Node.js elements', async ({ page }) => {
-    await page.goto('/api/wikipedia');
-    await page.waitForLoadState('networkidle');
+  let sharedPage;
 
+  test.beforeAll(async ({ browser }) => {
+    sharedPage = await browser.newPage();
+    await sharedPage.goto('/api/wikipedia');
+    await sharedPage.waitForLoadState('networkidle');
+  });
+
+  test.afterAll(async () => {
+    if (sharedPage) await sharedPage.close();
+  });
+
+  test('should display Content Example: Node.js elements', async () => {
     // Basic page checks
-    await expect(page).toHaveTitle(/Wikipedia/);
-    await expect(page.locator('h2')).toContainText('Wikipedia');
+    await expect(sharedPage).toHaveTitle(/Wikipedia/);
+    await expect(sharedPage.locator('h2')).toContainText('Wikipedia');
 
     // Content Example card (Node.js)
-    const contentCard = page.locator('.card.text-white.bg-success');
+    const contentCard = sharedPage.locator('.card.text-white.bg-success');
     await expect(contentCard).toBeVisible();
     await expect(contentCard.locator('.card-header h6')).toContainText('Content Example: Node.js');
 
@@ -38,21 +47,14 @@ test.describe('Wikipedia Example', () => {
     expect(await sectionLinks.count()).toBeGreaterThan(5);
   });
 
-  test('should search for "javascript" and display results', async ({ request, page }) => {
-    // Hit the endpoint directly to ensure server responds
-    const apiResp = await request.get(`/api/wikipedia?q=javascript`);
-    expect(apiResp.ok()).toBeTruthy();
-
-    // Perform the search via the UI
-    await page.goto('/api/wikipedia');
-    await page.waitForLoadState('networkidle');
-
-    await page.fill('input.form-control[name="q"]', 'javascript');
-    await page.click('.card.text-white.bg-info button[type="submit"]');
-    await page.waitForLoadState('networkidle');
+  test('should search for "javascript" and display results', async () => {
+    // Perform the search via the UI on the already loaded page
+    await sharedPage.fill('input.form-control[name="q"]', 'javascript');
+    await sharedPage.click('.card.text-white.bg-info button[type="submit"]');
+    await sharedPage.waitForLoadState('networkidle');
 
     // Results area
-    const results = page.locator('.card.text-white.bg-info .list-group a.list-group-item');
+    const results = sharedPage.locator('.card.text-white.bg-info .list-group a.list-group-item');
     await expect(results.first()).toBeVisible({ timeout: 10000 });
     const count = await results.count();
 

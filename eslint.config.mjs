@@ -6,6 +6,8 @@ import eslintPluginImport from 'eslint-plugin-import';
 export default [
   eslintConfigPrettier, // Disable Prettier‑handled style rules - prettier owns styling
   {
+    ignores: ['tmp/**', 'tmp'],
+
     plugins: {
       'chai-friendly': chaiFriendly,
       import: eslintPluginImport,
