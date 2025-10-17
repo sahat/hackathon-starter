@@ -2,23 +2,32 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('Lob API Integration', () => {
   test.describe.configure({ mode: 'serial' });
-  test('should validate ZIP code API response format', async ({ page }) => {
-    await page.goto('/api/lob');
-    await page.waitForLoadState('networkidle');
+  let sharedPage;
 
+  test.beforeAll(async ({ browser }) => {
+    sharedPage = await browser.newPage();
+    await sharedPage.goto('/api/lob');
+    await sharedPage.waitForLoadState('networkidle');
+  });
+
+  test.afterAll(async () => {
+    if (sharedPage) await sharedPage.close();
+  });
+
+  test('should validate ZIP code API response format', async () => {
     // Check for valid ZIP code pattern (5 digits)
-    await expect(page.locator('h3').filter({ hasText: 'Details of zip code:' })).toContainText(/Details of zip code: \d{5}/);
+    await expect(sharedPage.locator('h3').filter({ hasText: 'Details of zip code:' })).toContainText(/Details of zip code: \d{5}/);
 
     // Verify ZIP ID format (should be alphanumeric)
-    const idText = await page.locator('p').filter({ hasText: 'ID:' }).textContent();
+    const idText = await sharedPage.locator('p').filter({ hasText: 'ID:' }).textContent();
     expect(idText).toMatch(/ID: [a-zA-Z0-9_-]+/);
 
     // Verify ZIP Code Type format
-    const zipTypeText = await page.locator('p').filter({ hasText: 'Zip Code Type:' }).textContent();
+    const zipTypeText = await sharedPage.locator('p').filter({ hasText: 'Zip Code Type:' }).textContent();
     expect(zipTypeText).toMatch(/Zip Code Type: \w+/);
 
     // Verify cities table has proper data structure
-    const table = page.locator('table.table.table-striped.table-bordered');
+    const table = sharedPage.locator('table.table.table-striped.table-bordered');
     await expect(table).toBeVisible();
 
     // Verify table has data rows with proper structure
@@ -47,29 +56,23 @@ test.describe('Lob API Integration', () => {
     expect(preferredText).toMatch(/^(true|false)$/);
   });
 
-  test('should validate USPS Letter API response format', async ({ page }) => {
-    await page.goto('/api/lob');
-    await page.waitForLoadState('networkidle');
-
+  test('should validate USPS Letter API response format', async () => {
     // Verify letter ID format (should be alphanumeric with specific pattern)
-    const letterIdText = await page.locator('text=Letter ID:').textContent();
+    const letterIdText = await sharedPage.locator('text=Letter ID:').textContent();
     expect(letterIdText).toMatch(/Letter ID: [a-zA-Z0-9_-]+/);
 
     // Verify mail type format
-    const mailTypeText = await page.locator('text=Will be mailed using:').textContent();
+    const mailTypeText = await sharedPage.locator('text=Will be mailed using:').textContent();
     expect(mailTypeText).toMatch(/Will be mailed using: [a-zA-Z\s-]+/);
 
     // Verify delivery date format (should be a valid date)
-    const deliveryDateText = await page.locator('text=With expected delivery date of:').textContent();
+    const deliveryDateText = await sharedPage.locator('text=With expected delivery date of:').textContent();
     expect(deliveryDateText).toMatch(/With expected delivery date of: \d{4}-\d{2}-\d{2}/);
   });
 
-  test('should validate PDF generation and file properties', async ({ page }) => {
-    await page.goto('/api/lob');
-    await page.waitForLoadState('networkidle');
-
+  test('should validate PDF generation and file properties', async () => {
     // Verify PDF URL format and validate PDF file
-    const pdfObject = page.locator('#pdfviewer object');
+    const pdfObject = sharedPage.locator('#pdfviewer object');
     // Wait for PDF viewer to become visible (Lob has a 3-second delay for PDF generation)
     await expect(pdfObject).toBeVisible({ timeout: 10000 });
     const pdfUrl = await pdfObject.getAttribute('data');
@@ -77,7 +80,7 @@ test.describe('Lob API Integration', () => {
     expect(pdfUrl).toMatch(/^https?:\/\/.+\.pdf/);
 
     // Fetch and validate the PDF file
-    const response = await page.request.get(pdfUrl);
+    const response = await sharedPage.request.get(pdfUrl);
     expect(response.status()).toBe(200);
 
     const contentType = response.headers()['content-type'];
