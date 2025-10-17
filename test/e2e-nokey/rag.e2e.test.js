@@ -111,7 +111,7 @@ test.describe('RAG File Upload Integration', () => {
     await page.waitForLoadState('networkidle');
 
     const errorAlert = page.locator('.alert-danger');
-    
+
     await expect(errorAlert).toBeVisible({ timeout: 3000 });
 
     // Locate server-side validation error alert
