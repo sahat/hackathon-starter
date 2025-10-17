@@ -71,7 +71,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 
 - Login
   - **Local Authentication** Sign in with Email and Password, Passwordless
-  - **OAuth 2.0 Authentication:** Sign in with Google, Facebook, X (Twitter), Twitch, Github, Discord
+  - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, X (Twitter), Twitch, Github, Discord
   - **OpenID Connect:** Sign in with LinkedIn
 - **User Profile and Account Management**
   - Gravatar
@@ -323,6 +323,18 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Copy and paste _API Key_ and _Secret Key_ keys into `.env` file
 - _API Key_ is your **clientID**
 - _Secret Key_ is your **clientSecret**
+
+<hr>
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" height="50">
+
+- Go to <a href="https://portal.azure.com/" target="_blank">Azure Portal</a>, sign in, and navigate to **Microsoft Entra ID**
+- Click **App registrations** > **+ New registration**
+- Enter an application name (e.g., "Hackathon Starter App") and select **Accounts in any organizational directory and personal Microsoft accounts**
+- Set **Redirect URI** to **Web** with your BASE_URL followed by `/auth/microsoft/callback` (e.g., `http://localhost:8080/auth/microsoft/callback`)
+- Click **Register**, then copy the **Application (client) ID** to `.env` as `MICROSOFT_CLIENT_ID`
+- Go to **Certificates & secrets** > **+ New client secret**, add a description and expiration, then click **Add**
+- Copy the secret **Value** immediately to `.env` as `MICROSOFT_CLIENT_SECRET` (won't be visible again)
 
 <hr>
 
