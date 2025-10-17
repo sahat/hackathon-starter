@@ -9,10 +9,10 @@ const errorHandler = require('errorhandler');
 const lusca = require('lusca');
 const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo');
-const flash = require('express-flash');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const rateLimit = require('express-rate-limit');
+const { flash } = require('./config/flash');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -127,7 +127,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
+app.use(flash);
 app.use((req, res, next) => {
   if (req.path === '/api/upload' || req.path === '/ai/togetherai-camera') {
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
