@@ -109,9 +109,10 @@ test.describe('RAG File Upload Integration', () => {
 
     // Wait for redirect to complete and for flash messages to render
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(3000); // Extra wait time for flash message rendering
 
     const errorAlert = page.locator('.alert-danger');
+    
+    await expect(errorAlert).toBeVisible({ timeout: 3000 });
 
     // Locate server-side validation error alert
     const hasError = (await errorAlert.count()) > 0;

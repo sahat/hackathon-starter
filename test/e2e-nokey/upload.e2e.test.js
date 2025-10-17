@@ -187,7 +187,7 @@ test.describe('File Upload API Integration', () => {
       fs.mkdirSync(tmpDir, { recursive: true });
     }
 
-    // Create a file exactly at the 1MB limit (1024 * 1024 bytes)
+    // Create a file very close to 1MB limit (1024 * 1024 bytes)
     const maxContent = 'A'.repeat(1024 * 1024 - 100); // Slightly under 1MB to account for headers
     const maxFilePath = path.join(tmpDir, 'max-size-test.txt');
     const uploadsDir = path.join(__dirname, '../../uploads');
@@ -236,7 +236,6 @@ test.describe('File Upload API Integration', () => {
       });
 
       expect(matchedFileName).toBeTruthy();
-      expect(matchedFileName).toBeDefined();
 
       if (matchedFileName) {
         uploadedFilePath = path.join(uploadsDir, matchedFileName);
@@ -344,7 +343,6 @@ test.describe('File Upload API Integration', () => {
         });
 
         expect(matchedFileName).toBeTruthy();
-        expect(matchedFileName).toBeDefined();
 
         if (matchedFileName) {
           const uploadedFilePath = path.join(uploadsDir, matchedFileName);
@@ -357,8 +355,6 @@ test.describe('File Upload API Integration', () => {
           // Update beforeFiles set for next iteration
           beforeFiles.add(matchedFileName);
         }
-
-        console.log(`✓ Successfully uploaded and verified ${fileType.name} (${fileType.mimeType})`);
       }
     } finally {
       // Clean up test files from tmp/ directory
