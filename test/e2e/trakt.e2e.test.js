@@ -1,40 +1,42 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Trakt.tv API Integration', () => {
-  test('should launch app, navigate to Trakt API page, and handle basic page elements', async ({ page }) => {
-    // Navigate to Trakt API page
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
+  let sharedPage;
 
-    // Basic page checks
-    await expect(page).toHaveTitle(/Trakt\.tv API/);
-    await expect(page.locator('h2')).toContainText('Trakt.tv API');
-
-    // Check for API documentation links
-    await expect(page.locator('.btn-group a[href*="trakt.docs.apiary.io"]')).toBeVisible();
-    await expect(page.locator('.btn-group a[href*="trakt.tv/oauth/applications"]')).toBeVisible();
-    await expect(page.locator('text=/API Docs/i')).toBeVisible();
-    await expect(page.locator('text=/App Dashboard/i')).toBeVisible();
+  test.beforeAll(async ({ browser }) => {
+    sharedPage = await browser.newPage();
+    await sharedPage.goto('/api/trakt');
+    await sharedPage.waitForLoadState('networkidle');
   });
 
-  test('should display proper flash message for authentication states', async ({ page }) => {
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
+  test.afterAll(async () => {
+    if (sharedPage) await sharedPage.close();
+  });
 
+  test('should launch app, navigate to Trakt API page, and handle basic page elements', async () => {
+    // Basic page checks
+    await expect(sharedPage).toHaveTitle(/Trakt\.tv API/);
+    await expect(sharedPage.locator('h2')).toContainText('Trakt.tv API');
+
+    // Check for API documentation links
+    await expect(sharedPage.locator('.btn-group a[href*="trakt.docs.apiary.io"]')).toBeVisible();
+    await expect(sharedPage.locator('.btn-group a[href*="trakt.tv/oauth/applications"]')).toBeVisible();
+    await expect(sharedPage.locator('text=/API Docs/i')).toBeVisible();
+    await expect(sharedPage.locator('text=/App Dashboard/i')).toBeVisible();
+  });
+
+  test('should display proper flash message for authentication states', async () => {
     // Check for the specific authentication failure message
-    const alertWarning = page.locator('.alert.alert-warning');
+    const alertWarning = sharedPage.locator('.alert.alert-warning');
     await expect(alertWarning).toBeVisible();
 
     // Should contain the "please log in" message
     await expect(alertWarning).toContainText('Please log in to access your Trakt.tv profile information.');
   });
 
-  test('should display public trending movies section', async ({ page }) => {
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
-
+  test('should display public trending movies section', async () => {
     // Check for trending movies section - this should exist with valid API key
-    const trendingCard = page.locator('.card.text-white.bg-info');
+    const trendingCard = sharedPage.locator('.card.text-white.bg-info');
     await expect(trendingCard).toBeVisible();
     await expect(trendingCard.locator('.card-header h6')).toContainText('Trending Movies (Public API, top 6)');
 
@@ -59,12 +61,9 @@ test.describe('Trakt.tv API Integration', () => {
     }
   });
 
-  test('should display top trending movie details', async ({ page }) => {
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
-
+  test('should display top trending movie details', async () => {
     // Check for top trending movie section - this should exist with valid API key
-    const topTrendingCard = page.locator('.card.text-white.bg-primary');
+    const topTrendingCard = sharedPage.locator('.card.text-white.bg-primary');
     await expect(topTrendingCard).toBeVisible();
     await expect(topTrendingCard.locator('.card-header h6')).toContainText('Top Trending Movie Details');
 
@@ -95,11 +94,8 @@ test.describe('Trakt.tv API Integration', () => {
     expect(overviewFound).toBe(true);
   });
 
-  test('should handle movie images and trailers', async ({ page }) => {
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
-
-    const topTrendingCard = page.locator('.card.text-white.bg-primary');
+  test('should handle movie images and trailers', async () => {
+    const topTrendingCard = sharedPage.locator('.card.text-white.bg-primary');
     await expect(topTrendingCard).toBeVisible();
 
     // Check for movie poster image
@@ -118,11 +114,8 @@ test.describe('Trakt.tv API Integration', () => {
     expect(iframeSrc).toMatch(/youtu/);
   });
 
-  test('should display movie year and tagline', async ({ page }) => {
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
-
-    const topTrendingCard = page.locator('.card.text-white.bg-primary');
+  test('should display movie year and tagline', async () => {
+    const topTrendingCard = sharedPage.locator('.card.text-white.bg-primary');
     await expect(topTrendingCard).toBeVisible();
 
     const yearElement = topTrendingCard.locator('span.text-muted');
@@ -135,11 +128,8 @@ test.describe('Trakt.tv API Integration', () => {
     await expect(tagline.first()).toBeVisible();
   });
 
-  test('should validate trending movies data structure', async ({ page }) => {
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
-
-    const trendingCard = page.locator('.card.text-white.bg-info');
+  test('should validate trending movies data structure', async () => {
+    const trendingCard = sharedPage.locator('.card.text-white.bg-info');
     await expect(trendingCard).toBeVisible();
 
     // Check the grid structure
@@ -165,11 +155,8 @@ test.describe('Trakt.tv API Integration', () => {
     }
   });
 
-  test('should handle runtime and rating formatting', async ({ page }) => {
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
-
-    const topTrendingCard = page.locator('.card.text-white.bg-primary');
+  test('should handle runtime and rating formatting', async () => {
+    const topTrendingCard = sharedPage.locator('.card.text-white.bg-primary');
     await expect(topTrendingCard).toBeVisible();
 
     // Check runtime format (should end with "min")
@@ -181,11 +168,8 @@ test.describe('Trakt.tv API Integration', () => {
     expect(ratingText).toMatch(/Rating:\s+(\d+\.\d{2}\s+\/\s+10|$)/);
   });
 
-  test('should handle arrays for languages and genres', async ({ page }) => {
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
-
-    const topTrendingCard = page.locator('.card.text-white.bg-primary');
+  test('should handle arrays for languages and genres', async () => {
+    const topTrendingCard = sharedPage.locator('.card.text-white.bg-primary');
     await expect(topTrendingCard).toBeVisible();
 
     // Check languages format (comma-separated or "N/A")
@@ -201,27 +185,24 @@ test.describe('Trakt.tv API Integration', () => {
     expect(certificationText).toMatch(/Certification:\s+([\w\s-]+|N\/A)/);
   });
 
-  test('should validate all API response elements are displayed', async ({ page }) => {
-    await page.goto('/api/trakt');
-    await page.waitForLoadState('networkidle');
-
+  test('should validate all API response elements are displayed', async () => {
     // Verify all main sections are present
-    await expect(page.locator('h2')).toContainText('Trakt.tv API');
+    await expect(sharedPage.locator('h2')).toContainText('Trakt.tv API');
 
     // Authentication warning should be present when not logged in
-    await expect(page.locator('.alert.alert-warning')).toBeVisible();
+    await expect(sharedPage.locator('.alert.alert-warning')).toBeVisible();
 
     // Public trending movies section should be present
-    await expect(page.locator('.card.text-white.bg-info')).toBeVisible();
+    await expect(sharedPage.locator('.card.text-white.bg-info')).toBeVisible();
 
     // Top trending movie details should be present
-    await expect(page.locator('.card.text-white.bg-primary')).toBeVisible();
+    await expect(sharedPage.locator('.card.text-white.bg-primary')).toBeVisible();
 
     // Verify the page handles the API response structure correctly
-    const trendingMoviesHeader = page.locator('.card.text-white.bg-info .card-header h6');
+    const trendingMoviesHeader = sharedPage.locator('.card.text-white.bg-info .card-header h6');
     await expect(trendingMoviesHeader).toContainText('Trending Movies (Public API, top 6)');
 
-    const topMovieHeader = page.locator('.card.text-white.bg-primary .card-header h6');
+    const topMovieHeader = sharedPage.locator('.card.text-white.bg-primary .card-header h6');
     await expect(topMovieHeader).toContainText('Top Trending Movie Details (Public API)');
   });
 });

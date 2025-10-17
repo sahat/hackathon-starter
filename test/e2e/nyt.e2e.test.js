@@ -1,16 +1,24 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('New York Times API Integration', () => {
-  test('should render basic page content', async ({ page }) => {
-    // Navigate to the NYT API page
-    await page.goto('/api/nyt');
-    await page.waitForLoadState('networkidle');
+  let sharedPage;
 
+  test.beforeAll(async ({ browser }) => {
+    sharedPage = await browser.newPage();
+    await sharedPage.goto('/api/nyt');
+    await sharedPage.waitForLoadState('networkidle');
+  });
+
+  test.afterAll(async () => {
+    if (sharedPage) await sharedPage.close();
+  });
+
+  test('should render basic page content', async () => {
     // Basic page checks
-    await expect(page).toHaveTitle(/New York Times API/);
-    await expect(page.locator('h2')).toContainText('New York Times API');
+    await expect(sharedPage).toHaveTitle(/New York Times API/);
+    await expect(sharedPage.locator('h2')).toContainText('New York Times API');
     // Locate the main table and verify header columns
-    const bestSellersTable = page.locator('table.table');
+    const bestSellersTable = sharedPage.locator('table.table');
     await expect(bestSellersTable).toBeVisible();
 
     //Check the content of the file
@@ -27,11 +35,8 @@ test.describe('New York Times API Integration', () => {
     expect(await tableRows.count()).toBeGreaterThan(0);
   });
 
-  test('should display the details for the Rank 1 best seller', async ({ page }) => {
-    await page.goto('/api/nyt');
-    await page.waitForLoadState('networkidle');
-
-    const bestSellersTable = page.locator('table.table');
+  test('should display the details for the Rank 1 best seller', async () => {
+    const bestSellersTable = sharedPage.locator('table.table');
     await expect(bestSellersTable).toBeVisible();
 
     // Locate the first row's data cells (td)

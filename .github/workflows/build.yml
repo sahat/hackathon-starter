@@ -10,137 +10,34 @@ permissions:
   contents: read
   pull-requests: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    env:
+      RUN_E2E: ${{ vars.RUN_E2E }} # from repository settings -> Actions -> Variables
     strategy:
       matrix:
         node-version: [22.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v5
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm install
       - run: npm run lint-check
       - run: npm run test
-
-  e2e-nokey:
-    name: E2E Tests with no API keys
-    if: ${{ github.repository == 'sahat/hackathon-starter' }}
-    needs: [build]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      max-parallel: 1 # To avoid hitting APIs concurrently
-      matrix:
-        node-version: [22.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm install
-      - run: npm run test:e2e-nokey
-
-  dependabot-automerge:
-    needs: [build, e2e-nokey]
-    if: >
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.user.login == 'dependabot[bot]'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-      - name: Automerge Dependabot PRs if all checks have passed
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh pr merge --squash ${{ github.event.pull_request.number }}
-
-  Sync-patches-after-dependabot-automerge:
-    needs: [dependabot-automerge]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-        with:
-          ref: master
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: 'lts/*'
-          cache: 'npm'
-
-      - name: Rename patch-package files to match current versions
-        shell: bash
-        run: |
-          shopt -s nullglob
-
-          get_version() {
-            jq -r ".dependencies[\"$1\"] // .devDependencies[\"$1\"]" package.json
-          }
-
-          CHANGED=0
-
-          for PATCH in patches/*.patch; do
-            BASE=$(basename "$PATCH" .patch)
-
-            NAME_WITHOUT_VERSION="${BASE%+*}"
-            if [[ "$NAME_WITHOUT_VERSION" == @*+* ]]; then
-              PACKAGE="${NAME_WITHOUT_VERSION/+//}"
-            else
-              PACKAGE="$NAME_WITHOUT_VERSION"
-            fi
-
-            VERSION=$(get_version "$PACKAGE")
-
-            if [ "$VERSION" == "null" ]; then
-              echo "Skipping $PACKAGE — not found in package.json"
-              continue
-            fi
-
-            VERSION="${VERSION#^}"
-            NEW_NAME="$(echo "$PACKAGE" | sed 's|/|+|g')+${VERSION}.patch"
-
-            if [ "$BASE.patch" != "$NEW_NAME" ]; then
-              echo "Renaming $BASE.patch -> $NEW_NAME"
-              git mv "$PATCH" "patches/$NEW_NAME"
-              CHANGED=1
-            fi
-          done
-
-          echo "CHANGED=$CHANGED" >> $GITHUB_ENV
-
-      - name: Install dependencies
-        if: ${{ env.CHANGED == '1' }}
-        run: npm ci
-
-      - name: Run tests
-        if: ${{ env.CHANGED == '1' }}
-        run: npm test
-
-      - name: Run e2e tests
-        if: ${{ env.CHANGED == '1' && github.repository == 'sahat/hackathon-starter' }}
+      - if: ${{ env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter'}}
         run: npm run test:e2e-nokey
-
-      - name: Commit and push patch renames
-        if: ${{ env.CHANGED == '1' }}
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add patches/
-          git commit -m "chore: sync patch-package filenames with current versions"
-          git push
+      - name: Upload tmp as an artifact (Playwrite artifacts, code coverage report, etc)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tmp-artifacts-${{ matrix.os }}-${{ github.job }}-${{ github.run_id }}
+          path: tmp/**
