@@ -1681,3 +1681,32 @@ exports.getWikipedia = async (req, res) => {
     error,
   });
 };
+
+exports.getTenor = async (req, res, next) => {
+  const limit = 20; // Default limit for the number of GIFs
+  const key = process.env.TENOR_API_KEY; // Tenor API key from environment variables
+  const search = req.query.search || 'Happy'; // Default search term if none is provided
+  const url = `https://tenor.googleapis.com/v2/search?key=${key}&q=${encodeURIComponent(search)}&limit=${limit}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch Tenor GIFs. Please ensure your Tenor API Key is set: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const gifs = data.results.map((gif) => ({
+      id: gif.id,
+      title: gif.content_description,
+      url: gif.media_formats.gif.url,
+    }));
+
+    res.render('api/tenor', {
+      title: 'Tenor API',
+      search,
+      gifs,
+    });
+  } catch (error) {
+    console.error('Tenor API Error:', error);
+    next(error);
+  }
+};

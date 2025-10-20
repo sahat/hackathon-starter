@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+  h2
+    i.fas.fa-flask.fa-sm.me-2
+    | Tenor API
+
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://developers.google.com/tenor/guides/quickstart', target='_blank')
+      i.far.fa-check-square.fa-sm.me-2
+      | Getting Started
+    a.btn.btn-primary.w-100(href='https://developers.google.com/tenor/guides/endpoints', target='_blank')
+      i.far.fa-file-alt.fa-sm.me-2
+      | Documentation
+  br
+
+  .card.text-white.bg-info.mb-4
+    .card-header
+      h6.panel-title.mb-0 Search Tenor GIFs
+    .card-body.text-dark.bg-white
+      form(role='form', method='GET', action='/api/tenor')
+        .form-group.mb-3
+          label.col-form-label.font-weight-bold Search Term
+          input.form-control(type='text', name='search', placeholder='Search for GIFs', value=search || '', required)
+        button.btn.btn-primary.mt-2(type='submit')
+          i.fas.fa-search.me-2
+          | Search
+
+  if gifs.length
+    .card.text-white.bg-success.mb-4
+      .card-header
+        h6.panel-title.mb-0 Results for "#{ search }"
+      .card-body.text-dark.bg-white
+        .row
+          each gif in gifs
+            .col-md-4
+              .card.mb-4
+                img.card-img-top.img-fluid.rounded(style='width: 100%; height: 300px; object-fit: cover', src=gif.url, alt=gif.title)
+  else
+    .alert.alert-warning.mt-3 No GIFs found for "#{ search }".
