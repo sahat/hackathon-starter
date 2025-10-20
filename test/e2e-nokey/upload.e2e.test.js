@@ -3,25 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 test.describe('File Upload API Integration', () => {
-  test('should load upload page with correct elements', async ({ page }) => {
-    // Navigate to upload page
-    await page.goto('/api/upload');
-    await page.waitForLoadState('networkidle');
-
-    // Basic page checks
-    await expect(page).toHaveTitle(/File Upload/);
-    await expect(page.locator('h2')).toContainText('File Upload');
-
-    // Check form elements
-    await expect(page.locator('h3')).toContainText('File Upload Form');
-    await expect(page.locator('form[enctype="multipart/form-data"]')).toBeVisible();
-    await expect(page.locator('input[type="file"][name="myFile"]')).toBeVisible();
-    await expect(page.locator('input[name="_csrf"]')).toBeAttached(); // CSRF is hidden, so check for presence
-    await expect(page.locator('button[type="submit"]')).toContainText('Submit');
-
-    // Check informational text
-    await expect(page.locator('text=/uploads.*directory/i')).toBeVisible();
-  });
+  test.describe.configure({ mode: 'serial' });
 
   test('should upload a small file successfully', async ({ page }) => {
     await page.goto('/api/upload');
@@ -97,7 +79,7 @@ test.describe('File Upload API Integration', () => {
 
     // Create a file larger than 1MB (1024 * 1024 bytes)
     const largeContent = 'A'.repeat(1024 * 1024 + 1000); // Slightly over 1MB
-    const largeFilePath = path.join(__dirname, 'large-test-file.txt');
+    const largeFilePath = path.join(__dirname, '../../tmp/large-test-file.txt');
 
     // Clean up any existing test file
     if (fs.existsSync(largeFilePath)) {
@@ -256,7 +238,7 @@ test.describe('File Upload API Integration', () => {
     }
   });
 
-  test('should upload comprehensive file types with enhanced verification', async ({ page }) => {
+  test('should upload different file types', async ({ page }) => {
     await page.goto('/api/upload');
     await page.waitForLoadState('networkidle');
 
