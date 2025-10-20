@@ -90,7 +90,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
-  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
+  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping, Tenor (GIFs)
   - **Maps and Location:** Google Maps, HERE Maps
   - **Productivity:** Google Drive, Google Sheets
 
@@ -456,6 +456,17 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 - Check the box **Allow this application to be used to Sign in with X**
 - Click **Update this X's applications settings**
 - Copy and paste _Consumer Key_ and _Consumer Secret_ keys into `.env` file
+
+<hr>
+
+<img src="https://tenor.com/assets/img/tenor-logo.svg" height="50">
+
+- Go to <a href="https://developers.google.com/tenor/guides/quickstart" target="_blank">https://developers.google.com/tenor/guides/quickstart</a>
+- Sign into Google Cloud Console
+- Click **Get a Tenor API key**
+- Create a new project of select an existing one
+- Click **Confirm and Continue**
+- Copy and paste TENOR_API_KEY into `.env` file
 
 <hr>
 
