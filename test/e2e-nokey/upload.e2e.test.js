@@ -4,11 +4,19 @@ const path = require('path');
 
 test.describe('File Upload API Integration', () => {
   test.describe.configure({ mode: 'serial' });
+  let sharedPage;
 
-  test('should upload a small file successfully', async ({ page }) => {
-    await page.goto('/api/upload');
-    await page.waitForLoadState('networkidle');
+  test.beforeAll(async ({ browser }) => {
+    sharedPage = await browser.newPage();
+    await sharedPage.goto('/api/upload');
+    await sharedPage.waitForLoadState('networkidle');
+  });
 
+  test.afterAll(async () => {
+    if (sharedPage) await sharedPage.close();
+  });
+
+  test('should upload a small file successfully', async () => {
     // Create a small test file in project 'tmp/' (gitignored)
     const tmpDir = path.join(__dirname, '../../tmp');
     if (!fs.existsSync(tmpDir)) {
@@ -24,25 +32,25 @@ test.describe('File Upload API Integration', () => {
       fs.writeFileSync(testFilePath, testContent);
 
       // Verify CSRF token is present
-      const csrfInput = page.locator('input[name="_csrf"]');
+      const csrfInput = sharedPage.locator('input[name="_csrf"]');
       await expect(csrfInput).toBeAttached();
 
       // Upload the file
-      const fileInput = page.locator('input[type="file"][name="myFile"]');
+      const fileInput = sharedPage.locator('input[type="file"][name="myFile"]');
       await fileInput.setInputFiles(testFilePath);
 
       // Submit form and wait for response
-      const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
+      const [response] = await Promise.all([sharedPage.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), sharedPage.click('button[type="submit"]')]);
 
       // Verify redirect response
       expect(response.status()).toBe(302);
 
       // Wait for redirect to complete
-      await page.waitForURL('/api/upload');
-      await page.waitForLoadState('networkidle');
+      await sharedPage.waitForURL('/api/upload');
+      await sharedPage.waitForLoadState('networkidle');
 
       // Check for success message
-      const successAlert = page.locator('.alert.alert-success');
+      const successAlert = sharedPage.locator('.alert.alert-success');
       await expect(successAlert).toBeVisible({ timeout: 10000 });
       await expect(successAlert).toContainText(/uploaded successfully/i);
 
@@ -73,10 +81,7 @@ test.describe('File Upload API Integration', () => {
     }
   });
 
-  test('should handle file size limit exceeded error', async ({ page }) => {
-    await page.goto('/api/upload');
-    await page.waitForLoadState('networkidle');
-
+  test('should handle file size limit exceeded error', async () => {
     // Create a file larger than 1MB (1024 * 1024 bytes)
     const largeContent = 'A'.repeat(1024 * 1024 + 1000); // Slightly over 1MB
     const largeFilePath = path.join(__dirname, '../../tmp/large-test-file.txt');
@@ -90,25 +95,25 @@ test.describe('File Upload API Integration', () => {
 
     try {
       // Verify CSRF token is present
-      const csrfInput = page.locator('input[name="_csrf"]');
+      const csrfInput = sharedPage.locator('input[name="_csrf"]');
       await expect(csrfInput).toBeAttached();
 
       // Upload the large file
-      const fileInput = page.locator('input[type="file"][name="myFile"]');
+      const fileInput = sharedPage.locator('input[type="file"][name="myFile"]');
       await fileInput.setInputFiles(largeFilePath);
 
       // Submit form and wait for response
-      const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
+      const [response] = await Promise.all([sharedPage.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), sharedPage.click('button[type="submit"]')]);
 
       // Verify redirect response
       expect(response.status()).toBe(302);
 
       // Wait for redirect to complete
-      await page.waitForURL('/api/upload');
-      await page.waitForLoadState('networkidle');
+      await sharedPage.waitForURL('/api/upload');
+      await sharedPage.waitForLoadState('networkidle');
 
       // Check for error message about file size
-      const errorAlert = page.locator('.alert.alert-danger');
+      const errorAlert = sharedPage.locator('.alert.alert-danger');
       await expect(errorAlert).toBeVisible({ timeout: 10000 });
       await expect(errorAlert).toContainText(/file size.*too large.*1MB/i);
     } finally {
@@ -119,34 +124,28 @@ test.describe('File Upload API Integration', () => {
     }
   });
 
-  test('should handle form submission without file', async ({ page }) => {
-    await page.goto('/api/upload');
-    await page.waitForLoadState('networkidle');
-
+  test('should handle form submission without file', async () => {
     // Verify CSRF token is present
-    const csrfInput = page.locator('input[name="_csrf"]');
+    const csrfInput = sharedPage.locator('input[name="_csrf"]');
     await expect(csrfInput).toBeAttached();
 
     // Submit form and wait for response
-    const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
+    const [response] = await Promise.all([sharedPage.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), sharedPage.click('button[type="submit"]')]);
 
     // Verify redirect response
     expect(response.status()).toBe(302);
 
     // Wait for redirect to complete
-    await page.waitForURL('/api/upload');
-    await page.waitForLoadState('networkidle');
+    await sharedPage.waitForURL('/api/upload');
+    await sharedPage.waitForLoadState('networkidle');
 
     // Should redirect back to upload page (no file selected is handled gracefully)
-    await expect(page.locator('h2')).toContainText('File Upload');
+    await expect(sharedPage.locator('h2')).toContainText('File Upload');
   });
 
-  test('should maintain CSRF protection', async ({ page }) => {
-    await page.goto('/api/upload');
-    await page.waitForLoadState('networkidle');
-
+  test('should maintain CSRF protection', async () => {
     // Verify CSRF token is present
-    const csrfInput = page.locator('input[name="_csrf"]');
+    const csrfInput = sharedPage.locator('input[name="_csrf"]');
     await expect(csrfInput).toBeAttached(); // CSRF is hidden, so check for presence
 
     const csrfValue = await csrfInput.getAttribute('value');
@@ -154,15 +153,12 @@ test.describe('File Upload API Integration', () => {
     expect(csrfValue.length).toBeGreaterThan(0);
 
     // Verify form has correct enctype for file uploads
-    const form = page.locator('form[enctype="multipart/form-data"]');
+    const form = sharedPage.locator('form[enctype="multipart/form-data"]');
     await expect(form).toBeVisible();
     await expect(form).toHaveAttribute('method', 'POST');
   });
 
-  test('should handle upload with maximum allowed file size', async ({ page }) => {
-    await page.goto('/api/upload');
-    await page.waitForLoadState('networkidle');
-
+  test('should handle upload with maximum allowed file size', async () => {
     // Create tmp directory if it doesn't exist
     const tmpDir = path.join(__dirname, '../../tmp');
     if (!fs.existsSync(tmpDir)) {
@@ -180,25 +176,25 @@ test.describe('File Upload API Integration', () => {
       fs.writeFileSync(maxFilePath, maxContent);
 
       // Verify CSRF token is present
-      const csrfInput = page.locator('input[name="_csrf"]');
+      const csrfInput = sharedPage.locator('input[name="_csrf"]');
       await expect(csrfInput).toBeAttached();
 
       // Upload the file
-      const fileInput = page.locator('input[type="file"][name="myFile"]');
+      const fileInput = sharedPage.locator('input[type="file"][name="myFile"]');
       await fileInput.setInputFiles(maxFilePath);
 
       // Submit form and wait for response
-      const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
+      const [response] = await Promise.all([sharedPage.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), sharedPage.click('button[type="submit"]')]);
 
       // Verify redirect response
       expect(response.status()).toBe(302);
 
       // Wait for redirect to complete
-      await page.waitForURL('/api/upload');
-      await page.waitForLoadState('networkidle');
+      await sharedPage.waitForURL('/api/upload');
+      await sharedPage.waitForLoadState('networkidle');
 
       // Check for success message (should work for files at the limit)
-      const successAlert = page.locator('.alert.alert-success');
+      const successAlert = sharedPage.locator('.alert.alert-success');
       await expect(successAlert).toBeVisible({ timeout: 10000 });
       await expect(successAlert).toContainText(/uploaded successfully/i);
 
@@ -238,10 +234,7 @@ test.describe('File Upload API Integration', () => {
     }
   });
 
-  test('should upload different file types', async ({ page }) => {
-    await page.goto('/api/upload');
-    await page.waitForLoadState('networkidle');
-
+  test('should upload different file types', async () => {
     // Define different file types to test
     const fileTypes = [
       {
@@ -287,25 +280,25 @@ test.describe('File Upload API Integration', () => {
         createdFiles.push(testFilePath);
 
         // Verify CSRF token is present
-        const csrfInput = page.locator('input[name="_csrf"]');
+        const csrfInput = sharedPage.locator('input[name="_csrf"]');
         await expect(csrfInput).toBeAttached();
 
         // Upload the file
-        const fileInput = page.locator('input[type="file"][name="myFile"]');
+        const fileInput = sharedPage.locator('input[type="file"][name="myFile"]');
         await fileInput.setInputFiles(testFilePath);
 
         // Submit form and wait for response
-        const [response] = await Promise.all([page.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), page.click('button[type="submit"]')]);
+        const [response] = await Promise.all([sharedPage.waitForResponse((response) => response.url().includes('/api/upload') && response.request().method() === 'POST'), sharedPage.click('button[type="submit"]')]);
 
         // Verify redirect response
         expect(response.status()).toBe(302);
 
         // Wait for redirect to complete
-        await page.waitForURL('/api/upload');
-        await page.waitForLoadState('networkidle');
+        await sharedPage.waitForURL('/api/upload');
+        await sharedPage.waitForLoadState('networkidle');
 
         // Check for success message
-        const successAlert = page.locator('.alert.alert-success');
+        const successAlert = sharedPage.locator('.alert.alert-success');
         await expect(successAlert).toBeVisible({ timeout: 10000 });
         await expect(successAlert).toContainText(/uploaded successfully/i);
 
