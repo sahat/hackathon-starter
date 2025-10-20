@@ -41,31 +41,65 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 
 ## Table of Contents
 
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
+- [Hackathon Starter](#hackathon-starter)
+  - [Testimonials](#testimonials)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Getting Started](#getting-started)
 - [Obtaining API Keys](#obtaining-api-keys)
-- [Web Analytics](#web-analytics)
-- [Open Graph](#open-graph)
-- [Project Structure](#project-structure)
-- [List of Packages](#list-of-packages)
-- [Useful Tools and Resources](#useful-tools-and-resources)
-- [Recommended Design Resources](#recommended-design-resources)
-- [Recommended Node.js Libraries](#recommended-nodejs-libraries)
-- [Recommended Client-side Libraries](#recommended-client-side-libraries)
-- [Using AI Assistants](#using-ai-assistants)
-- [FAQ](#faq)
-- [How It Works](#how-it-works-mini-guides)
-- [Cheatsheets](#cheatsheets)
-  - [ES6](#-es6-cheatsheet)
-  - [JavaScript Date](#-javascript-date-cheatsheet)
-  - [Mongoose Cheatsheet](#mongoose-cheatsheet)
-- [Deployment](#deployment)
-- [Docker](#docker)
-- [Production](#production)
-- [Changelog](#changelog)
-- [Contributing](#contributing)
-- [License](#license)
+  - [SMTP](#smtp)
+  - [Web Analytics](#web-analytics)
+    - [Google Analytics 4 Setup](#google-analytics-4-setup)
+    - [Facebook Pixel](#facebook-pixel)
+  - [Open Graph](#open-graph)
+  - [Project Structure](#project-structure)
+  - [List of Packages](#list-of-packages)
+  - [Useful Tools and Resources](#useful-tools-and-resources)
+  - [Recommended Design Resources](#recommended-design-resources)
+  - [Recommended Node.js Libraries](#recommended-nodejs-libraries)
+  - [Recommended Client-side Libraries](#recommended-client-side-libraries)
+  - [Using AI Assistants](#using-ai-assistants)
+    - [Providing Context to AI Tools](#providing-context-to-ai-tools)
+    - [Example Prompts to Get You Started](#example-prompts-to-get-you-started)
+  - [FAQ](#faq)
+    - [Why do I get `403 Error: Forbidden` when submitting a form?](#why-do-i-get-403-error-forbidden-when-submitting-a-form)
+    - [I am getting MongoDB Connection Error, how do I fix it?](#i-am-getting-mongodb-connection-error-how-do-i-fix-it)
+    - [I get an error when I deploy my app, why?](#i-get-an-error-when-i-deploy-my-app-why)
+    - [Why do you have all routes defined in app.js?](#why-do-you-have-all-routes-defined-in-appjs)
+  - [How It Works (mini guides)](#how-it-works-mini-guides)
+    - [Custom HTML and CSS Design 101](#custom-html-and-css-design-101)
+    - [How do flash messages work in this project?](#how-do-flash-messages-work-in-this-project)
+    - [How do I create a new page?](#how-do-i-create-a-new-page)
+    - [How do I use Socket.io with Hackathon Starter?](#how-do-i-use-socketio-with-hackathon-starter)
+  - [Cheatsheets](#cheatsheets)
+    - [ ES6 Cheatsheet](#-es6-cheatsheet)
+      - [Declarations](#declarations)
+      - [Template Strings](#template-strings)
+      - [Modules](#modules)
+      - [Spread Operator](#spread-operator)
+      - [Promises](#promises)
+      - [Arrow Functions](#arrow-functions)
+      - [Classes](#classes)
+    - [ JavaScript Date Cheatsheet](#-javascript-date-cheatsheet)
+      - [Unix Timestamp (seconds)](#unix-timestamp-seconds)
+      - [Add 30 minutes to a Date object](#add-30-minutes-to-a-date-object)
+      - [Date Formatting](#date-formatting)
+      - [Next week Date object](#next-week-date-object)
+      - [Yesterday Date object](#yesterday-date-object)
+    - [Mongoose Cheatsheet](#mongoose-cheatsheet)
+      - [Find all users:](#find-all-users)
+      - [Find a user by email:](#find-a-user-by-email)
+      - [Find 5 most recent user accounts:](#find-5-most-recent-user-accounts)
+      - [Get the total count of a field from all documents:](#get-the-total-count-of-a-field-from-all-documents)
+  - [Docker](#docker)
+  - [Deployment](#deployment)
+    - [Hosted MongoDB Atlas](#hosted-mongodb-atlas)
+  - [Production](#production)
+  - [Testing](#testing)
+  - [Changelog](#changelog)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Features
 
@@ -220,13 +254,15 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://imgur.com/2P4UMvC.png" height="75">
 
-- Go to <a href="https://developer.foursquare.com" target="_blank">Foursquare for Developers</a> and log in
-- Click on **My Apps** in the top menu
-- Click the **Create A New App** button
-- Enter _App Name_, _Welcome page url_,
-- For **Redirect URI**: your BASE_URL value followed by /auth/foursquare/callback (i.e. `http://localhost:8080/auth/foursquare/callback` )
-- Click **Save Changes**
-- Copy and paste _Client ID_ and _Client Secret_ keys into `.env` file
+- Go to <a href="https://foursquare.com/developer/" target="_blank">Foursquare for Developers</a> and log in
+
+- Click on **Create a new project** button
+- Enter your _Organization_ and _Project Name_
+- Click **Create**
+- Navigate to your project
+- Click **Settings** in the left-hand-side menu
+- Generate a Service API Key
+- Copy and paste the Service API Key as `FOURSQUARE_APIKEY` in your `.env` file
 
 <hr>
 

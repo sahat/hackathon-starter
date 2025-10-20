@@ -32,26 +32,23 @@ exports.getApi = (req, res) => {
  */
 exports.getFoursquare = async (req, res, next) => {
   try {
-    const headers = {
-      Authorization: `${process.env.FOURSQUARE_APIKEY}`,
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'X-Places-Api-Version': '2025-06-17',
+        authorization: `Bearer ${process.env.FOURSQUARE_SERVICE_APIKEY}`,
+      },
     };
 
-    const [trendingVenuesRes, venueDetailRes, venuePhotosRes] = await Promise.all([
-      fetch('https://api.foursquare.com/v3/places/search?ll=47.609657,-122.342148&limit=10', {
-        headers,
-      }).then((res) => res.json()),
-      fetch('https://api.foursquare.com/v3/places/427ea800f964a520b1211fe3', {
-        headers,
-      }).then((res) => res.json()),
-      fetch('https://api.foursquare.com/v3/places/427ea800f964a520b1211fe3/photos', {
-        headers,
-      }).then((res) => res.json()),
+    const [trendingVenuesRes, venueDetailRes] = await Promise.all([
+      fetch('https://places-api.foursquare.com/places/search?ll=47.609657,-122.342148&limit=10', options).then((res) => res.json()),
+      fetch('https://places-api.foursquare.com/places/427ea800f964a520b1211fe3', options).then((res) => res.json()),
     ]);
     res.render('api/foursquare', {
-      title: 'Foursquare API (v3)',
-      trendingVenues: trendingVenuesRes.results,
+      title: 'Foursquare Places API',
+      trendingVenues: trendingVenuesRes.results || [],
       venueDetail: venueDetailRes,
-      venuePhotos: venuePhotosRes.slice(0, 9), // Limit the photos to 9
     });
   } catch (error) {
     next(error);
