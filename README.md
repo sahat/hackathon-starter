@@ -1360,25 +1360,65 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 
 ## Docker
 
-You will need to install docker and docker-compose on your system. If you are using WSL, you will need to install Docker Desktop on Windows and docker-compose on WSL.
+Check if Docker is already installed on your system. If not, install it using the official Docker installation guide below.
+
+```bash 
+Docker --version
+```
 
 - [Docker installation](https://docs.docker.com/engine/installation/)
 
-After installing docker, start the application with the following commands :
+After installing docker, start the application by building docker image with the following commands :
+
+1. Clone the repo
+2. copy .env.example - .env
+3. Build it using Dockerfile / docker compose  
+
+## Option 1: Using Dockerfile
 
 ```
-# To build the project while suppressing most of the build messages
-docker-compose build web
+# Build the Docker image locally
+docker build --no-cache -t hackathon .
 
-# To build the project without suppressing the build messages or using cached data
-docker-compose build --no-cache --progress=plain web
+# Run the container
+docker run -d -p 8080:8080 --name hackathon-container hackathon
 
-# To start the application (or to restart after making changes to the source code)
-docker-compose up web
+# Verify whether the container is running
+docker ps
+
+# Stop the container
+docker stop hackathon-container
 
 ```
 
-To view the app, find your docker IP address + port 8080 ( this will typically be `http://localhost:8080/` ). To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.
+## Option 2: Using Docker Compose
+
+```
+# Build and run everything with one command:
+docker compose up --build -d
+
+
+# Verify whether the container is running
+docker ps
+
+# Stop it 
+docker compose down
+
+```
+
+# View the App
+To view the app, open your browser and go to :
+```
+http://localhost:8080/
+```
+If you want to use a different port, update it in your:
+- app.js
+- Dockerfile
+- (and optionally) docker-compose.yml
+
+# Notes for Developers
+
+Use ```docker logs -f hackathon-container```` to view container logs.
 
 ## Deployment
 
