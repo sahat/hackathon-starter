@@ -33,7 +33,11 @@ jobs:
       - run: npm install
       - run: npm run lint-check
       - run: npm run test
-      - if: ${{ env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter'}}
+      - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os == 'windows-latest' }}
+        env:
+          PATH: 'C:\Windows\System32;C:\Windows'
+        run: npm run test:e2e-nokey
+      - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os != 'windows-latest' }}
         run: npm run test:e2e-nokey
       - name: Upload tmp as an artifact (Playwrite artifacts, code coverage report, etc)
         if: always()
