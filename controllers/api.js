@@ -1118,14 +1118,18 @@ exports.postFileUpload = (req, res) => {
       req.flash('errors', {
         msg: 'File size is too large. Maximum file size allowed is 1MB',
       });
-      return res.redirect('/api/upload');
+      // Save the session to ensure flash is persisted before redirect to
+      // avoid race conditions with async session stores
+      return req.session.save(() => res.redirect('/api/upload'));
     }
     req.flash('errors', { msg: req.multerError.message });
-    return res.redirect('/api/upload');
+    // Save the session to ensure flash is persisted before redirect
+    return req.session.save(() => res.redirect('/api/upload'));
   }
 
   req.flash('success', { msg: 'File was uploaded successfully.' });
-  res.redirect('/api/upload');
+  // Save the session to ensure flash is persisted before redirect
+  return req.session.save(() => res.redirect('/api/upload'));
 };
 
 exports.uploadMiddleware = (req, res, next) => {
