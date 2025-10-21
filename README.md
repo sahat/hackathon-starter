@@ -328,7 +328,7 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" height="50">
 
-- Go to <a href="https://portal.azure.com/" target="_blank">Azure Portal</a>, sign in, and navigate to **Microsoft Entra ID**
+- Go to <a href="https://entra.microsoft.com/" target="_blank">Microsoft Entra admin center</a> and sign in
 - Click **App registrations** > **+ New registration**
 - Enter an application name (e.g., "Hackathon Starter App") and select **Accounts in any organizational directory and personal Microsoft accounts**
 - Set **Redirect URI** to **Web** with your BASE_URL followed by `/auth/microsoft/callback` (e.g., `http://localhost:8080/auth/microsoft/callback`)

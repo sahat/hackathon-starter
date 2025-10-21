@@ -503,6 +503,8 @@ const microsoftStrategyConfig = new OAuth2Strategy(
     clientID: process.env.MICROSOFT_CLIENT_ID,
     clientSecret: process.env.MICROSOFT_CLIENT_SECRET,
     callbackURL: `${process.env.BASE_URL}/auth/microsoft/callback`,
+    // Note: To get a refresh token, add 'offline_access' to the scope list.
+    // Trade-off: Users will see a permission approval screen every time they login with 'offline_access' in scope.
     scope: ['openid', 'profile', 'email', 'User.Read'].join(' '),
     state: generateState(),
     passReqToCallback: true,
