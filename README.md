@@ -486,7 +486,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 
 | Name                             | Description                                                          |
 | -------------------------------- | -------------------------------------------------------------------- |
-| **config**/flash.js              | The flash middleware (replacement for express-flash)                 |
+| **config**/flash.js              | Flash middleware (replacement for express-flash)                     |
 | **config**/morgan.js             | Configuration for request logging with morgan.                       |
 | **config**/nodemailer.js         | Configuration and helper function for sending email with nodemailer. |
 | **config**/passport.js           | Passport Local and OAuth strategies, plus login middleware.          |
@@ -542,7 +542,6 @@ Required to run the project before your modifications
 | @langchain/mongodb            | MongoDB integrations for LangChain                                    |
 | @langchain/textsplitters      | LangChain text splitters for RAG pipelines                            |
 | @lob/lob-typescript-sdk       | Lob (USPS mailing / physical mailing service) library.                |
-| @naandalist/patch-package     | Fix broken node modules ahead of fixes by maintainers.                |
 | @node-rs/bcrypt               | Library for hashing and salting user passwords.                       |
 | @octokit/rest                 | GitHub API library.                                                   |
 | @passport-js/passport-twitter | X (Twitter) login support (OAuth 2).                                  |
@@ -580,12 +579,11 @@ Required to run the project before your modifications
 | passport-oauth2-refresh       | A library to refresh OAuth 2.0 access tokens using refresh tokens.    |
 | passport-openidconnect        | Sign-in with OpenID Connect                                           |
 | passport-steam-openid         | OpenID 2.0 Steam plugin.                                              |
+| patch-package                 | Fix broken node modules ahead of fixes by maintainers.                |
 | pdfjs-dist                    | PDF parser                                                            |
 | pug                           | Template engine for Express.                                          |
 | sass                          | Sass compiler to generate CSS with superpowers.                       |
-| sinon                         | Test spies, stubs and mocks for JavaScript.                           |
 | stripe                        | Offical Stripe API library.                                           |
-| supertest                     | HTTP assertion library.                                               |
 | twilio                        | Twilio API library.                                                   |
 | twitch-passport               | Sign-in with Twitch plugin.                                           |
 | validator                     | A library of string validators and sanitizers.                        |
@@ -594,27 +592,26 @@ Required to run the project before your modifications
 
 Required during code development for testing, Hygiene, code styling, etc.
 
-| Package                         | Description                                                                 |
-| ------------------------------- | --------------------------------------------------------------------------- |
-| @eslint/compat                  | Compatibility utilities for ESLin (eslint v8 support in v9).                |
-| @eslint/eslintrc                | Support for legacy ESLintRC config file format for ESLint.                  |
-| @eslint/js                      | ESLint JavaScript language implementation.                                  |
-| @playwright/test                | Automated end-to-end web testing framework (supports headless web browsers) |
-| @prettier/plugin-pug            | Prettier plugin for formatting pug templates                                |
-| c8                              | Coverage test.                                                              |
-| chai                            | BDD/TDD assertion library.                                                  |
-| eslint-config-airbnb-base-ex... | Replacement for eslint-config-airbnb-base pending its upgrade to eslint v9. |
-| eslint-config-prettier          | Make ESLint and Prettier play nice with each other.                         |
-| eslint                          | Linter JavaScript.                                                          |
-| eslint-plugin-chai-friendly     | Makes eslint friendly towards Chai.js 'expect' and 'should' statements.     |
-| eslint-plugin-import            | ESLint plugin with rules that help validate proper imports.                 |
-| globals                         | ESLint global identifiers from different JavaScript environments.           |
-| husky                           | Git hook manager to automate tasks with git.                                |
-| mocha                           | Test framework.                                                             |
-| mongodb-memory-server           | In memory mongodb server for testing, so tests can be ran without a DB.     |
-| prettier                        | Code formatter.                                                             |
-| sinon                           | Test spies, stubs and mocks for JavaScript.                                 |
-| supertest                       | HTTP assertion library.                                                     |
+| Package                     | Description                                                                 |
+| --------------------------- | --------------------------------------------------------------------------- |
+| @eslint/compat              | Compatibility utilities for ESLin (eslint v8 support in v9).                |
+| @eslint/eslintrc            | Support for legacy ESLintRC config file format for ESLint.                  |
+| @eslint/js                  | ESLint JavaScript language implementation.                                  |
+| @playwright/test            | Automated end-to-end web testing framework (supports headless web browsers) |
+| @prettier/plugin-pug        | Prettier plugin for formatting pug templates                                |
+| c8                          | Coverage test.                                                              |
+| chai                        | BDD/TDD assertion library.                                                  |
+| eslint-config-prettier      | Make ESLint and Prettier play nice with each other.                         |
+| eslint                      | Linter JavaScript.                                                          |
+| eslint-plugin-chai-friendly | Makes eslint friendly towards Chai.js 'expect' and 'should' statements.     |
+| eslint-plugin-import        | ESLint plugin with rules that help validate proper imports.                 |
+| globals                     | ESLint global identifiers from different JavaScript environments.           |
+| husky                       | Git hook manager to automate tasks with git.                                |
+| mocha                       | Test framework.                                                             |
+| mongodb-memory-server       | In memory mongodb server for testing, so tests can be ran without a DB.     |
+| prettier                    | Code formatter.                                                             |
+| sinon                       | Test spies, stubs and mocks for JavaScript.                                 |
+| supertest                   | HTTP assertion library.                                                     |
 
 ## Useful Tools and Resources
 
