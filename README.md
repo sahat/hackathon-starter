@@ -486,6 +486,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 
 | Name                             | Description                                                          |
 | -------------------------------- | -------------------------------------------------------------------- |
+| **config**/flash.js              | The flash middleware (replacement for express-flash)                 |
 | **config**/morgan.js             | Configuration for request logging with morgan.                       |
 | **config**/nodemailer.js         | Configuration and helper function for sending email with nodemailer. |
 | **config**/passport.js           | Passport Local and OAuth strategies, plus login middleware.          |
@@ -795,7 +796,7 @@ You can also buy many beautifully designed _Bootstrap_ themes at various vendors
 ### How do flash messages work in this project?
 
 Flash messages allow you to display a message at the end of the request and access it on the next request and only the next request. For instance, on a failed login attempt, you would display an alert with some error message, but as soon as you refresh that page or visit a different page and come back to the login page, that error message will be gone. It is only displayed once.
-This project uses a custom flash middlware for flash messages. With this you don't have to explicitly send a flash message to every view inside `res.render()`.
+This project uses a middleware for displaying flash messages. You don't have to explicitly send a flash message to every view inside `res.render()`.
 All flash messages are available in your views via `messages` object by default.
 
 Flash messages have a two-step process. You use `req.flash('errors', { msg: 'Error messages goes here' }`

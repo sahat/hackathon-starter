@@ -1,6 +1,8 @@
 const { format } = require('util');
 
-// Flash Middleware
+// Flash Middleware as a replacement for express-flash / connect-flash
+// Those packages are unmaintained and have some issues. This is a simple
+// implementation that provides the same functionality.
 exports.flash = (req, res, next) => {
   if (req.flash) return next();
   req.flash = (type, message, ...args) => {
