@@ -50,7 +50,6 @@
     "dotenv": "^17.2.3",
     "errorhandler": "^1.5.1",
     "express": "^5.1.0",
-    "express-flash": "^0.0.2",
     "express-rate-limit": "^8.1.0",
     "express-session": "^1.18.2",
     "jquery": "^3.7.1",

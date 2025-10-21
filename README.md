@@ -486,6 +486,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 
 | Name                             | Description                                                          |
 | -------------------------------- | -------------------------------------------------------------------- |
+| **config**/flash.js              | The flash middleware (replacement for express-flash)                 |
 | **config**/morgan.js             | Configuration for request logging with morgan.                       |
 | **config**/nodemailer.js         | Configuration and helper function for sending email with nodemailer. |
 | **config**/passport.js           | Passport Local and OAuth strategies, plus login middleware.          |
@@ -556,7 +557,6 @@ Required to run the project before your modifications
 | dotenv                        | Loads environment variables from .env file.                           |
 | errorhandler                  | Development-only error handler middleware.                            |
 | express                       | Node.js web framework.                                                |
-| express-flash                 | Provides flash messages for Express.                                  |
 | express-rate-limit            | Rate limiting middleware for abuse protection.                        |
 | express-session               | Simple session middleware for Express.                                |
 | jquery                        | Front-end JS library to interact with HTML elements.                  |
@@ -796,8 +796,8 @@ You can also buy many beautifully designed _Bootstrap_ themes at various vendors
 ### How do flash messages work in this project?
 
 Flash messages allow you to display a message at the end of the request and access it on the next request and only the next request. For instance, on a failed login attempt, you would display an alert with some error message, but as soon as you refresh that page or visit a different page and come back to the login page, that error message will be gone. It is only displayed once.
-This project uses _express-flash_ module for flash messages. And that module is built on top of _connect-flash_, which is what I used in this project initially. With _express-flash_ you don't have to explicitly send a flash message to every view inside `res.render()`.
-All flash messages are available in your views via `messages` object by default, thanks to _express-flash_.
+This project uses a middleware for displaying flash messages. You don't have to explicitly send a flash message to every view inside `res.render()`.
+All flash messages are available in your views via `messages` object by default.
 
 Flash messages have a two-step process. You use `req.flash('errors', { msg: 'Error messages goes here' }`
 to create a flash message in your controllers, and then display them in your views:
