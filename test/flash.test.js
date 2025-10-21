@@ -67,14 +67,14 @@ describe('flash middleware core tests', () => {
     flash(req, res, next);
     req.flash('info', 'hello');
     res.render('index');
-    expect(res.locals.messages).to.deep.equal({ info: ['hello'] });
+    expect(res.locals.messages).to.deep.equal({ info: [{ msg: 'hello' }] });
     // calling again clears messages
     res.render('index');
     expect(res.locals.messages).to.deep.equal({});
   });
 });
 
-describe('flash middleware integration behaviour', () => {
+describe('flash middleware integration behavior', () => {
   let req, res, next;
   beforeEach(() => {
     req = { session: {} };
@@ -96,13 +96,11 @@ describe('flash middleware integration behaviour', () => {
     expect(messages).to.deep.equal([]);
   });
 
-  it('should expose messages to res.locals.flash for views', () => {
+  it('should expose messages to res.locals.messages for views', () => {
     flash(req, res, next);
     req.flash('info', 'Hello');
-    // Simulate rendering a template
     res.render('index');
-    expect(res.locals.messages).to.deep.equal({ info: ['Hello'] });
-    // Messages should be cleared after rendering
+    expect(res.locals.messages).to.deep.equal({ info: [{ msg: 'Hello' }] });
     expect(req.session.flash).to.deep.equal({});
   });
 

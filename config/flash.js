@@ -24,7 +24,17 @@ exports.flash = (req, res, next) => {
   };
   res.render = ((r) =>
     function (...args) {
-      res.locals.messages = req.flash();
+      // Retrieve and clear all flash messages for this render
+      const raw = req.flash();
+
+      // Normalize to arrays of { msg } objects to match express-flash contract
+      const messages = {};
+      for (const [type, list] of Object.entries(raw)) {
+        const arr = Array.isArray(list) ? list : [list];
+        messages[type] = arr.map((item) => (item && typeof item === 'object' && 'msg' in item ? item : { msg: String(item) }));
+      }
+
+      res.locals.messages = messages;
       return r.apply(this, args);
     })(res.render);
   next();
