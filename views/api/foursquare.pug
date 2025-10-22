@@ -13,39 +13,42 @@ block content
     a.btn.btn-primary.w-100(href='https://docs.foursquare.com/', target='_blank')
       i.fas.fa-code-branch.fa-sm.me-2
       | API Docs
-  h3.text-primary Trending Venues
-  p Near longitude: -122.342148, latitude: 47.609657
-    table.table.table-striped.table-bordered
-      thead
-        tr
-          th.d-xs
-          th Name
-          th.d-xs.d-sm Category
-          th.d-xs Address
-          th.d-xs Distance (meters)
-      tbody
-        each venue in trendingVenues
+  if error
+    .alert.alert-danger.mt-3 #{ error }
+  else
+    h3.text-primary Trending Venues
+    p Near longitude: -122.342148, latitude: 47.609657
+      table.table.table-striped.table-bordered
+        thead
           tr
-            td.d-xs
-              if venue.categories && venue.categories.length > 0
-                img(src=venue.categories[0].icon.prefix + '32' + venue.categories[0].icon.suffix, alt=venue.categories[0].name, width='32', height='32')
-              else
-                | N/A
-            td= venue.name
-            td.d-xs.d-sm= venue.categories && venue.categories.length > 0 ? venue.categories[0].name : 'N/A'
-            td.d-xs= venue.location.formatted_address || 'N/A'
-            td.d-xs= venue.distance
-    br
-  h3.text-primary Venue Details
-  p
-    i
-      u #{ venueDetail.name }
-    if venueDetail.categories && venueDetail.categories.length > 0
+            th.d-xs
+            th Name
+            th.d-xs.d-sm Category
+            th.d-xs Address
+            th.d-xs Distance (meters)
+        tbody
+          each venue in trendingVenues
+            tr
+              td.d-xs
+                if venue.categories && venue.categories.length > 0
+                  img(src=venue.categories[0].icon.prefix + '32' + venue.categories[0].icon.suffix, alt=venue.categories[0].name, width='32', height='32')
+                else
+                  | N/A
+              td= venue.name
+              td.d-xs.d-sm= venue.categories && venue.categories.length > 0 ? venue.categories[0].name : 'N/A'
+              td.d-xs= venue.location.formatted_address || 'N/A'
+              td.d-xs= venue.distance
+      br
+    h3.text-primary Venue Details
+    p
+      i
+        u #{ venueDetail.name }
+      if venueDetail.categories && venueDetail.categories.length > 0
+        |
+        | is a #{ venueDetail.categories[0].name }
       |
-      | is a #{ venueDetail.categories[0].name }
-    |
-    | located at #{ venueDetail.location.address || 'N/A' }, #{ venueDetail.location.locality || 'N/A' }, #{ venueDetail.location.region || 'N/A' }. (longitude: #{ venueDetail.longitude }, latitude: #{ venueDetail.latitude })
-    if venueDetail.related_places
-      if venueDetail.related_places.children && venueDetail.related_places.children.length > 0
-        p Related venues or businesses to #{ venueDetail.name }, which are mostly in the same building or the immediate area are:
-        p(style='margin-left: 20px; white-space: pre-wrap') #{ venueDetail.related_places.children.map(place => place.name).join(', ') }
+      | located at #{ venueDetail.location.address || 'N/A' }, #{ venueDetail.location.locality || 'N/A' }, #{ venueDetail.location.region || 'N/A' }. (longitude: #{ venueDetail.longitude }, latitude: #{ venueDetail.latitude })
+      if venueDetail.related_places
+        if venueDetail.related_places.children && venueDetail.related_places.children.length > 0
+          p Related venues or businesses to #{ venueDetail.name }, which are mostly in the same building or the immediate area are:
+          p(style='margin-left: 20px; white-space: pre-wrap') #{ venueDetail.related_places.children.map(place => place.name).join(', ') }
