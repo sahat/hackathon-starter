@@ -32,29 +32,41 @@ exports.getApi = (req, res) => {
  */
 exports.getFoursquare = async (req, res, next) => {
   try {
-    const headers = {
-      Authorization: `${process.env.FOURSQUARE_APIKEY}`,
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'X-Places-Api-Version': '2025-06-17',
+        authorization: `Bearer ${process.env.FOURSQUARE_APIKEY}`,
+      },
     };
 
-    const [trendingVenuesRes, venueDetailRes, venuePhotosRes] = await Promise.all([
-      fetch('https://api.foursquare.com/v3/places/search?ll=47.609657,-122.342148&limit=10', {
-        headers,
-      }).then((res) => res.json()),
-      fetch('https://api.foursquare.com/v3/places/427ea800f964a520b1211fe3', {
-        headers,
-      }).then((res) => res.json()),
-      fetch('https://api.foursquare.com/v3/places/427ea800f964a520b1211fe3/photos', {
-        headers,
-      }).then((res) => res.json()),
+    const fetchJson = async (url, fetchOptions, label) => {
+      const res = await fetch(url, fetchOptions);
+      if (!res.ok) {
+        const text = await res.text().catch(() => '<unable to read body>');
+        throw new Error(`${label} failed: ${res.status} ${res.statusText} - ${text}`);
+      }
+      return res.json();
+    };
+
+    const [trendingVenuesRes, venueDetailRes] = await Promise.all([
+      fetchJson('https://places-api.foursquare.com/places/search?ll=47.609657,-122.342148&limit=10', options, 'Foursquare search'),
+      fetchJson('https://places-api.foursquare.com/places/427ea800f964a520b1211fe3', options, 'Foursquare venue detail'),
     ]);
     res.render('api/foursquare', {
-      title: 'Foursquare API (v3)',
-      trendingVenues: trendingVenuesRes.results,
+      title: 'Foursquare Places API',
+      trendingVenues: trendingVenuesRes.results || [],
       venueDetail: venueDetailRes,
-      venuePhotos: venuePhotosRes.slice(0, 9), // Limit the photos to 9
     });
   } catch (error) {
-    next(error);
+    console.error('Foursquare API Error:', error);
+    return res.status(500).render('api/foursquare', {
+      title: 'Foursquare Places API',
+      trendingVenues: [],
+      venueDetail: null,
+      error: 'Failed to fetch Foursquare data',
+    });
   }
 };
 
