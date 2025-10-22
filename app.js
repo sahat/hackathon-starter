@@ -19,6 +19,13 @@ const { flash } = require('./config/flash');
  */
 dotenv.config({ path: '.env.example', quiet: true });
 
+['MONGODB_URI', 'SESSION_SECRET', 'BASE_URL'].forEach((key) => {
+  if (!process.env[key]) {
+    console.error(`❌ Missing required environment variable: ${key}`);
+    process.exit(1);
+  }
+});
+
 /**
  * Set config values
  */
@@ -92,11 +99,19 @@ console.log('Run this app using "npm start" to include sass/scss/css builds.\n')
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(process.env.MONGODB_URI);
+// Remove the duplicate connection and autoReconnect
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => {
+    console.error('MongoDB initial connection error:', err);
+    process.exit(1);
+  });
+
 mongoose.connection.on('error', (err) => {
-  console.error(err);
-  console.log('MongoDB connection error. Please make sure MongoDB is running.');
-  process.exit(1);
+  console.error('❌ MongoDB runtime error:', err);
+});
+mongoose.connection.on('disconnected', () => {
+  console.warn('⚠️ MongoDB disconnected. Attempting to reconnect...');
 });
 
 /**
