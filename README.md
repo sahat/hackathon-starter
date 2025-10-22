@@ -220,7 +220,7 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://imgur.com/2P4UMvC.png" height="75">
 
-- Go to <a href="https://foursquare.com/developer/" target="_blank">Foursquare for Developers</a> and log in
+- Go to <a href="https://foursquare.com/developers" target="_blank">Foursquare for Developers</a> and log in
 
 - Click on **Create a new project** button
 - Enter your _Organization_ and _Project Name_
