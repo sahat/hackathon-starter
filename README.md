@@ -182,6 +182,47 @@ See:
 - [Deployment](#deployment)
 - [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md)
 
+## Optional (Alternative to ngrok) :
+### 🌐 Cloudflare HTTPS Proxy Setup (Zero Trust Tunnel)
+ - This guide explains how to use **Cloudflare Tunnels** as a free HTTPS proxy alternative to ngrok —      perfect for development and API testing.
+
+**🧰 Prerequisites**
+
+- You must have a **Cloudflare account** and a **domain** added to Cloudflare.
+- Your local app should be running on `http://localhost:8080` (or any other port).
+
+**🚀 Setup Instructions**
+
+1. **Login to Cloudflare Dashboard**  
+   Go to [https://dash.cloudflare.com](https://dash.cloudflare.com) and add your domain if not already added.
+
+
+2. **Access Zero Trust**  
+   From the left sidebar, open **Zero Trust → Access → Tunnels**.
+
+3. **Install Cloudflare Tunnel CLI** 
+   ```bash
+    npm install -g cloudflared
+4. ***Authenticate your Account***
+    ```bash
+    cloudflared login
+- A browser window will open — select your domain and authorize access.
+
+5. **Create and Start a Tunnel**
+    ```bash
+    cloudflared tunnel --url http://localhost:8080
+- Once started, you’ll see a public HTTPS URL like:
+    ```bash
+    https://yourdomain.trycloudflare.com
+    
+6. **Use the Tunnel URL**
+    - Update your `.env` file or config:
+   ```bash
+   BASE_URL=https://yourdomain.trycloudflare.com
+- Use this link instead of ngrok for testing secure APIs or OAuth callbacks.
+
+<img width="1536" height="1024" alt="ChatGPT Image Oct 23, 2025, 01_14_24 PM" src="https://github.com/user-attachments/assets/691fbf75-3e5d-4531-86e5-6a2158ed7ce4" />
+
 # Obtaining API Keys
 
 You will need to obtain appropriate credentials (Client ID, Client Secret, API Key, or Username & Password) for API and service providers which you need. See Step 2 in the Getting started section for more info.
