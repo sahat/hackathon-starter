@@ -62,7 +62,7 @@
     "mongoose": "^8.19.2",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
-    "nodemailer": "^7.0.9",
+    "nodemailer": "^7.0.10",
     "oauth": "^0.10.2",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
