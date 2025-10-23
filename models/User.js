@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema(
     github: String,
     google: String,
     linkedin: String,
+    microsoft: String,
     quickbooks: String,
     steam: String,
     trakt: String,

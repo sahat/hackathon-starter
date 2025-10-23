@@ -32,6 +32,14 @@ block content
         a.btn.btn-block.btn-google.btn-social(href='/auth/google')
           i.fab.fa-google.fa-xs
           | Sign in with Google
+        //- Microsoft branding requirements: https://learn.microsoft.com/en-us/entra/identity-platform/howto-add-branding-in-apps
+        a.btn.btn-block.btn-microsoft.btn-social(href='/auth/microsoft')
+          svg.ms-logo(xmlns='http://www.w3.org/2000/svg', width='32', height='32', viewBox='0 0 21 21', style='margin-right: 10px; vertical-align: middle')
+            rect(x='1', y='1', width='9', height='9', fill='#f25022')
+            rect(x='1', y='11', width='9', height='9', fill='#00a4ef')
+            rect(x='11', y='1', width='9', height='9', fill='#7fba00')
+            rect(x='11', y='11', width='9', height='9', fill='#ffb900')
+          | Sign in with Microsoft
         a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
           i.fab.fa-facebook-f.fa-sm
           | Sign in with Facebook
