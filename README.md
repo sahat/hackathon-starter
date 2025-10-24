@@ -611,6 +611,7 @@ Required during code development for testing, Hygiene, code styling, etc.
 | husky                       | Git hook manager to automate tasks with git.                                |
 | mocha                       | Test framework.                                                             |
 | mongodb-memory-server       | In memory mongodb server for testing, so tests can be ran without a DB.     |
+| nock                        | HTTP server mocking and expectations library for Node.js                    |
 | prettier                    | Code formatter.                                                             |
 | sinon                       | Test spies, stubs and mocks for JavaScript.                                 |
 | supertest                   | HTTP assertion library.                                                     |
@@ -1422,12 +1423,15 @@ The provided E2E tests cover the example API integrations included in the starte
 
 During a hackathon, you typically don't need to worry about E2E tests; they can slow you down when you're focused on rapid prototyping. However, if you plan to launch your project for real-world use, adding and maintaining E2E tests is strongly recommended. They help ensure that future changes don't unintentionally break existing functionality.
 
+- **Integration tests** focus on verifying that backend controllers and services correctly handle data from external APIs without making real network requests. These tests use Nock to intercept and mock outbound HTTP calls so that the backend logic can be validated in isolation.
+
 You can run the tests using:
 
 ```bash
 npm test           # or "npm run test" for unit tests - core functions
 npm run test:e2e
 npm run test:e2e-nokey
+npm run test:integration
 ```
 
 ## Changelog

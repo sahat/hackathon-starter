@@ -24,7 +24,8 @@
     "test:e2e-nokey": "playwright test --config=test/playwright.config.js --project=chromium-nokey",
     "pretest:e2e": "npx playwright install chromium",
     "pretest:e2e-nokey": "npx playwright install chromium",
-    "test:image-link": "mocha --timeout 300000 \"test/*links.test.js\""
+    "test:image-link": "mocha --timeout 300000 \"test/*links.test.js\"",
+    "test:integration": "mocha --require test/mocha.config.js \"test/integration/**/*.test.js\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",
@@ -98,6 +99,7 @@
     "husky": "^9.1.7",
     "mocha": "^11.7.4",
     "mongodb-memory-server": "^10.2.3",
+    "nock": "^14.0.10",
     "prettier": "^3.6.2",
     "sinon": "^21.0.0",
     "supertest": "^7.1.4"
