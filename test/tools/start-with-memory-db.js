@@ -8,6 +8,21 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 
 (async function main() {
   try {
+    // Optionally enable API mocks before the app is imported
+    if (process.env.MOCK_FOURSQUARE === '1') {
+      try {
+        // This file monkey-patches global.fetch to return deterministic
+        // responses for Foursquare Places API v3 endpoints used in the demo.
+        const urlMod = await import('url');
+        const { pathToFileURL } = urlMod;
+        const mockPath = path.join(__dirname, 'mock-foursquare.js');
+        await import(pathToFileURL(mockPath).href);
+        console.log('[start-with-memory-db] Foursquare API mock enabled');
+      } catch (e) {
+        console.warn('[start-with-memory-db] Failed to enable Foursquare mock:', e && e.message);
+      }
+    }
+
     // If a real MONGODB_URI is already provided, prefer it.
     if (process.env.MONGODB_URI) {
       console.log('[start-with-memory-db] Using provided MONGODB_URI');

@@ -20,6 +20,8 @@ const TEST_ENV_OVERRIDES = {
   RATE_LIMIT_GLOBAL: '500',
   RATE_LIMIT_STRICT: '20',
   RATE_LIMIT_LOGIN: '50',
+  // Enable test-only mocks for external APIs
+  MOCK_FOURSQUARE: process.env.MOCK_FOURSQUARE || '1',
 };
 
 Object.entries(TEST_ENV_OVERRIDES).forEach(([k, v]) => {
