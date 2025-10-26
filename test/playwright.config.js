@@ -15,7 +15,6 @@ if (!originalMongoUri && result && result.parsed && result.parsed.MONGODB_URI) {
 // Put any environment variables here that must be forced for e2e runs.
 // This ensures the Playwright runner and the spawned webServer see the same values.
 const TEST_ENV_OVERRIDES = {
-  BASE_URL: 'http://127.0.0.1:8080',
   SESSION_SECRET: process.env.SESSION_SECRET || 'test_session_secret',
   RATE_LIMIT_GLOBAL: '500',
   RATE_LIMIT_STRICT: '20',
@@ -47,6 +46,7 @@ module.exports = defineConfig({
   use: {
     baseURL: process.env.BASE_URL,
     trace: 'on-first-retry',
+    // headless: false, launchOptions: { slowMo: 200 }, // Uncomment to see the browser
   },
   projects: [
     {
@@ -65,7 +65,7 @@ module.exports = defineConfig({
     // and also write a fixed, deterministic log file that tests can inspect.
     // Using a fixed file keeps the test simple; it will be overwritten each run.
     command: 'node ./tools/playwright-start-and-log.js',
-    url: process.env.BASE_URL,
+    url: 'http://127.0.0.1:8080',
     reuseExistingServer: !process.env.CI,
     env: { ...process.env, ...TEST_ENV_OVERRIDES },
   },
