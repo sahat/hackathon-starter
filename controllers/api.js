@@ -1690,7 +1690,13 @@ exports.getTenor = async (req, res, next) => {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`Failed to fetch Tenor GIFs. Please ensure your Tenor API Key is set: ${response.status} ${response.statusText}`);
+      try {
+        const body = await response.text();
+        console.error('Tenor API error', response.status, response.statusText, body);
+      } catch (e) {
+        console.error('Tenor API error and failed to read body', response.status, response.statusText, e);
+      }
+      throw new Error(`Failed to fetch Tenor GIFs: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
