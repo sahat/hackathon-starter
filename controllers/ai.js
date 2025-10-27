@@ -486,7 +486,7 @@ exports.postOpenAIModeration = async (req, res) => {
           Authorization: `Bearer ${openAiKey}`,
         },
         body: JSON.stringify({
-          model: 'text-moderation-latest',
+          model: 'omni-moderation-latest',
           input: inputText,
         }),
       });
