@@ -30,9 +30,9 @@
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@googleapis/drive": "^19.1.0",
     "@googleapis/sheets": "^12.0.0",
-    "@huggingface/inference": "^4.12.0",
+    "@huggingface/inference": "^4.13.0",
     "@langchain/community": "^0.3.57",
-    "@langchain/core": "^0.3.78",
+    "@langchain/core": "^0.3.79",
     "@langchain/mongodb": "0.1.1",
     "@langchain/textsplitters": "^0.1.0",
     "@lob/lob-typescript-sdk": "^1.3.5",
@@ -80,7 +80,7 @@
     "stripe": "^19.1.0",
     "twilio": "^5.10.3",
     "twitch-passport": "^1.0.6",
-    "validator": "^13.15.15"
+    "validator": "^13.15.20"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.0",
