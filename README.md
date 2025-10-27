@@ -172,6 +172,12 @@ _What to get and configure:_
 
   After installing or downloading the standalone ngrok client you can start ngrok to intercept the data exchanged on port 8080 with `./ngrok http 8080` in Linux or `ngrok http 8080` in Windows.
 
+- Cloudflare Tunnel (cloudflared) and HTTPS  
+  As an alternative to ngrok, you can use [Cloudflare Tunnel (cloudflared)](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/) to expose your local server over HTTPS for free.  
+  You will need a Cloudflare account with a domain added. After installing `cloudflared`, log in with `cloudflared tunnel login`, then create and run a tunnel:  
+  `cloudflared tunnel --url http://localhost:8080`  
+  This will generate a secure HTTPS URL through your Cloudflare domain that you can use as your BASE_URL. Like ngrok, use this URL instead of `http://localhost:8080` to avoid CSRF or mixed content errors.
+
 **Step 3:** Develop your application and customize the experience
 
 - Check out [How It Works](#how-it-works-mini-guides)
