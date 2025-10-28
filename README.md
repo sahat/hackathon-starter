@@ -623,6 +623,7 @@ Required during code development for testing, Hygiene, code styling, etc.
 | husky                       | Git hook manager to automate tasks with git.                                |
 | mocha                       | Test framework.                                                             |
 | mongodb-memory-server       | In memory mongodb server for testing, so tests can be ran without a DB.     |
+| nock                        | HTTP server mocking library for integration tests.                          |
 | prettier                    | Code formatter.                                                             |
 | sinon                       | Test spies, stubs and mocks for JavaScript.                                 |
 | supertest                   | HTTP assertion library.                                                     |
@@ -1425,9 +1426,10 @@ If you are starting with this boilerplate to build an application for prod deplo
 
 ## Testing
 
-Hackathon Starter includes both unit tests and end-to-end (E2E) tests.
+Hackathon Starter includes unit tests, integration tests, and end-to-end (E2E) tests.
 
 - **Unit tests** focus on core functionality, such as user account management.
+- **Integration tests** use [Nock](https://github.com/nock/nock) to mock external HTTP API calls, allowing you to test backend logic in isolation without network access. These tests are located in `test/integration/`.
 - **E2E tests** use [Playwright](https://playwright.dev/) to run the application in a headless Chrome browser, making live API calls and verifying rendered views. These tests are located in `test/e2e/` and `test/e2e-nokey/`. For running nokey tests, you don't need to obtain any API keys.
 
 The provided E2E tests cover the example API integrations included in the starter project. You can use these as **examples or templates** when creating your own test files, adapting them to match your project's specific views and workflows.
@@ -1437,10 +1439,142 @@ During a hackathon, you typically don't need to worry about E2E tests; they can 
 You can run the tests using:
 
 ```bash
-npm test           # or "npm run test" for unit tests - core functions
+npm test                  # or "npm run test" for unit tests - core functions
+npm run test:integration  # Run integration tests (no network access required)
 npm run test:e2e
 npm run test:e2e-nokey
 ```
+
+### Adding New Integration Tests
+
+Integration tests use **Nock** to intercept outbound HTTP calls and return mocked responses. This approach allows you to:
+
+- Test controller logic without making real API calls
+- Run tests offline without API keys (after initial recording)
+- Ensure tests are fast and reliable
+
+**Nock has two primary approaches:**
+
+1. **Manual Mocking** - Manually define mock responses (good for simple tests)
+2. **Recording/Playback** - Record real API responses once, then replay them (recommended for complex APIs)
+
+#### Option 1: Manual Mocking (Simple Example)
+
+**Example: Adding a manually mocked Nock test**
+
+1. Create a new test file in `test/integration/` (e.g., `test/integration/github.integration.test.js`)
+
+2. Load test environment variables and set up Nock:
+
+```javascript
+const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config({ path: path.join(__dirname, '..', '.env.test') });
+
+const { expect } = require('chai');
+const sinon = require('sinon');
+const nock = require('nock');
+const apiController = require('../../controllers/api');
+
+describe('GitHub Integration Tests (Nock)', () => {
+  beforeEach(() => {
+    nock.disableNetConnect(); // Block all real HTTP requests
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    nock.enableNetConnect();
+  });
+
+  it('should fetch GitHub user data with mocked API', async () => {
+    // Mock the GitHub API response
+    nock('https://api.github.com').get('/users/octocat').reply(200, {
+      login: 'octocat',
+      name: 'The Octocat',
+      public_repos: 8,
+    });
+
+    // Create mock req/res objects
+    const req = { params: { username: 'octocat' } };
+    const res = {
+      render: sinon.spy(),
+      status: sinon.stub().returnsThis(),
+    };
+
+    // Call the controller
+    await apiController.getGitHubUser(req, res);
+
+    // Assert the controller processed the mocked response correctly
+    expect(res.render.calledOnce).to.be.true;
+    const renderData = res.render.firstCall.args[1];
+    expect(renderData.user.login).to.equal('octocat');
+    expect(renderData.user.public_repos).to.equal(8);
+  });
+});
+```
+
+3. Run your new test: `npm run test:integration`
+
+#### Option 2: Recording/Playback (Recommended)
+
+Nock recorder captures real API responses and saves them as fixtures for offline testing.
+
+**Benefits:**
+
+- Records actual API responses
+- Works offline after initial recording
+- Easy to update when APIs change
+
+**See example:** `test/integration/github.integration.test.js`
+
+**Quick start:**
+
+1. Create test file using `nock.back()`:
+
+```javascript
+const { nockDone } = await nock.back('my-api-fixture.json');
+try {
+  await apiController.getMyAPI(req, res);
+  expect(res.render.calledOnce).to.be.true;
+} finally {
+  nockDone();
+}
+```
+
+2. Record fixtures with live API:
+
+```bash
+# Windows PowerShell
+$env:MY_API_KEY='your-api-key'; $env:NOCK_BACK_MODE='record'
+npm test -- test/integration/my-api.integration.test.js
+
+# Windows CMD
+set MY_API_KEY=your-api-key && set NOCK_BACK_MODE=record && npm test -- test/integration/my-api.integration.test.js
+
+# Linux/Mac
+MY_API_KEY='your-api-key' NOCK_BACK_MODE=record npm test -- test/integration/my-api.integration.test.js
+```
+
+3. Run tests offline (no API key required):
+
+```bash
+npm run test:integration
+```
+
+4. Update fixtures:
+
+```bash
+# Replace 'record' with 'update' in commands above
+```
+
+**Modes:**
+
+- `lockdown` - Use fixtures only, no network
+- `record` - Create new fixtures
+- `update` - Refresh existing fixtures
+- `wild` - Allow live requests
+
+Reference: [Nock documentation](https://github.com/nock/nock)
 
 ## Changelog
 
