@@ -71,7 +71,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 
 - Login
   - **Local Authentication** Sign in with Email and Password, Passwordless
-  - **OAuth 2.0 Authentication:** Sign in with Google, Facebook, X (Twitter), Twitch, Github, Discord
+  - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, X (Twitter), Twitch, Github, Discord
   - **OpenID Connect:** Sign in with LinkedIn
 - **User Profile and Account Management**
   - Gravatar
@@ -220,13 +220,15 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://imgur.com/2P4UMvC.png" height="75">
 
-- Go to <a href="https://developer.foursquare.com" target="_blank">Foursquare for Developers</a> and log in
-- Click on **My Apps** in the top menu
-- Click the **Create A New App** button
-- Enter _App Name_, _Welcome page url_,
-- For **Redirect URI**: your BASE_URL value followed by /auth/foursquare/callback (i.e. `http://localhost:8080/auth/foursquare/callback` )
-- Click **Save Changes**
-- Copy and paste _Client ID_ and _Client Secret_ keys into `.env` file
+- Go to <a href="https://foursquare.com/developers" target="_blank">Foursquare for Developers</a> and log in
+
+- Click on **Create a new project** button
+- Enter your _Organization_ and _Project Name_
+- Click **Create**
+- Navigate to your project
+- Click **Settings** in the left-hand-side menu
+- Generate a Service API Key
+- Copy and paste the Service API Key as `FOURSQUARE_APIKEY` in your `.env` file
 
 <hr>
 
@@ -323,6 +325,18 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 - Copy and paste _API Key_ and _Secret Key_ keys into `.env` file
 - _API Key_ is your **clientID**
 - _Secret Key_ is your **clientSecret**
+
+<hr>
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" height="50">
+
+- Go to <a href="https://entra.microsoft.com/" target="_blank">Microsoft Entra admin center</a> and sign in
+- Click **App registrations** > **+ New registration**
+- Enter an application name (e.g., "Hackathon Starter App") and select **Accounts in any organizational directory and personal Microsoft accounts**
+- Set **Redirect URI** to **Web** with your BASE_URL followed by `/auth/microsoft/callback` (e.g., `http://localhost:8080/auth/microsoft/callback`)
+- Click **Register**, then copy the **Application (client) ID** to `.env` as `MICROSOFT_CLIENT_ID`
+- Go to **Certificates & secrets** > **+ New client secret**, add a description and expiration, then click **Add**
+- Copy the secret **Value** immediately to `.env` as `MICROSOFT_CLIENT_SECRET` (won't be visible again)
 
 <hr>
 
@@ -497,6 +511,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 
 | Name                             | Description                                                          |
 | -------------------------------- | -------------------------------------------------------------------- |
+| **config**/flash.js              | Flash middleware (replacement for express-flash)                     |
 | **config**/morgan.js             | Configuration for request logging with morgan.                       |
 | **config**/nodemailer.js         | Configuration and helper function for sending email with nodemailer. |
 | **config**/passport.js           | Passport Local and OAuth strategies, plus login middleware.          |
@@ -552,7 +567,6 @@ Required to run the project before your modifications
 | @langchain/mongodb            | MongoDB integrations for LangChain                                    |
 | @langchain/textsplitters      | LangChain text splitters for RAG pipelines                            |
 | @lob/lob-typescript-sdk       | Lob (USPS mailing / physical mailing service) library.                |
-| @naandalist/patch-package     | Fix broken node modules ahead of fixes by maintainers.                |
 | @node-rs/bcrypt               | Library for hashing and salting user passwords.                       |
 | @octokit/rest                 | GitHub API library.                                                   |
 | @passport-js/passport-twitter | X (Twitter) login support (OAuth 2).                                  |
@@ -567,7 +581,6 @@ Required to run the project before your modifications
 | dotenv                        | Loads environment variables from .env file.                           |
 | errorhandler                  | Development-only error handler middleware.                            |
 | express                       | Node.js web framework.                                                |
-| express-flash                 | Provides flash messages for Express.                                  |
 | express-rate-limit            | Rate limiting middleware for abuse protection.                        |
 | express-session               | Simple session middleware for Express.                                |
 | jquery                        | Front-end JS library to interact with HTML elements.                  |
@@ -591,12 +604,11 @@ Required to run the project before your modifications
 | passport-oauth2-refresh       | A library to refresh OAuth 2.0 access tokens using refresh tokens.    |
 | passport-openidconnect        | Sign-in with OpenID Connect                                           |
 | passport-steam-openid         | OpenID 2.0 Steam plugin.                                              |
+| patch-package                 | Fix broken node modules ahead of fixes by maintainers.                |
 | pdfjs-dist                    | PDF parser                                                            |
 | pug                           | Template engine for Express.                                          |
 | sass                          | Sass compiler to generate CSS with superpowers.                       |
-| sinon                         | Test spies, stubs and mocks for JavaScript.                           |
 | stripe                        | Offical Stripe API library.                                           |
-| supertest                     | HTTP assertion library.                                               |
 | twilio                        | Twilio API library.                                                   |
 | twitch-passport               | Sign-in with Twitch plugin.                                           |
 | validator                     | A library of string validators and sanitizers.                        |
@@ -605,27 +617,26 @@ Required to run the project before your modifications
 
 Required during code development for testing, Hygiene, code styling, etc.
 
-| Package                         | Description                                                                 |
-| ------------------------------- | --------------------------------------------------------------------------- |
-| @eslint/compat                  | Compatibility utilities for ESLin (eslint v8 support in v9).                |
-| @eslint/eslintrc                | Support for legacy ESLintRC config file format for ESLint.                  |
-| @eslint/js                      | ESLint JavaScript language implementation.                                  |
-| @playwright/test                | Automated end-to-end web testing framework (supports headless web browsers) |
-| @prettier/plugin-pug            | Prettier plugin for formatting pug templates                                |
-| c8                              | Coverage test.                                                              |
-| chai                            | BDD/TDD assertion library.                                                  |
-| eslint-config-airbnb-base-ex... | Replacement for eslint-config-airbnb-base pending its upgrade to eslint v9. |
-| eslint-config-prettier          | Make ESLint and Prettier play nice with each other.                         |
-| eslint                          | Linter JavaScript.                                                          |
-| eslint-plugin-chai-friendly     | Makes eslint friendly towards Chai.js 'expect' and 'should' statements.     |
-| eslint-plugin-import            | ESLint plugin with rules that help validate proper imports.                 |
-| globals                         | ESLint global identifiers from different JavaScript environments.           |
-| husky                           | Git hook manager to automate tasks with git.                                |
-| mocha                           | Test framework.                                                             |
-| mongodb-memory-server           | In memory mongodb server for testing, so tests can be ran without a DB.     |
-| prettier                        | Code formatter.                                                             |
-| sinon                           | Test spies, stubs and mocks for JavaScript.                                 |
-| supertest                       | HTTP assertion library.                                                     |
+| Package                     | Description                                                                 |
+| --------------------------- | --------------------------------------------------------------------------- |
+| @eslint/compat              | Compatibility utilities for ESLin (eslint v8 support in v9).                |
+| @eslint/eslintrc            | Support for legacy ESLintRC config file format for ESLint.                  |
+| @eslint/js                  | ESLint JavaScript language implementation.                                  |
+| @playwright/test            | Automated end-to-end web testing framework (supports headless web browsers) |
+| @prettier/plugin-pug        | Prettier plugin for formatting pug templates                                |
+| c8                          | Coverage test.                                                              |
+| chai                        | BDD/TDD assertion library.                                                  |
+| eslint-config-prettier      | Make ESLint and Prettier play nice with each other.                         |
+| eslint                      | Linter JavaScript.                                                          |
+| eslint-plugin-chai-friendly | Makes eslint friendly towards Chai.js 'expect' and 'should' statements.     |
+| eslint-plugin-import        | ESLint plugin with rules that help validate proper imports.                 |
+| globals                     | ESLint global identifiers from different JavaScript environments.           |
+| husky                       | Git hook manager to automate tasks with git.                                |
+| mocha                       | Test framework.                                                             |
+| mongodb-memory-server       | In memory mongodb server for testing, so tests can be ran without a DB.     |
+| prettier                    | Code formatter.                                                             |
+| sinon                       | Test spies, stubs and mocks for JavaScript.                                 |
+| supertest                   | HTTP assertion library.                                                     |
 
 ## Useful Tools and Resources
 
@@ -807,8 +818,8 @@ You can also buy many beautifully designed _Bootstrap_ themes at various vendors
 ### How do flash messages work in this project?
 
 Flash messages allow you to display a message at the end of the request and access it on the next request and only the next request. For instance, on a failed login attempt, you would display an alert with some error message, but as soon as you refresh that page or visit a different page and come back to the login page, that error message will be gone. It is only displayed once.
-This project uses _express-flash_ module for flash messages. And that module is built on top of _connect-flash_, which is what I used in this project initially. With _express-flash_ you don't have to explicitly send a flash message to every view inside `res.render()`.
-All flash messages are available in your views via `messages` object by default, thanks to _express-flash_.
+This project uses a middleware for displaying flash messages. You don't have to explicitly send a flash message to every view inside `res.render()`.
+All flash messages are available in your views via `messages` object by default.
 
 Flash messages have a two-step process. You use `req.flash('errors', { msg: 'Error messages goes here' }`
 to create a flash message in your controllers, and then display them in your views:
