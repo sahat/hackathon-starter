@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema(
   {
     email: { type: String, unique: true, required: true },
-    password: String,
+    password: { type: String, required: true },
 
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema(
     twitch: String,
     x: String,
 
-    tokens: Array,
+    tokens: { type: Array, default: [] },
 
     profile: {
       name: String,
@@ -46,127 +46,87 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// Indexes for verification fileds that are queried
+// indexes
 userSchema.index({ passwordResetToken: 1 });
 userSchema.index({ emailVerificationToken: 1 });
 userSchema.index({ loginToken: 1 });
 
-// Virtual properties for checking token expiration
-userSchema.virtual('isPasswordResetExpired').get(function checkPasswordResetExpiration() {
-  return Date.now() > this.passwordResetExpires;
+// virtuals
+userSchema.virtual('isPasswordResetExpired').get(function () {
+  return this.passwordResetExpires && Date.now() > this.passwordResetExpires;
+});
+userSchema.virtual('isEmailVerificationExpired').get(function () {
+  return this.emailVerificationExpires && Date.now() > this.emailVerificationExpires;
+});
+userSchema.virtual('isLoginExpired').get(function () {
+  return this.loginExpires && Date.now() > this.loginExpires;
 });
 
-userSchema.virtual('isEmailVerificationExpired').get(function checkEmailVerificationExpiration() {
-  return Date.now() > this.emailVerificationExpires;
-});
-
-userSchema.virtual('isLoginExpired').get(function checkLoginTokenExpiration() {
-  return Date.now() > this.loginExpires;
-});
-
-// Middleware to clear expired tokens on save
-userSchema.pre('save', function clearExpiredTokens(next) {
+// clear expired tokens
+userSchema.pre('save', function (next) {
   const now = Date.now();
-
-  if (this.passwordResetExpires && this.passwordResetExpires < now) {
-    this.passwordResetToken = undefined;
-    this.passwordResetExpires = undefined;
-    this.passwordResetIpHash = undefined;
-  }
-
-  if (this.emailVerificationExpires && this.emailVerificationExpires < now) {
-    this.emailVerificationToken = undefined;
-    this.emailVerificationExpires = undefined;
-    this.emailVerificationIpHash = undefined;
-  }
-
-  if (this.loginExpires && this.loginExpires < now) {
-    this.loginToken = undefined;
-    this.loginExpires = undefined;
-    this.loginIpHash = undefined;
-  }
-
+  const clear = (prefix) => {
+    const exp = this[`${prefix}Expires`];
+    if (exp && exp < now) {
+      this[`${prefix}Token`] = undefined;
+      this[`${prefix}Expires`] = undefined;
+      this[`${prefix}IpHash`] = undefined;
+    }
+  };
+  ['passwordReset', 'emailVerification', 'login'].forEach(clear);
   next();
 });
 
-// Password hash middleware
-userSchema.pre('save', async function hashPassword(next) {
-  const user = this;
-  if (!user.isModified('password')) {
-    return next();
-  }
+// hash password
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
   try {
-    user.password = await bcrypt.hash(user.password, 10);
+    this.password = await bcrypt.hash(this.password, 10);
     next();
   } catch (err) {
     next(err);
   }
 });
 
-// Helper method for validating password for login by password strategy
-userSchema.methods.comparePassword = async function comparePassword(candidatePassword, cb) {
+// compare password
+userSchema.methods.comparePassword = async function (candidate, cb) {
   try {
-    cb(null, await bcrypt.verify(candidatePassword, this.password));
+    cb(null, await bcrypt.verify(candidate, this.password));
   } catch (err) {
     cb(err);
   }
 };
 
-// Helper method for getting gravatar
-userSchema.methods.gravatar = function gravatarUrl(size) {
-  if (!size) {
-    size = 200;
-  }
-  if (!this.email) {
-    return `https://gravatar.com/avatar/00000000000000000000000000000000?s=${size}&d=retro`;
-  }
-  const sha256 = crypto.createHash('sha256').update(this.email).digest('hex');
-  return `https://gravatar.com/avatar/${sha256}?s=${size}&d=retro`;
+// gravatar
+userSchema.methods.gravatar = function (size = 200) {
+  const base = 'https://gravatar.com/avatar';
+  const hash = this.email
+    ? crypto.createHash('sha256').update(this.email.trim().toLowerCase()).digest('hex')
+    : '00000000000000000000000000000000';
+  return `${base}/${hash}?s=${size}&d=retro`;
 };
 
-// Helper methods for creating hashed IP addresses
-// This is used to prevent CSRF attacks by ensuring that the token is valid for
-// the IP address it was generated from
-userSchema.statics.hashIP = function hashIP(ip) {
-  return crypto.createHash('sha256').update(ip).digest('hex');
-};
-
-// Helper methods for token generation
-userSchema.statics.generateToken = function generateToken() {
-  return crypto.randomBytes(32).toString('hex');
-};
-
-// Helper methods for token verification
-userSchema.methods.verifyTokenAndIp = function verifyTokenAndIp(token, ip, tokenType) {
-  const hashedIp = this.constructor.hashIP(ip);
-  const tokenField = `${tokenType}Token`;
-  const ipHashField = `${tokenType}IpHash`;
-  const expiresField = `${tokenType}Expires`;
-
-  // Comparing tokens in a timing-safe manner
-  // This is to harden against timing attacks (CWE-208: Observable Timing Discrepancy)
+// verify token + IP
+userSchema.methods.verifyTokenAndIp = function (token, ip, type) {
   try {
-    // First check if we have all required values
-    if (!this[tokenField] || !token || !this[ipHashField] || !hashedIp) {
-      return false;
-    }
+    const hashedIp = this.constructor.hashIP(ip);
+    const t = `${type}Token`, ipH = `${type}IpHash`, exp = `${type}Expires`;
 
-    // For plain string tokens, use Buffer.from without 'hex'
-    const storedToken = Buffer.from(this[tokenField]);
-    const inputToken = Buffer.from(token);
+    if (!this[t] || !this[ipH] || !this[exp] || this[exp] < Date.now()) return false;
 
-    // Ensure both buffers are the same length before comparing
-    if (storedToken.length !== inputToken.length) {
-      return false;
-    }
+    const stored = Buffer.from(this[t]);
+    const incoming = Buffer.from(token);
+    if (stored.length !== incoming.length) return false;
 
-    return crypto.timingSafeEqual(storedToken, inputToken) && this[ipHashField] === hashedIp && this[expiresField] > Date.now();
-  } catch (err) {
-    console.log(err);
+    return crypto.timingSafeEqual(stored, incoming) && this[ipH] === hashedIp;
+  } catch {
     return false;
   }
 };
 
-const User = mongoose.model('User', userSchema);
+// statics
+userSchema.statics.hashIP = (ip) => crypto.createHash('sha256').update(ip).digest('hex');
+userSchema.statics.generateToken = () => crypto.randomBytes(32).toString('hex');
 
+const User = mongoose.model('User', userSchema);
 module.exports = User;
