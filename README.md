@@ -44,6 +44,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
+- [HTTPS Proxy](#https-proxy)
 - [Obtaining API Keys](#obtaining-api-keys)
 - [Web Analytics](#web-analytics)
 - [Open Graph](#open-graph)
@@ -166,21 +167,66 @@ _What to get and configure:_
   - Set SITE_CONTACT_EMAIL as your incoming email address for messages sent to you through the contact form.
   - Set TRANSACTION_EMAIL as the "From" address for emails sent to users through the lost password or email verification emails to users. You may set this to the same address as SITE_CONTACT_EMAIL.
 
-- ngrok and HTTPS
-  If you want to use some API that needs HTTPS to work (for example Github or Facebook),
-  you will need to download [ngrok](https://ngrok.com/). Start ngrok, set your BASE_URL to the forwarding address (i.e `https://3ccb-1234-abcd.ngrok-free.app` ), and use the forwarding address to access your application. If you are using a proxy like ngrok, you may get a CSRF mismatch error if you try to access the app at `http://localhost:8080` instead of the https://...ngrok-free.app address.
+**Step 3:** Setup an HTTPS proxy to access the app with an https address:
+See
 
-  After installing or downloading the standalone ngrok client you can start ngrok to intercept the data exchanged on port 8080 with `./ngrok http 8080` in Linux or `ngrok http 8080` in Windows.
+- [HTTPS Proxy](#https-proxy)
 
-**Step 3:** Develop your application and customize the experience
+**Step 4:** Develop your application and customize the experience
 
 - Check out [How It Works](#how-it-works-mini-guides)
 
-**Step 4:** Optional - deploy to production
+**Step 5:** Optional - deploy to production
 See:
 
 - [Deployment](#deployment)
 - [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md)
+
+## HTTPS Proxy:
+
+If you want to use an API that requires HTTPS (for example, GitHub or Facebook), you need to run the app with an HTTPS URL. You can do this by setting up an HTTPS proxy using either ngrok or Cloudflare.
+Note: When using an HTTPS proxy, you may get a CSRF mismatch error if you try to directly access the app at `http://localhost:8080` instead of the HTTPS proxy address.
+
+### ngrok
+
+- Download [ngrok](https://ngrok.com/download).
+- Start ngrok.
+- Set your BASE_URL to the forwarding address from ngrok (i.e., `https://3ccb-1234-abcd.ngrok-free.app`). This will be the HTTPS address for accessing the app.
+
+### Cloudflare
+
+- Download and install [cloudflared](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads).
+- For a quick, free tunnel with a random subdomain under `trycloudflare.com`, execute:
+
+```
+cloudflared tunnel --url http://localhost:8080
+```
+
+- Set BASE_URL to the HTTPS address for the tunnel.
+
+#### Cloudflare with your own domain name
+
+If you own a domain managed by Cloudflare, you can use Cloudflare's Zero Trust portal to set up a tunnel to your app that is activated by a system service. Alternatively, you can create a tunnel and route a subdomain you like to your app using their CLI:
+
+```
+cloudflared tunnel login
+cloudflared tunnel create myapptunnel
+cloudflared tunnel route dns myapptunnel myappsubdomain.mydomain.com
+cloudflared tunnel --url http://localhost:8080 run myapptunnel
+```
+
+Then set BASE_URL to the HTTPS address for the tunnel.
+Note that the tunnel and DNS route are a one-time setup. To reactivate the HTTPS tunnel to your app later, such as after a system restart, just rerun:
+
+```
+cloudflared tunnel --url http://localhost:8080 run myapptunnel
+```
+
+To clean up your own domain's related configurations when you're done:
+
+- Delete the tunnel by executing `cloudflared tunnel delete myapptunnel`
+- Remove the `myappsubdomain` DNS entry from your domain through the Cloudflare web UI.
+- Remove `%USERPROFILE%\.cloudflared` (Windows) or `~/.cloudflared` (Linux/macOS) if you want to clear local credentials.
 
 # Obtaining API Keys
 
