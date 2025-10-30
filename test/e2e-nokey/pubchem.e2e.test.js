@@ -6,7 +6,6 @@ test.describe('PubChem API Integration', () => {
   let sharedPage;
 
   test.beforeAll(async ({ browser }) => {
-    // Open one page for the whole suite to avoid repeated expensive navigations
     sharedPage = await browser.newPage();
     await sharedPage.goto('/api/pubchem');
     await sharedPage.waitForLoadState('networkidle');
@@ -135,33 +134,16 @@ test.describe('PubChem API Integration', () => {
     }
   });
 
-  test('should display safety and hazard information when available', async () => {
+  test('should display safety and hazard information', async () => {
     // Test safety information section if present
     const safetyCard = sharedPage.locator('.card.text-white.bg-warning');
-    if ((await safetyCard.count()) > 0) {
-      await expect(safetyCard).toBeVisible();
-      await expect(sharedPage.locator('.card-header h6', { hasText: 'Safety and Hazard Information' })).toBeVisible();
+    await expect(safetyCard).toBeVisible();
+    await expect(sharedPage.locator('.card-header h6', { hasText: 'Safety and Hazard Information' })).toBeVisible();
 
-      // Test for warning icons in safety information
-      const warningIcons = sharedPage.locator('.fas.fa-exclamation-triangle.fa-sm.text-warning');
-      if ((await warningIcons.count()) > 0) {
-        await expect(warningIcons.first()).toBeVisible();
-      }
-    }
-  });
-
-  test('should display chemical classifications when available', async () => {
-    // Test classifications section if present
-    const classificationsCard = sharedPage.locator('.card.text-white.bg-secondary');
-    if ((await classificationsCard.count()) > 0) {
-      await expect(classificationsCard).toBeVisible();
-      await expect(sharedPage.locator('.card-header h6', { hasText: 'Chemical Classifications' })).toBeVisible();
-
-      // Test for classification badges
-      const classificationBadges = sharedPage.locator('.badge.badge-info');
-      if ((await classificationBadges.count()) > 0) {
-        await expect(classificationBadges.first()).toBeVisible();
-      }
+    // Test for warning icons in safety information
+    const warningIcons = sharedPage.locator('.fas.fa-exclamation-triangle.fa-sm.text-warning');
+    if ((await warningIcons.count()) > 0) {
+      await expect(warningIcons.first()).toBeVisible();
     }
   });
 

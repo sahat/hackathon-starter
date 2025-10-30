@@ -1486,7 +1486,7 @@ exports.getPubChem = async (req, res, next) => {
     const aspirinCID = 2244;
 
     // Fetch comprehensive data about Aspirin from PubChem
-    const [compoundData, propertiesData, synonymsData, classificationData, safetyData, manufacturingData, imageData] = await Promise.all([
+    const [compoundData, propertiesData, synonymsData, safetyData, manufacturingData, imageData] = await Promise.all([
       // Basic compound information
       fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/JSON`)
         .then((res) => res.json())
@@ -1509,14 +1509,6 @@ exports.getPubChem = async (req, res, next) => {
         .catch((err) => {
           console.error('Synonyms and Alternative Names API error:', err);
           return { error: 'Failed to fetch Synonyms and Alternative names' };
-        }),
-
-      // Classification data
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/classification/JSON`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Classification API error:', err);
-          return { error: 'Failed to fetch Classification Data' };
         }),
 
       // Safety and hazard information
@@ -1546,8 +1538,6 @@ exports.getPubChem = async (req, res, next) => {
     // Handle synonyms from API data
     const synonyms = synonymsData?.InformationList?.Information?.[0]?.Synonym || [];
 
-    const classifications = classificationData?.Hierarchies || [];
-
     // Extract safety information
     const safetyInfo = {};
     if (safetyData?.Record?.Section) {
@@ -1572,7 +1562,6 @@ exports.getPubChem = async (req, res, next) => {
       compound,
       properties,
       synonyms: synonyms.slice(0, 10), // Limit to first 10 synonyms
-      classifications,
       safetyInfo,
       manufacturingInfo,
       imageUrl: imageData,
