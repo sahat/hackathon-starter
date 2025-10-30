@@ -27,7 +27,13 @@
     "test:e2e-nokey:record": "API_MODE=record npm run test:e2e-nokey:live",
     "test:e2e-nokey:replay": "API_MODE=replay API_STRICT_REPLAY=1 npm run test:e2e-nokey:live",
     "pretest:e2e": "npx playwright install chromium",
+    "pretest:e2e:live": "npx playwright install chromium",
+    "pretest:e2e:record": "npx playwright install chromium",
+    "pretest:e2e:replay": "npx playwright install chromium",
     "pretest:e2e-nokey": "npx playwright install chromium",
+    "pretest:e2e-nokey:live": "npx playwright install chromium",
+    "pretest:e2e-nokey:record": "npx playwright install chromium",
+    "pretest:e2e-nokey:replay": "npx playwright install chromium",
     "test:image-link": "mocha --timeout 300000 \"test/*links.test.js\""
   },
   "dependencies": {
