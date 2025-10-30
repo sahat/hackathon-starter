@@ -126,20 +126,6 @@ block content
                       i.fas.fa-exclamation-triangle.fa-sm.text-warning.me-2
                       = item
 
-  // Classifications Section
-  if classifications && classifications.length > 0
-    .card.text-white.bg-secondary.mb-4
-      .card-header
-        h6.panel-title.mb-0 Chemical Classifications
-      .card-body.text-dark.bg-white
-        each classification in classifications.slice(0, 3)
-          if classification.Node && classification.Node.length > 0
-            h6= classification.SourceName || 'Classification'
-            .mb-3
-              each node in classification.Node.slice(0, 5)
-                if node.Information && node.Information.Name
-                  span.badge.badge-info.m-1= node.Information.Name
-
   // Additional Information Section
   .card.text-white.bg-dark.mb-4
     .card-header
