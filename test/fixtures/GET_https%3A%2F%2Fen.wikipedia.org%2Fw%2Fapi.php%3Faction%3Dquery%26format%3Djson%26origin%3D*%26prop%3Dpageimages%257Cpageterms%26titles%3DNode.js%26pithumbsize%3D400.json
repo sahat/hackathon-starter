@@ -1,0 +1,15 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "pages": {
+      "26415635": {
+        "pageid": 26415635,
+        "ns": 0,
+        "title": "Node.js",
+        "thumbnail": { "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/500px-Node.js_logo.svg.png", "width": 400, "height": 245 },
+        "pageimage": "Node.js_logo.svg",
+        "terms": { "alias": ["Node", "NodeJS"], "label": ["Node.js"], "description": ["JavaScript runtime environment"] }
+      }
+    }
+  }
+}

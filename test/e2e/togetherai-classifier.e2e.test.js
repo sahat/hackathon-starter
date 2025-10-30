@@ -1,6 +1,17 @@
+process.env.API_TEST_FILE = 'e2e/togetherai-classifier.e2e.test.js';
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
+const { registerTestInManifest, isInManifest } = require('../tools/fixture-helpers');
+
+// Self-register this test in the manifest when recording
+registerTestInManifest('e2e/togetherai-classifier.e2e.test.js');
+
+// Skip this file during replay if it's not in the manifest
+if (process.env.API_MODE === 'replay' && !isInManifest('e2e/togetherai-classifier.e2e.test.js')) {
+  console.log('[fixtures] skipping e2e/togetherai-classifier.e2e.test.js as it is not in manifest for replay mode - 3 tests');
+  test.skip(true, 'Not in manifest for replay mode');
+}
 
 // Helper: extract Query per Minute (QPM) from the webserver log file if we get one.
 function extractQpmFromLog() {

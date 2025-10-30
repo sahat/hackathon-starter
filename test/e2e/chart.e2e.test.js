@@ -1,4 +1,15 @@
+const testFileName = 'e2e/chart.e2e.test.js';
+process.env.API_TEST_FILE = testFileName;
 const { test, expect } = require('@playwright/test');
+const { registerTestInManifest, isInManifest } = require('../tools/fixture-helpers');
+
+// Self-register this test in the manifest when recording
+registerTestInManifest(testFileName);
+
+if (process.env.API_MODE && process.env.API_MODE === 'replay' && !isInManifest(testFileName)) {
+  console.log(`[fixtures] skipping ${testFileName} as it is not in manifest for replay mode`);
+  test.skip(true, 'Not in manifest for replay mode');
+}
 
 test.describe('Chart.js and Alpha Vantage API Integration', () => {
   let sharedPage;

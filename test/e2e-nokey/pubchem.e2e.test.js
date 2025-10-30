@@ -1,4 +1,14 @@
+process.env.API_TEST_FILE = 'e2e-nokey/pubchem.e2e.test.js';
 const { test, expect } = require('@playwright/test');
+const { registerTestInManifest, isInManifest } = require('../tools/fixture-helpers');
+// Self-register this test in the manifest when recording
+registerTestInManifest('e2e-nokey/pubchem.e2e.test.js');
+
+// Skip this file during replay if it's not in the manifest
+if (process.env.API_MODE === 'replay' && !isInManifest('e2e-nokey/pubchem.e2e.test.js')) {
+  console.log('[fixtures] skipping e2e-nokey/pubchem.e2e.test.js as it is not in manifest for replay mode - 6 tests');
+  test.skip(true, 'Not in manifest for replay mode');
+}
 test.setTimeout(60_000); // 60s
 
 test.describe('PubChem API Integration', () => {
@@ -6,6 +16,7 @@ test.describe('PubChem API Integration', () => {
   let sharedPage;
 
   test.beforeAll(async ({ browser }) => {
+    // Open one page for the whole suite to avoid repeated expensive navigations
     sharedPage = await browser.newPage();
     await sharedPage.goto('/api/pubchem');
     await sharedPage.waitForLoadState('networkidle');

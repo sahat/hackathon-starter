@@ -33,12 +33,27 @@ jobs:
       - run: npm install
       - run: npm run lint-check
       - run: npm run test
+
       - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os == 'windows-latest' }}
         env:
           PATH: 'C:\Windows\System32;C:\Windows'
-        run: npm run test:e2e-nokey
+        run: npm run test:e2e-nokey:replay
+      - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os == 'windows-latest' }}
+        env:
+          PATH: 'C:\Windows\System32;C:\Windows'
+        run: npm run test:e2e:replay
+      - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os == 'windows-latest' }}
+        env:
+          PATH: 'C:\Windows\System32;C:\Windows'
+        run: npm run test:e2e-nokey:live
+
       - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os != 'windows-latest' }}
-        run: npm run test:e2e-nokey
+        run: npm run test:e2e:replay
+      - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os != 'windows-latest' }}
+        run: npm run test:e2e-nokey:replay
+      - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os != 'windows-latest' }}
+        run: npm run test:e2e-nokey:live
+
       - name: Upload tmp as an artifact (Playwrite artifacts, code coverage report, etc)
         if: always()
         uses: actions/upload-artifact@v4

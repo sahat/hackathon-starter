@@ -40,7 +40,7 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : 2,
+  workers: process.env.API_MODE === 'record' ? 1 : process.env.CI ? 1 : 2,
   outputDir: '../tmp/playwright-artifacts',
   reporter: [['html', { outputFolder: '../tmp/playwright-report', open: 'never' }]],
   use: {
