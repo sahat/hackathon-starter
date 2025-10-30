@@ -1,0 +1,7 @@
+[
+  {
+    "comment": "This fixture will be auto-generated when you run the test in record mode.",
+    "instructions": "Run: $env:NOCK_BACK_MODE='record'; npm test -- test/integration/github.integration.test.js",
+    "note": "Do not manually edit this file when recording real API responses."
+  }
+]
