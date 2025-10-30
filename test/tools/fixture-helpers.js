@@ -28,11 +28,13 @@ function keyFor(method, url, body) {
   const sensitiveParams = ['apikey', 'api_key', 'api-key', 'key', 'token'];
   sensitiveParams.forEach((param) => parsed.searchParams.delete(param));
   const cleanUrl = `${parsed.origin}${parsed.pathname}${parsed.search}`;
+  // Encode, then replace Windows-forbidden filename characters with _
+  const safe = encodeURIComponent(cleanUrl).replace(/[<>:"/\\|?*]/g, '_');
   if (upper === 'GET') {
-    return `${upper}_${encodeURIComponent(cleanUrl)}.json`;
+    return `${upper}_${safe}.json`;
   }
   const hash = hashBody(body);
-  return `${upper}_${encodeURIComponent(cleanUrl)}_${hash}.json`;
+  return `${upper}_${safe}_${hash}.json`;
 }
 
 function registerTestInManifest(testFile) {
