@@ -111,8 +111,8 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Local Install: [MongoDB](https://www.mongodb.com/download-center/community)
   - Hosted: No need to install, see the MongoDB Atlas section
 
-- [Node.js 22.12+](http://nodejs.org)
-  - Highly recommended: Use/Upgrade your Node.js to the latest Node.js 22 LTS version.
+- [Node.js LTS 24](http://nodejs.org)
+  - Highly recommended: Use/Upgrade your Node.js to the latest Node.js LTS version.
 - Command Line Tools
 - <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Apple_logo_grey.svg" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
 - <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg" height="17">&nbsp;**Windows:** [Visual Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://learn.microsoft.com/en-us/windows/wsl/install) OR [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)

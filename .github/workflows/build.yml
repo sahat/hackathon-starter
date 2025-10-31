@@ -21,7 +21,7 @@ jobs:
       RUN_E2E: ${{ vars.RUN_E2E }} # from repository settings -> Actions -> Variables
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v5
