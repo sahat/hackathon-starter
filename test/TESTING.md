@@ -114,6 +114,10 @@ The E2E test framework in hackathon-starter is currently only for server-side AP
 
 Both are installed in `start-with-memory-db.js` for Playwright tests before the Express app loads for testing.
 
+#### Limitations and unsupported transports
+
+Record/replay supports only server-side `fetch()` and `axios` calls. Node's built-in (legacy) `http`/`https` modules, or browser-side API calls are currently not supported.
+
 #### Recording Mode (API_MODE=record)
 
 When recording, the system:
