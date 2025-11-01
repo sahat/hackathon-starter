@@ -13,7 +13,7 @@ This document describes the test organization, fixture system, and how to create
 
 ## Overview
 
-Hackathon-starter comes with core unit tests that focus on essential functionality, as well as end-to-end (E2E) tests using [Playwright](https://playwright.dev/) for various integrations.
+Hackathon Starter comes with core unit tests that focus on essential functionality, as well as end-to-end (E2E) tests using [Playwright](https://playwright.dev/) for various integrations.
 
 The purpose of the core unit tests is to verify core features like user management and security features. You usually don't need to worry about these during hackathons, but it's a good idea to keep them to ensure your customizations don't break core functions.
 
@@ -72,6 +72,27 @@ test/
    - Can run without any configuration in replay mode
 
 3. **Core Unit Tests** - Individual component tests (models, config, middleware)
+
+## Running E2E Tests
+
+Use one script with project selection:
+
+```bash
+npm run test:e2e:live                               # All E2E tests with live API calls
+npm run test:e2e:replay         # All E2E tests with previously recorded API responses
+npm run test:custom -- --project=chromium-record         # E2E with recording API calls (record fixtures)
+npm run test:custom -- --project=chromium-nokey-live      # Only E2E tests that don't require API keys (live)
+npm run test:custom -- --project=chromium-nokey-replay    # Only E2E tests that don't require API keys (replay fixtures)
+npm run test:custom -- --project=chromium-nokey-record    # Only E2E tests that don't require API keys (record fixtures)
+```
+
+### Run a Single E2E Test File
+
+```bash
+npx playwright test test/e2e.../testfile.e2e.test.js                           --config=test/playwright.config.js --project=chromium # Run tests in a single test file against live APIs
+npx playwright test test/e2e.../testfile.e2e.test.js                           --config=test/playwright.config.js --project=chromium-record # Run tests in a single test file while replaying recorded API responses from the fixtures
+npx playwright test test/e2e.../testfile.e2e.test.js                           --config=test/playwright.config.js --project=chromium-record # Run tests in a single test file against live APIs and capture the API responses as fixtures for replay later
+```
 
 ## Fixture System
 
@@ -134,27 +155,28 @@ With strict mode enabled:
 2. **Add fixture boilerplate** (if applicable - see existing tests for examples)
 3. **Write your test assertions**
 4. **Test and finalize your test against live APIs**
-   ```bash
-   npx playwright test test/e2e/my-api.e2e.test.js
-   ```
+
+```bash
+npx playwright test test/e2e/my-api.e2e.test.js --config=test/playwright.config.js --project=chromium
+```
+
 5. **Record fixtures** (first time only):
-   ```bash
-   API_MODE=record npx playwright test test/e2e/my-api.e2e.test.js
-   ```
+
+```bash
+npx playwright test test/e2e/my-api.e2e.test.js --config=test/playwright.config.js --project=chromium-record
+```
+
 6. **Verify replay works**:
-   ```bash
-   API_MODE=replay npx playwright test test/e2e/my-api.e2e.test.js
-   ```
-7. **Verify replay covered all API calls using the strict mode**
-   ```bash
-   API_MODE=replay API_STRICT_REPLAY=1 npx playwright test test/e2e/my-api.e2e.test.js
-   ```
+
+```bash
+npx playwright test test/e2e/my-api.e2e.test.js --config=test/playwright.config.js --project=chromium-replay
+```
 
 ### 3. Important Patterns
 
 #### API_TEST_FILE Environment Variable
 
-Always set this at the top of your test file if you are setting up Playwrite tests that are going to have record and replay:
+Always set this at the top of your test file if you are setting up Playwright tests that are going to have record and replay:
 
 ```javascript
 process.env.API_TEST_FILE = 'e2e/my-api.e2e.test.js';

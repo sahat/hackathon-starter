@@ -11,19 +11,17 @@ if (!originalMongoUri && result && result.parsed && result.parsed.MONGODB_URI) {
   delete process.env.MONGODB_URI;
 }
 
-// TEST ENV OVERRIDES
-// Put any environment variables here that must be forced for e2e runs.
-// This ensures the Playwright runner and the spawned webServer see the same values.
-const TEST_ENV_OVERRIDES = {
+// Detect if replay project is being run
+const isReplay = process.argv.some((arg) => arg === '--project=chromium-replay' || arg === '--project=chromium-nokey-replay');
+
+const webServerEnv = {
+  ...process.env,
   SESSION_SECRET: process.env.SESSION_SECRET || 'test_session_secret',
   RATE_LIMIT_GLOBAL: '500',
   RATE_LIMIT_STRICT: '20',
   RATE_LIMIT_LOGIN: '50',
+  ...(isReplay ? { API_MODE: 'replay', API_STRICT_REPLAY: '1' } : {}),
 };
-
-Object.entries(TEST_ENV_OVERRIDES).forEach(([k, v]) => {
-  process.env[k] = v;
-});
 
 // Create `tmp` dir in case if it doesn't exist yet
 // so `tee ../tmp/playwright-webserver.log` doesn't fail
@@ -52,21 +50,38 @@ module.exports = defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: ['e2e/*.e2e.test.js'],
+      testMatch: ['e2e/*.e2e.test.js', 'e2e-nokey/*.e2e.test.js'],
     },
     {
-      name: 'chromium-nokey',
+      name: 'chromium-record',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: ['e2e/*.e2e.test.js', 'e2e-nokey/*.e2e.test.js'],
+    },
+    {
+      name: 'chromium-replay',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: ['e2e/*.e2e.test.js', 'e2e-nokey/*.e2e.test.js'],
+    },
+    {
+      name: 'chromium-nokey-live',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: ['e2e-nokey/*.e2e.test.js'],
+    },
+    {
+      name: 'chromium-nokey-record',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: ['e2e-nokey/*.e2e.test.js'],
+    },
+    {
+      name: 'chromium-nokey-replay',
       use: { ...devices['Desktop Chrome'] },
       testMatch: ['e2e-nokey/*.e2e.test.js'],
     },
   ],
   webServer: {
-    // Pipe web server stdout/stderr through `tee` so output still appears in the console
-    // and also write a fixed, deterministic log file that tests can inspect.
-    // Using a fixed file keeps the test simple; it will be overwritten each run.
     command: 'node ./tools/playwright-start-and-log.js',
     url: 'http://127.0.0.1:8080',
     reuseExistingServer: !process.env.CI,
-    env: { ...process.env, ...TEST_ENV_OVERRIDES },
+    env: webServerEnv,
   },
 });

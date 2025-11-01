@@ -27,7 +27,7 @@ const { keyFor } = require('./fixture-helpers');
 
 const FIXTURES_DIR = path.resolve(__dirname, '..', 'fixtures');
 
-function installServerApiFixtures({ mode = process.env.API_MODE || 'replay' } = {}) {
+function installServerApiFixtures({ mode = process.env.API_MODE } = {}) {
   const strict = process.env.API_STRICT_REPLAY === '1';
 
   const origFetch = globalThis.fetch;
@@ -50,27 +50,28 @@ function installServerApiFixtures({ mode = process.env.API_MODE || 'replay' } = 
     return;
   }
 
-  // replay mode
-  globalThis.fetch = async (input, init = {}) => {
-    try {
-      const url = typeof input === 'string' ? input : input.url;
-      const method = (init.method || 'GET').toUpperCase();
-      const file = path.join(FIXTURES_DIR, keyFor(method, url, init.body));
-      if (fs.existsSync(file)) {
-        const body = fs.readFileSync(file, 'utf8');
-        console.log(`[fixtures] server replay ${method} ${url}`);
-        return new Response(body, {
-          status: 200,
-          headers: { 'content-type': 'application/json; charset=utf-8' },
-        });
-      }
-      if (strict) {
-        console.warn(`[fixtures] server strict-replay missing: ${method} ${url} — blocking network`);
-        throw new Error(`Strict replay: missing fixture for ${method} ${url}`);
-      }
-    } catch {}
-    return origFetch(input, init);
-  };
+  if (mode === 'replay') {
+    globalThis.fetch = async (input, init = {}) => {
+      try {
+        const url = typeof input === 'string' ? input : input.url;
+        const method = (init.method || 'GET').toUpperCase();
+        const file = path.join(FIXTURES_DIR, keyFor(method, url, init.body));
+        if (fs.existsSync(file)) {
+          const body = fs.readFileSync(file, 'utf8');
+          console.log(`[fixtures] server replay ${method} ${url}`);
+          return new Response(body, {
+            status: 200,
+            headers: { 'content-type': 'application/json; charset=utf-8' },
+          });
+        }
+        if (strict) {
+          console.warn(`[fixtures] server strict-replay missing: ${method} ${url} — blocking network`);
+          throw new Error(`Strict replay: missing fixture for ${method} ${url}`);
+        }
+      } catch {}
+      return origFetch(input, init);
+    };
+  }
 }
 
 module.exports = { installServerApiFixtures };

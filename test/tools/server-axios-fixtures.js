@@ -30,7 +30,7 @@ const { keyFor } = require('./fixture-helpers');
 
 const FIXTURES_DIR = path.resolve(__dirname, '..', 'fixtures');
 
-function installServerAxiosFixtures({ mode = process.env.API_MODE || 'replay' } = {}) {
+function installServerAxiosFixtures({ mode = process.env.API_MODE } = {}) {
   const strict = process.env.API_STRICT_REPLAY === '1';
 
   if (mode === 'record') {
@@ -45,7 +45,7 @@ function installServerAxiosFixtures({ mode = process.env.API_MODE || 'replay' } 
       } catch {}
       return response;
     });
-  } else {
+  } else if (mode === 'replay') {
     axios.interceptors.request.use((config) => {
       try {
         const file = path.join(FIXTURES_DIR, keyFor(config.method || 'GET', config.url, config.data));

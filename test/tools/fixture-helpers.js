@@ -39,7 +39,7 @@ function keyFor(method, url, body) {
 
 function registerTestInManifest(testFile) {
   try {
-    if ((process.env.API_MODE || 'replay') !== 'record') return;
+    if (process.env.API_MODE !== 'record') return;
     let list = [];
     try {
       list = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));

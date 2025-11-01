@@ -51,8 +51,8 @@ const { installServerAxiosFixtures } = require('./server-axios-fixtures');
 
     // Install server-side API fixtures (record/replay) before app loads
     try {
-      installServerApiFixtures({ mode: process.env.API_MODE || 'replay' });
-      installServerAxiosFixtures({ mode: process.env.API_MODE || 'replay' });
+      installServerApiFixtures({ mode: process.env.API_MODE });
+      installServerAxiosFixtures({ mode: process.env.API_MODE });
     } catch {}
 
     // Import the application after env is set so app.js picks up MONGODB_URI
