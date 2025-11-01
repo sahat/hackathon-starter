@@ -21,7 +21,7 @@ jobs:
       RUN_E2E: ${{ vars.RUN_E2E }} # from repository settings -> Actions -> Variables
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v5
@@ -33,15 +33,21 @@ jobs:
       - run: npm install
       - run: npm run lint-check
       - run: npm run test
+
+      # For testing in Windows CI, we need to limit the path to exclude the additional executables
+      # that the default github runner has, but are not on a vanilla Windows OS installation.
       - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os == 'windows-latest' }}
         env:
           PATH: 'C:\Windows\System32;C:\Windows'
-        run: npm run test:e2e-nokey
+        run: npm run test:e2e:replay
+
+        # if not Windows, run normally
       - if: ${{ (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') && matrix.os != 'windows-latest' }}
-        run: npm run test:e2e-nokey
+        run: npm run test:e2e:replay
+
       - name: Upload tmp as an artifact (Playwrite artifacts, code coverage report, etc)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: tmp-artifacts-${{ matrix.os }}-${{ github.job }}-${{ github.run_id }}
           path: tmp/**

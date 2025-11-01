@@ -105,7 +105,11 @@ jobs:
 
       - name: Run e2e tests
         if: ${{ steps.rename-patches.outputs.changed == '1' && (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') }}
-        run: npm run test:e2e-nokey
+        run: npm run test:e2e:replay
+
+      - name: Run e2e tests that don't require API keys against live APIs
+        if: ${{ steps.rename-patches.outputs.changed == '1' && (env.RUN_E2E == 'true' || github.repository == 'sahat/hackathon-starter') }}
+        run: npm run test:e2e:custom -- --project=chromium-nokey-live
 
       - name: Commit and push patch renames
         if: ${{ steps.rename-patches.outputs.changed == '1' }}

@@ -1486,7 +1486,7 @@ exports.getPubChem = async (req, res, next) => {
     const aspirinCID = 2244;
 
     // Fetch comprehensive data about Aspirin from PubChem
-    const [compoundData, propertiesData, synonymsData, classificationData, safetyData, manufacturingData, imageData] = await Promise.all([
+    const [compoundData, propertiesData, synonymsData, safetyData, manufacturingData, imageData] = await Promise.all([
       // Basic compound information
       fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/JSON`)
         .then((res) => res.json())
@@ -1509,14 +1509,6 @@ exports.getPubChem = async (req, res, next) => {
         .catch((err) => {
           console.error('Synonyms and Alternative Names API error:', err);
           return { error: 'Failed to fetch Synonyms and Alternative names' };
-        }),
-
-      // Classification data
-      fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${aspirinCID}/classification/JSON`)
-        .then((res) => res.json())
-        .catch((err) => {
-          console.error('Classification API error:', err);
-          return { error: 'Failed to fetch Classification Data' };
         }),
 
       // Safety and hazard information
@@ -1546,8 +1538,6 @@ exports.getPubChem = async (req, res, next) => {
     // Handle synonyms from API data
     const synonyms = synonymsData?.InformationList?.Information?.[0]?.Synonym || [];
 
-    const classifications = classificationData?.Hierarchies || [];
-
     // Extract safety information
     const safetyInfo = {};
     if (safetyData?.Record?.Section) {
@@ -1572,7 +1562,6 @@ exports.getPubChem = async (req, res, next) => {
       compound,
       properties,
       synonyms: synonyms.slice(0, 10), // Limit to first 10 synonyms
-      classifications,
       safetyInfo,
       manufacturingInfo,
       imageUrl: imageData,
@@ -1615,7 +1604,10 @@ exports.getWikipedia = async (req, res) => {
   const searchWikipedia = async (term) => {
     const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(term)}&srlimit=10`;
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Failed to search Wikipedia');
+    if (!response.ok) {
+      console.error(`Wikipedia search failed: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to search Wikipedia: ${response.status} ${response.statusText}`);
+    }
     const data = await response.json();
     if (data.query && data.query.search) {
       return data.query.search.map((result) => ({
@@ -1630,7 +1622,10 @@ exports.getWikipedia = async (req, res) => {
   const getPageSections = async (title) => {
     const url = `https://en.wikipedia.org/w/api.php?action=parse&format=json&origin=*&page=${encodeURIComponent(title)}&prop=sections`;
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Failed to fetch sections');
+    if (!response.ok) {
+      console.error(`Wikipedia sections fetch failed for "${title}": ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch sections: ${response.status} ${response.statusText}`);
+    }
     const data = await response.json();
     if (data.parse && data.parse.sections) {
       return data.parse.sections.map((s) => s.line);
@@ -1642,7 +1637,10 @@ exports.getWikipedia = async (req, res) => {
   const getPageExtract = async (title) => {
     const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=extracts&explaintext=1&titles=${encodeURIComponent(title)}&exintro=1`;
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Failed to fetch extract');
+    if (!response.ok) {
+      console.error(`Wikipedia extract fetch failed for "${title}": ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch extract: ${response.status} ${response.statusText}`);
+    }
     const data = await response.json();
     const pageObj = data.query && data.query.pages ? Object.values(data.query.pages)[0] : null;
     if (pageObj && pageObj.extract) {
@@ -1655,7 +1653,10 @@ exports.getWikipedia = async (req, res) => {
   const getPageImage = async (title) => {
     const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages|pageterms&titles=${encodeURIComponent(title)}&pithumbsize=400`;
     const resp = await fetch(url);
-    if (!resp.ok) throw new Error('Failed to fetch image');
+    if (!resp.ok) {
+      console.error(`Wikipedia image fetch failed for "${title}": ${resp.status} ${resp.statusText}`);
+      throw new Error(`Failed to fetch image: ${resp.status} ${resp.statusText}`);
+    }
     const data = await resp.json();
     const pageObj = data.query && data.query.pages ? Object.values(data.query.pages)[0] : null;
     if (pageObj) {

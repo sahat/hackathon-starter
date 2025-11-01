@@ -5,6 +5,8 @@
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const { installServerApiFixtures } = require('./server-fetch-fixtures');
+const { installServerAxiosFixtures } = require('./server-axios-fixtures');
 
 (async function main() {
   try {
@@ -46,6 +48,12 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
     } catch (e) {
       console.warn('[start-with-memory-db] SCSS build failed or not available:', e.message || e);
     }
+
+    // Install server-side API fixtures (record/replay) before app loads
+    try {
+      installServerApiFixtures({ mode: process.env.API_MODE });
+      installServerAxiosFixtures({ mode: process.env.API_MODE });
+    } catch {}
 
     // Import the application after env is set so app.js picks up MONGODB_URI
     const urlMod = await import('url');

@@ -1,5 +1,12 @@
 const { test, expect } = require('@playwright/test');
 
+// Skip this suite entirely when running in record/replay fixture mode.
+// We intentionally do not use browser-side record/replay for HERE Maps.
+if (process.env.API_MODE === 'replay' || process.env.API_MODE === 'record') {
+  console.log('[fixtures] skipping here-maps.e2e.test.js in record/replay mode (browser-side fixtures disabled) - 3 tests');
+  test.skip(true, 'Skipping HERE Maps tests in record/replay mode (browser-side fixtures disabled)');
+}
+
 test.describe('HERE Maps API Integration', () => {
   let sharedPage;
   const tileRequests = [];

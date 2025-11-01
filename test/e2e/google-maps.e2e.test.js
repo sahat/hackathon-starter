@@ -1,5 +1,12 @@
 const { test, expect } = require('@playwright/test');
 
+// Skip this suite entirely when running in replay/record-fixture mode.
+// We intentionally do not use browser-side record/replay for Google Maps.
+if (process.env.API_MODE === 'replay' || process.env.API_MODE === 'record') {
+  console.log('[fixtures] skipping google-maps.e2e.test.js in record/replay mode (browser-side fixtures disabled) - 6 tests');
+  test.skip(true, 'Skipping Google Maps tests in record/replay mode (browser-side fixtures disabled)');
+}
+
 test.describe('Google Maps API Integration', () => {
   let sharedPage;
 

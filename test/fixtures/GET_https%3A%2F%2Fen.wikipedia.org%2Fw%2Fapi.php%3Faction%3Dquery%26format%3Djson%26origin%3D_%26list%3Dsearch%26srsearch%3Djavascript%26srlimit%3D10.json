@@ -1,0 +1,99 @@
+{
+  "batchcomplete": "",
+  "continue": { "sroffset": 10, "continue": "-||" },
+  "query": {
+    "searchinfo": { "totalhits": 4626, "suggestion": "java script", "suggestionsnippet": "java script" },
+    "search": [
+      {
+        "ns": 0,
+        "title": "JavaScript",
+        "pageid": 9845,
+        "size": 86320,
+        "wordcount": 7934,
+        "snippet": "<span class=\"searchmatch\">JavaScript</span> (JS) is a programming language and core technology of the Web, alongside HTML and CSS. It was created by Brendan Eich in 1995. Ninety-nine percent",
+        "timestamp": "2025-10-22T15:48:31Z"
+      },
+      {
+        "ns": 0,
+        "title": "JSON",
+        "pageid": 1575082,
+        "size": 47688,
+        "wordcount": 4928,
+        "snippet": "JSON (<span class=\"searchmatch\">JavaScript</span> Object Notation, pronounced /\u02c8d\u0292e\u026as\u0259n/ or /\u02c8d\u0292e\u026a\u02ccs\u0252n/) is an open standard file format and data interchange format that uses human-readable",
+        "timestamp": "2025-10-27T15:44:33Z"
+      },
+      {
+        "ns": 0,
+        "title": "Ajax (programming)",
+        "pageid": 1610950,
+        "size": 19474,
+        "wordcount": 1764,
+        "snippet": "Ajax (also AJAX /\u02c8e\u026ad\u0292\u00e6ks/; short for &quot;asynchronous <span class=\"searchmatch\">JavaScript</span> and XML&quot;) is a set of web development techniques that uses various web technologies on the",
+        "timestamp": "2025-08-14T01:53:40Z"
+      },
+      {
+        "ns": 0,
+        "title": "Percent-encoding",
+        "pageid": 1829286,
+        "size": 19111,
+        "wordcount": 1959,
+        "snippet": "URL encoding, officially known as percent-encoding, is a method to encode arbitrary data in a uniform resource identifier (URI) using only the US-ASCII",
+        "timestamp": "2025-10-27T14:09:41Z"
+      },
+      {
+        "ns": 0,
+        "title": "WebKit",
+        "pageid": 689524,
+        "size": 51144,
+        "wordcount": 4119,
+        "snippet": "WebKit as implemented by Google in the Chromium project. Its <span class=\"searchmatch\">JavaScript</span> engine, <span class=\"searchmatch\">Javascript</span>Core, also powers the Bun server-side JS runtime, as opposed",
+        "timestamp": "2025-10-28T18:24:18Z"
+      },
+      {
+        "ns": 0,
+        "title": "List of JavaScript engines",
+        "pageid": 1770496,
+        "size": 45438,
+        "wordcount": 2288,
+        "snippet": "The first engines for <span class=\"searchmatch\">JavaScript</span> were mere interpreters of the source code, but all relevant modern engines use just-in-time compilation for improved performance",
+        "timestamp": "2025-10-27T12:06:42Z"
+      },
+      {
+        "ns": 0,
+        "title": "V8 (JavaScript engine)",
+        "pageid": 19140716,
+        "size": 13231,
+        "wordcount": 1085,
+        "snippet": "V8 is a <span class=\"searchmatch\">JavaScript</span> and WebAssembly engine developed by Google for its Chrome browser. V8 is free and open-source software that is part of the Chromium",
+        "timestamp": "2025-10-28T04:23:52Z"
+      },
+      {
+        "ns": 0,
+        "title": "JavaScript library",
+        "pageid": 10081669,
+        "size": 9293,
+        "wordcount": 863,
+        "snippet": "A <span class=\"searchmatch\">JavaScript</span> library is a library of pre-written <span class=\"searchmatch\">JavaScript</span> code that allows for easier development of <span class=\"searchmatch\">JavaScript</span>-based applications, especially for AJAX",
+        "timestamp": "2025-06-29T20:49:43Z"
+      },
+      {
+        "ns": 0,
+        "title": "Unobtrusive JavaScript",
+        "pageid": 9136218,
+        "size": 14950,
+        "wordcount": 1519,
+        "snippet": "Unobtrusive <span class=\"searchmatch\">JavaScript</span> is a general approach to the use of client-side <span class=\"searchmatch\">JavaScript</span> in web pages so that if <span class=\"searchmatch\">JavaScript</span> features are partially or fully absent",
+        "timestamp": "2024-12-19T18:25:29Z"
+      },
+      {
+        "ns": 0,
+        "title": "Uniform Resource Identifier",
+        "pageid": 32146,
+        "size": 30925,
+        "wordcount": 4076,
+        "snippet": "A Uniform Resource Identifier (URI), formerly Universal Resource Identifier, is a unique sequence of characters that identifies an abstract or physical",
+        "timestamp": "2025-10-29T16:51:42Z"
+      }
+    ]
+  }
+}

@@ -44,6 +44,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
+- [HTTPS Proxy](#https-proxy)
 - [Obtaining API Keys](#obtaining-api-keys)
 - [Web Analytics](#web-analytics)
 - [Open Graph](#open-graph)
@@ -71,7 +72,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 
 - Login
   - **Local Authentication** Sign in with Email and Password, Passwordless
-  - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, X (Twitter), Twitch, Github, Discord
+  - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, X (Twitter), Twitch, GitHub, Discord
   - **OpenID Connect:** Sign in with LinkedIn
 - **User Profile and Account Management**
   - Gravatar
@@ -110,8 +111,8 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Local Install: [MongoDB](https://www.mongodb.com/download-center/community)
   - Hosted: No need to install, see the MongoDB Atlas section
 
-- [Node.js 22.12+](http://nodejs.org)
-  - Highly recommended: Use/Upgrade your Node.js to the latest Node.js 22 LTS version.
+- [Node.js LTS 24](http://nodejs.org)
+  - Highly recommended: Use/Upgrade your Node.js to the latest Node.js LTS version.
 - Command Line Tools
 - <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Apple_logo_grey.svg" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
 - <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg" height="17">&nbsp;**Windows:** [Visual Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://learn.microsoft.com/en-us/windows/wsl/install) OR [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
@@ -166,21 +167,66 @@ _What to get and configure:_
   - Set SITE_CONTACT_EMAIL as your incoming email address for messages sent to you through the contact form.
   - Set TRANSACTION_EMAIL as the "From" address for emails sent to users through the lost password or email verification emails to users. You may set this to the same address as SITE_CONTACT_EMAIL.
 
-- ngrok and HTTPS
-  If you want to use some API that needs HTTPS to work (for example Github or Facebook),
-  you will need to download [ngrok](https://ngrok.com/). Start ngrok, set your BASE_URL to the forwarding address (i.e `https://3ccb-1234-abcd.ngrok-free.app` ), and use the forwarding address to access your application. If you are using a proxy like ngrok, you may get a CSRF mismatch error if you try to access the app at `http://localhost:8080` instead of the https://...ngrok-free.app address.
+**Step 3:** Setup an HTTPS proxy to access the app with an https address:
+See
 
-  After installing or downloading the standalone ngrok client you can start ngrok to intercept the data exchanged on port 8080 with `./ngrok http 8080` in Linux or `ngrok http 8080` in Windows.
+- [HTTPS Proxy](#https-proxy)
 
-**Step 3:** Develop your application and customize the experience
+**Step 4:** Develop your application and customize the experience
 
 - Check out [How It Works](#how-it-works-mini-guides)
 
-**Step 4:** Optional - deploy to production
+**Step 5:** Optional - deploy to production
 See:
 
 - [Deployment](#deployment)
 - [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md)
+
+## HTTPS Proxy:
+
+If you want to use an API that requires HTTPS (for example, GitHub or Facebook), you need to run the app with an HTTPS URL. You can do this by setting up an HTTPS proxy using either ngrok or Cloudflare.
+Note: When using an HTTPS proxy, you may get a CSRF mismatch error if you try to directly access the app at `http://localhost:8080` instead of the HTTPS proxy address.
+
+### ngrok
+
+- Download [ngrok](https://ngrok.com/download).
+- Start ngrok.
+- Set your BASE_URL to the forwarding address from ngrok (i.e., `https://3ccb-1234-abcd.ngrok-free.app`). This will be the HTTPS address for accessing the app.
+
+### Cloudflare
+
+- Download and install [cloudflared](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads).
+- For a quick, free tunnel with a random subdomain under `trycloudflare.com`, execute:
+
+```
+cloudflared tunnel --url http://localhost:8080
+```
+
+- Set BASE_URL to the HTTPS address for the tunnel.
+
+#### Cloudflare with your own domain name
+
+If you own a domain managed by Cloudflare, you can use Cloudflare's Zero Trust portal to set up a tunnel to your app that is activated by a system service. Alternatively, you can create a tunnel and route a subdomain you like to your app using their CLI:
+
+```
+cloudflared tunnel login
+cloudflared tunnel create myapptunnel
+cloudflared tunnel route dns myapptunnel myappsubdomain.mydomain.com
+cloudflared tunnel --url http://localhost:8080 run myapptunnel
+```
+
+Then set BASE_URL to the HTTPS address for the tunnel.
+Note that the tunnel and DNS route are a one-time setup. To reactivate the HTTPS tunnel to your app later, such as after a system restart, just rerun:
+
+```
+cloudflared tunnel --url http://localhost:8080 run myapptunnel
+```
+
+To clean up your own domain's related configurations when you're done:
+
+- Delete the tunnel by executing `cloudflared tunnel delete myapptunnel`
+- Remove the `myappsubdomain` DNS entry from your domain through the Cloudflare web UI.
+- Remove `%USERPROFILE%\.cloudflared` (Windows) or `~/.cloudflared` (Linux/macOS) if you want to clear local credentials.
 
 # Obtaining API Keys
 
@@ -1439,19 +1485,34 @@ If you are starting with this boilerplate to build an application for prod deplo
 Hackathon Starter includes both unit tests and end-to-end (E2E) tests.
 
 - **Unit tests** focus on core functionality, such as user account management.
-- **E2E tests** use [Playwright](https://playwright.dev/) to run the application in a headless Chrome browser, making live API calls and verifying rendered views. These tests are located in `test/e2e/` and `test/e2e-nokey/`. For running nokey tests, you don't need to obtain any API keys.
-
-The provided E2E tests cover the example API integrations included in the starter project. You can use these as **examples or templates** when creating your own test files, adapting them to match your project's specific views and workflows.
+- **E2E tests** use [Playwright](https://playwright.dev/) to run the application in a headless Chrome browser, making live API calls and verifying rendered views. These tests are located in `test/e2e/` and `test/e2e-nokey/`. The nokey tests are tests that don't require API keys to run.
 
 During a hackathon, you typically don't need to worry about E2E tests; they can slow you down when you're focused on rapid prototyping. However, if you plan to launch your project for real-world use, adding and maintaining E2E tests is strongly recommended. They help ensure that future changes don't unintentionally break existing functionality.
+
+The existing E2E tests cover the example API integrations included in the starter project. You can use these as **examples or templates** when creating your own test files, adapting them to match your project's specific views and workflows.
 
 You can run the tests using:
 
 ```bash
-npm test           # or "npm run test" for unit tests - core functions
-npm run test:e2e
-npm run test:e2e-nokey
+npm test                  # unit tests (core functions)
+npm run test:e2e:live     # All E2E tests with previously recorded API responses
+npm run test:e2e:replay   # E2E (replay fixtures - recorded API responses)
 ```
+
+You can run a single E2E Test file like the following:
+
+```bash
+# Run tests in a single test file against live APIs
+npx playwright test test/e2e.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium
+
+# Run tests in a single test file while replaying recorded API responses from the fixtures
+npx playwright test test/e2e.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium-replay
+
+# Run tests in a single test file against live APIs and capture the API responses as fixtures for replay later
+npx playwright test test/e2e.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium-record
+```
+
+For more information on creating or running E2E tests see [test/TESTING.md](https://github.com/sahat/hackathon-starter/blob/master/test/TESTING.md)
 
 ## Changelog
 

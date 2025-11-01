@@ -1,0 +1,98 @@
+[
+  {
+    "watchers": 1238,
+    "movie": {
+      "title": "A House of Dynamite",
+      "year": 2025,
+      "ids": { "trakt": 1049823, "slug": "a-house-of-dynamite-2025", "imdb": "tt32376165", "tmdb": 1290159 },
+      "images": {
+        "fanart": ["walter-r2.trakt.tv/images/movies/001/049/823/fanarts/medium/56530050e3.jpg.webp"],
+        "poster": ["walter-r2.trakt.tv/images/movies/001/049/823/posters/thumb/1ee93ddb66.jpg.webp"],
+        "logo": ["walter-r2.trakt.tv/images/movies/001/049/823/logos/medium/3b2fd9c5a0.png.webp"],
+        "clearart": [],
+        "banner": [],
+        "thumb": []
+      }
+    }
+  },
+  {
+    "watchers": 816,
+    "movie": {
+      "title": "The Long Walk",
+      "year": 2025,
+      "ids": { "trakt": 449045, "slug": "the-long-walk-2025", "imdb": "tt10374610", "tmdb": 604079 },
+      "images": {
+        "fanart": ["walter-r2.trakt.tv/images/movies/000/449/045/fanarts/medium/be03d6d379.jpg.webp"],
+        "poster": ["walter-r2.trakt.tv/images/movies/000/449/045/posters/thumb/eea79cb06f.jpg.webp"],
+        "logo": ["walter-r2.trakt.tv/images/movies/000/449/045/logos/medium/a499a20340.png.webp"],
+        "clearart": ["walter-r2.trakt.tv/images/movies/000/449/045/cleararts/medium/5714074e92.png.webp"],
+        "banner": ["walter-r2.trakt.tv/images/movies/000/449/045/banners/medium/9ffe4d9dc0.jpg.webp"],
+        "thumb": ["walter-r2.trakt.tv/images/movies/000/449/045/thumbs/medium/14d3aa5763.jpg.webp"]
+      }
+    }
+  },
+  {
+    "watchers": 367,
+    "movie": {
+      "title": "Weapons",
+      "year": 2025,
+      "ids": { "trakt": 867094, "slug": "weapons-2025", "imdb": "tt26581740", "tmdb": 1078605 },
+      "images": {
+        "fanart": ["walter-r2.trakt.tv/images/movies/000/867/094/fanarts/medium/5925fc9e80.jpg.webp"],
+        "poster": ["walter-r2.trakt.tv/images/movies/000/867/094/posters/thumb/70d5a3734e.jpg.webp"],
+        "logo": ["walter-r2.trakt.tv/images/movies/000/867/094/logos/medium/667e0b7354.png.webp"],
+        "clearart": ["walter-r2.trakt.tv/images/movies/000/867/094/cleararts/medium/5a69034a6b.png.webp"],
+        "banner": ["walter-r2.trakt.tv/images/movies/000/867/094/banners/medium/964a565533.jpg.webp"],
+        "thumb": ["walter-r2.trakt.tv/images/movies/000/867/094/thumbs/medium/86b6ad799a.jpg.webp"]
+      }
+    }
+  },
+  {
+    "watchers": 317,
+    "movie": {
+      "title": "TRON: Ares",
+      "year": 2025,
+      "ids": { "trakt": 385396, "slug": "tron-ares-2025", "imdb": "tt6604188", "tmdb": 533533 },
+      "images": {
+        "fanart": ["walter-r2.trakt.tv/images/movies/000/385/396/fanarts/medium/160295fe98.jpg.webp"],
+        "poster": ["walter-r2.trakt.tv/images/movies/000/385/396/posters/thumb/9198618b70.jpg.webp"],
+        "logo": ["walter-r2.trakt.tv/images/movies/000/385/396/logos/medium/d81dd46897.png.webp"],
+        "clearart": [],
+        "banner": ["walter-r2.trakt.tv/images/movies/000/385/396/banners/medium/bbdd83539c.jpg.webp"],
+        "thumb": ["walter-r2.trakt.tv/images/movies/000/385/396/thumbs/medium/9f64043b10.jpg.webp"]
+      }
+    }
+  },
+  {
+    "watchers": 300,
+    "movie": {
+      "title": "The Roses",
+      "year": 2025,
+      "ids": { "trakt": 1029272, "slug": "the-roses-2025", "imdb": "tt31973693", "tmdb": 1267905 },
+      "images": {
+        "fanart": ["walter-r2.trakt.tv/images/movies/001/029/272/fanarts/medium/3e4837e92f.jpg.webp"],
+        "poster": ["walter-r2.trakt.tv/images/movies/001/029/272/posters/thumb/d4e3aa4013.jpg.webp"],
+        "logo": ["walter-r2.trakt.tv/images/movies/001/029/272/logos/medium/6c6f3749ff.png.webp"],
+        "clearart": [],
+        "banner": ["walter-r2.trakt.tv/images/movies/001/029/272/banners/medium/20db03aad0.jpg.webp"],
+        "thumb": []
+      }
+    }
+  },
+  {
+    "watchers": 294,
+    "movie": {
+      "title": "The Fantastic 4: First Steps",
+      "year": 2025,
+      "ids": { "trakt": 460087, "slug": "the-fantastic-4-first-steps-2025", "imdb": "tt10676052", "tmdb": 617126 },
+      "images": {
+        "fanart": ["walter-r2.trakt.tv/images/movies/000/460/087/fanarts/medium/7b0102ea5a.jpg.webp"],
+        "poster": ["walter-r2.trakt.tv/images/movies/000/460/087/posters/thumb/9d9aaac07e.jpg.webp"],
+        "logo": ["walter-r2.trakt.tv/images/movies/000/460/087/logos/medium/428524c416.png.webp"],
+        "clearart": ["walter-r2.trakt.tv/images/movies/000/460/087/cleararts/medium/2350b8023a.png.webp"],
+        "banner": ["walter-r2.trakt.tv/images/movies/000/460/087/banners/medium/f127538d51.jpg.webp"],
+        "thumb": ["walter-r2.trakt.tv/images/movies/000/460/087/thumbs/medium/ccde65ee19.jpg.webp"]
+      }
+    }
+  }
+]

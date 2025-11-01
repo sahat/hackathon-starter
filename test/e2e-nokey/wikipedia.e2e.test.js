@@ -1,4 +1,15 @@
+process.env.API_TEST_FILE = 'e2e-nokey/wikipedia.e2e.test.js';
 const { test, expect } = require('@playwright/test');
+const { registerTestInManifest, isInManifest } = require('../tools/fixture-helpers');
+
+// Self-register this test in the manifest when recording
+registerTestInManifest('e2e-nokey/wikipedia.e2e.test.js');
+
+// Skip this file during replay if it's not in the manifest
+if (process.env.API_MODE === 'replay' && !isInManifest('e2e-nokey/wikipedia.e2e.test.js')) {
+  console.log('[fixtures] skipping e2e-nokey/wikipedia.e2e.test.js as it is not in manifest for replay mode - 2 tests');
+  test.skip(true, 'Not in manifest for replay mode');
+}
 
 test.describe('Wikipedia Example', () => {
   let sharedPage;
@@ -34,8 +45,11 @@ test.describe('Wikipedia Example', () => {
     // Ensure there is a page image and it points to a valid URL
     const imageEl = contentCard.locator('.card-body img');
     await expect(imageEl).toBeVisible();
-    const imageLoaded = await imageEl.evaluate((img) => img.complete && img.naturalWidth > 0);
-    expect(imageLoaded).toBeTruthy();
+    if (process.env.API_MODE !== 'replay') {
+      // we are not saving images when recording, so don't expect in replay
+      const imageLoaded = await imageEl.evaluate((img) => img.complete && img.naturalWidth > 0);
+      expect(imageLoaded).toBeTruthy();
+    }
 
     // Ensure there is an extract paragraph with sufficient text
     const extractPara = contentCard.locator('.card-body p.text-break');
