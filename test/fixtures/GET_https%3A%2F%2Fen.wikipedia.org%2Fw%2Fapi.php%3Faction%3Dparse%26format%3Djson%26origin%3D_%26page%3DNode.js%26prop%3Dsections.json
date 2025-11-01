@@ -1,0 +1,27 @@
+{
+  "parse": {
+    "title": "Node.js",
+    "pageid": 26415635,
+    "sections": [
+      { "toclevel": 1, "level": "2", "line": "History", "number": "1", "index": "1", "fromtitle": "Node.js", "byteoffset": 4509, "anchor": "History", "linkAnchor": "History" },
+      { "toclevel": 2, "level": "3", "line": "Branding", "number": "1.1", "index": "2", "fromtitle": "Node.js", "byteoffset": 11313, "anchor": "Branding", "linkAnchor": "Branding" },
+      { "toclevel": 1, "level": "2", "line": "Overview", "number": "2", "index": "3", "fromtitle": "Node.js", "byteoffset": 11916, "anchor": "Overview", "linkAnchor": "Overview" },
+      { "toclevel": 2, "level": "3", "line": "Platform architecture", "number": "2.1", "index": "4", "fromtitle": "Node.js", "byteoffset": 15713, "anchor": "Platform_architecture", "linkAnchor": "Platform_architecture" },
+      { "toclevel": 2, "level": "3", "line": "Industry support", "number": "2.2", "index": "5", "fromtitle": "Node.js", "byteoffset": 16754, "anchor": "Industry_support", "linkAnchor": "Industry_support" },
+      { "toclevel": 1, "level": "2", "line": "Releases", "number": "3", "index": "6", "fromtitle": "Node.js", "byteoffset": 20649, "anchor": "Releases", "linkAnchor": "Releases" },
+      { "toclevel": 1, "level": "2", "line": "Technical details", "number": "4", "index": "7", "fromtitle": "Node.js", "byteoffset": 25358, "anchor": "Technical_details", "linkAnchor": "Technical_details" },
+      { "toclevel": 2, "level": "3", "line": "Internals", "number": "4.1", "index": "8", "fromtitle": "Node.js", "byteoffset": 25498, "anchor": "Internals", "linkAnchor": "Internals" },
+      { "toclevel": 2, "level": "3", "line": "Threading", "number": "4.2", "index": "9", "fromtitle": "Node.js", "byteoffset": 26108, "anchor": "Threading", "linkAnchor": "Threading" },
+      { "toclevel": 2, "level": "3", "line": "V8", "number": "4.3", "index": "10", "fromtitle": "Node.js", "byteoffset": 28859, "anchor": "V8", "linkAnchor": "V8" },
+      { "toclevel": 2, "level": "3", "line": "Package management", "number": "4.4", "index": "11", "fromtitle": "Node.js", "byteoffset": 29277, "anchor": "Package_management", "linkAnchor": "Package_management" },
+      { "toclevel": 2, "level": "3", "line": "Event loop", "number": "4.5", "index": "12", "fromtitle": "Node.js", "byteoffset": 29526, "anchor": "Event_loop", "linkAnchor": "Event_loop" },
+      { "toclevel": 2, "level": "3", "line": "WebAssembly", "number": "4.6", "index": "13", "fromtitle": "Node.js", "byteoffset": 30355, "anchor": "WebAssembly", "linkAnchor": "WebAssembly" },
+      { "toclevel": 2, "level": "3", "line": "Native bindings", "number": "4.7", "index": "14", "fromtitle": "Node.js", "byteoffset": 30516, "anchor": "Native_bindings", "linkAnchor": "Native_bindings" },
+      { "toclevel": 1, "level": "2", "line": "Project governance", "number": "5", "index": "15", "fromtitle": "Node.js", "byteoffset": 32225, "anchor": "Project_governance", "linkAnchor": "Project_governance" },
+      { "toclevel": 1, "level": "2", "line": "References", "number": "6", "index": "16", "fromtitle": "Node.js", "byteoffset": 35146, "anchor": "References", "linkAnchor": "References" },
+      { "toclevel": 1, "level": "2", "line": "Further reading", "number": "7", "index": "17", "fromtitle": "Node.js", "byteoffset": 35179, "anchor": "Further_reading", "linkAnchor": "Further_reading" },
+      { "toclevel": 1, "level": "2", "line": "External links", "number": "8", "index": "18", "fromtitle": "Node.js", "byteoffset": 36320, "anchor": "External_links", "linkAnchor": "External_links" }
+    ],
+    "showtoc": ""
+  }
+}

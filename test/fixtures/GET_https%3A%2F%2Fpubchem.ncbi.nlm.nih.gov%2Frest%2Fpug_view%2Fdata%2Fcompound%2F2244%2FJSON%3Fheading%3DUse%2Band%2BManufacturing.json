@@ -1,0 +1,1414 @@
+{
+  "Record": {
+    "RecordType": "CID",
+    "RecordNumber": 2244,
+    "RecordTitle": "Aspirin",
+    "Section": [
+      {
+        "TOCHeading": "Use and Manufacturing",
+        "Description": "This section provides information on the use and manufacturing information for this chemical, such as uses, consumption patterns, manufacturing methods, and U.S. imports/exports/production.",
+        "Section": [
+          {
+            "TOCHeading": "Uses",
+            "Description": "Major uses of this chemical, including both consumer uses and industrial uses.",
+            "Information": [
+              {
+                "ReferenceNumber": 47,
+                "Name": "EPA CPDat Chemical and Product Categories",
+                "Reference": ["The Chemical and Products Database, a resource for exposure-relevant data on chemicals in consumer products, Scientific Data, volume 5, Article number: 180125 (2018), DOI:10.1038/sdata.2018.125"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "The Chemical and Products Database, a resource for exposure-relevant data on chemicals in consumer products, Scientific Data, volume 5, Article number: 180125 (2018), DOI:10.1038/sdata.2018.125",
+                    "Matched": {
+                      "PCLID": 900163333,
+                      "Citation": "The Chemical and Products Database, a resource for exposure-relevant data on chemicals in consumer products, Scientific Data, volume 5, Article number: 180125 (2018), DOI:10.1038/sdata.2018.125"
+                    }
+                  }
+                ],
+                "Value": {
+                  "ExternalTableName": "cpdat"
+                }
+              },
+              {
+                "ReferenceNumber": 59,
+                "Name": "Sources/Uses",
+                "Reference": ["ACGIH - Documentation of the TLVs and BEIs, 7th Ed. Cincinnati: ACGIH Worldwide, 2020. TLVs and BEIs"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "ACGIH - Documentation of the TLVs and BEIs, 7th Ed. Cincinnati: ACGIH Worldwide, 2020. TLVs and BEIs",
+                    "Matched": {
+                      "PCLID": 900175734,
+                      "Citation": "ACGIH - Documentation of the TLVs and BEIs, 7th Ed. Cincinnati: ACGIH Worldwide, 2020. TLVs and BEIs"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Used in manufacturing and health care; [ACGIH TLVs and BEIs]"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["O'Neil, M.J. (ed.). The Merck Index - An Encyclopedia of Chemicals, Drugs, and Biologicals. Whitehouse Station, NJ:  Merck and Co., Inc., 2006., p. 141"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "O'Neil, M.J. (ed.). The Merck Index - An Encyclopedia of Chemicals, Drugs, and Biologicals. Whitehouse Station, NJ:  Merck and Co., Inc., 2006., p. 141",
+                    "Matched": {
+                      "PCLID": 900028661,
+                      "Citation": "O'Neil, M.J. (ed.). The Merck Index - An Encyclopedia of Chemicals, Drugs, and Biologicals. Whitehouse Station, NJ:  Merck and Co., Inc., 2006., p. 141"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Therapeutic Category: Analgesic; antipyretic; anti-inflammatory; antithrombotic."
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["O'Neil, M.J. (ed.). The Merck Index - An Encyclopedia of Chemicals, Drugs, and Biologicals. Whitehouse Station, NJ:  Merck and Co., Inc., 2006., p. 141"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "O'Neil, M.J. (ed.). The Merck Index - An Encyclopedia of Chemicals, Drugs, and Biologicals. Whitehouse Station, NJ:  Merck and Co., Inc., 2006., p. 141",
+                    "Matched": {
+                      "PCLID": 900028661,
+                      "Citation": "O'Neil, M.J. (ed.). The Merck Index - An Encyclopedia of Chemicals, Drugs, and Biologicals. Whitehouse Station, NJ:  Merck and Co., Inc., 2006., p. 141"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Therapeutic Category (Vet): Analgesic; antipyretic; anti-inflammatory; antithrombotic."
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "MEDICATION"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["CHEMICAL PROFILE: Aspirin, 1981"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "CHEMICAL PROFILE: Aspirin, 1981",
+                    "Matched": {
+                      "PCLID": 900125854,
+                      "Citation": "CHEMICAL PROFILE: Aspirin, 1981"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "CHEMICAL PROFILE: Virtually all aspirin is used in pharmaceutical products in aspirin tablets or in concert with other ingredients (1981)",
+                      "Markup": [
+                        {
+                          "Start": 32,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        },
+                        {
+                          "Start": 78,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "For more Uses (Complete) data for ACETYLSALICYLIC ACID (7 total), please visit the HSDB record page.",
+                      "Markup": [
+                        {
+                          "Start": 83,
+                          "Length": 16,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/source/hsdb/652#section=Uses-(Complete)"
+                        },
+                        {
+                          "Start": 34,
+                          "Length": 20,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/ACETYLSALICYLIC%20ACID",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 163,
+                "Reference": ["DOI:10.1021/acs.est.5b03332"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "DOI:10.1021/acs.est.5b03332",
+                    "Matched": {
+                      "PCLID": 3232849,
+                      "Citation": "Singer HP, Wössner AE, McArdell CS, Fenner K. Rapid Screening for Exposure to \"Non-Target\" Pharmaceuticals from Wastewater Effluents by Combining HRMS-Based Suspect Screening and Exposure Modeling. Environ Sci Technol. 2016 Jul 05;50(13):6698–707. doi: 10.1021/acs.est.5b03332. PMID: 26938046.",
+                      "PMID": 26938046,
+                      "DOI": "10.1021/acs.est.5b03332"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Use (kg) in Switzerland (2009): >50000"
+                    },
+                    {
+                      "String": "Use (kg; approx.) in Germany (2009): >500000"
+                    },
+                    {
+                      "String": "Use (kg; exact) in Germany (2009): 621516"
+                    },
+                    {
+                      "String": "Use (kg) in USA (2002): 795000"
+                    },
+                    {
+                      "String": "Use (kg) in France (2004): 396212"
+                    },
+                    {
+                      "String": "Consumption (g per capita) in Switzerland (2009): 6.4"
+                    },
+                    {
+                      "String": "Consumption (g per capita; approx.) in Germany (2009): 6.1"
+                    },
+                    {
+                      "String": "Consumption (g per capita; exact) in Germany (2009): 7.6"
+                    },
+                    {
+                      "String": "Consumption (g per capita) in the USA (2002): 2.8"
+                    },
+                    {
+                      "String": "Consumption (g per capita) in France (2004): 6.6"
+                    },
+                    {
+                      "String": "Excretion rate: 0.1"
+                    },
+                    {
+                      "String": "Calculated removal (%): 92.1"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 205,
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "For use in the temporary relief of various forms of pain, inflammation associated with various conditions (including rheumatoid arthritis, juvenile rheumatoid arthritis, systemic lupus erythematosus, osteoarthritis, and ankylosing spondylitis), and is also used to reduce the risk of death and/or nonfatal myocardial infarction in patients with a previous infarction or unstable angina pectoris."
+                    }
+                  ]
+                }
+              }
+            ],
+            "Section": [
+              {
+                "TOCHeading": "Use Classification",
+                "Description": "This section contains use classification/category information for this compound from various sources.",
+                "Information": [
+                  {
+                    "ReferenceNumber": 53,
+                    "Name": "Use Classification",
+                    "Value": {
+                      "StringWithMarkup": [
+                        {
+                          "String": "Human drugs -> Rare disease (orphan)"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "ReferenceNumber": 54,
+                    "Value": {
+                      "StringWithMarkup": [
+                        {
+                          "String": "Animal Drugs -> FDA Approved Animal Drug Products (Green Book) -> Active Ingredients"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "ReferenceNumber": 57,
+                    "Value": {
+                      "StringWithMarkup": [
+                        {
+                          "String": "Human Drugs -> FDA Approved Drug Products with Therapeutic Equivalence Evaluations (Orange Book) -> Active Ingredients"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "ReferenceNumber": 162,
+                    "Reference": ["S72 | NTUPHTW | Pharmaceutically Active Substances from National Taiwan University | DOI:10.5281/zenodo.3955664"],
+                    "ExtendedReference": [
+                      {
+                        "Citation": "S72 | NTUPHTW | Pharmaceutically Active Substances from National Taiwan University | DOI:10.5281/zenodo.3955664",
+                        "Matched": {
+                          "PCLID": 906297468,
+                          "Citation": "S72 | NTUPHTW | Pharmaceutically Active Substances from National Taiwan University | DOI:10.5281/zenodo.3955664"
+                        }
+                      }
+                    ],
+                    "Value": {
+                      "StringWithMarkup": [
+                        {
+                          "String": "Pharmaceuticals -> Animal Drugs -> Approved in Taiwan"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "TOCHeading": "Household Products",
+                "Description": "Household products containing this compound.  This information is from several sources, including the Consumer Product Information Database (CPID).",
+                "URL": "https://www.whatsinproducts.com/",
+                "Information": [
+                  {
+                    "ReferenceNumber": 5,
+                    "Name": "California Safe Cosmetics Program (CSCP)",
+                    "Value": {
+                      "StringWithMarkup": [
+                        {
+                          "String": "Cosmetics product ingredient: Aspirin (Acetylsalicylic acid)",
+                          "Markup": [
+                            {
+                              "Start": 30,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            },
+                            {
+                              "Start": 39,
+                              "Length": 20,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Acetylsalicylic%20acid",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            }
+                          ]
+                        },
+                        {
+                          "String": "Source: Aspirin is a non-steroidal anti-inflammatory over-the-counter drug. Aspirin relieves pain and reduces fever. Aspirin prevents blood from clotting quickly. Aspirin is added to cosmetics in order to reduce irritation and inflammation.",
+                          "Markup": [
+                            {
+                              "Start": 8,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            },
+                            {
+                              "Start": 76,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            },
+                            {
+                              "Start": 117,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            },
+                            {
+                              "Start": 163,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            }
+                          ]
+                        },
+                        {
+                          "String": "Potential health impacts: The major routes of exposure to aspirin in cosmetics are through the skin or by ingestion. Some people are sensitive to aspirin and can have severe reactions to small amounts. In high doses, aspirin can affect the liver. Aspirin is not recommended for children because of a link to Reye Syndrome, a serious liver disease. Aspirin is generally not recommended for use as a pain reliever during pregnancy, because it can cause changes in the heart of the unborn child and may delay or prolong labor. It also increases the risk of bleeding.",
+                          "Markup": [
+                            {
+                              "Start": 58,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            },
+                            {
+                              "Start": 146,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            },
+                            {
+                              "Start": 217,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            },
+                            {
+                              "Start": 247,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            },
+                            {
+                              "Start": 348,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            }
+                          ]
+                        },
+                        {
+                          "String": "The U.S. Food and Drug Administration (FDA) classifies aspirin as FDA Pregnancy Category D; there is a known risk to the fetus when the drug is used during pregnancy, but potential benefits may sometimes outweigh the risk. California Proposition 65 lists aspirin as a chemical known to cause developmental effects and reproductive harm.",
+                          "Markup": [
+                            {
+                              "Start": 55,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            },
+                            {
+                              "Start": 255,
+                              "Length": 7,
+                              "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                              "Type": "PubChem Internal Link",
+                              "Extra": "CID-2244"
+                            }
+                          ]
+                        },
+                        {
+                          "String": "Product count: 8"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "TOCHeading": "Methods of Manufacturing",
+            "Description": "Methods of producing this compound in an industrial scale, provided by the Hazardous Substances Data Bank (HSDB).",
+            "URL": "https://pubchem.ncbi.nlm.nih.gov/source/11933",
+            "Information": [
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["Ullmann's Encyclopedia of  Industrial Chemistry. 6th ed.Vol 1: Federal Republic of Germany: Wiley-VCH Verlag GmbH & Co. 2003 to Present, p. V31 725 (2003)"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "Ullmann's Encyclopedia of  Industrial Chemistry. 6th ed.Vol 1: Federal Republic of Germany: Wiley-VCH Verlag GmbH & Co. 2003 to Present, p. V31 725 (2003)",
+                    "Matched": {
+                      "PCLID": 900114545,
+                      "Citation": "Ullmann's Encyclopedia of  Industrial Chemistry. 6th ed.Vol 1: Federal Republic of Germany: Wiley-VCH Verlag GmbH & Co. 2003 to Present, p. V31 725 (2003)"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Acetylsalicylic acid is prepared by reacting acetic anhydride with salicylic acid at a temperature of <90 °C either in a solvent (e.g., acetic acid or aromatic, acyclic, or chlorinated hydrocarbons) or by the addition of catalysts such as acids or tertiary amines.",
+                      "Markup": [
+                        {
+                          "Start": 0,
+                          "Length": 20,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Acetylsalicylic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        },
+                        {
+                          "Start": 45,
+                          "Length": 16,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/acetic%20anhydride",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-7918"
+                        },
+                        {
+                          "Start": 67,
+                          "Length": 14,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/salicylic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-338"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["O'Neil, M.J. (ed.). The Merck Index - An Encyclopedia of Chemicals, Drugs, and Biologicals. Whitehouse Station, NJ:  Merck and Co., Inc., 2006., p. 140"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "O'Neil, M.J. (ed.). The Merck Index - An Encyclopedia of Chemicals, Drugs, and Biologicals. Whitehouse Station, NJ:  Merck and Co., Inc., 2006., p. 140",
+                    "Matched": {
+                      "PCLID": 900123151,
+                      "Citation": "O'Neil, M.J. (ed.). The Merck Index - An Encyclopedia of Chemicals, Drugs, and Biologicals. Whitehouse Station, NJ:  Merck and Co., Inc., 2006., p. 140"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Manufacture from salicylic acid and acetic anhydride. ... Crystallization from acetone..",
+                      "Markup": [
+                        {
+                          "Start": 17,
+                          "Length": 14,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/salicylic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-338"
+                        },
+                        {
+                          "Start": 36,
+                          "Length": 16,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/acetic%20anhydride",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-7918"
+                        },
+                        {
+                          "Start": 79,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/acetone",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-180"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "TOCHeading": "Impurities",
+            "Description": "Impurities are (unwanted) chemical substances that differ from the compound of interest and can be either naturally occurring or formed during the synthesis of a chemical compound.",
+            "Information": [
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["Council of Europe, European Directorate for the Quality of Medicines. European Pharmacopoeia, 5th Ed., Volume 2; Strasbourg, France, p.917 (2004)"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "Council of Europe, European Directorate for the Quality of Medicines. European Pharmacopoeia, 5th Ed., Volume 2; Strasbourg, France, p.917 (2004)",
+                    "Matched": {
+                      "PCLID": 900095665,
+                      "Citation": "Council of Europe, European Directorate for the Quality of Medicines. European Pharmacopoeia, 5th Ed., Volume 2; Strasbourg, France, p.917 (2004)"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "4-hydroxybenzoic acid; 4-hydroxybenzene-1,3-dicarboxylic acid (4-hydroxyisophthalic acid); salicylic acid; 2-[[2-(acetyloxy)benzoyl]oxy]benzoic acid (acetylsalicylsalicylic acid); 2-[(2-hydroxybenzoyl)oxy]benzoic acid (salicylsalicylic acid); 2-(acetyloxy)benzoic anhydride (acetylsalicylic anhydride)",
+                      "Markup": [
+                        {
+                          "Start": 0,
+                          "Length": 21,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/4-hydroxybenzoic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-135"
+                        },
+                        {
+                          "Start": 23,
+                          "Length": 38,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/4-hydroxybenzene-1%2C3-dicarboxylic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-161113247"
+                        },
+                        {
+                          "Start": 63,
+                          "Length": 25,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/4-hydroxyisophthalic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-12490"
+                        },
+                        {
+                          "Start": 91,
+                          "Length": 14,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/salicylic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-338"
+                        },
+                        {
+                          "Start": 150,
+                          "Length": 27,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/acetylsalicylsalicylic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-10745"
+                        },
+                        {
+                          "Start": 180,
+                          "Length": 37,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/2-%5B%282-hydroxybenzoyl%29oxy%5Dbenzoic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-5161"
+                        },
+                        {
+                          "Start": 219,
+                          "Length": 21,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/salicylsalicylic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-5161"
+                        },
+                        {
+                          "Start": 243,
+                          "Length": 30,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/2-%28acetyloxy%29benzoic%20anhydride",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-15110"
+                        },
+                        {
+                          "Start": 275,
+                          "Length": 25,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/acetylsalicylic%20anhydride",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-15110"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "TOCHeading": "Formulations/Preparations",
+            "Description": "Information on Formulations/Preparations of this chemical, collected by the Hazardous Substances Data Bank (HSDB) from various sources.",
+            "URL": "https://pubchem.ncbi.nlm.nih.gov/source/11933",
+            "Information": [
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["McEvoy, G.K. (ed.). American Hospital Formulary Service.     AHFS Drug Information. American Society of Health-System     Pharmacists, Bethesda, MD. 2007., p. 2037"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "McEvoy, G.K. (ed.). American Hospital Formulary Service.     AHFS Drug Information. American Society of Health-System     Pharmacists, Bethesda, MD. 2007., p. 2037",
+                    "Matched": {
+                      "PCLID": 906279464,
+                      "Citation": "McEvoy, G.K. (ed.). American Hospital Formulary Service.     AHFS Drug Information. American Society of Health-System     Pharmacists, Bethesda, MD. 2007., p. 2037"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Aspirin Formulations:"
+                    },
+                    {
+                      "String": "Table: Aspirin Formulations: [Table#1910]",
+                      "Markup": [
+                        {
+                          "Start": 29,
+                          "Length": 12,
+                          "Type": "Inline Table",
+                          "Extra": "[Table#1910]"
+                        },
+                        {
+                          "Start": 7,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Name": "[Table#1910]",
+                "Value": {
+                  "Binary": [
+                    "IlByZXBhcmF0aW9ucyIsIkRvc2UgKG1nKSIsIlByb2R1Y3QiLCJNYW51ZmFjdHVyZXIiCiJQaWVjZXMsIGNoZXdpbmcgZ3VtIiwiMjI3IiwiQXNwZXJndW0iLCJIZXJpdGFnZSwgU2NoZXJpbmcgUGxvdWdoIgoiVGFibGV0cyIsIjgxIiwiQXNwaXJpbiBBZHVsdCBMb3cgU3RyZW5ndGgiLCJHZXJpLUNhcmUsTWFuZ28tSHVtcGhyaWVzIgoiIiwiODEiLCJBc3BpcmluIExvdyBEb3NlIiwiQmFzaWMgVmlhdGFtaW5zIgoiIiwiMzI1IiwiTm9yd2ljaCBBc3BpcmluIiwiQ2hhdHRlbSIKIiIsIjMyNSB3aXRoIGJ1ZmZlcnMiLCJNYWduYXByaW4sIEltcHJvdmVkIiwiUnVnYnkiCiIiLCIzMjUgd2l0aCBidWZmZXJzIiwiTWFnbmFwcmluIEFydGhyaXRpcyBTdHJlbmd0aCIsIlJ1Z2J5IgoiIiwiNTAwIiwiTm9yd2ljaCBBc3BpcmluIE1heGltdW0gU3RyZW5ndGgiLCJDaGF0dGVtIgoiIiwiNjUwIiwiTm9yd2ljaCBBc3BpcmluIE1heGltdW0gU3RyZW5ndGgiLCJDaGF0dGVtIgoiVGFibGV0cywgY2hld2FibGUiLCI4MSIsIkJheWVyIENoaWxkcmVuJ3MgQ2hld2FibGUgYXNwaXJpbiIsIkJheWVyIgoiIiwiODEiLCJBc3BpcmluIENoaWxkcmVucyIsIkFtZXJpc291cmNlQmVyZ2VuLCBDYXJkaW5hbCBIZWFsdGgsIENoYWluIERydWcgTWFya2V0aW5nLCBFY2tlcmQsIEl2YXgsIE1ham9yLCBQREssIFByaW1lIE1hcmtldGluZywgUXVhbGl0ZXN0LCBSdWdieSwgVVJMIgoiIiwiODEiLCJBc3BpcmluIGZvciBDaGlsZHJlbiIsIkdlcmktQ2FyZSIKIiIsIjgxIiwiU3QuIEpvc2VwaCBBc3BpcmluIExvdyBTdHJlbmd0aCBDaGV3YWJsZSIsIk1jTmVpbCIKIlRhYmxldHMsIGRlbGF5ZWQtcmVsZWFzZSAoZW50ZXJpYy1jb2F0ZWQpIiwiODEiLCJBc3BpcmluIEFkdWx0IExvdyBTdHJlbmd0aCIsIkFtZXJpc291cmNlQmVyZ2VuIgoiIiwiODEiLCJBc3BpcmluIEFkdWx0IExvdyBTdHJlbmd0aCIsIkl2YXgiCiIiLCI4MSIsIkFzcGlyaW4gRW50ZXJpYyBDb2F0ZWQiLCJBZHZhbmNlIgoiIiwiODEiLCJBc3BpcmluIExvdyBEb3NlIiwiUXVhbGl0ZXN0IgoiIiwiODEiLCJBc3BpcmluIFJlZ2ltZW4iLCJQREsiCiIiLCI4MSIsIkFzcGlyaW4gUmVnaW1lbiBMb3cgU3RyZW5ndGgiLCJDYXJkaW5hbCBIZWFsdGgiCiIiLCI4MSIsIkJheWVyIEFzcGlyaW4gUmVnaW1lbiBBZHVsdCBMb3cgU3RyZW5ndGgiLCJCYXllciIKIiIsIjgxIiwiRWNvdHJpbiBBZHVsdCBMb3cgU3RyZW5ndGggKHdpdGggcHJvcHlsZW5lIGdseWNvbCkiLCJHbGF4b1NtaXRoS2xpbmUiCiIiLCI4MSIsIkVjb3RyaW4gQWR1bHQgTG93IFN0cmVuZ3RoICh3aXRoIHByb3B5bGVuZSBnbHljb2wpIiwiR2xheG9TbWl0aEtsaW5lIgoiIiwiODEiLCJTdC4gSm9zZXBoIEFkdWx0IExvdyBTdHJlbmd0aCBFbnRlcmljIENvYXRlZCBUYWJsZXRzIiwiTWNOZWlsIgoiIiwiODEgd2l0aCBidWZmZXJzIiwiQXNjcmlwdGluIEVudGVyaWMgUmVndWxhciBTdHJlbmd0aCIsIk5vdmFydGlzIgoiIiwiMTYyIiwiSGFsZnByaW4iLCJLcmFtZXIiCiIiLCIzMjUiLCJBc3BpcmluIGZvciBBcnRocml0aXMiLCJDYXJkaW5hbCBIZWFsdGgiCiIiLCIzMjUiLCJCYXllciBBc3BpcmluIFJlZ2ltZW4gUmVndWxhciBTdHJlbmd0aCBDYXBsZXRzICh3aXRoIHByb3B5bGVuZSBnbHljb2wiLCJCYXllciIKIiIsIjMyNSIsIkVjb3RyaW4gUmVndWxhciBTdHJlbmd0aCAod2l0aCBwcm9weWxlbmUgZ2x5Y29sKSIsIkdsYXhvU21pdGhLbGluZSIKIiIsIjMyNSIsIkdlbmFjb3RlIiwiSXZheCIKIiIsIjMyNSB3aXRoIGJ1ZmZlcnMiLCJBc2NyaXB0aW4gRW50ZXJpYyBSZWd1bGFyIFN0cmVuZ3RoIiwiTm92YXJ0aXMiCiIiLCI1MDAiLCJBc3BpcmluIEV4dHJhIFN0cmVuZ3RoIiwiTWVkaWNpbmUgU2hvcHBlIgoiIiwiNTAwIiwiQXNwaXJpbiBNYXhpbXVtIFN0cmVuZ3RoIiwiQ2hhaW4gRHJ1ZyBNYXJrZXRpbmciCiIiLCI1MDAiLCJFY290cmluIE1heGltdW0gU3RyZW5ndGggKHdpdGggcHJvcHlsZW5lIGdseWNvbCkiLCJHbGF4b1NtaXRoS2xpbmUiCiIiLCI2NTAiLCJBc3BpcmluIERlbGF5ZWQgUmVsZWFzZSBUYWJsZXRzIiwiVGltZS1DYXAsIFVuaXRlZCBSZXNlYXJjaCIKIiIsIjk3NSIsIkVhc3ByaW4iLCJIYXJ2ZXN0IgoiVGFibGV0cywgZXh0ZW5kZWQtcmVsZWFzZSIsIjgwMCIsIlpPUnByaW4iLCJQYXIiCiJUYWJsZXRzLCBmaWxtLWNvYXRlZCIsIjgxIHdpdGggYnVmZmVycyIsIldvbWVuJ3MgQXNwaXJpbiBQbHVzIENhbGNpdW0gQ2FwbGV0cyAod2l0aCBjYWxjaXVtIGNhcmJvbmF0ZSBhbmQgY3Jvc3Bvdmlkb25lKSIsIkJheWVyIgoiIiwiMzI1IiwiQXNwaXJpbiBMaXRlIENvYXRlZCIsIkFtZXJpc291cmNlQmVyZ2VuIgoiIiwiMzI1IiwiQXNwaXJpbiBNaWNyb3RoaW4gQ29hdGluZyIsIkNhcmRpbmFsIEhlYWx0aCIKIiIsIjMyNSIsIkJheWVyIEFzcGlyaW4gQ2FwbGV0cyIsIkJheWVyIgoiIiwiMzI1IiwiR2VudWluZSBCYXllciBBc3BpcmluIFRhYmxldHMiLCJCYXllciIKIiIsIjMyNSB3aXRoIGJ1ZmZlcnMiLCJBc2NyaXB0aW4gUmVndWxhciBTdHJlbmd0aCIsIk5vdmFydGlzIgoiIiwiMzI1IHdpdGggYnVmZmVycyIsIkFzY3JpcHRpbiBBcnRocml0aXMgUGFpbiBDYXBsZXRzIiwiTm92YXJ0aXMiCiIiLCIzMjUgd2l0aCBidWZmZXJzIiwiQnVmZmVyaW4gVGFibGV0cyAod2l0aCBwb3ZpZG9uZSBhbmQgcHJvcHlsZW5lIGdseWNvbCksIiwiTm92YXJ0aXMgQ29uc3VtZXIgSGVhbHRoIgoiIiwiNTAwIiwiQmF5ZXIgQXNwaXJpbiBFeHRyYSBTdHJlbmd0aCBDYXBsZXRzICh3aXRoIHByb3B5bGVuZSBnbHljb2wpIiwiQmF5ZXIiCiIiLCI1MDAiLCJCYXllciBBc3BpcmluIEV4dHJhIFN0cmVuZ3RoIEdlbGNhcGxldHMgKHdpdGggcGFyYWJlbnMpIiwiQmF5ZXIiCiIiLCI1MDAiLCJCYXllciBBc3BpcmluIEV4dHJhIFN0cmVuZ3RoIFRhYmxldHMiLCJCYXllciIKIiIsIjUwMCB3aXRoIGJ1ZmZlcnMiLCJBc2NyaXB0aW4gTWF4aW11bSBTdHJlbmd0aCBDYXBsZXRzIiwiTm92YXJ0aXMiCiIiLCI1MDAgd2l0aCBidWZmZXJzIiwiQmF5ZXIgQXNwaXJpbiBQbHVzIEJ1ZmZlcmVkIEV4dHJhIFN0cmVuZ3RoIENhcGxldHMgKHdpdGggY2FsY2l1bSBjYXJib25hdGUgYW5kIHByb3B5bGVuZSBnbHljb2wpIiwiQmF5ZXIiCiIiLCI1MDAgd2l0aCBidWZmZXJzIiwiQnVmZmVyaW4gQXJ0aHJpdGlzIFN0cmVuZ3RoIENhcGxldHMgKHdpdGggcG92aWRvbmUgYW5kIHByb3B5bGVuZSBnbHljb2wpIiwiQnJpc3RvbC1NeWVycyIKIiIsIjUwMCB3aXRoIGJ1ZmZlcnMiLCJCdWZmZXJpbiBFeHRyYSBTdHJlbmd0aCAod2l0aCBwb3ZpZG9uZSBhbmQgcHJvcHlsZW5lIGdseWNvbCkiLCJOb3ZhcnRpcyBDb25zdW1lciBIZWFsdGgiCiJUYWJsZXRzLCBmb3Igc29sdXRpb24iLCIzMjUiLCJBbGthLVNlbHR6ZXIgRWZmZXJ2ZXNjZW50IFBhaW4gUmVsaWV2ZXIgYW5kIEFudGFjaWQgKHdpdGggY2l0cmljIGFjaWQgMSBnIGFuZCBzb2RpdW0gYmljYXJib25hdGUgMS45MTYgZykiLCJCYXllciIKIiIsIjMyNSIsIkFsa2EtU2VsdHplciBMZW1vbi1MaW1lIEVmZmVydmVzY2VudCBQYWluIFJlbGlldmVyIGFuZCBBbnRhY2lkICh3aXRoIGFzcGFydGFtZSBjaXRyaWMgYWNpZCAxIGcgYW5kIHNvZGl1bSBiaWNhcmJvbmF0ZSAxLjcgZykiLCJCYXllciIKIiIsIjUwMCIsIkFsa2EtU2VsdHplciBFeHRyYSBTdHJlbmd0aCBFZmZlcnZlc2NlbnQgUGFpbiBSZWxpZXZlciBhbmQgQW50YWNpZCAod2l0aCBjaXRyaWMgYWNpZCAxIGcgYW5kIHNvZGl1bSBiaWNhcmJvbmF0ZSAxLjk4NSBnKSIsIkJheWVyIgoiUmVjdGFsIFN1cHBvc2l0b3JpZXMiLCI2MCIsIkFzcGlyaW4gU3VwcG9zaXRvcmllcyIsIkNvbnNvbGlkYXRlZCBNaWRsYW5kIgoiIiwiMTIwIiwiQXNwaXJpbiBTdXBwb3NpdG9yaWVzIiwiQ29uc29saWRhdGVkIE1pZGxhbmQiCiIiLCIyMDAiLCJBc3BpcmluIFN1cHBvc2l0b3JpZXMiLCJDb25zb2xpZGF0ZWQgTWlkbGFuZCIKIiIsIjMwMCIsIkFzcGlyaW4gU3VwcG9zaXRvcmllcyIsIkNvbnNvbGlkYXRlZCBNaWRsYW5kLCBQYWRkb2NrIgoiIiwiMzAwIiwiQXNwaXJpbiBTdXBwb3NpdG9yaWVzIiwiQ29uc29saWRhdGVkIE1pZGxhbmQsIFBhZGRvY2siCg=="
+                  ],
+                  "MimeType": "text/csv"
+                }
+              }
+            ]
+          },
+          {
+            "TOCHeading": "Consumption Patterns",
+            "Description": "Consumption patterns of this chemical and products containing it, collected by the Hazardous Substances Data Bank (HSDB) from various sources.",
+            "Information": [
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["SRI"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "SRI",
+                    "Matched": {
+                      "PCLID": 900133608,
+                      "Citation": "SRI"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "54% AS AN ANALGESIC IN COMBINATION WITH OTHER ACTIVE OR INERT INGREDIENTS; 46% AS AN ANALGESIC IN SINGLE INGREDIENT ASPIRIN TABLETS (1973)",
+                      "Markup": [
+                        {
+                          "Start": 116,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/ASPIRIN",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["Kavaler AR; Chemical Marketing Reporter 231 (8): 54 (1987)"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "Kavaler AR; Chemical Marketing Reporter 231 (8): 54 (1987)",
+                    "Matched": {
+                      "PCLID": 906280737,
+                      "Citation": "Kavaler AR; Chemical Marketing Reporter 231 (8): 54 (1987)"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "CHEMICAL PROFILE: Aspirin. Almost all aspirin manufactured in the US is used in aspirin tablets, pharmaceutical products or in conjunction with other ingredients for its analgesic and antipyretic properties. Approx 10% of US production is exported in bulk.",
+                      "Markup": [
+                        {
+                          "Start": 18,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        },
+                        {
+                          "Start": 38,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        },
+                        {
+                          "Start": 80,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["Kavaler AR; Chemical Marketing Reporter 231 (8): 54 (1987)"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "Kavaler AR; Chemical Marketing Reporter 231 (8): 54 (1987)",
+                    "Matched": {
+                      "PCLID": 906280737,
+                      "Citation": "Kavaler AR; Chemical Marketing Reporter 231 (8): 54 (1987)"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "CHEMICAL PROFILE: Aspirin. Demand: 1986: 29.5 million lb; 1987: 30.0 million lb; 1991 /projected/: 31.8 million lb.",
+                      "Markup": [
+                        {
+                          "Start": 18,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["Kavaler AR; Chemical Marketing Reporter 237 (10): 50 (1990)"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "Kavaler AR; Chemical Marketing Reporter 237 (10): 50 (1990)",
+                    "Matched": {
+                      "PCLID": 900070897,
+                      "Citation": "Kavaler AR; Chemical Marketing Reporter 237 (10): 50 (1990)"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "CHEMICAL PROFILE: Aspirin. Almost all aspirin manufactured in the US is used in aspirin tablets, pharmaceutical products or in conjunction with other ingredients for its analgesic and antipyretic properties. Approximately 5% of US production is exported in bulk.",
+                      "Markup": [
+                        {
+                          "Start": 18,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        },
+                        {
+                          "Start": 38,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        },
+                        {
+                          "Start": 80,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "For more Consumption Patterns (Complete) data for ACETYLSALICYLIC ACID (8 total), please visit the HSDB record page.",
+                      "Markup": [
+                        {
+                          "Start": 99,
+                          "Length": 16,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/source/hsdb/652#section=Consumption-Patterns-(Complete)"
+                        },
+                        {
+                          "Start": 50,
+                          "Length": 20,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/ACETYLSALICYLIC%20ACID",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "TOCHeading": "U.S. Production",
+            "Description": "The amount of this chemical produced/manufactured in the U.S.",
+            "Information": [
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["SRI"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "SRI",
+                    "Matched": {
+                      "PCLID": 900133608,
+                      "Citation": "SRI"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "(1972) 1.59X10+10 GRAMS"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["SRI"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "SRI",
+                    "Matched": {
+                      "PCLID": 900133608,
+                      "Citation": "SRI"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "(1975) 1.16X10+10 GRAMS"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["USITC. SYN ORG CHEM-U.S. PROD/SALES 1985 p.97"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "USITC. SYN ORG CHEM-U.S. PROD/SALES 1985 p.97",
+                    "Matched": {
+                      "PCLID": 900052402,
+                      "Citation": "USITC. SYN ORG CHEM-U.S. PROD/SALES 1985 p.97"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "(1984) 1.54X10+10 g"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": [
+                  "US EPA; Non-confidential Production Volume Information Submitted by Companies for Chemicals Under the 1986-2002 Inventory Update Rule (IUR).  Benzoic acid, 2-(acetyloxy)- (50-78-2). Available from, as of March 20, 2008: https://www.epa.gov/oppt/iur/tools/data/2002-vol.html"
+                ],
+                "ExtendedReference": [
+                  {
+                    "Citation": "US EPA; Non-confidential Production Volume Information Submitted by Companies for Chemicals Under the 1986-2002 Inventory Update Rule (IUR).  Benzoic acid, 2-(acetyloxy)- (50-78-2). Available from, as of March 20, 2008: https://www.epa.gov/oppt/iur/tools/data/2002-vol.html",
+                    "Matched": {
+                      "PCLID": 900082943,
+                      "Citation": "US EPA; Non-confidential Production Volume Information Submitted by Companies for Chemicals Under the 1986-2002 Inventory Update Rule (IUR).  Benzoic acid, 2-(acetyloxy)- (50-78-2). Available from, as of March 20, 2008: https://www.epa.gov/oppt/iur/tools/data/2002-vol.html"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Production volumes for non-confidential chemicals reported under the Inventory Update Rule. [Table#1911]",
+                      "Markup": [
+                        {
+                          "Start": 92,
+                          "Length": 12,
+                          "Type": "Inline Table",
+                          "Extra": "[Table#1911]"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Name": "[Table#1911]",
+                "Value": {
+                  "Binary": ["IlllYXIiLCJQcm9kdWN0aW9uIFJhbmdlIChwb3VuZHMpIgoiMTk4NiIsIj4xIG1pbGxpb24gLSAxMCBtaWxsaW9uIgoiMTk5MCIsIk5vIFJlcG9ydHMiCiIxOTk0IiwiMTAgdGhvdXNhbmQgLSA1MDAgdGhvdXNhbmQiCiIxOTk4IiwiMTAgdGhvdXNhbmQgLSA1MDAgdGhvdXNhbmQiCiIyMDAyIiwiTm8gUmVwb3J0cyIK"],
+                  "MimeType": "text/csv"
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "For more U.S. Production (Complete) data for ACETYLSALICYLIC ACID (7 total), please visit the HSDB record page.",
+                      "Markup": [
+                        {
+                          "Start": 94,
+                          "Length": 16,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/source/hsdb/652#section=U-S-Production-(Complete)"
+                        },
+                        {
+                          "Start": 45,
+                          "Length": 20,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/ACETYLSALICYLIC%20ACID",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "TOCHeading": "U.S. Imports",
+            "Description": "The amount of this chemical imported to the U.S.",
+            "Information": [
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["SRI"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "SRI",
+                    "Matched": {
+                      "PCLID": 900133608,
+                      "Citation": "SRI"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "(1972) 2.04X10+8 GRAMS"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["SRI"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "SRI",
+                    "Matched": {
+                      "PCLID": 900133608,
+                      "Citation": "SRI"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "(1975) 1.42X10+8 GRAMS"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["BUREAU OF THE CENSUS. U.S. IMPORTS FOR CONSUMPTION AND GENERAL IMPORTS 1984  p.1-340"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "BUREAU OF THE CENSUS. U.S. IMPORTS FOR CONSUMPTION AND GENERAL IMPORTS 1984  p.1-340",
+                    "Matched": {
+                      "PCLID": 900035039,
+                      "Citation": "BUREAU OF THE CENSUS. U.S. IMPORTS FOR CONSUMPTION AND GENERAL IMPORTS 1984  p.1-340"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "(1984) 1.65x10+9 g"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["Kavaler AR; Chemical Marketing Reporter 237 (10): 50 (1990)"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "Kavaler AR; Chemical Marketing Reporter 237 (10): 50 (1990)",
+                    "Matched": {
+                      "PCLID": 900070897,
+                      "Citation": "Kavaler AR; Chemical Marketing Reporter 237 (10): 50 (1990)"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "CHEMICAL PROFILE: Aspirin imports were 2.6 million lb last year /1989/.",
+                      "Markup": [
+                        {
+                          "Start": 18,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "For more U.S. Imports (Complete) data for ACETYLSALICYLIC ACID (6 total), please visit the HSDB record page.",
+                      "Markup": [
+                        {
+                          "Start": 91,
+                          "Length": 16,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/source/hsdb/652#section=U-S-Imports-(Complete)"
+                        },
+                        {
+                          "Start": 42,
+                          "Length": 20,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/ACETYLSALICYLIC%20ACID",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "TOCHeading": "U.S. Exports",
+            "Description": "The amount of this chemical exported from the U.S.",
+            "Information": [
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["SRI"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "SRI",
+                    "Matched": {
+                      "PCLID": 900133608,
+                      "Citation": "SRI"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "(1972) 8.74X10+8 GRAMS (BULK)"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["SRI"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "SRI",
+                    "Matched": {
+                      "PCLID": 900133608,
+                      "Citation": "SRI"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "(1975) 1.06X10+8 GRAMS"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["BUREAU OF THE CENSUS. U.S. EXPORTS, SCHEDULE E, 1984 p.2-83"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "BUREAU OF THE CENSUS. U.S. EXPORTS, SCHEDULE E, 1984 p.2-83",
+                    "Matched": {
+                      "PCLID": 906271388,
+                      "Citation": "BUREAU OF THE CENSUS. U.S. EXPORTS, SCHEDULE E, 1984 p.2-83"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "(1984) 1.26X10+9  g (bulk)"
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["Kavaler AR; Chemical Marketing Reporter 237 (10): 50 (1990)"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "Kavaler AR; Chemical Marketing Reporter 237 (10): 50 (1990)",
+                    "Matched": {
+                      "PCLID": 900070897,
+                      "Citation": "Kavaler AR; Chemical Marketing Reporter 237 (10): 50 (1990)"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "CHEMICAL PROFILE: Aspirin exports were 1.3 million lb /in 1989/.",
+                      "Markup": [
+                        {
+                          "Start": 18,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "For more U.S. Exports (Complete) data for ACETYLSALICYLIC ACID (7 total), please visit the HSDB record page.",
+                      "Markup": [
+                        {
+                          "Start": 91,
+                          "Length": 16,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/source/hsdb/652#section=U-S-Exports-(Complete)"
+                        },
+                        {
+                          "Start": 42,
+                          "Length": 20,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/ACETYLSALICYLIC%20ACID",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "TOCHeading": "General Manufacturing Information",
+            "Description": "General manufacturing information for this chemical, provided by the Hazardous Substances Data Bank (HSDB) and EPA TSCA Chemical Substance Inventory.",
+            "DisplayControls": {
+              "ListType": "Columns"
+            },
+            "Information": [
+              {
+                "ReferenceNumber": 48,
+                "Name": "EPA TSCA Commercial Activity Status",
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Benzoic acid, 2-(acetyloxy)-: ACTIVE",
+                      "Markup": [
+                        {
+                          "Start": 0,
+                          "Length": 12,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Benzoic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-243"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "ReferenceNumber": 60,
+                "Description": "PEER REVIEWED",
+                "Reference": ["Kirk-Othmer Encyclopedia of Chemical Technology. 3rd ed., Volumes 1-26. New York, NY: John Wiley and Sons, 1978-1984., p. V20: 500 (1982)"],
+                "ExtendedReference": [
+                  {
+                    "Citation": "Kirk-Othmer Encyclopedia of Chemical Technology. 3rd ed., Volumes 1-26. New York, NY: John Wiley and Sons, 1978-1984., p. V20: 500 (1982)",
+                    "Matched": {
+                      "PCLID": 900155376,
+                      "Citation": "Kirk-Othmer Encyclopedia of Chemical Technology. 3rd ed., Volumes 1-26. New York, NY: John Wiley and Sons, 1978-1984., p. V20: 500 (1982)"
+                    }
+                  }
+                ],
+                "Value": {
+                  "StringWithMarkup": [
+                    {
+                      "String": "Acetylsalicylic acid otherwise known as aspirin, has been the most widely used over the counter drug.",
+                      "Markup": [
+                        {
+                          "Start": 0,
+                          "Length": 20,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/Acetylsalicylic%20acid",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        },
+                        {
+                          "Start": 40,
+                          "Length": 7,
+                          "URL": "https://pubchem.ncbi.nlm.nih.gov/compound/aspirin",
+                          "Type": "PubChem Internal Link",
+                          "Extra": "CID-2244"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Reference": [
+      {
+        "ReferenceNumber": 5,
+        "SourceName": "California Safe Cosmetics Program (CSCP) Product Database",
+        "SourceID": "45",
+        "Name": "Aspirin (Acetylsalicylic acid)",
+        "Description": "The California Safe Cosmetics Program (CSCP) is charged with implementing the California Safe Cosmetics Act (CSCA) and the Cosmetic Fragrance and Flavor Ingredient Right to Know Act (CFFIRKA). The goal of CSCP is to collect and share information on hazardous and potentially hazardous ingredients in cosmetics sold in California and to make this information available to the public.",
+        "URL": "https://cscpsearch.cdph.ca.gov/search/detailresult/45",
+        "LicenseURL": "https://www.cdph.ca.gov/Pages/Conditions-of-Use.aspx",
+        "ANID": 39993588
+      },
+      {
+        "ReferenceNumber": 47,
+        "SourceName": "EPA Chemical and Products Database (CPDat)",
+        "SourceID": "15227_DTXSID5020108",
+        "Name": "",
+        "Description": "The US EPA Chemical and Products Database (CPDat) is a database containing information mapping more than 49,000 chemicals to a set of terms categorizing their usage or function in 16,000 consumer products (e.g. shampoo, soap) types based on what chemicals they contain.",
+        "URL": "https://comptox.epa.gov/dashboard/DTXSID5020108#exposure",
+        "LicenseURL": "https://www.epa.gov/privacy/privacy-act-laws-policies-and-resources",
+        "ANID": 13736336
+      },
+      {
+        "ReferenceNumber": 59,
+        "SourceName": "Haz-Map, Information on Hazardous Chemicals and Occupational Diseases",
+        "SourceID": "hz212",
+        "Name": "Acetylsalicylic acid",
+        "Description": "Haz-Map® is an occupational health database designed for health and safety professionals and for consumers seeking information about the adverse effects of workplace exposures to chemical and biological agents.",
+        "URL": "https://haz-map.com/Agents/212",
+        "LicenseNote": "Copyright (c) 2022 Haz-Map(R). All rights reserved.\u000AUnless otherwise indicated, all materials from Haz-Map are copyrighted by Haz-Map(R). No part of these materials, either text or image may be used for any purpose other than for personal use. Therefore, reproduction, modification, storage in a retrieval system or retransmission, in any form or by any means, electronic, mechanical or otherwise, for reasons other than personal use, is strictly prohibited without prior written permission.",
+        "LicenseURL": "https://haz-map.com/About",
+        "ANID": 17276039
+      },
+      {
+        "ReferenceNumber": 60,
+        "SourceName": "Hazardous Substances Data Bank (HSDB)",
+        "SourceID": "652",
+        "Name": "ACETYLSALICYLIC ACID",
+        "Description": "The Hazardous Substances Data Bank (HSDB) is a toxicology database that focuses on the toxicology of potentially hazardous chemicals. It provides information on human exposure, industrial hygiene, emergency handling procedures, environmental fate, regulatory requirements, nanomaterials, and related areas. The information in HSDB has been assessed by a Scientific Review Panel.",
+        "URL": "https://pubchem.ncbi.nlm.nih.gov/source/hsdb/652",
+        "LicenseURL": "https://www.nlm.nih.gov/web_policies.html",
+        "IsToxnet": true,
+        "ANID": 586
+      },
+      {
+        "ReferenceNumber": 163,
+        "SourceName": "NORMAN Suspect List Exchange",
+        "SourceID": "57ce08a385ad1b07924d8267de39848a",
+        "Name": "ACETYLSALICYLIC ACID",
+        "Description": "The NORMAN network enhances the exchange of information on emerging environmental substances, and encourages the validation and harmonisation of common measurement methods and monitoring tools so that the requirements of risk assessors and risk managers can be better met. The NORMAN Suspect List Exchange (NORMAN-SLE) is a central access point to find suspect lists relevant for various environmental monitoring questions, described in DOI:10.1186/s12302-022-00680-6",
+        "LicenseNote": "Data: CC-BY 4.0; Code (hosted by ECI, LCSB): Artistic-2.0",
+        "LicenseURL": "https://creativecommons.org/licenses/by/4.0/",
+        "ANID": 45730302
+      },
+      {
+        "ReferenceNumber": 205,
+        "SourceName": "Toxin and Toxin Target Database (T3DB)",
+        "SourceID": "Compound::T3D2936",
+        "Name": "Aspirin",
+        "Description": "The Toxin and Toxin Target Database (T3DB), or, soon to be referred as, the Toxic Exposome Database, is a unique bioinformatics resource that combines detailed toxin data with comprehensive toxin target information.",
+        "URL": "http://www.t3db.ca/toxins/T3D2936",
+        "LicenseNote": "T3DB is offered to the public as a freely available resource. Use and re-distribution of the data, in whole or in part, for commercial purposes requires explicit permission of the authors and explicit acknowledgment of the source material (T3DB) and the original publication.",
+        "LicenseURL": "http://www.t3db.ca/downloads",
+        "ANID": 20442764
+      },
+      {
+        "ReferenceNumber": 48,
+        "SourceName": "EPA Chemicals under the TSCA",
+        "SourceID": "1f10d3a50f8050bfb69ee31925b77fd7",
+        "Name": "Benzoic acid, 2-(acetyloxy)-",
+        "Description": "EPA Chemicals under the Toxic Substances Control Act (TSCA) collection contains information on chemicals and their regulations under TSCA.",
+        "URL": "https://www.epa.gov/chemicals-under-tsca",
+        "LicenseURL": "https://www.epa.gov/privacy/privacy-act-laws-policies-and-resources",
+        "ANID": 38386736
+      },
+      {
+        "ReferenceNumber": 53,
+        "SourceName": "European Medicines Agency (EMA)",
+        "SourceID": "a4ed050c5594d1860287beab47a7e028",
+        "Name": "Acetylsalicylic acid (EU/3/04/208)",
+        "Description": "The European Medicines Agency (EMA) presents information on regulatory topics of the medicinal product lifecycle in EU countries.",
+        "URL": "https://www.ema.europa.eu/en/medicines/human/orphan-designations/eu304208",
+        "LicenseNote": "Information on the European Medicines Agency's (EMA)  website is subject to a disclaimer and copyright and limited reproduction notices.",
+        "LicenseURL": "https://www.ema.europa.eu/en/about-us/legal-notice",
+        "ANID": 49294643
+      },
+      {
+        "ReferenceNumber": 54,
+        "SourceName": "FDA Approved Animal Drug Products (Green Book)",
+        "SourceID": "act_Acetylsalicylic Acid",
+        "Name": "Acetylsalicylic Acid",
+        "Description": "Animal drug and active ingredient information from the FDA Green Book.",
+        "URL": "https://www.fda.gov/animal-veterinary/products/approved-animal-drug-products-green-book",
+        "LicenseNote": "Unless otherwise noted, the contents of the FDA website (www.fda.gov), both text and graphics, are not copyrighted. They are in the public domain and may be republished, reprinted and otherwise used freely by anyone without the need to obtain permission from FDA. Credit to the U.S. Food and Drug Administration as the source is appreciated but not required.",
+        "LicenseURL": "https://www.fda.gov/about-fda/about-website/website-policies#linking",
+        "ANID": 38980158
+      },
+      {
+        "ReferenceNumber": 57,
+        "SourceName": "FDA Orange Book",
+        "SourceID": "fed968a7ae39c99920dab6c54b5a97eb",
+        "Name": "ASPIRIN",
+        "Description": "The publication, Approved Drug Products with Therapeutic Equivalence Evaluations (the List, commonly known as the Orange Book), identifies drug products approved on the basis of safety and effectiveness by the Food and Drug Administration (FDA) under the Federal Food, Drug, and Cosmetic Act (the Act).",
+        "URL": "https://www.fda.gov/drugs/drug-approvals-and-databases/approved-drug-products-therapeutic-equivalence-evaluations-orange-book",
+        "LicenseNote": "Unless otherwise noted, the contents of the FDA website (www.fda.gov), both text and graphics, are not copyrighted. They are in the public domain and may be republished, reprinted and otherwise used freely by anyone without the need to obtain permission from FDA. Credit to the U.S. Food and Drug Administration as the source is appreciated but not required.",
+        "LicenseURL": "https://www.fda.gov/about-fda/about-website/website-policies#linking",
+        "ANID": 35233905
+      },
+      {
+        "ReferenceNumber": 162,
+        "SourceName": "NORMAN Suspect List Exchange",
+        "SourceID": "nrm_2244",
+        "Name": "ACETYLSALICYLIC ACID (also part of CARBSALATE CALCIUM)",
+        "Description": "The NORMAN network enhances the exchange of information on emerging environmental substances, and encourages the validation and harmonisation of common measurement methods and monitoring tools so that the requirements of risk assessors and risk managers can be better met. The NORMAN Suspect List Exchange (NORMAN-SLE) is a central access point to find suspect lists relevant for various environmental monitoring questions, described in DOI:10.1186/s12302-022-00680-6",
+        "LicenseNote": "Data: CC-BY 4.0; Code (hosted by ECI, LCSB): Artistic-2.0",
+        "LicenseURL": "https://creativecommons.org/licenses/by/4.0/",
+        "ANID": 9046529
+      }
+    ]
+  }
+}

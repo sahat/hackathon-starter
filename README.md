@@ -72,7 +72,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 
 - Login
   - **Local Authentication** Sign in with Email and Password, Passwordless
-  - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, X (Twitter), Twitch, Github, Discord
+  - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, X (Twitter), Twitch, GitHub, Discord
   - **OpenID Connect:** Sign in with LinkedIn
 - **User Profile and Account Management**
   - Gravatar
@@ -1474,19 +1474,34 @@ If you are starting with this boilerplate to build an application for prod deplo
 Hackathon Starter includes both unit tests and end-to-end (E2E) tests.
 
 - **Unit tests** focus on core functionality, such as user account management.
-- **E2E tests** use [Playwright](https://playwright.dev/) to run the application in a headless Chrome browser, making live API calls and verifying rendered views. These tests are located in `test/e2e/` and `test/e2e-nokey/`. For running nokey tests, you don't need to obtain any API keys.
-
-The provided E2E tests cover the example API integrations included in the starter project. You can use these as **examples or templates** when creating your own test files, adapting them to match your project's specific views and workflows.
+- **E2E tests** use [Playwright](https://playwright.dev/) to run the application in a headless Chrome browser, making live API calls and verifying rendered views. These tests are located in `test/e2e/` and `test/e2e-nokey/`. The nokey tests are tests that don't require API keys to run.
 
 During a hackathon, you typically don't need to worry about E2E tests; they can slow you down when you're focused on rapid prototyping. However, if you plan to launch your project for real-world use, adding and maintaining E2E tests is strongly recommended. They help ensure that future changes don't unintentionally break existing functionality.
+
+The existing E2E tests cover the example API integrations included in the starter project. You can use these as **examples or templates** when creating your own test files, adapting them to match your project's specific views and workflows.
 
 You can run the tests using:
 
 ```bash
-npm test           # or "npm run test" for unit tests - core functions
-npm run test:e2e
-npm run test:e2e-nokey
+npm test                  # unit tests (core functions)
+npm run test:e2e:live     # All E2E tests with previously recorded API responses
+npm run test:e2e:replay   # E2E (replay fixtures - recorded API responses)
 ```
+
+You can run a single E2E Test file like the following:
+
+```bash
+# Run tests in a single test file against live APIs
+npx playwright test test/e2e.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium
+
+# Run tests in a single test file while replaying recorded API responses from the fixtures
+npx playwright test test/e2e.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium-replay
+
+# Run tests in a single test file against live APIs and capture the API responses as fixtures for replay later
+npx playwright test test/e2e.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium-record
+```
+
+For more information on creating or running E2E tests see [test/TESTING.md](https://github.com/sahat/hackathon-starter/blob/master/test/TESTING.md)
 
 ## Changelog
 

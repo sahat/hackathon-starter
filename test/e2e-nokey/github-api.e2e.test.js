@@ -1,11 +1,23 @@
+process.env.API_TEST_FILE = 'e2e-nokey/github-api.e2e.test.js';
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
+const { registerTestInManifest, isInManifest } = require('../tools/fixture-helpers');
+
+// Self-register this test in the manifest when recording
+registerTestInManifest('e2e-nokey/github-api.e2e.test.js');
+
+// Skip this file during replay if it's not in the manifest
+if (process.env.API_MODE === 'replay' && !isInManifest('e2e-nokey/github-api.e2e.test.js')) {
+  console.log('[fixtures] skipping e2e-nokey/github-api.e2e.test.js as it is not in manifest for replay mode - 3 tests');
+  test.skip(true, 'Not in manifest for replay mode');
+}
 
 // Increase timeout for GitHub API tests to allow waiting for rate-limit reset which seems to be around 6 minutes
 test.setTimeout(6 * 60 * 1000 + 5000); // add extra 5s buffer
 
 async function gotoGithubWithRateLimitRetry(sharedPage, request) {
+  const isReplay = (process.env.API_MODE || 'replay') !== 'record';
   await sharedPage.goto('/api/github');
   await sharedPage.waitForLoadState('networkidle');
   const title = await sharedPage.title();
@@ -16,6 +28,9 @@ async function gotoGithubWithRateLimitRetry(sharedPage, request) {
   const webserverLog = path.resolve(__dirname, '..', '..', 'tmp', 'playwright-webserver.log');
   const recentLog = fs.readFileSync(webserverLog, 'utf8');
   const rateLimitRegex = /HttpError:\s*API rate limit exceeded for .* - https:\/\/docs\.github\.com/i;
+  if (isReplay) {
+    throw new Error('Replay mode: GitHub page rendered Error. Ensure fixtures exist for all requests.');
+  }
   if (!rateLimitRegex.test(recentLog)) {
     throw new Error('GitHub API page rendered Error. See playwrite webserver logs in tmp or workflow artifacts for details.');
   }

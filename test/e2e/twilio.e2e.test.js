@@ -1,4 +1,11 @@
+process.env.API_TEST_FILE = 'e2e/twilio.e2e.test.js';
 const { test, expect } = require('@playwright/test');
+
+// Skip this test in record/replay modes
+if (process.env.API_MODE === 'replay' || process.env.API_MODE === 'record') {
+  console.log('[fixtures] skipping twillio.e2e.test.js in record/replay mode (mix of jwt auth, legacy http and axios) - 2 tests');
+  test.skip(true, 'Skipping Twillio tests in record/replay mode (mix of jwt auth, legacy http and axios)');
+}
 
 test.describe('Twilio API Integration', () => {
   let sharedPage;

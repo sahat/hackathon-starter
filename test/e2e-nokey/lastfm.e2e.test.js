@@ -1,4 +1,11 @@
+process.env.API_TEST_FILE = 'e2e-nokey/lastfm.e2e.test.js';
 const { test, expect } = require('@playwright/test');
+
+// Skip this test in record/replay modes
+if (process.env.API_MODE === 'replay' || process.env.API_MODE === 'record') {
+  console.log('[fixtures] skipping lastfm.e2e.test.js in record/replay mode (legacy http) - 6 tests');
+  test.skip(true, 'Skipping lastfm tests in record/replay mode (legacy http and axios)');
+}
 
 test.describe('Last.fm API Integration', () => {
   test.describe.configure({ mode: 'serial' });

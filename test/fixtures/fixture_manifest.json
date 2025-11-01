@@ -1,0 +1,13 @@
+[
+  "e2e-nokey/github-api.e2e.test.js",
+  "e2e-nokey/pubchem.e2e.test.js",
+  "e2e-nokey/scraping.e2e.test.js",
+  "e2e-nokey/wikipedia.e2e.test.js",
+  "e2e/chart.e2e.test.js",
+  "e2e/foursquare.e2e.test.js",
+  "e2e/lob.e2e.test.js",
+  "e2e/nyt.e2e.test.js",
+  "e2e/openai-moderation.e2e.test.js",
+  "e2e/togetherai-classifier.e2e.test.js",
+  "e2e/trakt.e2e.test.js"
+]
