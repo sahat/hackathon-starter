@@ -11,7 +11,7 @@ if (!originalMongoUri && result && result.parsed && result.parsed.MONGODB_URI) {
   delete process.env.MONGODB_URI;
 }
 
-// Detect if replay project is being run
+// Detect if a replay or record project is being run
 const isReplay = process.argv.some((arg) => arg === '--project=chromium-replay' || arg === '--project=chromium-nokey-replay');
 if (isReplay) {
   process.env.API_MODE = 'replay';
@@ -28,8 +28,6 @@ const webServerEnv = {
   RATE_LIMIT_GLOBAL: '500',
   RATE_LIMIT_STRICT: '20',
   RATE_LIMIT_LOGIN: '50',
-  ...(isReplay ? { API_MODE: 'replay', API_STRICT_REPLAY: '1' } : {}),
-  ...(isRecord ? { API_MODE: 'record' } : {}),
 };
 
 // Create `tmp` dir in case if it doesn't exist yet
