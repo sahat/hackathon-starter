@@ -16,7 +16,6 @@ test.describe('PubChem API Integration', () => {
   let sharedPage;
 
   test.beforeAll(async ({ browser }) => {
-    // Open one page for the whole suite to avoid repeated expensive navigations
     sharedPage = await browser.newPage();
     await sharedPage.goto('/api/pubchem');
     await sharedPage.waitForLoadState('networkidle');
