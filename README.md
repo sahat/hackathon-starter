@@ -1483,17 +1483,22 @@ The existing E2E tests cover the example API integrations included in the starte
 You can run the tests using:
 
 ```bash
-npm test           # unit tests (core functions)
-npm run test:e2e:live             # All E2E tests with previously recorded API responses
-npm run test:e2e -- --project=all-replay          # E2E (replay fixtures - recorded API responses)
+npm test                  # unit tests (core functions)
+npm run test:e2e:live     # All E2E tests with previously recorded API responses
+npm run test:e2e:replay   # E2E (replay fixtures - recorded API responses)
 ```
 
 You can run a single E2E Test file like the following:
 
 ```bash
-npx playwright test test/e2e.../testfile.e2e.test.js                           --config=test/playwright.config.js --project=chromium # Run tests in a single test file against live APIs
-npx playwright test test/e2e.../testfile.e2e.test.js                           --config=test/playwright.config.js --project=chromium-record # Run tests in a single test file while replaying recorded API responses from the fixtures
-npx playwright test test/e2e.../testfile.e2e.test.js                           --config=test/playwright.config.js --project=chromium-record # Run tests in a single test file against live APIs and capture the API responses as fixtures for replay later
+# Run tests in a single test file against live APIs
+npx playwright test test/e2e.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium
+
+# Run tests in a single test file while replaying recorded API responses from the fixtures
+npx playwright test test/e2e.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium-replay
+
+# Run tests in a single test file against live APIs and capture the API responses as fixtures for replay later
+npx playwright test test/e2e.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium-record
 ```
 
 For more information on creating or running E2E tests see [test/TESTING.md](https://github.com/sahat/hackathon-starter/blob/master/test/TESTING.md)
