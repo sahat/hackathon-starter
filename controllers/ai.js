@@ -9,7 +9,7 @@ const { MongoDBAtlasVectorSearch, MongoDBAtlasSemanticCache } = require('@langch
 const { MongoDBStore } = require('@langchain/mongodb');
 const { ChatTogetherAI } = require('@langchain/community/chat_models/togetherai');
 const { HumanMessage } = require('@langchain/core/messages');
-const { CacheBackedEmbeddings } = require('langchain/embeddings/cache_backed');
+const { CacheBackedEmbeddings } = require('@langchain/classic/embeddings/cache_backed');
 const { MongoClient } = require('mongodb');
 // eslint-disable-next-line import/extensions
 const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
