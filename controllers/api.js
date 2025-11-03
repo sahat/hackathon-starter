@@ -1698,3 +1698,70 @@ exports.getWikipedia = async (req, res) => {
     error,
   });
 };
+
+/**
+ * GET /api/spotify
+ * Spotify API example.
+ */
+exports.getSpotify = async (req, res, next) => {
+  const token = req.user.tokens.find((token) => token.kind === 'spotify');
+  
+  if (!token) {
+    return res.render('api/spotify', {
+      title: 'Spotify Web API',
+      error: 'Please connect your Spotify account first.',
+      userProfile: null,
+      topTracks: [],
+      topArtists: [],
+      recentlyPlayed: [],
+      playlists: []
+    });
+  }
+
+  try {
+    const headers = {
+      'Authorization': `Bearer ${token.accessToken}`,
+      'Content-Type': 'application/json'
+    };
+
+    // Helper function to make Spotify API requests
+    const spotifyFetch = async (endpoint) => {
+      const response = await fetch(`https://api.spotify.com/v1${endpoint}`, { headers });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Spotify API error: ${response.status} - ${errorText}`);
+      }
+      return response.json();
+    };
+
+    // Fetch user profile and music data in parallel
+    const [userProfile, topTracks, topArtists, recentlyPlayed, playlists] = await Promise.all([
+      spotifyFetch('/me'),
+      spotifyFetch('/me/top/tracks?limit=10&time_range=short_term'),
+      spotifyFetch('/me/top/artists?limit=10&time_range=short_term'),
+      spotifyFetch('/me/player/recently-played?limit=10'),
+      spotifyFetch('/me/playlists?limit=10')
+    ]);
+
+    res.render('api/spotify', {
+      title: 'Spotify Web API',
+      error: null,
+      userProfile,
+      topTracks: topTracks.items || [],
+      topArtists: topArtists.items || [],
+      recentlyPlayed: recentlyPlayed.items || [],
+      playlists: playlists.items || []
+    });
+  } catch (error) {
+    console.error('Spotify API Error:', error);
+    res.render('api/spotify', {
+      title: 'Spotify Web API',
+      error: 'Failed to fetch Spotify data. Please try reconnecting your account.',
+      userProfile: null,
+      topTracks: [],
+      topArtists: [],
+      recentlyPlayed: [],
+      playlists: []
+    });
+  }
+};

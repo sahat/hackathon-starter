@@ -238,6 +238,7 @@ app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuth
 app.get('/api/trakt', apiController.getTrakt);
 app.get('/api/pubchem', apiController.getPubChem);
 app.get('/api/wikipedia', apiController.getWikipedia);
+app.get('/api/spotify', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getSpotify);
 
 /**
  * AI Integrations and Boilerplate example routes.

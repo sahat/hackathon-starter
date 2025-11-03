@@ -1,0 +1,145 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h2
+      i.fab.fa-spotify.fa-sm.me-2(style='color: #1DB954')
+      | Spotify Web API
+  
+  .btn-group.d-flex(role='group')
+    a.btn.btn-primary.w-100(href='https://developer.spotify.com/documentation/web-api', target='_blank')
+      i.far.fa-check-square.fa-sm.me-2
+      | Spotify API Docs
+    a.btn.btn-primary.w-100(href='https://developer.spotify.com/dashboard', target='_blank')
+      i.fas.fa-laptop.fa-sm.me-2
+      | Developer Dashboard
+    a.btn.btn-primary.w-100(href='https://developer.spotify.com/console', target='_blank')
+      i.fas.fa-code-branch.fa-sm.me-2
+      | API Console
+
+  if error
+    .alert.alert-danger.mt-3(role='alert')
+      i.fas.fa-exclamation-triangle.me-2
+      = error
+
+  if userProfile
+    .mt-4
+      h3 Your Profile
+      .card.mb-4
+        .card-body
+          .row
+            .col-md-2
+              if userProfile.images && userProfile.images.length > 0
+                img.rounded-circle(src=userProfile.images[0].url, alt='Profile Picture', width='100', height='100')
+              else
+                i.fas.fa-user-circle.fa-5x(style='color: #1DB954')
+            .col-md-10
+              h4= userProfile.display_name
+              p
+                strong Email: 
+                = userProfile.email
+              p
+                strong Country: 
+                = userProfile.country
+              p
+                strong Followers: 
+                = userProfile.followers.total
+              p
+                strong Subscription: 
+                = userProfile.product
+              if userProfile.external_urls && userProfile.external_urls.spotify
+                a.btn.btn-success.btn-sm(href=userProfile.external_urls.spotify, target='_blank')
+                  i.fab.fa-spotify.me-2
+                  | Open in Spotify
+
+    if topTracks && topTracks.length > 0
+      h3.mt-4 Your Top Tracks
+      .row
+        each track in topTracks
+          .col-md-6.mb-3
+            .card
+              .card-body
+                .row
+                  .col-3
+                    if track.album.images && track.album.images.length > 0
+                      img.img-fluid.rounded(src=track.album.images[0].url, alt=track.name)
+                  .col-9
+                    h5.card-title= track.name
+                    p.card-text
+                      strong Artists: 
+                      = track.artists.map(a => a.name).join(', ')
+                    p.card-text
+                      small.text-muted Album: #{track.album.name}
+                    if track.external_urls && track.external_urls.spotify
+                      a.btn.btn-sm.btn-success(href=track.external_urls.spotify, target='_blank')
+                        i.fas.fa-play.me-1
+                        | Play
+
+    if topArtists && topArtists.length > 0
+      h3.mt-4 Your Top Artists
+      .row
+        each artist in topArtists
+          .col-md-4.mb-3
+            .card.text-center
+              .card-body
+                if artist.images && artist.images.length > 0
+                  img.rounded-circle.mb-3(src=artist.images[0].url, alt=artist.name, width='120', height='120')
+                else
+                  i.fas.fa-user-circle.fa-5x.mb-3(style='color: #1DB954')
+                h5.card-title= artist.name
+                p.card-text
+                  each genre in artist.genres.slice(0, 3)
+                    span.badge.bg-secondary.me-1= genre
+                p.card-text
+                  small.text-muted Popularity: #{artist.popularity}/100
+                if artist.external_urls && artist.external_urls.spotify
+                  a.btn.btn-sm.btn-success(href=artist.external_urls.spotify, target='_blank')
+                    i.fab.fa-spotify.me-1
+                    | View Artist
+
+    if recentlyPlayed && recentlyPlayed.length > 0
+      h3.mt-4 Recently Played
+      .list-group.mb-4
+        each item in recentlyPlayed
+          .list-group-item
+            .row.align-items-center
+              .col-2
+                if item.track.album.images && item.track.album.images.length > 0
+                  img.img-fluid.rounded(src=item.track.album.images[2].url, alt=item.track.name)
+              .col-8
+                h6.mb-1= item.track.name
+                p.mb-1
+                  small= item.track.artists.map(a => a.name).join(', ')
+                p.mb-0
+                  small.text-muted Played: #{new Date(item.played_at).toLocaleString()}
+              .col-2.text-end
+                if item.track.external_urls && item.track.external_urls.spotify
+                  a.btn.btn-sm.btn-outline-success(href=item.track.external_urls.spotify, target='_blank')
+                    i.fas.fa-external-link-alt
+
+    if playlists && playlists.length > 0
+      h3.mt-4 Your Playlists
+      .row
+        each playlist in playlists
+          .col-md-4.mb-3
+            .card
+              if playlist.images && playlist.images.length > 0
+                img.card-img-top(src=playlist.images[0].url, alt=playlist.name)
+              else
+                .card-img-top.bg-secondary.d-flex.align-items-center.justify-content-center(style='height: 200px')
+                  i.fas.fa-music.fa-3x.text-white
+              .card-body
+                h5.card-title= playlist.name
+                p.card-text
+                  small.text-muted #{playlist.tracks.total} tracks
+                if playlist.description
+                  p.card-text
+                    small= playlist.description
+                if playlist.external_urls && playlist.external_urls.spotify
+                  a.btn.btn-success.btn-sm(href=playlist.external_urls.spotify, target='_blank')
+                    i.fab.fa-spotify.me-1
+                    | Open Playlist
+  else
+    .alert.alert-info.mt-3(role='alert')
+      i.fas.fa-info-circle.me-2
+      | Please connect your Spotify account to view your music data.
