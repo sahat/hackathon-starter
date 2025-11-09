@@ -355,8 +355,8 @@ passport.use(
  */
 const googleStrategyConfig = new GoogleStrategy(
   {
-    clientID: process.env.GOOGLE_ID,
-    clientSecret: process.env.GOOGLE_SECRET,
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: '/auth/google/callback',
     scope: ['profile', 'email', 'https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
     accessType: 'offline',
