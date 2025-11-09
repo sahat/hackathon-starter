@@ -91,7 +91,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
-  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping
+  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping, Tenor (GIFs)
   - **Maps and Location:** Google Maps, HERE Maps
   - **Productivity:** Google Drive, Google Sheets
 
@@ -292,27 +292,34 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" height="50">
 
-- Visit <a href="https://cloud.google.com/console/project" target="_blank">Google Cloud Console</a>
+- Visit <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a>
 - Click on the **Create Project** button
-- Enter _Project Name_, then click on **Create** button
-- Then click on _APIs & auth_ in the sidebar and select _API_ tab and based on your usage add:
-  - Login by Google: Click on **Google+ API** under _Social APIs_, then click **Enable API**
-  - Google Drive: Click on **Google Drive API** under _G Suite_, then click **Enable API**
-  - Google Sheets: Click on **Google Sheets API** under _G Suite_, then click **Enable API**
-- Next, under _APIs & auth_ in the sidebar click on the _Credentials_ tab
-- Click on **Create new Client ID** button
-- Select _Web Application_ and click on **Configure Consent Screen**
-- Fill out the required fields then click on **Save**
-- In the _Create Client ID_ modal dialog:
-- **Application Type**: Web Application
-- **Authorized Javascript origins**: set to your BASE_URL value (i.e. `http://localhost:8080`, etc)
-- **Authorized redirect URI**: set to your BASE_URL value followed by /auth/google/callback (i.e. `http://localhost:8080/auth/google/callback` )
-- Click on **Create Client ID** button
-- Copy and paste _Client ID_ and _Client secret_ keys into `.env`
+- Enter _Project Name_, then click **Create**
+- Copy the Project ID for your project and add it as GOOGLE_PROJECT_ID in your `.env` file.
+- Then add the APIs and services that apply to your application. If the UI doesn't let you add them during project creation, you can add them later via the **APIs & Services** page (left sidebar) or by searching for them in the top search bar.
 
-**Warning:** Restrict your **Google Maps API key** to the "Maps JavaScript API" and the specific domain name you are using (for example, your ngrok development domain). Avoid using "localhost" or leaving the key unrestricted, because your Maps API key will be publicly exposed through the web application. This exposure could allow unauthorized users to misuse your key, potentially resulting in charges to your GCP account and credit card.
+**Sign in with Google:**
 
-- Google Maps API Key: To use the "Maps JavaScript API," you must activate your Google Cloud Platform account with a valid credit card. If your account hasn't been activated yet, this process will also trigger the countdown for the expiration of your free credits if any. If you'd prefer to avoid this, consider using **HERE Maps** as an alternative. To get a key add the Search for "Maps Platform API Key" in your GCP Console and select the appropriate option. Then get your key and add your domain as the Website restriction for it.
+- Go to the **Credentials** tab, click **Create credentials**, and choose **OAuth client ID**.
+- Select **Web application**, and for **Authorized redirect URI** use your BASE_URL value followed by `/auth/google/callback` (for example `http://localhost:8080/auth/google/callback`).
+- Copy and paste the **Client ID** and **Client secret** into your `.env` file.
+- Update the OAuth consent screen if needed.
+
+**Other APIs:**
+
+Open the **Enabled APIs & services** page for your project in the Google Cloud Console (APIs & Services). Click **+ Enable APIs and services** (top of the page), find the services you need, and enable them:
+
+- **reCAPTCHA Enterprise API** (recommended for the contact form)
+- **Google Drive API**
+- **Google Sheets API**
+- **Maps JavaScript API**
+- **Tenor API**
+
+Next, create API keys for the services you enabled:
+
+- For backend API calls (Google Drive, Sheets, or Tenor), create a single API key and restrict it to those APIs. Copy the key as `GOOGLE_API_KEY` into your `.env` file.
+- For reCAPTCHA, follow the instructions at <a href="https://cloud.google.com/recaptcha/docs/create-key-website#create-recaptcha-key-Cloud%20console" target="_blank">Google Cloud reCAPTCHA Docs</a> and create a web checkbox reCAPTCHA key. No code changes are required. Just copy the reCAPTCHA site key into `.env` as `GOOGLE_RECAPTCHA_SITE_KEY`.
+- For the Google Maps JavaScript API, use a separate API key from your backend key because the key is sent to the front end and can be exposed. Restrict this key to your website on the credentials page. Do NOT use "localhost" as the restriction since it is not unique to your application. Once configured, copy the API key as `GOOGLE_MAP_API_KEY` into your `.env` file.
 
 <hr>
 
@@ -415,17 +422,6 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 - Copy and paste _Client ID_ and _Secret_ keys into `.env` file
 - _App ID_ is **client_id**, _App Secret_ is **client_secret**
 - Change **host** to api.paypal.com if you want to test against production and use the live credentials
-
-<hr>
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/200px-RecaptchaLogo.svg.png" height="75">
-
-- Visit <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin Console</a>
-- Enter your application's name as the **Label**
-- Choose **reCAPTCHA v2**, **"I'm not a robot" Checkbox**
-- Enter _localhost_ as the domain. You can have other domains added in addition to _localhost_
-- Accept the terms and submit the form
-- Copy the _Site Key_ and the _Secret key_ into `.env`. These keys will be accessible under Settings, reCAPTCHA keys drop down if you need them again later
 
 <hr>
 
