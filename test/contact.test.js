@@ -33,8 +33,9 @@ function setupApp(controller) {
 describe('Contact Controller', () => {
   before(() => {
     process.env.SITE_CONTACT_EMAIL = 'test@example.com';
-    process.env.RECAPTCHA_SITE_KEY = 'dummy';
-    process.env.RECAPTCHA_SECRET_KEY = 'dummy';
+    process.env.GOOGLE_RECAPTCHA_SITE_KEY = 'dummy';
+    process.env.GOOGLE_API_KEY = 'dummy';
+    process.env.GOOGLE_PROJECT_ID = 'dummy-project';
   });
 
   beforeEach(() => {
@@ -48,7 +49,7 @@ describe('Contact Controller', () => {
 
     // Stub global fetch for reCAPTCHA
     fetchStub = sinon.stub().resolves({
-      json: () => Promise.resolve({ success: true }),
+      json: () => Promise.resolve({ tokenProperties: { valid: true } }),
     });
     global.fetch = fetchStub;
 
@@ -136,7 +137,7 @@ describe('Contact Controller', () => {
     });
 
     it('handles reCAPTCHA failure', (done) => {
-      fetchStub.resolves({ json: () => Promise.resolve({ success: false }) });
+      fetchStub.resolves({ json: () => Promise.resolve({ tokenProperties: { valid: false } }) });
       request(app)
         .post('/contact')
         .type('form')
