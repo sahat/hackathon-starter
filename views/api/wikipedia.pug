@@ -70,7 +70,7 @@ block content
           .list-group
             each result in searchResults
               a.list-group-item.list-group-item-action(href=`https://en.wikipedia.org/wiki/${encodeURIComponent(result.title)}`, target='_blank', rel='noopener')
-                i.fas.fa-file-alt.me-2.text-primary
+                i.far.fa-file-lines.me-2.text-primary
                 strong= result.title
                 if result.snippet
                   br
