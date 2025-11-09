@@ -9,5 +9,6 @@
   "e2e/nyt.e2e.test.js",
   "e2e/openai-moderation.e2e.test.js",
   "e2e/togetherai-classifier.e2e.test.js",
-  "e2e/trakt.e2e.test.js"
+  "e2e/trakt.e2e.test.js",
+  "e2e/tenor.e2e.test.js"
 ]

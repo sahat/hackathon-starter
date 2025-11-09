@@ -1701,7 +1701,7 @@ exports.getWikipedia = async (req, res) => {
 
 exports.getTenor = async (req, res, next) => {
   const limit = 20; // Default limit for the number of GIFs
-  const key = process.env.TENOR_API_KEY; // Tenor API key from environment variables
+  const key = process.env.GOOGLE_API_KEY;
   const search = req.query.search || 'Happy'; // Default search term if none is provided
   const url = `https://tenor.googleapis.com/v2/search?key=${key}&q=${encodeURIComponent(search)}&limit=${limit}`;
   try {
