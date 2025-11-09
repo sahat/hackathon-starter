@@ -639,7 +639,7 @@ Required to run the project before your modifications
 | pdfjs-dist                    | PDF parser                                                            |
 | pug                           | Template engine for Express.                                          |
 | sass                          | Sass compiler to generate CSS with superpowers.                       |
-| stripe                        | Offical Stripe API library.                                           |
+| stripe                        | Official Stripe API library.                                          |
 | twilio                        | Twilio API library.                                                   |
 | twitch-passport               | Sign-in with Twitch plugin.                                           |
 | validator                     | A library of string validators and sanitizers.                        |

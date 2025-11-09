@@ -620,7 +620,7 @@ Provide the output in this JSON structure:
 }
 Replace <selected_department> with the name of the most relevant department from the list above. If the inquiry spans multiple categories, choose the department that is most likely to address the customer's issue promptly and effectively.`;
 
-// Image Uploade middleware for Camera uploads
+// Image upload middleware for camera uploads
 const createImageUploader = () => {
   const memoryStorage = multer.memoryStorage();
   return multer({

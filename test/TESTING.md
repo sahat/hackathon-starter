@@ -80,10 +80,10 @@ Use one script with project selection:
 ```bash
 npm run test:e2e:live                                   # All E2E tests with live API calls
 npm run test:e2e:replay                                 # All E2E tests with previously recorded API responses
-npm run test:custom -- --project=chromium-record        # E2E with recording API calls (record fixtures)
-npm run test:custom -- --project=chromium-nokey-live    # Only E2E tests that don't require API keys (live)
-npm run test:custom -- --project=chromium-nokey-replay  # Only E2E tests that don't require API keys (replay fixtures)
-npm run test:custom -- --project=chromium-nokey-record  # Only E2E tests that don't require API keys (record fixtures)
+npm run test:e2e:custom -- --project=chromium-record        # E2E with recording API calls (record fixtures)
+npm run test:e2e:custom -- --project=chromium-nokey-live    # Only E2E tests that don't require API keys (live)
+npm run test:e2e:custom -- --project=chromium-nokey-replay  # Only E2E tests that don't require API keys (replay fixtures)
+npm run test:e2e:custom -- --project=chromium-nokey-record  # Only E2E tests that don't require API keys (record fixtures)
 ```
 
 ### Run a Single E2E Test File

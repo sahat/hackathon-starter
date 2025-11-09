@@ -138,9 +138,9 @@ exports.getSignup = (req, res) => {
 };
 
 /**
- * Helper to send passwordless login link if a user is trying to create an account
+ * Helper to send a passwordless login link if a user is trying to create an account
  * but we already have an account for that email address.
- * This process with ambigious flash messages is a part of the security measure to
+ * This process with ambiguous flash messages is part of the security measures to
  * mitigate account enumeration attacks.
  */
 async function sendPasswordlessLoginLinkIfUserExists(user, req) {
@@ -177,7 +177,7 @@ Thank you!\n`,
 }
 
 /**
- * Helper to send passwordless signup link for new users.
+ * Helper to send a passwordless signup link for new users.
  */
 async function sendPasswordlessSignupLink(user, req) {
   const token = await User.generateToken();
@@ -319,8 +319,8 @@ exports.postUpdateProfile = async (req, res, next) => {
     } else {
       console.log('Error updating profile', err);
     }
-    // Generic error message for the user. Do not reveal the cause of the error tsuch as
-    // the new email being in the system to the user to avoid enumeration vulenrability.
+    // Generic error message for the user. Do not reveal the cause of the error, such as
+    // the new email being in the system, to the user to avoid enumeration vulnerability.
     req.flash('errors', {
       msg: "We encountered an issue updating your email address. If you suspect you have duplicate accounts, please log in with the other email address you've used or contact support for assistance. You can delete duplicate accounts from your account settings.",
     });
