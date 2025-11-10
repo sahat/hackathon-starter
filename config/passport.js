@@ -198,6 +198,12 @@ passport.use(
           });
           return done(null, false);
         }
+        if (normalizedEmail === undefined) {
+          req.flash('errors', {
+            msg: `Unable to sign in with Facebook. No email address was provided for account creation.`,
+          });
+          return done(null, false);
+        }
         const user = new User();
         user.email = normalizedEmail;
         user.facebook = profile.id;
