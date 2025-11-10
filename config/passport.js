@@ -147,6 +147,11 @@ async function saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenE
 /**
  * Sign in with Facebook.
  */
+
+FacebookStrategy.prototype.authorizationParams = function () {
+  return { auth_type: 'rerequest' };
+};
+
 passport.use(
   new FacebookStrategy(
     {
