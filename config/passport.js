@@ -154,6 +154,7 @@ passport.use(
       clientSecret: process.env.FACEBOOK_SECRET,
       callbackURL: `${process.env.BASE_URL}/auth/facebook/callback`,
       profileFields: ['name', 'email', 'link', 'locale', 'timezone', 'gender'],
+      scope: ['public_profile', 'email'],
       state: generateState(),
       passReqToCallback: true,
     },
