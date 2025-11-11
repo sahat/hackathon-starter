@@ -6,9 +6,13 @@
 - [ ] I manually tested the change with a running instance, DB, and valid API keys where applicable
 - [ ] Added/updated tests if the existing tests do not cover this change
 - [ ] README or other relevant docs are updated
-- [ ] `npm run lint`, `npm test`, and `npm run test:e2e-nokey` pass locally. `--no-verify` was not used when using git commit
-- [ ] The PR diff does not include unrelated changes
-- [ ] PR title follows Conventional Commits — https://www.conventionalcommits.org/en/v1.0.0
+- [ ] `--no-verify` was not used for the commit(s)
+- [ ] `npm run lint` passed locally without any errors
+- [ ] `npm test` passed locally without any errors
+- [ ] `npm run test:e2e:replay` passed locally without any errors
+- [ ] `npm run test:e2e:custom -- --project=chromium-nokey-live` passed locally without any errors
+- [ ] PR diff does not include unrelated changes
+- [ ] PR title follows Conventional Commits — https://www.conventionalcommits.org/en
 
 ## Description
 
