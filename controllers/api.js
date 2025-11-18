@@ -1577,7 +1577,7 @@ exports.getPubChem = async (req, res, next) => {
  * GET /api/wikipedia
  * wikipedia.org API Example.
  * - Uses wikipedia'a API to extract text, images, data and display in the api/wikipedia page
- * - Allow users to search content and dispay its data etracted from wikipedia page
+ * - Allow users to search content and display its data etracted from wikipedia page
  */
 exports.getWikipedia = async (req, res) => {
   const validationErrors = [];
