@@ -9,7 +9,8 @@ on:
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
-
+    environment: Test
+  
     steps:
       - uses: actions/checkout@v4
         with:
