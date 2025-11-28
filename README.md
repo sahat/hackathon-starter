@@ -14,8 +14,6 @@ Abaixo estão listados os integrantes do grupo e seus respectivos perfis no GitH
 - [Pedro Marchi Nunes](https://github.com/PedroMarchiN)
 - [Leonardo Ryuiti Miasiro](https://github.com/LeonardoMiasiro)
 
-
-
 **Live Demo**: [Link](https://hackathon-starter-1.ydftech.com)
 
 Jump to [What's new?](https://github.com/sahat/hackathon-starter/blob/master/CHANGELOG.md)
