@@ -18,6 +18,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
           a.nav-link(class=title === 'Contact' ? 'active' : '', href='/contact') Contact
 
       form.d-flex
+        button#theme-toggle.btn.btn-outline-secondary.me-2(type='button', aria-pressed='false', title='Alternar tema')
+          span#theme-icon 🌙
         if !user
           a.btn.btn-outline-light.me-2(href='/login') Login
           a.btn.btn-primary(href='/signup') Create Account

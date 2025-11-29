@@ -13,6 +13,19 @@ html.h-100(lang='en')
     //link(rel='stylesheet', href='/css/bootstrap.min.css')
     link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css')
+    script.
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme) {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+          } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+          } else {
+            document.documentElement.setAttribute('data-bs-theme', 'light');
+          }
+        } catch (e) {}
+      })();
     block head
 
   body.d-flex.flex-column.h-100
