@@ -35,6 +35,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=gurizada-da-federal
-            -Dsonar.organization=gurizada-da-federal
+            -Dsonar.projectKey=ArturKioshi_ES2_2025-2_hackathon-starter
+            -Dsonar.organization=arturkioshi
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.branch.name=master
