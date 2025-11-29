@@ -2,27 +2,29 @@ name: sonarcloud
 
 on:
   push:
-    branches: ['main']
+    branches: ['master']
   pull_request:
-    branches: ['main']
+    branches: ['master']
 
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
-    environment: Test
+    environment: Tests
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Code Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Install Node
+      - name: Nodejs Config
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22.x'
+          cache: npm
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Dependencies
+        run: npm ci
 
       - name: Run tests + coverage
         run: npm test
