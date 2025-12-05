@@ -14,6 +14,7 @@ const OpenIDConnectStrategy = require('passport-openidconnect');
 const { OAuth } = require('oauth');
 const moment = require('moment');
 const validator = require('validator');
+const SpotifyStrategy = require('passport-spotify').Strategy;
 
 const User = require('../models/User');
 
@@ -976,6 +977,74 @@ exports.isAuthorized = async (req, res, next) => {
     return res.redirect(`/auth/${provider}`);
   }
 };
+
+/**
+ * Spotify integration.
+ */
+const secrets = require('./secrets');
+
+passport.use(
+  new SpotifyStrategy(
+    {
+      clientID: secrets.spotify.clientID,
+      clientSecret: secrets.spotify.clientSecret,
+      callbackURL: secrets.spotify.callbackURL,
+      passReqToCallback: true,
+    },
+    (req, accessToken, refreshToken, profile, done) => {
+      if (req.user) {
+        User.findOne({ spotify: profile.id })
+          .then((existingUser) => {
+            if (existingUser) {
+              req.flash('errors', { msg: 'There is already a Spotify account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+              done(null);
+            } else {
+              User.findById(req.user.id)
+                .then((user) => {
+                  user.spotify = profile.id;
+                  user.tokens.push({ kind: 'spotify', accessToken, refreshToken });
+                  user.profile.picture = user.profile.picture || profile.photos[0].value;
+                  user.profile.name = user.profile.name || profile.displayName;
+                  user.save((err) => {
+                    req.flash('info', { msg: 'Spotify account has been linked.' });
+                    done(err, user);
+                  });
+                })
+                .catch((err) => done(err));
+            }
+          })
+          .catch((err) => done(err));
+      } else {
+        User.findOne({ spotify: profile.id })
+          .then((existingUser) => {
+            if (existingUser) {
+              existingUser.tokens = existingUser.tokens.filter((token) => token.kind !== 'spotify');
+              existingUser.tokens.push({ kind: 'spotify', accessToken, refreshToken });
+              existingUser.save((err) => done(err, existingUser));
+            } else {
+              User.findOne({ email: profile.emails[0].value })
+                .then((existingEmailUser) => {
+                  if (existingEmailUser) {
+                    req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Spotify manually from the account settings.' });
+                    done(null);
+                  } else {
+                    const user = new User();
+                    user.email = profile.emails[0].value;
+                    user.spotify = profile.id;
+                    user.tokens.push({ kind: 'spotify', accessToken, refreshToken });
+                    user.profile.picture = profile.photos[0].value;
+                    user.profile.name = profile.displayName;
+                    user.save((err) => done(err, user));
+                  }
+                })
+                .catch((err) => done(err));
+            }
+          })
+          .catch((err) => done(err));
+      }
+    },
+  ),
+);
 
 // Add export for testing the internal function
 exports._saveOAuth2UserTokens = saveOAuth2UserTokens;

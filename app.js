@@ -239,6 +239,8 @@ app.get('/api/trakt', apiController.getTrakt);
 app.get('/api/pubchem', apiController.getPubChem);
 app.get('/api/wikipedia', apiController.getWikipedia);
 app.get('/api/tenor', apiController.getTenor);
+app.get('/api/trakt', apiController.getTrakt);
+app.get('/api/spotify', passportConfig.isAuthenticated, apiController.getSpotify);
 
 /**
  * AI Integrations and Boilerplate example routes.
@@ -313,6 +315,10 @@ app.get('/auth/discord', passport.authenticate('discord'));
 app.get('/auth/discord/callback', passport.authenticate('discord', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
+app.get('/auth/spotify', passport.authenticate('spotify', { scope: ['user-read-email', 'user-read-private'] }));
+app.get('/auth/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/auth/failure' }), (req, res) => {
+  res.redirect(req.session.returnTo || '/');
+});
 
 /**
  * OAuth authorization routes. (API examples)
@@ -333,6 +339,7 @@ app.get('/auth/quickbooks', passport.authorize('quickbooks'));
 app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
+app.get('/api/spotify', passport.authorize('spotify'));
 
 /**
  * Error Handler.

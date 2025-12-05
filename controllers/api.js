@@ -23,6 +23,7 @@ const fs = require('fs');
 exports.getApi = (req, res) => {
   res.render('api/index', {
     title: 'API Examples',
+    spotify: process.env.SPOTIFY_ID,
   });
 };
 
@@ -1730,6 +1731,43 @@ exports.getTenor = async (req, res, next) => {
     });
   } catch (error) {
     console.error('Tenor API Error:', error);
+    next(error);
+  }
+};
+
+/**
+ * GET /api/spotify
+ * Spotify API example.
+ */
+exports.getSpotify = async (req, res, next) => {
+  try {
+    const token = req.user.tokens.find((token) => token.kind === 'spotify');
+    if (!token) {
+      throw new Error('Spotify token not found');
+    }
+
+    const response = await fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        Authorization: `Bearer ${token.accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      try {
+        const error = await response.json();
+        throw new Error(error.error?.message || 'Failed to fetch Spotify data');
+      } catch {
+        throw new Error('Failed to fetch Spotify data. Response was not valid JSON.');
+      }
+    }
+
+    const profile = await response.json();
+
+    res.render('api/spotify', {
+      title: 'Spotify API',
+      profile,
+    });
+  } catch (error) {
     next(error);
   }
 };

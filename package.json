@@ -74,6 +74,7 @@
     "passport-oauth": "^1.0.0",
     "passport-oauth2-refresh": "^2.2.0",
     "passport-openidconnect": "^0.1.2",
+    "passport-spotify": "^2.0.0",
     "passport-steam-openid": "^1.1.8",
     "patch-package": "^8.0.1",
     "pdfjs-dist": "^5.4.394",

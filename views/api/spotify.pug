@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+  h1 Spotify API
+  if profile
+    p Name: #{ profile.display_name }
+    p Email: #{ profile.email }
+    p Country: #{ profile.country }
+    img(src=profile.images[0] ? profile.images[0].url : 'URL_DE_FALLBACK', width='120')
+  else
+    p No Spotify data available.
