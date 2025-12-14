@@ -59,6 +59,6 @@ test.describe('New York Times API Integration', () => {
     await expect(firstRowCells.nth(1)).toContainText(currentRank1Title);
     expect(currentRank1Title.length).toBeGreaterThan(5);
     await expect(firstRowCells.nth(3)).toContainText(/\w+/);
-    await expect(firstRowCells.nth(4)).toContainText(/978\d{9,}/);
+    await expect(firstRowCells.nth(4)).toContainText(/\d{13}/);
   });
 });
