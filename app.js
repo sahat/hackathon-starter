@@ -149,19 +149,23 @@ app.use((req, res, next) => {
 const isSafeRedirect = (url) => /^\/[a-zA-Z0-9/_-]*$/.test(url);
 app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
-  if (!req.user && req.path !== '/login' && req.path !== '/signup' && !req.path.match(/^\/auth/) && !req.path.match(/\./)) {
+  if (!req.user && req.path !== '/login' && req.path !== '/signup' && !req.path.startsWith('/auth') && !req.path.includes('.')) {
     const returnTo = req.originalUrl;
     if (isSafeRedirect(returnTo)) {
       req.session.returnTo = returnTo;
     } else {
       req.session.returnTo = '/';
     }
-  } else if (req.user && (req.path === '/account' || req.path.match(/^\/api/))) {
+  } else if (req.user && (req.path === '/account' || req.path.startsWith('/api'))) {
     const returnTo = req.originalUrl;
     if (isSafeRedirect(returnTo)) {
       req.session.returnTo = returnTo;
+      if (req.path.startsWith('/api/') && !req.session.baseReturnTo) {
+        req.session.baseReturnTo = '/api';
+      }
     } else {
       req.session.returnTo = '/';
+      req.session.baseReturnTo = '/';
     }
   }
   next();
@@ -268,14 +272,15 @@ app.get('/auth/failure', (req, res) => {
   if (!hasErrorFlash) {
     req.flash('errors', { msg: 'Authentication failed or provider account is already linked.' });
   }
-  const { returnTo } = req.session;
+  const { returnTo, baseReturnTo } = req.session;
   req.session.returnTo = undefined;
-  // Prevent infinite loop: if returnTo is the current URL or an /auth/ route, redirect to /
-  if (!returnTo || !isSafeRedirect(returnTo) || returnTo === req.originalUrl || /^\/auth\//.test(returnTo)) {
+  req.session.baseReturnTo = undefined;
+  const redirectTarget = baseReturnTo || returnTo;
+
+  if (!redirectTarget || !isSafeRedirect(redirectTarget) || redirectTarget === req.originalUrl || redirectTarget.startsWith('/auth/')) {
     res.redirect('/');
-  } else {
-    res.redirect(returnTo);
   }
+  res.redirect(redirectTarget);
 });
 
 /**

@@ -147,6 +147,11 @@ async function saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenE
 /**
  * Sign in with Facebook.
  */
+
+FacebookStrategy.prototype.authorizationParams = function () {
+  return { auth_type: 'rerequest' };
+};
+
 passport.use(
   new FacebookStrategy(
     {
@@ -154,6 +159,7 @@ passport.use(
       clientSecret: process.env.FACEBOOK_SECRET,
       callbackURL: `${process.env.BASE_URL}/auth/facebook/callback`,
       profileFields: ['name', 'email', 'link', 'locale', 'timezone', 'gender'],
+      scope: ['public_profile', 'email'],
       state: generateState(),
       passReqToCallback: true,
     },
@@ -194,6 +200,12 @@ passport.use(
         if (existingEmailUser) {
           req.flash('errors', {
             msg: `Unable to sign in with Facebook at this time. If you have an existing account in our system, please sign in by email and link your account to Facebook in your user profile settings.`,
+          });
+          return done(null, false);
+        }
+        if (normalizedEmail === undefined) {
+          req.flash('errors', {
+            msg: `Unable to sign in with Facebook. No email address was provided for account creation.`,
           });
           return done(null, false);
         }
