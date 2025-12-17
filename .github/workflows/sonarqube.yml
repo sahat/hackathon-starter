@@ -12,7 +12,6 @@ jobs:
       github.event.pull_request.merged == true &&
       github.event.pull_request.head.ref == 'release-demo'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout merged code (master)
         uses: actions/checkout@v4
