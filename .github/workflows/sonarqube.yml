@@ -1,44 +1,33 @@
-name: SonarQube Scan on Merge (release-demo → master)
+name: SonarQube Analysis
 
 on:
+  # Runs when PR is created or updated (release-demo → main)
   pull_request:
-    types: [closed]
     branches:
-      - master
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+  # Runs AFTER merge into main
+  push:
+    branches:
+      - main
 
 jobs:
   sonarqube:
-    if: |
-      github.event.pull_request.merged == true &&
-      github.event.pull_request.head.ref == 'release-demo'
+    name: SonarQube Scan
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout merged code (master)
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Run tests (optional)
-        run: |
-          npm test || echo "Tests failed, continuing SonarQube scan"
-
       - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: |
-          npx sonar-scanner \
-            -Dsonar.projectKey=hackathon-starter \
-            -Dsonar.projectName=hackathon-starter \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=$SONAR_HOST_URL \
-            -Dsonar.login=$SONAR_TOKEN \
-            -Dsonar.branch.name=master
