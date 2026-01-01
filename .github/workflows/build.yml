@@ -47,7 +47,7 @@ jobs:
 
       - name: Upload tmp as an artifact (Playwrite artifacts, code coverage report, etc)
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: tmp-artifacts-${{ matrix.os }}-${{ github.job }}-${{ github.run_id }}
           path: tmp/**
