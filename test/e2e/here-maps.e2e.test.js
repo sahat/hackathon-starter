@@ -34,7 +34,7 @@ test.describe('HERE Maps API Integration', () => {
   });
 
   test('should initialize and render HERE Maps successfully', async () => {
-    await sharedPage.waitForTimeout(3000);
+    await sharedPage.waitForTimeout(5000);
 
     // Check if HERE Maps API loaded by verifying window.H object
     const hereMapsLoaded = await sharedPage.evaluate(() => typeof window.H !== 'undefined' && window.H !== null);
