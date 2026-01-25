@@ -65,7 +65,7 @@ userSchema.virtual('isLoginExpired').get(function checkLoginTokenExpiration() {
 });
 
 // Middleware to clear expired tokens on save
-userSchema.pre('save', function clearExpiredTokens(next) {
+userSchema.pre('save', function clearExpiredTokens() {
   const now = Date.now();
 
   if (this.passwordResetExpires && this.passwordResetExpires < now) {
@@ -85,22 +85,15 @@ userSchema.pre('save', function clearExpiredTokens(next) {
     this.loginExpires = undefined;
     this.loginIpHash = undefined;
   }
-
-  next();
 });
 
 // Password hash middleware
-userSchema.pre('save', async function hashPassword(next) {
+userSchema.pre('save', async function hashPassword() {
   const user = this;
   if (!user.isModified('password')) {
-    return next();
+    return;
   }
-  try {
-    user.password = await bcrypt.hash(user.password, 10);
-    next();
-  } catch (err) {
-    next(err);
-  }
+  user.password = await bcrypt.hash(user.password, 10);
 });
 
 // Helper method for validating password for login by password strategy
