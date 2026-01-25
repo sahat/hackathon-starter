@@ -1,4 +1,3 @@
-/* eslint-env jquery, browser */
 /* global $ */
 
 $(() => {

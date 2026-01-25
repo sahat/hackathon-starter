@@ -17,6 +17,7 @@ export default [
       globals: {
         ...globals.node,
         ...globals.mocha,
+        ...globals.browser,
       },
       sourceType: 'module',
     },
