@@ -88,7 +88,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - RAG with semantic and embedding caching
   - Llama Instruct, Llama Vision
   - OpenAI Moderation
-  - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Together.AI, and Hugging Face
+  - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Groq, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
   - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping, Tenor (GIFs)
@@ -443,13 +443,12 @@ The OpenAI moderation API for checking harmful inputs is free to use as long as 
 
 <hr>
 
-<img src="https://i.imgur.com/dOCkJxT.png" height="50">
+<img src="https://i.imgur.com/dSwblOk.png" height="50">
 
-- Visit <a href="https://www.together.ai" target="_blank">Together AI</a>
-- Sign in or create a Together AI account.
+- Visit <a href="https://groq.com" target="_blank">Groq</a>
+- Sign in or create a Groq account.
 - Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
-- Copy and paste the generated API key into your `.env` file as `TOGETHERAI_API_KEY` or set it as an environment variable.
-- Go to Together AI's <a href="https://api.together.ai/models" target="_blank"> Models</a> page and pick a model based on your use case and budget and specify it as `TOGETHERAI_MODEL` in your `.env` file or as an environment variable (e.g. `togethercomputer/llama-3-70b-chat`).
+- Copy and paste the generated API key into your `.env` file as `GROQ_API_KEY` or set it as an environment variable.
 
 <hr>
 

@@ -40,7 +40,7 @@ test/
 │   ├── lob.e2e.test.js
 │   ├── nyt.e2e.test.js
 │   ├── openai-moderation.e2e.test.js
-│   ├── togetherai-classifier.e2e.test.js
+│   ├── llm-classifier.e2e.test.js
 │   ├── trakt.e2e.test.js
 │   └── twilio.e2e.test.js
 ├── e2e-nokey/                   # Tests that work without API keys

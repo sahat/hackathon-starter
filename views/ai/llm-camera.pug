@@ -4,17 +4,17 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
       i.fas.fa-camera.fa-sm.me-2
-      | Together AI LLama Vision + User Camera
+      | Groq Llama Vision + User Camera
 
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary.w-100(href='https://api.together.ai', target='_blank')
+    a.btn.btn-primary.w-100(href='https://console.groq.com', target='_blank')
       i.fas.fa-table-columns.fa-sm.me-2
-      | Together AI Dashboard
-    a.btn.btn-primary.w-100(href='https://docs.together.ai/docs/vision-api', target='_blank')
+      | Groq Console
+    a.btn.btn-primary.w-100(href='https://console.groq.com/docs/vision', target='_blank')
       i.fas.fa-code.fa-sm.me-2
       | API Reference
   br
-  p.lead Take a picture with your device camera and send it to Together AI to analyze with #{ togetherAiModel } model.
+  p.lead Take a picture with your device camera and send it to Groq to analyze with #{ groqVisionModel } model.
 
   .row
     .col-md-7
@@ -143,7 +143,7 @@ block content
               formData.append('_csrf', '#{_csrf}');
 
               // Send to server
-              const response = await fetch('/ai/togetherai-camera', {
+              const response = await fetch('/ai/llm-camera', {
                 method: 'POST',
                 body: formData,
                 credentials: 'same-origin',

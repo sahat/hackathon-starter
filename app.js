@@ -129,7 +129,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash);
 app.use((req, res, next) => {
-  if (req.path === '/api/upload' || req.path === '/ai/togetherai-camera') {
+  if (req.path === '/api/upload' || req.path === '/ai/llm-camera') {
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
     // WARN: Any path that is not protected by CSRF here should have lusca.csrf() chained
     // in their route handler.
@@ -250,10 +250,10 @@ app.get('/api/tenor', apiController.getTenor);
 app.get('/ai', aiController.getAi);
 app.get('/ai/openai-moderation', aiController.getOpenAIModeration);
 app.post('/ai/openai-moderation', aiController.postOpenAIModeration);
-app.get('/ai/togetherai-classifier', aiController.getTogetherAIClassifier);
-app.post('/ai/togetherai-classifier', aiController.postTogetherAIClassifier);
-app.get('/ai/togetherai-camera', lusca({ csrf: true }), aiController.getTogetherAICamera);
-app.post('/ai/togetherai-camera', strictLimiter, aiController.imageUploadMiddleware, lusca({ csrf: true }), aiController.postTogetherAICamera);
+app.get('/ai/llm-classifier', aiController.getLLMClassifier);
+app.post('/ai/llm-classifier', aiController.postLLMClassifier);
+app.get('/ai/llm-camera', lusca({ csrf: true }), aiController.getLLMCamera);
+app.post('/ai/llm-camera', strictLimiter, aiController.imageUploadMiddleware, lusca({ csrf: true }), aiController.postLLMCamera);
 app.get('/ai/rag', aiController.getRag);
 app.post('/ai/rag/ingest', aiController.postRagIngest);
 app.post('/ai/rag/ask', aiController.postRagAsk);

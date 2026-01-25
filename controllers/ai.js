@@ -6,7 +6,7 @@ const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
 const { MongoDBAtlasVectorSearch, MongoDBAtlasSemanticCache } = require('@langchain/mongodb');
-const { ChatTogetherAI } = require('@langchain/community/chat_models/togetherai');
+const { ChatGroq } = require('@langchain/groq');
 const { HumanMessage } = require('@langchain/core/messages');
 const { MongoClient } = require('mongodb');
 const Keyv = require('keyv').default;
@@ -487,9 +487,9 @@ exports.postRagAsk = async (req, res) => {
     const context = relevantDocs.map((doc) => doc.pageContent).join('\n---\n');
 
     // Set up LLM
-    const llm = new ChatTogetherAI({
-      apiKey: process.env.TOGETHERAI_API_KEY,
-      model: process.env.TOGETHERAI_MODEL,
+    const llm = new ChatGroq({
+      apiKey: process.env.GROQ_API_KEY,
+      model: process.env.GROQ_MODEL,
       cache: llmSemanticCache,
     });
 
@@ -587,13 +587,14 @@ exports.postOpenAIModeration = async (req, res) => {
 };
 
 /**
- * Helper functions and constants for Together AI API Example
+ * Helper functions and constants for LLM API Examples
  * We are using LLMs to classify text or analyze a picture taken by the user's camera.
+ * Note: Both Classifier and Vision now use Groq API.
  */
 
-// Shared Together AI API caller
-const callTogetherAiApi = async (apiRequestBody, apiKey) => {
-  const response = await fetch('https://api.together.xyz/v1/chat/completions', {
+// Shared LLM API caller for Groq
+const callGroqApi = async (apiRequestBody, apiKey) => {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -603,7 +604,7 @@ const callTogetherAiApi = async (apiRequestBody, apiKey) => {
   });
   if (!response.ok) {
     const errData = await response.json().catch(() => ({}));
-    console.error('Together AI API Error Response:', errData);
+    console.error('Groq API Error Response:', errData);
     const errorMessage = errData.error && errData.error.message ? errData.error.message : `API Error: ${response.status}`;
     throw new Error(errorMessage);
   }
@@ -661,7 +662,7 @@ const extractClassifierResponse = (content) => {
         ({ department } = parsed);
       }
     } catch (err) {
-      console.log('Failed to parse JSON from TogetherAI API response:', err);
+      console.log('Failed to parse JSON from LLM API response:', err);
       // fallback: try to extract department manually
       const match = content.match(/"department"\s*:\s*"([^"]+)"/);
       if (match) {
@@ -721,34 +722,34 @@ const createImageDataUrl = (file) => {
 };
 
 /**
- * GET /ai/togetherai-camera
- * Together AI Camera Analysis Example
+ * GET /ai/llm-camera
+ * Groq Vision Camera Analysis Example
  */
-exports.getTogetherAICamera = (req, res) => {
-  res.render('ai/togetherai-camera', {
-    title: 'Together.ai Camera Analysis',
-    togetherAiModel: process.env.TOGETHERAI_VISION_MODEL,
+exports.getLLMCamera = (req, res) => {
+  res.render('ai/llm-camera', {
+    title: 'Groq Vision Camera Analysis',
+    groqVisionModel: process.env.GROQ_VISION,
   });
 };
 
 /**
- * POST /ai/togetherai-camera
- * Analyze image using Together AI Vision
+ * POST /ai/llm-camera
+ * Analyze image using Groq Vision
  */
-exports.postTogetherAICamera = async (req, res) => {
+exports.postLLMCamera = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No image provided' });
   }
   try {
-    const togetherAiKey = process.env.TOGETHERAI_API_KEY;
-    const togetherAiModel = process.env.TOGETHERAI_VISION_MODEL;
-    if (!togetherAiKey) {
-      return res.status(500).json({ error: 'TogetherAI API key is not set' });
+    const groqApiKey = process.env.GROQ_API_KEY;
+    const groqVisionModel = process.env.GROQ_VISION;
+    if (!groqApiKey) {
+      return res.status(500).json({ error: 'Groq API key is not set' });
     }
     const dataUrl = createImageDataUrl(req.file);
-    const apiRequestBody = createVisionLLMRequestBody(dataUrl, togetherAiModel);
-    // console.log('Making Vision API request to Together AI...');
-    const data = await callTogetherAiApi(apiRequestBody, togetherAiKey);
+    const apiRequestBody = createVisionLLMRequestBody(dataUrl, groqVisionModel);
+    // console.log('Making Vision API request to Groq...');
+    const data = await callGroqApi(apiRequestBody, groqApiKey);
     const analysis = extractVisionAnalysis(data);
     // console.log('Vision analysis completed:', analysis);
     res.json({ analysis });
@@ -759,44 +760,44 @@ exports.postTogetherAICamera = async (req, res) => {
 };
 
 /**
- * GET /ai/togetherai-classifier
- * Together AI / LLM API Example.
+ * GET /ai/llm-classifier
+ * LLM API Text Classification Example.
  */
-exports.getTogetherAIClassifier = (req, res) => {
-  res.render('ai/togetherai-classifier', {
-    title: 'Together.ai/LLM Department Classifier',
+exports.getLLMClassifier = (req, res) => {
+  res.render('ai/llm-classifier', {
+    title: 'LLM Department Classifier',
     result: null,
-    togetherAiModel: process.env.TOGETHERAI_MODEL,
+    llmModel: process.env.GROQ_MODEL,
     error: null,
     input: '',
   });
 };
 
 /**
- * POST /ai/togetherai-classifier
- * Together AI API Example.
+ * POST /ai/llm-classifier
+ * LLM API Text Classification Example.
  * - Classifies customer service inquiries into departments.
- * - Uses Together AI API with a foundational LLM model to classify the input text.
+ * - Uses Groq API with Llama model to classify the input text.
  * - The systemPrompt is the instructions from the developer to the model for processing
  *   the user input.
  */
-exports.postTogetherAIClassifier = async (req, res) => {
-  const togetherAiKey = process.env.TOGETHERAI_API_KEY;
-  const togetherAiModel = process.env.TOGETHERAI_MODEL;
+exports.postLLMClassifier = async (req, res) => {
+  const groqApiKey = process.env.GROQ_API_KEY;
+  const groqModel = process.env.GROQ_MODEL;
   const inputText = (req.body.inputText || '').slice(0, 300);
   let result = null;
   let error = null;
-  if (!togetherAiKey) {
-    error = 'TogetherAI API key is not set in environment variables.';
-  } else if (!togetherAiModel) {
-    error = 'TogetherAI model is not set in environment variables.';
+  if (!groqApiKey) {
+    error = 'Groq API key is not set in environment variables.';
+  } else if (!groqModel) {
+    error = 'Groq model is not set in environment variables.';
   } else if (!inputText.trim()) {
     error = 'Please enter the customer message to classify.';
   } else {
     try {
-      const systemPrompt = messageClassifierSystemPrompt; // Your existing system prompt here
-      const apiRequestBody = createClassifierLLMRequestBody(inputText, togetherAiModel, systemPrompt);
-      const data = await callTogetherAiApi(apiRequestBody, togetherAiKey);
+      const systemPrompt = messageClassifierSystemPrompt;
+      const apiRequestBody = createClassifierLLMRequestBody(inputText, groqModel, systemPrompt);
+      const data = await callGroqApi(apiRequestBody, groqApiKey);
       const content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
       const department = extractClassifierResponse(content);
       result = {
@@ -805,13 +806,13 @@ exports.postTogetherAIClassifier = async (req, res) => {
         systemPrompt,
       };
     } catch (err) {
-      console.log('TogetherAI Classifier API Error:', err);
-      error = 'Failed to call TogetherAI API.';
+      console.log('Groq LLM Classifier API Error:', err);
+      error = 'Failed to call Groq API.';
     }
   }
 
-  res.render('ai/togetherai-classifier', {
-    title: 'TogetherAI Department Classifier',
+  res.render('ai/llm-classifier', {
+    title: 'LLM Department Classifier',
     result,
     error,
     input: inputText,

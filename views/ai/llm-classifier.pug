@@ -4,25 +4,25 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
       i.fas.fa-network-wired.fa-sm.me-2(style='color: #6f42c1')
-      | Together AI - One-shot LLM API call example
+      | LLM - One-shot Text Classification
 
   .btn-group.mb-4.d-flex(role='group')
-    a.btn.btn-primary.w-100(href='https://api.together.ai', target='_blank')
+    a.btn.btn-primary.w-100(href='https://console.groq.com', target='_blank')
       i.fas.fa-table-columns.fa-sm.me-2
-      | Together AI Dashboard
-    a.btn.btn-primary.w-100(href='https://docs.together.ai/docs/inference', target='_blank')
+      | Groq Console
+    a.btn.btn-primary.w-100(href='https://console.groq.com/docs/quickstart', target='_blank')
       i.fas.fa-info.fa-sm.me-2
-      | Together AI Docs
-    a.btn.btn-primary.w-100(href='https://docs.together.ai/reference/chat-completions', target='_blank')
+      | Groq Docs
+    a.btn.btn-primary.w-100(href='https://console.groq.com/docs/api-reference', target='_blank')
       i.fas.fa-book.fa-sm.me-2
       | API Reference
 
   p.text-muted
-    | Analyze a customer message using #{ togetherAiModel } hosted on Together.AI to determine the appropriate department for routing. The system prompt provides classification instructions and requests the LLM to respond in JSON format, which the application can parse for further actions.
+    | Analyze a customer message using #{ llmModel } to determine the appropriate department for routing. The system prompt provides classification instructions and requests the LLM to respond in JSON format, which the application can parse for further actions.
 
   .row
     .col-md-8.col-lg-6
-      form(method='POST', action='/ai/togetherai-classifier')
+      form(method='POST', action='/ai/llm-classifier')
         input(type='hidden', name='_csrf', value=_csrf)
         .mb-3
           label(for='inputText') Customer message
