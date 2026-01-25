@@ -499,15 +499,15 @@ exports.postRagAsk = async (req, res) => {
     const llmPrompt = `Answer the following question as best as you can:\n${question}\nAnswer:`;
 
     // Run batch LLM calls
-    const results = await llm.generate([[new HumanMessage(ragPrompt)], [new HumanMessage(llmPrompt)]]);
+    const results = await llm.batch([[new HumanMessage(ragPrompt)], [new HumanMessage(llmPrompt)]]);
 
     // Before parsing the results, check to see if we have a valid response so we don't crash
-    if (!results?.generations?.length || results.generations.length < 2) {
+    if (!results?.length || results.length < 2) {
       req.flash('errors', { msg: `Unable to get a valid response from the LLM. Please try again.` });
       return res.redirect('/ai/rag');
     }
-    const ragResponse = results.generations[0][0].text;
-    const llmResponse = results.generations[1][0].text;
+    const ragResponse = results[0].content;
+    const llmResponse = results[1].content;
     res.render('ai/rag', {
       title: 'Retrieval-Augmented Generation (RAG) Demo',
       ingestedFiles,
