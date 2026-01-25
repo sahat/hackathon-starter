@@ -6,11 +6,11 @@ const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
 const { MongoDBAtlasVectorSearch, MongoDBAtlasSemanticCache } = require('@langchain/mongodb');
-const { MongoDBStore } = require('@langchain/mongodb');
 const { ChatTogetherAI } = require('@langchain/community/chat_models/togetherai');
 const { HumanMessage } = require('@langchain/core/messages');
-const { CacheBackedEmbeddings } = require('langchain/embeddings/cache_backed');
 const { MongoClient } = require('mongodb');
+const Keyv = require('keyv').default;
+const KeyvMongo = require('@keyv/mongo').default;
 // eslint-disable-next-line import/extensions
 const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
 
@@ -29,9 +29,11 @@ exports.getAi = (req, res) => {
  */
 // RAG collection names
 const RAG_CHUNKS = 'rag_chunks';
-const DOC_EMBEDDINGS_CACHE = 'doc_emb_cache';
-const QUERY_EMBEDDINGS_CACHE = 'query_emb_cache';
 const LLM_SEMANTIC_CACHE = 'llm_sem_cache';
+
+// Keyv cache instances
+let docEmbeddingsCache = null;
+let queryEmbeddingsCache = null;
 
 // Initialization status flags
 let ragFolderReady = false;
@@ -48,6 +50,100 @@ function prepareRagFolder() {
     fs.mkdirSync(ingestedDir, { recursive: true });
   }
   ragFolderReady = true;
+}
+
+/*
+ * Helper function to initialize keyv caching for embeddings
+ */
+function initializeEmbeddingCaches(mongoUri) {
+  if (!docEmbeddingsCache) {
+    docEmbeddingsCache = new Keyv({
+      store: new KeyvMongo(mongoUri, { collection: 'doc_emb_cache' }),
+      namespace: 'doc_embeddings',
+    });
+  }
+  if (!queryEmbeddingsCache) {
+    queryEmbeddingsCache = new Keyv({
+      store: new KeyvMongo(mongoUri, { collection: 'query_emb_cache' }),
+      namespace: 'query_embeddings',
+      ttl: 5184000000, // 60 days in milliseconds
+    });
+  }
+}
+
+/*
+ * Helper function to normalize text for consistent cache key generation
+ */
+function normalizeTextForCaching(text) {
+  return text.trim().replace(/\s+/g, ' ');
+}
+
+/*
+ * Helper function to create cache key for a single text string
+ */
+function createCacheKey(text, modelName, prefix) {
+  const normalized = normalizeTextForCaching(text);
+  const hash = crypto.createHash('sha256').update(normalized).digest('hex');
+  return `${prefix}:${modelName}:${hash}`;
+}
+
+/*
+ * Wrapper function to create cached embeddings that properly cache per-document
+ * This matches CacheBackedEmbeddings semantics without using it
+ */
+function createCachedEmbeddings(baseEmbeddings, modelName) {
+  return {
+    embedDocuments: async (documents) => {
+      const results = [];
+      const uncachedDocs = [];
+      const uncachedIndices = [];
+
+      // Precompute cache keys
+      const cacheKeys = documents.map((doc) => createCacheKey(doc, modelName, 'doc'));
+
+      // Fetch all cached embeddings in parallel
+      const cachedResults = await Promise.all(cacheKeys.map((key) => docEmbeddingsCache.get(key)));
+
+      // Separate cached vs uncached documents while preserving order
+      for (let i = 0; i < cachedResults.length; i++) {
+        const cached = cachedResults[i];
+        if (cached) {
+          results[i] = cached;
+        } else {
+          uncachedDocs.push(documents[i]);
+          uncachedIndices.push(i);
+        }
+      }
+
+      // Embed only uncached documents
+      if (uncachedDocs.length > 0) {
+        const newEmbeddings = await baseEmbeddings.embedDocuments(uncachedDocs);
+
+        // Store each new embedding in cache and place in results array
+        for (let i = 0; i < uncachedDocs.length; i++) {
+          const cacheKey = createCacheKey(uncachedDocs[i], modelName, 'doc');
+          const embedding = newEmbeddings[i];
+          await docEmbeddingsCache.set(cacheKey, embedding);
+          results[uncachedIndices[i]] = embedding;
+        }
+      }
+
+      return results;
+    },
+
+    embedQuery: async (query) => {
+      const cacheKey = createCacheKey(query, modelName, 'query');
+      const cached = await queryEmbeddingsCache.get(cacheKey);
+
+      if (cached) {
+        return cached;
+      }
+
+      const embedding = await baseEmbeddings.embedQuery(query);
+      await queryEmbeddingsCache.set(cacheKey, embedding);
+      return embedding;
+    },
+  };
 }
 
 /*
@@ -92,25 +188,8 @@ async function setupRagCollection(db) {
   const ragCollection = await createCollectionForVectorSearch(db, RAG_CHUNKS, [{ fileHash: 1 }, { fileName: 1 }]); // for the RAG chunks from input documents
   await createCollectionForVectorSearch(db, LLM_SEMANTIC_CACHE, [{ llm_string: 1, prompt: 1 }]); // for the LLM semantic cache so we can reduce LLM calls and related costs
 
-  // Create the document embedding cache collection if it doesn't exist
-  const docCacheCollections = await db.listCollections({ name: DOC_EMBEDDINGS_CACHE }).toArray();
-  if (docCacheCollections.length === 0) {
-    await db.createCollection(DOC_EMBEDDINGS_CACHE);
-    console.log(`Created collection ${DOC_EMBEDDINGS_CACHE} for permanent document embedding cache.`);
-  }
-
-  // Create the query embedding cache collection with TTL if it doesn't exist
-  const queryCacheCollections = await db.listCollections({ name: QUERY_EMBEDDINGS_CACHE }).toArray();
-  if (queryCacheCollections.length === 0) {
-    await db.createCollection(QUERY_EMBEDDINGS_CACHE);
-    console.log(`Created collection ${QUERY_EMBEDDINGS_CACHE} for query embedding cache with TTL.`);
-
-    // Set a TTL index (60 days) for automatic expiration
-    await db.collection(QUERY_EMBEDDINGS_CACHE).createIndex({ createdAt: 1 }, { expireAfterSeconds: 5184000 }); // 60 days
-    console.log('Created TTL index on query embedding cache (expiration: 60 days).');
-  }
   ragCollectionReady = true;
-  console.log('Vector Search and Embedding Cache Collections have been set up.');
+  console.log('Vector Search Collections have been set up.');
   return ragCollection;
 }
 
@@ -217,8 +296,9 @@ exports.postRagIngest = async (req, res) => {
     await client.connect();
     const db = client.db();
     const collection = ragCollectionReady ? db.collection(RAG_CHUNKS) : await setupRagCollection(db);
-    const documentEmbeddingsCache = new MongoDBStore({ collection: db.collection(DOC_EMBEDDINGS_CACHE) });
-    const queryEmbeddingsCache = new MongoDBStore({ collection: db.collection(QUERY_EMBEDDINGS_CACHE) });
+
+    // Initialize keyv caches for embeddings
+    initializeEmbeddingCaches(process.env.MONGODB_URI);
 
     // Process files sequentially using reduce
     await files.reduce(async (promise, file) => {
@@ -268,21 +348,17 @@ exports.postRagIngest = async (req, res) => {
         // You can also use OpenAIEmbeddings or other providers.
         // If you change your embedding model, you would need to reprocess all your
         // files and recreate the vector index if the embedding dimensions are different.
-        const cacheBackedEmbeddings = CacheBackedEmbeddings.fromBytesStore(
-          new HuggingFaceInferenceEmbeddings({
-            apiKey: process.env.HUGGINGFACE_KEY,
-            model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
-            provider: process.env.HUGGINGFACE_PROVIDER,
-          }),
-          documentEmbeddingsCache,
-          {
-            namespace: process.env.HUGGINGFACE_EMBEDDING_MODEL,
-            queryEmbeddingStore: queryEmbeddingsCache,
-          },
-        );
+        const embeddings = new HuggingFaceInferenceEmbeddings({
+          apiKey: process.env.HUGGINGFACE_KEY,
+          model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
+          provider: process.env.HUGGINGFACE_PROVIDER,
+        });
+
+        // Wrap embeddings with per-document caching layer
+        const cachedEmbeddings = createCachedEmbeddings(embeddings, process.env.HUGGINGFACE_EMBEDDING_MODEL);
 
         // Create embeddings and add them to MongoDB
-        await MongoDBAtlasVectorSearch.fromDocuments(chunksWithMetadata, cacheBackedEmbeddings, {
+        await MongoDBAtlasVectorSearch.fromDocuments(chunksWithMetadata, cachedEmbeddings, {
           collection,
           indexName: 'default',
           textKey: 'text',
@@ -345,8 +421,10 @@ exports.postRagAsk = async (req, res) => {
     await client.connect();
     const db = client.db();
     const collection = ragCollectionReady ? db.collection(RAG_CHUNKS) : await setupRagCollection(db);
-    const documentEmbeddingsCache = new MongoDBStore({ collection: db.collection(DOC_EMBEDDINGS_CACHE) });
-    const queryEmbeddingsCache = new MongoDBStore({ collection: db.collection(QUERY_EMBEDDINGS_CACHE) });
+
+    // Initialize keyv caches for embeddings
+    initializeEmbeddingCaches(process.env.MONGODB_URI);
+
     const llmSemCacheCollection = db.collection(LLM_SEMANTIC_CACHE);
 
     // Get list of ingested files for display in the frontend
@@ -384,19 +462,16 @@ exports.postRagAsk = async (req, res) => {
     // This enables the system to perform a similarity search against stored document
     // embeddings, retrieving the most relevant chunks based on meaning rather than exact
     // keywords.
-    const cacheBackedEmbeddings = CacheBackedEmbeddings.fromBytesStore(
-      new HuggingFaceInferenceEmbeddings({
-        apiKey: process.env.HUGGINGFACE_KEY,
-        model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
-        provider: process.env.HUGGINGFACE_PROVIDER,
-      }),
-      documentEmbeddingsCache,
-      {
-        namespace: process.env.HUGGINGFACE_EMBEDDING_MODEL,
-        queryEmbeddingStore: queryEmbeddingsCache,
-      },
-    );
-    const vectorStore = new MongoDBAtlasVectorSearch(cacheBackedEmbeddings, {
+    const embeddings = new HuggingFaceInferenceEmbeddings({
+      apiKey: process.env.HUGGINGFACE_KEY,
+      model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
+      provider: process.env.HUGGINGFACE_PROVIDER,
+    });
+
+    // Wrap embeddings with per-document caching layer
+    const cachedEmbeddings = createCachedEmbeddings(embeddings, process.env.HUGGINGFACE_EMBEDDING_MODEL);
+
+    const vectorStore = new MongoDBAtlasVectorSearch(cachedEmbeddings, {
       collection,
       indexName: 'default',
       textKey: 'text',
@@ -405,7 +480,7 @@ exports.postRagAsk = async (req, res) => {
 
     const llmSemanticCache = new MongoDBAtlasSemanticCache(
       llmSemCacheCollection,
-      cacheBackedEmbeddings, // Embedding model should be passed separately
+      cachedEmbeddings, // Embedding model should be passed separately
       { scoreThreshold: 0.99 }, // Optional similarity threshold settings
     );
     const relevantDocs = await vectorStore.similaritySearch(question, 8); // Retrieve top 8 relevant chunks
