@@ -10,7 +10,6 @@ const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
 const { SteamOpenIdStrategy } = require('passport-steam-openid');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
-const OpenIDConnectStrategy = require('passport-openidconnect');
 const { OAuth } = require('oauth');
 const moment = require('moment');
 const validator = require('validator');
@@ -76,6 +75,94 @@ passport.use(
  *       - If there is, return an error message.
  *       - Else create a new account.
  */
+
+/**
+ * Helper function that contains the shared post-profile OAuth logic
+ * (supports OAuth 1.0a and OAuth 2.0 providers).
+ * Returns User (new or updated) on success or throws Error on failure.
+ */
+async function handleAuthLogin(req, accessToken, refreshToken, providerName, params, providerProfile, sessionAlreadyLoggedIn, tokenSecret, oauth2provider, tokenConfig = {}, refreshTokenExpiration = null) {
+  if (sessionAlreadyLoggedIn) {
+    const existingUser = await User.findOne({
+      [providerName]: { $eq: providerProfile.id },
+    });
+    if (existingUser && existingUser.id !== req.user.id) {
+      throw new Error('PROVIDER_COLLISION');
+    }
+    let user;
+    if (oauth2provider) {
+      user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, refreshTokenExpiration, providerName, tokenConfig);
+    } else {
+      user = await User.findById(req.user.id);
+      user.tokens.push({ kind: providerName, accessToken, ...(tokenSecret && { tokenSecret }) });
+    }
+    user[providerName] = providerProfile.id;
+    user.profile.name = user.profile.name || providerProfile.name;
+    user.profile.gender = user.profile.gender || providerProfile.gender;
+    user.profile.picture = user.profile.picture || providerProfile.picture;
+    user.profile.location = user.profile.location || providerProfile.location;
+    user.profile.website = user.profile.website || providerProfile.website;
+    user.profile.email = user.profile.email || providerProfile.email;
+    await user.save();
+    return user;
+  }
+  // User is not logged in:
+  const existingUser = await User.findOne({ [providerName]: { $eq: providerProfile.id } });
+  if (existingUser) {
+    return existingUser;
+  }
+  const normalizedEmail = providerProfile.email ? validator.normalizeEmail(providerProfile.email, { gmail_remove_dots: false }) : undefined;
+  if (!normalizedEmail) {
+    throw new Error('EMAIL_REQUIRED');
+  }
+  const existingEmailUser = await User.findOne({
+    email: { $eq: normalizedEmail },
+  });
+  if (existingEmailUser) {
+    throw new Error('EMAIL_COLLISION');
+  }
+  const user = new User();
+  user.email = normalizedEmail;
+  user[providerName] = providerProfile.id;
+  req.user = user;
+  if (oauth2provider) {
+    await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, refreshTokenExpiration, providerName, tokenConfig);
+  } else {
+    user.tokens.push({ kind: providerName, accessToken, ...(tokenSecret && { tokenSecret }) });
+  }
+  user.profile.name = providerProfile.name;
+  user.profile.gender = providerProfile.gender;
+  user.profile.picture = providerProfile.picture;
+  user.profile.location = providerProfile.location;
+  user.profile.website = providerProfile.website;
+  user.profile.email = providerProfile.email;
+  await user.save();
+  return user;
+}
+
+/**
+ * Helper function to handle OAuth errors with provider-specific messages.
+ * Returns true if error was handled, false otherwise.
+ */
+function authError2Flash(err, req, done, providerDisplayName) {
+  if (err.message === 'PROVIDER_COLLISION') {
+    req.flash('errors', { msg: `There is another account in our system linked to your ${providerDisplayName} account. Please delete the duplicate account before linking ${providerDisplayName} to your current account.` });
+    if (req.session) req.session.returnTo = undefined;
+    done(null, req.user);
+    return true;
+  }
+  if (err.message === 'EMAIL_COLLISION') {
+    req.flash('errors', { msg: `Unable to sign in with ${providerDisplayName} at this time. If you have an existing account in our system, please sign in by email and link your account to ${providerDisplayName} in your user profile settings.` });
+    done(null, false);
+    return true;
+  }
+  if (err.message === 'EMAIL_REQUIRED') {
+    req.flash('errors', { msg: `Unable to sign in with ${providerDisplayName}. No email address was provided for account creation.` });
+    done(null, false);
+    return true;
+  }
+  return false;
+}
 
 /**
  * Common function to handle OAuth2 token processing and saving user data.
@@ -166,60 +253,25 @@ passport.use(
     async (req, accessToken, refreshToken, params, profile, done) => {
       // Facebook does not provide a refresh token but includes an expiration for the access token
       try {
-        if (req.user) {
-          const existingUser = await User.findOne({
-            facebook: { $eq: profile.id },
-          });
-          if (existingUser && existingUser.id !== req.user.id) {
-            req.flash('errors', {
-              msg: 'There is another account in our system linked to your Facebook account. Please delete the duplicate account before linking Facebook to your current account.',
-            });
-            if (req.session) req.session.returnTo = undefined; // Prevent infinite redirect loop
-            return done(null, req.user);
+        const providerProfile = {
+          id: profile.id,
+          name: `${profile.name.givenName} ${profile.name.familyName}`,
+          gender: profile._json.gender,
+          picture: `https://graph.facebook.com/${profile.id}/picture?type=large`,
+          location: profile._json.location ? profile._json.location.name : '',
+          email: profile._json.email,
+        };
+        try {
+          const sessionAlreadyLoggedIn = !!req.user;
+          const user = await handleAuthLogin(req, accessToken, null, 'facebook', params, providerProfile, sessionAlreadyLoggedIn, null, true);
+          if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+            req.flash('info', { msg: 'Facebook account has been linked.' });
           }
-          const user = await saveOAuth2UserTokens(req, accessToken, null, params.expires_in, null, 'facebook');
-          user.facebook = profile.id;
-          user.profile.name = user.profile.name || `${profile.name.givenName} ${profile.name.familyName}`;
-          user.profile.gender = user.profile.gender || profile._json.gender;
-          user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
-          await user.save();
-          req.flash('info', { msg: 'Facebook account has been linked.' });
           return done(null, user);
+        } catch (err) {
+          if (authError2Flash(err, req, done, 'Facebook')) return;
+          throw err;
         }
-        const existingUser = await User.findOne({
-          facebook: { $eq: profile.id },
-        });
-        if (existingUser) {
-          return done(null, existingUser);
-        }
-        const emailFromProvider = profile._json.email;
-        const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
-        const existingEmailUser = await User.findOne({
-          email: { $eq: normalizedEmail },
-        });
-        if (existingEmailUser) {
-          req.flash('errors', {
-            msg: `Unable to sign in with Facebook at this time. If you have an existing account in our system, please sign in by email and link your account to Facebook in your user profile settings.`,
-          });
-          return done(null, false);
-        }
-        if (normalizedEmail === undefined) {
-          req.flash('errors', {
-            msg: `Unable to sign in with Facebook. No email address was provided for account creation.`,
-          });
-          return done(null, false);
-        }
-        const user = new User();
-        user.email = normalizedEmail;
-        user.facebook = profile.id;
-        req.user = user;
-        await saveOAuth2UserTokens(req, accessToken, null, params.expires_in, null, 'facebook');
-        user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
-        user.profile.gender = profile._json.gender;
-        user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
-        user.profile.location = profile._json.location ? profile._json.location.name : '';
-        await user.save();
-        return done(null, user);
       } catch (err) {
         return done(err);
       }
@@ -243,33 +295,6 @@ passport.use(
     async (req, accessToken, refreshToken, params, profile, done) => {
       // GitHub does not provide a refresh token or an expiration
       try {
-        if (req.user) {
-          const existingUser = await User.findOne({
-            github: { $eq: profile.id },
-          });
-          if (existingUser && existingUser.id !== req.user.id) {
-            req.flash('errors', {
-              msg: 'There is another account in our system linked to your GitHub account. Please delete the duplicate account before linking GitHub to your current account.',
-            });
-            if (req.session) req.session.returnTo = undefined;
-            return done(null, req.user);
-          }
-          const user = await saveOAuth2UserTokens(req, accessToken, null, null, null, 'github');
-          user.github = profile.id;
-          user.profile.name = user.profile.name || profile.displayName;
-          user.profile.picture = user.profile.picture || profile._json.avatar_url;
-          user.profile.location = user.profile.location || profile._json.location;
-          user.profile.website = user.profile.website || profile._json.blog;
-          await user.save();
-          req.flash('info', { msg: 'GitHub account has been linked.' });
-          return done(null, user);
-        }
-        const existingUser = await User.findOne({
-          github: { $eq: profile.id },
-        });
-        if (existingUser) {
-          return done(null, existingUser);
-        }
         // Github may return a list of email addresses instead of just one
         // Sort by primary, then by verified, then pick the first one in the list
         const sortedEmails = (profile.emails || []).slice().sort((a, b) => {
@@ -277,28 +302,25 @@ passport.use(
           if (b.verified !== a.verified) return b.verified - a.verified;
           return 0;
         });
-        const emailFromProvider = sortedEmails.length > 0 ? sortedEmails[0].value : null;
-        const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
-        const existingEmailUser = await User.findOne({
-          email: { $eq: normalizedEmail },
-        });
-        if (existingEmailUser) {
-          req.flash('errors', {
-            msg: `Unable to sign in with GitHub at this time. If you have an existing account in our system, please sign in by email and link your account to GitHub in your user profile settings.`,
-          });
-          return done(null, false);
+        const providerProfile = {
+          id: profile.id,
+          name: profile.displayName,
+          picture: profile._json.avatar_url,
+          location: profile._json.location,
+          website: profile._json.blog,
+          email: sortedEmails.length > 0 ? sortedEmails[0].value : null,
+        };
+        try {
+          const sessionAlreadyLoggedIn = !!req.user;
+          const user = await handleAuthLogin(req, accessToken, null, 'github', params, providerProfile, sessionAlreadyLoggedIn, null, true);
+          if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+            req.flash('info', { msg: 'GitHub account has been linked.' });
+          }
+          return done(null, user);
+        } catch (err) {
+          if (authError2Flash(err, req, done, 'GitHub')) return;
+          throw err;
         }
-        const user = new User();
-        user.email = normalizedEmail;
-        user.github = profile.id;
-        req.user = user;
-        await saveOAuth2UserTokens(req, accessToken, null, null, null, 'github');
-        user.profile.name = profile.displayName;
-        user.profile.picture = profile._json.avatar_url;
-        user.profile.location = profile._json.location;
-        user.profile.website = profile._json.blog;
-        await user.save();
-        return done(null, user);
       } catch (err) {
         return done(err);
       }
@@ -320,41 +342,27 @@ passport.use(
     },
     async (req, accessToken, tokenSecret, profile, done) => {
       try {
-        if (req.user) {
-          const existingUser = await User.findOne({ x: { $eq: profile.id } });
-          if (existingUser && existingUser.id !== req.user.id) {
-            req.flash('errors', {
-              msg: 'There is another account in our system linked to your X account. Please delete the duplicate account before linking X to your current account.',
-            });
-            if (req.session) req.session.returnTo = undefined;
-            return done(null, req.user);
-          }
-          const user = await User.findById(req.user.id);
-          user.x = profile.id;
-          user.tokens.push({ kind: 'x', accessToken, tokenSecret });
-          user.profile.name = user.profile.name || profile.displayName;
-          user.profile.location = user.profile.location || profile._json.location;
-          user.profile.picture = user.profile.picture || profile._json.profile_image_url_https;
-          await user.save();
-          req.flash('info', { msg: 'X account has been linked.' });
-          return done(null, user);
-        }
-        const existingUser = await User.findOne({ x: { $eq: profile.id } });
-        if (existingUser) {
-          return done(null, existingUser);
-        }
-        const user = new User();
         // X will not provide an email address.  Period.
-        // But a person’s X username is guaranteed to be unique
-        // so we can "fake" a X email address as follows:
-        user.email = `${profile.username}@x.com`;
-        user.x = profile.id;
-        user.tokens.push({ kind: 'x', accessToken, tokenSecret });
-        user.profile.name = profile.displayName;
-        user.profile.location = profile._json.location;
-        user.profile.picture = profile._json.profile_image_url_https;
-        await user.save();
-        return done(null, user);
+        // But a person's X username is guaranteed to be unique
+        // so we can "fake" placeholder X email address as follows:
+        const providerProfile = {
+          id: profile.id,
+          name: profile.displayName,
+          location: profile._json.location,
+          picture: profile._json.profile_image_url_https,
+          email: `${profile.username}@placeholder-x.email`,
+        };
+        try {
+          const sessionAlreadyLoggedIn = !!req.user;
+          const user = await handleAuthLogin(req, accessToken, null, 'x', {}, providerProfile, sessionAlreadyLoggedIn, tokenSecret, false);
+          if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+            req.flash('info', { msg: 'X account has been linked.' });
+          }
+          return done(null, user);
+        } catch (err) {
+          if (authError2Flash(err, req, done, 'X')) return;
+          throw err;
+        }
       } catch (err) {
         return done(err);
       }
@@ -378,51 +386,24 @@ const googleStrategyConfig = new GoogleStrategy(
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
     try {
-      if (req.user) {
-        const existingUser = await User.findOne({
-          google: { $eq: profile.id },
-        });
-        if (existingUser && existingUser.id !== req.user.id) {
-          req.flash('errors', {
-            msg: 'There is another account in our system linked to your Google account. Please delete the duplicate account before linking Google to your current account.',
-          });
-          if (req.session) req.session.returnTo = undefined;
-          return done(null, req.user);
+      const providerProfile = {
+        id: profile.id,
+        name: profile.displayName,
+        gender: profile._json.gender,
+        picture: profile._json.picture,
+        email: profile.emails && profile.emails[0] && profile.emails[0].value ? profile.emails[0].value : undefined,
+      };
+      try {
+        const sessionAlreadyLoggedIn = !!req.user;
+        const user = await handleAuthLogin(req, accessToken, refreshToken, 'google', params, providerProfile, sessionAlreadyLoggedIn, null, true);
+        if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+          req.flash('info', { msg: 'Google account has been linked.' });
         }
-        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'google');
-        user.google = profile.id;
-        user.profile.name = user.profile.name || profile.displayName;
-        user.profile.gender = user.profile.gender || profile._json.gender;
-        user.profile.picture = user.profile.picture || profile._json.picture;
-        await user.save();
-        req.flash('info', { msg: 'Google account has been linked.' });
         return done(null, user);
+      } catch (err) {
+        if (authError2Flash(err, req, done, 'Google')) return;
+        throw err;
       }
-      const existingUser = await User.findOne({ google: { $eq: profile.id } });
-      if (existingUser) {
-        return done(null, existingUser);
-      }
-      const emailFromProvider = profile.emails && profile.emails[0] && profile.emails[0].value ? profile.emails[0].value : undefined;
-      const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
-      const existingEmailUser = await User.findOne({
-        email: { $eq: normalizedEmail },
-      });
-      if (existingEmailUser) {
-        req.flash('errors', {
-          msg: `Unable to sign in with Google at this time. If you have an existing account in our system, please sign in by email and link your account to Google in your user profile settings.`,
-        });
-        return done(null, false);
-      }
-      const user = new User();
-      user.email = normalizedEmail;
-      user.google = profile.id;
-      req.user = user; // Set req.user so saveOAuth2UserTokens can use it
-      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'google');
-      user.profile.name = profile.displayName;
-      user.profile.gender = profile._json.gender;
-      user.profile.picture = profile._json.picture;
-      await user.save();
-      return done(null, user);
     } catch (err) {
       return done(err);
     }
@@ -432,78 +413,57 @@ passport.use('google', googleStrategyConfig);
 refresh.use('google', googleStrategyConfig);
 
 /**
- * Sign in with LinkedIn using OpenID Connect.
+ * Sign in with LinkedIn using OAuth2.
  */
-passport.use(
-  'linkedin',
-  new OpenIDConnectStrategy(
-    {
-      issuer: 'https://www.linkedin.com/oauth',
-      authorizationURL: 'https://www.linkedin.com/oauth/v2/authorization',
-      tokenURL: 'https://www.linkedin.com/oauth/v2/accessToken',
-      userInfoURL: 'https://api.linkedin.com/v2/userinfo',
-      clientID: process.env.LINKEDIN_ID,
-      clientSecret: process.env.LINKEDIN_SECRET,
-      callbackURL: `${process.env.BASE_URL}/auth/linkedin/callback`,
-      scope: ['openid', 'profile', 'email'],
-      passReqToCallback: true,
-    },
-    async (req, issuer, profile, params, done) => {
+const linkedinStrategyConfig = new OAuth2Strategy(
+  {
+    authorizationURL: 'https://www.linkedin.com/oauth/v2/authorization',
+    tokenURL: 'https://www.linkedin.com/oauth/v2/accessToken',
+    clientID: process.env.LINKEDIN_ID,
+    clientSecret: process.env.LINKEDIN_SECRET,
+    callbackURL: `${process.env.BASE_URL}/auth/linkedin/callback`,
+    scope: ['openid', 'profile', 'email'].join(' '),
+    state: generateState(),
+    passReqToCallback: true,
+  },
+  async (req, accessToken, refreshToken, params, profile, done) => {
+    const sessionAlreadyLoggedIn = !!req.user;
+    try {
+      // Fetch LinkedIn profile using accessToken
+      const response = await fetch('https://api.linkedin.com/v2/userinfo', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (!response.ok) {
+        return done(new Error('Failed to fetch LinkedIn profile'));
+      }
+      const linkedinProfile = await response.json();
+      if (!linkedinProfile || !linkedinProfile.sub || !linkedinProfile.name) {
+        req.flash('errors', { msg: 'Invalid LinkedIn profile data' });
+        return sessionAlreadyLoggedIn ? done(null, req.user) : done(null, false);
+      }
+      const providerProfile = {
+        id: linkedinProfile.sub,
+        name: linkedinProfile.name,
+        picture: linkedinProfile.picture || undefined,
+        email: linkedinProfile.email,
+      };
       try {
-        if (!profile || !profile.id) {
-          return done(null, false, {
-            message: 'No profile information received.',
-          });
-        }
-        if (req.user) {
-          const existingUser = await User.findOne({
-            linkedin: { $eq: profile.id },
-          });
-          if (existingUser && existingUser.id !== req.user.id) {
-            req.flash('errors', {
-              msg: 'There is another account in our system linked to your LinkedIn account. Please delete the duplicate account before linking LinkedIn to your current account.',
-            });
-            if (req.session) req.session.returnTo = undefined;
-            return done(null, req.user);
-          }
-          const user = await User.findById(req.user.id);
-          user.linkedin = profile.id;
-          user.tokens.push({ kind: 'linkedin', accessToken: null }); // null for now since passport-openidconnect isn't returning it yet; will update when it supports it
-          user.profile.name = user.profile.name || profile.displayName;
-          user.profile.picture = user.profile.picture || profile.photos;
-          await user.save();
+        const user = await handleAuthLogin(req, accessToken, refreshToken, 'linkedin', params, providerProfile, sessionAlreadyLoggedIn, null, true);
+        if (sessionAlreadyLoggedIn && req.user.id === user.id) {
           req.flash('info', { msg: 'LinkedIn account has been linked.' });
-          return done(null, user);
         }
-        const existingUser = await User.findOne({
-          linkedin: { $eq: profile.id },
-        });
-        if (existingUser) {
-          return done(null, existingUser);
-        }
-        const email = profile.emails && profile.emails[0] && profile.emails[0].value ? profile.emails[0].value : undefined;
-        const normalizedEmail = email ? validator.normalizeEmail(email, { gmail_remove_dots: false }) : undefined;
-        const existingEmailUser = await User.findOne({ email: { $eq: normalizedEmail } });
-        if (existingEmailUser) {
-          req.flash('errors', {
-            msg: `Unable to sign in with LinkedIn at this time. If you have an existing account in our system, please sign in by email and link your account to LinkedIn in your user profile settings.`,
-          });
-          return done(null, false);
-        }
-        const user = new User();
-        user.linkedin = profile.id;
-        user.tokens.push({ kind: 'linkedin', accessToken: null });
-        user.email = normalizedEmail;
-        user.profile.name = profile.displayName;
-        user.profile.picture = profile.photos || '';
-        await user.save();
         return done(null, user);
       } catch (err) {
-        return done(err);
+        if (authError2Flash(err, req, done, 'LinkedIn')) return;
+        throw err;
       }
-    },
-  ),
+    } catch (err) {
+      return done(err);
+    }
+  },
 );
+passport.use('linkedin', linkedinStrategyConfig);
+refresh.use('linkedin', linkedinStrategyConfig);
 
 /**
  * Sign in with Microsoft using OAuth2Strategy.
@@ -522,57 +482,35 @@ const microsoftStrategyConfig = new OAuth2Strategy(
     passReqToCallback: true,
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
+    const sessionAlreadyLoggedIn = !!req.user;
     try {
       // Fetch Microsoft profile using accessToken
       const response = await fetch('https://graph.microsoft.com/v1.0/me', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (!response.ok) {
         return done(new Error('Failed to fetch Microsoft profile'));
       }
       const microsoftProfile = await response.json();
-
-      if (req.user) {
-        const existingUser = await User.findOne({ microsoft: { $eq: microsoftProfile.id } });
-        if (existingUser && existingUser.id !== req.user.id) {
-          req.flash('errors', {
-            msg: 'There is another account in our system linked to your Microsoft account. Please delete the duplicate account before linking Microsoft to your current account.',
-          });
-          if (req.session) req.session.returnTo = undefined;
-          return done(null, req.user);
+      if (!microsoftProfile || !microsoftProfile.id || !microsoftProfile.displayName) {
+        req.flash('errors', { msg: 'Invalid Microsoft profile data' });
+        return sessionAlreadyLoggedIn ? done(null, req.user) : done(null, false);
+      }
+      const providerProfile = {
+        id: microsoftProfile.id,
+        name: microsoftProfile.displayName,
+        email: microsoftProfile.mail || microsoftProfile.userPrincipalName,
+      };
+      try {
+        const user = await handleAuthLogin(req, accessToken, refreshToken, 'microsoft', params, providerProfile, sessionAlreadyLoggedIn, null, true, {}, params.refresh_token_expires_in);
+        if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+          req.flash('info', { msg: 'Microsoft account has been linked.' });
         }
-        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.refresh_token_expires_in, 'microsoft');
-        user.microsoft = microsoftProfile.id;
-        user.profile.name = user.profile.name || microsoftProfile.displayName;
-        await user.save();
-        req.flash('info', { msg: 'Microsoft account has been linked.' });
         return done(null, user);
+      } catch (err) {
+        if (authError2Flash(err, req, done, 'Microsoft')) return;
+        throw err;
       }
-      const existingUser = await User.findOne({ microsoft: { $eq: microsoftProfile.id } });
-      if (existingUser) {
-        return done(null, existingUser);
-      }
-      const emailFromProvider = microsoftProfile.mail || microsoftProfile.userPrincipalName;
-      const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
-      const existingEmailUser = await User.findOne({
-        email: { $eq: normalizedEmail },
-      });
-      if (existingEmailUser) {
-        req.flash('errors', {
-          msg: `Unable to sign in with Microsoft at this time. If you have an existing account in our system, please sign in by email and link your account to Microsoft in your user profile settings.`,
-        });
-        return done(null, false);
-      }
-      const user = new User();
-      user.email = normalizedEmail;
-      user.microsoft = microsoftProfile.id;
-      req.user = user;
-      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.refresh_token_expires_in, 'microsoft');
-      user.profile.name = microsoftProfile.displayName;
-      await user.save();
-      return done(null, user);
     } catch (err) {
       return done(err);
     }
@@ -595,50 +533,23 @@ const twitchStrategyConfig = new TwitchStrategy(
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
     try {
-      if (req.user) {
-        const existingUser = await User.findOne({
-          twitch: { $eq: profile.id },
-        });
-        if (existingUser && existingUser.id !== req.user.id) {
-          req.flash('errors', {
-            msg: 'There is another account in our system linked to your Twitch account. Please delete the duplicate account before linking Twitch to your current account.',
-          });
-          if (req.session) req.session.returnTo = undefined;
-          return done(null, req.user);
+      const providerProfile = {
+        id: profile.id,
+        name: profile.display_name,
+        email: profile?._json?.data?.[0]?.email ?? profile?.email ?? null,
+        picture: profile.profile_image_url,
+      };
+      try {
+        const sessionAlreadyLoggedIn = !!req.user;
+        const user = await handleAuthLogin(req, accessToken, refreshToken, 'twitch', params, providerProfile, sessionAlreadyLoggedIn, null, true);
+        if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+          req.flash('info', { msg: 'Twitch account has been linked.' });
         }
-        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'twitch');
-        user.twitch = profile.id;
-        user.profile.name = user.profile.name || profile.displayName;
-        user.profile.picture = user.profile.picture || profile.profile_image_url;
-        await user.save();
-        req.flash('info', { msg: 'Twitch account has been linked.' });
         return done(null, user);
+      } catch (err) {
+        if (authError2Flash(err, req, done, 'Twitch')) return;
+        throw err;
       }
-      const existingUser = await User.findOne({ twitch: { $eq: profile.id } });
-      if (existingUser) {
-        return done(null, existingUser);
-      }
-      const emailFromProvider = profile._json.data[0].email;
-      const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
-      const existingEmailUser = await User.findOne({
-        email: { $eq: normalizedEmail },
-      });
-      if (existingEmailUser) {
-        req.flash('errors', {
-          msg: `Unable to sign in with Twitch at this time. If you have an existing account in our system, please sign in by email and link your account to Twitch in your user profile settings.`,
-        });
-        return done(null, false);
-      }
-      const user = new User();
-      user.email = normalizedEmail;
-      user.twitch = profile.id;
-      req.user = user; // Set req.user so saveOAuth2UserTokens can use it
-      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'twitch');
-      user.profile.name = profile.display_name;
-      user.profile.email = profile.email;
-      user.profile.picture = profile.profile_image_url;
-      await user.save();
-      return done(null, user);
     } catch (err) {
       return done(err);
     }
@@ -665,12 +576,9 @@ passport.use(
     },
     async (req, token, tokenSecret, profile, done) => {
       try {
-        const user = await User.findById(req.user._id);
-
         if (!token || !tokenSecret) {
           throw new Error('Missing or invalid token/tokenSecret');
         }
-
         // Helper function to generate the OAuth 1.0a authHeader for Tumblr API.
         // This function is not going to make any actual calls to
         // tumblr's /request_token or /access_token endpoints.
@@ -678,29 +586,32 @@ passport.use(
           const oauth = new OAuth('https://www.tumblr.com/oauth/request_token', 'https://www.tumblr.com/oauth/access_token', process.env.TUMBLR_KEY, process.env.TUMBLR_SECRET, '1.0A', null, 'HMAC-SHA1');
           return oauth.authHeader(url, token, tokenSecret, method);
         }
-
         const userInfoURL = 'https://api.tumblr.com/v2/user/info';
-        const response = await fetch(userInfoURL, {
-          headers: { Authorization: getTumblrAuthHeader(userInfoURL, 'GET') },
-        });
-
+        const response = await fetch(userInfoURL, { headers: { Authorization: getTumblrAuthHeader(userInfoURL, 'GET') } });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         const data = await response.json();
-
         // Extract user info from the API response
         const tumblrUser = data.response.user;
-        if (!user.tumblr) {
-          user.tumblr = tumblrUser.name; // Save Tumblr username
+        const primaryBlog = tumblrUser.blogs?.find((blog) => blog.primary) || tumblrUser.blogs?.[0];
+        const providerProfile = {
+          id: primaryBlog.uuid || tumblrUser.name,
+          name: tumblrUser.name,
+          picture: primaryBlog?.avatar?.[0]?.url,
+          website: primaryBlog?.url,
+        };
+        try {
+          const sessionAlreadyLoggedIn = !!req.user;
+          const user = await handleAuthLogin(req, token, null, 'tumblr', {}, providerProfile, sessionAlreadyLoggedIn, tokenSecret, false);
+          if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+            req.flash('info', { msg: 'Tumblr account has been linked.' });
+          }
+          return done(null, user);
+        } catch (err) {
+          if (authError2Flash(err, req, done, 'Tumblr')) return;
+          throw err;
         }
-
-        // Save tokens and user info
-        user.tokens.push({ kind: 'tumblr', accessToken: token, tokenSecret });
-        await user.save();
-
-        return done(null, user);
       } catch (err) {
         if (err.response) {
           // Log API response error details for debugging
@@ -732,56 +643,38 @@ passport.use(
     async (req, identifier, profile, done) => {
       const steamId = identifier.match(/\d+$/)[0];
       const profileURL = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_KEY}&steamids=${steamId}`;
+      const sessionAlreadyLoggedIn = !!req.user;
+      // Fetch Steam profile data
+      let providerProfile;
       try {
-        if (req.user) {
-          const existingUser = await User.findOne({ steam: { $eq: steamId } });
-          if (existingUser && existingUser.id !== req.user.id) {
-            req.flash('errors', {
-              msg: 'There is another account in our system linked to your Steam account. Please delete the duplicate account before linking Steam to your current account.',
-            });
-            if (req.session) req.session.returnTo = undefined;
-            return done(null, req.user);
-          }
-          const user = await User.findById(req.user.id);
-          user.steam = steamId;
-          user.tokens.push({ kind: 'steam', accessToken: steamId });
-          try {
-            const response = await fetch(profileURL);
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            const profileData = data.response.players[0];
-            user.profile.name = user.profile.name || profileData.personaname;
-            user.profile.picture = user.profile.picture || profileData.avatarmedium;
-            await user.save();
-            return done(null, user);
-          } catch (err) {
-            console.log(err);
-            await user.save();
-            return done(err, user);
-          }
-        } else {
-          try {
-            const response = await fetch(profileURL);
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            const profileData = data.response.players[0];
-            const user = new User();
-            user.steam = steamId;
-            user.email = `${steamId}@steam.com`; // steam does not disclose emails, prevent duplicate keys
-            user.tokens.push({ kind: 'steam', accessToken: steamId });
-            user.profile.name = profileData.personaname;
-            user.profile.picture = profileData.avatarmedium;
-            await user.save();
-            return done(null, user);
-          } catch (err) {
-            return done(err, null);
-          }
+        const response = await fetch(profileURL);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        const data = await response.json();
+        const players = data && data.response && Array.isArray(data.response.players) ? data.response.players : [];
+        if (players.length === 0) {
+          req.flash('errors', { msg: 'Invalid Steam profile data' });
+          return sessionAlreadyLoggedIn ? done(null, req.user) : done(null, false);
+        }
+        providerProfile = {
+          id: steamId,
+          name: data.response.players[0].personaname,
+          picture: data.response.players[0].avatarmedium,
+        };
       } catch (err) {
+        console.log(err);
+        return done(err);
+      }
+
+      try {
+        const user = await handleAuthLogin(req, steamId, null, 'steam', {}, providerProfile, sessionAlreadyLoggedIn, null, false);
+        if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+          req.flash('info', { msg: 'Steam account has been linked.' });
+        }
+        return done(null, user);
+      } catch (err) {
+        if (authError2Flash(err, req, done, 'Steam')) return;
         return done(err);
       }
     },
@@ -804,9 +697,8 @@ const quickbooksStrategyConfig = new OAuth2Strategy(
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
     try {
-      const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.x_refresh_token_expires_in, 'quickbooks', {
-        quickbooks: req.query.realmId,
-      });
+      const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.x_refresh_token_expires_in, 'quickbooks', { quickbooks: req.query.realmId });
+      req.flash('info', { msg: 'Quickbooks account has been linked.' });
       return done(null, user);
     } catch (err) {
       return done(err);
@@ -844,13 +736,28 @@ const traktStrategyConfig = new OAuth2Strategy(
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, params.x_refresh_token_expires_in, 'trakt', {
-        trakt: data.ids.slug,
-      });
-      user.profile.name = user.profile.name || data.name;
-      user.profile.location = user.profile.location || data.location;
-      await user.save();
-      return done(null, user);
+      if (!data?.ids?.slug || !data?.name) {
+        req.flash('errors', { msg: 'Invalid Trakt profile data' });
+        return req.user ? done(null, req.user) : done(null, false);
+      }
+      const providerProfile = {
+        id: data.ids.slug,
+        name: data.name,
+        gender: data.gender,
+        picture: data.images?.avatar?.full,
+        location: data.location,
+      };
+      const sessionAlreadyLoggedIn = !!req.user;
+      try {
+        const user = await handleAuthLogin(req, accessToken, refreshToken, 'trakt', params, providerProfile, sessionAlreadyLoggedIn, null, true, { trakt: data.ids.slug }, params.x_refresh_token_expires_in || null);
+        if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+          req.flash('info', { msg: 'Trakt account has been linked.' });
+        }
+        return done(null, user);
+      } catch (err) {
+        if (authError2Flash(err, req, done, 'Trakt')) return;
+        return done(err);
+      }
     } catch (err) {
       return done(err);
     }
@@ -874,6 +781,7 @@ const discordStrategyConfig = new OAuth2Strategy(
     passReqToCallback: true,
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
+    const sessionAlreadyLoggedIn = !!req.user;
     try {
       // Fetch Discord profile using accessToken
       const response = await fetch('https://discord.com/api/users/@me', {
@@ -885,47 +793,26 @@ const discordStrategyConfig = new OAuth2Strategy(
         return done(new Error('Failed to fetch Discord profile'));
       }
       const discordProfile = await response.json();
-      if (req.user) {
-        const existingUser = await User.findOne({ discord: { $eq: discordProfile.id } });
-        if (existingUser && existingUser.id !== req.user.id) {
-          req.flash('errors', {
-            msg: 'There is another account in our system linked to your Discord account. Please delete the duplicate account before linking Discord to your current account.',
-          });
-          if (req.session) req.session.returnTo = undefined;
-          return done(null, req.user);
+      if (!discordProfile || !discordProfile.id || !discordProfile.username) {
+        req.flash('errors', { msg: 'Invalid Discord profile data' });
+        return sessionAlreadyLoggedIn ? done(null, req.user) : done(null, false);
+      }
+      const providerProfile = {
+        id: discordProfile.id,
+        name: discordProfile.username,
+        email: discordProfile.email,
+        picture: discordProfile.avatar ? `https://cdn.discordapp.com/avatars/${discordProfile.id}/${discordProfile.avatar}.png` : undefined,
+      };
+      try {
+        const user = await handleAuthLogin(req, accessToken, refreshToken, 'discord', params, providerProfile, sessionAlreadyLoggedIn, null, true);
+        if (sessionAlreadyLoggedIn && req.user.id === user.id) {
+          req.flash('info', { msg: 'Discord account has been linked.' });
         }
-        const user = await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'discord');
-        user.discord = discordProfile.id;
-        user.profile.name = user.profile.name || discordProfile.username;
-        user.profile.picture = user.profile.picture || (discordProfile.avatar ? `https://cdn.discordapp.com/avatars/${discordProfile.id}/${discordProfile.avatar}.png` : undefined);
-        await user.save();
-        req.flash('info', { msg: 'Discord account has been linked.' });
         return done(null, user);
+      } catch (err) {
+        if (authError2Flash(err, req, done, 'Discord')) return;
+        throw err;
       }
-      const existingUser = await User.findOne({ discord: { $eq: discordProfile.id } });
-      if (existingUser) {
-        return done(null, existingUser);
-      }
-      const emailFromProvider = discordProfile.email;
-      const normalizedEmail = emailFromProvider ? validator.normalizeEmail(emailFromProvider, { gmail_remove_dots: false }) : undefined;
-      const existingEmailUser = await User.findOne({
-        email: { $eq: normalizedEmail },
-      });
-      if (existingEmailUser) {
-        req.flash('errors', {
-          msg: `Unable to sign in with Discord at this time. If you have an existing account in our system, please sign in by email and link your account to Discord in your user profile settings.`,
-        });
-        return done(null, false);
-      }
-      const user = new User();
-      user.email = normalizedEmail;
-      user.discord = discordProfile.id;
-      req.user = user;
-      await saveOAuth2UserTokens(req, accessToken, refreshToken, params.expires_in, null, 'discord');
-      user.profile.name = discordProfile.username;
-      user.profile.picture = discordProfile.avatar ? `https://cdn.discordapp.com/avatars/${discordProfile.id}/${discordProfile.avatar}.png` : undefined;
-      await user.save();
-      return done(null, user);
     } catch (err) {
       return done(err);
     }
@@ -989,5 +876,6 @@ exports.isAuthorized = async (req, res, next) => {
   }
 };
 
-// Add export for testing the internal function
+// Add export for testing the internal functions
 exports._saveOAuth2UserTokens = saveOAuth2UserTokens;
+exports._handleAuthLogin = handleAuthLogin;
