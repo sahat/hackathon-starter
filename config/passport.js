@@ -16,6 +16,7 @@ const moment = require('moment');
 const validator = require('validator');
 
 const User = require('../models/User');
+const LoginHistory = require('../models/LoginHistory');
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -145,6 +146,20 @@ async function saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenE
 }
 
 /**
+ * 记录OAuth登录历史的辅助函数
+ */
+async function recordOAuthLoginHistory(user, provider, req) {
+  try {
+    if (user && user._id) {
+      await LoginHistory.recordLogin(user._id, provider.toLowerCase(), req.ip, req.get('User-Agent') || 'Unknown');
+    }
+  } catch (error) {
+    console.error(`Failed to record ${provider} login history:`, error);
+    // 不阻止登录流程，只是记录错误
+  }
+}
+
+/**
  * Sign in with Facebook.
  */
 
@@ -184,12 +199,16 @@ passport.use(
           user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
           await user.save();
           req.flash('info', { msg: 'Facebook account has been linked.' });
+          // 记录登录历史
+          await recordOAuthLoginHistory(user, 'facebook', req);
           return done(null, user);
         }
         const existingUser = await User.findOne({
           facebook: { $eq: profile.id },
         });
         if (existingUser) {
+          // 记录登录历史
+          await recordOAuthLoginHistory(existingUser, 'facebook', req);
           return done(null, existingUser);
         }
         const emailFromProvider = profile._json.email;
@@ -219,6 +238,8 @@ passport.use(
         user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
         user.profile.location = profile._json.location ? profile._json.location.name : '';
         await user.save();
+        // 记录登录历史
+        await recordOAuthLoginHistory(user, 'facebook', req);
         return done(null, user);
       } catch (err) {
         return done(err);
@@ -262,12 +283,16 @@ passport.use(
           user.profile.website = user.profile.website || profile._json.blog;
           await user.save();
           req.flash('info', { msg: 'GitHub account has been linked.' });
+          // 记录登录历史
+          await recordOAuthLoginHistory(user, 'github', req);
           return done(null, user);
         }
         const existingUser = await User.findOne({
           github: { $eq: profile.id },
         });
         if (existingUser) {
+          // 记录登录历史
+          await recordOAuthLoginHistory(existingUser, 'github', req);
           return done(null, existingUser);
         }
         // Github may return a list of email addresses instead of just one
@@ -298,6 +323,8 @@ passport.use(
         user.profile.location = profile._json.location;
         user.profile.website = profile._json.blog;
         await user.save();
+        // 记录登录历史
+        await recordOAuthLoginHistory(user, 'github', req);
         return done(null, user);
       } catch (err) {
         return done(err);
@@ -337,10 +364,14 @@ passport.use(
           user.profile.picture = user.profile.picture || profile._json.profile_image_url_https;
           await user.save();
           req.flash('info', { msg: 'X account has been linked.' });
+          // 记录登录历史
+          await recordOAuthLoginHistory(user, 'x', req);
           return done(null, user);
         }
         const existingUser = await User.findOne({ x: { $eq: profile.id } });
         if (existingUser) {
+          // 记录登录历史
+          await recordOAuthLoginHistory(existingUser, 'x', req);
           return done(null, existingUser);
         }
         const user = new User();
@@ -354,6 +385,8 @@ passport.use(
         user.profile.location = profile._json.location;
         user.profile.picture = profile._json.profile_image_url_https;
         await user.save();
+        // 记录登录历史
+        await recordOAuthLoginHistory(user, 'x', req);
         return done(null, user);
       } catch (err) {
         return done(err);
@@ -396,10 +429,14 @@ const googleStrategyConfig = new GoogleStrategy(
         user.profile.picture = user.profile.picture || profile._json.picture;
         await user.save();
         req.flash('info', { msg: 'Google account has been linked.' });
+        // 记录登录历史
+        await recordOAuthLoginHistory(user, 'google', req);
         return done(null, user);
       }
       const existingUser = await User.findOne({ google: { $eq: profile.id } });
       if (existingUser) {
+        // 记录登录历史
+        await recordOAuthLoginHistory(existingUser, 'google', req);
         return done(null, existingUser);
       }
       const emailFromProvider = profile.emails && profile.emails[0] && profile.emails[0].value ? profile.emails[0].value : undefined;
@@ -422,6 +459,8 @@ const googleStrategyConfig = new GoogleStrategy(
       user.profile.gender = profile._json.gender;
       user.profile.picture = profile._json.picture;
       await user.save();
+      // 记录登录历史
+      await recordOAuthLoginHistory(user, 'google', req);
       return done(null, user);
     } catch (err) {
       return done(err);

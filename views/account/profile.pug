@@ -74,6 +74,16 @@ block content
           | Change Password
 
   .pb-2.mt-2.mb-4.border-bottom
+    h3 Login History
+
+  .form-group
+    .offset-sm-3.col-md-7.pl-2
+      p View your recent login activity to help identify any unauthorized access.
+      a.btn.btn-info(href='/account/login-history')
+        i.fas.fa-history.me-2
+        | View Login History
+
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Logout Everywhere
 
   form(action='/account/logout-everywhere', method='POST')

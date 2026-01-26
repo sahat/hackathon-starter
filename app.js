@@ -208,6 +208,7 @@ app.post('/account/profile', passportConfig.isAuthenticated, userController.post
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.post('/account/logout-everywhere', passportConfig.isAuthenticated, userController.postLogoutEverywhere);
+app.get('/account/login-history', passportConfig.isAuthenticated, userController.getLoginHistory);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 /**

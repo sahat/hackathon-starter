@@ -4,6 +4,7 @@ const validator = require('validator');
 const mailChecker = require('mailchecker');
 const User = require('../models/User');
 const Session = require('../models/Session');
+const LoginHistory = require('../models/LoginHistory');
 const nodemailerConfig = require('../config/nodemailer');
 
 /**
@@ -99,10 +100,19 @@ Thank you!\n`,
       req.flash('errors', info);
       return res.redirect('/login');
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, async (err) => {
       if (err) {
         return next(err);
       }
+      
+      // 记录登录历史
+      try {
+        await LoginHistory.recordLogin(user._id, 'local', req.ip, req.get('User-Agent') || 'Unknown');
+      } catch (loginHistoryError) {
+        console.error('Failed to record login history:', loginHistoryError);
+        // 不阻止登录流程，只是记录错误
+      }
+      
       req.flash('success', { msg: 'Success! You are logged in.' });
       res.redirect(req.session.returnTo || '/');
     });
@@ -429,10 +439,19 @@ exports.getLoginByEmail = async (req, res, next) => {
     user.emailVerified = true; // Mark email as verified since they also proved ownership
     await user.save();
 
-    req.logIn(user, (err) => {
+    req.logIn(user, async (err) => {
       if (err) {
         return next(err);
       }
+      
+      // 记录登录历史
+      try {
+        await LoginHistory.recordLogin(user._id, 'local', req.ip, req.get('User-Agent') || 'Unknown');
+      } catch (loginHistoryError) {
+        console.error('Failed to record login history:', loginHistoryError);
+        // 不阻止登录流程，只是记录错误
+      }
+      
       req.flash('success', { msg: 'Success! You are logged in.' });
       res.redirect(req.session.returnTo || '/');
     });
@@ -704,5 +723,21 @@ exports.postLogoutEverywhere = async (req, res, next) => {
     });
   } catch (err) {
     return next(err);
+  }
+};
+
+/**
+ * GET /account/login-history
+ * Login history page
+ */
+exports.getLoginHistory = async (req, res, next) => {
+  try {
+    const loginHistory = await LoginHistory.getUserLoginHistory(req.user.id);
+    res.render('account/login-history', {
+      title: 'Login History',
+      loginHistory
+    });
+  } catch (err) {
+    next(err);
   }
 };

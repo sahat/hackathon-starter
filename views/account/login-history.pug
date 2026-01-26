@@ -1,0 +1,65 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 Login History
+    p.text-muted View your recent login activity to help identify any unauthorized access.
+
+  if loginHistory && loginHistory.length > 0
+    .table-responsive
+      table.table.table-striped.table-hover
+        thead.thead-dark
+          tr
+            th(scope='col') Login Time
+            th(scope='col') Method
+            th(scope='col') IP Address
+            th(scope='col') Browser / Device
+        tbody
+          each record in loginHistory
+            tr
+              td
+                = new Date(record.loginTime).toLocaleString()
+              td
+                case record.loginMethod
+                  when 'local'
+                    span.badge.bg-primary Email & Password
+                  when 'github'
+                    span.badge.bg-dark GitHub
+                  when 'google'
+                    span.badge.bg-danger Google
+                  when 'facebook'
+                    span.badge.bg-primary Facebook
+                  when 'discord'
+                    span.badge.bg-info Discord
+                  when 'microsoft'
+                    span.badge.bg-primary Microsoft
+                  when 'linkedin'
+                    span.badge.bg-primary LinkedIn
+                  when 'steam'
+                    span.badge.bg-dark Steam
+                  when 'twitch'
+                    span.badge.bg-purple Twitch
+                  when 'tumblr'
+                    span.badge.bg-secondary Tumblr
+                  when 'trakt'
+                    span.badge.bg-success Trakt
+                  when 'quickbooks'
+                    span.badge.bg-primary QuickBooks
+                  when 'x'
+                    span.badge.bg-dark X (Twitter)
+                  default
+                    span.badge.bg-secondary= record.loginMethod
+              td
+                code= record.ipAddress
+              td
+                .text-truncate(style='max-width: 300px;')
+                  small.text-muted= record.userAgent
+  else
+    .alert.alert-info
+      i.fas.fa-info-circle.me-2
+      | No login history found. This will appear after your first login.
+
+  .mt-4
+    a.btn.btn-secondary(href='/account')
+      i.fas.fa-arrow-left.me-2
+      | Back to Account
