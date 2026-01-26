@@ -1,5 +1,6 @@
-const path = require('path');
-const crypto = require('crypto');
+const crypto = require('node:crypto');
+const fs = require('node:fs');
+const path = require('node:path');
 const cheerio = require('cheerio');
 const { LastFmNode } = require('lastfm');
 const multer = require('multer');
@@ -14,7 +15,6 @@ const googledrive = require('@googleapis/drive');
 const googlesheets = require('@googleapis/sheets');
 const validator = require('validator');
 const { Configuration: LobConfiguration, LetterEditable, LettersApi, ZipEditable, ZipLookupsApi } = require('@lob/lob-typescript-sdk');
-const fs = require('fs');
 
 /**
  * GET /api

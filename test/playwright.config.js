@@ -1,7 +1,7 @@
+const fs = require('node:fs');
+const path = require('node:path');
 const { defineConfig, devices } = require('@playwright/test');
 const dotenv = require('dotenv');
-const path = require('path');
-const fs = require('fs');
 // Preserve any MONGODB_URI that was set before loading dotenv, since it is set to the memory server starter
 const originalMongoUri = process.env.MONGODB_URI;
 const result = dotenv.config({ path: path.resolve(__dirname, '.env.test'), quiet: true });

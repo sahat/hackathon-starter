@@ -1,7 +1,7 @@
 // tools/start-and-log.js
-const path = require('path');
-const fs = require('fs');
-const { spawn } = require('child_process');
+const fs = require('node:fs');
+const path = require('node:path');
+const { spawn } = require('node:child_process');
 
 const logPath = path.resolve(__dirname, '../..', 'tmp', 'playwright-webserver.log');
 const out = fs.createWriteStream(logPath, { flags: 'w' });

@@ -1,10 +1,10 @@
+const path = require('node:path');
 const { expect } = require('chai');
 const sinon = require('sinon');
 const refresh = require('passport-oauth2-refresh');
 const moment = require('moment');
 const mongoose = require('mongoose');
 const validator = require('validator');
-const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env.test') });
 const passportModule = require('../config/passport');
 const { isAuthorized, _saveOAuth2UserTokens, _handleAuthLogin } = passportModule;

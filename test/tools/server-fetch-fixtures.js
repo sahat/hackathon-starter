@@ -21,8 +21,8 @@
  * See also: server-axios-fixtures.js (same pattern for axios), fixture-helpers.js (shared utilities)
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const { keyFor } = require('./fixture-helpers');
 
 const FIXTURES_DIR = path.resolve(__dirname, '..', 'fixtures');

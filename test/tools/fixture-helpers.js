@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+const crypto = require('node:crypto');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const MANIFEST_PATH = path.resolve(__dirname, '..', 'fixtures', 'fixture_manifest.json');
 

@@ -1,7 +1,7 @@
-const crypto = require('crypto');
-const fs = require('fs');
+const crypto = require('node:crypto');
+const fs = require('node:fs');
+const path = require('node:path');
 const multer = require('multer');
-const path = require('path');
 const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
 const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');

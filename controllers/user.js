@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 const passport = require('passport');
 const validator = require('validator');
 const mailChecker = require('mailchecker');

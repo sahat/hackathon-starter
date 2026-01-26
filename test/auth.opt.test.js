@@ -1,8 +1,8 @@
+const path = require('node:path');
 const { expect } = require('chai');
 const sinon = require('sinon');
 const moment = require('moment');
 const mongoose = require('mongoose');
-const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env.test') });
 const { _saveOAuth2UserTokens } = require('../config/passport');
 const User = require('../models/User');

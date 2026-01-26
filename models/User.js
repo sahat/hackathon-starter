@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 const bcrypt = require('@node-rs/bcrypt');
 const mongoose = require('mongoose');
 

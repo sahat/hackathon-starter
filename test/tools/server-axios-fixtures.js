@@ -23,8 +23,8 @@
  * See also: server-fetch-fixtures.js (same pattern for fetch), fixture-helpers.js (shared utilities)
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const axios = require('axios');
 const { keyFor } = require('./fixture-helpers');
 

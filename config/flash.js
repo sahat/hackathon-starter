@@ -1,4 +1,4 @@
-const { format } = require('util');
+const { format } = require('node:util');
 
 // Flash Middleware as a replacement for express-flash / connect-flash
 // Those packages are unmaintained and have some issues. This is a simple

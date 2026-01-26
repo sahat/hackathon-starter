@@ -1,7 +1,7 @@
 /**
  * Module dependencies.
  */
-const path = require('path');
+const path = require('node:path');
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');

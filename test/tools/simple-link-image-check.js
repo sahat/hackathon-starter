@@ -9,8 +9,8 @@
  - Prints a readable report of where each URL was found and status
 */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const ROOT = process.cwd();
 const VIEWS_DIR = path.join(ROOT, 'views');

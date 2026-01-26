@@ -2,8 +2,8 @@
 // test/helpers/start-with-memory-db.js
 // Starts mongodb-memory-server and then starts the app (require('../../app')).
 
-const path = require('path');
-const { spawnSync } = require('child_process');
+const path = require('node:path');
+const { spawnSync } = require('node:child_process');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const { installServerApiFixtures } = require('./server-fetch-fixtures');
 const { installServerAxiosFixtures } = require('./server-axios-fixtures');
