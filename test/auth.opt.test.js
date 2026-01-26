@@ -1,7 +1,6 @@
 const path = require('node:path');
 const { expect } = require('chai');
 const sinon = require('sinon');
-const moment = require('moment');
 const mongoose = require('mongoose');
 require('dotenv').config({ path: path.join(__dirname, '.env.test') });
 const { _saveOAuth2UserTokens } = require('../config/passport');
@@ -65,7 +64,7 @@ describe('Microsoft OAuth Integration Tests:', () => {
       kind: 'microsoft',
       accessToken: 'expired-microsoft-token',
       refreshToken: 'valid-microsoft-refresh-token',
-      accessTokenExpires: moment().subtract(1, 'hour').format(),
+      accessTokenExpires: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
     });
 
     const accessToken = 'new-microsoft-access-token';
@@ -90,12 +89,12 @@ describe('Microsoft OAuth Integration Tests:', () => {
       {
         kind: 'google',
         accessToken: 'google-token',
-        accessTokenExpires: moment().add(1, 'hour').format(),
+        accessTokenExpires: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
       },
       {
         kind: 'github',
         accessToken: 'github-token',
-        accessTokenExpires: moment().add(1, 'hour').format(),
+        accessTokenExpires: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
       },
     ];
 

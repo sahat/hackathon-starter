@@ -617,7 +617,6 @@ Required to run the project before your modifications
 | lastfm                        | Last.fm API library.                                                  |
 | lusca                         | CSRF middleware.                                                      |
 | mailchecker                   | Verifies that an email address is valid and not a disposable address. |
-| moment                        | Parse, validate, compute dates and times.                             |
 | mongodb                       | MongoDB driver                                                        |
 | mongoose                      | MongoDB ODM.                                                          |
 | morgan                        | HTTP request logger middleware for node.js.                           |
@@ -1284,19 +1283,11 @@ class Person {
 Math.floor(Date.now() / 1000);
 ```
 
-```MomentJS
-moment().unix();
-```
-
 #### Add 30 minutes to a Date object
 
 ```js
 var now = new Date();
 now.setMinutes(now.getMinutes() + 30);
-```
-
-```MomentJS
-moment().add(30, 'minutes');
 ```
 
 #### Date Formatting
@@ -1320,10 +1311,6 @@ if (MM < 10) {
 console.log(MM + '-' + DD + '-' + YYYY); // 03-30-2016
 ```
 
-```MomentJS
-console.log(moment(new Date(), 'MM-DD-YYYY'));
-```
-
 ```js
 // hh:mm (12 hour time with am/pm)
 var now = new Date();
@@ -1338,10 +1325,6 @@ minutes = minutes < 10 ? '0' + minutes : minutes;
 console.log(hours + ':' + minutes + ' ' + amPm); // 1:43 am
 ```
 
-```MomentJS
-console.log(moment(new Date(), 'hh:mm A'));
-```
-
 #### Next week Date object
 
 ```js
@@ -1349,19 +1332,11 @@ var today = new Date();
 var nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
 ```
 
-```MomentJS
-moment().add(7, 'days');
-```
-
 #### Yesterday Date object
 
 ```js
 var today = new Date();
 var yesterday = date.setDate(date.getDate() - 1);
-```
-
-```MomentJS
-moment().add(-1, 'days');
 ```
 
 :top: <sub>[**back to top**](#table-of-contents)</sub>

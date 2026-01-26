@@ -11,7 +11,6 @@ const { SteamOpenIdStrategy } = require('passport-steam-openid');
 const { OAuthStrategy } = require('passport-oauth');
 const { OAuth2Strategy } = require('passport-oauth');
 const { OAuth } = require('oauth');
-const moment = require('moment');
 const validator = require('validator');
 
 const User = require('../models/User');
@@ -191,7 +190,7 @@ async function saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenE
     if (providerToken) {
       providerToken.accessToken = accessToken;
       if (accessTokenExpiration) {
-        providerToken.accessTokenExpires = moment().add(accessTokenExpiration, 'seconds').format();
+        providerToken.accessTokenExpires = new Date(Date.now() + accessTokenExpiration * 1000).toISOString();
       } else {
         delete providerToken.accessTokenExpires;
       }
@@ -199,7 +198,7 @@ async function saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenE
         providerToken.refreshToken = refreshToken;
       }
       if (refreshTokenExpiration) {
-        providerToken.refreshTokenExpires = moment().add(refreshTokenExpiration, 'seconds').format();
+        providerToken.refreshTokenExpires = new Date(Date.now() + refreshTokenExpiration * 1000).toISOString();
       } else if (refreshToken) {
         // Only delete refresh token expiration if we got a new refresh token and don't have an expiration for it
         delete providerToken.refreshTokenExpires;
@@ -209,11 +208,11 @@ async function saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenE
         kind: providerName,
         accessToken,
         ...(accessTokenExpiration && {
-          accessTokenExpires: moment().add(accessTokenExpiration, 'seconds').format(),
+          accessTokenExpires: new Date(Date.now() + accessTokenExpiration * 1000).toISOString(),
         }),
         ...(refreshToken && { refreshToken }),
         ...(refreshTokenExpiration && {
-          refreshTokenExpires: moment().add(refreshTokenExpiration, 'seconds').format(),
+          refreshTokenExpires: new Date(Date.now() + refreshTokenExpiration * 1000).toISOString(),
         }),
       };
       user.tokens.push(newToken);
@@ -839,9 +838,9 @@ exports.isAuthorized = async (req, res, next) => {
   const provider = req.path.split('/')[2];
   const token = req.user.tokens.find((token) => token.kind === provider);
   if (token) {
-    if (token.accessTokenExpires && moment(token.accessTokenExpires).isBefore(moment().subtract(1, 'minutes'))) {
+    if (token.accessTokenExpires && new Date(token.accessTokenExpires).getTime() < Date.now() - 1 * 60 * 1000) {
       if (token.refreshToken) {
-        if (token.refreshTokenExpires && moment(token.refreshTokenExpires).isBefore(moment().subtract(1, 'minutes'))) {
+        if (token.refreshTokenExpires && new Date(token.refreshTokenExpires).getTime() < Date.now() - 1 * 60 * 1000) {
           return res.redirect(`/auth/${provider}`);
         }
         try {
@@ -855,7 +854,7 @@ exports.isAuthorized = async (req, res, next) => {
           req.user.tokens.forEach((tokenObject) => {
             if (tokenObject.kind === provider) {
               tokenObject.accessToken = newTokens.accessToken;
-              if (newTokens.params.expires_in) tokenObject.accessTokenExpires = moment().add(newTokens.params.expires_in, 'seconds').format();
+              if (newTokens.params.expires_in) tokenObject.accessTokenExpires = new Date(Date.now() + newTokens.params.expires_in * 1000).toISOString();
             }
           });
 

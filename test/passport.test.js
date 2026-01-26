@@ -2,7 +2,6 @@ const path = require('node:path');
 const { expect } = require('chai');
 const sinon = require('sinon');
 const refresh = require('passport-oauth2-refresh');
-const moment = require('moment');
 const mongoose = require('mongoose');
 const validator = require('validator');
 require('dotenv').config({ path: path.join(__dirname, '.env.test') });
@@ -54,7 +53,7 @@ describe('Passport Config', () => {
       req.user.tokens.push({
         kind: 'test_provider',
         accessToken: 'valid-token',
-        accessTokenExpires: moment().add(1, 'hour').format(),
+        accessTokenExpires: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
       });
 
       isAuthorized(req, res, next)
@@ -71,7 +70,7 @@ describe('Passport Config', () => {
       req.user.tokens.push({
         kind: 'test_provider',
         accessToken: 'expired-token',
-        accessTokenExpires: moment().subtract(1, 'hour').format(),
+        accessTokenExpires: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
       });
 
       isAuthorized(req, res, next)
@@ -95,7 +94,7 @@ describe('Passport Config', () => {
         kind: 'test_provider',
         accessToken: 'expired-token',
         refreshToken: 'valid-refresh-token',
-        accessTokenExpires: moment().subtract(1, 'hour').format(),
+        accessTokenExpires: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
       });
 
       isAuthorized(req, res, next)
@@ -119,8 +118,8 @@ describe('Passport Config', () => {
         kind: 'test_provider',
         accessToken: 'expired-token',
         refreshToken: 'valid-refresh-token',
-        refreshTokenExpires: moment().add(1, 'day').format(),
-        accessTokenExpires: moment().subtract(1, 'hour').format(),
+        refreshTokenExpires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        accessTokenExpires: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
       });
 
       isAuthorized(req, res, next)
@@ -138,8 +137,8 @@ describe('Passport Config', () => {
         kind: 'test_provider',
         accessToken: 'expired-token',
         refreshToken: 'expired-refresh-token',
-        refreshTokenExpires: moment().subtract(1, 'day').format(),
-        accessTokenExpires: moment().subtract(1, 'hour').format(),
+        refreshTokenExpires: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+        accessTokenExpires: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
       });
 
       isAuthorized(req, res, next)
@@ -162,7 +161,7 @@ describe('Passport Config', () => {
         kind: 'test_provider',
         accessToken: 'expired-token',
         refreshToken: 'invalid-refresh-token',
-        accessTokenExpires: moment().subtract(1, 'hour').format(),
+        accessTokenExpires: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
       });
 
       isAuthorized(req, res, next)
@@ -232,7 +231,7 @@ describe('Passport Config', () => {
       req.user.tokens.push({
         kind: 'google',
         accessToken: 'old-access-token',
-        accessTokenExpires: moment().add(1, 'hour').format(),
+        accessTokenExpires: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
       });
 
       const accessToken = 'new-access-token';
@@ -261,7 +260,11 @@ describe('Passport Config', () => {
       _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName)
         .then(() => {
           expect(req.user.tokens[0].refreshToken).to.equal('refresh-token');
-          expect(moment(req.user.tokens[0].refreshTokenExpires).isSame(moment().add(refreshTokenExpiration, 'seconds'), 'minute')).to.be.true;
+          {
+            const expectedRefresh = new Date(Date.now() + refreshTokenExpiration * 1000).toISOString();
+            const diffMinutes = Math.abs(new Date(req.user.tokens[0].refreshTokenExpires).getTime() - new Date(expectedRefresh).getTime()) / 60000;
+            expect(diffMinutes).to.be.lessThan(1);
+          }
           done();
         })
         .catch(done);
@@ -297,11 +300,14 @@ describe('Passport Config', () => {
 
       _saveOAuth2UserTokens(req, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration, providerName)
         .then(() => {
-          const expectedAccessExpiration = moment().add(accessTokenExpiration, 'seconds').format();
-          const expectedRefreshExpiration = moment().add(refreshTokenExpiration, 'seconds').format();
-
-          expect(moment(req.user.tokens[0].accessTokenExpires).isSame(expectedAccessExpiration, 'minute')).to.be.true;
-          expect(moment(req.user.tokens[0].refreshTokenExpires).isSame(expectedRefreshExpiration, 'minute')).to.be.true;
+          const expectedAccessExpiration = new Date(Date.now() + accessTokenExpiration * 1000).toISOString();
+          const expectedRefreshExpiration = new Date(Date.now() + refreshTokenExpiration * 1000).toISOString();
+          {
+            const diffMinutesA = Math.abs(new Date(req.user.tokens[0].accessTokenExpires).getTime() - new Date(expectedAccessExpiration).getTime()) / 60000;
+            const diffMinutesR = Math.abs(new Date(req.user.tokens[0].refreshTokenExpires).getTime() - new Date(expectedRefreshExpiration).getTime()) / 60000;
+            expect(diffMinutesA).to.be.lessThan(1);
+            expect(diffMinutesR).to.be.lessThan(1);
+          }
           done();
         })
         .catch(done);
@@ -344,7 +350,7 @@ describe('Passport Config', () => {
       req.user.tokens.push({
         kind: 'test_provider',
         accessToken: 'old-access-token',
-        accessTokenExpires: moment().add(1, 'hour').format(),
+        accessTokenExpires: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
       });
 
       const accessToken = 'new-access-token';
@@ -366,8 +372,8 @@ describe('Passport Config', () => {
         kind: 'test_provider',
         accessToken: 'old-access-token',
         refreshToken: 'old-refresh-token',
-        accessTokenExpires: moment().add(1, 'hour').format(),
-        refreshTokenExpires: moment().add(1, 'day').format(),
+        accessTokenExpires: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
+        refreshTokenExpires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
       });
 
       const accessToken = 'new-access-token';
@@ -438,12 +444,12 @@ describe('Passport Config', () => {
         {
           kind: 'facebook',
           accessToken: 'facebook-token',
-          accessTokenExpires: moment().add(1, 'hour').format(),
+          accessTokenExpires: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
         },
         {
           kind: 'github',
           accessToken: 'github-token',
-          accessTokenExpires: moment().add(1, 'hour').format(),
+          accessTokenExpires: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
         },
       ];
 
@@ -492,8 +498,8 @@ describe('Passport Config', () => {
           expect(token.kind).to.be.a('string');
           expect(token.accessToken).to.be.a('string');
           expect(token.refreshToken).to.be.a('string');
-          expect(moment(token.accessTokenExpires).isValid()).to.be.true;
-          expect(moment(token.refreshTokenExpires).isValid()).to.be.true;
+          expect(!isNaN(Date.parse(token.accessTokenExpires))).to.be.true;
+          expect(!isNaN(Date.parse(token.refreshTokenExpires))).to.be.true;
 
           done();
         })
@@ -533,7 +539,7 @@ describe('Passport Config', () => {
             accessToken: 'new-google-token',
             refreshToken: 'refresh-token',
           });
-          expect(moment(savedUser.tokens[0].accessTokenExpires).isValid()).to.be.true;
+          expect(!isNaN(Date.parse(savedUser.tokens[0].accessTokenExpires))).to.be.true;
           expect(savedUser.markModified.calledWith('tokens')).to.be.true;
           expect(savedUser.save.calledOnce).to.be.true;
           done();
