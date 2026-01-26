@@ -3,9 +3,11 @@ const sinon = require('sinon');
 const refresh = require('passport-oauth2-refresh');
 const moment = require('moment');
 const mongoose = require('mongoose');
+const validator = require('validator');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env.test') });
-const { isAuthorized, _saveOAuth2UserTokens } = require('../config/passport');
+const passportModule = require('../config/passport');
+const { isAuthorized, _saveOAuth2UserTokens, _handleAuthLogin } = passportModule;
 const User = require('../models/User');
 
 describe('Passport Config', () => {
@@ -534,6 +536,406 @@ describe('Passport Config', () => {
           expect(moment(savedUser.tokens[0].accessTokenExpires).isValid()).to.be.true;
           expect(savedUser.markModified.calledWith('tokens')).to.be.true;
           expect(savedUser.save.calledOnce).to.be.true;
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('handleAuthLogin Tests', () => {
+    let req;
+    let userFindOneStub;
+    let userFindByIdStub;
+    let validatorStub;
+    let UserSaveStub;
+    let UserMarkModifiedStub;
+
+    beforeEach((done) => {
+      req = {
+        user: null,
+      };
+
+      userFindOneStub = sinon.stub(User, 'findOne');
+      userFindByIdStub = sinon.stub(User, 'findById');
+      validatorStub = sinon.stub(validator, 'normalizeEmail');
+
+      done();
+    });
+
+    afterEach((done) => {
+      userFindOneStub.restore();
+      userFindByIdStub.restore();
+      validatorStub.restore();
+      if (UserSaveStub && UserSaveStub.restore) {
+        UserSaveStub.restore();
+        UserSaveStub = null;
+      }
+      if (UserMarkModifiedStub && UserMarkModifiedStub.restore) {
+        UserMarkModifiedStub.restore();
+        UserMarkModifiedStub = null;
+      }
+      done();
+    });
+
+    it('Scenario 1: Link flow – successful provider link', (done) => {
+      const existingUser = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'existing@example.com',
+        google: undefined,
+        profile: {
+          name: 'Old Name',
+          gender: '',
+          picture: '',
+        },
+        tokens: [],
+      });
+      existingUser.save = sinon.stub().resolves();
+      existingUser.markModified = sinon.spy();
+
+      req.user = existingUser;
+
+      const accessToken = 'google-access-token';
+      const refreshToken = 'google-refresh-token';
+      const params = { expires_in: 3600 };
+      const providerProfile = {
+        id: 'google-provider-id-123',
+        name: 'John Doe',
+        gender: 'male',
+        picture: 'https://example.com/photo.jpg',
+        email: 'john@example.com',
+      };
+
+      // No existing user with this provider ID (collision check passes)
+      userFindOneStub.resolves(null);
+
+      // findById returns the existing user for saveOAuth2UserTokens
+      userFindByIdStub.resolves(existingUser);
+
+      _handleAuthLogin(req, accessToken, refreshToken, 'google', params, providerProfile, true, null, true)
+        .then((result) => {
+          expect(userFindOneStub.calledOnce).to.be.true;
+          expect(userFindOneStub.firstCall.args[0]).to.deep.equal({
+            google: { $eq: 'google-provider-id-123' },
+          });
+          expect(userFindByIdStub.calledOnce).to.be.true;
+          expect(result.google).to.equal('google-provider-id-123');
+          expect(result.profile.name).to.equal('Old Name'); // Fallback keeps existing
+          expect(result.profile.gender).to.equal('male'); // Fallback assigns new
+          expect(result.profile.picture).to.equal('https://example.com/photo.jpg'); // Fallback assigns new
+          expect(existingUser.save.calledTwice).to.be.true; // Called by saveOAuth2UserTokens and handleAuthLogin
+          expect(result).to.equal(existingUser);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('Scenario 2: Link flow – provider collision', (done) => {
+      const currentUser = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'current@example.com',
+        google: undefined,
+        tokens: [],
+      });
+      currentUser.save = sinon.stub().resolves();
+
+      const otherUser = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'other@example.com',
+        google: 'google-provider-id-123',
+        tokens: [],
+      });
+
+      req.user = currentUser;
+
+      const accessToken = 'google-access-token';
+      const refreshToken = 'google-refresh-token';
+      const params = { expires_in: 3600 };
+      const providerProfile = {
+        id: 'google-provider-id-123',
+        name: 'John Doe',
+        gender: 'male',
+        picture: 'https://example.com/photo.jpg',
+        email: 'john@example.com',
+      };
+
+      // Another user already has this provider ID
+      userFindOneStub.resolves(otherUser);
+
+      _handleAuthLogin(req, accessToken, refreshToken, 'google', params, providerProfile, true, null, true)
+        .then(() => {
+          done(new Error('Expected function to throw PROVIDER_COLLISION error'));
+        })
+        .catch((err) => {
+          expect(err.message).to.equal('PROVIDER_COLLISION');
+          expect(userFindOneStub.calledOnce).to.be.true;
+          expect(userFindByIdStub.called).to.be.false;
+          expect(currentUser.save.called).to.be.false;
+          done();
+        })
+        .catch(done);
+    });
+
+    it('Scenario 3: Login flow – returning user by provider ID', (done) => {
+      const existingUser = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'existing@example.com',
+        google: 'google-provider-id-123',
+        profile: {
+          name: 'John Doe',
+          gender: 'male',
+          picture: 'https://example.com/photo.jpg',
+        },
+        tokens: [],
+      });
+      existingUser.save = sinon.stub().resolves();
+      existingUser.markModified = sinon.spy();
+
+      // No logged-in user (login flow)
+      req.user = null;
+
+      const accessToken = 'google-access-token';
+      const refreshToken = 'google-refresh-token';
+      const params = { expires_in: 3600 };
+      const providerProfile = {
+        id: 'google-provider-id-123',
+        name: 'John Doe',
+        gender: 'male',
+        picture: 'https://example.com/photo.jpg',
+        email: 'existing@example.com',
+      };
+
+      // User found by provider ID
+      userFindOneStub.resolves(existingUser);
+
+      _handleAuthLogin(req, accessToken, refreshToken, 'google', params, providerProfile, false, null, true)
+        .then((result) => {
+          expect(userFindOneStub.calledOnce).to.be.true;
+          expect(userFindOneStub.firstCall.args[0]).to.deep.equal({
+            google: { $eq: 'google-provider-id-123' },
+          });
+          expect(result).to.equal(existingUser);
+          expect(userFindByIdStub.called).to.be.false;
+          expect(existingUser.save.called).to.be.false;
+          expect(existingUser.markModified.called).to.be.false;
+          done();
+        })
+        .catch(done);
+    });
+
+    it('Scenario 4: Login flow – email collision', (done) => {
+      // No logged-in user (login flow)
+      req.user = null;
+
+      const existingEmailUser = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'john@example.com',
+        google: undefined,
+        tokens: [],
+      });
+
+      const accessToken = 'google-access-token';
+      const refreshToken = 'google-refresh-token';
+      const params = { expires_in: 3600 };
+      const providerProfile = {
+        id: 'google-provider-id-123',
+        name: 'John Doe',
+        gender: 'male',
+        picture: 'https://example.com/photo.jpg',
+        email: 'john@example.com',
+      };
+
+      // First call: no user found by provider ID
+      // Second call: user found by email
+      userFindOneStub.onFirstCall().resolves(null);
+      userFindOneStub.onSecondCall().resolves(existingEmailUser);
+
+      validatorStub.returns('john@example.com');
+
+      _handleAuthLogin(req, accessToken, refreshToken, 'google', params, providerProfile, false, null, true)
+        .then(() => {
+          done(new Error('Expected function to throw EMAIL_COLLISION error'));
+        })
+        .catch((err) => {
+          expect(err.message).to.equal('EMAIL_COLLISION');
+          expect(userFindOneStub.calledTwice).to.be.true;
+          expect(userFindOneStub.firstCall.args[0]).to.deep.equal({
+            google: { $eq: 'google-provider-id-123' },
+          });
+          expect(userFindOneStub.secondCall.args[0]).to.deep.equal({
+            email: { $eq: 'john@example.com' },
+          });
+          expect(validatorStub.calledOnce).to.be.true;
+          expect(validatorStub.firstCall.args[0]).to.equal('john@example.com');
+          expect(validatorStub.firstCall.args[1]).to.deep.equal({ gmail_remove_dots: false });
+          expect(userFindByIdStub.called).to.be.false;
+          done();
+        })
+        .catch(done);
+    });
+
+    it('Scenario 5: Login flow – new user creation', (done) => {
+      // No logged-in user (login flow)
+      req.user = null;
+
+      const accessToken = 'google-access-token';
+      const refreshToken = 'google-refresh-token';
+      const params = { expires_in: 3600 };
+      const providerProfile = {
+        id: 'google-provider-id-456',
+        name: 'Jane Smith',
+        gender: 'female',
+        picture: 'https://example.com/jane.jpg',
+        email: 'jane@example.com',
+      };
+
+      // No user found by provider ID, no user found by email
+      userFindOneStub.resolves(null);
+      validatorStub.returns('jane@example.com');
+
+      // findById returns null (new user not yet in DB)
+      userFindByIdStub.resolves(null);
+
+      // Stub User.prototype.save and markModified
+      UserSaveStub = sinon.stub(User.prototype, 'save').resolves();
+      UserMarkModifiedStub = sinon.stub(User.prototype, 'markModified');
+
+      _handleAuthLogin(req, accessToken, refreshToken, 'google', params, providerProfile, false, null, true)
+        .then((result) => {
+          expect(userFindOneStub.calledTwice).to.be.true;
+          expect(userFindOneStub.firstCall.args[0]).to.deep.equal({
+            google: { $eq: 'google-provider-id-456' },
+          });
+          expect(userFindOneStub.secondCall.args[0]).to.deep.equal({
+            email: { $eq: 'jane@example.com' },
+          });
+          expect(validatorStub.calledOnce).to.be.true;
+          expect(userFindByIdStub.calledOnce).to.be.true;
+          expect(req.user).to.be.an.instanceof(User);
+          expect(req.user.email).to.equal('jane@example.com');
+          expect(req.user.google).to.equal('google-provider-id-456');
+          expect(req.user.profile.name).to.equal('Jane Smith');
+          expect(req.user.profile.gender).to.equal('female');
+          expect(req.user.profile.picture).to.equal('https://example.com/jane.jpg');
+          expect(UserSaveStub.calledTwice).to.be.true; // Called by saveOAuth2UserTokens and handleAuthLogin
+          expect(result).to.equal(req.user);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('Scenario 6: Email normalization', (done) => {
+      // No logged-in user (login flow)
+      req.user = null;
+
+      const accessToken = 'google-access-token';
+      const refreshToken = 'google-refresh-token';
+      const params = { expires_in: 3600 };
+      const providerProfile = {
+        id: 'google-provider-id-789',
+        name: 'Bob Johnson',
+        gender: 'male',
+        picture: 'https://example.com/bob.jpg',
+        email: 'Bob.Johnson+test@Gmail.com',
+      };
+
+      // No user found by provider ID, no user found by normalized email
+      userFindOneStub.resolves(null);
+      validatorStub.returns('bob.johnson+test@gmail.com');
+      userFindByIdStub.resolves(null);
+
+      UserSaveStub = sinon.stub(User.prototype, 'save').resolves();
+      UserMarkModifiedStub = sinon.stub(User.prototype, 'markModified');
+
+      _handleAuthLogin(req, accessToken, refreshToken, 'google', params, providerProfile, false, null, true)
+        .then((result) => {
+          expect(validatorStub.calledOnce).to.be.true;
+          expect(validatorStub.firstCall.args[0]).to.equal('Bob.Johnson+test@Gmail.com');
+          expect(validatorStub.firstCall.args[1]).to.deep.equal({ gmail_remove_dots: false });
+          expect(userFindOneStub.calledTwice).to.be.true;
+          expect(userFindOneStub.secondCall.args[0]).to.deep.equal({
+            email: { $eq: 'bob.johnson+test@gmail.com' },
+          });
+          expect(userFindByIdStub.calledOnce).to.be.true;
+          expect(req.user.email).to.equal('bob.johnson+test@gmail.com');
+          expect(result).to.equal(req.user);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('Scenario 7: providerProfile.email undefined AND sessionAlreadyLoggedIn = false (should throw EMAIL_REQUIRED)', (done) => {
+      // No logged-in user (login flow)
+      req.user = null;
+
+      const accessToken = 'google-access-token';
+      const refreshToken = 'google-refresh-token';
+      const params = { expires_in: 3600 };
+      const providerProfile = {
+        id: 'google-provider-id-999',
+        name: 'No Email User',
+        gender: 'male',
+        picture: 'https://example.com/nomail.jpg',
+        email: undefined,
+      };
+
+      // No user found by provider ID
+      userFindOneStub.resolves(null);
+      // Don't stub validator - let it naturally return undefined for undefined input
+
+      _handleAuthLogin(req, accessToken, refreshToken, 'google', params, providerProfile, false, null, true)
+        .then(() => {
+          done(new Error('Expected EMAIL_REQUIRED error to be thrown'));
+        })
+        .catch((err) => {
+          expect(err.message).to.equal('EMAIL_REQUIRED');
+          expect(userFindOneStub.calledOnce).to.be.true;
+          done();
+        });
+    });
+
+    it('Scenario 8: providerProfile.email undefined AND sessionAlreadyLoggedIn = true (should succeed)', (done) => {
+      const existingUser = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'existing@example.com',
+        google: undefined,
+        profile: {
+          name: '', // Empty name so it will be replaced
+          gender: '',
+          picture: '',
+        },
+        tokens: [],
+      });
+      existingUser.save = sinon.stub().resolves();
+      existingUser.markModified = sinon.spy();
+
+      req.user = existingUser;
+
+      const accessToken = 'google-access-token';
+      const refreshToken = 'google-refresh-token';
+      const params = { expires_in: 3600 };
+      const providerProfile = {
+        id: 'google-provider-id-888',
+        name: 'User With No Email',
+        picture: 'https://example.com/user.jpg',
+        email: undefined,
+      };
+
+      // No collision with existing user
+      userFindOneStub.resolves(null);
+      userFindByIdStub.resolves(null);
+
+      UserSaveStub = sinon.stub(User.prototype, 'save').resolves();
+      UserMarkModifiedStub = sinon.stub(User.prototype, 'markModified');
+
+      _handleAuthLogin(req, accessToken, refreshToken, 'google', params, providerProfile, true, null, true)
+        .then((result) => {
+          expect(userFindOneStub.calledOnce).to.be.true;
+          expect(result.google).to.equal('google-provider-id-888');
+          // Profile name should be updated (empty || User With No Email = User With No Email)
+          expect(result.profile.name).to.equal('User With No Email');
+          // Save should be called at least once
+          const totalSaveCalls = UserSaveStub.callCount + existingUser.save.callCount;
+          expect(totalSaveCalls).to.be.at.least(1);
           done();
         })
         .catch(done);

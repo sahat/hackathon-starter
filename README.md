@@ -72,8 +72,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 
 - Login
   - **Local Authentication** Sign in with Email and Password, Passwordless
-  - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, X (Twitter), Twitch, GitHub, Discord
-  - **OpenID Connect:** Sign in with LinkedIn
+  - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, LinkedIn, X (Twitter), Twitch, GitHub, Discord
 - **User Profile and Account Management**
   - Gravatar
   - Profile Details
@@ -86,12 +85,12 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - Device camera
 - **AI Examples and Boilerplates**
   - RAG with semantic and embedding caching
-  - Llama Instruct, Llama Vision
+  - Llama 3.3, Llama 4 Scout (vision use case)
   - OpenAI Moderation
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Groq, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
-  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Web Scraping, Tenor (GIFs)
+  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Steam (OpenID), Web Scraping, Tenor (GIFs)
   - **Maps and Location:** Google Maps, HERE Maps
   - **Productivity:** Google Drive, Google Sheets
 
@@ -632,7 +631,6 @@ Required to run the project before your modifications
 | passport-local                | Sign-in with Username and Password plugin.                            |
 | passport-oauth                | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.    |
 | passport-oauth2-refresh       | A library to refresh OAuth 2.0 access tokens using refresh tokens.    |
-| passport-openidconnect        | Sign-in with OpenID Connect                                           |
 | passport-steam-openid         | OpenID 2.0 Steam plugin.                                              |
 | patch-package                 | Fix broken node modules ahead of fixes by maintainers.                |
 | pdfjs-dist                    | PDF parser                                                            |
