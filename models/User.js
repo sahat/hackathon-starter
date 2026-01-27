@@ -20,6 +20,21 @@ const userSchema = new mongoose.Schema(
     loginExpires: Date,
     loginIpHash: String,
 
+    webauthnUserID: { type: Buffer, minlength: 16, maxlength: 64 },
+    webauthnCredentials: [
+      {
+        credentialId: { type: Buffer, required: true },
+        publicKey: { type: Buffer, required: true },
+        counter: { type: Number, required: true, default: 0 },
+        transports: { type: [String], default: [] },
+        deviceType: String,
+        backedUp: Boolean,
+        deviceName: String,
+        createdAt: { type: Date, default: Date.now },
+        lastUsedAt: { type: Date, default: Date.now },
+      },
+    ],
+
     discord: String,
     facebook: String,
     github: String,
@@ -46,7 +61,10 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// Indexes for verification fileds that are queried
+// Webauthn credential Id should be globally unique across all users
+userSchema.index({ 'webauthnCredentials.credentialId': 1 }, { unique: true, sparse: true });
+
+// Indexes for verification fields that are queried
 userSchema.index({ passwordResetToken: 1 });
 userSchema.index({ emailVerificationToken: 1 });
 userSchema.index({ loginToken: 1 });

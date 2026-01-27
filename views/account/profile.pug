@@ -26,15 +26,13 @@ block content
       label.col-md-3.col-form-label.font-weight-bold.text-right Gender
       .col-sm-6.mt-2
         .form-check.form-check-inline
-          input.form-check-input(type='radio', checked=user.profile.gender == 'male', name='gender', value='male', data-toggle='radio')
+          input.form-check-input(type='radio', checked=user.profile.gender == 'male', name='gender', value='male')
           label.form-check-label Male
-
         .form-check.form-check-inline
-          input.form-check-input(type='radio', checked=user.profile.gender == 'female', name='gender', value='female', data-toggle='radio')
+          input.form-check-input(type='radio', checked=user.profile.gender == 'female', name='gender', value='female')
           label.form-check-label Female
-
         .form-check.form-check-inline
-          input.form-check-input(type='radio', checked=user.profile.gender == 'other', name='gender', value='other', data-toggle='radio')
+          input.form-check-input(type='radio', checked=user.profile.gender == 'other', name='gender', value='other')
           label.form-check-label Other
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='location') Location
@@ -50,7 +48,7 @@ block content
         img.profile(src=user.profile.picture ? user.profile.picture : user.gravatar(), width='100', height='100')
     .form-group
       .offset-sm-3.col-md-7.pl-2
-        button.btn.btn.btn-primary(type='submit')
+        button.btn.btn-primary(type='submit')
           i.fas.fa-pencil.fa-sm.me-2
           | Update Profile
 
@@ -74,13 +72,32 @@ block content
           | Change Password
 
   .pb-2.mt-2.mb-4.border-bottom
+    h3 Biometric Login
+  .form-group
+    .offset-sm-3.col-md-7.pl-2
+      if user.webauthnCredentials && user.webauthnCredentials.length
+        p.mb-2 Biometric login is enabled for this account.
+        form(action='/account/webauthn/remove', method='POST')
+          input(type='hidden', name='_csrf', value=_csrf)
+          button.btn.btn-outline-danger(type='submit')
+            i.fas.fa-fingerprint.fa-sm.me-2
+            | Remove biometric login
+      else
+        p#biometricUnsupported.text-muted.mb-2(style='display: none')
+          | Biometric login is not supported by this browser or device.
+        form#biometricEnableForm(action='/account/webauthn/register', method='POST', style='display: none')
+          input(type='hidden', name='_csrf', value=_csrf)
+          button.btn.btn-outline-dark(type='submit')
+            i.fas.fa-fingerprint.fa-sm.me-2
+            | Enable biometric login
+
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Logout Everywhere
 
   form(action='/account/logout-everywhere', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
       p.offset-sm-3.col-md-7.pl-2 This will log you out of all devices and locations.
-
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn-danger(type='submit')
           i.fas.fa-sm.me-2.fa-right-from-bracket
@@ -161,3 +178,13 @@ block content
         p.mb-1: a.text-danger(href='/account/unlink/x') Unlink your X account
       else
         p.mb-1: a(href='/auth/x') Link your X account
+
+  script.
+    // Show biometric enrollment only if WebAuthn is supported
+    if (window.PublicKeyCredential) {
+      const enableForm = document.getElementById('biometricEnableForm');
+      if (enableForm) enableForm.style.display = 'block';
+    } else {
+      const unsupported = document.getElementById('biometricUnsupported');
+      if (unsupported) unsupported.style.display = 'block';
+    }

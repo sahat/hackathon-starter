@@ -1,0 +1,44 @@
+extends ../layout
+
+block head
+  script(src='/js/lib/index.umd.min.js')
+  script#webauthnOptions(type='application/json') !{ publicKey }
+
+block content
+  .text-center
+    h3 Enable Passkey / Biometrics Login
+    p#status.text-muted Click the button below to begin passkey / biometrics setup with your device.
+
+    button#startBtn.btn.btn-primary.mt-3(type='button')
+      Enable Passkey / Biometrics
+
+    #failure.alert.alert-danger.mt-4(style='display: none')
+      p Passkey / Biometrics setup did not complete. You may retry or return to your account.
+      .d-flex.justify-content-center.gap-3
+        button#retryBtn.btn.btn-outline-primary(type='button') Try again
+        a.btn.btn-outline-secondary(href='/account') Back to account
+
+  form#webauthnForm(method='POST', action='/account/webauthn/verify')
+    input(type='hidden', name='_csrf', value=_csrf)
+    input#credential(type='hidden', name='credential')
+
+  script.
+    document.getElementById('retryBtn').addEventListener('click', () => {
+      window.location.reload();
+    });
+    document.getElementById('startBtn').addEventListener('click', async () => {
+      try {
+        const btn = document.getElementById('startBtn');
+        btn.disabled = true;
+        document.getElementById('status').textContent = 'Follow your device prompts to complete setup.';
+        const optionsJSON = JSON.parse(document.getElementById('webauthnOptions').textContent.trim());
+        const attResp = await SimpleWebAuthnBrowser.startRegistration({ optionsJSON });
+        document.getElementById('credential').value = JSON.stringify(attResp);
+        document.getElementById('webauthnForm').submit();
+      } catch (err) {
+        console.error('ERROR:', err);
+        document.getElementById('failure').style.display = 'block';
+        document.getElementById('status').style.display = 'none';
+        document.getElementById('startBtn').disabled = false;
+      }
+    });
