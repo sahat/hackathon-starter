@@ -10,7 +10,7 @@ block content
       .col-md-7
         input#email.form-control(type='email', name='email', placeholder='Email', autofocus, autocomplete='email', required)
     .form-group.row.mb-3
-      .col-md-3.offset-md-3
+      .col-md-4.offset-md-3.d-flex.gap-4
         .form-check
           input#loginByEmailLink.form-check-input(type='checkbox', name='loginByEmailLink')
           label.form-check-label(for='loginByEmailLink') Login by Email Link
@@ -19,11 +19,24 @@ block content
       .col-md-7
         input#password.form-control(type='password', name='password', placeholder='Password', autocomplete='current-password', required)
     .form-group.row
-      .col-md-7.offset-md-3
+      .col-md-8.offset-md-3.d-flex.align-items-center.gap-2
         button.col-md-2.btn.btn-primary(type='submit')
           i.far.fa-user.fa-sm.me-2
           | Login
         a.btn.btn-link(href='/forgot') Forgot your password?
+    .form-group.row
+      .col-md-7.offset-md-3.d-grid.gap-2
+        hr
+    .form-group.row.mb-3
+      .col-md-3.offset-md-3.d-grid.gap-2
+        button#biometricLogin.btn.btn-outline-dark(type='submit', formaction='/login/webauthn-start', formmethod='POST', style='display: none')
+          i.fas.fa-fingerprint.fa-sm.me-2
+          | Continue with passkey / biometrics
+    #biometricEmailOption.form-group.row(style='display: none')
+      .col-md-5.offset-md-3.d-flex.gap-4
+        .form-check
+          input#useEmailWithBiometrics.form-check-input(type='checkbox', name='useEmailWithBiometrics', checked)
+          label.form-check-label(for='useEmailWithBiometrics') Use the above email account for passkey / biometrics login
     .form-group.row
       .col-md-7.offset-md-3.d-grid.gap-2
         hr
@@ -66,16 +79,32 @@ block content
       if (this.checked) {
         passwordGroup.style.display = 'none';
         passwordInput.removeAttribute('required');
-        // Don't clear the password here
       } else {
         passwordGroup.style.display = 'flex';
         passwordInput.setAttribute('required', '');
       }
     });
 
+    document.getElementById('useEmailWithBiometrics').addEventListener('change', function () {
+      const emailInput = document.getElementById('email');
+      if (this.checked) {
+        emailInput.setAttribute('required', '');
+      } else {
+        emailInput.removeAttribute('required');
+      }
+    });
+
     // Only clear password at form submission if email link is selected
-    document.querySelector('form').addEventListener('submit', function (e) {
+    document.querySelector('form').addEventListener('submit', function () {
       if (document.getElementById('loginByEmailLink').checked) {
         document.getElementById('password').value = '';
       }
     });
+
+    // Only show biometric options if the browser supports WebAuthn
+    if (window.PublicKeyCredential) {
+      const biometricBtn = document.getElementById('biometricLogin');
+      const biometricEmailOption = document.getElementById('biometricEmailOption');
+      if (biometricBtn) biometricBtn.style.display = 'inline-block';
+      if (biometricEmailOption) biometricEmailOption.style.display = 'flex';
+    }

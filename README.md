@@ -71,7 +71,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 ## Features
 
 - Login
-  - **Local Authentication** Sign in with Email and Password, Passwordless
+  - **Local Authentication** Sign in with Email and Password, Passwordless, Passkey / Biometrics
   - **OAuth 2.0 Authentication:** Sign in with Google, Microsoft, Facebook, LinkedIn, X (Twitter), Twitch, GitHub, Discord
 - **User Profile and Account Management**
   - Gravatar
@@ -549,13 +549,14 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **controllers**/contact.js       | Controller for contact form.                                         |
 | **controllers**/home.js          | Controller for home page (index).                                    |
 | **controllers**/user.js          | Controller for user account management.                              |
+| **controllers**/webauthn.js      | Controller for webauthn management (passkey / biometrics login)      |
 | **models**/User.js               | Mongoose schema and model for User.                                  |
 | **public**/                      | Static assets (fonts, css, js, img).                                 |
 | **public**/**js**/application.js | Specify client-side JavaScript dependencies.                         |
 | **public**/**js**/app.js         | Place your client-side JavaScript here.                              |
 | **public**/**css**/main.scss     | Main stylesheet for your app.                                        |
 | **test**/\*.js                   | Tests, related configs and helpers.                                  |
-| **views/account**/               | Templates for _login, password reset, signup, profile_.              |
+| **views/account**/               | Templates for _login, password reset, signup, profile, webauthn_     |
 | **views/ai**/                    | Templates for AI examples and boilerplates.                          |
 | **views/api**/                   | Templates for API examples.                                          |
 | **views/partials**/flash.pug     | Error, info and success flash notifications.                         |
@@ -591,6 +592,7 @@ Required to run the project before your modifications
 | @googleapis/drive             | Google Drive API integration library.                                 |
 | @googleapis/sheets            | Google Sheets API integration library.                                |
 | @huggingface/inference        | Client library for Hugging Face Inference providers                   |
+| @keyv/mongo                   | MongoDB storage adapter for Keyv                                      |
 | @langchain/community          | Third party integrations for Langchain                                |
 | @langchain/core               | Base LangChain abstractions and Expression Language                   |
 | @langchain/mongodb            | MongoDB integrations for LangChain                                    |
@@ -600,6 +602,8 @@ Required to run the project before your modifications
 | @octokit/rest                 | GitHub API library.                                                   |
 | @passport-js/passport-twitter | X (Twitter) login support (OAuth 2).                                  |
 | @popperjs/core                | Frontend js library for poppers and tooltips.                         |
+| @simplewebauthn/browser       | WebAuthn frontend library (passkey / biometrics authentication)       |
+| @simplewebauthn/server        | WebAuthn backend library (passkey / biometrics authentication)        |
 | bootstrap                     | CSS Framework.                                                        |
 | bootstrap-social              | Social buttons library.                                               |
 | bowser                        | User agent parser                                                     |
@@ -613,6 +617,7 @@ Required to run the project before your modifications
 | express-rate-limit            | Rate limiting middleware for abuse protection.                        |
 | express-session               | Simple session middleware for Express.                                |
 | jquery                        | Front-end JS library to interact with HTML elements.                  |
+| keyv                          | key-value storage with support for multiple backends                  |
 | langchain                     | Framework for developing LLM applications                             |
 | lastfm                        | Last.fm API library.                                                  |
 | lusca                         | CSRF middleware.                                                      |

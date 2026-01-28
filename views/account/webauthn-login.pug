@@ -1,0 +1,43 @@
+extends ../layout
+
+block head
+  script(src='/js/lib/index.umd.min.js')
+  script#webauthnOptions(type='application/json') !{ publicKey }
+
+block content
+  .text-center
+    h3 Passkey / Biometrics Login
+    p#status.text-muted Click the button below to authenticate with your device.
+    button#startBtn.btn.btn-primary.mt-3(type='button') Log me in
+
+    #failure.alert.alert-danger.mt-4(style='display: none')
+      p Login did not complete. You may retry or use another login method.
+      .d-flex.justify-content-center.gap-3
+        button#retryBtn.btn.btn-outline-primary(type='button') Try again
+        a.btn.btn-outline-secondary(href='/login') Back to login page
+
+  form#webauthnForm(method='POST', action='/login/webauthn-verify')
+    input(type='hidden', name='_csrf', value=_csrf)
+    input#credential(type='hidden', name='credential')
+
+  script.
+    document.getElementById('retryBtn').addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    document.getElementById('startBtn').addEventListener('click', async () => {
+      try {
+        const btn = document.getElementById('startBtn');
+        btn.disabled = true;
+        document.getElementById('status').textContent = 'Follow your device prompts to complete authentication.';
+        const optionsJSON = JSON.parse(document.getElementById('webauthnOptions').textContent.trim());
+        const asseResp = await SimpleWebAuthnBrowser.startAuthentication({ optionsJSON });
+        document.getElementById('credential').value = JSON.stringify(asseResp);
+        document.getElementById('webauthnForm').submit();
+      } catch (err) {
+        console.error('ERROR:', err);
+        document.getElementById('failure').style.display = 'block';
+        document.getElementById('status').style.display = 'none';
+        document.getElementById('startBtn').disabled = false;
+      }
+    });

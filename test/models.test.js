@@ -1,3 +1,4 @@
+const crypto = require('node:crypto');
 const { expect } = require('chai');
 const sinon = require('sinon');
 const bcrypt = require('@node-rs/bcrypt');
@@ -32,6 +33,7 @@ describe('User Model', () => {
     if (mongoose.connection.db) {
       await mongoose.connection.db.dropDatabase();
     }
+    await User.createIndexes();
   });
 
   afterEach(() => {
@@ -173,6 +175,87 @@ describe('User Model', () => {
     const gravatar = user.gravatar();
     expect(gravatar.includes(sha256)).to.equal(true);
   });
+
+  it('should define webauthnUserID as a Buffer in the schema', () => {
+    const path = User.schema.paths.webauthnUserID;
+    expect(path).to.exist;
+    expect(path.instance).to.equal('Buffer');
+  });
+
+  it('should persist webauthnUserID across save and reload', async () => {
+    const user = await User.create({
+      email: 'webauthn@test.com',
+      password: 'password123',
+    });
+
+    const webauthnUserID = crypto.randomBytes(32);
+    user.webauthnUserID = webauthnUserID;
+    await user.save();
+
+    const reloaded = await User.findById(user._id);
+
+    expect(reloaded.webauthnUserID).to.exist;
+    expect(Buffer.isBuffer(reloaded.webauthnUserID)).to.be.true;
+    expect(reloaded.webauthnUserID.equals(webauthnUserID)).to.be.true;
+  });
+
+  it('should enforce global uniqueness of webauthn credentialId', async () => {
+    const credentialId = Buffer.from('duplicate-credential-id');
+
+    await User.create({
+      email: 'user1@test.com',
+      password: 'password',
+      webauthnCredentials: [{ credentialId, publicKey: Buffer.from([1]), counter: 0 }],
+    });
+
+    try {
+      await User.create({
+        email: 'user2@test.com',
+        password: 'password',
+        webauthnCredentials: [{ credentialId, publicKey: Buffer.from([2]), counter: 0 }],
+      });
+      throw new Error('Expected duplicate key error');
+    } catch (err) {
+      expect(err).to.have.property('code', 11000);
+    }
+  });
+
+  it('should persist webauthn publicKey as binary without corruption', async () => {
+    const publicKey = crypto.randomBytes(65);
+
+    const user = await User.create({
+      email: 'binary@test.com',
+      password: 'password',
+      webauthnCredentials: [
+        {
+          credentialId: crypto.randomBytes(32),
+          publicKey,
+          counter: 0,
+        },
+      ],
+    });
+
+    const reloaded = await User.findById(user._id);
+    const storedKey = reloaded.webauthnCredentials[0].publicKey;
+
+    expect(Buffer.isBuffer(storedKey)).to.be.true;
+    expect(storedKey.equals(publicKey)).to.be.true;
+  });
+
+  it('should not regenerate webauthnUserID once set', async () => {
+    const user = await User.create({
+      email: 'stable@test.com',
+      password: 'password',
+      webauthnUserID: crypto.randomBytes(32),
+    });
+
+    const original = user.webauthnUserID;
+    await user.save();
+
+    const reloaded = await User.findById(user._id);
+    expect(reloaded.webauthnUserID.equals(original)).to.be.true;
+  });
+
   describe('Token Verification', () => {
     it('should verify valid token and IP hash before expiration', () => {
       const token = 'testtoken123';

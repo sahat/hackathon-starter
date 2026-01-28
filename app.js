@@ -72,6 +72,7 @@ const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const aiController = require('./controllers/ai');
 const contactController = require('./controllers/contact');
+const webauthnController = require('./controllers/webauthn');
 
 /**
  * API keys and Passport configuration.
@@ -149,7 +150,7 @@ app.use((req, res, next) => {
 const isSafeRedirect = (url) => /^\/[a-zA-Z0-9/_-]*$/.test(url);
 app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
-  if (!req.user && req.path !== '/login' && req.path !== '/signup' && !req.path.startsWith('/auth') && !req.path.includes('.')) {
+  if (!req.user && req.path !== '/login' && !req.path.startsWith('/login/webauthn-') && req.path !== '/signup' && !req.path.startsWith('/auth') && !req.path.includes('.')) {
     const returnTo = req.originalUrl;
     if (isSafeRedirect(returnTo)) {
       req.session.returnTo = returnTo;
@@ -175,6 +176,7 @@ app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/chart.js/di
 app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/@popperjs/core/dist/umd'), { maxAge: 31557600000 }));
 app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js'), { maxAge: 31557600000 }));
 app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/jquery/dist'), { maxAge: 31557600000 }));
+app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/@simplewebauthn/browser/dist/bundle'), { maxAge: 31557600000 }));
 app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 31557600000 }));
 app.use('/image-cache', express.static(path.join(__dirname, 'tmp/image-cache'), { maxAge: 31557600000 }));
 
@@ -192,6 +194,9 @@ app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', loginLimiter, userController.postLogin);
 app.get('/login/verify/:token', loginLimiter, userController.getLoginByEmail);
+app.post('/login/webauthn-start', loginLimiter, webauthnController.postLoginStart);
+app.get('/login/webauthn-start', (req, res) => res.redirect('/login')); // webauthn-start requires a POST
+app.post('/login/webauthn-verify', loginLimiter, webauthnController.postLoginVerify);
 app.get('/logout', userController.logout);
 app.get('/forgot', userController.getForgot);
 app.post('/forgot', strictLimiter, userController.postForgot);
@@ -209,6 +214,10 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.post('/account/logout-everywhere', passportConfig.isAuthenticated, userController.postLogoutEverywhere);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.post('/account/webauthn/register', passportConfig.isAuthenticated, webauthnController.postRegisterStart);
+app.get('/account/webauthn/register', (req, res) => res.redirect('/account')); // webauthn/register start requires a POST
+app.post('/account/webauthn/verify', passportConfig.isAuthenticated, webauthnController.postRegisterVerify);
+app.post('/account/webauthn/remove', passportConfig.isAuthenticated, webauthnController.postRemove);
 
 /**
  * API examples routes.
