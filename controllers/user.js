@@ -310,6 +310,19 @@ exports.postUpdateProfile = async (req, res, next) => {
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
     user.profile.website = req.body.website || '';
+
+    // Handle picture source selection
+    if (typeof req.body.pictureSource === 'string') {
+      const newProfilePictureSource = req.body.pictureSource.trim();
+      if (newProfilePictureSource && user.profile.pictures && user.profile.pictures.has(newProfilePictureSource)) {
+        user.profile.pictureSource = newProfilePictureSource;
+        user.profile.picture = user.profile.pictures.get(newProfilePictureSource);
+      } else {
+        req.flash('errors', { msg: 'Invalid profile picture change request.' });
+        return res.redirect('/account');
+      }
+    }
+
     await user.save();
     req.flash('success', { msg: 'Profile information has been updated.' });
     res.redirect('/account');
@@ -383,6 +396,32 @@ exports.getOauthUnlink = async (req, res, next) => {
     const user = await User.findById(req.user.id);
     user[provider.toLowerCase()] = undefined;
     const tokensWithoutProviderToUnlink = user.tokens.filter((token) => token.kind !== provider.toLowerCase());
+
+    // Remove provider's picture entry
+    if (user.profile.pictures && user.profile.pictures.has(provider.toLowerCase())) {
+      user.profile.pictures.delete(provider.toLowerCase());
+
+      // If current picture source was the unlinked provider, select fallback
+      if (user.profile.pictureSource === provider.toLowerCase()) {
+        let fallbackSource = null;
+
+        // Priority order: gravatar -> any remaining provider -> undefined
+        if (user.profile.pictures.has('gravatar')) {
+          fallbackSource = 'gravatar';
+        } else if (user.profile.pictures.size > 0) {
+          fallbackSource = user.profile.pictures.keys().next().value;
+        }
+
+        if (fallbackSource) {
+          user.profile.pictureSource = fallbackSource;
+          user.profile.picture = user.profile.pictures.get(fallbackSource);
+        } else {
+          user.profile.pictureSource = undefined;
+          user.profile.picture = undefined;
+        }
+      }
+    }
+
     // Some auth providers do not provide an email address in the user profile.
     // As a result, we need to verify that unlinking the provider is safe by ensuring
     // that another login method exists.

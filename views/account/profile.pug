@@ -44,8 +44,24 @@ block content
         input#website.form-control(type='text', name='website', value=user.profile.website, autocomplete='url')
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right Profile Picture
-      .col-sm-4.mb-2
-        img.profile(src=user.profile.picture ? user.profile.picture : user.gravatar(), width='100', height='100')
+      .col-md-9.mb-2
+        .d-flex.align-items-center.gap-4
+          .text-center
+            img.rounded.border(src=user.profile.picture || user.gravatar(), width='96', height='96', referrerpolicy='no-referrer')
+            if user.profile.pictureSource
+              .small.text-muted.mt-1
+                div Current Picture
+                .small.text-muted From: #{ user.profile.pictureSource.charAt(0).toUpperCase() + user.profile.pictureSource.slice(1) }
+
+          if user.profile.pictures && user.profile.pictures.size > 1
+            .flex-grow-1
+              .d-flex.flex-wrap.gap-3
+                each picture, provider in Object.fromEntries(user.profile.pictures)
+                  label.border.rounded.p-2.text-center(data-picture-tile, class=user.profile.pictureSource === provider ? 'border-primary bg-light' : 'border-secondary', style='cursor: pointer; width: 110px')
+                    input.form-check-input.visually-hidden(type='radio', name='pictureSource', value=provider, checked=user.profile.pictureSource === provider)
+                    img.rounded.mb-1(src=picture, width='64', height='64', referrerpolicy='no-referrer')
+                    .small.text-muted= provider.charAt(0).toUpperCase() + provider.slice(1)
+
     .form-group
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn-primary(type='submit')
@@ -188,3 +204,18 @@ block content
       const unsupported = document.getElementById('biometricUnsupported');
       if (unsupported) unsupported.style.display = 'block';
     }
+
+  script.
+    document.addEventListener('click', (e) => {
+      const tile = e.target.closest('[data-picture-tile]');
+      if (!tile) return;
+
+      document.querySelectorAll('[data-picture-tile]').forEach((t) => {
+        t.classList.remove('border-primary', 'bg-light');
+        t.classList.add('border-secondary');
+      });
+
+      tile.classList.remove('border-secondary');
+      tile.classList.add('border-primary', 'bg-light');
+      tile.querySelector('input[type=radio]').checked = true;
+    });

@@ -583,7 +583,7 @@ describe('Passport Config', () => {
       done();
     });
 
-    it('Scenario 1: Link flow – successful provider link', (done) => {
+    it('Scenario 1: Link flow - successful provider link', (done) => {
       const existingUser = new User({
         _id: new mongoose.Types.ObjectId(),
         email: 'existing@example.com',
@@ -635,7 +635,7 @@ describe('Passport Config', () => {
         .catch(done);
     });
 
-    it('Scenario 2: Link flow – provider collision', (done) => {
+    it('Scenario 2: Link flow - provider collision', (done) => {
       const currentUser = new User({
         _id: new mongoose.Types.ObjectId(),
         email: 'current@example.com',
@@ -681,7 +681,7 @@ describe('Passport Config', () => {
         .catch(done);
     });
 
-    it('Scenario 3: Login flow – returning user by provider ID', (done) => {
+    it('Scenario 3: Login flow - returning user by provider ID', (done) => {
       const existingUser = new User({
         _id: new mongoose.Types.ObjectId(),
         email: 'existing@example.com',
@@ -728,7 +728,7 @@ describe('Passport Config', () => {
         .catch(done);
     });
 
-    it('Scenario 4: Login flow – email collision', (done) => {
+    it('Scenario 4: Login flow - email collision', (done) => {
       // No logged-in user (login flow)
       req.user = null;
 
@@ -779,7 +779,7 @@ describe('Passport Config', () => {
         .catch(done);
     });
 
-    it('Scenario 5: Login flow – new user creation', (done) => {
+    it('Scenario 5: Login flow - new user creation', (done) => {
       // No logged-in user (login flow)
       req.user = null;
 
@@ -945,6 +945,128 @@ describe('Passport Config', () => {
           done();
         })
         .catch(done);
+    });
+
+    it('Scenario 9: Link flow - legacy upgrade (no pictures map)', async () => {
+      const user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'legacy@example.com',
+        profile: {
+          picture: 'old-picture',
+        },
+        tokens: [],
+      });
+      user.save = sinon.stub().resolves();
+      req.user = user;
+      userFindOneStub.resolves(null);
+      userFindByIdStub.resolves(user);
+      const providerProfile = {
+        id: 'facebook-id',
+        picture: 'https://facebook/pic.jpg',
+      };
+      const result = await _handleAuthLogin(req, 'token', null, 'facebook', {}, providerProfile, true, null, true);
+      expect(result.profile.pictures).to.be.instanceOf(Map);
+      expect(result.profile.pictures.get('facebook')).to.equal('https://facebook/pic.jpg');
+      expect(result.profile.picture).to.equal('https://facebook/pic.jpg');
+      expect(result.profile.pictureSource).to.equal('facebook');
+    });
+
+    it('Scenario 10: Link flow - legacy upgrade (missing pictureSource)', async () => {
+      const user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'legacy@example.com',
+        profile: {
+          picture: 'old-picture',
+          pictures: new Map([['google', 'google-pic']]),
+        },
+        tokens: [],
+      });
+      user.save = sinon.stub().resolves();
+      req.user = user;
+      userFindOneStub.resolves(null);
+      userFindByIdStub.resolves(user);
+      const providerProfile = {
+        id: 'facebook-id',
+        picture: 'https://facebook/pic.jpg',
+      };
+      const result = await _handleAuthLogin(req, 'token', null, 'facebook', {}, providerProfile, true, null, true);
+      expect(result.profile.pictureSource).to.equal('facebook');
+      expect(result.profile.pictures.get('facebook')).to.equal('https://facebook/pic.jpg');
+    });
+
+    it('Scenario 11: Link flow - gravatar upgraded to provider', async () => {
+      const user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'user@example.com',
+        profile: {
+          picture: 'gravatar-url',
+          pictureSource: 'gravatar',
+          pictures: new Map([['gravatar', 'gravatar-url']]),
+        },
+        tokens: [],
+      });
+      user.save = sinon.stub().resolves();
+      req.user = user;
+      userFindOneStub.resolves(null);
+      userFindByIdStub.resolves(user);
+      const providerProfile = {
+        id: 'github-id',
+        picture: 'https://github/pic.jpg',
+      };
+      const result = await _handleAuthLogin(req, 'token', null, 'github', {}, providerProfile, true, null, true);
+      expect(result.profile.picture).to.equal('https://github/pic.jpg');
+      expect(result.profile.pictureSource).to.equal('github');
+      expect(result.profile.pictures.get('github')).to.equal('https://github/pic.jpg');
+    });
+
+    it('Scenario 12: Link flow - preserve non-gravatar primary picture', async () => {
+      const user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'user@example.com',
+        profile: {
+          picture: 'google-pic',
+          pictureSource: 'google',
+          pictures: new Map([['google', 'google-pic']]),
+        },
+        tokens: [],
+      });
+      user.save = sinon.stub().resolves();
+      req.user = user;
+      userFindOneStub.resolves(null);
+      userFindByIdStub.resolves(user);
+      const providerProfile = {
+        id: 'facebook-id',
+        picture: 'https://facebook/pic.jpg',
+      };
+      const result = await _handleAuthLogin(req, 'token', null, 'facebook', {}, providerProfile, true, null, true);
+      expect(result.profile.picture).to.equal('google-pic');
+      expect(result.profile.pictureSource).to.equal('google');
+      expect(result.profile.pictures.get('facebook')).to.equal('https://facebook/pic.jpg');
+    });
+
+    it('Scenario 13: Link flow - relink same provider updates picture entry', async () => {
+      const user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: 'user@example.com',
+        profile: {
+          picture: 'gravatar-url',
+          pictureSource: 'gravatar',
+          pictures: new Map([['google', 'old-google-pic']]),
+        },
+        tokens: [],
+      });
+      user.save = sinon.stub().resolves();
+      req.user = user;
+      userFindOneStub.resolves(null);
+      userFindByIdStub.resolves(user);
+      const providerProfile = {
+        id: 'google-id',
+        picture: 'new-google-pic',
+      };
+      const result = await _handleAuthLogin(req, 'token', null, 'google', {}, providerProfile, true, null, true);
+      expect(result.profile.pictures.get('google')).to.equal('new-google-pic');
+      expect(result.profile.picture).to.equal('new-google-pic');
+      expect(result.profile.pictureSource).to.equal('google');
     });
   });
 });
