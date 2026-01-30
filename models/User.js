@@ -56,6 +56,12 @@ const userSchema = new mongoose.Schema(
       location: String,
       website: String,
       picture: String,
+      pictureSource: String,
+
+      pictures: {
+        type: Map,
+        of: String,
+      },
     },
   },
   { timestamps: true },
@@ -135,6 +141,34 @@ userSchema.methods.gravatar = function gravatarUrl(size) {
   return `https://gravatar.com/avatar/${sha256}?s=${size}&d=retro`;
 };
 
+userSchema.pre('save', function updateGravatarOnEmailChange() {
+  if (!this.isModified('email')) return;
+  if (!this.profile.pictures) {
+    this.profile.pictures = new Map();
+  }
+  if (!this.profile.pictureSource) {
+    this.profile.pictureSource = 'gravatar';
+  }
+  const url = this.gravatar();
+  this.profile.pictures.set('gravatar', url);
+  if (this.profile.pictureSource === 'gravatar') {
+    this.profile.picture = url;
+  }
+});
+
+userSchema.methods.noMultiPictureUpgrade = function noMultiPictureUpgrade() {
+  if (!this.profile.pictures) {
+    this.profile.pictures = new Map();
+  }
+  if (!this.profile.pictureSource) {
+    this.profile.pictureSource = 'gravatar';
+  }
+  const url = this.gravatar();
+  this.profile.pictures.set('gravatar', url);
+  if (this.profile.pictureSource === 'gravatar') {
+    this.profile.picture = url;
+  }
+};
 // Helper methods for creating hashed IP addresses
 // This is used to prevent CSRF attacks by ensuring that the token is valid for
 // the IP address it was generated from

@@ -98,7 +98,21 @@ async function handleAuthLogin(req, accessToken, refreshToken, providerName, par
     user[providerName] = providerProfile.id;
     user.profile.name = user.profile.name || providerProfile.name;
     user.profile.gender = user.profile.gender || providerProfile.gender;
-    user.profile.picture = user.profile.picture || providerProfile.picture;
+
+    if (providerProfile.picture) {
+      if (!user.profile.pictures || user.profile.pictureSource === undefined) {
+        // legacy account (pre-multi-picture support)
+        user.profile.pictures = new Map();
+        user.profile.picture = providerProfile.picture;
+        user.profile.pictureSource = providerName;
+      }
+      user.profile.pictures.set(providerName, providerProfile.picture);
+      if (user.profile.pictureSource === 'gravatar') {
+        user.profile.picture = providerProfile.picture;
+        user.profile.pictureSource = providerName;
+      }
+    }
+
     user.profile.location = user.profile.location || providerProfile.location;
     user.profile.website = user.profile.website || providerProfile.website;
     user.profile.email = user.profile.email || providerProfile.email;
@@ -131,7 +145,14 @@ async function handleAuthLogin(req, accessToken, refreshToken, providerName, par
   }
   user.profile.name = providerProfile.name;
   user.profile.gender = providerProfile.gender;
-  user.profile.picture = providerProfile.picture;
+
+  if (providerProfile.picture) {
+    user.profile.pictures = new Map();
+    user.profile.pictures.set(providerName, providerProfile.picture);
+    user.profile.picture = providerProfile.picture;
+    user.profile.pictureSource = providerName;
+  }
+
   user.profile.location = providerProfile.location;
   user.profile.website = providerProfile.website;
   user.profile.email = providerProfile.email;

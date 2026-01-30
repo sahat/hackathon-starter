@@ -564,6 +564,138 @@ describe('User Model', () => {
       const url = user.gravatar(200);
       expect(url).to.include('00000000000000000000000000000000');
     });
+
+    it('Scenario 1: Gravatar generation when email is present - after save', async () => {
+      const user = new User({
+        email: 'test@gmail.com',
+        password: 'password123',
+      });
+
+      await user.save();
+
+      const sha256 = '87924606b4131a8aceeeae8868531fbb9712aaa07a5d3a756b26ce0f5d6ca674';
+
+      expect(user.profile.pictures).to.be.instanceOf(Map);
+      expect(user.profile.pictures.get('gravatar')).to.include(sha256);
+      expect(user.profile.pictureSource).to.equal('gravatar');
+      expect(user.profile.picture).to.include(sha256);
+    });
+
+    it('Scenario 2: Gravatar update on email change', async () => {
+      const user = new User({
+        email: 'user1@example.com',
+        password: 'password123',
+      });
+
+      await user.save();
+
+      const originalGravatar = user.profile.pictures.get('gravatar');
+      expect(user.profile.picture).to.equal(originalGravatar);
+
+      // Change email
+      user.email = 'user2@example.com';
+      await user.save();
+
+      const newGravatar = user.profile.pictures.get('gravatar');
+      expect(newGravatar).to.not.equal(originalGravatar);
+      expect(user.profile.picture).to.equal(newGravatar);
+    });
+
+    it('Scenario 3: noMultiPictureUpgrade behavior', () => {
+      const user = new User({
+        email: 'test@example.com',
+        password: 'password123',
+      });
+
+      user.noMultiPictureUpgrade();
+
+      expect(user.profile.pictures).to.be.instanceOf(Map);
+      expect(user.profile.pictureSource).to.equal('gravatar');
+      expect(user.profile.pictures.get('gravatar')).to.include(user.gravatar());
+      expect(user.profile.picture).to.equal(user.gravatar());
+    });
+
+    it('Scenario 4: Preserve non-gravatar pictureSource', async () => {
+      const user = new User({
+        email: 'test@example.com',
+        password: 'password123',
+        profile: {
+          pictureSource: 'facebook',
+          picture: 'https://facebook/pic.jpg',
+        },
+      });
+
+      await user.save();
+
+      expect(user.profile.pictures.get('gravatar')).to.include(user.gravatar());
+      expect(user.profile.picture).to.equal('https://facebook/pic.jpg');
+      expect(user.profile.pictureSource).to.equal('facebook');
+    });
+
+    it('Scenario 5: Preserve non-gravatar pictureSource - noMultiPictureUpgrade', () => {
+      const user = new User({
+        email: 'test@example.com',
+        password: 'password123',
+        profile: {
+          pictureSource: 'github',
+          picture: 'https://github/pic.jpg',
+        },
+      });
+
+      user.noMultiPictureUpgrade();
+
+      expect(user.profile.pictures.get('gravatar')).to.include(user.gravatar());
+      expect(user.profile.picture).to.equal('https://github/pic.jpg');
+      expect(user.profile.pictureSource).to.equal('github');
+    });
+
+    it('Scenario 6: Legacy account upgrade path', () => {
+      const user = new User({
+        email: 'legacy@example.com',
+        password: 'password123',
+        profile: {
+          picture: 'old-picture.jpg',
+          // pictureSource and pictures are undefined
+        },
+      });
+
+      user.noMultiPictureUpgrade();
+
+      expect(user.profile.pictures).to.be.instanceOf(Map);
+      expect(user.profile.pictures.get('gravatar')).to.include(user.gravatar());
+      expect(user.profile.pictureSource).to.equal('gravatar');
+      expect(user.profile.picture).to.equal(user.gravatar());
+    });
+
+    it('Scenario 7: Map persistence', async () => {
+      const user = new User({
+        email: 'maptest@example.com',
+        password: 'password123',
+      });
+
+      await user.save();
+
+      const reloaded = await User.findById(user._id);
+
+      expect(reloaded.profile.pictures).to.be.instanceOf(Map);
+      expect(reloaded.profile.pictures.get('gravatar')).to.include(user.gravatar());
+    });
+
+    it('Scenario 8: No duplicate gravatar entries', async () => {
+      const user = new User({
+        email: 'noduplicate@example.com',
+        password: 'password123',
+      });
+
+      await user.save();
+      const initialSize = user.profile.pictures.size;
+
+      // Save again without changing email
+      await user.save();
+
+      expect(user.profile.pictures.size).to.equal(initialSize);
+      expect(user.profile.pictures.get('gravatar')).to.include(user.gravatar());
+    });
   });
 
   describe('Token Cleanup on Save', () => {
