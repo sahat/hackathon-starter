@@ -62,7 +62,6 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - [JavaScript Date](#-javascript-date-cheatsheet)
   - [Mongoose Cheatsheet](#mongoose-cheatsheet)
 - [Deployment](#deployment)
-- [Docker](#docker)
 - [Production](#production)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
@@ -564,12 +563,9 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **views/partials**/footer.pug    | Footer partial template.                                             |
 | **views**/layout.pug             | Base template.                                                       |
 | **views**/home.pug               | Home page template.                                                  |
-| .dockerignore                    | Folder and files ignored by docker usage.                            |
 | .env.example                     | Your API keys, tokens, passwords and database URI.                   |
 | .gitignore                       | Folder and files ignored by git.                                     |
 | app.js                           | The main application file.                                           |
-| docker-compose.yml               | Docker compose configuration file.                                   |
-| Dockerfile                       | Docker configuration file.                                           |
 | eslint.config.mjs                | Rules for eslint linter.                                             |
 | package.json                     | NPM dependencies.                                                    |
 | package-lock.json                | Contains exact versions of NPM dependencies in package.json.         |
@@ -1387,28 +1383,6 @@ User.aggregate({ $group: { _id: null, total: { $sum: '$votes' } } }, (err, votes
 ```
 
 :top: <sub>[**back to top**](#table-of-contents)</sub>
-
-## Docker
-
-You will need to install docker and docker-compose on your system. If you are using WSL, you will need to install Docker Desktop on Windows and docker-compose on WSL.
-
-- [Docker installation](https://docs.docker.com/engine/installation/)
-
-After installing docker, start the application with the following commands :
-
-```
-# To build the project while suppressing most of the build messages
-docker-compose build web
-
-# To build the project without suppressing the build messages or using cached data
-docker-compose build --no-cache --progress=plain web
-
-# To start the application (or to restart after making changes to the source code)
-docker-compose up web
-
-```
-
-To view the app, find your docker IP address + port 8080 ( this will typically be `http://localhost:8080/` ). To use a port other than 8080, you would need to modify the port in app.js, Dockerfile, and docker-compose.yml.
 
 ## Deployment
 

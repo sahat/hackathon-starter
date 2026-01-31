@@ -41,7 +41,7 @@ The following is a list of various code that you may not potentially be using an
   - Some or all of the last form-group set, which are the social login choices
 - views/account/profile.pug
   - Link/unlink buttons for GitHub, LinkedIn, Steam
-- Remove README, changelog, this guide, Docker-related files if not using them
+- Remove README, changelog and this guide if not using them
 - Create a domain whitelist for your app in Here's developer portal if you are using the HERE Maps API.
 - Add unit tests so you can test and incorporate dependency and upstream updates with less effort. GPT tools may create some good unit tests with very low effort.
 
