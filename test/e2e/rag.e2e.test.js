@@ -118,13 +118,13 @@ test.describe('RAG File Upload Integration', () => {
 
   test.afterAll(async () => {
     // Clean up MongoDB rag_chunks collection after all tests
-    // Remove all documents that have fileName: 'examplecorp_test_fixture.pdf'
+    // Remove all documents that have fileName: 'test_examplecorp_fixture.pdf'
     const client = new MongoClient(process.env.MONGODB_URI);
     try {
       await client.connect();
       const db = client.db();
       const collection = db.collection('rag_chunks');
-      const result = await collection.deleteMany({ fileName: 'examplecorp_test_fixture.pdf' });
+      const result = await collection.deleteMany({ fileName: 'test_examplecorp_fixture.pdf' });
       console.log(`Cleaned up ${result.deletedCount} documents from rag_chunks collection`);
     } catch (err) {
       console.error('Error cleaning up rag_chunks:', err);
@@ -174,8 +174,8 @@ test.describe('RAG File Upload Integration', () => {
 
     // Create test PDF dynamically
     const ragInputDir = path.join(__dirname, '../../rag_input');
-    const targetFile = path.join(ragInputDir, 'examplecorp_test_fixture.pdf');
-    const ingestedFile = path.join(ragInputDir, 'ingested', 'examplecorp_test_fixture.pdf');
+    const targetFile = path.join(ragInputDir, 'test_examplecorp_fixture.pdf');
+    const ingestedFile = path.join(ragInputDir, 'ingested', 'test_examplecorp_fixture.pdf');
 
     // Ensure rag_input directory exists
     if (!fs.existsSync(ragInputDir)) {
@@ -213,7 +213,7 @@ test.describe('RAG File Upload Integration', () => {
       await expect(successAlert).toBeVisible();
 
       // Verify the file appears in the Ingested Files list
-      const fileInList = page.locator('table.table-striped tbody tr td', { hasText: 'examplecorp_test_fixture.pdf' });
+      const fileInList = page.locator('table.table-striped tbody tr td', { hasText: 'test_examplecorp_fixture.pdf' });
       await expect(fileInList).toBeVisible({ timeout: 5000 });
 
       // Poll for index readiness instead of blind wait
