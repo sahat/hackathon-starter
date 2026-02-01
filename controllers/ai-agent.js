@@ -17,7 +17,7 @@ const observabilityMiddleware = createMiddleware({
     const messageCount = state.messages?.length || 0;
     runtime.writer?.({
       type: 'status',
-      emoji: '🤖',
+      emoji: '[LLM]',
       stage: 'before_model',
       message: messageCount > 1 ? 'Model analyzing conversation...' : 'Model analyzing your request...',
       details: { messageCount },
@@ -32,7 +32,7 @@ const observabilityMiddleware = createMiddleware({
 
     runtime.writer?.({
       type: 'status',
-      emoji: hasToolCalls ? '🔧' : '✅',
+      emoji: hasToolCalls ? '[TOOL]' : '[LLM]',
       stage: 'after_model',
       message: hasToolCalls ? `Model requesting ${lastMessage.tool_calls.length} tool(s)...` : 'Response ready',
       details: {
@@ -51,7 +51,7 @@ const observabilityMiddleware = createMiddleware({
     // Emit "starting tool" status
     request.runtime.writer?.({
       type: 'status',
-      emoji: '⚡',
+      emoji: '[TOOL:START]',
       stage: 'tool_start',
       message: `Executing tool: ${toolName}`,
       details: { toolName, args: toolArgs },
@@ -80,7 +80,7 @@ const observabilityMiddleware = createMiddleware({
 
       request.runtime.writer?.({
         type: 'status',
-        emoji: success ? '✅' : '⚠️',
+        emoji: success ? '[TOOL]' : '[WARN]',
         stage: 'tool_end',
         message: `Tool ${toolName}: ${resultSummary}`,
         details: { toolName, duration, success },
@@ -92,7 +92,7 @@ const observabilityMiddleware = createMiddleware({
 
       request.runtime.writer?.({
         type: 'status',
-        emoji: '❌',
+        emoji: '[ERROR]',
         stage: 'tool_error',
         message: `Tool ${toolName} failed: ${error.message}`,
         details: { toolName, duration, error: error.message },
@@ -183,8 +183,9 @@ exports.getAIAgentChat = async (req, res) => {
 
       // With multiple streamMode, chunks come as [mode, data] tuples
       const [streamMode, data] = Array.isArray(chunk) && chunk.length === 2 ? chunk : ['updates', chunk]; // Fallback for single mode
-
-      console.log(`Chunk ${chunkCount} [${streamMode}]:`, JSON.stringify(data, null, 2));
+      // Uncomment for to see the raw chunk data in console for debugging
+      // console.log(`Chunk ${chunkCount} [${streamMode}]:`, JSON.stringify(data, null, 2));
+      console.log(`Chunk ${chunkCount} [${streamMode}] received`);
 
       // Handle 'custom' mode events (from middleware and config.writer in tools)
       if (streamMode === 'custom') {
@@ -232,7 +233,7 @@ exports.getAIAgentChat = async (req, res) => {
             if (toolCalls && toolCalls.length > 0) {
               const toolName = toolCalls[0].name;
               const args = toolCalls[0].args || {};
-              statusMessage = `🔧 Agent calling tool: ${toolName}`;
+              statusMessage = `[DECODE] Agent calling tool: ${toolName}`;
               if (args && args.orderId) {
                 statusMessage += ` (Order: ${args.orderId})`;
               } else if (args && args.input) {
@@ -241,7 +242,7 @@ exports.getAIAgentChat = async (req, res) => {
             } else if (content) {
               const contentStr = typeof content === 'string' ? content : JSON.stringify(content);
               if (contentStr.trim() && contentStr.length > 0) {
-                statusMessage = '💬 Agent generating response...';
+                statusMessage = '[LLM] Agent generating response...';
               }
             }
           });
@@ -257,7 +258,7 @@ exports.getAIAgentChat = async (req, res) => {
       }
 
       if (data.tools) {
-        let statusMessage = '⚙️ Processing tool results...';
+        let statusMessage = '[DECODE] Processing tool results...';
 
         // Check for specific tool results
         // In LangChain v1, tool messages have .name and .content directly
@@ -276,20 +277,20 @@ exports.getAIAgentChat = async (req, res) => {
                 try {
                   const parsed = JSON.parse(contentStr);
                   if (parsed.success === false) {
-                    details = ' ⚠️ (needs attention)';
+                    details = ' [DECODE:WARN] (needs attention)';
                   } else if (parsed.success === true) {
-                    details = ' ✅';
+                    details = ' [DECODE:SUCCESS]';
                   }
                 } catch (error) {
                   // Not JSON, check for error messages
                   console.log(error);
                   if (contentStr.includes('Error:') || contentStr.includes('timeout')) {
-                    details = ' ❌ (error)';
+                    details = ' [DECODE:ERROR] (error)';
                   }
                 }
               }
 
-              statusMessage = `📊 Tool result: ${toolName}${details}`;
+              statusMessage = `[DECODE] Tool result: ${toolName}${details}`;
             }
           });
         }
@@ -307,7 +308,7 @@ exports.getAIAgentChat = async (req, res) => {
       if (data.human_followup) {
         const statusData = JSON.stringify({
           type: 'status',
-          message: '⏸️ Waiting for human input...',
+          message: '[DISPATCH] Waiting for human input...',
           timestamp: new Date().toISOString(),
         });
         res.write(`data: ${statusData}\n\n`);
@@ -349,7 +350,7 @@ const getOrderStatusTool = tool(
     // Emit progress via config.writer (v1 custom streaming pattern)
     config.writer?.({
       type: 'progress',
-      emoji: '📡',
+      emoji: '[TOOL:ORDER_STATUS]',
       message: `Looking up order ${orderId} in database...`,
     });
 
@@ -363,7 +364,7 @@ const getOrderStatusTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '📦',
+      emoji: '[TOOL:ORDER_STATUS]',
       message: `Found order ${orderId}, checking shipment status...`,
     });
 
@@ -388,7 +389,7 @@ const getOrderStatusTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '✨',
+      emoji: '[TOOL:ORDER_STATUS]',
       message: `Order ${orderId}: ${status}${isPartialShipment ? ' (partial shipment)' : ''}`,
     });
 
@@ -408,7 +409,7 @@ const processRefundTool = tool(
   async ({ orderId, itemId }, config) => {
     config.writer?.({
       type: 'progress',
-      emoji: '💳',
+      emoji: '[TOOL:REFUND]',
       message: `Initiating refund for item ${itemId}...`,
     });
 
@@ -421,7 +422,7 @@ const processRefundTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '🔍',
+      emoji: '[TOOL:REFUND]',
       message: 'Verifying refund eligibility...',
     });
 
@@ -436,7 +437,7 @@ const processRefundTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '💰',
+      emoji: '[TOOL:REFUND]',
       message: 'Processing payment reversal...',
     });
 
@@ -467,7 +468,7 @@ const sendReplacementTool = tool(
   async ({ orderId, itemId }, config) => {
     config.writer?.({
       type: 'progress',
-      emoji: '📋',
+      emoji: '[TOOL:REPLACE]',
       message: 'Checking inventory for replacement item...',
     });
 
@@ -484,7 +485,7 @@ const sendReplacementTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '📦',
+      emoji: '[TOOL:REPLACE]',
       message: 'Creating replacement order...',
     });
 
@@ -492,7 +493,7 @@ const sendReplacementTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '🚚',
+      emoji: '[TOOL:REPLACE]',
       message: 'Scheduling shipment...',
     });
 
@@ -521,7 +522,7 @@ const cancelOrderTool = tool(
   async ({ orderId }, config) => {
     config.writer?.({
       type: 'progress',
-      emoji: '🛑',
+      emoji: '[TOOL:CANCEL_ORDER]',
       message: `Initiating cancellation for order ${orderId}...`,
     });
 
@@ -529,7 +530,7 @@ const cancelOrderTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '🔐',
+      emoji: '[TOOL:CANCEL_ORDER]',
       message: 'Verifying cancellation eligibility...',
     });
 
@@ -544,7 +545,7 @@ const cancelOrderTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '💸',
+      emoji: '[TOOL:CANCEL_ORDER]',
       message: 'Processing automatic refund...',
     });
 
@@ -572,7 +573,7 @@ const verifyRefundTool = tool(
   async ({ refundId }, config) => {
     config.writer?.({
       type: 'progress',
-      emoji: '🔎',
+      emoji: '[TOOL:REFUND_VERIFY]',
       message: `Looking up refund ${refundId}...`,
     });
 
@@ -604,7 +605,7 @@ const processReturnTool = tool(
   async ({ orderId, itemId }, config) => {
     config.writer?.({
       type: 'progress',
-      emoji: '📝',
+      emoji: '[TOOL:RETURN]',
       message: 'Creating return authorization...',
     });
 
@@ -617,7 +618,7 @@ const processReturnTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '🏷️',
+      emoji: '[TOOL:RETURN]',
       message: 'Generating shipping label...',
     });
 
@@ -649,7 +650,7 @@ const tier2EscalationTool = tool(
   async ({ issueSummary }, config) => {
     config.writer?.({
       type: 'progress',
-      emoji: '📞',
+      emoji: '[TOOL:ESCALATE]',
       message: 'Connecting to Tier 2 support system...',
     });
 
@@ -657,7 +658,7 @@ const tier2EscalationTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '👤',
+      emoji: '[TOOL:ESCALATE]',
       message: 'Finding available senior specialist...',
     });
 
@@ -666,7 +667,7 @@ const tier2EscalationTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '📋',
+      emoji: '[TOOL:ESCALATE]',
       message: 'Creating escalation ticket...',
     });
 
@@ -683,7 +684,7 @@ const tier2EscalationTool = tool(
 
     config.writer?.({
       type: 'progress',
-      emoji: '✅',
+      emoji: '[TOOL:ESCALATE]',
       message: 'Escalation confirmed, assigning priority...',
     });
 
@@ -766,11 +767,4 @@ function generateSessionId() {
   return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
-/**
- * POST /ai/ai-agent/reset
- * Reset the conversation session
- */
-exports.postAIAgentReset = (req, res) => {
-  const newSessionId = generateSessionId();
-  res.json({ sessionId: newSessionId });
-};
+// Reset endpoint removed; opening the page creates a fresh sessionId
