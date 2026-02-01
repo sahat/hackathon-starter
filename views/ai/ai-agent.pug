@@ -94,7 +94,6 @@ block content
   script.
     let sessionId = '#{sessionId}';
     let eventSource = null;
-
     const chat = document.getElementById('chat-messages');
     const status = document.getElementById('status');
     const statusMessages = document.getElementById('status-messages');
@@ -102,9 +101,7 @@ block content
     const input = document.getElementById('message-input');
     const sendBtn = document.getElementById('send-button');
     const spinner = document.getElementById('send-spinner');
-
     const ts = () => `[${new Date().toLocaleTimeString()}]`;
-
     sendBtn.onclick = send;
     input.onkeydown = (e) => {
       if (e.key === 'Enter') {
@@ -116,48 +113,34 @@ block content
     function send() {
       const text = input.value.trim();
       if (!text) return;
-
       append(chat, `${ts()} You: ${text}`);
       input.value = '';
       sendBtn.disabled = true;
       spinner.style.display = 'inline-block';
       status.textContent = 'Processing...';
-
       if (eventSource) eventSource.close();
-
       const csrf = document.querySelector('meta[name="csrf-token"]').content;
       const url = `/ai/ai-agent/chat?sessionId=${sessionId}&message=${encodeURIComponent(text)}&_csrf=${encodeURIComponent(csrf)}`;
       eventSource = new EventSource(url);
-
       eventSource.onmessage = (e) => {
         const data = JSON.parse(e.data);
-
-        if (data.type === 'chunk') {
-          appendRaw(JSON.stringify(data, null, 2));
-
-          const msgs = data?.content?.model_request?.messages;
-          if (Array.isArray(msgs)) {
-            msgs.forEach((msg) => {
-              const content = msg?.kwargs?.content ?? msg?.content ?? msg?.text ?? '';
-              const toolCalls = msg?.kwargs?.tool_calls ?? msg?.tool_calls ?? [];
-              const textOut = typeof content === 'string' ? content : JSON.stringify(content);
-
-              if (textOut && textOut.trim() && (!toolCalls || toolCalls.length === 0)) {
-                append(chat, `${ts()} AI: ${textOut}`);
-              }
-            });
-          }
-        }
-
-        if (data.type === 'status') {
+        // Handle different SSE event types sent from backend
+        if (data.type === 'chat') {
+          // AI responses for the chat window
+          append(chat, `${ts()} AI: ${data.message}`);
+        } else if (data.type === 'status') {
+          // Status updates for the system status panel
           append(statusMessages, `${ts()} ${data.message}`);
-        }
-
-        if (data.type === 'done') {
+        } else if (data.type === 'raw') {
+          // Raw stream data for debugging
+          appendRaw(JSON.stringify(data.content, null, 2));
+        } else if (data.type === 'done') {
+          cleanup();
+        } else if (data.type === 'error') {
+          append(chat, `${ts()} Error: ${data.error}`);
           cleanup();
         }
       };
-
       eventSource.onerror = cleanup;
     }
 

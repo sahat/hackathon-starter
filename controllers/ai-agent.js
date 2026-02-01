@@ -112,6 +112,110 @@ let globalAgent = null;
 const globalMemory = new MemorySaver();
 
 /**
+ * Helper: Send SSE event to client
+ * @param {Object} res - Express response object
+ * @param {string} eventType - Type of SSE event (chat, status, raw)
+ * @param {Object} data - Data payload to send
+ */
+function sendSSE(res, eventType, data) {
+  const payload = JSON.stringify({ type: eventType, ...data, timestamp: new Date().toISOString() });
+  res.write(`data: ${payload}\n\n`);
+}
+
+/**
+ * Helper: Extract AI chat messages from model_request node
+ * @param {Object} modelRequestData - The model_request chunk from stream
+ * @returns {Array<string>} Array of AI messages to display
+ */
+function extractAIMessages(modelRequestData) {
+  const messages = [];
+  if (modelRequestData?.messages) {
+    modelRequestData.messages.forEach((msg) => {
+      const content = msg?.kwargs?.content ?? msg?.content ?? msg?.text ?? '';
+      const toolCalls = msg?.kwargs?.tool_calls ?? msg?.tool_calls ?? [];
+      const textOut = typeof content === 'string' ? content : JSON.stringify(content);
+
+      // Only include messages with actual content (not tool call requests)
+      if (textOut && textOut.trim() && (!toolCalls || toolCalls.length === 0)) {
+        messages.push(textOut);
+      }
+    });
+  }
+  return messages;
+}
+
+/**
+ * Helper: Process custom stream events (from middleware and config.writer)
+ * @param {Object} data - Custom event data
+ * @returns {string|null} Formatted status message or null
+ */
+function processCustomEvent(data) {
+  if (!data || (data.type !== 'status' && data.type !== 'progress')) {
+    return null;
+  }
+  const emoji = data.emoji || '';
+  const message = data.message || '';
+  let formattedMessage = emoji ? `${emoji} ${message}` : message;
+  if (data.details?.toolName) {
+    formattedMessage += ` [${data.details.toolName}]`;
+  }
+  if (data.details?.duration) {
+    formattedMessage += ` (${data.details.duration}ms)`;
+  }
+  return formattedMessage;
+}
+
+/**
+ * Helper: Process updates stream events (state changes from graph nodes)
+ * @param {Object} data - Update event data
+ * @returns {Object|null} Status info or null
+ */
+function processUpdateEvent(data) {
+  // Handle model_request node (LLM invocation)
+  if (data.model_request?.messages) {
+    const msg = data.model_request.messages[0];
+    const toolCalls = msg?.kwargs?.tool_calls ?? msg?.tool_calls;
+    const content = msg?.kwargs?.content ?? msg?.content ?? msg?.text ?? '';
+    if (toolCalls && toolCalls.length > 0) {
+      const toolName = toolCalls[0].name;
+      const args = toolCalls[0].args || {};
+      let statusMsg = `[DECODE] Agent calling tool: ${toolName}`;
+      if (args.orderId) statusMsg += ` (Order: ${args.orderId})`;
+      return { message: statusMsg };
+    }
+    if (content && String(content).trim()) {
+      return { message: '[LLM] Agent generating response...' };
+    }
+  }
+
+  // Handle tools node (tool execution results)
+  if (data.tools?.messages) {
+    const msg = data.tools.messages[0];
+    const toolName = msg?.name ?? msg?.kwargs?.name;
+    const content = msg?.content ?? msg?.kwargs?.content ?? '';
+    if (toolName) {
+      let detail = '';
+      const contentStr = typeof content === 'string' ? content : JSON.stringify(content);
+      try {
+        const parsed = JSON.parse(contentStr);
+        if (parsed.success === false) detail = ' [DECODE:WARN] (needs attention)';
+        else if (parsed.success === true) detail = ' [DECODE:SUCCESS]';
+      } catch {
+        if (contentStr.includes('Error:') || contentStr.includes('timeout')) {
+          detail = ' [DECODE:ERROR]';
+        }
+      }
+      return { message: `[DECODE] Tool result: ${toolName}${detail}` };
+    }
+  }
+  // Handle human_followup node
+  if (data.human_followup) {
+    return { message: '[DISPATCH] Waiting for human input...' };
+  }
+  return null;
+}
+
+/**
  * GET /ai/ai-agent
  * AI Agent Customer Service Demo
  */
@@ -125,216 +229,94 @@ exports.getAIAgent = (req, res) => {
 
 /**
  * GET /ai/ai-agent/chat
- * Handle chat messages with the AI agent via EventSource
+ * Handle chat messages with the AI agent via Server-Sent Events (SSE)
+ * Streams three types of events:
+ *   - 'chat': AI responses to display in chat UI
+ *   - 'status': Status updates for System Status panel
+ *   - 'raw': Raw stream data for debugging
  */
 exports.getAIAgentChat = async (req, res) => {
   const { message, sessionId } = req.query;
-
   console.log('=== AI Agent Chat Request ===');
   console.log('Message:', message);
   console.log('Session ID:', sessionId);
-  console.log('Request body:', req.body);
-
   if (!message || !message.trim()) {
     console.log('ERROR: Message is required');
     return res.status(400).json({ error: 'Message is required' });
   }
-
-  // Set headers first before any potential errors
+  // Set SSE headers
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     Connection: 'keep-alive',
     'Access-Control-Allow-Origin': '*',
   });
-
   try {
-    // Use global agent instance to maintain memory across requests
+    // Initialize or reuse agent instance
     if (!globalAgent) {
       console.log('Creating customer service agent...');
       globalAgent = await createCustomerServiceAgent();
       console.log('Agent created successfully');
-    } else {
-      console.log('Using existing agent instance');
     }
-    const agent = globalAgent;
-
     const threadId = sessionId || generateSessionId();
     console.log('Thread ID:', threadId);
-
-    console.log('Starting agent stream...');
-
-    // Use multiple stream modes (v1 best practice):
-    // - 'updates': Get state updates after each node execution
-    // - 'custom': Get custom events from middleware and config.writer in tools
-    const stream = await agent.stream(
+    // Start streaming with multiple modes (v1 best practice)
+    // - 'updates': State changes from graph nodes
+    // - 'custom': Custom events from middleware and tool config.writer
+    const stream = await globalAgent.stream(
       { messages: [new HumanMessage(message)] },
       {
         configurable: { thread_id: threadId },
-        recursionLimit: 10, // Prevent infinite loops
-        streamMode: ['updates', 'custom'], // Multiple modes for richer status updates
+        // Higher limit to account for middleware overhead
+        // Middleware adds ~2 extra steps per model invocation (beforeModel + afterModel)
+        // With retries, we need: 3 model calls × 3 steps each + 2 tool calls = ~11 steps
+        recursionLimit: 25,
+        streamMode: ['updates', 'custom'],
       },
     );
-    console.log('Stream created, processing chunks...');
 
     let chunkCount = 0;
     for await (const chunk of stream) {
       chunkCount += 1;
-
-      // With multiple streamMode, chunks come as [mode, data] tuples
-      const [streamMode, data] = Array.isArray(chunk) && chunk.length === 2 ? chunk : ['updates', chunk]; // Fallback for single mode
-      // Uncomment for to see the raw chunk data in console for debugging
-      // console.log(`Chunk ${chunkCount} [${streamMode}]:`, JSON.stringify(data, null, 2));
+      // Parse stream mode and data
+      const [streamMode, data] = Array.isArray(chunk) && chunk.length === 2 ? chunk : ['updates', chunk];
       console.log(`Chunk ${chunkCount} [${streamMode}] received`);
-
-      // Handle 'custom' mode events (from middleware and config.writer in tools)
+      // Send raw debug data
+      sendSSE(res, 'raw', { content: data, streamMode });
+      // Process custom events (middleware & tool progress)
       if (streamMode === 'custom') {
-        // Custom events from middleware (observability) or tools (progress)
-        if (data && (data.type === 'status' || data.type === 'progress')) {
-          const emoji = data.emoji || '';
-          const message = data.message || '';
-          const stage = data.stage || '';
-
-          // Format message with stage info if available
-          let formattedMessage = emoji ? `${emoji} ${message}` : message;
-          if (data.details && data.details.toolName) {
-            formattedMessage += ` [${data.details.toolName}]`;
-          }
-          if (data.details && data.details.duration) {
-            formattedMessage += ` (${data.details.duration}ms)`;
-          }
-
-          const statusData = JSON.stringify({
-            type: 'status',
-            message: formattedMessage,
-            stage: stage,
-            timestamp: new Date().toISOString(),
-          });
-          res.write(`data: ${statusData}\n\n`);
-          console.log('Sent custom status:', formattedMessage);
+        const statusMsg = processCustomEvent(data);
+        if (statusMsg) {
+          sendSSE(res, 'status', { message: statusMsg, stage: data.stage });
+          console.log('Custom status:', statusMsg);
         }
-        continue; // Skip to next chunk for custom events
+        continue;
       }
-
-      // Handle 'updates' mode (state updates from nodes)
-      // Send progress updates for different node types
-      // Note: createAgent uses 'model_request' node name for model outputs
-      if (data.model_request) {
-        let statusMessage = 'Agent is analyzing your request...';
-
-        // Check for tool calls in model messages
-        // LangChain v1 uses msg.kwargs.content and msg.kwargs.tool_calls structure
-        if (data.model_request.messages) {
-          data.model_request.messages.forEach((msg) => {
-            // Message structure: msg.kwargs.tool_calls, msg.kwargs.content
-            const toolCalls = (msg.kwargs && msg.kwargs.tool_calls) || msg.tool_calls;
-            const content = (msg.kwargs && msg.kwargs.content) || msg.content || msg.text || '';
-
-            if (toolCalls && toolCalls.length > 0) {
-              const toolName = toolCalls[0].name;
-              const args = toolCalls[0].args || {};
-              statusMessage = `[DECODE] Agent calling tool: ${toolName}`;
-              if (args && args.orderId) {
-                statusMessage += ` (Order: ${args.orderId})`;
-              } else if (args && args.input) {
-                statusMessage += ` (${args.input.substring(0, 50)}${args.input.length > 50 ? '...' : ''})`;
-              }
-            } else if (content) {
-              const contentStr = typeof content === 'string' ? content : JSON.stringify(content);
-              if (contentStr.trim() && contentStr.length > 0) {
-                statusMessage = '[LLM] Agent generating response...';
-              }
-            }
+      // Process updates events (node state changes)
+      if (streamMode === 'updates') {
+        // Extract and send AI chat messages
+        if (data.model_request) {
+          const aiMessages = extractAIMessages(data.model_request);
+          aiMessages.forEach((msg) => {
+            sendSSE(res, 'chat', { message: msg });
+            console.log('AI message:', msg.substring(0, 50));
           });
         }
-
-        const statusData = JSON.stringify({
-          type: 'status',
-          message: statusMessage,
-          timestamp: new Date().toISOString(),
-        });
-        res.write(`data: ${statusData}\n\n`);
-        console.log('Sent status update:', statusMessage);
-      }
-
-      if (data.tools) {
-        let statusMessage = '[DECODE] Processing tool results...';
-
-        // Check for specific tool results
-        // In LangChain v1, tool messages have .name and .content directly
-        if (data.tools.messages) {
-          data.tools.messages.forEach((msg) => {
-            // v1 message structure: msg.name, msg.content
-            // Also check msg.kwargs for backward compatibility
-            const toolName = msg.name || (msg.kwargs && msg.kwargs.name);
-            const content = msg.content || (msg.kwargs && msg.kwargs.content) || '';
-
-            if (toolName) {
-              // Try to extract meaningful info from tool response
-              let details = '';
-              const contentStr = typeof content === 'string' ? content : JSON.stringify(content);
-              if (contentStr) {
-                try {
-                  const parsed = JSON.parse(contentStr);
-                  if (parsed.success === false) {
-                    details = ' [DECODE:WARN] (needs attention)';
-                  } else if (parsed.success === true) {
-                    details = ' [DECODE:SUCCESS]';
-                  }
-                } catch (error) {
-                  // Not JSON, check for error messages
-                  console.log(error);
-                  if (contentStr.includes('Error:') || contentStr.includes('timeout')) {
-                    details = ' [DECODE:ERROR] (error)';
-                  }
-                }
-              }
-
-              statusMessage = `[DECODE] Tool result: ${toolName}${details}`;
-            }
-          });
+        // Extract and send status updates
+        const statusInfo = processUpdateEvent(data);
+        if (statusInfo) {
+          sendSSE(res, 'status', statusInfo);
+          console.log('Status update:', statusInfo.message);
         }
-
-        const statusData = JSON.stringify({
-          type: 'status',
-          message: statusMessage,
-          timestamp: new Date().toISOString(),
-        });
-        res.write(`data: ${statusData}\n\n`);
-        console.log('Sent status update:', statusMessage);
       }
-
-      // Add status for other chunk types
-      if (data.human_followup) {
-        const statusData = JSON.stringify({
-          type: 'status',
-          message: '[DISPATCH] Waiting for human input...',
-          timestamp: new Date().toISOString(),
-        });
-        res.write(`data: ${statusData}\n\n`);
-        console.log('Sent status update: Human followup required');
-      }
-
-      const chunkData = JSON.stringify({
-        type: 'chunk',
-        content: data,
-        streamMode: streamMode,
-        timestamp: new Date().toISOString(),
-      });
-      res.write(`data: ${chunkData}\n\n`);
     }
-
     console.log(`Stream completed with ${chunkCount} chunks`);
-    res.write(`data: ${JSON.stringify({ type: 'done' })}\n\n`);
+    sendSSE(res, 'done', {});
     res.end();
   } catch (error) {
     console.error('AI Agent Error:', error);
     console.error('Error stack:', error.stack);
-    const errorData = JSON.stringify({
-      type: 'error',
-      error: error.message,
-    });
-    res.write(`data: ${errorData}\n\n`);
+    sendSSE(res, 'error', { error: error.message });
     res.end();
   }
 };
