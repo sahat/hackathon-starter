@@ -1,111 +1,16 @@
 const { ChatGroq } = require('@langchain/groq');
-const { HumanMessage, ToolMessage } = require('@langchain/core/messages');
-const { createAgent, tool, createMiddleware } = require('langchain');
+const { HumanMessage } = require('@langchain/core/messages');
+const { createAgent, tool, toolRetryMiddleware, summarizationMiddleware } = require('langchain');
 const { MemorySaver } = require('@langchain/langgraph');
 const z = require('zod');
 
 /**
- * Observability Middleware - The v1 way to add detailed status updates
- * This middleware intercepts agent execution at key points and emits
- * status updates via the stream writer for real-time UI feedback.
+ * Built-in middleware handles:
+ * - toolRetryMiddleware: Automatic retry with exponential backoff for failed tools
+ * - summarizationMiddleware: Condenses long conversations to stay within context limits
+ *
+ * Tools emit progress via config.writer for real-time UI feedback.
  */
-const observabilityMiddleware = createMiddleware({
-  name: 'ObservabilityMiddleware',
-
-  // Called before each model (LLM) invocation
-  beforeModel: (state, runtime) => {
-    const messageCount = state.messages?.length || 0;
-    runtime.writer?.({
-      type: 'status',
-      emoji: '[LLM]',
-      stage: 'before_model',
-      message: messageCount > 1 ? 'Model analyzing conversation...' : 'Model analyzing your request...',
-      details: { messageCount },
-    });
-    return undefined; // Don't modify state
-  },
-
-  // Called after each model response
-  afterModel: (state, runtime) => {
-    const lastMessage = state.messages?.[state.messages.length - 1];
-    const hasToolCalls = lastMessage?.tool_calls?.length > 0;
-
-    runtime.writer?.({
-      type: 'status',
-      emoji: hasToolCalls ? '[TOOL]' : '[LLM]',
-      stage: 'after_model',
-      message: hasToolCalls ? `Model requesting ${lastMessage.tool_calls.length} tool(s)...` : 'Response ready',
-      details: {
-        hasToolCalls,
-        toolNames: hasToolCalls ? lastMessage.tool_calls.map((tc) => tc.name) : [],
-      },
-    });
-    return undefined;
-  },
-
-  // Wraps each tool call for detailed tracking
-  wrapToolCall: async (request, handler) => {
-    const toolName = request.toolCall?.name || 'unknown';
-    const toolArgs = request.toolCall?.args || {};
-
-    // Emit "starting tool" status
-    request.runtime.writer?.({
-      type: 'status',
-      emoji: '[TOOL:START]',
-      stage: 'tool_start',
-      message: `Executing tool: ${toolName}`,
-      details: { toolName, args: toolArgs },
-    });
-
-    const startTime = Date.now();
-
-    try {
-      const result = await handler(request);
-      const duration = Date.now() - startTime;
-
-      // Parse result to determine success/failure
-      let success = true;
-      let resultSummary = 'completed';
-      try {
-        const parsed = typeof result.content === 'string' ? JSON.parse(result.content) : result.content;
-        if (parsed.success === false) {
-          success = false;
-          resultSummary = parsed.reason || parsed.message || 'failed';
-        } else if (parsed.success === true) {
-          resultSummary = 'success';
-        }
-      } catch {
-        // Not JSON, that's okay
-      }
-
-      request.runtime.writer?.({
-        type: 'status',
-        emoji: success ? '[TOOL]' : '[WARN]',
-        stage: 'tool_end',
-        message: `Tool ${toolName}: ${resultSummary}`,
-        details: { toolName, duration, success },
-      });
-
-      return result;
-    } catch (error) {
-      const duration = Date.now() - startTime;
-
-      request.runtime.writer?.({
-        type: 'status',
-        emoji: '[ERROR]',
-        stage: 'tool_error',
-        message: `Tool ${toolName} failed: ${error.message}`,
-        details: { toolName, duration, error: error.message },
-      });
-
-      // Return error as ToolMessage so agent can retry or handle gracefully
-      return new ToolMessage({
-        content: `Error: ${error.message}. Please retry or try an alternative approach.`,
-        tool_call_id: request.toolCall.id,
-      });
-    }
-  },
-});
 
 // Create a single agent instance with memory that persists across requests
 let globalAgent = null;
@@ -124,93 +29,41 @@ function sendSSE(res, eventType, data) {
 
 /**
  * Helper: Extract AI chat messages from model_request node
- * @param {Object} modelRequestData - The model_request chunk from stream
+ * @param {Object} data - The stream chunk data
  * @returns {Array<string>} Array of AI messages to display
  */
-function extractAIMessages(modelRequestData) {
+function extractAIMessages(data) {
   const messages = [];
-  if (modelRequestData?.messages) {
-    modelRequestData.messages.forEach((msg) => {
-      const content = msg?.kwargs?.content ?? msg?.content ?? msg?.text ?? '';
-      const toolCalls = msg?.kwargs?.tool_calls ?? msg?.tool_calls ?? [];
-      const textOut = typeof content === 'string' ? content : JSON.stringify(content);
-
-      // Only include messages with actual content (not tool call requests)
-      if (textOut && textOut.trim() && (!toolCalls || toolCalls.length === 0)) {
-        messages.push(textOut);
-      }
-    });
-  }
+  const modelData = data?.model_request?.messages || [];
+  modelData.forEach((msg) => {
+    const content = msg?.kwargs?.content ?? msg?.content ?? '';
+    const toolCalls = msg?.kwargs?.tool_calls ?? msg?.tool_calls ?? [];
+    // Only include messages with actual text content (not tool call requests)
+    if (content && typeof content === 'string' && content.trim() && !toolCalls?.length) {
+      messages.push(content);
+    }
+  });
   return messages;
 }
 
 /**
- * Helper: Process custom stream events (from middleware and config.writer)
- * @param {Object} data - Custom event data
- * @returns {string|null} Formatted status message or null
- */
-function processCustomEvent(data) {
-  if (!data || (data.type !== 'status' && data.type !== 'progress')) {
-    return null;
-  }
-  const emoji = data.emoji || '';
-  const message = data.message || '';
-  let formattedMessage = emoji ? `${emoji} ${message}` : message;
-  if (data.details?.toolName) {
-    formattedMessage += ` [${data.details.toolName}]`;
-  }
-  if (data.details?.duration) {
-    formattedMessage += ` (${data.details.duration}ms)`;
-  }
-  return formattedMessage;
-}
-
-/**
- * Helper: Process updates stream events (state changes from graph nodes)
+ * Helper: Extract status from graph node updates
  * @param {Object} data - Update event data
  * @returns {Object|null} Status info or null
  */
 function processUpdateEvent(data) {
-  // Handle model_request node (LLM invocation)
-  if (data.model_request?.messages) {
+  // Model requesting tools
+  if (data.model_request?.messages?.[0]) {
     const msg = data.model_request.messages[0];
     const toolCalls = msg?.kwargs?.tool_calls ?? msg?.tool_calls;
-    const content = msg?.kwargs?.content ?? msg?.content ?? msg?.text ?? '';
-    if (toolCalls && toolCalls.length > 0) {
-      const toolName = toolCalls[0].name;
-      const args = toolCalls[0].args || {};
-      let statusMsg = `[DECODE] Agent calling tool: ${toolName}`;
-      if (args.orderId) statusMsg += ` (Order: ${args.orderId})`;
-      return { message: statusMsg };
-    }
-    if (content && String(content).trim()) {
-      return { message: '[LLM] Agent generating response...' };
+    if (toolCalls?.length) {
+      return { message: `Agent calling: ${toolCalls.map((t) => t.name).join(', ')}` };
     }
   }
-
-  // Handle tools node (tool execution results)
-  if (data.tools?.messages) {
-    const msg = data.tools.messages[0];
-    const toolName = msg?.name ?? msg?.kwargs?.name;
-    const content = msg?.content ?? msg?.kwargs?.content ?? '';
-    if (toolName) {
-      let detail = '';
-      const contentStr = typeof content === 'string' ? content : JSON.stringify(content);
-      try {
-        const parsed = JSON.parse(contentStr);
-        if (parsed.success === false) detail = ' [DECODE:WARN] (needs attention)';
-        else if (parsed.success === true) detail = ' [DECODE:SUCCESS]';
-      } catch {
-        if (contentStr.includes('Error:') || contentStr.includes('timeout')) {
-          detail = ' [DECODE:ERROR]';
-        }
-      }
-      return { message: `[DECODE] Tool result: ${toolName}${detail}` };
-    }
-  }
-  // Handle human_followup node
-  if (data.human_followup) {
-    return { message: '[DISPATCH] Waiting for human input...' };
+  // Tool execution completed
+  if (data.tools?.messages?.[0]) {
+    const toolName = data.tools.messages[0]?.name ?? data.tools.messages[0]?.kwargs?.name;
+    if (toolName) return { message: `Tool completed: ${toolName}` };
   }
   return null;
 }
@@ -260,57 +113,35 @@ exports.getAIAgentChat = async (req, res) => {
     }
     const threadId = sessionId || generateSessionId();
     console.log('Thread ID:', threadId);
-    // Start streaming with multiple modes (v1 best practice)
-    // - 'updates': State changes from graph nodes
-    // - 'custom': Custom events from middleware and tool config.writer
+    // Stream with multiple modes: 'updates' for state changes, 'custom' for tool progress
     const stream = await globalAgent.stream(
       { messages: [new HumanMessage(message)] },
       {
         configurable: { thread_id: threadId },
-        // Higher limit to account for middleware overhead
-        // Middleware adds ~2 extra steps per model invocation (beforeModel + afterModel)
-        // With retries, we need: 3 model calls × 3 steps each + 2 tool calls = ~11 steps
-        recursionLimit: 25,
+        recursionLimit: 15, // Built-in middleware is more efficient
         streamMode: ['updates', 'custom'],
       },
     );
 
-    let chunkCount = 0;
     for await (const chunk of stream) {
-      chunkCount += 1;
-      // Parse stream mode and data
       const [streamMode, data] = Array.isArray(chunk) && chunk.length === 2 ? chunk : ['updates', chunk];
-      console.log(`Chunk ${chunkCount} [${streamMode}] received`);
-      // Send raw debug data
+
+      // Always send raw data for debug panel
       sendSSE(res, 'raw', { content: data, streamMode });
-      // Process custom events (middleware & tool progress)
-      if (streamMode === 'custom') {
-        const statusMsg = processCustomEvent(data);
-        if (statusMsg) {
-          sendSSE(res, 'status', { message: statusMsg, stage: data.stage });
-          console.log('Custom status:', statusMsg);
-        }
+
+      // Custom events = tool progress messages
+      if (streamMode === 'custom' && data?.message) {
+        sendSSE(res, 'status', { message: data.message });
         continue;
       }
-      // Process updates events (node state changes)
-      if (streamMode === 'updates') {
-        // Extract and send AI chat messages
-        if (data.model_request) {
-          const aiMessages = extractAIMessages(data.model_request);
-          aiMessages.forEach((msg) => {
-            sendSSE(res, 'chat', { message: msg });
-            console.log('AI message:', msg.substring(0, 50));
-          });
-        }
-        // Extract and send status updates
-        const statusInfo = processUpdateEvent(data);
-        if (statusInfo) {
-          sendSSE(res, 'status', statusInfo);
-          console.log('Status update:', statusInfo.message);
-        }
-      }
+
+      // Updates = graph state changes
+      const aiMessages = extractAIMessages(data);
+      aiMessages.forEach((msg) => sendSSE(res, 'chat', { message: msg }));
+
+      const statusInfo = processUpdateEvent(data);
+      if (statusInfo) sendSSE(res, 'status', statusInfo);
     }
-    console.log(`Stream completed with ${chunkCount} chunks`);
     sendSSE(res, 'done', {});
     res.end();
   } catch (error) {
@@ -329,33 +160,21 @@ exports.getAIAgentChat = async (req, res) => {
 // Tool: Get Order Status
 const getOrderStatusTool = tool(
   async ({ orderId }, config) => {
-    // Emit progress via config.writer (v1 custom streaming pattern)
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:ORDER_STATUS]',
-      message: `Looking up order ${orderId} in database...`,
-    });
+    config.writer?.({ message: `Looking up order ${orderId}...` });
 
-    // 20% chance of timeout
+    // 20% chance of timeout (toolRetryMiddleware will handle retry)
     if (Math.random() < 0.2) {
       throw new Error('API timeout - please retry');
     }
 
-    // Simulate database lookup delay
     await new Promise((resolve) => setTimeout(resolve, 300 + Math.random() * 200));
-
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:ORDER_STATUS]',
-      message: `Found order ${orderId}, checking shipment status...`,
-    });
 
     // Mock order data with potential partial shipments
     const isPartialShipment = Math.random() < 0.3;
     const orderStatuses = ['processing', 'shipped', 'delivered', 'cancelled'];
     const status = orderStatuses[Math.floor(Math.random() * orderStatuses.length)];
 
-    const mockOrder = {
+    return JSON.stringify({
       orderId,
       status,
       items: isPartialShipment
@@ -365,17 +184,9 @@ const getOrderStatusTool = tool(
             { itemId: 'item3', name: 'Screen Protector', status: 'delivered' },
           ]
         : [{ itemId: 'item1', name: 'Wireless Headphones', status }],
-      trackingNumber: status === 'shipped' ? `TRK${Math.random().toString(36).substr(2, 9).toUpperCase()}` : null,
+      trackingNumber: status === 'shipped' ? `TRK${Math.random().toString(36).slice(2, 11).toUpperCase()}` : null,
       estimatedDelivery: status === 'shipped' ? '2-3 business days' : null,
-    };
-
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:ORDER_STATUS]',
-      message: `Order ${orderId}: ${status}${isPartialShipment ? ' (partial shipment)' : ''}`,
     });
-
-    return JSON.stringify(mockOrder);
   },
   {
     name: 'get_order_status',
@@ -389,26 +200,16 @@ const getOrderStatusTool = tool(
 // Tool: Process Refund
 const processRefundTool = tool(
   async ({ orderId, itemId }, config) => {
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:REFUND]',
-      message: `Initiating refund for item ${itemId}...`,
-    });
+    config.writer?.({ message: `Processing refund for ${itemId}...` });
 
-    // 15% chance of API error
+    // 15% chance of API error (toolRetryMiddleware handles retry)
     if (Math.random() < 0.15) {
       throw new Error('Refund processing API error - please retry');
     }
 
     await new Promise((resolve) => setTimeout(resolve, 400 + Math.random() * 300));
 
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:REFUND]',
-      message: 'Verifying refund eligibility...',
-    });
-
-    // 10% chance of refund blocked
+    // 10% chance of refund blocked (business logic, not retry-able)
     if (Math.random() < 0.1) {
       return JSON.stringify({
         success: false,
@@ -417,15 +218,7 @@ const processRefundTool = tool(
       });
     }
 
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:REFUND]',
-      message: 'Processing payment reversal...',
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 200));
-
-    const refundId = `REF${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    const refundId = `REF${Math.random().toString(36).slice(2, 11).toUpperCase()}`;
     return JSON.stringify({
       success: true,
       refundId,
@@ -448,15 +241,11 @@ const processRefundTool = tool(
 // Tool: Send Replacement
 const sendReplacementTool = tool(
   async ({ orderId, itemId }, config) => {
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:REPLACE]',
-      message: 'Checking inventory for replacement item...',
-    });
+    config.writer?.({ message: `Processing replacement for ${itemId}...` });
 
     await new Promise((resolve) => setTimeout(resolve, 300 + Math.random() * 200));
 
-    // 10% chance of out-of-stock
+    // 10% chance of out-of-stock (business logic)
     if (Math.random() < 0.1) {
       return JSON.stringify({
         success: false,
@@ -465,25 +254,11 @@ const sendReplacementTool = tool(
       });
     }
 
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:REPLACE]',
-      message: 'Creating replacement order...',
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 200));
-
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:REPLACE]',
-      message: 'Scheduling shipment...',
-    });
-
-    const replacementOrderId = `RPL${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    const replacementOrderId = `RPL${Math.random().toString(36).slice(2, 11).toUpperCase()}`;
     return JSON.stringify({
       success: true,
       replacementOrderId,
-      trackingNumber: `TRK${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+      trackingNumber: `TRK${Math.random().toString(36).slice(2, 11).toUpperCase()}`,
       estimatedDelivery: '2-4 business days',
       originalOrderId: orderId,
       originalItemId: itemId,
@@ -502,21 +277,11 @@ const sendReplacementTool = tool(
 // Tool: Cancel Order
 const cancelOrderTool = tool(
   async ({ orderId }, config) => {
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:CANCEL_ORDER]',
-      message: `Initiating cancellation for order ${orderId}...`,
-    });
+    config.writer?.({ message: `Cancelling order ${orderId}...` });
 
     await new Promise((resolve) => setTimeout(resolve, 300));
 
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:CANCEL_ORDER]',
-      message: 'Verifying cancellation eligibility...',
-    });
-
-    // 20% chance of "pending" status requiring verification
+    // 20% chance of pending verification (business logic)
     if (Math.random() < 0.2) {
       return JSON.stringify({
         success: false,
@@ -524,14 +289,6 @@ const cancelOrderTool = tool(
         message: `Order cancellation requires additional verification. Please confirm you want to cancel order ${orderId}`,
       });
     }
-
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:CANCEL_ORDER]',
-      message: 'Processing automatic refund...',
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 200));
 
     return JSON.stringify({
       success: true,
@@ -553,11 +310,7 @@ const cancelOrderTool = tool(
 // Tool: Verify Refund
 const verifyRefundTool = tool(
   async ({ refundId }, config) => {
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:REFUND_VERIFY]',
-      message: `Looking up refund ${refundId}...`,
-    });
+    config.writer?.({ message: `Checking refund ${refundId}...` });
 
     await new Promise((resolve) => setTimeout(resolve, 250));
 
@@ -585,28 +338,16 @@ const verifyRefundTool = tool(
 // Tool: Process Return
 const processReturnTool = tool(
   async ({ orderId, itemId }, config) => {
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:RETURN]',
-      message: 'Creating return authorization...',
-    });
+    config.writer?.({ message: `Creating return for ${itemId}...` });
 
     await new Promise((resolve) => setTimeout(resolve, 300));
 
-    // 15% chance of label generation failure
+    // 15% chance of label generation failure (toolRetryMiddleware handles retry)
     if (Math.random() < 0.15) {
       throw new Error('Return label generation failed - please retry');
     }
 
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:RETURN]',
-      message: 'Generating shipping label...',
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 200));
-
-    const returnId = `RET${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    const returnId = `RET${Math.random().toString(36).slice(2, 11).toUpperCase()}`;
     return JSON.stringify({
       success: true,
       returnId,
@@ -630,32 +371,12 @@ const processReturnTool = tool(
 // Tool: Tier 2 Support Escalation (High Latency)
 const tier2EscalationTool = tool(
   async ({ issueSummary }, config) => {
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:ESCALATE]',
-      message: 'Connecting to Tier 2 support system...',
-    });
+    config.writer?.({ message: 'Escalating to Tier 2 support...' });
 
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    // Simulate high latency for escalation
+    await new Promise((resolve) => setTimeout(resolve, 1500 + Math.random() * 1000));
 
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:ESCALATE]',
-      message: 'Finding available senior specialist...',
-    });
-
-    // Simulate high latency with progress updates
-    await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 1500));
-
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:ESCALATE]',
-      message: 'Creating escalation ticket...',
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    // 10% chance of needing more info
+    // 10% chance of needing more info (business logic)
     if (Math.random() < 0.1) {
       return JSON.stringify({
         success: false,
@@ -664,13 +385,7 @@ const tier2EscalationTool = tool(
       });
     }
 
-    config.writer?.({
-      type: 'progress',
-      emoji: '[TOOL:ESCALATE]',
-      message: 'Escalation confirmed, assigning priority...',
-    });
-
-    const ticketId = `T2-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    const ticketId = `T2-${Math.random().toString(36).slice(2, 11).toUpperCase()}`;
     return JSON.stringify({
       success: true,
       ticketId,
@@ -691,13 +406,9 @@ const tier2EscalationTool = tool(
 );
 
 /**
- * Create the Customer Service Agent using createAgent
+ * Create the Customer Service Agent using createAgent with built-in middleware
  */
 async function createCustomerServiceAgent() {
-  console.log('Creating customer service agent...');
-  console.log('GROQ_API_KEY exists:', !!process.env.GROQ_API_KEY);
-  console.log('GROQ_MODEL:', process.env.GROQ_MODEL);
-
   const chatModel = new ChatGroq({
     apiKey: process.env.GROQ_API_KEY,
     model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
@@ -708,22 +419,32 @@ async function createCustomerServiceAgent() {
 
   const tools = [getOrderStatusTool, processRefundTool, sendReplacementTool, cancelOrderTool, verifyRefundTool, processReturnTool, tier2EscalationTool];
 
-  // Use the new createAgent API from langchain v1
-  // Include observabilityMiddleware for detailed status updates (v1 best practice)
+  // Use LangChain v1 built-in middleware for production-ready features
   const agent = createAgent({
     model: chatModel,
-    tools: tools,
-    checkpointer: globalMemory, // Use shared memory instance
-    middleware: [observabilityMiddleware], // v1 middleware for observability
+    tools,
+    checkpointer: globalMemory,
+    middleware: [
+      // Automatic retry for transient tool failures (API timeouts, etc.)
+      toolRetryMiddleware({
+        maxRetries: 2,
+        backoffFactor: 2.0,
+        initialDelayMs: 500,
+      }),
+      // Condense long conversations to stay within context limits
+      summarizationMiddleware({
+        model: chatModel,
+        trigger: { tokens: 4000 },
+        keep: { messages: 10 },
+      }),
+    ],
     systemPrompt: `You are a helpful customer service agent for an e-commerce platform.
 
 Your responsibilities:
 1. Understand customer inquiries and provide helpful responses
 2. Use the available tools to check order status, process requests, and resolve issues
 3. Handle multiple issues in a single conversation
-4. Retry failed operations when appropriate
-5. Escalate complex issues to Tier 2 support when needed
-6. Always be polite, professional, and solution-oriented
+4. Always be polite, professional, and solution-oriented
 
 Available tools:
 - get_order_status: Check order details and status
@@ -734,7 +455,6 @@ Available tools:
 - process_return: Process item returns
 - tier2_support_escalation: Escalate complex issues
 
-When tools fail, try them again up to 2 times before considering alternatives.
 If a customer has multiple issues, handle them systematically one by one.
 Always confirm successful actions and provide relevant details like tracking numbers, refund IDs, etc.`,
   });
@@ -746,7 +466,5 @@ Always confirm successful actions and provide relevant details like tracking num
  * Utility function to generate session IDs
  */
 function generateSessionId() {
-  return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  return `session_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
 }
-
-// Reset endpoint removed; opening the page creates a fresh sessionId
