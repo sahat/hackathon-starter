@@ -29,8 +29,6 @@ function sendSSE(res, eventType, data) {
 
 /**
  * Helper: Extract AI chat messages from model_request node
- * @param {Object} data - The stream chunk data
- * @returns {Array<string>} Array of AI messages to display
  */
 function extractAIMessages(data) {
   const messages = [];
@@ -48,8 +46,6 @@ function extractAIMessages(data) {
 
 /**
  * Helper: Extract status from graph node updates
- * @param {Object} data - Update event data
- * @returns {Object|null} Status info or null
  */
 function processUpdateEvent(data) {
   // Model requesting tools
@@ -81,15 +77,15 @@ exports.getAIAgent = (req, res) => {
 };
 
 /**
- * GET /ai/ai-agent/chat
+ * POST /ai/ai-agent/chat
  * Handle chat messages with the AI agent via Server-Sent Events (SSE)
  * Streams three types of events:
  *   - 'chat': AI responses to display in chat UI
  *   - 'status': Status updates for System Status panel
  *   - 'raw': Raw stream data for debugging
  */
-exports.getAIAgentChat = async (req, res) => {
-  const { message, sessionId } = req.query;
+exports.postAIAgentChat = async (req, res) => {
+  const { message, sessionId } = req.body;
   console.log('=== AI Agent Chat Request ===');
   console.log('Message:', message);
   console.log('Session ID:', sessionId);
@@ -411,7 +407,7 @@ const tier2EscalationTool = tool(
 async function createCustomerServiceAgent() {
   const chatModel = new ChatGroq({
     apiKey: process.env.GROQ_API_KEY,
-    model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
+    model: process.env.GROQ_MODEL,
     temperature: 0.1,
     timeout: 30000,
     maxRetries: 1,

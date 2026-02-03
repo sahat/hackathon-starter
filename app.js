@@ -269,7 +269,7 @@ app.get('/ai/rag', aiController.getRag);
 app.post('/ai/rag/ingest', aiController.postRagIngest);
 app.post('/ai/rag/ask', aiController.postRagAsk);
 app.get('/ai/ai-agent', aiAgentController.getAIAgent);
-app.get('/ai/ai-agent/chat', aiAgentController.getAIAgentChat);
+app.post('/ai/ai-agent/chat', aiAgentController.postAIAgentChat);
 
 /**
  * OAuth authentication failure handler (common for all providers)

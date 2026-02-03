@@ -93,7 +93,7 @@ block content
 
   script.
     let sessionId = '#{sessionId}';
-    let eventSource = null;
+    let abortController = null;
     const chat = document.getElementById('chat-messages');
     const status = document.getElementById('status');
     const statusMessages = document.getElementById('status-messages');
@@ -110,7 +110,7 @@ block content
       }
     };
 
-    function send() {
+    async function send() {
       const text = input.value.trim();
       if (!text) return;
       append(chat, `${ts()} You: ${text}`);
@@ -118,35 +118,68 @@ block content
       sendBtn.disabled = true;
       spinner.style.display = 'inline-block';
       status.textContent = 'Processing...';
-      if (eventSource) eventSource.close();
-      const csrf = document.querySelector('meta[name="csrf-token"]').content;
-      const url = `/ai/ai-agent/chat?sessionId=${sessionId}&message=${encodeURIComponent(text)}&_csrf=${encodeURIComponent(csrf)}`;
-      eventSource = new EventSource(url);
-      eventSource.onmessage = (e) => {
-        const data = JSON.parse(e.data);
-        // Handle different SSE event types sent from backend
-        if (data.type === 'chat') {
-          // AI responses for the chat window
-          append(chat, `${ts()} AI: ${data.message}`);
-        } else if (data.type === 'status') {
-          // Status updates for the system status panel
-          append(statusMessages, `${ts()} ${data.message}`);
-        } else if (data.type === 'raw') {
-          // Raw stream data for debugging
-          appendRaw(JSON.stringify(data.content, null, 2));
-        } else if (data.type === 'done') {
-          cleanup();
-        } else if (data.type === 'error') {
-          append(chat, `${ts()} Error: ${data.error}`);
-          cleanup();
+
+      // Abort any previous request
+      if (abortController) abortController.abort();
+      abortController = new AbortController();
+
+      try {
+        const csrf = document.querySelector('meta[name="csrf-token"]').content;
+        const response = await fetch('/ai/ai-agent/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrf,
+          },
+          body: JSON.stringify({ message: text, sessionId }),
+          signal: abortController.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
         }
-      };
-      eventSource.onerror = cleanup;
+
+        // Read SSE stream from fetch response
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop(); // Keep incomplete line in buffer
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = JSON.parse(line.slice(6));
+              if (data.type === 'chat') {
+                append(chat, `${ts()} AI: ${data.message}`);
+              } else if (data.type === 'status') {
+                append(statusMessages, `${ts()} ${data.message}`);
+              } else if (data.type === 'raw') {
+                appendRaw(JSON.stringify(data.content, null, 2));
+              } else if (data.type === 'done') {
+                // Stream complete
+              } else if (data.type === 'error') {
+                append(chat, `${ts()} Error: ${data.error}`);
+              }
+            }
+          }
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          append(chat, `${ts()} Error: ${err.message}`);
+        }
+      } finally {
+        cleanup();
+      }
     }
 
     function cleanup() {
-      if (eventSource) eventSource.close();
-      eventSource = null;
+      abortController = null;
       sendBtn.disabled = false;
       spinner.style.display = 'none';
       status.textContent = 'Ready';
