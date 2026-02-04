@@ -13,15 +13,19 @@ block content
               .card-header
                 h5.mb-0 Customer Service Chat
               .card-body.d-flex.flex-column
+                if notLoggedIn
+                  .alert.alert-info.mb-3
+                    i.fas.fa-info-circle.me-2
+                    | #[a(href='/login') Login] to have your chat history saved across sessions.
                 form(method='POST', action='/ai/ai-agent/reset', style='display: inline')
                   input(type='hidden', name='_csrf', value=_csrf)
                   button.btn.btn-outline-secondary.mb-3.btn-sm(type='submit', onclick='return confirm("Are you sure you want to start a new chat? Your conversation history will be cleared.")')
                     i.fas.fa-redo.me-1
                     | New Chat
                 #chat-messages.mb-3.flex-grow-1.overflow-auto.border.rounded.p-3
-                  if messages && messages.length > 0
+                  if chatMessages && chatMessages.length > 0
                     //- Show prior conversation history
-                    each msg in messages
+                    each msg in chatMessages
                       .mb-2
                         if msg.role === 'user'
                           strong You:

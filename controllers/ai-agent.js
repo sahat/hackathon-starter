@@ -26,6 +26,21 @@ let mongoClient = null;
 const CHECKPOINT_TTL_SECONDS = 7 * 24 * 60 * 60;
 
 /**
+ * Delete all AI agent chat data for a user
+ * Called when user deletes their account
+ */
+exports.deleteUserAIAgentData = async (userId) => {
+  try {
+    const checkpointer = await getCheckpointer();
+    await checkpointer.deleteThread(userId);
+    console.log(`AI Agent: Deleted chat data for user ${userId}`);
+  } catch (error) {
+    // Log but don't throw - account deletion should still proceed
+    console.error(`AI Agent: Failed to delete chat data for user ${userId}:`, error.message);
+  }
+};
+
+/**
  * Initialize MongoDB checkpointer with TTL index for automatic cleanup
  * Uses MongoDB's native TTL index feature for expiring old sessions
  */
@@ -110,67 +125,92 @@ function extractStatus(data) {
 
 /**
  * GET /ai/ai-agent
- * AI Agent Customer Service Demo (Authenticated users only)
- * Uses user._id as thread_id for persistent sessions per user
+ * AI Agent Customer Service Demo
+ * - Authenticated users: Uses user._id as thread_id for persistent sessions
+ * - Unauthenticated users: Uses temporary session ID (chat not persisted across page reloads)
  */
 exports.getAIAgent = async (req, res) => {
-  // Use user's MongoDB _id as the thread identifier for persistent sessions
-  const threadId = req.user._id.toString();
-
-  // Load prior messages from checkpoint for returning users
+  let notLoggedIn = null;
+  let threadId;
   let priorMessages = [];
-  try {
-    const checkpointer = await getCheckpointer();
-    const checkpoint = await checkpointer.getTuple({
-      configurable: { thread_id: threadId, checkpoint_ns: '' },
-    });
 
-    if (checkpoint?.checkpoint?.channel_values?.messages) {
-      // Extract human and AI messages for display (filter out tool calls/results)
-      priorMessages = checkpoint.checkpoint.channel_values.messages
-        .filter((msg) => msg.constructor?.name === 'HumanMessage' || msg.constructor?.name === 'AIMessage')
-        .filter((msg) => {
-          // Filter out AI messages that are just tool calls (no content)
-          if (msg.constructor?.name === 'AIMessage') {
-            return msg.content && typeof msg.content === 'string' && msg.content.trim().length > 0;
-          }
-          return true;
-        })
-        .map((msg) => ({
-          role: msg.constructor?.name === 'HumanMessage' ? 'user' : 'assistant',
-          content: msg.content,
-        }));
+  if (!req.user) {
+    // Not logged in - use a temporary session ID
+    notLoggedIn = true;
+    if (!req.session.tempAiAgentSessionId) {
+      req.session.tempAiAgentSessionId = `temp_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
     }
-  } catch (error) {
-    console.error('Error loading prior messages:', error);
-    // Continue with empty messages on error
+    threadId = req.session.tempAiAgentSessionId;
+  } else {
+    // Logged in - use user's MongoDB _id for persistent sessions
+    threadId = req.user._id.toString();
+
+    // Load prior messages from checkpoint for returning authenticated users
+    try {
+      const checkpointer = await getCheckpointer();
+      const checkpoint = await checkpointer.getTuple({ configurable: { thread_id: threadId, checkpoint_ns: '' } });
+
+      if (checkpoint?.checkpoint?.channel_values?.messages) {
+        // Extract human and AI messages for display (filter out tool calls/results)
+        priorMessages = checkpoint.checkpoint.channel_values.messages
+          .filter((msg) => msg.constructor?.name === 'HumanMessage' || msg.constructor?.name === 'AIMessage')
+          .filter((msg) => {
+            // Filter out AI messages that are just tool calls (no content)
+            if (msg.constructor?.name === 'AIMessage') {
+              return msg.content && typeof msg.content === 'string' && msg.content.trim().length > 0;
+            }
+            return true;
+          })
+          .map((msg) => ({
+            role: msg.constructor?.name === 'HumanMessage' ? 'user' : 'assistant',
+            content: msg.content,
+          }));
+      }
+    } catch (error) {
+      console.error('Error loading prior messages:', error);
+      // Continue with empty messages on error
+    }
   }
 
   res.render('ai/ai-agent', {
     title: 'AI Agent Customer Service',
-    messages: priorMessages,
+    chatMessages: priorMessages,
     sessionId: threadId,
+    notLoggedIn,
   });
 };
 
 /**
  * POST /ai/ai-agent/reset
- * Reset the user's chat session by creating a new thread
+ * Reset the user's chat session
+ * - Authenticated users: Deletes checkpoint from MongoDB
+ * - Unauthenticated users: Clears session temp ID (generates new one on next visit)
  */
 exports.postAIAgentReset = async (req, res) => {
   try {
-    const checkpointer = await getCheckpointer();
-    const userId = req.user._id.toString();
-
-    // Delete the user's checkpoint using the built-in deleteThread method
-    await checkpointer.deleteThread(userId);
+    if (req.user) {
+      // Authenticated user - delete from MongoDB
+      const checkpointer = await getCheckpointer();
+      const userId = req.user._id.toString();
+      await checkpointer.deleteThread(userId);
+    } else if (req.session.tempAiAgentSessionId) {
+      // Unauthenticated user - clear temp session ID
+      // Optionally delete from MongoDB if we're persisting temp sessions
+      try {
+        const checkpointer = await getCheckpointer();
+        await checkpointer.deleteThread(req.session.tempAiAgentSessionId);
+      } catch {
+        // Ignore errors for temp session cleanup
+      }
+      delete req.session.tempAiAgentSessionId;
+    }
 
     req.flash('success', { msg: 'Chat session has been reset. You can start a new conversation.' });
-    res.redirect('/ai/ai-agent');
+    req.session.save(() => res.redirect('/ai/ai-agent'));
   } catch (error) {
     console.error('Error resetting AI agent session:', error);
     req.flash('errors', { msg: 'Failed to reset chat session. Please try again.' });
-    res.redirect('/ai/ai-agent');
+    req.session.save(() => res.redirect('/ai/ai-agent'));
   }
 };
 
@@ -181,16 +221,27 @@ exports.postAIAgentReset = async (req, res) => {
  *   - 'chat': AI responses to display in chat UI
  *   - 'status': Status updates for System Status panel
  *   - 'raw': Raw stream data for debugging
- * (Authenticated users only - uses user._id as thread_id)
+ * Works for both authenticated and unauthenticated users
  */
 exports.postAIAgentChat = async (req, res) => {
   const { message } = req.body;
-  // Use authenticated user's ID as the thread identifier
-  const threadId = req.user._id.toString();
+  let threadId;
+  if (req.user) {
+    // Authenticated user - use persistent ID
+    threadId = req.user._id.toString();
+  } else if (req.session.tempAiAgentSessionId) {
+    // Unauthenticated user - use temporary session ID
+    threadId = req.session.tempAiAgentSessionId;
+  } else {
+    // No session ID available - create one
+    threadId = `temp_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+    req.session.tempAiAgentSessionId = threadId;
+  }
 
   console.log('=== AI Agent Chat Request ===');
   console.log('Message:', message);
-  console.log('User ID / Thread ID:', threadId);
+  console.log('Thread ID:', threadId);
+  console.log('Authenticated:', !!req.user);
 
   // Validate message exists
   if (!message || !message.trim()) {

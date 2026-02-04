@@ -152,6 +152,11 @@ app.use((req, res, next) => {
 const isSafeRedirect = (url) => /^\/[a-zA-Z0-9/_-]*$/.test(url);
 app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
+  // Only set returnTo for GET requests (Only pages that a user can navigate to)
+  if (req.method !== 'GET') {
+    return next();
+  }
+
   if (!req.user && req.path !== '/login' && !req.path.startsWith('/login/webauthn-') && req.path !== '/signup' && !req.path.startsWith('/auth') && !req.path.includes('.')) {
     const returnTo = req.originalUrl;
     if (isSafeRedirect(returnTo)) {
@@ -268,9 +273,9 @@ app.post('/ai/llm-camera', strictLimiter, aiController.imageUploadMiddleware, lu
 app.get('/ai/rag', aiController.getRag);
 app.post('/ai/rag/ingest', aiController.postRagIngest);
 app.post('/ai/rag/ask', aiController.postRagAsk);
-app.get('/ai/ai-agent', passportConfig.isAuthenticated, aiAgentController.getAIAgent);
-app.post('/ai/ai-agent/chat', passportConfig.isAuthenticated, aiAgentController.postAIAgentChat);
-app.post('/ai/ai-agent/reset', passportConfig.isAuthenticated, aiAgentController.postAIAgentReset);
+app.get('/ai/ai-agent', aiAgentController.getAIAgent);
+app.post('/ai/ai-agent/chat', aiAgentController.postAIAgentChat);
+app.post('/ai/ai-agent/reset', aiAgentController.postAIAgentReset);
 
 /**
  * OAuth authentication failure handler (common for all providers)
