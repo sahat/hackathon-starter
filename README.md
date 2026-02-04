@@ -83,6 +83,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - File upload
 - Device camera
 - **AI Examples and Boilerplates**
+  - AI Agent ReAct (Reasoning + Acting) with tool calling and memory
   - RAG with semantic and embedding caching
   - Llama 3.3, Llama 4 Scout (vision use case)
   - OpenAI Moderation
@@ -1032,6 +1033,69 @@ Most of the time you will be dealing with other APIs to do the real work:
 [Mongoose](http://mongoosejs.com/docs/guide.html) for querying database, socket.io for sending and receiving messages over WebSockets, sending emails via [Nodemailer](http://nodemailer.com/), form validation using [validator.js](https://github.com/validatorjs/validator.js) library, parsing websites using [Cheerio](https://github.com/cheeriojs/cheerio), etc.
 
 <hr>
+
+### AI Agent Controller
+
+LangChain v1 ReAct agent intended as a starting point for building new AI agents. The end-to-end implementation here supports tool execution, chat session memory, and real‑time streaming to the frontend using Server‑Sent Events (SSE). To get build your Agent using this controller as starting point you need to do two things:
+
+#### 1. Define the agent's role
+
+Edit the `systemPrompt` in `createAiAgent()` to describe what the agent does and which tools it can use.
+
+```
+systemPrompt: `You are a helpful [... e.g. travel, personal assistant, exam grading] agent.
+
+Your responsibilities:
+
+1. [YOUR_RESPONSIBILITY_1]
+2. [YOUR_RESPONSIBILITY_2]
+3. [YOUR_RESPONSIBILITY_3]
+
+Available tools:
+[LIST_YOUR_TOOLS_HERE]`
+```
+
+---
+
+#### 2. Replace the tools
+
+Add tools specific to your project by replacing the existing tools in the `tools` array inside `createAiAgent()`.  
+The existing tool functions can be removed.
+
+Tools follow this structure and use a Zod schema for input validation:
+
+```js
+const myTool = tool(
+  async ({ input }, config) => {
+    config.writer?.({ message: 'Calling my service...' });
+
+    // Call your API or database
+    const result = await callYourAPI(input);
+
+    return JSON.stringify(result);
+  },
+  {
+    name: 'my_tool',
+    description: 'Does something specific',
+    schema: z.object({
+      input: z.string().describe('The input'),
+    }),
+  },
+);
+```
+
+---
+
+#### Other Functions in ai-agent.js
+
+These functions handle streaming, parsing, and session management and typically do not need modification:
+
+- `getAIAgent(req, res)` : Express route (GET /ai/ai-agent) - Renders the AI agent demo page and initializes a session.
+- `postAIAgentChat(req, res)` : Express route (POST /ai/ai-agent/chat) - Main SSE endpoint. Streams AI responses, tool progress, and debug data.
+- `sendSSE(res, eventType, data)` : Sends typed SSE events to the frontend.
+- `extractAIMessages(data)` : Extracts user‑visible AI messages from agent stream updates.
+- `extractStatus(data)` : Derives tool call and completion status messages.
+- `generateSessionId()` : Generates per‑conversation thread IDs.
 
 ### How do I use Socket.io with Hackathon Starter?
 

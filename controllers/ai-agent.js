@@ -17,6 +17,13 @@ let globalAgent = null;
 const globalMemory = new MemorySaver();
 
 /**
+ * Utility function to generate session IDs
+ */
+function generateSessionId() {
+  return `session_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+}
+
+/**
  * Helper: Send SSE event to client
  * @param {Object} res - Express response object
  * @param {string} eventType - Type of SSE event (chat, status, raw)
@@ -47,7 +54,7 @@ function extractAIMessages(data) {
 /**
  * Helper: Extract status from graph node updates
  */
-function processUpdateEvent(data) {
+function extractStatus(data) {
   // Model requesting tools
   if (data.model_request?.messages?.[0]) {
     const msg = data.model_request.messages[0];
@@ -104,7 +111,7 @@ exports.postAIAgentChat = async (req, res) => {
     // Initialize or reuse agent instance
     if (!globalAgent) {
       console.log('Creating customer service agent...');
-      globalAgent = await createCustomerServiceAgent();
+      globalAgent = await createAiAgent();
       console.log('Agent created successfully');
     }
     const threadId = sessionId || generateSessionId();
@@ -135,7 +142,7 @@ exports.postAIAgentChat = async (req, res) => {
       const aiMessages = extractAIMessages(data);
       aiMessages.forEach((msg) => sendSSE(res, 'chat', { message: msg }));
 
-      const statusInfo = processUpdateEvent(data);
+      const statusInfo = extractStatus(data);
       if (statusInfo) sendSSE(res, 'status', statusInfo);
     }
     sendSSE(res, 'done', {});
@@ -404,7 +411,7 @@ const tier2EscalationTool = tool(
 /**
  * Create the Customer Service Agent using createAgent with built-in middleware
  */
-async function createCustomerServiceAgent() {
+async function createAiAgent() {
   const chatModel = new ChatGroq({
     apiKey: process.env.GROQ_API_KEY,
     model: process.env.GROQ_MODEL,
@@ -456,11 +463,4 @@ Always confirm successful actions and provide relevant details like tracking num
   });
 
   return agent;
-}
-
-/**
- * Utility function to generate session IDs
- */
-function generateSessionId() {
-  return `session_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
 }

@@ -48,48 +48,79 @@ block content
           .card-header.bg-info.text-white
             h5.mb-0
               i.fas.fa-code.me-2
-              | 🛠️ Developer Guide: AI Agent Boilerplate
+              | Developer Guide: AI Agent Boilerplate
           .card-body
             .row
-              .col-md-6
-                h6.text-primary
-                  i.fas.fa-info-circle.me-1
-                  | What is this?
-                p This is #[strong LangChain v1 ReAct Agent] demo built with:
-                ul.small
-                  li #[code createAgent] from the #[code langchain] package
-                  li #[strong Groq] as the LLM provider (fast inference with Llama 3.3 70B)
-                  li #[strong Server-Sent Events (SSE)] for real-time streaming
-                  li #[strong Middleware] for observability (the status updates you see)
-                  li #[strong MemorySaver] for conversation persistence across messages
+              .col-lg-8.col-md-7
+                h5.mb-2 AI Agent Controller
+                p This is a LangChain v1 ReAct agent intended as a starting point for building AI‑powered features. It supports tool execution, chat session memory, and real‑time streaming to the frontend using Server‑Sent Events (SSE).
 
-              .col-md-6
-                h6.text-primary.mt-3
-                  i.fas.fa-cogs.me-1
-                  | How it works
-                ol.small
-                  li User sends a message via the chat input
-                  li Backend creates/uses a persistent agent with tools
-                  li Agent decides which tools to call based on the query
-                  li #[strong Middleware] emits status updates at each stage (beforeModel, afterModel, wrapToolCall)
-                  li #[strong Tools] emit progress via #[code config.writer] during execution
-                  li Results stream back to the UI in real-time
+                hr
 
-              .col-12
-                h6.text-success
-                  | Quick Start for Your Hackathon
-                .small
-                  strong Step 1: Define Your Domain
-                  p.mb-2 Replace the customer service scenario with your business problem. Edit the #[code systemPrompt] in #[code controllers/ai-agent.js]
+                h6.mb-1 Getting Started
 
-                  strong Step 2: Create Your Tools
-                  p.mb-2 Tools are how your agent interacts with the world. Look for #[code tool()] definitions and create your own:
+                h6.mb-0 1. Define the agent’s role
+                p.mb-2 Edit the #[code systemPrompt] in #[code createAiAgent()] to describe what the agent does and which tools it can use.
+                pre.small.
+                  systemPrompt: `You are a helpful [... e.g. travel, personal assistant, exam grading] agent.
 
-                  strong Step 3: Add to Agent
-                  p.mb-0 Add your tools to the #[code tools] array in #[code createCustomerServiceAgent()]
+                  Your responsibilities:
+                  1. [YOUR_RESPONSIBILITY_1]
+                  2. [YOUR_RESPONSIBILITY_2]
+                  3. [YOUR_RESPONSIBILITY_3]
 
-            mt-3.mb-0.small
-              | #[strong Tip:] The #[code observabilityMiddleware] in #[code ai-agent.js] shows how to add custom status updates. Use #[code config.writer] inside your tools to emit real-time progress to users!
+                  Available tools:
+                  [LIST_YOUR_TOOLS_HERE]`
+
+                hr
+
+                h6.mb-0 2. Replace the tools
+                p.mb-2 Add tools specific to your project by replacing the existing tools in the #[code tools] array inside #[code createAiAgent()]. The existing tool functions can be removed.
+                p.mb-1 Tools follow this structure and use a Zod schema for input validation:
+                pre.small.
+                  const myTool = tool(
+                    async ({ input }, config) => {
+                      config.writer?.({ message: 'Calling my service...' });
+
+                      // Call your API or database
+                      const result = await callYourAPI(input);
+
+                      return JSON.stringify(result);
+                    },
+                    {
+                      name: 'my_tool',
+                      description: 'Does something specific',
+                      schema: z.object({
+                        input: z.string().describe('The input'),
+                      }),
+                    },
+                  );
+
+                hr
+
+              .col-lg-4.col-md-5
+                .sticky-top(style='top: 1rem')
+                  h6.mb-2 Other Functions in ai-agent.js
+                  p.mb-1 These functions handle streaming, parsing, and session management and typically do not need modification:
+                  ul.small
+                    li #[code sendSSE(res, eventType, data)] — Sends typed SSE events to the frontend.
+                    li #[code extractAIMessages(data)] — Extracts user‑visible AI messages from agent stream updates.
+                    li #[code extractStatus(data)] — Derives tool call and completion status messages.
+                    li #[code getAIAgent(req, res)] — Renders the AI agent demo page and initializes a session.
+                    li #[code postAIAgentChat(req, res)] — Main SSE endpoint. Streams AI responses, tool progress, and debug data.
+                    li #[code createAiAgent()] — Creates the LangChain agent and registers tools, middleware, and memory.
+                    li #[code generateSessionId()] — Generates per‑conversation thread IDs.
+
+                  hr
+
+                  h6.mb-2 Useful Links
+                  ul.small
+                    li: a(href='https://docs.langchain.com/oss/javascript/langchain/agents', target='_blank') LangChain Agents Guide
+                    li: a(href='https://docs.langchain.com/oss/javascript/langchain/tools', target='_blank') LangChain Tools
+                    li: a(href='https://docs.langchain.com/oss/javascript/releases/langchain-v1', target='_blank') LangChain Middleware
+                    li: a(href='https://zod.dev', target='_blank') Zod Schemas
+
+                  p.mt-2.small.mb-0 Need additional in-page details? Ask and I'll expand any section.
 
   script.
     let sessionId = '#{sessionId}';
