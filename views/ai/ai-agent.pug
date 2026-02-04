@@ -4,23 +4,42 @@ block content
   .container.mt-4
     .row
       .col-12
-        h2 AI Agent: Customer Service Example
+        .d-flex.justify-content-between.align-items-center.mb-3
+          h2.mb-0 AI Agent: Customer Service Example
+
         .row.align-items-stretch
           .col-md-6
             .card.h-100
               .card-header
                 h5.mb-0 Customer Service Chat
               .card-body.d-flex.flex-column
+                form(method='POST', action='/ai/ai-agent/reset', style='display: inline')
+                  input(type='hidden', name='_csrf', value=_csrf)
+                  button.btn.btn-outline-secondary.mb-3.btn-sm(type='submit', onclick='return confirm("Are you sure you want to start a new chat? Your conversation history will be cleared.")')
+                    i.fas.fa-redo.me-1
+                    | New Chat
                 #chat-messages.mb-3.flex-grow-1.overflow-auto.border.rounded.p-3
-                  .text-muted.mb-3
-                    p Welcome! I'm your AI customer service representative. I can help you with:
-                    ul.small
-                      li Order tracking and status
-                      li Returns and refunds
-                      li Replacements for damaged items
-                      li Order cancellations
-                      li Payment and billing issues
-                    p.mt-2 Try asking about order #1234 or mention any customer service issue!
+                  if messages && messages.length > 0
+                    //- Show prior conversation history
+                    each msg in messages
+                      .mb-2
+                        if msg.role === 'user'
+                          strong You:
+                          | #{ msg.content }
+                        else
+                          strong AI:
+                          | #{ msg.content }
+                  else
+                    //- Show welcome message for new conversations
+                    #welcome-message.text-muted.mb-3
+                      p Welcome! I'm your AI customer service representative. I can help you with:
+                      ul.small
+                        li Order tracking and status
+                        li Returns and refunds
+                        li Replacements for damaged items
+                        li Order cancellations
+                        li Payment and billing issues
+                      p.mt-2 Try asking about order #1234 or mention any customer service issue!
                 .input-group.mt-2
                   input#message-input.form-control(type='text', placeholder='Type your message...')
                   button#send-button.btn.btn-primary(type='button')
@@ -144,6 +163,11 @@ block content
     async function send() {
       const text = input.value.trim();
       if (!text) return;
+
+      // Hide welcome message on first interaction
+      const welcomeMsg = document.getElementById('welcome-message');
+      if (welcomeMsg) welcomeMsg.remove();
+
       append(chat, `${ts()} You: ${text}`);
       input.value = '';
       sendBtn.disabled = true;
@@ -167,7 +191,15 @@ block content
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
+          // Try to read error message from JSON response
+          let errorMsg = `HTTP ${response.status}`;
+          try {
+            const errorData = await response.json();
+            if (errorData.error) errorMsg = errorData.error;
+          } catch (e) {
+            /* ignore parse errors */
+          }
+          throw new Error(errorMsg);
         }
 
         // Read SSE stream from fetch response
@@ -185,7 +217,13 @@ block content
 
           for (const line of lines) {
             if (line.startsWith('data: ')) {
-              const data = JSON.parse(line.slice(6));
+              let data;
+              try {
+                data = JSON.parse(line.slice(6));
+              } catch (parseError) {
+                console.warn('Failed to parse Agent data from the server (SSE data):', line, parseError);
+                continue;
+              }
               if (data.type === 'chat') {
                 append(chat, `${ts()} AI: ${data.message}`);
               } else if (data.type === 'status') {

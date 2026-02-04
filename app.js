@@ -268,8 +268,9 @@ app.post('/ai/llm-camera', strictLimiter, aiController.imageUploadMiddleware, lu
 app.get('/ai/rag', aiController.getRag);
 app.post('/ai/rag/ingest', aiController.postRagIngest);
 app.post('/ai/rag/ask', aiController.postRagAsk);
-app.get('/ai/ai-agent', aiAgentController.getAIAgent);
-app.post('/ai/ai-agent/chat', aiAgentController.postAIAgentChat);
+app.get('/ai/ai-agent', passportConfig.isAuthenticated, aiAgentController.getAIAgent);
+app.post('/ai/ai-agent/chat', passportConfig.isAuthenticated, aiAgentController.postAIAgentChat);
+app.post('/ai/ai-agent/reset', passportConfig.isAuthenticated, aiAgentController.postAIAgentReset);
 
 /**
  * OAuth authentication failure handler (common for all providers)
