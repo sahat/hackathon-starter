@@ -4,7 +4,7 @@ import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import eslintPluginImport from 'eslint-plugin-import';
 
 export default [
-  eslintConfigPrettier, // Disable Prettier‑handled style rules - prettier owns styling
+  eslintConfigPrettier, // Disable Prettier-handled style rules - prettier owns styling
   {
     ignores: ['tmp/**', 'tmp'],
 
