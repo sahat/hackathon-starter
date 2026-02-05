@@ -302,10 +302,7 @@ exports.postAIAgentChat = async (req, res) => {
     threadId = `${TEMP_SESSION_PREFIX}${req.sessionID}`;
   }
 
-  console.log('=== AI Agent Chat Request ===');
-  console.log('Message:', message);
-  console.log('Thread ID:', threadId);
-  console.log('Authenticated:', !!req.user);
+  console.log(`AI Agent: chat request - thread ID: ${threadId}`);
 
   // Validate message exists
   if (!message || !message.trim()) {
