@@ -1039,7 +1039,7 @@ Most of the time you will be dealing with other APIs to do the real work:
 LangChain v1 ReAct agent intended as a starting point for building new AI agents. The end-to-end implementation supports:
 
 - **Tool execution** with automatic retry middleware for transient failures
-- **MongoDB session persistence** - Chat history persists across page reloads for authenticated users (7-day TTL with automatic cleanup)
+- **MongoDB session persistence** - Chat history persists across page reloads (authenticated users: permanent until account deletion; unauthenticated: tied to Express session lifecycle)
 - **Input guardrails** - Prompt injection/jailbreak detection using a guard model (e.g., Llama Guard 4)
 - **Conversation summarization** - Long conversations are condensed to stay within context limits
 - **Real-time streaming** - Server-Sent Events (SSE) for live responses
@@ -1099,8 +1099,9 @@ const myTool = tool(
 These functions handle streaming, parsing, and session management and typically do not need modification:
 
 - `promptGuardMiddleware()` : LangChain middleware that classifies user input before the agent processes it. Blocks unsafe prompts and redirects the conversation.
-- `getCheckpointer()` : Initializes the MongoDB checkpointer for session persistence. Creates a TTL index for automatic cleanup of old sessions.
-- `getAIAgent(req, res)` : Express route (GET /ai/ai-agent) - Renders the AI agent demo page and loads prior messages for authenticated users.
+- `getCheckpointer()` : Initializes the MongoDB checkpointer for session persistence.
+- `cleanupOrphanedTempSessions()` : Cleans up checkpoint data for unauthenticated users whose Express sessions have expired. Called on app startup.
+- `getAIAgent(req, res)` : Express route (GET /ai/ai-agent) - Renders the AI agent demo page and loads prior messages.
 - `postAIAgentChat(req, res)` : Express route (POST /ai/ai-agent/chat) - Main SSE endpoint. Streams AI responses, tool progress, and debug data.
 - `postAIAgentReset(req, res)` : Express route (POST /ai/ai-agent/reset) - Clears the user's chat session from MongoDB.
 - `deleteUserAIAgentData(userId)` : Called when a user deletes their account to clean up their chat data.

@@ -101,6 +101,10 @@ mongoose.connection.on('error', (err) => {
   console.log('MongoDB connection error. Please make sure MongoDB is running.');
   process.exit(1);
 });
+mongoose.connection.once('open', () => {
+  // Clean up orphaned temp AI agent sessions (Express sessions expired but chat checkpoint data remains)
+  aiAgentController.cleanupOrphanedTempSessions();
+});
 
 /**
  * Express configuration.

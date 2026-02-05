@@ -23,8 +23,8 @@ let globalAgent = null;
 let globalCheckpointer = null;
 let promptGuardModel = null;
 
-// TTL for chat sessions in seconds (7 days)
-const CHECKPOINT_TTL_SECONDS = 7 * 24 * 60 * 60;
+// Temp session prefix - tied to Express session lifecycle
+const TEMP_SESSION_PREFIX = 'temp_';
 
 /**
  * Detects prompt injection and jailbreak attacks
@@ -98,39 +98,75 @@ exports.deleteUserAIAgentData = async (userId) => {
 };
 
 /**
- * Initialize MongoDB checkpointer with TTL index for automatic cleanup
- * Uses MongoDB's native TTL index feature for expiring old sessions
+ * Initialize MongoDB checkpointer for persistent sessions.
+ *
+ * Session cleanup strategy:
+ * - Authenticated users: Data cleaned up on account deletion via deleteUserAIAgentData()
+ * - Temp users (unauthenticated): Thread ID tied to Express sessionID.
+ *   When Express session expires (2 weeks), cleanupOrphanedTempSessions() removes the data.
+ * - Conversation size bounded by summarizationMiddleware (4000 tokens trigger, keeps 10 messages)
  */
 async function getCheckpointer() {
   if (!globalCheckpointer) {
-    // Reuse mongoose's existing MongoDB connection (managed by app.js)
-    // This avoids creating duplicate connections and leverages mongoose's connection pooling
+    // Reuse mongoose's existing MongoDB connection
     const mongoClient = mongoose.connection.getClient();
-
-    // Create checkpointer with the mongoose-managed client
     globalCheckpointer = new MongoDBSaver({
       client: mongoClient,
       checkpointCollectionName: 'ai_agent_checkpoints',
       checkpointWritesCollectionName: 'ai_agent_checkpoint_writes',
     });
 
-    // Set up TTL index for automatic cleanup of old sessions
-    // This runs once on first initialization
-    try {
-      const db = mongoClient.db();
-      // Create TTL index on the checkpoint collection
-      // MongoDB will automatically delete documents when 'updatedAt' is older than TTL
-      await db.collection('ai_agent_checkpoints').createIndex({ updatedAt: 1 }, { expireAfterSeconds: CHECKPOINT_TTL_SECONDS, background: true });
-      console.log(`AI Agent: MongoDB checkpoint TTL index created (${CHECKPOINT_TTL_SECONDS / 86400} days)`);
-    } catch (err) {
-      // Index may already exist (error code 85/86), which is fine
-      if (err.code !== 85 && err.code !== 86) {
-        console.warn('AI Agent: Could not create TTL index:', err.message);
-      }
-    }
+    console.log('AI Agent: MongoDB checkpointer initialized');
   }
   return globalCheckpointer;
 }
+
+/**
+ * Clean up orphaned temp sessions whose Express sessions have expired.
+ * Temp thread IDs use format: temp_{sessionID}
+ * This should be called periodically (e.g., on app startup, daily cron).
+ */
+exports.cleanupOrphanedTempSessions = async () => {
+  try {
+    const mongoClient = mongoose.connection.getClient();
+    const db = mongoClient.db();
+    const checkpointsCollection = db.collection('ai_agent_checkpoints');
+    const sessionsCollection = db.collection('sessions');
+
+    // Find all temp thread IDs
+    const tempThreads = await checkpointsCollection.distinct('thread_id', {
+      thread_id: { $regex: `^${TEMP_SESSION_PREFIX}` },
+    });
+
+    if (tempThreads.length === 0) {
+      return { cleaned: 0, total: 0 };
+    }
+
+    // Extract session IDs and check which still exist
+    const sessionIds = tempThreads.map((tid) => tid.replace(TEMP_SESSION_PREFIX, ''));
+    const existingSessions = await sessionsCollection.find({ _id: { $in: sessionIds } }, { projection: { _id: 1 } }).toArray();
+    const existingSessionIds = new Set(existingSessions.map((s) => s._id));
+
+    // Delete orphaned threads (session expired)
+    const checkpointer = await getCheckpointer();
+    let cleaned = 0;
+    for (const threadId of tempThreads) {
+      const sessionId = threadId.replace(TEMP_SESSION_PREFIX, '');
+      if (!existingSessionIds.has(sessionId)) {
+        await checkpointer.deleteThread(threadId);
+        cleaned += 1;
+      }
+    }
+
+    if (cleaned > 0) {
+      console.log(`AI Agent: Cleaned up ${cleaned} orphaned temp sessions`);
+    }
+    return { cleaned, total: tempThreads.length };
+  } catch (error) {
+    console.error('AI Agent: Error cleaning up orphaned sessions:', error.message);
+    return { cleaned: 0, total: 0, error: error.message };
+  }
+};
 
 /**
  * Helper: Send SSE event to client
@@ -183,39 +219,38 @@ function extractStatus(data) {
 /**
  * GET /ai/ai-agent
  * AI Agent Customer Service Demo
- * - Authenticated users: Loads prior messages from MongoDB checkpoint
- * - Unauthenticated users: Fresh session (temp ID created on first chat message)
+ * Loads prior messages from MongoDB checkpoint for both:
+ * - Authenticated users: Thread ID = userId (persists across browser sessions)
+ * - Unauthenticated users: Thread ID = temp_{sessionID} (persists while session active)
  */
 exports.getAIAgent = async (req, res) => {
   let priorMessages = [];
+  const threadId = req.user ? req.user._id.toString() : `${TEMP_SESSION_PREFIX}${req.sessionID}`;
 
-  if (req.user) {
-    // Load prior messages from checkpoint for returning authenticated users
-    try {
-      const checkpointer = await getCheckpointer();
-      const threadId = req.user._id.toString();
-      const checkpoint = await checkpointer.getTuple({ configurable: { thread_id: threadId, checkpoint_ns: '' } });
+  // Load prior messages from checkpoint
+  try {
+    const checkpointer = await getCheckpointer();
+    const checkpoint = await checkpointer.getTuple({ configurable: { thread_id: threadId, checkpoint_ns: '' } });
 
-      if (checkpoint?.checkpoint?.channel_values?.messages) {
-        // Extract human and AI messages for display (filter out tool calls/results)
-        priorMessages = checkpoint.checkpoint.channel_values.messages
-          .filter((msg) => msg instanceof HumanMessage || msg instanceof AIMessage)
-          .filter((msg) => {
-            // Filter out AI messages that are just tool calls (no content)
-            if (msg instanceof AIMessage) {
-              return msg.content && typeof msg.content === 'string' && msg.content.trim().length > 0;
-            }
-            return true;
-          })
-          .map((msg) => ({
-            role: msg instanceof HumanMessage ? 'user' : 'assistant',
-            content: msg.content,
-          }));
-      }
-    } catch (error) {
-      console.error('Error loading prior messages:', error);
-      // Continue with empty messages on error
+    if (checkpoint?.checkpoint?.channel_values?.messages) {
+      // Extract human and AI messages for display (filter out tool calls/results)
+      priorMessages = checkpoint.checkpoint.channel_values.messages
+        .filter((msg) => msg instanceof HumanMessage || msg instanceof AIMessage)
+        .filter((msg) => {
+          // Filter out AI messages that are just tool calls (no content)
+          if (msg instanceof AIMessage) {
+            return msg.content && typeof msg.content === 'string' && msg.content.trim().length > 0;
+          }
+          return true;
+        })
+        .map((msg) => ({
+          role: msg instanceof HumanMessage ? 'user' : 'assistant',
+          content: msg.content,
+        }));
     }
+  } catch (error) {
+    console.error('Error loading prior messages:', error);
+    // Continue with empty messages on error
   }
 
   res.render('ai/ai-agent', {
@@ -233,22 +268,9 @@ exports.getAIAgent = async (req, res) => {
  */
 exports.postAIAgentReset = async (req, res) => {
   try {
-    if (req.user) {
-      // Authenticated user - delete from MongoDB
-      const checkpointer = await getCheckpointer();
-      const userId = req.user._id.toString();
-      await checkpointer.deleteThread(userId);
-    } else if (req.session.tempAiAgentSessionId) {
-      // Unauthenticated user - clear temp session ID
-      // Optionally delete from MongoDB if we're persisting temp sessions
-      try {
-        const checkpointer = await getCheckpointer();
-        await checkpointer.deleteThread(req.session.tempAiAgentSessionId);
-      } catch {
-        // Ignore errors for temp session cleanup
-      }
-      delete req.session.tempAiAgentSessionId;
-    }
+    const checkpointer = await getCheckpointer();
+    const threadId = req.user ? req.user._id.toString() : `${TEMP_SESSION_PREFIX}${req.sessionID}`;
+    await checkpointer.deleteThread(threadId);
 
     req.flash('success', { msg: 'Chat session has been reset. You can start a new conversation.' });
     req.session.save(() => res.redirect('/ai/ai-agent'));
@@ -274,13 +296,10 @@ exports.postAIAgentChat = async (req, res) => {
   if (req.user) {
     // Authenticated user - use persistent ID
     threadId = req.user._id.toString();
-  } else if (req.session.tempAiAgentSessionId) {
-    // Unauthenticated user - use temporary session ID
-    threadId = req.session.tempAiAgentSessionId;
   } else {
-    // No session ID available - create one
-    threadId = `temp_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
-    req.session.tempAiAgentSessionId = threadId;
+    // Unauthenticated user - tie to Express session lifecycle
+    // When Express session expires (2 weeks), cleanupOrphanedTempSessions() will remove the data
+    threadId = `${TEMP_SESSION_PREFIX}${req.sessionID}`;
   }
 
   console.log('=== AI Agent Chat Request ===');
@@ -302,8 +321,10 @@ exports.postAIAgentChat = async (req, res) => {
     });
   }
 
-  // Sanitize the message (escape HTML entities to prevent XSS)
-  const sanitizedMessage = validator.escape(message.trim());
+  // Use trimmed message directly - no HTML escaping needed since:
+  // 1. Frontend uses textContent (not innerHTML) for safe display
+  // 2. HTML entity encoding could confuse the LLM (e.g., "&" becomes "&amp;")
+  const sanitizedMessage = message.trim();
 
   // Set SSE headers
   res.writeHead(200, {

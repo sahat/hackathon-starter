@@ -44,12 +44,12 @@ block content
                         li Payment and billing issues
                       p.small.mt-2 (Ask about order #1234, mention any customer service issue, etc.)
                 .d-flex.gap-2.align-items-end.mt-2
-                  textarea#message-input.form-control(rows='3', placeholder='Type your message...')
+                  textarea#message-input.form-control(rows='3', placeholder='Type your message...', aria-label='Chat message input')
                   button#send-button.btn.btn-primary(type='button', style='min-width: 70px; height: 38px')
                     span#send-text Send
                     span#send-spinner.spinner-border.spinner-border-sm(role='status', aria-hidden='true', style='display: none')
 
-          .col-md-6
+          .col-md-6.mb-3
             .card.h-100
               .card-header
                 h6.mb-0 System Status
@@ -128,7 +128,9 @@ block content
                     li #[code sendSSE(res, eventType, data)] — Sends typed SSE events to the frontend.
                     li #[code extractAIMessages(data)] — Extracts user-visible AI messages from agent stream updates.
                     li #[code extractStatus(data)] — Derives tool call and completion status messages.
-                    li #[code getAIAgent(req, res)] — Renders the AI agent demo page and loads prior messages for authenticated users.
+                    li #[code getCheckpointer()] — Initializes the MongoDB checkpointer for session persistence.
+                    li #[code cleanupOrphanedTempSessions()] — Cleans up data for expired unauthenticated sessions (runs on app startup).
+                    li #[code getAIAgent(req, res)] — Renders the AI agent demo page and loads prior messages.
                     li #[code postAIAgentChat(req, res)] — Main SSE endpoint. Streams AI responses, tool progress, and debug data.
                     li #[code createAiAgent()] — Creates the LangChain agent and registers tools, middleware, and memory.
                     li #[code promptGuardMiddleware()] — Detects prompt injection and jailbreak attacks using a guard model.
@@ -158,7 +160,8 @@ block content
     const ts = () => `[${new Date().toLocaleTimeString()}]`;
     sendBtn.onclick = send;
     input.onkeydown = (e) => {
-      if (e.key === 'Enter') {
+      // Submit on Enter, but allow Shift+Enter for multi-line input
+      if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         send();
       }
