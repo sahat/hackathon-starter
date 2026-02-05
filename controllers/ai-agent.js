@@ -336,7 +336,7 @@ exports.postAIAgentChat = async (req, res) => {
     // Initialize or reuse agent instance
     if (!globalAgent) {
       console.log('Creating customer service agent...');
-      globalAgent = await createAiAgent();
+      globalAgent = await createAIAgent();
       console.log('Agent created successfully');
     }
     console.log('Thread ID:', threadId);
@@ -608,7 +608,7 @@ const tier2EscalationTool = tool(
 /**
  * Create the Customer Service Agent using createAgent with built-in middleware
  */
-async function createAiAgent() {
+async function createAIAgent() {
   const chatModel = new ChatGroq({
     apiKey: process.env.GROQ_API_KEY,
     model: process.env.GROQ_MODEL,

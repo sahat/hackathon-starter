@@ -82,7 +82,7 @@ block content
                 h6.mb-1 Getting Started
 
                 h6.mb-0 1. Define the agent's role
-                p.mb-2 Edit the #[code systemPrompt] in #[code createAiAgent()] to describe what the agent does and which tools it can use.
+                p.mb-2 Edit the #[code systemPrompt] in #[code createAIAgent()] to describe what the agent does and which tools it can use.
                 pre.small.
                   systemPrompt: `You are a helpful [... e.g. travel, personal assistant, exam grading] agent.
 
@@ -97,7 +97,7 @@ block content
                 hr
 
                 h6.mb-0 2. Replace the tools
-                p.mb-2 Add tools specific to your project by replacing the existing tools in the #[code tools] array inside #[code createAiAgent()]. The existing tool functions can be removed.
+                p.mb-2 Add tools specific to your project by replacing the existing tools in the #[code tools] array inside #[code createAIAgent()]. The existing tool functions can be removed.
                 p.mb-1 Tools follow this structure and use a Zod schema for input validation:
                 pre.small.
                   const myTool = tool(
@@ -132,7 +132,7 @@ block content
                     li #[code cleanupOrphanedTempSessions()] — Cleans up data for expired unauthenticated sessions (runs on app startup).
                     li #[code getAIAgent(req, res)] — Renders the AI agent demo page and loads prior messages.
                     li #[code postAIAgentChat(req, res)] — Main SSE endpoint. Streams AI responses, tool progress, and debug data.
-                    li #[code createAiAgent()] — Creates the LangChain agent and registers tools, middleware, and memory.
+                    li #[code createAIAgent()] — Creates the LangChain agent and registers tools, middleware, and memory.
                     li #[code promptGuardMiddleware()] — Detects prompt injection and jailbreak attacks using a guard model.
 
                   hr

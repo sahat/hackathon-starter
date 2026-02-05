@@ -1048,7 +1048,7 @@ To build your Agent using this controller as a starting point, you need to do tw
 
 #### 1. Define the agent's role
 
-Edit the `systemPrompt` in `createAiAgent()` to describe what the agent does and which tools it can use.
+Edit the `systemPrompt` in `createAIAgent()` to describe what the agent does and which tools it can use.
 
 ```
 systemPrompt: `You are a helpful [... e.g. travel, personal assistant, exam grading] agent.
@@ -1067,7 +1067,7 @@ Available tools:
 
 #### 2. Replace the tools
 
-Add tools specific to your project by replacing the existing tools in the `tools` array inside `createAiAgent()`.  
+Add tools specific to your project by replacing the existing tools in the `tools` array inside `createAIAgent()`.  
 The existing tool functions can be removed.
 
 Tools follow this structure and use a Zod schema for input validation:
