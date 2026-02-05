@@ -1,0 +1,280 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    .row
+      .col-12
+        .d-flex.justify-content-between.align-items-center.mb-3
+          h2.mb-0 AI Agent: Customer Service Example
+
+        .row.align-items-stretch
+          .col-md-6.mb-3
+            .card.h-100
+              .card-header
+                h5.mb-0 Customer Service Chat
+              .card-body.d-flex.flex-column
+                if notLoggedIn
+                  .alert.alert-info.mb-3
+                    i.fas.fa-info-circle.me-2
+                    | #[a(href='/login') Login] to have your chat history saved across sessions.
+                form(method='POST', action='/ai/ai-agent/reset', style='display: inline')
+                  input(type='hidden', name='_csrf', value=_csrf)
+                  button.btn.btn-outline-secondary.mb-3.btn-sm(type='submit', onclick='return confirm("Are you sure you want to start a new chat? Your conversation history will be cleared.")')
+                    i.fas.fa-redo.me-1
+                    | New Chat
+                #chat-messages.mb-3.flex-grow-1.overflow-auto.border.rounded.p-3(aria-live='polite', aria-label='Chat conversation', style='min-height: 250px')
+                  if chatMessages && chatMessages.length > 0
+                    //- Show prior conversation history
+                    each msg in chatMessages
+                      .mb-2
+                        if msg.role === 'user'
+                          strong You:
+                          | #{ msg.content }
+                        else
+                          strong AI:
+                          | #{ msg.content }
+                  else
+                    //- Show welcome message for new conversations
+                    #welcome-message.text-muted.mb-3
+                      p Welcome! I'm your AI customer service representative. I can help you with:
+                      ul.small
+                        li Order tracking and status
+                        li Returns and refunds
+                        li Order cancellations
+                        li Payment and billing issues
+                      p.small.mt-2 (Ask about order #1234, mention any customer service issue, etc.)
+                .d-flex.gap-2.align-items-end.mt-2
+                  textarea#message-input.form-control(rows='3', placeholder='Type your message...', aria-label='Chat message input')
+                  button#send-button.btn.btn-primary(type='button', style='min-width: 70px; height: 38px')
+                    span#send-text Send
+                    span#send-spinner.spinner-border.spinner-border-sm(role='status', aria-hidden='true', style='display: none')
+
+          .col-md-6.mb-3
+            .card.h-100
+              .card-header
+                h6.mb-0 System Status
+              .card-body
+                p.mb-2
+                  strong Status:
+                  |
+                  span#status Ready
+                #status-messages.mb-3.overflow-auto.border.rounded.p-2.bg-light(style='max-height: 150px')
+                  .text-muted.small No status messages yet
+                h6.mb-2 Raw Stream Data
+                #raw-data.mb-3.overflow-auto.border.rounded.p-2.bg-light.font-monospace.small(style='max-height: 200px')
+                  .text-muted.small No raw data yet
+
+    .row.mt-5
+      .col-12
+        .card.border-info
+          .card-header.bg-info.text-white
+            h5.mb-0
+              i.fas.fa-code.me-2
+              | Developer Guide: AI Agent Boilerplate
+          .card-body
+            .row
+              .col-lg-8.col-md-7
+                h5.mb-2 AI Agent Controller
+                p This is a LangChain v1 ReAct agent intended as a starting point for building AI-powered features. It supports tool execution, chat session memory, and real-time streaming to the frontend using Server-Sent Events (SSE).
+
+                hr
+
+                h6.mb-1 Getting Started
+
+                h6.mb-0 1. Define the agent's role
+                p.mb-2 Edit the #[code systemPrompt] in #[code createAIAgent()] to describe what the agent does and which tools it can use.
+                pre.small.
+                  systemPrompt: `You are a helpful [... e.g. travel, personal assistant, exam grading] agent.
+
+                  Your responsibilities:
+                  1. [YOUR_RESPONSIBILITY_1]
+                  2. [YOUR_RESPONSIBILITY_2]
+                  3. [YOUR_RESPONSIBILITY_3]
+
+                  Available tools:
+                  [LIST_YOUR_TOOLS_HERE]`
+
+                hr
+
+                h6.mb-0 2. Replace the tools
+                p.mb-2 Add tools specific to your project by replacing the existing tools in the #[code tools] array inside #[code createAIAgent()]. The existing tool functions can be removed.
+                p.mb-1 Tools follow this structure and use a Zod schema for input validation:
+                pre.small.
+                  const myTool = tool(
+                    async ({ input }, config) => {
+                      config.writer?.({ message: 'Calling my service...' });
+
+                      // Call your API or database
+                      const result = await callYourAPI(input);
+
+                      return JSON.stringify(result);
+                    },
+                    {
+                      name: 'my_tool',
+                      description: 'Does something specific',
+                      schema: z.object({
+                        input: z.string().describe('The input'),
+                      }),
+                    },
+                  );
+
+                hr
+
+              .col-lg-4.col-md-5
+                .sticky-top(style='top: 1rem')
+                  h6.mb-2 Other Functions in ai-agent.js
+                  p.mb-1 These functions handle streaming, parsing, and session management and typically do not need modification:
+                  ul.small
+                    li #[code sendSSE(res, eventType, data)] — Sends typed SSE events to the frontend.
+                    li #[code extractAIMessages(data)] — Extracts user-visible AI messages from agent stream updates.
+                    li #[code extractStatus(data)] — Derives tool call and completion status messages.
+                    li #[code getCheckpointer()] — Initializes the MongoDB checkpointer for session persistence.
+                    li #[code cleanupOrphanedTempSessions()] — Cleans up data for expired unauthenticated sessions (runs on app startup).
+                    li #[code getAIAgent(req, res)] — Renders the AI agent demo page and loads prior messages.
+                    li #[code postAIAgentChat(req, res)] — Main SSE endpoint. Streams AI responses, tool progress, and debug data.
+                    li #[code createAIAgent()] — Creates the LangChain agent and registers tools, middleware, and memory.
+                    li #[code promptGuardMiddleware()] — Detects prompt injection and jailbreak attacks using a guard model.
+
+                  hr
+
+                  h6.mb-2 Useful Links
+                  ul.small
+                    li: a(href='https://docs.langchain.com/oss/javascript/langchain/agents', target='_blank') LangChain Agents Guide
+                    li: a(href='https://docs.langchain.com/oss/javascript/langchain/tools', target='_blank') LangChain Tools
+                    li: a(href='https://docs.langchain.com/oss/javascript/langchain/guardrails', target='_blank') LangChain Guardrails
+                    li: a(href='https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-4/', target='_blank') Llama Guard 4
+                    li: a(href='https://zod.dev', target='_blank') Zod Schemas
+
+                  p.mt-2.small.mb-0 Need additional in-page details? Ask and I'll expand any section.
+
+  script.
+    let abortController = null;
+    const chat = document.getElementById('chat-messages');
+    const status = document.getElementById('status');
+    const statusMessages = document.getElementById('status-messages');
+    const rawData = document.getElementById('raw-data');
+    const input = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-button');
+    const sendText = document.getElementById('send-text');
+    const spinner = document.getElementById('send-spinner');
+    const ts = () => `[${new Date().toLocaleTimeString()}]`;
+    sendBtn.onclick = send;
+    input.onkeydown = (e) => {
+      // Submit on Enter, but allow Shift+Enter for multi-line input
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        send();
+      }
+    };
+
+    async function send() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      // Hide welcome message on first interaction
+      const welcomeMsg = document.getElementById('welcome-message');
+      if (welcomeMsg) welcomeMsg.remove();
+
+      append(chat, `${ts()} You: ${text}`);
+      input.value = '';
+      sendBtn.disabled = true;
+      sendText.style.display = 'none';
+      spinner.style.display = 'inline-block';
+      status.textContent = 'Processing...';
+
+      // Abort any previous request
+      if (abortController) abortController.abort();
+      abortController = new AbortController();
+
+      try {
+        const csrf = document.querySelector('meta[name="csrf-token"]').content;
+        const response = await fetch('/ai/ai-agent/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrf,
+          },
+          body: JSON.stringify({ message: text }),
+          signal: abortController.signal,
+        });
+
+        if (!response.ok) {
+          // Try to read error message from JSON response
+          let errorMsg = `HTTP ${response.status}`;
+          try {
+            const errorData = await response.json();
+            if (errorData.error) errorMsg = errorData.error;
+          } catch (e) {
+            /* ignore parse errors */
+          }
+          throw new Error(errorMsg);
+        }
+
+        // Read SSE stream from fetch response
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop(); // Keep incomplete line in buffer
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              let data;
+              try {
+                data = JSON.parse(line.slice(6));
+              } catch (parseError) {
+                console.warn('Failed to parse Agent data from the server (SSE data):', line, parseError);
+                continue;
+              }
+              if (data.type === 'chat') {
+                append(chat, `${ts()} AI: ${data.message}`);
+              } else if (data.type === 'status') {
+                append(statusMessages, `${ts()} ${data.message}`);
+              } else if (data.type === 'raw') {
+                appendRaw(JSON.stringify(data.content, null, 2));
+              } else if (data.type === 'done') {
+                // Stream complete
+              } else if (data.type === 'error') {
+                append(chat, `${ts()} Error: ${data.error}`);
+              }
+            }
+          }
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          append(chat, `${ts()} Error: ${err.message}`);
+        }
+      } finally {
+        cleanup();
+      }
+    }
+
+    function cleanup() {
+      abortController = null;
+      sendBtn.disabled = false;
+      sendText.style.display = 'inline';
+      spinner.style.display = 'none';
+      status.textContent = 'Ready';
+    }
+
+    function append(container, text) {
+      const div = document.createElement('div');
+      div.className = 'mb-2';
+      div.textContent = text;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendRaw(text) {
+      const pre = document.createElement('pre');
+      pre.className = 'small border-bottom pb-2 mb-2';
+      pre.textContent = text;
+      rawData.appendChild(pre);
+      rawData.scrollTop = rawData.scrollHeight;
+    }

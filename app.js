@@ -71,6 +71,8 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const aiController = require('./controllers/ai');
+const aiAgentController = require('./controllers/ai-agent');
+
 const contactController = require('./controllers/contact');
 const webauthnController = require('./controllers/webauthn');
 
@@ -98,6 +100,10 @@ mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('MongoDB connection error. Please make sure MongoDB is running.');
   process.exit(1);
+});
+mongoose.connection.once('open', () => {
+  // Clean up orphaned temp AI agent sessions (Express sessions expired but chat checkpoint data remains)
+  aiAgentController.cleanupOrphanedTempSessions();
 });
 
 /**
@@ -150,6 +156,11 @@ app.use((req, res, next) => {
 const isSafeRedirect = (url) => /^\/[a-zA-Z0-9/_-]*$/.test(url);
 app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
+  // Only set returnTo for GET requests (Only pages that a user can navigate to)
+  if (req.method !== 'GET') {
+    return next();
+  }
+
   if (!req.user && req.path !== '/login' && !req.path.startsWith('/login/webauthn-') && req.path !== '/signup' && !req.path.startsWith('/auth') && !req.path.includes('.')) {
     const returnTo = req.originalUrl;
     if (isSafeRedirect(returnTo)) {
@@ -266,6 +277,9 @@ app.post('/ai/llm-camera', strictLimiter, aiController.imageUploadMiddleware, lu
 app.get('/ai/rag', aiController.getRag);
 app.post('/ai/rag/ingest', aiController.postRagIngest);
 app.post('/ai/rag/ask', aiController.postRagAsk);
+app.get('/ai/ai-agent', aiAgentController.getAIAgent);
+app.post('/ai/ai-agent/chat', aiAgentController.postAIAgentChat);
+app.post('/ai/ai-agent/reset', aiAgentController.postAIAgentReset);
 
 /**
  * OAuth authentication failure handler (common for all providers)

@@ -83,6 +83,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - File upload
 - Device camera
 - **AI Examples and Boilerplates**
+  - AI Agent ReAct (Reasoning + Acting) with tool calling, MongoDB session persistence, and input guardrails
   - RAG with semantic and embedding caching
   - Llama 3.3, Llama 4 Scout (vision use case)
   - OpenAI Moderation
@@ -1032,6 +1033,89 @@ Most of the time you will be dealing with other APIs to do the real work:
 [Mongoose](http://mongoosejs.com/docs/guide.html) for querying database, socket.io for sending and receiving messages over WebSockets, sending emails via [Nodemailer](http://nodemailer.com/), form validation using [validator.js](https://github.com/validatorjs/validator.js) library, parsing websites using [Cheerio](https://github.com/cheeriojs/cheerio), etc.
 
 <hr>
+
+### AI Agent Controller
+
+LangChain v1 ReAct agent intended as a starting point for building new AI agents. The end-to-end implementation supports:
+
+- **Tool execution** with automatic retry middleware for transient failures
+- **MongoDB session persistence** - Chat history persists across page reloads (authenticated users: permanent until account deletion; unauthenticated: tied to Express session lifecycle)
+- **Input guardrails** - Prompt injection/jailbreak detection using a guard model (e.g., Llama Guard 4)
+- **Conversation summarization** - Long conversations are condensed to stay within context limits
+- **Real-time streaming** - Server-Sent Events (SSE) for live responses
+
+To build your Agent using this controller as a starting point, you need to do two things:
+
+#### 1. Define the agent's role
+
+Edit the `systemPrompt` in `createAIAgent()` to describe what the agent does and which tools it can use.
+
+```
+systemPrompt: `You are a helpful [... e.g. travel, personal assistant, exam grading] agent.
+
+Your responsibilities:
+
+1. [YOUR_RESPONSIBILITY_1]
+2. [YOUR_RESPONSIBILITY_2]
+3. [YOUR_RESPONSIBILITY_3]
+
+Available tools:
+[LIST_YOUR_TOOLS_HERE]`
+```
+
+---
+
+#### 2. Replace the tools
+
+Add tools specific to your project by replacing the existing tools in the `tools` array inside `createAIAgent()`.  
+The existing tool functions can be removed.
+
+Tools follow this structure and use a Zod schema for input validation:
+
+```js
+const myTool = tool(
+  async ({ input }, config) => {
+    config.writer?.({ message: 'Calling my service...' });
+
+    // Call your API or database
+    const result = await callYourAPI(input);
+
+    return JSON.stringify(result);
+  },
+  {
+    name: 'my_tool',
+    description: 'Does something specific',
+    schema: z.object({
+      input: z.string().describe('The input'),
+    }),
+  },
+);
+```
+
+---
+
+#### Other Functions in ai-agent.js
+
+These functions handle streaming, parsing, and session management and typically do not need modification:
+
+- `promptGuardMiddleware()` : LangChain middleware that classifies user input before the agent processes it. Blocks unsafe prompts and redirects the conversation.
+- `getCheckpointer()` : Initializes the MongoDB checkpointer for session persistence.
+- `cleanupOrphanedTempSessions()` : Cleans up checkpoint data for unauthenticated users whose Express sessions have expired. Called on app startup.
+- `getAIAgent(req, res)` : Express route (GET /ai/ai-agent) - Renders the AI agent demo page and loads prior messages.
+- `postAIAgentChat(req, res)` : Express route (POST /ai/ai-agent/chat) - Main SSE endpoint. Streams AI responses, tool progress, and debug data.
+- `postAIAgentReset(req, res)` : Express route (POST /ai/ai-agent/reset) - Clears the user's chat session from MongoDB.
+- `deleteUserAIAgentData(userId)` : Called when a user deletes their account to clean up their chat data.
+- `sendSSE(res, eventType, data)` : Sends typed SSE events to the frontend.
+- `extractAIMessages(data)` : Extracts user-visible AI messages from agent stream updates.
+- `extractStatus(data)` : Derives tool call and completion status messages.
+
+#### Environment Variables
+
+The AI Agent requires these environment variables:
+
+- `GROQ_API_KEY` : Your Groq API key
+- `GROQ_MODEL` : The main LLM model (e.g., `llama-3.3-70b-versatile`)
+- `GROQ_MODEL_PROMPT_GUARD` : The guard model for input safety (e.g., `meta-llama/llama-guard-4-12b`)
 
 ### How do I use Socket.io with Hackathon Starter?
 

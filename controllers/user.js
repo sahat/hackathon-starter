@@ -5,6 +5,7 @@ const mailChecker = require('mailchecker');
 const User = require('../models/User');
 const Session = require('../models/Session');
 const nodemailerConfig = require('../config/nodemailer');
+const aiAgentController = require('./ai-agent');
 
 /**
  * GET /login
@@ -371,7 +372,9 @@ exports.postUpdatePassword = async (req, res, next) => {
  */
 exports.postDeleteAccount = async (req, res, next) => {
   try {
-    await User.deleteOne({ _id: req.user.id });
+    const userId = req.user.id;
+    await aiAgentController.deleteUserAIAgentData(userId); // Delete user's AI agent chat history
+    await User.deleteOne({ _id: userId });
     req.logout((err) => {
       if (err) console.log('Error: Failed to logout.', err);
       req.session.destroy((err) => {
