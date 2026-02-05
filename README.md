@@ -1095,7 +1095,6 @@ These functions handle streaming, parsing, and session management and typically 
 - `sendSSE(res, eventType, data)` : Sends typed SSE events to the frontend.
 - `extractAIMessages(data)` : Extracts user‑visible AI messages from agent stream updates.
 - `extractStatus(data)` : Derives tool call and completion status messages.
-- `generateSessionId()` : Generates per‑conversation thread IDs.
 
 ### How do I use Socket.io with Hackathon Starter?
 

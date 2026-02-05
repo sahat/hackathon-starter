@@ -1,5 +1,5 @@
 const validator = require('validator');
-const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
 const { ChatGroq } = require('@langchain/groq');
 const { HumanMessage } = require('@langchain/core/messages');
 const { createAgent, tool, toolRetryMiddleware, summarizationMiddleware } = require('langchain');
@@ -20,7 +20,6 @@ const MAX_MESSAGE_LENGTH = 100;
 // Create a single agent instance with memory that persists across requests
 let globalAgent = null;
 let globalCheckpointer = null;
-let mongoClient = null;
 
 // TTL for chat sessions in seconds (7 days)
 const CHECKPOINT_TTL_SECONDS = 7 * 24 * 60 * 60;
@@ -46,11 +45,11 @@ exports.deleteUserAIAgentData = async (userId) => {
  */
 async function getCheckpointer() {
   if (!globalCheckpointer) {
-    // Create MongoDB client from connection string
-    mongoClient = new MongoClient(process.env.MONGODB_URI);
-    await mongoClient.connect();
+    // Reuse mongoose's existing MongoDB connection (managed by app.js)
+    // This avoids creating duplicate connections and leverages mongoose's connection pooling
+    const mongoClient = mongoose.connection.getClient();
 
-    // Create checkpointer with the connected client
+    // Create checkpointer with the mongoose-managed client
     globalCheckpointer = new MongoDBSaver({
       client: mongoClient,
       checkpointCollectionName: 'ai_agent_checkpoints',
@@ -175,7 +174,6 @@ exports.getAIAgent = async (req, res) => {
   res.render('ai/ai-agent', {
     title: 'AI Agent Customer Service',
     chatMessages: priorMessages,
-    sessionId: threadId,
     notLoggedIn,
   });
 };
@@ -586,7 +584,6 @@ Your responsibilities:
 Available tools:
 - get_order_status: Check order details and status
 - process_refund: Process refunds for items
-- send_replacement: Send replacement items
 - cancel_order: Cancel entire orders
 - verify_refund: Check refund status
 - process_return: Process item returns

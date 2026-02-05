@@ -22,7 +22,7 @@ block content
                   button.btn.btn-outline-secondary.mb-3.btn-sm(type='submit', onclick='return confirm("Are you sure you want to start a new chat? Your conversation history will be cleared.")')
                     i.fas.fa-redo.me-1
                     | New Chat
-                #chat-messages.mb-3.flex-grow-1.overflow-auto.border.rounded.p-3
+                #chat-messages.mb-3.flex-grow-1.overflow-auto.border.rounded.p-3(aria-live='polite', aria-label='Chat conversation')
                   if chatMessages && chatMessages.length > 0
                     //- Show prior conversation history
                     each msg in chatMessages
@@ -82,7 +82,7 @@ block content
 
                 h6.mb-1 Getting Started
 
-                h6.mb-0 1. Define the agent’s role
+                h6.mb-0 1. Define the agent's role
                 p.mb-2 Edit the #[code systemPrompt] in #[code createAiAgent()] to describe what the agent does and which tools it can use.
                 pre.small.
                   systemPrompt: `You are a helpful [... e.g. travel, personal assistant, exam grading] agent.
@@ -132,7 +132,6 @@ block content
                     li #[code getAIAgent(req, res)] — Renders the AI agent demo page and initializes a session.
                     li #[code postAIAgentChat(req, res)] — Main SSE endpoint. Streams AI responses, tool progress, and debug data.
                     li #[code createAiAgent()] — Creates the LangChain agent and registers tools, middleware, and memory.
-                    li #[code generateSessionId()] — Generates per‑conversation thread IDs.
 
                   hr
 
@@ -146,7 +145,6 @@ block content
                   p.mt-2.small.mb-0 Need additional in-page details? Ask and I'll expand any section.
 
   script.
-    let sessionId = '#{sessionId}';
     let abortController = null;
     const chat = document.getElementById('chat-messages');
     const status = document.getElementById('status');
@@ -190,7 +188,7 @@ block content
             'Content-Type': 'application/json',
             'X-CSRF-Token': csrf,
           },
-          body: JSON.stringify({ message: text, sessionId }),
+          body: JSON.stringify({ message: text }),
           signal: abortController.signal,
         });
 
