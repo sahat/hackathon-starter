@@ -132,6 +132,7 @@ block content
                     li #[code getAIAgent(req, res)] — Renders the AI agent demo page and initializes a session.
                     li #[code postAIAgentChat(req, res)] — Main SSE endpoint. Streams AI responses, tool progress, and debug data.
                     li #[code createAiAgent()] — Creates the LangChain agent and registers tools, middleware, and memory.
+                    li #[code promptGuardMiddleware()] — Detects prompt injection and jailbreak attacks using a guard model.
 
                   hr
 
@@ -139,7 +140,8 @@ block content
                   ul.small
                     li: a(href='https://docs.langchain.com/oss/javascript/langchain/agents', target='_blank') LangChain Agents Guide
                     li: a(href='https://docs.langchain.com/oss/javascript/langchain/tools', target='_blank') LangChain Tools
-                    li: a(href='https://docs.langchain.com/oss/javascript/releases/langchain-v1', target='_blank') LangChain Middleware
+                    li: a(href='https://docs.langchain.com/oss/javascript/langchain/guardrails', target='_blank') LangChain Guardrails
+                    li: a(href='https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-4/', target='_blank') Llama Guard 4
                     li: a(href='https://zod.dev', target='_blank') Zod Schemas
 
                   p.mt-2.small.mb-0 Need additional in-page details? Ask and I'll expand any section.

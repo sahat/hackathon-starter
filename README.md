@@ -83,7 +83,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - File upload
 - Device camera
 - **AI Examples and Boilerplates**
-  - AI Agent ReAct (Reasoning + Acting) with tool calling and memory
+  - AI Agent ReAct (Reasoning + Acting) with tool calling, MongoDB session persistence, and input guardrails
   - RAG with semantic and embedding caching
   - Llama 3.3, Llama 4 Scout (vision use case)
   - OpenAI Moderation
@@ -1036,7 +1036,15 @@ Most of the time you will be dealing with other APIs to do the real work:
 
 ### AI Agent Controller
 
-LangChain v1 ReAct agent intended as a starting point for building new AI agents. The end-to-end implementation here supports tool execution, chat session memory, and real‑time streaming to the frontend using Server‑Sent Events (SSE). To get build your Agent using this controller as starting point you need to do two things:
+LangChain v1 ReAct agent intended as a starting point for building new AI agents. The end-to-end implementation supports:
+
+- **Tool execution** with automatic retry middleware for transient failures
+- **MongoDB session persistence** - Chat history persists across page reloads for authenticated users (7-day TTL with automatic cleanup)
+- **Input guardrails** - Prompt injection/jailbreak detection using a guard model (e.g., Llama Guard 4)
+- **Conversation summarization** - Long conversations are condensed to stay within context limits
+- **Real-time streaming** - Server-Sent Events (SSE) for live responses
+
+To build your Agent using this controller as a starting point, you need to do two things:
 
 #### 1. Define the agent's role
 
@@ -1090,11 +1098,23 @@ const myTool = tool(
 
 These functions handle streaming, parsing, and session management and typically do not need modification:
 
-- `getAIAgent(req, res)` : Express route (GET /ai/ai-agent) - Renders the AI agent demo page and initializes a session.
+- `promptGuardMiddleware()` : LangChain middleware that classifies user input before the agent processes it. Blocks unsafe prompts and redirects the conversation.
+- `getCheckpointer()` : Initializes the MongoDB checkpointer for session persistence. Creates a TTL index for automatic cleanup of old sessions.
+- `getAIAgent(req, res)` : Express route (GET /ai/ai-agent) - Renders the AI agent demo page and loads prior messages for authenticated users.
 - `postAIAgentChat(req, res)` : Express route (POST /ai/ai-agent/chat) - Main SSE endpoint. Streams AI responses, tool progress, and debug data.
+- `postAIAgentReset(req, res)` : Express route (POST /ai/ai-agent/reset) - Clears the user's chat session from MongoDB.
+- `deleteUserAIAgentData(userId)` : Called when a user deletes their account to clean up their chat data.
 - `sendSSE(res, eventType, data)` : Sends typed SSE events to the frontend.
 - `extractAIMessages(data)` : Extracts user‑visible AI messages from agent stream updates.
 - `extractStatus(data)` : Derives tool call and completion status messages.
+
+#### Environment Variables
+
+The AI Agent requires these environment variables:
+
+- `GROQ_API_KEY` : Your Groq API key
+- `GROQ_MODEL` : The main LLM model (e.g., `llama-3.3-70b-versatile`)
+- `GROQ_MODEL_PROMPT_GUARD` : The guard model for input safety (e.g., `meta-llama/llama-guard-4-12b`)
 
 ### How do I use Socket.io with Hackathon Starter?
 
