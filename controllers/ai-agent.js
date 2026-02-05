@@ -183,28 +183,17 @@ function extractStatus(data) {
 /**
  * GET /ai/ai-agent
  * AI Agent Customer Service Demo
- * - Authenticated users: Uses user._id as thread_id for persistent sessions
- * - Unauthenticated users: Uses temporary session ID (chat not persisted across page reloads)
+ * - Authenticated users: Loads prior messages from MongoDB checkpoint
+ * - Unauthenticated users: Fresh session (temp ID created on first chat message)
  */
 exports.getAIAgent = async (req, res) => {
-  let notLoggedIn = null;
-  let threadId;
   let priorMessages = [];
 
-  if (!req.user) {
-    // Not logged in - use a temporary session ID
-    notLoggedIn = true;
-    if (!req.session.tempAiAgentSessionId) {
-      req.session.tempAiAgentSessionId = `temp_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
-    }
-    threadId = req.session.tempAiAgentSessionId;
-  } else {
-    // Logged in - use user's MongoDB _id for persistent sessions
-    threadId = req.user._id.toString();
-
+  if (req.user) {
     // Load prior messages from checkpoint for returning authenticated users
     try {
       const checkpointer = await getCheckpointer();
+      const threadId = req.user._id.toString();
       const checkpoint = await checkpointer.getTuple({ configurable: { thread_id: threadId, checkpoint_ns: '' } });
 
       if (checkpoint?.checkpoint?.channel_values?.messages) {
@@ -232,7 +221,7 @@ exports.getAIAgent = async (req, res) => {
   res.render('ai/ai-agent', {
     title: 'AI Agent Customer Service',
     chatMessages: priorMessages,
-    notLoggedIn,
+    notLoggedIn: !req.user,
   });
 };
 

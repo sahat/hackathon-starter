@@ -76,7 +76,7 @@ block content
             .row
               .col-lg-8.col-md-7
                 h5.mb-2 AI Agent Controller
-                p This is a LangChain v1 ReAct agent intended as a starting point for building AI‑powered features. It supports tool execution, chat session memory, and real‑time streaming to the frontend using Server‑Sent Events (SSE).
+                p This is a LangChain v1 ReAct agent intended as a starting point for building AI-powered features. It supports tool execution, chat session memory, and real-time streaming to the frontend using Server-Sent Events (SSE).
 
                 hr
 
@@ -127,9 +127,9 @@ block content
                   p.mb-1 These functions handle streaming, parsing, and session management and typically do not need modification:
                   ul.small
                     li #[code sendSSE(res, eventType, data)] — Sends typed SSE events to the frontend.
-                    li #[code extractAIMessages(data)] — Extracts user‑visible AI messages from agent stream updates.
+                    li #[code extractAIMessages(data)] — Extracts user-visible AI messages from agent stream updates.
                     li #[code extractStatus(data)] — Derives tool call and completion status messages.
-                    li #[code getAIAgent(req, res)] — Renders the AI agent demo page and initializes a session.
+                    li #[code getAIAgent(req, res)] — Renders the AI agent demo page and loads prior messages for authenticated users.
                     li #[code postAIAgentChat(req, res)] — Main SSE endpoint. Streams AI responses, tool progress, and debug data.
                     li #[code createAiAgent()] — Creates the LangChain agent and registers tools, middleware, and memory.
                     li #[code promptGuardMiddleware()] — Detects prompt injection and jailbreak attacks using a guard model.

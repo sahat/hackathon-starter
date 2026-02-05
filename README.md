@@ -1105,7 +1105,7 @@ These functions handle streaming, parsing, and session management and typically 
 - `postAIAgentReset(req, res)` : Express route (POST /ai/ai-agent/reset) - Clears the user's chat session from MongoDB.
 - `deleteUserAIAgentData(userId)` : Called when a user deletes their account to clean up their chat data.
 - `sendSSE(res, eventType, data)` : Sends typed SSE events to the frontend.
-- `extractAIMessages(data)` : Extracts user‑visible AI messages from agent stream updates.
+- `extractAIMessages(data)` : Extracts user-visible AI messages from agent stream updates.
 - `extractStatus(data)` : Derives tool call and completion status messages.
 
 #### Environment Variables
