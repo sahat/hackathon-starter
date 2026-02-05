@@ -8,5 +8,5 @@
   "e2e/nyt.e2e.test.js",
   "e2e/openai-moderation.e2e.test.js",
   "e2e/trakt.e2e.test.js",
-  "e2e/tenor.e2e.test.js"
+  "e2e/giphy.e2e.test.js"
 ]

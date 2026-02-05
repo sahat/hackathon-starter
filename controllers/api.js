@@ -1699,37 +1699,41 @@ exports.getWikipedia = async (req, res) => {
   });
 };
 
-exports.getTenor = async (req, res, next) => {
-  const limit = 20; // Default limit for the number of GIFs
-  const key = process.env.GOOGLE_API_KEY;
-  const search = req.query.search || 'Happy'; // Default search term if none is provided
-  const url = `https://tenor.googleapis.com/v2/search?key=${key}&q=${encodeURIComponent(search)}&limit=${limit}`;
+exports.getGiphy = async (req, res, next) => {
+  const limit = 20;
+  const apiKey = process.env.GIPHY_API_KEY;
+  const search = req.query.search || 'Happy';
+  const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${encodeURIComponent(search)}&limit=${limit}&offset=0&rating=g&lang=en`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
       try {
         const body = await response.text();
-        console.error('Tenor API error', response.status, response.statusText, body);
+        console.error('GIPHY API error', response.status, response.statusText, body);
       } catch (e) {
-        console.error('Tenor API error and failed to read body', response.status, response.statusText, e);
+        console.error('GIPHY API error and failed to read body', response.status, response.statusText, e);
       }
-      throw new Error(`Failed to fetch Tenor GIFs: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch GIPHY GIFs: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
-    const gifs = data.results.map((gif) => ({
+    if (data.meta && data.meta.status !== 200) {
+      throw new Error(`GIPHY API error: ${data.meta.msg}`);
+    }
+
+    const gifs = data.data.map((gif) => ({
       id: gif.id,
-      title: gif.content_description,
-      url: gif.media_formats.gif.url,
+      title: gif.title,
+      url: gif.images.fixed_width.url,
     }));
 
-    res.render('api/tenor', {
-      title: 'Tenor API',
+    res.render('api/giphy', {
+      title: 'GIPHY API',
       search,
       gifs,
     });
   } catch (error) {
-    console.error('Tenor API Error:', error);
+    console.error('GIPHY API Error:', error);
     next(error);
   }
 };

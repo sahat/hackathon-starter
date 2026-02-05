@@ -90,7 +90,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Groq, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
-  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Steam (OpenID), Web Scraping, Tenor (GIFs)
+  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Steam (OpenID), Web Scraping, GIPHY
   - **Maps and Location:** Google Maps, HERE Maps
   - **Productivity:** Google Drive, Google Sheets
 
@@ -289,6 +289,17 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <hr>
 
+<img src="https://i.imgur.com/ddl2VjR.png" height="75">
+
+- Go to <a href="https://developers.giphy.com/" target="_blank">GIPHY Developers website</a>
+- Login or create a new account and login.
+- Select **Dashboard** from the navigation bar
+- Then click on **Create an API Key** and then select **API** and click on **Next Step**.
+- Enter _App Name_ and _App Description_. Select **Web** and create a beta key.
+- Now copy and paste the API key into `.env` file as GIPHY_API_KEY.
+
+<hr>
+
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" height="50">
 
 - Visit <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a>
@@ -312,11 +323,10 @@ Open the **Enabled APIs & services** page for your project in the Google Cloud C
 - **Google Drive API**
 - **Google Sheets API**
 - **Maps JavaScript API**
-- **Tenor API**
 
 Next, create API keys for the services you enabled:
 
-- For backend API calls (Google Drive, Sheets, or Tenor), create a single API key and restrict it to those APIs. Copy the key as `GOOGLE_API_KEY` into your `.env` file.
+- For backend API calls (Google Drive and Sheets), create a single API key and restrict it to those APIs. Copy the key as `GOOGLE_API_KEY` into your `.env` file.
 - For reCAPTCHA, follow the instructions at <a href="https://cloud.google.com/recaptcha/docs/create-key-website#create-recaptcha-key-Cloud%20console" target="_blank">Google Cloud reCAPTCHA Docs</a> and create a web checkbox reCAPTCHA key. No code changes are required. Just copy the reCAPTCHA site key into `.env` as `GOOGLE_RECAPTCHA_SITE_KEY`.
 - For the Google Maps JavaScript API, use a separate API key from your backend key because the key is sent to the front end and can be exposed. Restrict this key to your website on the credentials page. Do NOT use "localhost" as the restriction since it is not unique to your application. Once configured, copy the API key as `GOOGLE_MAP_API_KEY` into your `.env` file.
 

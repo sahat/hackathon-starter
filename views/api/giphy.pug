@@ -3,28 +3,30 @@ extends ../layout
 block content
   h2
     i.fas.fa-images.fa-sm.me-2
-    | Tenor API
+    | GIPHY API
 
   .btn-group.d-flex(role='group')
-    a.btn.btn-primary.w-100(href='https://developers.google.com/tenor/guides/quickstart', target='_blank')
+    a.btn.btn-primary.w-100(href='https://developers.giphy.com/docs/api/', target='_blank')
       i.far.fa-check-square.fa-sm.me-2
-      | Tenor API Getting Started
-    a.btn.btn-primary.w-100(href='https://console.developers.google.com/apis/dashboard', target='_blank')
+      | GIPHY API Docs
+    a.btn.btn-primary.w-100(href='https://developers.giphy.com/dashboard/', target='_blank')
       i.fas.fa-laptop.fa-sm.me-2
-      | Google API Console
+      | GIPHY Developer Dashboard
   br
 
   .card.text-white.bg-info.mb-4
     .card-header
-      h6.panel-title.mb-0 Search Tenor GIFs
+      h6.panel-title.mb-0 Search GIPHY GIFs
     .card-body.text-dark.bg-white
-      form(role='form', method='GET', action='/api/tenor')
+      form(role='form', method='GET', action='/api/giphy')
         .form-group.mb-3
           label.col-form-label.font-weight-bold Search Term
           input.form-control(type='text', name='search', placeholder='Search for GIFs', value=search || '', required)
-        button.btn.btn-primary.mt-2(type='submit')
-          i.fas.fa-search.me-2
-          | Search
+        .d-flex.mt-2.align-items-center
+          button.btn.btn-primary(type='submit')
+            i.fas.fa-search.me-2
+            | Search
+          img.ms-auto(src='https://i.imgur.com/B8SZtl2.png', alt='Powered by GIPHY', style='height: 40px')
 
   if gifs.length
     .card.text-white.bg-success.mb-4
