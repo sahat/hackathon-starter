@@ -8,7 +8,7 @@ block content
           h2.mb-0 AI Agent: Customer Service Example
 
         .row.align-items-stretch
-          .col-md-6
+          .col-md-6.mb-3
             .card.h-100
               .card-header
                 h5.mb-0 Customer Service Chat
@@ -22,7 +22,7 @@ block content
                   button.btn.btn-outline-secondary.mb-3.btn-sm(type='submit', onclick='return confirm("Are you sure you want to start a new chat? Your conversation history will be cleared.")')
                     i.fas.fa-redo.me-1
                     | New Chat
-                #chat-messages.mb-3.flex-grow-1.overflow-auto.border.rounded.p-3(aria-live='polite', aria-label='Chat conversation')
+                #chat-messages.mb-3.flex-grow-1.overflow-auto.border.rounded.p-3(aria-live='polite', aria-label='Chat conversation', style='min-height: 250px')
                   if chatMessages && chatMessages.length > 0
                     //- Show prior conversation history
                     each msg in chatMessages
@@ -40,15 +40,14 @@ block content
                       ul.small
                         li Order tracking and status
                         li Returns and refunds
-                        li Replacements for damaged items
                         li Order cancellations
                         li Payment and billing issues
-                      p.mt-2 Try asking about order #1234 or mention any customer service issue!
-                .input-group.mt-2
-                  input#message-input.form-control(type='text', placeholder='Type your message...')
-                  button#send-button.btn.btn-primary(type='button')
-                    span Send
-                    span#send-spinner.spinner-border.spinner-border-sm.ms-2(role='status', aria-hidden='true', style='display: none')
+                      p.small.mt-2 (Ask about order #1234, mention any customer service issue, etc.)
+                .d-flex.gap-2.align-items-end.mt-2
+                  textarea#message-input.form-control(rows='3', placeholder='Type your message...')
+                  button#send-button.btn.btn-primary(type='button', style='min-width: 70px; height: 38px')
+                    span#send-text Send
+                    span#send-spinner.spinner-border.spinner-border-sm(role='status', aria-hidden='true', style='display: none')
 
           .col-md-6
             .card.h-100
@@ -154,6 +153,7 @@ block content
     const rawData = document.getElementById('raw-data');
     const input = document.getElementById('message-input');
     const sendBtn = document.getElementById('send-button');
+    const sendText = document.getElementById('send-text');
     const spinner = document.getElementById('send-spinner');
     const ts = () => `[${new Date().toLocaleTimeString()}]`;
     sendBtn.onclick = send;
@@ -175,6 +175,7 @@ block content
       append(chat, `${ts()} You: ${text}`);
       input.value = '';
       sendBtn.disabled = true;
+      sendText.style.display = 'none';
       spinner.style.display = 'inline-block';
       status.textContent = 'Processing...';
 
@@ -254,6 +255,7 @@ block content
     function cleanup() {
       abortController = null;
       sendBtn.disabled = false;
+      sendText.style.display = 'inline';
       spinner.style.display = 'none';
       status.textContent = 'Ready';
     }

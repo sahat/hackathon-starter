@@ -7,7 +7,7 @@ const { MongoDBSaver } = require('@langchain/langgraph-checkpoint-mongodb');
 const z = require('zod');
 
 // Maximum allowed message length (characters)
-const MAX_MESSAGE_LENGTH = 100;
+const MAX_MESSAGE_LENGTH = 400;
 
 /**
  * Built-in middleware handles:
