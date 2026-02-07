@@ -41,7 +41,7 @@ const limiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
-// Strict Auth Rate Limiter Config for signup, password recover, account verification, login by email
+// Strict Auth Rate Limiter Config for signup, password recover, account verification, login by email, send 2FA email
 const strictLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: RATE_LIMIT_STRICT, // attempts per hour
@@ -53,6 +53,15 @@ const strictLimiter = rateLimit({
 const loginLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: RATE_LIMIT_LOGIN, // attempts per hour
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+// Login 2FA Rate Limiter Config - allow more requests for 2FA pages per login to avoid UX issues.
+// This is after a valid username/password submission, so the attack surface is smaller
+// and we want to avoid locking out legitimate users who mistype their 2FA code.
+const login2FALimmiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: RATE_LIMIT_LOGIN * 5,
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -205,6 +214,11 @@ app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', loginLimiter, userController.postLogin);
 app.get('/login/verify/:token', loginLimiter, userController.getLoginByEmail);
+app.get('/login/2fa', login2FALimmiter, userController.getTwoFactor);
+app.post('/login/2fa', login2FALimmiter, userController.postTwoFactor);
+app.post('/login/2fa/resend', strictLimiter, userController.resendTwoFactorCode);
+app.get('/login/2fa/totp', login2FALimmiter, userController.getTotpVerify);
+app.post('/login/2fa/totp', login2FALimmiter, userController.postTotpVerify);
 app.post('/login/webauthn-start', loginLimiter, webauthnController.postLoginStart);
 app.get('/login/webauthn-start', (req, res) => res.redirect('/login')); // webauthn-start requires a POST
 app.post('/login/webauthn-verify', loginLimiter, webauthnController.postLoginVerify);
@@ -222,6 +236,11 @@ app.get('/account/verify/:token', passportConfig.isAuthenticated, userController
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
+app.post('/account/2fa/email/enable', passportConfig.isAuthenticated, userController.postEnable2FA);
+app.post('/account/2fa/email/remove', passportConfig.isAuthenticated, userController.postRemoveEmail2FA);
+app.get('/account/2fa/totp/setup', passportConfig.isAuthenticated, userController.getTotpSetup);
+app.post('/account/2fa/totp/setup', passportConfig.isAuthenticated, userController.postTotpSetup);
+app.post('/account/2fa/totp/remove', passportConfig.isAuthenticated, userController.postRemoveTotp);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.post('/account/logout-everywhere', passportConfig.isAuthenticated, userController.postLogoutEverywhere);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);

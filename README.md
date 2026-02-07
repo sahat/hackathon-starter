@@ -77,6 +77,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Profile Details
   - Password management (Change, Reset, Forgot)
   - Verify Email
+  - **Two-Factor Authentication (2FA)** Email codes and Authenticator apps
   - Link multiple OAuth provider accounts to one account
   - Delete Account
 - Contact Form (powered by SMTP via Mailgun, AWS SES, etc.)
@@ -635,6 +636,7 @@ Required to run the project before your modifications
 | multer                        | Node.js middleware for handling `multipart/form-data`.                |
 | nodemailer                    | Node.js library for sending emails.                                   |
 | oauth                         | OAuth API library without middleware constraints.                     |
+| otpauth                       | One-Time Password (TOTP/HOTP) library for 2FA authenticator apps.     |
 | passport                      | Simple and elegant authentication library for node.js.                |
 | passport-facebook             | Sign-in with Facebook plugin.                                         |
 | passport-github2              | Sign-in with GitHub plugin.                                           |

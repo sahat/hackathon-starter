@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 Setup Authenticator App
+
+  .row
+    .col-md-8.offset-md-2
+      p.mb-3 Scan the QR code below with your authenticator app (Google Authenticator, Microsoft Authenticator, Authy, etc.)
+
+      .text-center.mb-4
+        img(src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrCode)}`, alt='QR Code')
+      p.mb-3 Or manually enter this secret key:
+      .alert.alert-secondary.text-center.mb-4
+        code= secret
+
+      p.mb-3 After adding the account to your app, enter the 6-digit code to verify:
+
+      form(method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group.mb-3
+          label.form-label(for='code') Verification Code
+          input#code.form-control(type='text', name='code', placeholder='000000', maxlength='6', pattern='[0-9]{6}', inputmode='numeric', autofocus, required)
+        .form-group
+          button.btn.btn-primary(type='submit')
+            i.fas.fa-check.fa-sm.me-2
+            | Verify and Enable
+          a.btn.btn-link(href='/account') Cancel

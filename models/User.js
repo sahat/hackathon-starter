@@ -20,6 +20,13 @@ const userSchema = new mongoose.Schema(
     loginExpires: Date,
     loginIpHash: String,
 
+    twoFactorEnabled: { type: Boolean, default: false },
+    twoFactorMethods: { type: [String], enum: ['email', 'totp'], default: [] },
+    twoFactorCode: String,
+    twoFactorExpires: Date,
+    twoFactorIpHash: String,
+    totpSecret: String,
+
     webauthnUserID: { type: Buffer, minlength: 16, maxlength: 64 },
     webauthnCredentials: [
       {
@@ -74,6 +81,7 @@ userSchema.index({ 'webauthnCredentials.credentialId': 1 }, { unique: true, spar
 userSchema.index({ passwordResetToken: 1 });
 userSchema.index({ emailVerificationToken: 1 });
 userSchema.index({ loginToken: 1 });
+userSchema.index({ twoFactorCode: 1 });
 
 // Virtual properties for checking token expiration
 userSchema.virtual('isPasswordResetExpired').get(function checkPasswordResetExpiration() {
@@ -86,6 +94,10 @@ userSchema.virtual('isEmailVerificationExpired').get(function checkEmailVerifica
 
 userSchema.virtual('isLoginExpired').get(function checkLoginTokenExpiration() {
   return Date.now() > this.loginExpires;
+});
+
+userSchema.virtual('isTwoFactorExpired').get(function checkTwoFactorExpiration() {
+  return Date.now() > this.twoFactorExpires;
 });
 
 // Middleware to clear expired tokens on save
@@ -108,6 +120,10 @@ userSchema.pre('save', function clearExpiredTokens() {
     this.loginToken = undefined;
     this.loginExpires = undefined;
     this.loginIpHash = undefined;
+  }
+
+  if (this.twoFactorExpires && this.twoFactorExpires < now) {
+    this.clearTwoFactorCode();
   }
 });
 
@@ -169,6 +185,13 @@ userSchema.methods.noMultiPictureUpgrade = function noMultiPictureUpgrade() {
     this.profile.picture = url;
   }
 };
+// Helper method for clearing 2FA code fields (after use or expiration)
+userSchema.methods.clearTwoFactorCode = function clearTwoFactorCode() {
+  this.twoFactorCode = undefined;
+  this.twoFactorExpires = undefined;
+  this.twoFactorIpHash = undefined;
+};
+
 // Helper methods for creating hashed IP addresses
 // This is used to prevent CSRF attacks by ensuring that the token is valid for
 // the IP address it was generated from
@@ -179,6 +202,11 @@ userSchema.statics.hashIP = function hashIP(ip) {
 // Helper methods for token generation
 userSchema.statics.generateToken = function generateToken() {
   return crypto.randomBytes(32).toString('hex');
+};
+
+// Helper method for generating 6-digit codes
+userSchema.statics.generateCode = function generateCode() {
+  return crypto.randomInt(100000, 999999).toString();
 };
 
 // Helper methods for token verification
@@ -206,6 +234,28 @@ userSchema.methods.verifyTokenAndIp = function verifyTokenAndIp(token, ip, token
     }
 
     return crypto.timingSafeEqual(storedToken, inputToken) && this[ipHashField] === hashedIp && this[expiresField] > Date.now();
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+// Helper method for code verification (6-digit codes)
+userSchema.methods.verifyCodeAndIp = function verifyCodeAndIp(code, ip, codeType) {
+  const hashedIp = this.constructor.hashIP(ip);
+  const codeField = `${codeType}Code`;
+  const ipHashField = `${codeType}IpHash`;
+  const expiresField = `${codeType}Expires`;
+  try {
+    if (!this[codeField] || !code || !this[ipHashField] || !hashedIp) {
+      return false;
+    }
+    const storedCode = Buffer.from(this[codeField]);
+    const inputCode = Buffer.from(code);
+    if (storedCode.length !== inputCode.length) {
+      return false;
+    }
+    return crypto.timingSafeEqual(storedCode, inputCode) && this[ipHashField] === hashedIp && this[expiresField] > Date.now();
   } catch (err) {
     console.log(err);
     return false;

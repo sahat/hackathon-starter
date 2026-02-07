@@ -62,7 +62,7 @@ block content
                     img.rounded.mb-1(src=picture, width='64', height='64', referrerpolicy='no-referrer')
                     .small.text-muted= provider.charAt(0).toUpperCase() + provider.slice(1)
 
-    .form-group
+    .form-group.mb-5
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn-primary(type='submit')
           i.fas.fa-pencil.fa-sm.me-2
@@ -81,7 +81,7 @@ block content
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='confirmPassword') Confirm Password
       .col-md-7.mb-2
         input#confirmPassword.form-control(type='password', name='confirmPassword', autocomplete='new-password', minlength='8', required)
-    .form-group
+    .form-group.mb-5
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn-primary(type='submit')
           i.fas.fa-lock.fa-sm.me-2
@@ -89,7 +89,7 @@ block content
 
   .pb-2.mt-2.mb-4.border-bottom
     h3 Biometric Login
-  .form-group
+  .form-group.mb-5
     .offset-sm-3.col-md-7.pl-2
       if user.webauthnCredentials && user.webauthnCredentials.length
         p.mb-2 Biometric login is enabled for this account.
@@ -108,11 +108,65 @@ block content
             | Enable biometric login
 
   .pb-2.mt-2.mb-4.border-bottom
+    h3 Two-Factor Authentication (2FA)
+  .form-group.mb-5
+    .offset-sm-3.col-md-7.pl-2
+      if user.twoFactorEnabled
+        p.mb-3 Two-factor authentication is enabled for your account.
+        if user.twoFactorMethods && user.twoFactorMethods.length
+          .mb-3
+            p.mb-2.font-weight-bold Active methods:
+            if user.twoFactorMethods.includes('email')
+              .d-flex.justify-content-between.align-items-center.mb-2.p-2.border.rounded
+                .d-flex.align-items-center
+                  i.fas.fa-envelope.me-2
+                  span Email verification codes
+                form(action='/account/2fa/email/remove', method='POST', style='display: inline')
+                  input(type='hidden', name='_csrf', value=_csrf)
+                  button.btn.btn-sm.btn-outline-danger(type='submit') Remove
+            if user.twoFactorMethods.includes('totp')
+              .d-flex.justify-content-between.align-items-center.mb-2.p-2.border.rounded
+                .d-flex.align-items-center
+                  i.fas.fa-mobile-alt.me-2
+                  span Authenticator app
+                form(action='/account/2fa/totp/remove', method='POST', style='display: inline')
+                  input(type='hidden', name='_csrf', value=_csrf)
+                  button.btn.btn-sm.btn-outline-danger(type='submit') Remove
+        .mb-2
+          if !user.twoFactorMethods.includes('totp')
+            a.btn.btn-outline-dark(href='/account/2fa/totp/setup')
+              i.fas.fa-mobile-alt.fa-sm.me-2
+              | Add Authenticator App
+          if !user.twoFactorMethods.includes('email')
+            form.ms-2(action='/account/2fa/email/enable', method='POST', style='display: inline')
+              input(type='hidden', name='_csrf', value=_csrf)
+              button.btn.btn-outline-dark(type='submit')
+                i.fas.fa-envelope.fa-sm.me-2
+                | Add 2FA by Email
+      else
+        if !user.password
+          p.mb-2.text-muted You must set a password before enabling 2FA.
+        if !user.emailVerified
+          p.mb-2.text-muted You must verify your email before enabling 2FA.
+        if user.password && user.emailVerified
+          p.mb-3 Add an extra layer of security to your account.
+          .mb-2
+            a.btn.btn-outline-dark(href='/account/2fa/totp/setup')
+              i.fas.fa-mobile-alt.fa-sm.me-2
+              | Setup Authenticator App
+          .mb-2
+            form(action='/account/2fa/email/enable', method='POST', style='display: inline')
+              input(type='hidden', name='_csrf', value=_csrf)
+              button.btn.btn-outline-dark(type='submit')
+                i.fas.fa-envelope.fa-sm.me-2
+                | Enable Email 2FA
+
+  .pb-2.mt-2.mb-4.border-bottom
     h3 Logout Everywhere
 
   form(action='/account/logout-everywhere', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
+    .form-group.mb-5
       p.offset-sm-3.col-md-7.pl-2 This will log you out of all devices and locations.
       .offset-sm-3.col-md-7.pl-2
         button.btn.btn-danger(type='submit')
@@ -123,7 +177,7 @@ block content
     h3 Delete Account
 
   form(action='/account/delete', method='POST', onsubmit='return confirm(\'Are you sure you want to delete your account?\');')
-    .form-group
+    .form-group.mb-5
       p.offset-sm-3.col-md-7.pl-2 You can delete your account, but keep in mind this action is irreversible.
       input(type='hidden', name='_csrf', value=_csrf)
       .offset-sm-3.col-md-7.pl-2
@@ -133,7 +187,7 @@ block content
 
   .pb-2.mt-2.mb-4.border-bottom
     h3 Linked Accounts
-  .form-group
+  .form-group.mb-5
     .offset-sm-3.col-md-7.pl-2
       if user.discord
         p.mb-1: a.text-danger(href='/account/unlink/discord') Unlink your Discord account
