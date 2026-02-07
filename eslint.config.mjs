@@ -1,7 +1,7 @@
 import chaiFriendly from 'eslint-plugin-chai-friendly';
 import globals from 'globals';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
-import eslintPluginImport from 'eslint-plugin-import';
+import { importX } from 'eslint-plugin-import-x';
 
 export default [
   eslintConfigPrettier, // Disable Prettier-handled style rules - prettier owns styling
@@ -10,7 +10,7 @@ export default [
 
     plugins: {
       'chai-friendly': chaiFriendly,
-      import: eslintPluginImport,
+      import: importX,
     },
 
     languageOptions: {

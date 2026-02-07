@@ -658,8 +658,6 @@ Required during code development for testing, Hygiene, code styling, etc.
 
 | Package                     | Description                                                                 |
 | --------------------------- | --------------------------------------------------------------------------- |
-| @eslint/compat              | Compatibility utilities for ESLin (eslint v8 support in v9).                |
-| @eslint/eslintrc            | Support for legacy ESLintRC config file format for ESLint.                  |
 | @eslint/js                  | ESLint JavaScript language implementation.                                  |
 | @playwright/test            | Automated end-to-end web testing framework (supports headless web browsers) |
 | @prettier/plugin-pug        | Prettier plugin for formatting pug templates                                |
@@ -668,7 +666,7 @@ Required during code development for testing, Hygiene, code styling, etc.
 | eslint-config-prettier      | Make ESLint and Prettier play nice with each other.                         |
 | eslint                      | Linter JavaScript.                                                          |
 | eslint-plugin-chai-friendly | Makes eslint friendly towards Chai.js 'expect' and 'should' statements.     |
-| eslint-plugin-import        | ESLint plugin with rules that help validate proper imports.                 |
+| eslint-plugin-import-x      | ESLint plugin with rules that help validate proper imports.                 |
 | globals                     | ESLint global identifiers from different JavaScript environments.           |
 | husky                       | Git hook manager to automate tasks with git.                                |
 | mocha                       | Test framework.                                                             |

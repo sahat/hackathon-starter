@@ -1,13 +1,5 @@
 const nodemailer = require('nodemailer');
 
-process.on('uncaughtException', (err) => {
-  if (err?.code === 'ERR_SSL_BAD_RECORD_TYPE') {
-    console.error('Caught TLS socket error. This is a known issue with some SMTP service providers', err);
-    return;
-  }
-  throw err;
-});
-
 /**
  * Helper Function to Send Mail.
  */

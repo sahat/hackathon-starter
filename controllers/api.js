@@ -5,9 +5,6 @@ const cheerio = require('cheerio');
 const { LastFmNode } = require('lastfm');
 const multer = require('multer');
 const { OAuth } = require('oauth');
-// Disable eslint rule for @octakit/rest until the following github issue is resolved
-// github npm package bug: https://github.com/octokit/rest.js/issues/446
-// eslint-disable-next-line import/no-unresolved
 const { Octokit } = require('@octokit/rest');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
 const twilioClient = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
