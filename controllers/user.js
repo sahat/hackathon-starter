@@ -2,6 +2,7 @@ const crypto = require('node:crypto');
 const passport = require('passport');
 const validator = require('validator');
 const mailChecker = require('mailchecker');
+const OTPAuth = require('otpauth');
 const User = require('../models/User');
 const Session = require('../models/Session');
 const nodemailerConfig = require('../config/nodemailer');
@@ -15,6 +16,9 @@ exports.getLogin = (req, res) => {
   if (req.user) {
     return res.redirect('/');
   }
+  // Clear any pending 2FA state when returning to the login page
+  // (e.g. user clicked Cancel, pressed Back, or abandoned the 2FA flow)
+  req.session.twoFactorPendingUserId = undefined;
   res.render('account/login', {
     title: 'Login',
   });
@@ -99,6 +103,19 @@ Thank you!\n`,
     if (!user) {
       req.flash('errors', info);
       return res.redirect('/login');
+    }
+    if (user.twoFactorEnabled && user.password) {
+      req.session.twoFactorPendingUserId = user.id;
+      // Priority: totp -> email
+      if (user.twoFactorMethods.includes('totp')) {
+        return res.redirect('/login/2fa/totp');
+      }
+      // If a valid email code already exists (e.g. user re-entered credentials),
+      // let them know. getTwoFactor will generate a new code if needed.
+      if (user.twoFactorCode && user.twoFactorExpires > Date.now() && user.twoFactorIpHash === User.hashIP(req.ip)) {
+        req.flash('info', { msg: 'A verification code was already sent to your email. Check your inbox or use the resend option below.' });
+      }
+      return res.redirect('/login/2fa');
     }
     req.logIn(user, (err) => {
       if (err) {
@@ -305,6 +322,12 @@ exports.postUpdateProfile = async (req, res, next) => {
   }
   try {
     const user = await User.findById(req.user.id);
+    // Prevent email changes when email is the user's only 2FA method.
+    // Changing to a mistyped address would lock the user out of their account.
+    if (user.email !== req.body.email && user.twoFactorEnabled && user.twoFactorMethods.includes('email') && !user.twoFactorMethods.includes('totp')) {
+      req.flash('errors', { msg: 'You cannot change your email while email is your only two-factor authentication (2FA) method. Please add an authenticator app first, or remove email 2FA before changing your email address.' });
+      return res.redirect('/account');
+    }
     if (user.email !== req.body.email) user.emailVerified = false;
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
@@ -746,5 +769,361 @@ exports.postLogoutEverywhere = async (req, res, next) => {
     });
   } catch (err) {
     return next(err);
+  }
+};
+
+/**
+ * Helper to send a 2FA code email.
+ * The success flash message is customizable so callers can distinguish
+ * between first send and resend.
+ */
+async function sendTwoFactorEmail(email, code, req, successMsg = 'A verification code has been sent to your email.') {
+  const mailOptions = {
+    to: email,
+    from: process.env.SITE_CONTACT_EMAIL,
+    subject: 'Two-Factor Authentication Code',
+    text: `Hello,\n\nYour temporary two-factor authentication code is:\n\n${code}\n\nEnter this code on the login page to complete your sign-in.\n\nFor security:\n- This code can only be used once\n- This code expires if not used\n- If you didn't request this code, please ignore this email and ensure your account is secure\n\nThank you!\n`,
+  };
+  await nodemailerConfig.sendMail({
+    mailOptions,
+    successfulType: 'info',
+    successfulMsg: successMsg,
+    loggingError: 'ERROR: Could not send 2FA code.',
+    errorType: 'errors',
+    errorMsg: 'Error sending verification code. Please try again later.',
+    req,
+  });
+}
+
+/**
+ * POST /login/2fa/resend
+ * Resend the 2FA code email.
+ * If the current code is still within its expiry window and was issued to the
+ * same client IP, reuses the same code and refreshes its expiration.
+ * Otherwise generates a fresh code bound to the current IP.
+ * Note: previously sent emails become invalid if the client IP changes.
+ */
+exports.resendTwoFactorCode = async (req, res, next) => {
+  if (!req.session.twoFactorPendingUserId) {
+    req.flash('errors', { msg: 'Session expired. Please log in again.' });
+    return res.redirect('/login');
+  }
+  try {
+    const user = await User.findById(req.session.twoFactorPendingUserId);
+    if (!user) {
+      req.flash('errors', { msg: 'Session expired. Please log in again.' });
+      return res.redirect('/login');
+    }
+    if (!user.twoFactorMethods.includes('email')) {
+      req.flash('errors', { msg: 'Email-based two-factor authentication is not enabled for this account.' });
+      return res.redirect('/login/2fa/totp');
+    }
+    const currentIpHash = User.hashIP(req.ip);
+    const hasValidCode = user.twoFactorCode && user.twoFactorExpires && user.twoFactorExpires > Date.now() && user.twoFactorIpHash === currentIpHash;
+    const code = hasValidCode ? user.twoFactorCode : User.generateCode();
+    const successMsg = hasValidCode ? 'The verification code has been resent to your email.' : 'A new verification code has been sent to your email.';
+    user.twoFactorCode = code;
+    user.twoFactorExpires = Date.now() + 600000; // fresh 10 min
+    user.twoFactorIpHash = currentIpHash;
+    await user.save();
+    await sendTwoFactorEmail(user.email, code, req, successMsg);
+    res.redirect('/login/2fa');
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * GET /login/2fa
+ * Two-factor authentication page.
+ * This is the single place that ensures a code exists and sends the email
+ * if needed — whether the user came from login, switched from TOTP, or
+ * is revisiting the page.
+ */
+exports.getTwoFactor = async (req, res, next) => {
+  if (!req.session.twoFactorPendingUserId) {
+    return res.redirect('/login');
+  }
+  try {
+    const user = await User.findById(req.session.twoFactorPendingUserId);
+    if (!user) {
+      return res.redirect('/login');
+    }
+    if (!user.twoFactorMethods.includes('email')) {
+      return res.redirect('/login/2fa/totp');
+    }
+    const hasValidCode = user.twoFactorCode && user.twoFactorExpires && user.twoFactorExpires > Date.now() && user.twoFactorIpHash === User.hashIP(req.ip);
+    if (!hasValidCode) {
+      const code = User.generateCode();
+      user.twoFactorCode = code;
+      user.twoFactorExpires = Date.now() + 600000; // 10 min
+      user.twoFactorIpHash = User.hashIP(req.ip);
+      await user.save();
+      await sendTwoFactorEmail(user.email, code, req);
+    }
+    res.render('account/two-factor', {
+      title: 'Two-Factor Authentication',
+      method: 'email',
+      methods: user.twoFactorMethods,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * POST /login/2fa
+ * Verify two-factor authentication code
+ */
+exports.postTwoFactor = async (req, res, next) => {
+  const validationErrors = [];
+  const code = validator.trim(req.body.code || '');
+  if (!validator.isNumeric(code) || !validator.isLength(code, { min: 6, max: 6 })) {
+    validationErrors.push({ msg: 'Invalid verification code.' });
+  }
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
+    return res.redirect('/login/2fa');
+  }
+  if (!req.session.twoFactorPendingUserId) {
+    req.flash('errors', { msg: 'Session expired. Please log in again.' });
+    return res.redirect('/login');
+  }
+  try {
+    const user = await User.findById(req.session.twoFactorPendingUserId);
+    if (!user || !user.verifyCodeAndIp(code, req.ip, 'twoFactor')) {
+      req.flash('errors', { msg: 'Invalid or expired verification code.' });
+      return res.redirect('/login/2fa');
+    }
+    // Clear the used code as it is to be one-time use only
+    user.clearTwoFactorCode();
+    await user.save();
+    req.session.twoFactorPendingUserId = undefined;
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash('success', { msg: 'Success! You are logged in.' });
+      res.redirect(req.session.returnTo || '/');
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * POST /account/2fa/email/enable
+ * Enable email-based two-factor authentication
+ */
+exports.postEnable2FA = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user.password) {
+      req.flash('errors', { msg: 'You must set a password before enabling 2FA.' });
+      return res.redirect('/account');
+    }
+    if (!user.emailVerified) {
+      req.flash('errors', { msg: 'You must verify your email before enabling 2FA.' });
+      return res.redirect('/account');
+    }
+    user.twoFactorEnabled = true;
+    if (!user.twoFactorMethods.includes('email')) {
+      user.twoFactorMethods.push('email');
+    }
+    await user.save();
+    req.flash('success', { msg: 'Two-factor authentication has been enabled.' });
+    res.redirect('/account');
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * GET /account/2fa/totp/setup
+ * Setup TOTP authenticator
+ */
+exports.getTotpSetup = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user.password) {
+      req.flash('errors', { msg: 'You must set a password before enabling 2FA.' });
+      return res.redirect('/account');
+    }
+    if (!user.emailVerified) {
+      req.flash('errors', { msg: 'You must verify your email before enabling 2FA.' });
+      return res.redirect('/account');
+    }
+    const secret = OTPAuth.Secret.fromHex(crypto.randomBytes(20).toString('hex'));
+    const totp = new OTPAuth.TOTP({
+      issuer: 'Hackathon Starter',
+      label: user.email,
+      algorithm: 'SHA1',
+      digits: 6,
+      period: 30,
+      secret,
+    });
+    req.session.totpSecret = secret.base32;
+    res.render('account/totp-setup', {
+      title: 'Setup Authenticator',
+      qrCode: totp.toString(),
+      secret: secret.base32,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * POST /account/2fa/totp/setup
+ * Verify and enable TOTP
+ */
+exports.postTotpSetup = async (req, res, next) => {
+  const validationErrors = [];
+  const code = validator.trim(req.body.code || '');
+  if (!validator.isNumeric(code) || !validator.isLength(code, { min: 6, max: 6 })) {
+    validationErrors.push({ msg: 'Invalid verification code.' });
+  }
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
+    return res.redirect('/account/2fa/totp/setup');
+  }
+  if (!req.session.totpSecret) {
+    req.flash('errors', { msg: 'Session expired. Please try again.' });
+    return res.redirect('/account');
+  }
+  try {
+    const totp = new OTPAuth.TOTP({
+      secret: OTPAuth.Secret.fromBase32(req.session.totpSecret),
+    });
+    const delta = totp.validate({ token: code, window: 1 });
+    if (delta === null) {
+      req.flash('errors', { msg: 'Invalid verification code. Please try again.' });
+      return res.redirect('/account/2fa/totp/setup');
+    }
+    const user = await User.findById(req.user.id);
+    user.twoFactorEnabled = true;
+    user.totpSecret = req.session.totpSecret;
+    if (!user.twoFactorMethods.includes('totp')) {
+      user.twoFactorMethods.push('totp');
+    }
+    await user.save();
+    req.session.totpSecret = undefined;
+    req.flash('success', { msg: 'Authenticator app has been enabled for 2FA.' });
+    res.redirect('/account');
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * GET /login/2fa/totp
+ * TOTP verification page
+ */
+exports.getTotpVerify = async (req, res, next) => {
+  if (!req.session.twoFactorPendingUserId) {
+    return res.redirect('/login');
+  }
+  try {
+    const user = await User.findById(req.session.twoFactorPendingUserId);
+    if (!user) {
+      req.flash('errors', { msg: 'Session expired. Please log in again.' });
+      return res.redirect('/login');
+    }
+    if (!user.totpSecret || !user.twoFactorMethods.includes('totp')) {
+      req.flash('errors', { msg: 'TOTP authentication is not enabled for this account.' });
+      return res.redirect('/login');
+    }
+    res.render('account/two-factor', {
+      title: 'Two-Factor Authentication',
+      method: 'totp',
+      methods: user.twoFactorMethods,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * POST /login/2fa/totp
+ * Verify TOTP code
+ */
+exports.postTotpVerify = async (req, res, next) => {
+  const validationErrors = [];
+  const code = validator.trim(req.body.code || '');
+  if (!validator.isNumeric(code) || !validator.isLength(code, { min: 6, max: 6 })) {
+    validationErrors.push({ msg: 'Invalid verification code.' });
+  }
+  if (validationErrors.length) {
+    req.flash('errors', validationErrors);
+    return res.redirect('/login/2fa/totp');
+  }
+  if (!req.session.twoFactorPendingUserId) {
+    req.flash('errors', { msg: 'Session expired. Please log in again.' });
+    return res.redirect('/login');
+  }
+  try {
+    const user = await User.findById(req.session.twoFactorPendingUserId);
+    if (!user || !user.totpSecret) {
+      req.flash('errors', { msg: 'Invalid session.' });
+      return res.redirect('/login');
+    }
+    const totp = new OTPAuth.TOTP({
+      secret: OTPAuth.Secret.fromBase32(user.totpSecret),
+    });
+    const delta = totp.validate({ token: code, window: 1 });
+    if (delta === null) {
+      req.flash('errors', { msg: 'Invalid verification code.' });
+      return res.redirect('/login/2fa/totp');
+    }
+    req.session.twoFactorPendingUserId = undefined;
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash('success', { msg: 'Success! You are logged in.' });
+      res.redirect(req.session.returnTo || '/');
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * POST /account/2fa/totp/remove
+ * Remove TOTP authenticator
+ */
+exports.postRemoveTotp = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    user.totpSecret = undefined;
+    user.twoFactorMethods = user.twoFactorMethods.filter((m) => m !== 'totp');
+    if (user.twoFactorMethods.length === 0) {
+      user.twoFactorEnabled = false;
+    }
+    await user.save();
+    req.flash('success', { msg: 'Authenticator app has been removed.' });
+    res.redirect('/account');
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * POST /account/2fa/email/remove
+ * Remove email 2FA
+ */
+exports.postRemoveEmail2FA = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    user.twoFactorMethods = user.twoFactorMethods.filter((m) => m !== 'email');
+    user.clearTwoFactorCode();
+    if (user.twoFactorMethods.length === 0) {
+      user.twoFactorEnabled = false;
+    }
+    await user.save();
+    req.flash('success', { msg: 'Email 2FA has been removed.' });
+    res.redirect('/account');
+  } catch (err) {
+    next(err);
   }
 };

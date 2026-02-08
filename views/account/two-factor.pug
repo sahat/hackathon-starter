@@ -1,0 +1,44 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 Two-Factor Authentication
+
+  .row
+    .col-md-8.offset-md-2
+      if method === 'totp'
+        p.text-muted Open your authenticator app and enter the 6-digit code.
+      else
+        p.text-muted Please enter your email verification code below to complete your login.
+
+      form(method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group.mb-3
+          if method === 'email'
+            i.far.fa-envelope.fa-sm.me-2
+            label.form-label(for='code') Email Code
+          if method === 'totp'
+            i.fas.fa-mobile-alt.fa-sm.me-2
+            label.form-label(for='code') Authenticator App Code
+          input#code.form-control(type='text', name='code', placeholder='000000', pattern='[0-9]{6}', inputmode='numeric', maxlength='6', autofocus, required)
+        .form-group
+          button.btn.btn-primary(type='submit')
+            i.fas.fa-shield-alt.fa-sm.me-2
+            | Verify
+          a.btn.btn-link(href='/login') Cancel
+
+      if method === 'email'
+        form.mt-2(method='POST', action='/login/2fa/resend')
+          input(type='hidden', name='_csrf', value=_csrf)
+          button.btn.btn-outline-secondary.btn-sm(type='submit')
+            i.fas.fa-redo.fa-sm.me-2
+            | Resend Code
+
+      if methods && methods.length > 1
+        hr.my-4
+        p.text-muted Use a different method:
+        .d-flex.gap-2
+          if methods.includes('totp') && method !== 'totp'
+            a(href='/login/2fa/totp') Authenticator App
+          if methods.includes('email') && method !== 'email'
+            a(href='/login/2fa') Email Code

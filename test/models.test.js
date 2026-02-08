@@ -499,6 +499,13 @@ describe('User Model', () => {
       });
       expect(user.isLoginExpired).to.be.true;
     });
+
+    it('should check if 2FA code is expired', () => {
+      const user = new User({
+        twoFactorExpires: Date.now() - 3600000,
+      });
+      expect(user.isTwoFactorExpired).to.be.true;
+    });
   });
 
   describe('User Password Handling', () => {
@@ -712,6 +719,9 @@ describe('User Model', () => {
         loginToken: 'token',
         loginExpires: Date.now() - 3600000,
         loginIpHash: 'hash',
+        twoFactorCode: '123456',
+        twoFactorExpires: Date.now() - 3600000,
+        twoFactorIpHash: 'hash',
       });
 
       await user.save();
@@ -719,6 +729,445 @@ describe('User Model', () => {
       expect(user.passwordResetToken).to.be.undefined;
       expect(user.emailVerificationToken).to.be.undefined;
       expect(user.loginToken).to.be.undefined;
+      expect(user.twoFactorCode).to.be.undefined;
+    });
+  });
+
+  describe('Two-Factor Authentication', () => {
+    describe('Code Generation', () => {
+      it('should generate a 6-digit code', () => {
+        const code = User.generateCode();
+        expect(code).to.match(/^\d{6}$/);
+        expect(parseInt(code, 10)).to.be.at.least(100000);
+        expect(parseInt(code, 10)).to.be.at.most(999999);
+      });
+
+      it('should generate unique codes', () => {
+        const codes = new Set();
+        for (let i = 0; i < 100; i++) {
+          codes.add(User.generateCode());
+        }
+        expect(codes.size).to.be.greaterThan(90);
+      });
+    });
+
+    describe('2FA Code Verification', () => {
+      it('should verify valid 2FA code and IP before expiration', () => {
+        const code = '123456';
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          password: 'password123',
+          twoFactorCode: code,
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        const isValid = user.verifyCodeAndIp(code, ip, 'twoFactor');
+        expect(isValid).to.be.true;
+      });
+
+      it('should reject expired 2FA code', () => {
+        const code = '123456';
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          password: 'password123',
+          twoFactorCode: code,
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() - 600000,
+        });
+
+        const isValid = user.verifyCodeAndIp(code, ip, 'twoFactor');
+        expect(isValid).to.be.false;
+      });
+
+      it('should reject invalid 2FA code', () => {
+        const code = '123456';
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          password: 'password123',
+          twoFactorCode: '654321',
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        const isValid = user.verifyCodeAndIp(code, ip, 'twoFactor');
+        expect(isValid).to.be.false;
+      });
+
+      it('should reject code from different IP', () => {
+        const code = '123456';
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          password: 'password123',
+          twoFactorCode: code,
+          twoFactorIpHash: User.hashIP('192.168.1.1'),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        const isValid = user.verifyCodeAndIp(code, ip, 'twoFactor');
+        expect(isValid).to.be.false;
+      });
+
+      it('should handle missing code fields', () => {
+        const code = '123456';
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          password: 'password123',
+        });
+
+        const isValid = user.verifyCodeAndIp(code, ip, 'twoFactor');
+        expect(isValid).to.be.false;
+      });
+
+      it('should reject empty string code', () => {
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorCode: '123456',
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        expect(user.verifyCodeAndIp('', ip, 'twoFactor')).to.be.false;
+      });
+
+      it('should reject null code', () => {
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorCode: '123456',
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        expect(user.verifyCodeAndIp(null, ip, 'twoFactor')).to.be.false;
+      });
+
+      it('should reject undefined code', () => {
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorCode: '123456',
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        expect(user.verifyCodeAndIp(undefined, ip, 'twoFactor')).to.be.false;
+      });
+
+      it('should reject code with wrong length', () => {
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorCode: '123456',
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        expect(user.verifyCodeAndIp('12345', ip, 'twoFactor')).to.be.false;
+        expect(user.verifyCodeAndIp('1234567', ip, 'twoFactor')).to.be.false;
+      });
+
+      it('should reject code with non-numeric characters', () => {
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorCode: '123456',
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        expect(user.verifyCodeAndIp('abcdef', ip, 'twoFactor')).to.be.false;
+      });
+
+      it('should reject when stored code is missing but other fields exist', () => {
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        expect(user.verifyCodeAndIp('123456', ip, 'twoFactor')).to.be.false;
+      });
+
+      it('should reject when IP hash is missing but other fields exist', () => {
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorCode: '123456',
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        expect(user.verifyCodeAndIp('123456', '127.0.0.1', 'twoFactor')).to.be.false;
+      });
+
+      it('should use timing-safe comparison for codes', () => {
+        const code = '123456';
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          password: 'password123',
+          twoFactorCode: code,
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        const timingSafeEqualSpy = sinon.spy(crypto, 'timingSafeEqual');
+        try {
+          user.verifyCodeAndIp('123456', ip, 'twoFactor');
+          expect(timingSafeEqualSpy.calledOnce).to.be.true;
+
+          timingSafeEqualSpy.resetHistory();
+          user.verifyCodeAndIp('654321', ip, 'twoFactor');
+          expect(timingSafeEqualSpy.calledOnce).to.be.true;
+        } finally {
+          timingSafeEqualSpy.restore();
+        }
+      });
+    });
+
+    describe('2FA Methods Management', () => {
+      it('should initialize with empty twoFactorMethods array', async () => {
+        const user = await User.create({
+          email: 'test@example.com',
+          password: 'password123',
+        });
+
+        expect(user.twoFactorMethods).to.be.an('array');
+        expect(user.twoFactorMethods).to.have.lengthOf(0);
+        expect(user.twoFactorEnabled).to.be.false;
+      });
+
+      it('should add email to twoFactorMethods', async () => {
+        const user = await User.create({
+          email: 'test@example.com',
+          password: 'password123',
+        });
+
+        user.twoFactorEnabled = true;
+        user.twoFactorMethods.push('email');
+        await user.save();
+
+        const reloaded = await User.findById(user._id);
+        expect(reloaded.twoFactorMethods).to.include('email');
+        expect(reloaded.twoFactorEnabled).to.be.true;
+      });
+
+      it('should add multiple 2FA methods', async () => {
+        const user = await User.create({
+          email: 'test@example.com',
+          password: 'password123',
+        });
+
+        user.twoFactorEnabled = true;
+        user.twoFactorMethods.push('email', 'totp');
+        await user.save();
+
+        const reloaded = await User.findById(user._id);
+        expect(reloaded.twoFactorMethods).to.have.lengthOf(2);
+        expect(reloaded.twoFactorMethods).to.include('email');
+        expect(reloaded.twoFactorMethods).to.include('totp');
+      });
+
+      it('should remove individual 2FA method', async () => {
+        const user = await User.create({
+          email: 'test@example.com',
+          password: 'password123',
+          twoFactorEnabled: true,
+          twoFactorMethods: ['email', 'totp'],
+        });
+
+        user.twoFactorMethods = user.twoFactorMethods.filter((m) => m !== 'email');
+        await user.save();
+
+        const reloaded = await User.findById(user._id);
+        expect(reloaded.twoFactorMethods).to.have.lengthOf(1);
+        expect(reloaded.twoFactorMethods).to.include('totp');
+        expect(reloaded.twoFactorMethods).to.not.include('email');
+      });
+
+      it('should disable 2FA when all methods removed', async () => {
+        const user = await User.create({
+          email: 'test@example.com',
+          password: 'password123',
+          twoFactorEnabled: true,
+          twoFactorMethods: ['email'],
+        });
+
+        user.twoFactorMethods = [];
+        user.twoFactorEnabled = false;
+        await user.save();
+
+        const reloaded = await User.findById(user._id);
+        expect(reloaded.twoFactorMethods).to.have.lengthOf(0);
+        expect(reloaded.twoFactorEnabled).to.be.false;
+      });
+
+      it('should accept email as a valid method', async () => {
+        const user = await User.create({
+          email: 'enum-test1@example.com',
+          password: 'password123',
+          twoFactorMethods: ['email'],
+        });
+        expect(user.twoFactorMethods).to.deep.equal(['email']);
+      });
+
+      it('should accept totp as a valid method', async () => {
+        const user = await User.create({
+          email: 'enum-test2@example.com',
+          password: 'password123',
+          twoFactorMethods: ['totp'],
+        });
+        expect(user.twoFactorMethods).to.deep.equal(['totp']);
+      });
+
+      it('should reject invalid 2FA method values', async () => {
+        try {
+          await User.create({
+            email: 'enum-test3@example.com',
+            password: 'password123',
+            twoFactorMethods: ['sms'],
+          });
+          expect.fail('Should have thrown validation error');
+        } catch (err) {
+          expect(err.name).to.equal('ValidationError');
+        }
+      });
+    });
+
+    describe('2FA Virtual Properties', () => {
+      it('should check if 2FA code is not expired', () => {
+        const user = new User({
+          twoFactorExpires: Date.now() + 600000,
+        });
+        expect(user.isTwoFactorExpired).to.be.false;
+      });
+    });
+
+    describe('2FA Token Cleanup', () => {
+      it('should clear expired 2FA code on save', async () => {
+        const user = new User({
+          email: 'test@example.com',
+          password: 'password123',
+          twoFactorCode: '123456',
+          twoFactorExpires: Date.now() - 600000,
+          twoFactorIpHash: 'hash',
+        });
+
+        await user.save();
+
+        expect(user.twoFactorCode).to.be.undefined;
+        expect(user.twoFactorExpires).to.be.undefined;
+        expect(user.twoFactorIpHash).to.be.undefined;
+      });
+
+      it('should not clear valid 2FA code on save', async () => {
+        const code = '123456';
+        const user = new User({
+          email: 'test@example.com',
+          password: 'password123',
+          twoFactorCode: code,
+          twoFactorExpires: Date.now() + 600000,
+          twoFactorIpHash: 'hash',
+        });
+
+        await user.save();
+
+        expect(user.twoFactorCode).to.equal(code);
+        expect(user.twoFactorExpires).to.exist;
+        expect(user.twoFactorIpHash).to.equal('hash');
+      });
+    });
+
+    describe('clearTwoFactorCode', () => {
+      it('should clear all three 2FA code fields', () => {
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorCode: '123456',
+          twoFactorExpires: Date.now() + 600000,
+          twoFactorIpHash: 'somehash',
+        });
+
+        user.clearTwoFactorCode();
+
+        expect(user.twoFactorCode).to.be.undefined;
+        expect(user.twoFactorExpires).to.be.undefined;
+        expect(user.twoFactorIpHash).to.be.undefined;
+      });
+
+      it('should be safe to call when fields are already undefined', () => {
+        const user = new User({ email: 'test@example.com' });
+
+        user.clearTwoFactorCode();
+
+        expect(user.twoFactorCode).to.be.undefined;
+        expect(user.twoFactorExpires).to.be.undefined;
+        expect(user.twoFactorIpHash).to.be.undefined;
+      });
+
+      it('should not affect other user fields', () => {
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorEnabled: true,
+          twoFactorMethods: ['email'],
+          twoFactorCode: '123456',
+          twoFactorExpires: Date.now() + 600000,
+          twoFactorIpHash: 'somehash',
+        });
+
+        user.clearTwoFactorCode();
+
+        expect(user.twoFactorEnabled).to.be.true;
+        expect(user.twoFactorMethods).to.include('email');
+        expect(user.email).to.equal('test@example.com');
+      });
+    });
+
+    describe('Code consumption (single-use)', () => {
+      it('should not verify after clearTwoFactorCode is called', () => {
+        const code = '123456';
+        const ip = '127.0.0.1';
+        const user = new User({
+          email: 'test@example.com',
+          twoFactorCode: code,
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        expect(user.verifyCodeAndIp(code, ip, 'twoFactor')).to.be.true;
+
+        user.clearTwoFactorCode();
+
+        expect(user.verifyCodeAndIp(code, ip, 'twoFactor')).to.be.false;
+      });
+
+      it('should persist cleared state after save', async () => {
+        const code = '123456';
+        const ip = '127.0.0.1';
+        const user = await User.create({
+          email: 'consume-test@example.com',
+          password: 'password123',
+          twoFactorCode: code,
+          twoFactorIpHash: User.hashIP(ip),
+          twoFactorExpires: Date.now() + 600000,
+        });
+
+        expect(user.verifyCodeAndIp(code, ip, 'twoFactor')).to.be.true;
+
+        user.clearTwoFactorCode();
+        await user.save();
+
+        const reloaded = await User.findById(user._id);
+        expect(reloaded.twoFactorCode).to.be.undefined;
+        expect(reloaded.twoFactorExpires).to.be.undefined;
+        expect(reloaded.twoFactorIpHash).to.be.undefined;
+        expect(reloaded.verifyCodeAndIp(code, ip, 'twoFactor')).to.be.false;
+      });
     });
   });
 });
