@@ -7,6 +7,7 @@ const User = require('../models/User');
 const Session = require('../models/Session');
 const nodemailerConfig = require('../config/nodemailer');
 const aiAgentController = require('./ai-agent');
+const { revokeProviderTokens, revokeAllProviderTokens } = require('../config/token-revocation');
 
 /**
  * GET /login
@@ -396,6 +397,8 @@ exports.postUpdatePassword = async (req, res, next) => {
 exports.postDeleteAccount = async (req, res, next) => {
   try {
     const userId = req.user.id;
+    // Best-effort: revoke OAuth tokens at provider endpoints before deleting
+    await revokeAllProviderTokens(req.user.tokens);
     await aiAgentController.deleteUserAIAgentData(userId); // Delete user's AI agent chat history
     await User.deleteOne({ _id: userId });
     req.logout((err) => {
@@ -421,7 +424,11 @@ exports.getOauthUnlink = async (req, res, next) => {
     provider = validator.escape(provider);
     const user = await User.findById(req.user.id);
     user[provider.toLowerCase()] = undefined;
+    const tokenToRevoke = user.tokens.find((token) => token.kind === provider.toLowerCase());
     const tokensWithoutProviderToUnlink = user.tokens.filter((token) => token.kind !== provider.toLowerCase());
+
+    // Best-effort: revoke the OAuth token at the provider's endpoint before unlinking
+    await revokeProviderTokens(provider.toLowerCase(), tokenToRevoke);
 
     // Remove provider's picture entry
     if (user.profile.pictures && user.profile.pictures.has(provider.toLowerCase())) {
