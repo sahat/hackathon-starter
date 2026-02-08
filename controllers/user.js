@@ -16,6 +16,9 @@ exports.getLogin = (req, res) => {
   if (req.user) {
     return res.redirect('/');
   }
+  // Clear any pending 2FA state when returning to the login page
+  // (e.g. user clicked Cancel, pressed Back, or abandoned the 2FA flow)
+  req.session.twoFactorPendingUserId = undefined;
   res.render('account/login', {
     title: 'Login',
   });
@@ -1104,6 +1107,7 @@ exports.postRemoveEmail2FA = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
     user.twoFactorMethods = user.twoFactorMethods.filter((m) => m !== 'email');
+    user.clearTwoFactorCode();
     if (user.twoFactorMethods.length === 0) {
       user.twoFactorEnabled = false;
     }
