@@ -917,16 +917,17 @@ describe('User Model', () => {
           twoFactorExpires: Date.now() + 600000,
         });
 
-        const startTime = process.hrtime.bigint();
-        user.verifyCodeAndIp('123456', ip, 'twoFactor');
-        const validTime = process.hrtime.bigint() - startTime;
+        const timingSafeEqualSpy = sinon.spy(crypto, 'timingSafeEqual');
+        try {
+          user.verifyCodeAndIp('123456', ip, 'twoFactor');
+          expect(timingSafeEqualSpy.calledOnce).to.be.true;
 
-        const startTime2 = process.hrtime.bigint();
-        user.verifyCodeAndIp('654321', ip, 'twoFactor');
-        const invalidTime = process.hrtime.bigint() - startTime2;
-
-        const timeDiff = Math.abs(Number(validTime - invalidTime));
-        expect(timeDiff).to.be.lessThan(1000000);
+          timingSafeEqualSpy.resetHistory();
+          user.verifyCodeAndIp('654321', ip, 'twoFactor');
+          expect(timingSafeEqualSpy.calledOnce).to.be.true;
+        } finally {
+          timingSafeEqualSpy.restore();
+        }
       });
     });
 

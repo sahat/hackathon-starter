@@ -803,6 +803,10 @@ exports.resendTwoFactorCode = async (req, res, next) => {
       req.flash('errors', { msg: 'Session expired. Please log in again.' });
       return res.redirect('/login');
     }
+    if (!user.twoFactorMethods.includes('email')) {
+      req.flash('errors', { msg: 'Email-based two-factor authentication is not enabled for this account.' });
+      return res.redirect('/login/2fa/totp');
+    }
     const hasValidCode = user.twoFactorCode && user.twoFactorExpires && user.twoFactorExpires > Date.now();
     const code = hasValidCode ? user.twoFactorCode : User.generateCode();
     const successMsg = hasValidCode ? 'The verification code has been resent to your email.' : 'A new verification code has been sent to your email.';
@@ -833,16 +837,17 @@ exports.getTwoFactor = async (req, res, next) => {
     if (!user) {
       return res.redirect('/login');
     }
-    if (user.twoFactorMethods.includes('email')) {
-      const hasValidCode = user.twoFactorCode && user.twoFactorExpires && user.twoFactorExpires > Date.now() && user.twoFactorIpHash === User.hashIP(req.ip);
-      if (!hasValidCode) {
-        const code = User.generateCode();
-        user.twoFactorCode = code;
-        user.twoFactorExpires = Date.now() + 600000; // 10 min
-        user.twoFactorIpHash = User.hashIP(req.ip);
-        await user.save();
-        await sendTwoFactorEmail(user.email, code, req);
-      }
+    if (!user.twoFactorMethods.includes('email')) {
+      return res.redirect('/login/2fa/totp');
+    }
+    const hasValidCode = user.twoFactorCode && user.twoFactorExpires && user.twoFactorExpires > Date.now() && user.twoFactorIpHash === User.hashIP(req.ip);
+    if (!hasValidCode) {
+      const code = User.generateCode();
+      user.twoFactorCode = code;
+      user.twoFactorExpires = Date.now() + 600000; // 10 min
+      user.twoFactorIpHash = User.hashIP(req.ip);
+      await user.save();
+      await sendTwoFactorEmail(user.email, code, req);
     }
     res.render('account/two-factor', {
       title: 'Two-Factor Authentication',
@@ -895,8 +900,8 @@ exports.postTwoFactor = async (req, res, next) => {
 };
 
 /**
- * POST /account/2fa/enable
- * Enable two-factor authentication
+ * POST /account/2fa/email/enable
+ * Enable email-based two-factor authentication
  */
 exports.postEnable2FA = async (req, res, next) => {
   try {
@@ -915,24 +920,6 @@ exports.postEnable2FA = async (req, res, next) => {
     }
     await user.save();
     req.flash('success', { msg: 'Two-factor authentication has been enabled.' });
-    res.redirect('/account');
-  } catch (err) {
-    next(err);
-  }
-};
-
-/**
- * POST /account/2fa/disable
- * Disable two-factor authentication
- */
-exports.postDisable2FA = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user.id);
-    user.twoFactorEnabled = false;
-    user.twoFactorMethods = [];
-    user.totpSecret = undefined;
-    await user.save();
-    req.flash('success', { msg: 'Two-factor authentication has been disabled.' });
     res.redirect('/account');
   } catch (err) {
     next(err);
@@ -1020,16 +1007,28 @@ exports.postTotpSetup = async (req, res, next) => {
  * GET /login/2fa/totp
  * TOTP verification page
  */
-exports.getTotpVerify = async (req, res) => {
+exports.getTotpVerify = async (req, res, next) => {
   if (!req.session.twoFactorPendingUserId) {
     return res.redirect('/login');
   }
-  const user = await User.findById(req.session.twoFactorPendingUserId);
-  res.render('account/two-factor', {
-    title: 'Two-Factor Authentication',
-    method: 'totp',
-    methods: user.twoFactorMethods,
-  });
+  try {
+    const user = await User.findById(req.session.twoFactorPendingUserId);
+    if (!user) {
+      req.flash('errors', { msg: 'Session expired. Please log in again.' });
+      return res.redirect('/login');
+    }
+    if (!user.totpSecret || !user.twoFactorMethods.includes('totp')) {
+      req.flash('errors', { msg: 'TOTP authentication is not enabled for this account.' });
+      return res.redirect('/login');
+    }
+    res.render('account/two-factor', {
+      title: 'Two-Factor Authentication',
+      method: 'totp',
+      methods: user.twoFactorMethods,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 /**

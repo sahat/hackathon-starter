@@ -206,7 +206,7 @@ userSchema.statics.generateToken = function generateToken() {
 
 // Helper method for generating 6-digit codes
 userSchema.statics.generateCode = function generateCode() {
-  return crypto.randomInt(100000, 999999).toString();
+  return crypto.randomInt(100000, 1000000).toString();
 };
 
 // Helper methods for token verification
@@ -257,7 +257,11 @@ userSchema.methods.verifyCodeAndIp = function verifyCodeAndIp(code, ip, codeType
     }
     return crypto.timingSafeEqual(storedCode, inputCode) && this[ipHashField] === hashedIp && this[expiresField] > Date.now();
   } catch (err) {
-    console.log(err);
+    if (err.code) {
+      console.log(`Error in verifyCodeAndIp - ${err.code}`);
+    } else {
+      console.log(`Error in verifyCodeAndIp`);
+    }
     return false;
   }
 };

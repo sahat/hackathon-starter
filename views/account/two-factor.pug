@@ -39,6 +39,6 @@ block content
         p.text-muted Use a different method:
         .d-flex.gap-2
           if methods.includes('totp') && method !== 'totp'
-            a.p(href='/login/2fa/totp') Authenticator App
+            a(href='/login/2fa/totp') Authenticator App
           if methods.includes('email') && method !== 'email'
-            a.p(href='/login/2fa') Email Code
+            a(href='/login/2fa') Email Code

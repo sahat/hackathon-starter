@@ -59,7 +59,7 @@ const loginLimiter = rateLimit({
 // Login 2FA Rate Limiter Config - allow more requests for 2FA pages per login to avoid UX issues.
 // This is after a valid username/password submission, so the attack surface is smaller
 // and we want to avoid locking out legitimate users who mistype their 2FA code.
-const login2FALimmiter = rateLimit({
+const login2FALimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: RATE_LIMIT_LOGIN * 5,
   standardHeaders: true,
@@ -214,11 +214,11 @@ app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', loginLimiter, userController.postLogin);
 app.get('/login/verify/:token', loginLimiter, userController.getLoginByEmail);
-app.get('/login/2fa', login2FALimmiter, userController.getTwoFactor);
-app.post('/login/2fa', login2FALimmiter, userController.postTwoFactor);
+app.get('/login/2fa', login2FALimiter, userController.getTwoFactor);
+app.post('/login/2fa', login2FALimiter, userController.postTwoFactor);
 app.post('/login/2fa/resend', strictLimiter, userController.resendTwoFactorCode);
-app.get('/login/2fa/totp', login2FALimmiter, userController.getTotpVerify);
-app.post('/login/2fa/totp', login2FALimmiter, userController.postTotpVerify);
+app.get('/login/2fa/totp', login2FALimiter, userController.getTotpVerify);
+app.post('/login/2fa/totp', login2FALimiter, userController.postTotpVerify);
 app.post('/login/webauthn-start', loginLimiter, webauthnController.postLoginStart);
 app.get('/login/webauthn-start', (req, res) => res.redirect('/login')); // webauthn-start requires a POST
 app.post('/login/webauthn-verify', loginLimiter, webauthnController.postLoginVerify);
