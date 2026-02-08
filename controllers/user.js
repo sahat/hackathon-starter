@@ -791,9 +791,11 @@ async function sendTwoFactorEmail(email, code, req, successMsg = 'A verification
 
 /**
  * POST /login/2fa/resend
- * Resend the 2FA code email. If the current code is still valid, resends the
- * same code with a refreshed expiration so all emails remain valid.
- * If the code expired, generates a fresh one.
+ * Resend the 2FA code email.
+ * If the current code is still within its expiry window and was issued to the
+ * same client IP, reuses the same code and refreshes its expiration.
+ * Otherwise generates a fresh code bound to the current IP.
+ * Note: previously sent emails become invalid if the client IP changes.
  */
 exports.resendTwoFactorCode = async (req, res, next) => {
   if (!req.session.twoFactorPendingUserId) {
@@ -810,12 +812,13 @@ exports.resendTwoFactorCode = async (req, res, next) => {
       req.flash('errors', { msg: 'Email-based two-factor authentication is not enabled for this account.' });
       return res.redirect('/login/2fa/totp');
     }
-    const hasValidCode = user.twoFactorCode && user.twoFactorExpires && user.twoFactorExpires > Date.now();
+    const currentIpHash = User.hashIP(req.ip);
+    const hasValidCode = user.twoFactorCode && user.twoFactorExpires && user.twoFactorExpires > Date.now() && user.twoFactorIpHash === currentIpHash;
     const code = hasValidCode ? user.twoFactorCode : User.generateCode();
     const successMsg = hasValidCode ? 'The verification code has been resent to your email.' : 'A new verification code has been sent to your email.';
     user.twoFactorCode = code;
     user.twoFactorExpires = Date.now() + 600000; // fresh 10 min
-    user.twoFactorIpHash = User.hashIP(req.ip);
+    user.twoFactorIpHash = currentIpHash;
     await user.save();
     await sendTwoFactorEmail(user.email, code, req, successMsg);
     res.redirect('/login/2fa');
