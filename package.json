@@ -50,7 +50,7 @@
     "@simplewebauthn/server": "^13.2.2",
     "bootstrap": "^5.3.8",
     "bootstrap-social": "github:SeattleDevs/bootstrap-social",
-    "bowser": "^2.13.1",
+    "bowser": "^2.14.1",
     "chart.js": "^4.5.1",
     "cheerio": "^1.2.0",
     "compression": "^1.8.1",
