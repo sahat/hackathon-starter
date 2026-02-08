@@ -427,9 +427,6 @@ exports.getOauthUnlink = async (req, res, next) => {
     const tokenToRevoke = user.tokens.find((token) => token.kind === provider.toLowerCase());
     const tokensWithoutProviderToUnlink = user.tokens.filter((token) => token.kind !== provider.toLowerCase());
 
-    // Best-effort: revoke the OAuth token at the provider's endpoint before unlinking
-    await revokeProviderTokens(provider.toLowerCase(), tokenToRevoke);
-
     // Remove provider's picture entry
     if (user.profile.pictures && user.profile.pictures.has(provider.toLowerCase())) {
       user.profile.pictures.delete(provider.toLowerCase());
@@ -464,6 +461,9 @@ exports.getOauthUnlink = async (req, res, next) => {
       });
       return res.redirect('/account');
     }
+
+    // Best-effort: revoke the OAuth token at the provider's endpoint before unlinking
+    await revokeProviderTokens(provider.toLowerCase(), tokenToRevoke);
     user.tokens = tokensWithoutProviderToUnlink;
     await user.save();
     req.flash('info', {

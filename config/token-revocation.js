@@ -26,8 +26,32 @@ function generateOAuth1Header(method, url, consumerKey, consumerSecret, token, t
     .join(', ')}`;
 }
 
+const REQUIRED_FIELDS = {
+  basic: ['clientId', 'clientSecret'],
+  body: ['clientId', 'clientSecret'],
+  json_body: ['clientId', 'clientSecret'],
+  trakt: ['clientId', 'clientSecret'],
+  client_id_only: ['clientId'],
+  github: ['clientId', 'clientSecret'],
+  oauth1: ['consumerKey', 'consumerSecret'],
+  token_only: [],
+  facebook: [],
+};
+
+const REVOKE_TIMEOUT_MS = 8000;
+
 async function revokeToken(revokeURL, token, tokenTypeHint, config, tokenSecret) {
   try {
+    const required = REQUIRED_FIELDS[config.authMethod];
+    if (required) {
+      const missing = required.filter((f) => !config[f]);
+      if (missing.length > 0) {
+        console.warn(`Token revocation: skipping ${config.authMethod} — missing config: ${missing.join(', ')}`);
+        return false;
+      }
+    }
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REVOKE_TIMEOUT_MS);
     const headers = {};
     let body;
     let method = 'POST';
@@ -90,7 +114,8 @@ async function revokeToken(revokeURL, token, tokenTypeHint, config, tokenSecret)
         console.warn(`Token revocation: unknown authMethod '${config.authMethod}'`);
         return false;
     }
-    const response = await fetch(finalURL, { method, headers, body });
+    const response = await fetch(finalURL, { method, headers, body, signal: controller.signal });
+    clearTimeout(timeout);
     if (response.ok) return true;
     console.warn(`Token revocation: ${revokeURL} responded with HTTP ${response.status}`);
     return false;

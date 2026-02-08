@@ -187,6 +187,19 @@ describe('Token Revocation', () => {
       await revokeProviderTokens('test_token_only', { accessToken: 'tok' });
       expect(fetchStub.calledOnce).to.be.true;
     });
+
+    it('should skip revocation when required config fields are missing', async () => {
+      providerRevocationConfig.test_misconfigured = { revokeURL: 'https://test.example.com/revoke', authMethod: 'basic' };
+      await revokeProviderTokens('test_misconfigured', { accessToken: 'tok' });
+      expect(fetchStub.called).to.be.false;
+      delete providerRevocationConfig.test_misconfigured;
+    });
+
+    it('should pass an AbortController signal to fetch', async () => {
+      await revokeProviderTokens('test_token_only', { accessToken: 'tok' });
+      const [, options] = fetchStub.firstCall.args;
+      expect(options.signal).to.be.an.instanceOf(AbortSignal);
+    });
   });
 
   describe('revokeAllProviderTokens', () => {
