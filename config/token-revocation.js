@@ -41,6 +41,7 @@ const REQUIRED_FIELDS = {
 const REVOKE_TIMEOUT_MS = 8000;
 
 async function revokeToken(revokeURL, token, tokenTypeHint, config, tokenSecret) {
+  let timeout;
   try {
     const required = REQUIRED_FIELDS[config.authMethod];
     if (required) {
@@ -51,7 +52,7 @@ async function revokeToken(revokeURL, token, tokenTypeHint, config, tokenSecret)
       }
     }
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), REVOKE_TIMEOUT_MS);
+    timeout = setTimeout(() => controller.abort(), REVOKE_TIMEOUT_MS);
     const headers = {};
     let body;
     let method = 'POST';
@@ -115,13 +116,14 @@ async function revokeToken(revokeURL, token, tokenTypeHint, config, tokenSecret)
         return false;
     }
     const response = await fetch(finalURL, { method, headers, body, signal: controller.signal });
-    clearTimeout(timeout);
     if (response.ok) return true;
     console.warn(`Token revocation: ${revokeURL} responded with HTTP ${response.status}`);
     return false;
   } catch (err) {
     console.warn(`Token revocation: request to ${revokeURL} failed — ${err.message}`);
     return false;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
