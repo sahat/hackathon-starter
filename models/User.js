@@ -81,7 +81,6 @@ userSchema.index({ 'webauthnCredentials.credentialId': 1 }, { unique: true, spar
 userSchema.index({ passwordResetToken: 1 });
 userSchema.index({ emailVerificationToken: 1 });
 userSchema.index({ loginToken: 1 });
-userSchema.index({ twoFactorCode: 1 });
 
 // Virtual properties for checking token expiration
 userSchema.virtual('isPasswordResetExpired').get(function checkPasswordResetExpiration() {
@@ -256,12 +255,7 @@ userSchema.methods.verifyCodeAndIp = function verifyCodeAndIp(code, ip, codeType
       return false;
     }
     return crypto.timingSafeEqual(storedCode, inputCode) && this[ipHashField] === hashedIp && this[expiresField] > Date.now();
-  } catch (err) {
-    if (err.code) {
-      console.log(`Error in verifyCodeAndIp - ${err.code}`);
-    } else {
-      console.log(`Error in verifyCodeAndIp`);
-    }
+  } catch {
     return false;
   }
 };

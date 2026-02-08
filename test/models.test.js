@@ -1169,13 +1169,5 @@ describe('User Model', () => {
         expect(reloaded.verifyCodeAndIp(code, ip, 'twoFactor')).to.be.false;
       });
     });
-
-    describe('2FA Index', () => {
-      it('should have index on twoFactorCode field', async () => {
-        const indexes = await User.collection.getIndexes();
-        const hasIndex = Object.keys(indexes).some((key) => key.includes('twoFactorCode'));
-        expect(hasIndex).to.be.true;
-      });
-    });
   });
 });
