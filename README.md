@@ -79,6 +79,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Verify Email
   - **Two-Factor Authentication (2FA)** Email codes and Authenticator apps
   - Link multiple OAuth provider accounts to one account
+  - OAuth token revocation
   - Delete Account
 - Contact Form (powered by SMTP via Mailgun, AWS SES, etc.)
 - File upload
@@ -555,6 +556,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **config**/morgan.js             | Configuration for request logging with morgan.                       |
 | **config**/nodemailer.js         | Configuration and helper function for sending email with nodemailer. |
 | **config**/passport.js           | Passport Local and OAuth strategies, plus login middleware.          |
+| **config**/token-revocation.js   | Helper for revoking OAuth tokens.                                    |
 | **controllers**/ai.js            | Controller for /ai route and all ai examples and boilerplates.       |
 | **controllers**/api.js           | Controller for /api route and all api examples.                      |
 | **controllers**/contact.js       | Controller for contact form.                                         |

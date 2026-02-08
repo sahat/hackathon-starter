@@ -842,6 +842,77 @@ passport.use('discord', discordStrategyConfig);
 refresh.use('discord', discordStrategyConfig);
 
 /**
+ * Token Revocation Config
+ *
+ * Providers with a revocation endpoint. Used by config/token-revocation.js
+ * to revoke tokens on unlink or account deletion.
+ *
+ * authMethod values:
+ *   'body'           – client_id + client_secret + token in form-encoded body
+ *   'basic'          – HTTP Basic auth (client_id:client_secret) + token in form body
+ *   'token_only'     – only the token in form-encoded body
+ *   'client_id_only' – client_id + token in body (no client_secret)
+ *   'json_body'      – JSON body with token, client_id, client_secret
+ *   'trakt'          – JSON body + trakt-api-key / trakt-api-version headers
+ *   'facebook'       – HTTP DELETE with access_token as query param
+ *   'github'         – HTTP DELETE with Basic auth + JSON body
+ *   'oauth1'         – OAuth 1.0a signed POST (needs consumerKey/consumerSecret)
+ */
+const providerRevocationConfig = {
+  google: {
+    revokeURL: 'https://oauth2.googleapis.com/revoke',
+    authMethod: 'token_only',
+  },
+  facebook: {
+    revokeURL: 'https://graph.facebook.com/me/permissions',
+    authMethod: 'facebook',
+  },
+  github: {
+    revokeURL: `https://api.github.com/applications/${process.env.GITHUB_ID}/token`,
+    clientId: process.env.GITHUB_ID,
+    clientSecret: process.env.GITHUB_SECRET,
+    authMethod: 'github',
+  },
+  x: {
+    revokeURL: 'https://api.x.com/1.1/oauth/invalidate_token',
+    consumerKey: process.env.X_KEY,
+    consumerSecret: process.env.X_SECRET,
+    authMethod: 'oauth1',
+  },
+  linkedin: {
+    revokeURL: 'https://www.linkedin.com/oauth/v2/revoke',
+    clientId: process.env.LINKEDIN_ID,
+    clientSecret: process.env.LINKEDIN_SECRET,
+    authMethod: 'body',
+  },
+  discord: {
+    revokeURL: 'https://discord.com/api/oauth2/token/revoke',
+    clientId: process.env.DISCORD_CLIENT_ID,
+    clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    authMethod: 'body',
+  },
+  twitch: {
+    revokeURL: 'https://id.twitch.tv/oauth2/revoke',
+    clientId: process.env.TWITCH_CLIENT_ID,
+    authMethod: 'client_id_only',
+  },
+  trakt: {
+    revokeURL: 'https://api.trakt.tv/oauth/revoke',
+    clientId: process.env.TRAKT_ID,
+    clientSecret: process.env.TRAKT_SECRET,
+    authMethod: 'trakt',
+  },
+  quickbooks: {
+    revokeURL: 'https://developer.api.intuit.com/v2/oauth2/tokens/revoke',
+    clientId: process.env.QUICKBOOKS_CLIENT_ID,
+    clientSecret: process.env.QUICKBOOKS_CLIENT_SECRET,
+    authMethod: 'basic',
+  },
+};
+
+exports.providerRevocationConfig = providerRevocationConfig;
+
+/**
  * Login Required middleware.
  */
 exports.isAuthenticated = (req, res, next) => {
