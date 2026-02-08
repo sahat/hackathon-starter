@@ -133,16 +133,21 @@ block content
                   input(type='hidden', name='_csrf', value=_csrf)
                   button.btn.btn-sm.btn-outline-danger(type='submit') Remove
         .mb-2
-          if !user.twoFactorMethods || !user.twoFactorMethods.includes('totp')
-            a.btn.btn-outline-dark(href='/account/2fa/totp/setup')
-              i.fas.fa-mobile-alt.fa-sm.me-2
-              | Add Authenticator App
-          if !user.twoFactorMethods || !user.twoFactorMethods.includes('email')
-            form.ms-2(action='/account/2fa/email/enable', method='POST', style='display: inline')
-              input(type='hidden', name='_csrf', value=_csrf)
-              button.btn.btn-outline-dark(type='submit')
-                i.fas.fa-envelope.fa-sm.me-2
-                | Add 2FA by Email
+          if !user.emailVerified
+            p.text-muted
+              i.fas.fa-exclamation-triangle.me-1
+              | Verify your email address to add additional 2FA method(s).
+          else
+            if !user.twoFactorMethods || !user.twoFactorMethods.includes('totp')
+              a.btn.btn-outline-dark(href='/account/2fa/totp/setup')
+                i.fas.fa-mobile-alt.fa-sm.me-2
+                | Add Authenticator App
+            if !user.twoFactorMethods || !user.twoFactorMethods.includes('email')
+              form.ms-2(action='/account/2fa/email/enable', method='POST', style='display: inline')
+                input(type='hidden', name='_csrf', value=_csrf)
+                button.btn.btn-outline-dark(type='submit')
+                  i.fas.fa-envelope.fa-sm.me-2
+                  | Add 2FA by Email
       else
         if !user.password
           p.mb-2.text-muted You must set a password before enabling 2FA.

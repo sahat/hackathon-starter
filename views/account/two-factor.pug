@@ -14,12 +14,12 @@ block content
       form(method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group.mb-3
-          if method == 'email'
+          if method === 'email'
             i.far.fa-envelope.fa-sm.me-2
             label.form-label(for='code') Email Code
-          if method == 'totp'
-            i.fas.fa-qrcode.fa-sm.me-2
-            label.form-label(for='code') Authenticator Code
+          if method === 'totp'
+            i.fas.fa-mobile-alt.fa-sm.me-2
+            label.form-label(for='code') Authenticator App Code
           input#code.form-control(type='text', name='code', placeholder='000000', pattern='[0-9]{6}', inputmode='numeric', maxlength='6', autofocus, required)
         .form-group
           button.btn.btn-primary(type='submit')

@@ -322,6 +322,12 @@ exports.postUpdateProfile = async (req, res, next) => {
   }
   try {
     const user = await User.findById(req.user.id);
+    // Prevent email changes when email is the user's only 2FA method.
+    // Changing to a mistyped address would lock the user out of their account.
+    if (user.email !== req.body.email && user.twoFactorEnabled && user.twoFactorMethods.includes('email') && !user.twoFactorMethods.includes('totp')) {
+      req.flash('errors', { msg: 'You cannot change your email while email is your only two-factor authentication (2FA) method. Please add an authenticator app first, or remove email 2FA before changing your email address.' });
+      return res.redirect('/account');
+    }
     if (user.email !== req.body.email) user.emailVerified = false;
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
