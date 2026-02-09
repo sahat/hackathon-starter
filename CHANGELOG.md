@@ -2,6 +2,98 @@
 
 ---
 
+### 10.0.0 (February 08, 2026)
+
+New AI and Integration Features
+
+- AI: AI Agent (ReAct: Reasoning+Acting) boilerplate with LangChain as a starting point for AI Agent development with support for:
+  - Tool execution with automatic retry middleware for transient failures
+  - MongoDB session persistence for chat history for authenticated users
+  - Input guardrails for safety against prompt injection/jailbreak (Llama Guard 4)
+  - Conversation summarization for long conversations to stay within context limits
+  - Real-time streaming for live response chat experience using Server-Sent Events (SSE)
+  - Streaming of the Agent's internal chatter, tool calls, etc., for debugging
+- AI: RAG boilerplate (LangChain, Huggingface, Groq (Llama 3.3), MongoDB Vector Search, Keyv caching)
+- AI: Serverless LLM integration - text classification (Llama 3.3 hosted on Groq)
+- AI: Vision - device camera and LLM vision model usage (Llama 4 Scout hosted on Groq)
+- AI: OpenAI Moderation model usage example
+
+- API Integration: trakt.tv
+- API Integration: Wikipedia (@nikeshadhikari9)
+- API Integration: Pubchem chemical info data source (@hemanthsavasere)
+- API Integration: ~~Tenor~~ GIPHY (@DanielLuu122 @YasharF)
+
+New Core Features
+
+- 2FA via email and code generator apps (TOTP)
+- Login with passkeys (biometrics, Face ID, etc.)
+- Passwordless authentication (login via email link)
+- OAuth token revocation (RFC 7009-style and provider-specific variants) when users unlink an OAuth provider or delete their account
+- Login with Discord
+- Login with Microsoft (@dev-shahed)
+- Multiple profile picture support
+
+Enhancements
+
+- Enhanced Express.js logging with custom Morgan configuration
+- Reduced startup friction for new projects by making reCAPTCHA credentials optional
+- Consolidated the AI integrations to be separate from API integrations
+- Refactored Passport.js strategies to use a common auth-login handler for easier swapping of OAuth providers, maintenance, and core testing
+- Updated the included sample Terms of Service and Privacy Policy for formatting and compliance with Google and Facebook requirements
+- Various visual and UX improvements
+- Improved pre-commit hook scripts for running `eslint --fix` and `Prettier --write` on files being committed
+- Consolidated temporary artifacts in tmp/
+
+Bug Fixes
+
+- Fix Facebook OAuth: missing email scope, and infinite loop in certain cases
+- Fix upload folder being created in controllers/ instead of the app root
+- Fix error handling issues in Google Sheets and Google Drive integration
+- Fix various npm script-related issues for Windows development environments
+- Fix error from not having husky installed in production environments when using `npm ci --omit dev`
+
+Chores & Maintenance
+
+- Replaced unmaintained express-flash npm package with our own middleware (@Prasanth-S7)
+- Replaced moment.js in favor of the native Node.js date API
+- Updated minimum engine to Node.js 24.13 which is the latest fully security-patched LTS version.
+- Updated dependencies
+- Improved dependabot and GitHub Action scripts to automate keeping dependencies up-to-date.
+- Updated Google Maps API integration
+- Updated Google branding per their requirements
+- Updated NYT API integration to use v3 endpoint
+- Updated QuickBooks API integration per required changes
+- Migrated Foursquare API integration to use the new Places API endpoints (@mheavey2)
+- Migrated reCAPTCHA to GCP
+- Removed Pinterest OAuth and API Integration
+- Removed SendGrid references as they no longer offer a reasonable free tier for hackathon participants (@nylla8444)
+- Removed lodash dependency, as much of the functionality can be fulfilled with current versions of JS with minimal code.
+- Removed Airbnb eslint (fork) usage in favor of direct rules within eslint 9 configs
+- Removed docker support documentation as it won't be officially supported any more (Docker workflows don't align with the hackathon development model and deployment environments vary too widely for a single Docker configuration to be useful or maintainable.)
+- Added Pull Request template with a checklist to remind devs on various pre-checks for shippable code
+- Updated various documentation (@YasharF @nylla8444 @FrontendBy-GJ)
+
+Tests
+
+- Add API call recording and replay capability and fixtures to enable end-to-end testing without API keys
+- Add Playwright harness for UI-driven testing and end-to-end (E2E) test examples
+  - Base harness and E2E for automated UI testing (@akilesh1706 @YasharF)
+  - E2E tests for GitHub integration (@akilesh1706)
+  - E2E tests for last.fm integration (@hsavasere)
+  - E2E tests for the web scraping (@Mrinank-Bhowmick)
+  - E2E tests for OpenAI Moderation (@Mrinank-Bhowmick)
+  - E2E tests for Pubchem integration (@hemanthsavasere)
+  - E2E tests for Lob integration (@hemanthsavasere)
+  - E2E tests for trakt.tv integration (@hemanthsavasere)
+  - E2E tests for NY Times integration (@Vedant794)
+  - E2E tests for Wikipedia integration (@nikeshadhikari9)
+  - E2E tests for Google Maps integration (@AndersonTsaiTW)
+  - E2E tests for the file upload (@hemanthsavasere)
+  - E2E tests for Twilio integration (@henockt)
+  - E2E tests for HERE Maps integration (@AndersonTsaiTW)
+  - E2E tests for Foursquare integration (@Sid0004)
+  - E2E tests for ChartJS and Alpha Vantage integration (@AndersonTsaiTW)
+
 ### 9.0.0 (April 12, 2025)
 
 New Features
