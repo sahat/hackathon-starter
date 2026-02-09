@@ -1,7 +1,7 @@
 import chaiFriendly from 'eslint-plugin-chai-friendly';
 import globals from 'globals';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
-import { importX } from 'eslint-plugin-import-x';
+// import { importX } from 'eslint-plugin-import-x';
 
 export default [
   eslintConfigPrettier, // Disable Prettier-handled style rules - prettier owns styling
@@ -10,7 +10,7 @@ export default [
 
     plugins: {
       'chai-friendly': chaiFriendly,
-      import: importX,
+      // import: importX,
     },
 
     languageOptions: {
@@ -25,13 +25,16 @@ export default [
     rules: {
       // Plugin-specific rules
       'chai-friendly/no-unused-expressions': 'error',
-      'import/no-unresolved': ['error', { commonjs: true, caseSensitive: true }],
-      'import/extensions': ['error', 'ignorePackages', { js: 'never', mjs: 'never', jsx: 'never' }],
-      'import/order': ['error', { groups: [['builtin', 'external', 'internal']], distinctGroup: true }],
-      'import/no-duplicates': 'error',
-      'import/prefer-default-export': 'error',
-      'import/no-named-as-default': 'error',
-      'import/no-named-as-default-member': 'error',
+
+      // Import rules removed with temporary removal of eslint-plugin-import / eslint-plugin-import-x due to
+      //  ESLint 10 compatibility issues, and to be added once eslint-plugin-import/-x is updated to support ESLint 10
+      // 'import/no-unresolved': ['error', { commonjs: true, caseSensitive: true }],
+      // 'import/extensions': ['error', 'ignorePackages', { js: 'never', mjs: 'never', jsx: 'never' }],
+      // 'import/order': ['error', { groups: [['builtin', 'external', 'internal']], distinctGroup: true }],
+      // 'import/no-duplicates': 'error',
+      // 'import/prefer-default-export': 'error',
+      //'import/no-named-as-default': 'error',
+      // 'import/no-named-as-default-member': 'error',
 
       // Quality rules (Airbnb-style, non-style)
       'class-methods-use-this': 'error',
