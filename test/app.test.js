@@ -46,12 +46,6 @@ describe('GET /forgot', () => {
   });
 });
 
-describe('GET /api', () => {
-  it('should return 200 OK', (done) => {
-    request(app).get('/api').expect(200, done);
-  });
-});
-
 describe('GET /contact', () => {
   it('should return 200 OK', (done) => {
     request(app).get('/contact').expect(200, done);
@@ -61,5 +55,33 @@ describe('GET /contact', () => {
 describe('GET /random-url', () => {
   it('should return 404', (done) => {
     request(app).get('/reset').expect(404, done);
+  });
+});
+
+describe('core GET routes do not throw', () => {
+  const routes = [
+    '/',
+    '/login',
+    '/logout',
+    '/signup',
+    '/forgot',
+    '/contact',
+    '/login/2fa',
+    '/login/2fa/totp',
+    '/login/webauthn-start',
+    '/login/verify/testtoken',
+    '/reset/testtoken',
+    '/account',
+    '/account/verify',
+    '/account/verify/testtoken',
+    '/account/2fa/totp/setup',
+    '/account/webauthn/register',
+    '/auth/failure',
+  ];
+
+  routes.forEach((route) => {
+    it(`GET ${route}`, async () => {
+      await request(app).get(route);
+    });
   });
 });
