@@ -58,26 +58,8 @@ describe('GET /random-url', () => {
   });
 });
 
-describe('core GET routes do not throw', () => {
-  const routes = [
-    '/',
-    '/login',
-    '/logout',
-    '/signup',
-    '/forgot',
-    '/contact',
-    '/login/2fa',
-    '/login/2fa/totp',
-    '/login/webauthn-start',
-    '/login/verify/testtoken',
-    '/reset/testtoken',
-    '/account',
-    '/account/verify',
-    '/account/verify/testtoken',
-    '/account/2fa/totp/setup',
-    '/account/webauthn/register',
-    '/auth/failure',
-  ];
+describe('Other core GET routes do not cause errors', () => {
+  const routes = ['/logout', '/login/2fa', '/login/2fa/totp', '/login/webauthn-start', '/login/verify/testtoken', '/reset/testtoken', '/account', '/account/verify', '/account/verify/testtoken', '/account/2fa/totp/setup', '/account/webauthn/register', '/auth/failure'];
 
   routes.forEach((route) => {
     it(`GET ${route}`, async () => {
