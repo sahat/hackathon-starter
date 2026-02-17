@@ -320,7 +320,7 @@ app.get('/auth/failure', (req, res) => {
   const redirectTarget = baseReturnTo || returnTo;
 
   if (!redirectTarget || !isSafeRedirect(redirectTarget) || redirectTarget === req.originalUrl || redirectTarget.startsWith('/auth/')) {
-    res.redirect('/');
+    return res.redirect('/');
   }
   res.redirect(redirectTarget);
 });
