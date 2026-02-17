@@ -63,7 +63,13 @@ describe('Other core GET routes do not cause errors', () => {
 
   routes.forEach((route) => {
     it(`GET ${route}`, async () => {
-      await request(app).get(route);
+      await request(app)
+        .get(route)
+        .expect((res) => {
+          if (res.status >= 500) {
+            throw new Error(`Expected non-5xx status for ${route} but got ${res.status}`);
+          }
+        });
     });
   });
 });
