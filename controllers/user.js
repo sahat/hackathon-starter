@@ -94,7 +94,7 @@ Thank you!\n`,
 
   // Regular password login
   if (validator.isEmpty(req.body.password)) {
-    req.flash('errors', 'Password cannot be blank.');
+    req.flash('errors', { msg: 'Password cannot be blank.' });
     return res.redirect('/login');
   }
   passport.authenticate('local', (err, user, info) => {
