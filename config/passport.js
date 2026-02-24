@@ -750,6 +750,7 @@ const traktStrategyConfig = new OAuth2Strategy(
           'trakt-api-version': 2,
           'trakt-api-key': process.env.TRAKT_ID,
           'Content-Type': 'application/json',
+          'User-Agent': 'Hackathon-Starter',
         },
       });
       if (!response.ok) {

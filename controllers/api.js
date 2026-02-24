@@ -1287,7 +1287,12 @@ async function fetchAndCacheTraktImage(imageUrl) {
 
   // Download and save
   try {
-    const response = await fetch(imageUrl);
+    const response = await fetch(imageUrl, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Hackathon-Starter',
+      },
+    });
     if (!response.ok) return null;
     const buffer = Buffer.from(await response.arrayBuffer());
     const absPath = path.join(imageCacheDir, filename);
@@ -1321,6 +1326,7 @@ async function fetchTraktUserProfile(traktToken) {
       'trakt-api-version': 2,
       'trakt-api-key': process.env.TRAKT_ID,
       'Content-Type': 'application/json',
+      'User-Agent': 'Hackathon-Starter',
     },
   });
   if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -1334,6 +1340,7 @@ async function fetchTraktUserHistory(traktToken, limit) {
       'trakt-api-version': 2,
       'trakt-api-key': process.env.TRAKT_ID,
       'Content-Type': 'application/json',
+      'User-Agent': 'Hackathon-Starter',
     },
   });
   if (!res.ok) return [];
@@ -1346,6 +1353,7 @@ async function fetchTraktTrendingMovies(limit) {
       'trakt-api-version': 2,
       'trakt-api-key': process.env.TRAKT_ID,
       'Content-Type': 'application/json',
+      'User-Agent': 'Hackathon-Starter',
     },
   });
   if (!res.ok) return [];
@@ -1372,6 +1380,7 @@ async function fetchMovieDetails(slug, watchers) {
       'trakt-api-version': 2,
       'trakt-api-key': process.env.TRAKT_ID,
       'Content-Type': 'application/json',
+      'User-Agent': 'Hackathon-Starter',
     },
   });
   if (!res.ok) return null;
