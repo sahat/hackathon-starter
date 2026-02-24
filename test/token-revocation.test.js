@@ -1,7 +1,7 @@
 const path = require('node:path');
 const { expect } = require('chai');
 const sinon = require('sinon');
-require('dotenv').config({ path: path.join(__dirname, '.env.test') });
+process.loadEnvFile(path.join(__dirname, '.env.test'));
 const { providerRevocationConfig } = require('../config/passport');
 const { revokeProviderTokens, revokeAllProviderTokens } = require('../config/token-revocation');
 

@@ -7,7 +7,6 @@ const compression = require('compression');
 const session = require('express-session');
 const errorHandler = require('errorhandler');
 const lusca = require('lusca');
-const dotenv = require('dotenv');
 const { MongoStore } = require('connect-mongo');
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -17,7 +16,11 @@ const { flash } = require('./config/flash');
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.config({ path: '.env.example', quiet: true });
+try {
+  process.loadEnvFile('.env.example');
+} catch {
+  console.log('No .env.example file found. This is OK if the required environment variables are already set in your environment.');
+}
 
 /**
  * Set config values

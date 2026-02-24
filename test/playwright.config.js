@@ -1,13 +1,14 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { defineConfig, devices } = require('@playwright/test');
-const dotenv = require('dotenv');
-// Preserve any MONGODB_URI that was set before loading dotenv, since it is set to the memory server starter
+// Preserve any MONGODB_URI that was set before loading env file, since it is set to the memory server starter
 const originalMongoUri = process.env.MONGODB_URI;
-const result = dotenv.config({ path: path.resolve(__dirname, '.env.test'), quiet: true });
+process.loadEnvFile(path.resolve(__dirname, '.env.test'));
 // If MONGODB_URI was not set by the outer environment (originalMongoUri undefined)
-// but exists in the parsed dotenv, remove it so the memory-server starter can create a DB.
-if (!originalMongoUri && result && result.parsed && result.parsed.MONGODB_URI) {
+// but was loaded from the env file, remove it so the memory-server starter can create a DB.
+if (originalMongoUri) {
+  process.env.MONGODB_URI = originalMongoUri;
+} else if (process.env.MONGODB_URI) {
   delete process.env.MONGODB_URI;
 }
 

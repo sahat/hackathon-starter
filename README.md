@@ -621,7 +621,6 @@ Required to run the project before your modifications
 | cheerio                       | Scrape web pages using jQuery-style syntax.                           |
 | compression                   | Node.js compression middleware.                                       |
 | connect-mongo                 | MongoDB session store for Express.                                    |
-| dotenv                        | Loads environment variables from .env file.                           |
 | errorhandler                  | Development-only error handler middleware.                            |
 | express                       | Node.js web framework.                                                |
 | express-rate-limit            | Rate limiting middleware for abuse protection.                        |
