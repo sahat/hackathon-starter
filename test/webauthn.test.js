@@ -5,7 +5,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { generateRegistrationOptions, generateAuthenticationOptions } = require('@simplewebauthn/server');
 
-require('dotenv').config({ path: path.join(__dirname, '.env.test') });
+process.loadEnvFile(path.join(__dirname, '.env.test'));
 
 describe('WebAuthn Controller', () => {
   let generateRegistrationOptionsStub;

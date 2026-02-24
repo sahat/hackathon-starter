@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const refresh = require('passport-oauth2-refresh');
 const mongoose = require('mongoose');
 const validator = require('validator');
-require('dotenv').config({ path: path.join(__dirname, '.env.test') });
+process.loadEnvFile(path.join(__dirname, '.env.test'));
 const passportModule = require('../config/passport');
 const { isAuthorized, _saveOAuth2UserTokens, _handleAuthLogin } = passportModule;
 const User = require('../models/User');
