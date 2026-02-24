@@ -18,8 +18,12 @@ const { flash } = require('./config/flash');
  */
 try {
   process.loadEnvFile('.env.example');
-} catch {
-  console.log('No .env.example file found. This is OK if the required environment variables are already set in your environment.');
+} catch (err) {
+  if (err && err.code === 'ENOENT') {
+    console.log('No .env.example file found. This is OK if the required environment variables are already set in your environment.');
+  } else {
+    console.error('Error loading .env.example file:', err);
+  }
 }
 
 /**

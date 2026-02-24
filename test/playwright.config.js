@@ -6,9 +6,9 @@ const originalMongoUri = process.env.MONGODB_URI;
 process.loadEnvFile(path.resolve(__dirname, '.env.test'));
 // If MONGODB_URI was not set by the outer environment (originalMongoUri undefined)
 // but was loaded from the env file, remove it so the memory-server starter can create a DB.
-if (originalMongoUri) {
+if (originalMongoUri !== undefined) {
   process.env.MONGODB_URI = originalMongoUri;
-} else if (process.env.MONGODB_URI) {
+} else if (process.env.MONGODB_URI !== undefined) {
   delete process.env.MONGODB_URI;
 }
 
