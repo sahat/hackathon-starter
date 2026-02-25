@@ -1,0 +1,64 @@
+diff --git a/node_modules/passport-oauth1/lib/strategy.js b/node_modules/passport-oauth1/lib/strategy.js
+index 337c7e8..f762513 100644
+--- a/node_modules/passport-oauth1/lib/strategy.js
++++ b/node_modules/passport-oauth1/lib/strategy.js
+@@ -1,6 +1,5 @@
+ // Load modules.
+ var passport = require('passport-strategy')
+-  , url = require('url')
+   , util = require('util')
+   , utils = require('./utils')
+   , OAuth = require('oauth').OAuth
+@@ -239,11 +238,10 @@ OAuthStrategy.prototype.authenticate = function(req, options) {
+     var params = this.requestTokenParams(options);
+     var callbackURL = options.callbackURL || this._callbackURL;
+     if (callbackURL) {
+-      var parsed = url.parse(callbackURL);
+-      if (!parsed.protocol) {
++      if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(callbackURL)) {
+         // The callback URL is relative, resolve a fully qualified URL from the
+         // URL of the originating request.
+-        callbackURL = url.resolve(utils.originalURL(req, { proxy: this._trustProxy }), callbackURL);
++        callbackURL = new URL(callbackURL, utils.originalURL(req, { proxy: this._trustProxy })).href;
+       }
+     }
+     params.oauth_callback = callbackURL;
+@@ -261,18 +259,32 @@ OAuthStrategy.prototype.authenticate = function(req, options) {
+       function stored(err) {
+         if (err) { return self.error(err); }
+ 
+-        var parsed = url.parse(self._userAuthorizationURL, true);
+-        parsed.query.oauth_token = token;
++        var parsed = new URL(self._userAuthorizationURL);
++        parsed.searchParams.set('oauth_token', token);
+         if (!params.oauth_callback_confirmed && callbackURL) {
+           // NOTE: If oauth_callback_confirmed=true is not present when issuing a
+           //       request token, the server does not support OAuth 1.0a.  In this
+           //       circumstance, `oauth_callback` is passed when redirecting the
+           //       user to the service provider.
+-          parsed.query.oauth_callback = callbackURL;
++          parsed.searchParams.set('oauth_callback', callbackURL);
+         }
+-        utils.merge(parsed.query, self.userAuthorizationParams(options));
+-        delete parsed.search;
+-        var location = url.format(parsed);
++        var authParams = self.userAuthorizationParams(options) || {};
++        for (var key in authParams) {
++          if (!Object.prototype.hasOwnProperty.call(authParams, key)) { continue; }
++          var value = authParams[key];
++          if (value === null || typeof value === 'undefined') { continue; }
++          if (Array.isArray(value)) {
++            parsed.searchParams.delete(key);
++            for (var i = 0; i < value.length; i++) {
++              if (value[i] === null || typeof value[i] === 'undefined') { continue; }
++              parsed.searchParams.append(key, String(value[i]));
++            }
++          } else {
++            parsed.searchParams.set(key, String(value));
++          }
++        }
++        parsed.search = parsed.search.replace(/\+/g, '%20');
++        var location = parsed.href;
+         self.redirect(location);
+       }
+ 
