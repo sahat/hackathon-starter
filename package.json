@@ -84,7 +84,7 @@
     "pdfjs-dist": "^5.4.624",
     "pug": "^3.0.3",
     "sass": "^1.97.3",
-    "stripe": "^20.3.1",
+    "stripe": "^20.4.0",
     "twilio": "^5.12.2",
     "twitch-passport": "^1.0.6",
     "validator": "^13.15.26"
