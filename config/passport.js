@@ -1,4 +1,3 @@
-const crypto = require('node:crypto');
 const passport = require('passport');
 const refresh = require('passport-oauth2-refresh');
 const { Strategy: LocalStrategy } = require('passport-local');
@@ -26,10 +25,6 @@ passport.deserializeUser(async (id, done) => {
     return done(error);
   }
 });
-
-function generateState() {
-  return crypto.randomBytes(16).toString('hex');
-}
 
 /**
  * Sign in using Email and Password.
@@ -267,7 +262,7 @@ passport.use(
       callbackURL: `${process.env.BASE_URL}/auth/facebook/callback`,
       profileFields: ['name', 'email', 'link', 'locale', 'timezone', 'gender'],
       scope: ['public_profile', 'email'],
-      state: generateState(),
+      state: true,
       passReqToCallback: true,
     },
     async (req, accessToken, refreshToken, params, profile, done) => {
@@ -308,7 +303,7 @@ passport.use(
       clientID: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
       callbackURL: `${process.env.BASE_URL}/auth/github/callback`,
-      state: generateState(),
+      state: true,
       passReqToCallback: true,
       scope: ['user:email'],
     },
@@ -357,7 +352,7 @@ passport.use(
       consumerKey: process.env.X_KEY,
       consumerSecret: process.env.X_SECRET,
       callbackURL: `${process.env.BASE_URL}/auth/x/callback`,
-      state: generateState(),
+      state: true,
       passReqToCallback: true,
     },
     async (req, accessToken, tokenSecret, profile, done) => {
@@ -401,7 +396,7 @@ const googleStrategyConfig = new GoogleStrategy(
     scope: ['profile', 'email', 'https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
     accessType: 'offline',
     prompt: 'consent',
-    state: generateState(),
+    state: true,
     passReqToCallback: true,
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
@@ -443,7 +438,7 @@ const linkedinStrategyConfig = new OAuth2Strategy(
     clientSecret: process.env.LINKEDIN_SECRET,
     callbackURL: `${process.env.BASE_URL}/auth/linkedin/callback`,
     scope: ['openid', 'profile', 'email'].join(' '),
-    state: generateState(),
+    state: true,
     passReqToCallback: true,
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
@@ -498,7 +493,7 @@ const microsoftStrategyConfig = new OAuth2Strategy(
     // Note: To get a refresh token, add 'offline_access' to the scope list.
     // Trade-off: Users will see a permission approval screen every time they login with 'offline_access' in scope.
     scope: ['openid', 'profile', 'email', 'User.Read'].join(' '),
-    state: generateState(),
+    state: true,
     passReqToCallback: true,
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
@@ -548,7 +543,7 @@ const twitchStrategyConfig = new TwitchStrategy(
     clientSecret: process.env.TWITCH_CLIENT_SECRET,
     callbackURL: `${process.env.BASE_URL}/auth/twitch/callback`,
     scope: ['user:read:email', 'channel:read:subscriptions', 'moderator:read:followers'],
-    state: generateState(),
+    state: true,
     passReqToCallback: true,
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
@@ -591,7 +586,7 @@ passport.use(
       consumerKey: process.env.TUMBLR_KEY,
       consumerSecret: process.env.TUMBLR_SECRET,
       callbackURL: '/auth/tumblr/callback',
-      state: generateState(),
+      state: true,
       passReqToCallback: true,
     },
     async (req, token, tokenSecret, profile, done) => {
@@ -658,7 +653,7 @@ passport.use(
       apiKey: process.env.STEAM_KEY,
       returnURL: `${process.env.BASE_URL}/auth/steam/callback`,
       profile: true,
-      state: generateState(),
+      state: true,
     },
     async (req, identifier, profile, done) => {
       const steamId = identifier.match(/\d+$/)[0];
@@ -712,7 +707,7 @@ const quickbooksStrategyConfig = new OAuth2Strategy(
     clientSecret: process.env.QUICKBOOKS_CLIENT_SECRET,
     callbackURL: `${process.env.BASE_URL}/auth/quickbooks/callback`,
     scope: ['com.intuit.quickbooks.accounting'],
-    state: generateState(),
+    state: true,
     passReqToCallback: true,
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
@@ -738,7 +733,7 @@ const traktStrategyConfig = new OAuth2Strategy(
     clientID: process.env.TRAKT_ID,
     clientSecret: process.env.TRAKT_SECRET,
     callbackURL: `${process.env.BASE_URL}/auth/trakt/callback`,
-    state: generateState(),
+    state: true,
     passReqToCallback: true,
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
@@ -798,7 +793,7 @@ const discordStrategyConfig = new OAuth2Strategy(
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
     callbackURL: `${process.env.BASE_URL}/auth/discord/callback`,
     scope: ['identify', 'email'].join(' '),
-    state: generateState(),
+    state: true,
     passReqToCallback: true,
   },
   async (req, accessToken, refreshToken, params, profile, done) => {
