@@ -857,7 +857,9 @@ refresh.use('discord', discordStrategyConfig);
 const providerRevocationConfig = {
   google: {
     revokeURL: 'https://oauth2.googleapis.com/revoke',
-    authMethod: 'token_only',
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    authMethod: 'basic',
   },
   facebook: {
     revokeURL: 'https://graph.facebook.com/me/permissions',
