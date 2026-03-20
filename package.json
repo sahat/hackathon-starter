@@ -37,7 +37,7 @@
     "@langchain/community": "^1.1.24",
     "@langchain/core": "^1.1.34",
     "@langchain/groq": "^1.1.5",
-    "@langchain/langgraph": "^1.2.3",
+    "@langchain/langgraph": "^1.2.4",
     "@langchain/langgraph-checkpoint-mongodb": "^1.2.0",
     "@langchain/mongodb": "^1.1.0",
     "@langchain/textsplitters": "^1.0.1",
