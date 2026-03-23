@@ -17,7 +17,8 @@ sessionSchema.statics = {
     // Validate it so it contains only hex chars; then it is safe to embed into a RegExp
     // without regex-metacharacter escaping.
     if (!validator.isMongoId(userId)) {
-      throw new Error('Invalid userId format.');
+      // Treat invalid session state as a no-op to avoid breaking logout flows.
+      return Promise.resolve({ acknowledged: true, deletedCount: 0 });
     }
 
     return this.deleteMany({
