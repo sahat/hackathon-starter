@@ -110,7 +110,6 @@ async function handleAuthLogin(req, accessToken, refreshToken, providerName, par
 
     user.profile.location = user.profile.location || providerProfile.location;
     user.profile.website = user.profile.website || providerProfile.website;
-    user.profile.email = user.profile.email || providerProfile.email;
     await user.save();
     return user;
   }
@@ -150,7 +149,6 @@ async function handleAuthLogin(req, accessToken, refreshToken, providerName, par
 
   user.profile.location = providerProfile.location;
   user.profile.website = providerProfile.website;
-  user.profile.email = providerProfile.email;
   await user.save();
   return user;
 }
