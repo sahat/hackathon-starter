@@ -9,7 +9,7 @@ block content
       p.mb-3 Scan the QR code below with your authenticator app (Google Authenticator, Microsoft Authenticator, Authy, etc.)
 
       .text-center.mb-4
-        img(src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrCode)}`, alt='QR Code')
+        img.img-fluid(src=qrImage, alt='QR Code', width='200', height='200')
       p.mb-3 Or manually enter this secret key:
       .alert.alert-secondary.text-center.mb-4
         code= secret

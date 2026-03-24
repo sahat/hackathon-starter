@@ -3,6 +3,7 @@ const passport = require('passport');
 const validator = require('validator');
 const mailChecker = require('mailchecker');
 const OTPAuth = require('otpauth');
+const encodeQR = require('qr').default;
 const User = require('../models/User');
 const Session = require('../models/Session');
 const nodemailerConfig = require('../config/nodemailer');
@@ -970,9 +971,12 @@ exports.getTotpSetup = async (req, res, next) => {
       secret,
     });
     req.session.totpSecret = secret.base32;
+    // Generate QR image (SVG) data URI using the `qr` package
+    const svg = encodeQR(totp.toString(), 'svg');
+    const qrImage = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
     res.render('account/totp-setup', {
       title: 'Setup Authenticator',
-      qrCode: totp.toString(),
+      qrImage,
       secret: secret.base32,
     });
   } catch (err) {

@@ -83,6 +83,7 @@
     "patch-package": "^8.0.1",
     "pdfjs-dist": "^5.5.207",
     "pug": "^3.0.4",
+    "qr": "^0.5.5",
     "sass": "^1.98.0",
     "stripe": "^20.4.1",
     "twilio": "^5.13.1",
@@ -100,7 +101,7 @@
     "eslint-plugin-chai-friendly": "^1.1.1",
     "globals": "^17.4.0",
     "husky": "^9.1.7",
-    "mocha": "12.0.0-beta-10",
+    "mocha": "next",
     "mongodb-memory-server": "^11.0.1",
     "prettier": "^3.8.1",
     "sinon": "^21.0.3",
@@ -109,8 +110,12 @@
   "overrides": {
     "encoding-sniffer": "github:SeattleDevs/encoding-sniffer",
     "fetch-blob": "github:SeattleDevs/fetch-blob",
-    "formdata-node": "^6.0.3",
-    "rimraf": "6.1.2"
+    "formdata-node": "^6.0.3"
+  },
+  "overrideReasons": {
+    "encoding-sniffer": "cheerio",
+    "fetch-blob": "@googleapis/drive",
+    "formdata-node": "@langchain/groq, @langchain/community"
   },
   "engines": {
     "node": ">=24.13.0"
