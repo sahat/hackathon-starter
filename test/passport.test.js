@@ -109,10 +109,12 @@ describe('Passport Config', () => {
     });
 
     function invokeLocal(email, password, done) {
-      // Access the registered local strategy directly from passport._strategies
-      const strategy = passport._strategies.local;
-      // Call the verify callback with the given credentials
-      strategy._verify(email, password, done);
+      // Use passport's public authenticate API rather than accessing private
+      // _strategies internals, which could change across passport versions.
+      const req = { body: { email, password }, session: {} };
+      passport.authenticate('local', (err, user, info) => {
+        done(err, user, info);
+      })(req, {}, (err) => done(err));
     }
 
     it('should return false with message when user not found', (done) => {

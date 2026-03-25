@@ -22,7 +22,9 @@ function buildRequireShim(overrides) {
 }
 
 function restoreRequireShim(Module, original) {
-  Module.prototype.require = original;
+  if (Module && original) {
+    Module.prototype.require = original;
+  }
   delete require.cache[require.resolve('../controllers/user')];
 }
 
@@ -1591,6 +1593,11 @@ describe('User Controller', () => {
     let next;
 
     beforeEach(() => {
+      // Freeze time at a fixed timestamp so totp.generate() and the controller's
+      // totp.validate() always operate on the same 30-second TOTP window,
+      // eliminating flakiness when the test runs near a step boundary.
+      sinon.useFakeTimers({ now: 1_000_000_000_000 });
+
       fakeUser = makeFakeUser({
         twoFactorEnabled: false,
         twoFactorMethods: [],
@@ -1622,7 +1629,7 @@ describe('User Controller', () => {
 
     afterEach(() => {
       restoreRequireShim(shimModule, shimOriginal);
-      sinon.restore();
+      sinon.restore(); // also restores fake timers
     });
 
     it('should flash error when code is not 6 numeric digits', async () => {
@@ -1732,6 +1739,11 @@ describe('User Controller', () => {
     let next;
 
     beforeEach(() => {
+      // Freeze time at a fixed timestamp so totp.generate() and the controller's
+      // totp.validate() always operate on the same 30-second TOTP window,
+      // eliminating flakiness when the test runs near a step boundary.
+      sinon.useFakeTimers({ now: 1_000_000_000_000 });
+
       fakeUser = makeFakeUser({ totpSecret: 'JBSWY3DPEHPK3PXP' });
       userFindByIdStub = sinon.stub().resolves(fakeUser);
 
@@ -1760,7 +1772,7 @@ describe('User Controller', () => {
 
     afterEach(() => {
       restoreRequireShim(shimModule, shimOriginal);
-      sinon.restore();
+      sinon.restore(); // also restores fake timers
     });
 
     it('should flash error and redirect /login/2fa/totp for non-numeric code', async () => {
