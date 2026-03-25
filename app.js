@@ -88,6 +88,7 @@ const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const aiController = require('./controllers/ai');
 const aiAgentController = require('./controllers/ai-agent');
+const aiNovitaController = require('./controllers/ai-novita');
 
 const contactController = require('./controllers/contact');
 const webauthnController = require('./controllers/webauthn');
@@ -306,6 +307,9 @@ app.post('/ai/rag/ask', aiController.postRagAsk);
 app.get('/ai/ai-agent', aiAgentController.getAIAgent);
 app.post('/ai/ai-agent/chat', aiAgentController.postAIAgentChat);
 app.post('/ai/ai-agent/reset', aiAgentController.postAIAgentReset);
+app.get('/ai/novita', aiNovitaController.getNovita);
+app.post('/ai/novita/classify', aiNovitaController.postNovitaClassify);
+app.post('/ai/novita/chat', aiNovitaController.postNovitaChat);
 
 /**
  * OAuth authentication failure handler (common for all providers)
