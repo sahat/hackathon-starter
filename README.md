@@ -643,12 +643,14 @@ Required to run the project before your modifications
 | passport-github2              | Sign-in with GitHub plugin.                                           |
 | passport-google-oauth         | Sign-in with Google plugin.                                           |
 | passport-local                | Sign-in with Username and Password plugin.                            |
-| passport-oauth                | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.    |
+| passport-oauth1               | Allows you to set up your own OAuth 1.0a strategy.                    |
+| passport-oauth2               | Allows you to set up your own OAuth 2.0 strategy.                     |
 | passport-oauth2-refresh       | A library to refresh OAuth 2.0 access tokens using refresh tokens.    |
 | passport-steam-openid         | OpenID 2.0 Steam plugin.                                              |
 | patch-package                 | Fix broken node modules ahead of fixes by maintainers.                |
 | pdfjs-dist                    | PDF parser                                                            |
 | pug                           | Template engine for Express.                                          |
+| qr                            | Generate and decode QR codes                                          |
 | sass                          | Sass compiler to generate CSS with superpowers.                       |
 | stripe                        | Official Stripe API library.                                          |
 | twilio                        | Twilio API library.                                                   |

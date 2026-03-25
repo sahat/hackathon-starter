@@ -7,8 +7,8 @@ const { Strategy: TwitchStrategy } = require('twitch-passport');
 const { Strategy: GitHubStrategy } = require('passport-github2');
 const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
 const { SteamOpenIdStrategy } = require('passport-steam-openid');
-const { OAuthStrategy } = require('passport-oauth');
-const { OAuth2Strategy } = require('passport-oauth');
+const OAuthStrategy = require('passport-oauth1');
+const OAuth2Strategy = require('passport-oauth2');
 const { OAuth } = require('oauth');
 const validator = require('validator');
 
