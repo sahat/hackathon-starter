@@ -4,7 +4,6 @@
  - Scans Pug views under views/ai and views/api for href and img src attributes
  - Scans README.md and PROD_CHECKLIST.md for http(s) links
  - Only checks images used in button areas for ai/index and api/index (heuristic: img tags in those files)
- - Performs HEAD, falls back to GET if needed
  - Bounded concurrency
  - Prints a readable report of where each URL was found and status
 */

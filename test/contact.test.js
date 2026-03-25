@@ -63,7 +63,17 @@ describe('Contact Controller', () => {
   });
 
   after(() => {
-    process.env = OLD_ENV;
+    // Restore only the specific env vars set in before() rather than replacing
+    // the entire process.env object. Replacing process.env loses variables set
+    // by process.loadEnvFile() in other test files (e.g. BASE_URL), which
+    // breaks any test that loads a module using those vars after this suite runs.
+    for (const key of ['SITE_CONTACT_EMAIL', 'GOOGLE_RECAPTCHA_SITE_KEY', 'GOOGLE_API_KEY', 'GOOGLE_PROJECT_ID']) {
+      if (key in OLD_ENV) {
+        process.env[key] = OLD_ENV[key];
+      } else {
+        delete process.env[key];
+      }
+    }
   });
 
   describe('GET /contact', () => {
