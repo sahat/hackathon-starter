@@ -58,7 +58,11 @@ test/
 ├── models.test.js               # Database model tests - core unit test
 ├── morgan.test.js               # Morgan logger tests - core unit test
 ├── nodemailer.test.js           # Email tests - core unit test
-├── passport.test.js             # Auth tests - core unit test
+├── passport.test.js             # Auth & middleware tests - core unit test
+├── session.test.js              # Session model tests - core unit test
+├── token-revocation.test.js     # Token revocation tests - core unit test
+├── user.test.js                 # User controller tests - core unit test
+├── webauthn.test.js             # WebAuthn controller tests - core unit test
 └── playwright.config.js         # Playwright configuration
 ```
 

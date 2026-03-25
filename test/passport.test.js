@@ -6,10 +6,179 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 process.loadEnvFile(path.join(__dirname, '.env.test'));
 const passportModule = require('../config/passport');
-const { isAuthorized, _saveOAuth2UserTokens, _handleAuthLogin } = passportModule;
+const { isAuthenticated, isAuthorized, _saveOAuth2UserTokens, _handleAuthLogin } = passportModule;
 const User = require('../models/User');
+// Load passport after config so strategies are registered
+const passport = require('passport');
 
 describe('Passport Config', () => {
+  // =========================================================================
+  // isAuthenticated middleware
+  // =========================================================================
+  describe('isAuthenticated Middleware', () => {
+    let req;
+    let res;
+    let next;
+
+    beforeEach(() => {
+      req = {
+        isAuthenticated: sinon.stub(),
+        flash: sinon.spy(),
+      };
+      res = { redirect: sinon.spy() };
+      next = sinon.spy();
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should call next() when authenticated', () => {
+      req.isAuthenticated.returns(true);
+      isAuthenticated(req, res, next);
+      expect(next.calledOnce).to.be.true;
+      expect(res.redirect.called).to.be.false;
+    });
+
+    it('should set an error flash and redirect /login when not authenticated', () => {
+      req.isAuthenticated.returns(false);
+      isAuthenticated(req, res, next);
+      expect(req.flash.calledWith('errors')).to.be.true;
+      expect(res.redirect.calledWith('/login')).to.be.true;
+      expect(next.called).to.be.false;
+    });
+  });
+
+  // =========================================================================
+  // serializeUser / deserializeUser
+  // =========================================================================
+  describe('serializeUser / deserializeUser', () => {
+    let findByIdStub;
+
+    beforeEach(() => {
+      findByIdStub = sinon.stub(User, 'findById');
+    });
+
+    afterEach(() => {
+      findByIdStub.restore();
+    });
+
+    it('serializeUser stores user.id', (done) => {
+      const fakeUser = new User({ _id: new mongoose.Types.ObjectId(), email: 'a@b.com' });
+      passport.serializeUser(fakeUser, (err, id) => {
+        expect(err).to.be.null;
+        expect(id).to.equal(fakeUser.id);
+        done();
+      });
+    });
+
+    it('deserializeUser returns user for a valid id', (done) => {
+      const fakeUser = new User({ _id: new mongoose.Types.ObjectId(), email: 'a@b.com' });
+      findByIdStub.resolves(fakeUser);
+      passport.deserializeUser(fakeUser.id, (err, user) => {
+        expect(err).to.be.null;
+        expect(user).to.equal(fakeUser);
+        expect(findByIdStub.calledWith(fakeUser.id)).to.be.true;
+        done();
+      });
+    });
+
+    it('deserializeUser calls done with error when findById rejects', (done) => {
+      const dbError = new Error('db failure');
+      findByIdStub.rejects(dbError);
+      passport.deserializeUser('some-id', (err, user) => {
+        expect(err).to.equal(dbError);
+        expect(user).to.be.undefined;
+        done();
+      });
+    });
+  });
+
+  // =========================================================================
+  // LocalStrategy
+  // =========================================================================
+  describe('LocalStrategy (local)', () => {
+    let findOneStub;
+
+    beforeEach(() => {
+      findOneStub = sinon.stub(User, 'findOne');
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    function invokeLocal(email, password, done) {
+      // Access the registered local strategy directly from passport._strategies
+      const strategy = passport._strategies.local;
+      // Call the verify callback with the given credentials
+      strategy._verify(email, password, done);
+    }
+
+    it('should return false with message when user not found', (done) => {
+      findOneStub.resolves(null);
+      invokeLocal('missing@example.com', 'pass', (err, user, info) => {
+        expect(err).to.be.null;
+        expect(user).to.be.false;
+        expect(info.msg).to.include('missing@example.com');
+        done();
+      });
+    });
+
+    it('should return false when user has no password (OAuth-only account)', (done) => {
+      const fakeUser = new User({ email: 'oauth@example.com', password: undefined });
+      findOneStub.resolves(fakeUser);
+      invokeLocal('oauth@example.com', 'whatever', (err, user, info) => {
+        expect(err).to.be.null;
+        expect(user).to.be.false;
+        expect(info.msg).to.include('sign-in provider');
+        done();
+      });
+    });
+
+    it('should return false with invalid message when password is wrong', (done) => {
+      const fakeUser = new User({ email: 'user@example.com', password: 'hashedpass' });
+      sinon.stub(fakeUser, 'comparePassword').callsFake((_pw, cb) => cb(null, false));
+      findOneStub.resolves(fakeUser);
+      invokeLocal('user@example.com', 'wrongpass', (err, user, info) => {
+        expect(err).to.be.null;
+        expect(user).to.be.false;
+        expect(info.msg).to.include('Invalid');
+        done();
+      });
+    });
+
+    it('should return the user when credentials are correct', (done) => {
+      const fakeUser = new User({ email: 'user@example.com', password: 'correcthash' });
+      sinon.stub(fakeUser, 'comparePassword').callsFake((_pw, cb) => cb(null, true));
+      findOneStub.resolves(fakeUser);
+      invokeLocal('user@example.com', 'correctpass', (err, user) => {
+        expect(err).to.be.null;
+        expect(user).to.equal(fakeUser);
+        done();
+      });
+    });
+
+    it('should normalize the email to lower-case when looking up user', (done) => {
+      findOneStub.resolves(null);
+      invokeLocal('UPPER@EXAMPLE.COM', 'pass', () => {
+        expect(findOneStub.firstCall.args[0]).to.deep.equal({ email: { $eq: 'upper@example.com' } });
+        done();
+      });
+    });
+
+    it('should propagate comparePassword errors through done', (done) => {
+      const fakeUser = new User({ email: 'user@example.com', password: 'hash' });
+      const compareError = new Error('bcrypt failure');
+      sinon.stub(fakeUser, 'comparePassword').callsFake((_pw, cb) => cb(compareError));
+      findOneStub.resolves(fakeUser);
+      invokeLocal('user@example.com', 'pass', (err) => {
+        expect(err).to.equal(compareError);
+        done();
+      });
+    });
+  });
+
   describe('isAuthorized Middleware', () => {
     let req;
     let res;

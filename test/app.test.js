@@ -10,7 +10,7 @@ before(async () => {
   process.env.MONGODB_URI = mockMongoDBUri;
   // If we require the app at the beginning of this file
   // it will try to connect to the database before the
-  // MongoMemoryServer is started which can cause the testes to fail
+  // MongoMemoryServer is started which can cause the tests to fail
   // Hence we are making an exception for linting this require statement
   /* eslint-disable global-require */
   app = require('../app');
