@@ -37,7 +37,7 @@
     "@langchain/community": "^1.1.25",
     "@langchain/core": "^1.1.36",
     "@langchain/groq": "^1.1.5",
-    "@langchain/langgraph": "^1.2.5",
+    "@langchain/langgraph": "^1.2.6",
     "@langchain/langgraph-checkpoint-mongodb": "^1.2.0",
     "@langchain/mongodb": "^1.1.0",
     "@langchain/textsplitters": "^1.0.1",
@@ -86,7 +86,7 @@
     "pug": "^3.0.4",
     "qr": "^0.5.5",
     "sass": "^1.98.0",
-    "stripe": "^21.0.0",
+    "stripe": "^21.0.1",
     "twilio": "^5.13.1",
     "twitch-passport": "^1.0.6",
     "validator": "^13.15.26"
