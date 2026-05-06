@@ -105,7 +105,7 @@
     "mocha": "^12.0.0-beta-9.3",
     "mongodb-memory-server": "^11.1.0",
     "prettier": "^3.8.3",
-    "sinon": "^21.1.2",
+    "sinon": "^22.0.0",
     "supertest": "^7.2.2"
   },
   "overrides": {
