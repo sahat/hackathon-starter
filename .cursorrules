@@ -1,0 +1,5 @@
+# Coding Assistant Rules for Hackathon Starter
+- Use ES6 syntax.
+- Follow MVC pattern.
+- Mongoose for MongoDB.
+
