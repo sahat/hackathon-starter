@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js 26 Preview CI
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
       RUN_E2E: ${{ vars.RUN_E2E }} # from repository settings -> Actions -> Variables
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [26.x]
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v6
