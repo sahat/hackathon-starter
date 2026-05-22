@@ -416,8 +416,6 @@ Next, create API keys for the services you enabled:
 
 <img src="https://i.imgur.com/iCsCgp6.png" height="75">
 
-The OpenAI moderation API for checking harmful inputs is free to use as long as you have paid credits in your OpenAI developer account. The cost of using their other models depends on the model, as well as the input and output size of the API call.
-
 - Visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a>
 - Sign in or create an OpenAI account.
 - Click on **Create new secret key** to generate an API key.
