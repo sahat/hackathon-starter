@@ -39,7 +39,6 @@ test/
 │   ├── here-maps.e2e.test.js
 │   ├── lob.e2e.test.js
 │   ├── nyt.e2e.test.js
-│   ├── openai-moderation.e2e.test.js
 │   ├── llm-classifier.e2e.test.js
 │   ├── trakt.e2e.test.js
 │   └── twilio.e2e.test.js

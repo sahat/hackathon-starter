@@ -294,8 +294,6 @@ app.get('/api/giphy', apiController.getGiphy);
  * AI Integrations and Boilerplate example routes.
  */
 app.get('/ai', aiController.getAi);
-app.get('/ai/openai-moderation', aiController.getOpenAIModeration);
-app.post('/ai/openai-moderation', aiController.postOpenAIModeration);
 app.get('/ai/llm-classifier', aiController.getLLMClassifier);
 app.post('/ai/llm-classifier', aiController.postLLMClassifier);
 app.get('/ai/llm-camera', lusca({ csrf: true }), aiController.getLLMCamera);

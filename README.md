@@ -89,7 +89,6 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - AI Agent ReAct (Reasoning + Acting) with tool calling, MongoDB session persistence, and input guardrails
   - RAG with semantic and embedding caching
   - Llama 3.3, Llama 4 Scout (vision use case)
-  - OpenAI Moderation
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Groq, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
@@ -411,17 +410,6 @@ Next, create API keys for the services you enabled:
 - Create an account
 - Once logged into the dashboard, go to Settings in the bottom left corner of the page. (If there is a bottom pop-up, you may need to close it to see the Settings option.)
 - Go to the API Keys tab and get your Secret API key for the Test Environment. No physical paper mail will be sent out if you use the Test key, but you can see the PDF of what would have been mailed from your app (with some limitations) through the dashboard. If you use the Live key, they will actually print a physical letter, put it in an envelope with postage, place it in a USPS mailbox, and bill you for it.
-
-<hr>
-
-<img src="https://i.imgur.com/iCsCgp6.png" height="75">
-
-The OpenAI moderation API for checking harmful inputs is free to use as long as you have paid credits in your OpenAI developer account. The cost of using their other models depends on the model, as well as the input and output size of the API call.
-
-- Visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a>
-- Sign in or create an OpenAI account.
-- Click on **Create new secret key** to generate an API key.
-- Copy and paste the generated API key into your `.env` file as `OPENAI_API_KEY` or set it as an environment variable.
 
 <hr>
 
