@@ -2,6 +2,8 @@
  * Module dependencies.
  */
 const path = require('node:path');
+const crypto = require('node:crypto');
+const fs = require('node:fs');
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
@@ -206,6 +208,12 @@ app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/jquery/dist
 app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/@simplewebauthn/browser/dist/bundle'), { maxAge: 31557600000 }));
 app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 31557600000 }));
 app.use('/image-cache', express.static(path.join(__dirname, 'tmp/image-cache'), { maxAge: 31557600000 }));
+
+app.locals.mainJsHash = crypto
+  .createHash('md5') // only used as a cache buster, so md5 is sufficient and faster than sha256
+  .update(fs.readFileSync(path.join(__dirname, 'public', 'js', 'main.js')))
+  .digest('hex')
+  .slice(0, 8);
 
 /**
  * Analytics IDs needed thru layout.pug; set as express local so we don't have to pass them with each render call
