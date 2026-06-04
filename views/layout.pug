@@ -10,9 +10,9 @@ html.h-100(lang='en')
 
     title #{ title } - Hackathon Starter
     link(rel='shortcut icon', href='/favicon.ico')
-    //link(rel='stylesheet', href='/css/bootstrap.min.css')
+    //link(rel='stylesheet', href='/css/bootstrap.min.css') // bootstrap css gets added to main.css via main.scss build
     link(rel='stylesheet', href='/css/main.css?v=' + getFileHash('/css/main.css'))
-    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css')
+    link(rel='stylesheet', href='/css/lib/cookieconsent.min.css?v=' + getFileHash('/css/lib/cookieconsent.min.css'))
     block head
 
   body.d-flex.flex-column.h-100
@@ -28,55 +28,32 @@ html.h-100(lang='en')
     script(src='/js/lib/jquery.min.js?v=' + getFileHash('/js/lib/jquery.min.js'))
     script(src='/js/lib/bootstrap.min.js?v=' + getFileHash('/js/lib/bootstrap.min.js'))
     script(src='/js/main.js?v=' + getFileHash('/js/main.js'))
-    script(src='https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js')
+    script(src='/js/lib/cookieconsent.umd.min.js?v=' + getFileHash('/js/lib/cookieconsent.umd.min.js'))
+    //- Default Google consent state, CookieConsent config, and Facebook Pixel
+    //- queue stub all live in this single file. The FACEBOOK_PIXEL_ID data
+    //- attribute is read by the bundle via document.currentScript since static
+    //- assets can't see Pug template variables directly.
+    script(src='/js/cookieconsent-bundle.js?v=' + getFileHash('/js/cookieconsent-bundle.js'), data-facebook-pixel=FACEBOOK_PIXEL_ID || '')
 
-    script(type='text/javascript').
-      window.cookieconsent.initialise({
-        palette: {
-          popup: {
-            background: '#f8f9fa',
-          },
-          button: {
-            background: '#343a40',
-          },
-        },
-        position: 'bottom-right',
-        content: {
-          href: '/privacy-policy.html',
-        },
-      });
-
-    //- Google Analytics  GA4
+    //- Google Analytics  GA4. Both the gtag.js library and the config call are
+    //- gated on data-category='analytics' so they only execute after the user
+    //- grants analytics consent. The default consent state (set in the bundle)
+    //- is what stops Google from setting any cookies until then.
     if GOOGLE_ANALYTICS_ID
-      script(async, src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`)
-      script.
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
+      script(type='text/plain', data-category='analytics', async, src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`)
+      script(type='text/plain', data-category='analytics').
         gtag('js', new Date());
-        gtag('config', '#{GOOGLE_ANALYTICS_ID}');
+        gtag('config', '#{ GOOGLE_ANALYTICS_ID }');
 
-    //- Facebook Pixel Code
+    //- Facebook Pixel fbevents.js loader. Gated on data-category='marketing'
+    //- so the library only loads after the user grants marketing consent. The
+    //- fbq queue stub and init/track calls live in the bundle.
     if FACEBOOK_PIXEL_ID
-      script.
-        !(function (f, b, e, v, n, t, s) {
-          if (f.fbq) return;
-          n = f.fbq = function () {
-            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-          };
-          if (!f._fbq) f._fbq = n;
-          n.push = n;
-          n.loaded = !0;
-          n.version = '2.0';
-          n.queue = [];
+      script(type='text/plain', data-category='marketing').
+        !function (f, b, e, v, t, s) {
           t = b.createElement(e);
           t.async = !0;
           t.src = v;
           s = b.getElementsByTagName(e)[0];
           s.parentNode.insertBefore(t, s);
-        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '#{FACEBOOK_PIXEL_ID}');
-        fbq('track', 'PageView');
-      noscript
-        img(height='1', width='1', style='display: none', src=`https://www.facebook.com/tr?id=${FACEBOOK_PIXEL_ID}&ev=PageView&noscript=1`)
+        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');

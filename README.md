@@ -646,6 +646,7 @@ Required to run the project before your modifications
 | twilio                        | Twilio API library.                                                   |
 | twitch-passport               | Sign-in with Twitch plugin.                                           |
 | validator                     | A library of string validators and sanitizers.                        |
+| vanilla-cookieconsent         | GDPR/CCPA-compliant cookie consent banner                             |
 
 **Dev Dependencies**
 
