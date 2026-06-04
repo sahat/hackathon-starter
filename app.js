@@ -218,6 +218,8 @@ const libFiles = new Map([
   ['/js/lib/bootstrap.min.js', 'node_modules/bootstrap/dist/js/bootstrap.min.js'],
   ['/js/lib/jquery.min.js', 'node_modules/jquery/dist/jquery.min.js'],
   ['/js/lib/webauthn.umd.min.js', 'node_modules/@simplewebauthn/browser/dist/bundle/index.umd.min.js'],
+  ['/js/lib/cookieconsent.umd.min.js', 'node_modules/vanilla-cookieconsent/dist/cookieconsent.umd.js'],
+  ['/css/lib/cookieconsent.min.css', 'node_modules/vanilla-cookieconsent/dist/cookieconsent.css'],
   ['/webfonts/fa-brands-400.woff2', 'node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2'],
   ['/webfonts/fa-regular-400.woff2', 'node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2'],
   ['/webfonts/fa-solid-900.woff2', 'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2'],
