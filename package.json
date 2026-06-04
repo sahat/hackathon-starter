@@ -67,7 +67,7 @@
     "mailchecker": "^6.0.20",
     "mongodb": "^7.2.0",
     "mongoose": "^9.6.3",
-    "morgan": "^1.10.1",
+    "morgan": "^1.11.0",
     "multer": "^2.1.1",
     "nodemailer": "^8.0.10",
     "oauth": "^0.10.2",
