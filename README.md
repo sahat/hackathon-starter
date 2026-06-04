@@ -541,6 +541,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 
 | Name                             | Description                                                          |
 | -------------------------------- | -------------------------------------------------------------------- |
+| **config**/cacheBust.js          | Cache-busting helper for static routed files (css and front-end js)  |
 | **config**/flash.js              | Flash middleware (replacement for express-flash)                     |
 | **config**/morgan.js             | Configuration for request logging with morgan.                       |
 | **config**/nodemailer.js         | Configuration and helper function for sending email with nodemailer. |

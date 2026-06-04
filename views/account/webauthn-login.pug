@@ -1,7 +1,7 @@
 extends ../layout
 
 block head
-  script(src='/js/lib/index.umd.min.js')
+  script(src='/js/lib/webauthn.umd.min.js?v=' + getFileHash('/js/lib/webauthn.umd.min.js'))
   script#webauthnOptions(type='application/json') !{ publicKey }
 
 block content
