@@ -2,7 +2,6 @@
  * Module dependencies.
  */
 const path = require('node:path');
-const crypto = require('node:crypto');
 const fs = require('node:fs');
 const express = require('express');
 const compression = require('compression');
@@ -14,6 +13,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const rateLimit = require('express-rate-limit');
 const { flash } = require('./config/flash');
+const { getFileHash } = require('./config/cacheBust');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -200,20 +200,42 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
-app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/chart.js/dist'), { maxAge: 31557600000 }));
-app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/@popperjs/core/dist/umd'), { maxAge: 31557600000 }));
-app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js'), { maxAge: 31557600000 }));
-app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/jquery/dist'), { maxAge: 31557600000 }));
-app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/@simplewebauthn/browser/dist/bundle'), { maxAge: 31557600000 }));
-app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 31557600000 }));
-app.use('/image-cache', express.static(path.join(__dirname, 'tmp/image-cache'), { maxAge: 31557600000 }));
 
-app.locals.mainJsHash = crypto
-  .createHash('sha256')
-  .update(fs.readFileSync(path.join(__dirname, 'public', 'js', 'main.js')))
-  .digest('hex')
-  .slice(0, 8);
+/**
+ * Creating static routes for files in public/, tmp/image-cache, and front-end libraries
+ *
+ * 4 hr maxAge is the default that some CDNs like Cloudflare hence using it as the default maxAge
+ * You can clear your browser cache or use getFileHash versioning for cache busting
+ * See views/layout.pug for getFileHash usage example
+ */
+app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: '4h' }));
+app.use('/image-cache', express.static(path.join(__dirname, 'tmp/image-cache'), { maxAge: '4h' }));
+
+const libFiles = new Map([
+  // List client side libraries from node_modules (files needed in the web browser). Don't include files that are already in public/ folder.
+  ['/js/lib/chart.umd.min.js', 'node_modules/chart.js/dist/chart.umd.min.js'],
+  ['/js/lib/popper.min.js', 'node_modules/@popperjs/core/dist/umd/popper.min.js'],
+  ['/js/lib/bootstrap.min.js', 'node_modules/bootstrap/dist/js/bootstrap.min.js'],
+  ['/js/lib/jquery.min.js', 'node_modules/jquery/dist/jquery.min.js'],
+  ['/js/lib/webauthn.umd.min.js', 'node_modules/@simplewebauthn/browser/dist/bundle/index.umd.min.js'],
+  ['/webfonts/fa-brands-400.woff2', 'node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2'],
+  ['/webfonts/fa-regular-400.woff2', 'node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2'],
+  ['/webfonts/fa-solid-900.woff2', 'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2'],
+]);
+
+for (const [fileUrl, filePath] of libFiles) {
+  if (fs.existsSync(path.join(__dirname, 'public', fileUrl.slice(1)))) {
+    throw new Error(`Duplicate mapping issue: the library file is already present at ${fileUrl}`);
+  }
+  const libFileHandler = (req, res) => res.sendFile(path.join(__dirname, filePath), { maxAge: '1y' });
+  app.head(fileUrl, libFileHandler); // to improve caching with some proxies/CDNs
+  app.get(fileUrl, libFileHandler);
+  // Compute and cache libFile hashes so a bad file path or missing library fails fast during startup
+  getFileHash(fileUrl, libFiles, __dirname);
+}
+
+// Set up getFileHash so it can be used in pug templates for cache busting
+app.locals.getFileHash = (fileUrl) => getFileHash(fileUrl, libFiles, __dirname);
 
 /**
  * Analytics IDs needed thru layout.pug; set as express local so we don't have to pass them with each render call

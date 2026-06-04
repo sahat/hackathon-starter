@@ -11,7 +11,7 @@ html.h-100(lang='en')
     title #{ title } - Hackathon Starter
     link(rel='shortcut icon', href='/favicon.ico')
     //link(rel='stylesheet', href='/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='/css/main.css?v=' + getFileHash('/css/main.css'))
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css')
     block head
 
@@ -25,9 +25,9 @@ html.h-100(lang='en')
 
     include partials/footer
 
-    script(src='/js/lib/jquery.min.js')
-    script(src='/js/lib/bootstrap.min.js')
-    script(src='/js/main.js?v=' + mainJsHash)
+    script(src='/js/lib/jquery.min.js?v=' + getFileHash('/js/lib/jquery.min.js'))
+    script(src='/js/lib/bootstrap.min.js?v=' + getFileHash('/js/lib/bootstrap.min.js'))
+    script(src='/js/main.js?v=' + getFileHash('/js/main.js'))
     script(src='https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js')
 
     script(type='text/javascript').
