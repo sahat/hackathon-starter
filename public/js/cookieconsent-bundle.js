@@ -46,10 +46,7 @@ CookieConsent.run({
       services: {
         facebook: {
           label: 'Facebook Pixel',
-          cookies: [
-            { name: '_fbp', domain: '.facebook.com' },
-            { name: '_fbc', domain: '.facebook.com' },
-          ],
+          cookies: [{ name: '_fbp' }, { name: '_fbc' }],
         },
         'google-ads': {
           // Google Ads features (conversion tracking, remarketing, Google
@@ -82,6 +79,9 @@ CookieConsent.run({
           acceptAllBtn: 'Accept all',
           acceptNecessaryBtn: 'Reject all',
           showPreferencesBtn: 'Manage preferences',
+          footer: `
+            <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>
+            <a href="/terms-of-use.html" target="_blank">Terms of Use</a>`,
         },
         preferencesModal: {
           title: 'Cookie preferences',
