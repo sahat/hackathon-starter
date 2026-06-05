@@ -2,17 +2,134 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const multer = require('multer');
-const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
-const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
 const { MongoDBAtlasVectorSearch, MongoDBAtlasSemanticCache } = require('@langchain/mongodb');
 const { ChatGroq } = require('@langchain/groq');
 const { HumanMessage } = require('@langchain/core/messages');
+const { Document } = require('@langchain/core/documents');
+const { HfInference, InferenceClientProviderApiError } = require('@huggingface/inference');
 const { MongoClient } = require('mongodb');
 const Keyv = require('keyv').default;
 const KeyvMongo = require('@keyv/mongo').default;
-// // eslint-disable-next-line import/extensions
 const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
+
+/**
+ * Load a PDF file and return one Document per page using pdfjs-dist directly.
+ *
+ * Replaces @langchain/community's PDFLoader, which is a thin wrapper around
+ * pdfjs-dist. Pages with no extractable text are skipped, matching PDFLoader's
+ * behavior. The metadata shape matches what RecursiveCharacterTextSplitter and
+ * the rest of the LangChain pipeline expect.
+ */
+async function loadPdfDocuments(filePath) {
+  const data = new Uint8Array(fs.readFileSync(filePath));
+  const pdf = await pdfjsLib.getDocument({
+    data,
+    useWorkerFetch: false,
+    isEvalSupported: false,
+    useSystemFonts: true,
+  }).promise;
+  const meta = await pdf.getMetadata().catch(() => null);
+  const documents = [];
+  for (let i = 1; i <= pdf.numPages; i += 1) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    if (content.items.length === 0) continue;
+    let lastY;
+    const textItems = [];
+    for (const item of content.items) {
+      if (!('str' in item)) continue;
+      // Preserve line breaks by detecting vertical position changes.
+      // Use an explicit undefined check rather than a falsy check, since
+      // lastY === 0 is a valid PDF coordinate (e.g. text at the very bottom
+      // of a page, or pages with a top-left origin where baselines land near 0).
+      if (lastY === undefined || lastY === item.transform[5]) textItems.push(item.str);
+      else textItems.push(`\n${item.str}`);
+      lastY = item.transform[5];
+    }
+    documents.push(
+      new Document({
+        pageContent: textItems.join(''),
+        metadata: {
+          pdf: {
+            version: pdfjsLib.version,
+            info: meta?.info,
+            metadata: meta?.metadata,
+            totalPages: pdf.numPages,
+          },
+          loc: { pageNumber: i },
+        },
+      }),
+    );
+  }
+  return documents;
+}
+
+/**
+ * HTTP statuses that should never be retried. Mirrors the list used by
+ * @langchain/core's AsyncCaller (400-407, 409). 408 (Request Timeout), 429
+ * (Too Many Requests), and 5xx are all retried.
+ */
+const RETRY_STATUS_NO_RETRY = [400, 401, 402, 403, 404, 405, 406, 407, 409];
+
+/**
+ * Decide whether an error from the HF client should short-circuit retries.
+ * Mirrors the rules in @langchain/core's defaultFailedAttemptHandler
+ */
+function isNonRetryableError(err) {
+  if (typeof err !== 'object' || err === null) return true;
+  if (typeof err.message === 'string' && (err.message.startsWith('Cancel') || err.message.startsWith('AbortError'))) {
+    return true;
+  }
+  if (typeof err.name === 'string' && err.name === 'AbortError') return true;
+  if (err.code === 'ECONNABORTED') return true;
+  if (err?.error?.code === 'insufficient_quota') return true;
+  if (err instanceof InferenceClientProviderApiError) {
+    const status = err.httpResponse?.status;
+    if (typeof status === 'number' && RETRY_STATUS_NO_RETRY.includes(status)) return true;
+  }
+  return false;
+}
+
+/**
+ * Run `fn` with exponential-backoff retries on transient failures. Defaults match
+ * @langchain/core's AsyncCaller
+ */
+async function withRetry(fn, { maxRetries = 6, minTimeoutMs = 1000, factor = 2 } = {}) {
+  let attempt = 0;
+  for (;;) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (isNonRetryableError(err) || attempt >= maxRetries) throw err;
+      const delay = Math.round(minTimeoutMs * factor ** attempt);
+      const totalTries = maxRetries + 1;
+      const status = err instanceof InferenceClientProviderApiError ? err.httpResponse?.status : null;
+      const statusLabel = status ? `HTTP ${status}` : err.name && err.name !== 'Error' ? err.name : 'transient error';
+      console.warn(`[HuggingFaceEmbeddings] ${statusLabel} from Hugging Face; retrying in ${delay}ms (attempt ${attempt + 2}/${totalTries}).`);
+      await new Promise((r) => setTimeout(r, delay));
+      attempt += 1;
+    }
+  }
+}
+
+/**
+ * Minimal replacement for @langchain/community's HuggingFaceInferenceEmbeddings.
+ *
+ * Returns an object with embedDocuments(texts) and embedQuery(text) that
+ * MongoDBAtlasVectorSearch and our createCachedEmbeddings wrapper consume.
+ * Uses @huggingface/inference directly so we don't need the @langchain/community
+ * package. Behavior matches @langchain/community's implementation.
+ */
+function createHuggingFaceEmbeddings({ apiKey, model, provider }) {
+  const hf = new HfInference(apiKey);
+  const clean = (texts) => texts.map((t) => t.replace(/\n/g, ' '));
+  const callFeatureExtraction = (inputs) => withRetry(() => hf.featureExtraction({ model, inputs, provider }));
+  return {
+    embedQuery: (text) => callFeatureExtraction(clean([text])).then((res) => res[0]),
+    embedDocuments: (texts) => callFeatureExtraction(clean(texts)),
+  };
+}
 
 /**
  * GET /ai
@@ -323,10 +440,7 @@ exports.postRagIngest = async (req, res) => {
 
       // Process the PDF file
       try {
-        const loader = new PDFLoader(filePath, {
-          pdfjs: () => Promise.resolve(pdfjsLib),
-        });
-        const docs = await loader.load();
+        const docs = await loadPdfDocuments(filePath);
         // Split the document into chunks
         // Use RecursiveCharacterTextSplitter to split the documents into smaller chunks
         // When querying the model later, the vector search finds the most relevant chunks
@@ -344,11 +458,13 @@ exports.postRagIngest = async (req, res) => {
         }));
 
         // Create embeddings and store them in MongoDB
-        // Use HuggingFaceInferenceEmbeddings as the hosted embedding model provider.
-        // You can also use OpenAIEmbeddings or other providers.
+        // Use @huggingface/inference via the createHuggingFaceEmbeddings helper
+        // as the hosted embedding model provider. You can swap to a different
+        // provider by replacing createHuggingFaceEmbeddings (e.g. with one backed
+        // by OpenAIEmbeddings or another LangChain embeddings class).
         // If you change your embedding model, you would need to reprocess all your
         // files and recreate the vector index if the embedding dimensions are different.
-        const embeddings = new HuggingFaceInferenceEmbeddings({
+        const embeddings = createHuggingFaceEmbeddings({
           apiKey: process.env.HUGGINGFACE_KEY,
           model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
           provider: process.env.HUGGINGFACE_PROVIDER,
@@ -455,14 +571,14 @@ exports.postRagAsk = async (req, res) => {
     }
 
     // Set up vector store and embeddings
-    // Instantiate HuggingFaceInferenceEmbeddings for consistency with the embedding model
-    // used during ingestion. We do not use the embedding model for the LLM, but we use it
-    // for the vector search. The HuggingFaceInferenceEmbeddings instance converts the
-    // user's question into an embedding, which is then passed to MongoDBAtlasVectorSearch.
-    // This enables the system to perform a similarity search against stored document
-    // embeddings, retrieving the most relevant chunks based on meaning rather than exact
-    // keywords.
-    const embeddings = new HuggingFaceInferenceEmbeddings({
+    // Instantiate the same embeddings helper used during ingestion, so the query
+    // embedding is produced by the same model that produced the stored chunk
+    // embeddings. We do not use the embedding model for the LLM, but we use it for
+    // the vector search. The embeddings helper converts the user's question into
+    // an embedding, which is then passed to MongoDBAtlasVectorSearch. This enables
+    // the system to perform a similarity search against stored document embeddings,
+    // retrieving the most relevant chunks based on meaning rather than exact keywords.
+    const embeddings = createHuggingFaceEmbeddings({
       apiKey: process.env.HUGGINGFACE_KEY,
       model: process.env.HUGGINGFACE_EMBEDDING_MODEL,
       provider: process.env.HUGGINGFACE_PROVIDER,
