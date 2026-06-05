@@ -39,8 +39,11 @@ async function loadPdfDocuments(filePath) {
     const textItems = [];
     for (const item of content.items) {
       if (!('str' in item)) continue;
-      // Preserve line breaks by detecting vertical position changes
-      if (lastY === item.transform[5] || !lastY) textItems.push(item.str);
+      // Preserve line breaks by detecting vertical position changes.
+      // Use an explicit undefined check rather than a falsy check, since
+      // lastY === 0 is a valid PDF coordinate (e.g. text at the very bottom
+      // of a page, or pages with a top-left origin where baselines land near 0).
+      if (lastY === undefined || lastY === item.transform[5]) textItems.push(item.str);
       else textItems.push(`\n${item.str}`);
       lastY = item.transform[5];
     }
