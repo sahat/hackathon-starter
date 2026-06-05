@@ -19,7 +19,7 @@ block content
     .card.text-white.bg-success.mb-4
       .card-header
         h6.panel-title.mb-0 Chemical Information - Aspirin
-      .card-body.text-dark.bg-white
+      .card-body.bg-body.text-body
         .row
           .col-4
             if imageUrl
@@ -60,7 +60,7 @@ block content
     .card.text-white.bg-info.mb-4
       .card-header
         h6.panel-title.mb-0 Chemical and Physical Properties
-      .card-body.text-dark.bg-white
+      .card-body.bg-body.text-body
         .row
           .col-md-6
             h6 Molecular Properties
@@ -114,7 +114,7 @@ block content
     .card.text-white.bg-warning.mb-4
       .card-header
         h6.panel-title.mb-0 Safety and Hazard Information
-      .card-body.text-dark.bg-white
+      .card-body.bg-body.text-body
         .row
           each info, category in safetyInfo
             if info && info.length > 0
@@ -130,7 +130,7 @@ block content
   .card.text-white.bg-dark.mb-4
     .card-header
       h6.panel-title.mb-0 Additional Information & Usage
-    .card-body.text-dark.bg-white
+    .card-body.bg-body.text-body
       .row
         .col-md-6
           h6 Medical Information

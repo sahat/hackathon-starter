@@ -77,7 +77,7 @@ test.describe('GitHub API Integration', () => {
     await expect(repoSection).toBeVisible({ timeout: 10000 });
     await expect(sharedPage.locator('.card-header h6')).toContainText('Repository Lookup Example');
 
-    const repoContent = sharedPage.locator('.card-body.text-dark.bg-white');
+    const repoContent = sharedPage.locator('.card-body.bg-body.text-body');
     await expect(repoContent).toBeVisible();
 
     const repoLink = sharedPage.locator('a[href*="github.com"]');

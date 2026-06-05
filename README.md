@@ -97,13 +97,14 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - **Productivity:** Google Drive, Google Sheets
 
 - Flash notifications
+- Dark mode toggle (defaults to OS-preference)
 - reCAPTCHA and rate limit protection
 - CSRF protection
 - MVC Project Structure
 - Node.js clusters support
 - HTTPS Proxy support (via ngrok, Cloudflare, etc.)
 - Sass stylesheets
-- Bootstrap 5
+- Bootstrap 5.3
 - "Go to production" checklist
 
 ## Prerequisites
@@ -557,6 +558,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **public**/                      | Static assets (fonts, css, js, img).                                 |
 | **public**/**js**/application.js | Specify client-side JavaScript dependencies.                         |
 | **public**/**js**/app.js         | Place your client-side JavaScript here.                              |
+| **public**/**js**/theme.js       | Client-side dark mode toggle (localStorage persistence)              |
 | **public**/**css**/main.scss     | Main stylesheet for your app.                                        |
 | **test**/\*.js                   | Tests, related configs and helpers.                                  |
 | **views/account**/               | Templates for _login, password reset, signup, profile, webauthn_     |

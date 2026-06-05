@@ -25,7 +25,7 @@ block content
       .row.g-4.mt-1
         .col-md-12
           .card.shadow-sm
-            .card-body.bg-light
+            .card-body.bg-body-secondary
               .text-left
                 strong Question Asked:
                 | &nbsp;
@@ -35,7 +35,7 @@ block content
         if ragResponse
           .col-md-6
             .card.shadow-sm
-              .card-body.bg-light
+              .card-body.bg-body-secondary
                 h3.text-center
                   i.fas.fa-search.fa-2xs.me-2
                   i.fas.fa-arrow-right.fa-2xs.me-2
@@ -47,7 +47,7 @@ block content
         if llmResponse
           .col-md-6
             .card.shadow-sm
-              .card-body.bg-light
+              .card-body.bg-body-secondary
                 h3.text-center
                   i.fas.fa-robot.fa-sm.me-2
                   | No-RAG LLM Response
@@ -57,7 +57,7 @@ block content
     .row.g-4.mt-1
       .col-md-6
         .card.shadow-sm
-          .card-body.bg-light
+          .card-body.bg-body-secondary
             h3.text-center Ingested Files
             if ingestedFiles && ingestedFiles.length > 0
               table.table.table-striped.table-bordered
@@ -83,7 +83,7 @@ block content
 
       .col-md-6
         .card.shadow-sm
-          .card-body.bg-light
+          .card-body.bg-body-secondary
             h3.text-center Ask a Question
             p.text-left Try asking a question about information in the ingested RAG documents that was not part of the LLM's training data.
             .fw-bold Example Questions:
@@ -105,7 +105,7 @@ block content
     hr.border-primary.my-4
 
     .card.shadow-sm
-      .card-body.bg-light
+      .card-body.bg-body-secondary
         .row.align-items-top.g-4
           .col-md-5
             h4
