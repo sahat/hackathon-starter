@@ -31,7 +31,7 @@ block content
             tr
               td.d-xs
                 if venue.categories && venue.categories.length > 0
-                  img(src=venue.categories[0].icon.prefix + '32' + venue.categories[0].icon.suffix, alt=venue.categories[0].name, width='32', height='32')
+                  img(src=venue.categories[0].icon.prefix + 'bg_32' + venue.categories[0].icon.suffix, alt=venue.categories[0].name, width='32', height='32')
                 else
                   | N/A
               td= venue.name

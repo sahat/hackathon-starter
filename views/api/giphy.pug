@@ -17,7 +17,7 @@ block content
   .card.text-white.bg-info.mb-4
     .card-header
       h6.panel-title.mb-0 Search GIPHY GIFs
-    .card-body.text-dark.bg-white
+    .card-body.bg-body.text-body
       form(role='form', method='GET', action='/api/giphy')
         .form-group.mb-3
           label.col-form-label.font-weight-bold Search Term
@@ -32,7 +32,7 @@ block content
     .card.text-white.bg-success.mb-4
       .card-header
         h6.panel-title.mb-0 Results for "#{ search }"
-      .card-body.text-dark.bg-white
+      .card-body.bg-body.text-body
         .row
           each gif in gifs
             .col-md-4

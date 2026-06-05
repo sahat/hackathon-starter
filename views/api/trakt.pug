@@ -17,10 +17,10 @@ block content
 
   // User Profile and Recently Watched
   if userInfo
-    .card.text-white.bg-success.mb-4f
+    .card.text-white.bg-success.mb-4
       .card-header
         h6.panel-title.mb-0 Your Trakt.tv Profile & Recently Watched
-      .card-body.text-dark.bg-white
+      .card-body.bg-body.text-body
         ul.list-unstyled
           li
             strong Username:
@@ -68,7 +68,7 @@ block content
     .card.text-white.bg-info.mb-4
       .card-header
         h6.panel-title.mb-0 Trending Movies (Public API, top 6)
-      .card-body.text-dark.bg-white
+      .card-body.bg-body.text-body
         .row
           each item in trending
             .col-md-4.col-6.mb-3
@@ -86,7 +86,7 @@ block content
     .card.text-white.bg-primary.mb-4
       .card-header
         h6.panel-title.mb-0 Top Trending Movie Details (Public API)
-      .card-body.text-dark.bg-white
+      .card-body.bg-body.text-body
         .row
           .col-md-5
             .mb-3(style='width: 100%; max-width: 480px; margin: auto')

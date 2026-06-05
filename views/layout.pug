@@ -11,6 +11,31 @@ html.h-100(lang='en')
     title #{ title } - Hackathon Starter
     link(rel='shortcut icon', href='/favicon.ico')
     //link(rel='stylesheet', href='/css/bootstrap.min.css') // bootstrap css gets added to main.css via main.scss build
+    //- Theme bootstrap: stamp `data-bs-theme` (Bootstrap 5.3's data color mode)
+    //- and the cookieconsent `cc--darkmode` class BEFORE the stylesheets load,
+    //- so the first paint is already in the right theme. The preference lives
+    //- entirely in the browser — localStorage for an explicit choice,
+    //- prefers-color-scheme as the first-visit fallback. The runtime
+    //- toggle + cross-tab sync live in /js/theme.js.
+    script.
+      (function () {
+        var html = document.documentElement;
+        var stored = null;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch (e) {}
+        // Guard matchMedia the same way we guard localStorage: the only
+        // practical environment where it is missing is an exotic legacy
+        // webview, but if it ever throws we don't want the whole IIFE to
+        // abort before the theme attribute is stamped.
+        var prefersDark = false;
+        try {
+          prefersDark = typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches;
+        } catch (e) {}
+        var theme = stored === 'light' || stored === 'dark' ? stored : prefersDark ? 'dark' : 'light';
+        html.setAttribute('data-bs-theme', theme);
+        html.classList.toggle('cc--darkmode', theme === 'dark');
+      })();
     link(rel='stylesheet', href='/css/main.css?v=' + getFileHash('/css/main.css'))
     link(rel='stylesheet', href='/css/lib/cookieconsent.min.css?v=' + getFileHash('/css/lib/cookieconsent.min.css'))
     block head
@@ -28,6 +53,7 @@ html.h-100(lang='en')
     script(src='/js/lib/jquery.min.js?v=' + getFileHash('/js/lib/jquery.min.js'))
     script(src='/js/lib/bootstrap.min.js?v=' + getFileHash('/js/lib/bootstrap.min.js'))
     script(src='/js/main.js?v=' + getFileHash('/js/main.js'))
+    script(src='/js/theme.js?v=' + getFileHash('/js/theme.js'))
     script(src='/js/lib/cookieconsent.umd.min.js?v=' + getFileHash('/js/lib/cookieconsent.umd.min.js'))
     //- Default Google consent state, CookieConsent config, and Facebook Pixel
     //- queue stub all live in this single file. The FACEBOOK_PIXEL_ID data

@@ -103,7 +103,7 @@ block content
           | Biometric login is not supported by this browser or device.
         form#biometricEnableForm(action='/account/webauthn/register', method='POST', style='display: none')
           input(type='hidden', name='_csrf', value=_csrf)
-          button.btn.btn-outline-dark(type='submit')
+          button.btn.btn-outline-secondary(type='submit')
             i.fas.fa-fingerprint.fa-sm.me-2
             | Enable biometric login
 
@@ -139,13 +139,13 @@ block content
               | Verify your email address to add additional 2FA method(s).
           else
             if !user.twoFactorMethods || !user.twoFactorMethods.includes('totp')
-              a.btn.btn-outline-dark(href='/account/2fa/totp/setup')
+              a.btn.btn-outline-secondary(href='/account/2fa/totp/setup')
                 i.fas.fa-mobile-alt.fa-sm.me-2
                 | Add Authenticator App
             if !user.twoFactorMethods || !user.twoFactorMethods.includes('email')
               form.ms-2(action='/account/2fa/email/enable', method='POST', style='display: inline')
                 input(type='hidden', name='_csrf', value=_csrf)
-                button.btn.btn-outline-dark(type='submit')
+                button.btn.btn-outline-secondary(type='submit')
                   i.fas.fa-envelope.fa-sm.me-2
                   | Add 2FA by Email
       else
@@ -156,13 +156,13 @@ block content
         if user.password && user.emailVerified
           p.mb-3 Add an extra layer of security to your account.
           .mb-2
-            a.btn.btn-outline-dark(href='/account/2fa/totp/setup')
+            a.btn.btn-outline-secondary(href='/account/2fa/totp/setup')
               i.fas.fa-mobile-alt.fa-sm.me-2
               | Setup Authenticator App
           .mb-2
             form(action='/account/2fa/email/enable', method='POST', style='display: inline')
               input(type='hidden', name='_csrf', value=_csrf)
-              button.btn.btn-outline-dark(type='submit')
+              button.btn.btn-outline-secondary(type='submit')
                 i.fas.fa-envelope.fa-sm.me-2
                 | Enable Email 2FA
 

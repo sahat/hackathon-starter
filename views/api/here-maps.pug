@@ -25,11 +25,11 @@ block content
     #directLineDistance
     | &nbsp;miles.
 
-  script(src='https://js.api.here.com/v3/3.1/mapsjs-core.js', type='text/javascript', charset='utf-8')
-  script(src='https://js.api.here.com/v3/3.1/mapsjs-service.js', type='text/javascript', charset='utf-8')
-  script(src='https://js.api.here.com/v3/3.1/mapsjs-mapevents.js', type='text/javascript', charset='utf-8')
-  script(src='https://js.api.here.com/v3/3.1/mapsjs-ui.js', type='text/javascript', charset='utf-8')
-  link(rel='stylesheet', type='text/css', href='https://js.api.here.com/v3/3.1/mapsjs-ui.css')
+  script(src='https://js.api.here.com/v3/3.2/mapsjs-core.js', type='text/javascript', charset='utf-8')
+  script(src='https://js.api.here.com/v3/3.2/mapsjs-service.js', type='text/javascript', charset='utf-8')
+  script(src='https://js.api.here.com/v3/3.2/mapsjs-mapevents.js', type='text/javascript', charset='utf-8')
+  script(src='https://js.api.here.com/v3/3.2/mapsjs-ui.js', type='text/javascript', charset='utf-8')
+  link(rel='stylesheet', type='text/css', href='https://js.api.here.com/v3/3.2/mapsjs-ui.css')
 
   script.
     const platform = new H.service.Platform({
@@ -38,9 +38,23 @@ block content
     });
 
     const defaultLayers = platform.createDefaultLayers();
-    const map = new H.Map(document.getElementById('map'), defaultLayers.vector.normal.map, {
+    // Pick the dark vs. light base layer based on the current page theme.
+    // The inline <script> in <head> stamps `data-bs-theme` from localStorage
+    // (falling back to prefers-color-scheme) before any of these scripts run,
+    // so reading the attribute once at construction is correct for the
+    // initial paint. Subsequent toggles dispatch a `themechange` event from
+    // /js/theme.js, which we listen for here and call `setBaseLayer` to
+    // swap the tile source in place.
+    const darkBase = defaultLayers.vector.normal.mapnight;
+    const lightBase = defaultLayers.vector.normal.map;
+    const isDark = () => document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    const initialBase = isDark() ? darkBase : lightBase;
+    const map = new H.Map(document.getElementById('map'), initialBase, {
       zoom: 12,
       center: { lat: 47.6573676, lng: -122.3126527 },
+    });
+    document.addEventListener('themechange', (event) => {
+      map.setBaseLayer(event.detail.theme === 'dark' ? darkBase : lightBase);
     });
 
     const mapEvents = new H.mapevents.MapEvents(map);
@@ -59,8 +73,9 @@ block content
     lineString.pushLatLngAlt(47.6162956, -122.3555097);
     lineString.pushLatLngAlt(47.6205099, -122.3514661);
 
-    // Create polygon
-    const polygon = new H.map.Polygon(lineString, { style: { lineWidth: 2, strokeColor: 'black', fillColor: 'rgba(255, 0, 255, 0.5)' } });
+    // Create polygon.
+    const polygonGeometry = new H.geo.Polygon(lineString);
+    const polygon = new H.map.Polygon(polygonGeometry, { style: { lineWidth: 2, strokeColor: 'black', fillColor: 'rgba(255, 0, 255, 0.5)' } });
 
     // Create circle
     const circle = new H.map.Circle({ lat: 47.6205099, lng: -122.3514661 }, 3000, { style: { strokeColor: 'rgba(0,128,0, 0.6)', lineWidth: 1, fillColor: 'rgba(0, 128, 0, 0.3)' } });

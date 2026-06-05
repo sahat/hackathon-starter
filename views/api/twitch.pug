@@ -14,7 +14,7 @@ block content
   .card.text-white.bg-success.mb-4
     .card-header
       h6.panel-title.mb-0 Your Profile
-    .card-body.text-dark.bg-white
+    .card-body.bg-body.text-body
       .row
         .col-sm-2
           img(src=yourTwitchUserData.profile_image_url, width='150', height='150')
@@ -29,7 +29,7 @@ block content
   .card.text-white.bg-primary.mb-4
     .card-header
       h6.panel-title.mb-0 Top Streamer Playing Destiny 2
-    .card-body.text-dark.bg-white
+    .card-body.bg-body.text-body
       .row
         .col-sm-2
           img(src=otherTwitchStreamerInfo.profile_image_url, width='150', height='150')
@@ -54,7 +54,7 @@ block content
             div
               span Stream tags:
               each tag in otherTwitchStreamStatus.tags
-                span.badge.bg-primary.text-dark.mx-2= tag
+                span.badge.bg-primary-subtle.text-primary-emphasis.mx-2= tag
             br
             img(src=otherTwitchStreamStatus.thumbnail_url.replace('{width}x{height}', '640x360'), width='640', height='360')
           else

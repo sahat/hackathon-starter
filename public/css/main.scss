@@ -1,3 +1,13 @@
+// Use Bootstrap 5.3's `data` color mode: dark mode is applied by setting
+// `data-bs-theme="dark"` on <html>, which flips the global --bs-* CSS
+// variables. The preference is stored entirely in the browser —
+// localStorage for an explicit user choice, prefers-color-scheme as the
+// first-visit fallback. The inline <script> in <head> stamps the
+// attribute from those sources before the stylesheets load, so the first
+// paint is already in the right theme. The runtime toggle, persistence,
+// and cross-tab sync live in /js/theme.js.
+$color-mode-type: data;
+
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'node_modules/bootstrap-social/bootstrap-social.scss';
 @import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
@@ -87,4 +97,53 @@
     color: #fff !important;
     border: solid #000000;
   }
+}
+
+// Dark-mode overrides for the hardcoded `bg-light` utility used in a few
+// views (footer, pre.card in stripe.pug, ai-agent status panes, profile
+// picture-tile). The plain `bg-light` is not theme-aware, so we remap it.
+// Cookieconsent is themed separately via the `cc--darkmode` class on
+// <html>, which the inline <script> in <head> toggles alongside
+// `data-bs-theme`.
+@mixin dark-mode-fixes {
+  .bg-light,
+  pre.bg-light {
+    background-color: var(--bs-tertiary-bg) !important;
+  }
+
+  // The footer uses a hardcoded `bg-light` — give it a subtle dark equivalent
+  // without changing the markup.
+  footer.bg-light {
+    background-color: var(--bs-tertiary-bg) !important;
+  }
+
+  // /ai/rag.pug defines a .response-box with a hardcoded light background
+  // (#f8f9fa) inline; in dark mode the body text inside it would be light on
+  // a light box. Flip the box to the dark body bg so the text stays legible.
+  .response-box {
+    background-color: var(--bs-body-bg) !important;
+  }
+}
+
+[data-bs-theme='dark'] {
+  @include dark-mode-fixes;
+}
+
+// Dark-mode toggle icons: both glyphs are always present in the DOM, and SCSS
+// shows the one that matches the effective theme. Default is moon (page is
+// light); flip to sun whenever the page is in dark mode. `data-bs-theme` is
+// always set — by the inline <script> in <head> on first paint, and by
+// /js/theme.js on every subsequent toggle.
+.theme-icon-sun {
+  display: none;
+}
+.theme-icon-moon {
+  display: inline;
+}
+
+[data-bs-theme='dark'] .theme-icon-sun {
+  display: inline;
+}
+[data-bs-theme='dark'] .theme-icon-moon {
+  display: none;
 }
