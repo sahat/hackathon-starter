@@ -593,7 +593,6 @@ Required to run the project before your modifications
 | @googleapis/sheets            | Google Sheets API integration library.                                |
 | @huggingface/inference        | Client library for Hugging Face Inference providers                   |
 | @keyv/mongo                   | MongoDB storage adapter for Keyv                                      |
-| @langchain/community          | Third party integrations for Langchain                                |
 | @langchain/core               | Base LangChain abstractions and Expression Language                   |
 | @langchain/mongodb            | MongoDB integrations for LangChain                                    |
 | @langchain/textsplitters      | LangChain text splitters for RAG pipelines                            |
