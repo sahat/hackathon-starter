@@ -84,10 +84,15 @@ test.describe('Google Maps API Integration', () => {
     expect(markerCount).toBeGreaterThan(0);
 
     await markers.first().click();
-    await sharedPage.waitForTimeout(1000);
 
-    const infoWindow = await sharedPage.evaluate(() => document.querySelector('.info-window') !== null || document.querySelector('.gm-ui-hover-effect') !== null || document.querySelector('[class*="info"]') !== null);
-    expect(infoWindow).toBe(true);
+    // Google Maps renders its InfoWindow into a container with the
+    // class `.gm-style-iw`. The other class names the previous
+    // expression tried (.info-window, .gm-ui-hover-effect,
+    // [class*="info"]) are not applied to that container and only
+    // matched transiently, which is what masked the real failure
+    // (the marker was constructed without gmpClickable, so
+    // gmp-click never fired and the InfoWindow never opened).
+    await sharedPage.waitForSelector('.gm-style-iw', { timeout: 10000 });
 
     await expect(sharedPage.locator('#map')).toBeVisible();
   });
