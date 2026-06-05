@@ -33,6 +33,10 @@
   function applyTheme(theme) {
     html.setAttribute('data-bs-theme', theme);
     html.classList.toggle('cc--darkmode', theme === 'dark');
+    // Mirror the current state for assistive tech
+    for (const btn of document.querySelectorAll('[data-theme-toggle]')) {
+      btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    }
     // Let page-specific widgets (HERE maps base layer, third-party embeds,
     // any data-viz that paints to a canvas) react to the flip. We dispatch
     // on `document` so it reaches the widest set of listeners; bubbling
@@ -76,4 +80,14 @@
     const next = readStored();
     if (next && next !== currentTheme()) applyTheme(next);
   });
+
+  // First-paint sync for the toggle button's `aria-pressed`. The inline
+  // <head> script stamps `data-bs-theme` from localStorage / OS pref
+  // before this file even loads, so the DOM has the right theme — but
+  // the toggle button is rendered after that script, with a hardcoded
+  // `aria-pressed="false"` in the header markup. Align the button with
+  // whatever the page actually rendered as.
+  for (const btn of document.querySelectorAll('[data-theme-toggle]')) {
+    btn.setAttribute('aria-pressed', currentTheme() === 'dark' ? 'true' : 'false');
+  }
 })();

@@ -18,7 +18,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
           a.nav-link(class=title === 'Contact' ? 'active' : '', href='/contact') Contact
 
       form.d-flex
-        button.btn.btn-outline-light.me-2(type='button', data-theme-toggle, title='Toggle theme', aria-label='Toggle theme')
+        //- aria-pressed is kept in sync with data-bs-theme by /js/theme.js.
+        button.btn.btn-outline-light.me-2(type='button', data-theme-toggle, title='Toggle theme', aria-label='Toggle theme', aria-pressed='false')
           i.fa-solid.fa-moon.theme-icon-moon(aria-hidden='true')
           i.fa-solid.fa-sun.theme-icon-sun(aria-hidden='true')
         if !user

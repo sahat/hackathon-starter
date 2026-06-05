@@ -7,19 +7,22 @@ registerTestInManifest('e2e-nokey/theme.e2e.test.js');
 
 // Skip this file during replay if it's not in the manifest
 if (process.env.API_MODE === 'replay' && !isInManifest('e2e-nokey/theme.e2e.test.js')) {
-  console.log('[fixtures] skipping e2e-nokey/theme.e2e.test.js as it is not in manifest for replay mode - 3 tests');
+  console.log('[fixtures] skipping e2e-nokey/theme.e2e.test.js as it is not in manifest for replay mode - 4 tests');
   test.skip(true, 'Not in manifest for replay mode');
 }
 
 // All theme tests share a single browser context so localStorage (the
 // persistence layer under test) is the same instance the application sees.
+// We pin `colorScheme: 'light'` so the inline head script's prefers-color-scheme
+// fallback resolves to a known value — otherwise this suite would flake on
+// CI runners whose host OS prefers dark.
 test.describe('Dark mode toggle', () => {
   test.describe.configure({ mode: 'serial' });
 
   let page;
 
   test.beforeAll(async ({ browser }) => {
-    const context = await browser.newContext();
+    const context = await browser.newContext({ colorScheme: 'light' });
     page = await context.newPage();
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -38,6 +41,13 @@ test.describe('Dark mode toggle', () => {
 
     const toggle = page.locator('[data-theme-toggle]');
     await expect(toggle).toBeVisible();
+
+    // `aria-pressed` is the contract screen readers and other assistive
+    // tech rely on to read the toggle's current state. The first-paint
+    // sync in /js/theme.js must align it with the rendered theme.
+    const ariaPressed = await toggle.getAttribute('aria-pressed');
+    const expectedPressed = theme === 'dark' ? 'true' : 'false';
+    expect(ariaPressed).toBe(expectedPressed);
   });
 
   test('clicking the toggle flips data-bs-theme and persists to localStorage', async () => {
