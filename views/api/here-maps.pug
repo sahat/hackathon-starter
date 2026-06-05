@@ -38,17 +38,23 @@ block content
     });
 
     const defaultLayers = platform.createDefaultLayers();
-    // Pick the dark vs. light base layer based on the current page theme
-    // (data-bs-theme is stamped on <html> by the server after a toggle,
-    // or by the inline <script> in <head> from prefers-color-scheme on
-    // first visit). The dark-mode toggle does a full page reload, so
-    // reading the attribute once at construction is enough — no
-    // MutationObserver, no map.setBaseLayer(...) runtime swap needed.
-    const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-    const baseLayer = isDark ? defaultLayers.vector.normal.mapnight : defaultLayers.vector.normal.map;
-    const map = new H.Map(document.getElementById('map'), baseLayer, {
+    // Pick the dark vs. light base layer based on the current page theme.
+    // The inline <script> in <head> stamps `data-bs-theme` from localStorage
+    // (falling back to prefers-color-scheme) before any of these scripts run,
+    // so reading the attribute once at construction is correct for the
+    // initial paint. Subsequent toggles dispatch a `themechange` event from
+    // /js/theme.js, which we listen for here and call `setBaseLayer` to
+    // swap the tile source in place.
+    const darkBase = defaultLayers.vector.normal.mapnight;
+    const lightBase = defaultLayers.vector.normal.map;
+    const isDark = () => document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    const initialBase = isDark() ? darkBase : lightBase;
+    const map = new H.Map(document.getElementById('map'), initialBase, {
       zoom: 12,
       center: { lat: 47.6573676, lng: -122.3126527 },
+    });
+    document.addEventListener('themechange', (event) => {
+      map.setBaseLayer(event.detail.theme === 'dark' ? darkBase : lightBase);
     });
 
     const mapEvents = new H.mapevents.MapEvents(map);

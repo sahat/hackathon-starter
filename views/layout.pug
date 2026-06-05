@@ -24,7 +24,15 @@ html.h-100(lang='en')
         try {
           stored = localStorage.getItem('theme');
         } catch (e) {}
-        var theme = stored === 'light' || stored === 'dark' ? stored : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        // Guard matchMedia the same way we guard localStorage: the only
+        // practical environment where it is missing is an exotic legacy
+        // webview, but if it ever throws we don't want the whole IIFE to
+        // abort before the theme attribute is stamped.
+        var prefersDark = false;
+        try {
+          prefersDark = typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches;
+        } catch (e) {}
+        var theme = stored === 'light' || stored === 'dark' ? stored : prefersDark ? 'dark' : 'light';
         html.setAttribute('data-bs-theme', theme);
         html.classList.toggle('cc--darkmode', theme === 'dark');
       })();

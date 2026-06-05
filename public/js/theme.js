@@ -33,6 +33,11 @@
   function applyTheme(theme) {
     html.setAttribute('data-bs-theme', theme);
     html.classList.toggle('cc--darkmode', theme === 'dark');
+    // Let page-specific widgets (HERE maps base layer, third-party embeds,
+    // any data-viz that paints to a canvas) react to the flip. We dispatch
+    // on `document` so it reaches the widest set of listeners; bubbling
+    // stays inside the document tree and never crosses tabs.
+    document.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
   }
 
   function writeStored(theme) {
