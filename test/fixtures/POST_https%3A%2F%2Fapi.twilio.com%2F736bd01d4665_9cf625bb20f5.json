@@ -1,0 +1,36 @@
+[
+  {
+    "scope": "https://api.twilio.com:443",
+    "method": "POST",
+    "path": "/736bd01d4665",
+    "body": "To=%2B15005550001&From=%2B15005550006&Body=Hello%2C%20from%20Twilio.",
+    "status": 400,
+    "response": {
+      "code": 21211,
+      "message": "Invalid 'To' Phone Number: +1500555XXXX",
+      "more_info": "https://www.twilio.com/docs/errors/21211",
+      "status": 400
+    },
+    "rawHeaders": {
+      "connection": "keep-alive",
+      "content-length": "134",
+      "content-type": "application/json",
+      "date": "Tue, 09 Jun 2026 05:40:59 GMT",
+      "strict-transport-security": "max-age=31536000",
+      "twilio-concurrent-requests": "1",
+      "twilio-request-duration": "0.070",
+      "twilio-request-id": "RQf7f247ccf28019725c9f625c8c99043b",
+      "vary": "Origin",
+      "via": "1.1 f8731007efc5ab360d90cee573a1e916.cloudfront.net (CloudFront)",
+      "x-amz-cf-id": "DZKPyhvgBnpNAWWqQlAwnvl1rt3_vUcSfmpMXQ9ypL_65jIDDYbX_g==",
+      "x-amz-cf-pop": "SEA900-P10",
+      "x-api-domain": "api.twilio.com",
+      "x-cache": "Error from cloudfront",
+      "x-home-region": "us1",
+      "x-powered-by": "AT-5000",
+      "x-shenanigans": "none",
+      "x-twilio-error-code": "21211"
+    },
+    "responseIsBinary": false
+  }
+]

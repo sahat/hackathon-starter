@@ -1,0 +1,41 @@
+[
+  {
+    "scope": "https://api.github.com:443",
+    "method": "GET",
+    "path": "/ffa407d8bdb0",
+    "body": "",
+    "status": 200,
+    "response": [
+      "1f8b0800000000000003b5985d6f9b301486ff8baf51211f251f5235554a2f7201d5d4765a354d910b6e704a8019429a44fdef13601c20249b39ce55257ade87b7511f7cc2af03f2c3250dd014c5d8c309d21075d1f476389cdc0e3514842e5964179035fb6efef869fbceeac5b0671f3dfbfeee0e6908a738c16cb1613e9a222f49a278aaebc5c5f86649136ff3b6890973c220214172e3846b7da317f46fe9dd106968c93823bf0dd250831551ce29c23161b15e56f592b5dfb87765b69c7a0f7d3fdc1216376b9e45eb2222e23458cac669b03ce861e211b6c87ef995fdb1344e246ae4e387fcc782ba19204e3063c4fd7f040f1cf4701b10f675d01989c29cb4798b1d46a384868144a55a0c6928644b1cd03d96c4846c99a5b33212a97c1c6988a42490f91c8bf9831e319a6267f795dfd9213425ee4296d508220d25bb88a0297a8909cbfe7d63c2162925db05bf1e6dde7cea649f384dc802bbebccb677ecc7e44b3bdaf7467decffe1fa8d8c516f386ad7cfd9dafb07c3de76d7afa003f4135d2ffb27c6a4042c52dd0dace5210a7210c841ce50276109845ac839b21af298bc873ca84644d1e22a26ae5c1c700ffbe351df1cb77b381fdafb79ff11700c16748087bce9650bf990948359a6bb819534c4bf1c03b22f27a873afc041cdcb29b2dee52179ebf2981ae77883ab1847f61ef55312b89e306f301cf48686d9ae9e6558fb07c39abd76568fe301ee353a5f76b0312ce56235dbddc9160ac4cd1a0ee4688da4ced53a16ea6c8d26eb6e2d2cef702daec6e546a3ab38bd5e79041be5396af4c63df3cc423bdf5acfcb4f7be5743f480b3cc066d1f6b2c7624ccae022d5dddd5a1e622d07817ce50c75a69640a8a39c236b278fc97bc9836a8c142daeb3d186b1876965ad354693b332dafb8f41771147138886d5a2ffd86a2b9372ab6d1904ecb70d0468c9152cd8a62b300ad7dd2313bcf30a94f4e22b921db65f9155b40257ba5cc5d3271c2461ec3d311ad014c7a309f7b5670ccc9e396837f6616bed5f3fed95d5f9f8e47880b76dc52ffbdb9690f2f804d0dde7732888d7a74c90dfa738759eb7b0a1be9f2265bd3f25c8fb7fca50f31c68eb7695e7814b52ec07212b8fedbe694c8c33e7f6ce5edddf5a90b751391df010a8b4bdec7e65504af932d7ddf4060122b84081bc1614753a1f91508b0549565e1194775644d5a85a69721543efa36846d21d17d4ec4d26e6f8cc66fdfaf9f8fcd17f9c75ff9acbf100458f752f1b7a9c931294c7bafb590740f42c49203b4b883a390511ea66099255b3ccc99b5926d58879ec71152fd96ebd61e2dc34fafd81717bf6edd36abeb7662f80b74f391ea0a5687bd94a3126256591eaee642d0f519283404672863a214b20d447ce91d591c7e46de44135328a16ea5cfcfd17963d8d0559240000"
+    ],
+    "rawHeaders": {
+      "accept-ranges": "bytes",
+      "access-control-allow-origin": "*",
+      "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning",
+      "cache-control": "public, max-age=60, s-maxage=60",
+      "content-encoding": "gzip",
+      "content-length": "1042",
+      "content-security-policy": "default-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Tue, 09 Jun 2026 05:41:12 GMT",
+      "etag": "W/\"cbf3c294e3c5441bfd25f97c5950eba0f84ab6764dba2e2a0476f2760abaa8eb\"",
+      "link": "<https://api.github.com/repositories/14370955/stargazers?per_page=10&page=2>; rel=\"next\", <https://api.github.com/repositories/14370955/stargazers?per_page=10&page=3523>; rel=\"last\"",
+      "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+      "server": "github.com",
+      "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+      "vary": "Accept,Accept-Encoding, Accept, X-Requested-With",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "deny",
+      "x-github-api-version-selected": "2022-11-28",
+      "x-github-media-type": "github.v3; format=json",
+      "x-github-request-id": "F67B:19E0A9:25E8573:265E81B:6A27A77B",
+      "x-ratelimit-limit": "60",
+      "x-ratelimit-remaining": "54",
+      "x-ratelimit-reset": "1780987272",
+      "x-ratelimit-resource": "core",
+      "x-ratelimit-used": "6",
+      "x-xss-protection": "0"
+    },
+    "responseIsBinary": false
+  }
+]

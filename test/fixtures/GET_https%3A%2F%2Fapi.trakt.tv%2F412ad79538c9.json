@@ -1,0 +1,36 @@
+[
+  {
+    "scope": "https://api.trakt.tv:443",
+    "method": "GET",
+    "path": "/412ad79538c9",
+    "body": "",
+    "status": 200,
+    "response": [
+      "1b0c07002c0a6ce70e215a2c1d98ce361f822169ebd49a56e42f952fbd6a47e6e2a49bc8985cf961dbbe00299b45a7ab2fe2c6525f6847e498b28b9b2a1fdd969c8b45eecbcd718d9bffb5a6893a527b81d6d8b8c4bb0f6f6f0bc80e88c69785aed0015b7615c276819d411883ffe57faa2c42e177bbcc4354b7430b8318e85b9ab4170248ffcb0ee812c1343c47d90e3b1ea73fc275ff04629b0a481744b1b54de83caaad2ab8d36499741ad0712f3b214e6b522cd82854f532fc674a2850e7ddcd4ca5babd0f2d635e5799e76780e839ab4f2650bb4c3b98e30fd09bbbb15aca80b96dc5851076c8b329760390b06d45f13de08492691840d6e10a62c4035fe9348f6de8804f60bafce616e274a83e1d194f3df5c44dc897dbdc2b11e7dc3d10beb43126df8f4209f4e286ac7db9b88cf7c759fbb64542a31e30cd2ed7fbf9eba1e878d09b8b97efacfb9b6ddec5711380beb881a33767fa478349e15c3f4ca5674cb7200c8c93fa4dc716bba59bb015474843cc6310661905287d10d2d6d79598decb40216f140bb6e050b75aea83008c7c26f99fed0cc33ae9df4ba2d60ae2c9e6e634747bfaf446ef5f0ee7b30177de9f9eb2fd2fc0550f20c20d0c004761a2daa20f363c002106781813475e1ff222fbb15b05acfd97c3d87cf9343968713d4fcd2d16745a0f77578242a6af54ed1ad6d16b927075f21c23c31cec92586d8f2294ad9b22c8d4dc6266d66830f73792a71cb5fb4576fe966b30af58f26ad0919b2c36c58732bd6676a10cdfa3e4bd6db7cb4dc6b0c4194984be436557d8ff8dbe657d2b4106b6ed2226947b31794e5685356d035bd9d664052687aa96b47a996885ad754a225004212794afd8f3b0b8cd01aeb84640d8cae820515b9dccb49a93c3eef7db97dbe863f1c1092a3849278287452c04bbf8385558d32de0b861b43877c93d3fbb652dd0b42254adca1977a8300a5cf47a99a13939b6107f7317e4ad6e91b11554f35538e7ada80a0cf901abc8a0fed740ab8d9a3b790889babcab13c84eb95c75ca1192b6493a699cc585be004671654600b51521873150934b5c525885122453a962a8b93183605a35dc467da0b18420c5b10d2518622d0331a93143d5306bdeb503"
+    ],
+    "rawHeaders": {
+      "access-control-allow-origin": "*",
+      "access-control-expose-headers": "X-Pagination-Page,X-Pagination-Page-Count,X-Pagination-Limit,X-Pagination-Item-Count,X-Trending-User-Count,X-Start-Date,X-End-Date,X-Sort-By,X-Sort-How,X-Private-User,X-Ratelimit,Retry-After,X-Upgrade-URL,X-Applied-Sort-By,X-Applied-Sort-How,Cache-Control,Pragma,Expires",
+      "age": "18717",
+      "cache-control": "public, max-age=86400, s-maxage=43200",
+      "cache-tag": "movie,movie_metadata",
+      "cf-cache-status": "HIT",
+      "cf-placement": "remote-ORD",
+      "cf-ray": "a08dcd557dc0c62f-SEA",
+      "connection": "keep-alive",
+      "content-encoding": "br",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Tue, 09 Jun 2026 05:40:32 GMT",
+      "last-modified": "Tue, 09 Jun 2026 00:28:34 GMT",
+      "server": "cloudflare",
+      "speculation-rules": "\"/cdn-cgi/speculation\"",
+      "transfer-encoding": "chunked",
+      "vary": "Origin, accept-encoding",
+      "x-content-type-options": "nosniff",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "responseIsBinary": false
+  }
+]

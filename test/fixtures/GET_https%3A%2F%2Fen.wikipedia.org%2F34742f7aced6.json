@@ -1,0 +1,41 @@
+[
+  {
+    "scope": "https://en.wikipedia.org:443",
+    "method": "GET",
+    "path": "/34742f7aced6",
+    "body": "",
+    "status": 200,
+    "response": [
+      "1f8b08000000000000035d4fcb4ec4300cfc9595cfa1294bbb12f9843d70d923aa50da58a9212f12b70b5aedbfa31416217cb13de319792e306a9ee629fae49011148080f705f327a80b246db1d4617fe8eefbc3437f03c980ba61024201d50a6062571d9ea2c1e6b580009e173f064daeea4a5cf254f999391525e5925cd4a639d31b7934a49b98adac5baa9b9ca2f73114b9994823cda3fc717e71d1c6a6ac56f66d9b3eeefec34d0a16049cc9f00caa6b5b0133929d19d4beebafe23b82d7f6cfb7bfe2fa3666bfc5d68e7401f5bc1d81d8daf1048300a7477437a6861d04182c53a6c41443658e7ad5a70dd8e5253079dc615829c7e031300cd75a5f70ce405680010000"
+    ],
+    "rawHeaders": {
+      "access-control-allow-credentials": "false",
+      "access-control-allow-origin": "*",
+      "access-control-expose-headers": "MediaWiki-API-Error, Retry-After, X-Database-Lag, MediaWiki-Login-Suppressed",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "263",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Tue, 09 Jun 2026 05:41:42 GMT",
+      "mediawiki-login-suppressed": "true",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.codfw.main-678f4bd5bc-tmfbg",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp4044\"",
+      "set-cookie": "REDACTED",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp4044 miss, cp4044 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "76.104.248.98",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "89f30ecd-421f-41b8-aed8-979fdad99212"
+    },
+    "responseIsBinary": false
+  }
+]

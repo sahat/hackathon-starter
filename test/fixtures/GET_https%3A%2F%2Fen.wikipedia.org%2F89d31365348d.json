@@ -1,0 +1,43 @@
+[
+  {
+    "scope": "https://en.wikipedia.org:443",
+    "method": "GET",
+    "path": "/89d31365348d",
+    "body": "",
+    "status": 200,
+    "response": [
+      "1f8b08000000000000039d976d6fdb3610c7bfca81af12404e443dd892d015c8823da448dba176da62cb5e50d4c9622a912a49d9f5da7cf78192edc8ad33c003022836cf47f27777ff3b7d2539b3bce2aa696bb44832423cc295b4427648b2afc4685596062dc9a83f5e21936fdfc8a3473e77a837bd2132cd2b214be53e5965595d096b48164dfdc023a65b2ed158a124c9c8035b31305c8bd692f19291a26ddd5e07168fded639c9fefa4aa42199ef112b6ced8ef18aadd87ce7a9654b1405c9d2248a3d62c43f48b26416d3c0236ba50bae3a694996f871e891a7bd5e989649e03533e6a7fbed568da3724f5e3eb97f71e9cc5ec2d9abf93908030c5aad969a358d904ba8995c766c89c064015c69048bbc92aa56cb0da8126c85f001730f58ade4d28802e1f7c5ebdbdefc7a3ebf806b8dcc6201f9067ed6280b26e117c12b1012689ac61e08eb766d98909609d95b1287a1416359d3928c047e309df8ee6f41675938cba2d99fe4d1fb11d9fced9b112c1acf623f0976bca2649aa407bc623f4ec6bcdcefe1ec346a6ff307e416de28cb5ca03d074faa4e722ce0f2bef3039e14ee9106e81e5366dc234ee525287ddca2ff8e0f7681bc1c822241b528c158260ba60b28458d502add30dbb32e986520a445cd2b2697fb355b310b9d410355d73039d1c80a96d7f83ce2c0cf689845f428e2ab07f605ce4609723e063ea57e1afb3be0819fc4f101709a86fe18f8a242b8321bc9ab1e9a81d3d8bb7b7f7c7deb41673a56d71bd058a2d6588055c00c0c87551aae5e5d7df476b0b794b7ccef3bdfc7e927b3c50c06ad4beb35e650e00a6bd53628ed90f4e27387664474c5b470a776c6fbaa10689e639b2c28cdfc240b8fb3fd033547692728b92a845c8ec926411a24d31d599ad260f61dd9e901d9ef7db9fa340a3e49b5960ecdddbb5b785aeb6fdea0ad548fae5f40603a175633bdd9251730e8a47089051a8dea344710054a2b4a811aceeededd9c43679c6c28596f7a6db89b4faee6d73737c02ba619b7a88fe3892741b8a07ee6d3cc9f1ec5732b4c1f9aa73c00944b217bde7b50b3991fa5d3a79a0fe861cd07e1341d832a8536f6c4bcdb6e0b6bd438d45cabd1dd6c27885b368ea2077967a151056ab9ff6167101e3a6327424e1c0a706d4ad4bd82b80088a6d56a85d0a2eecb5872bcf87f677c86354d167e9cf9b38cc64759df6dc3fc6e17e69b7d9847b0c380467bd4a19fcc0eab3df20f515fc17fb81db2c7eb650b75bd71b62bd486d5c7acb729dbf52509063f7728393afc4f693614ea3e3f7b0d65b9b16ed9696f5b6d8ce0ac7eae5ae3054db330ccc2f419442ab7ba33628570bc57d3701ad0645fb3512f8de39a8de9019fb1c7d382ddc358a244cd6a606dab15e3954b24978c2ed91c985a3841e83bf489de65af70ee5e068cda722d4ff45222b39d7661d0082dd356f492ad34949dfb87e506a5fd3118d18406139a2e68920571161c0fc648136a913bcd1a6b82ef2774dae7621f89348a0fc533992687797adacdb63b0e51d87d5025b41a276b2dac4579a2c75e7e7bccacaed5dab8aa0064c6d5c9b82ba9138330c999c1c265482d78af36c603342df22118e5b6571e2d89c845c175af38a3c71bd8280a66232dfb32d68a2488e8a883f9c92ca287e5104487e3989b0e063f275fd4c5a217e2a19bebaede35ee024b2111989b6535725b6fc058dd71979bc5899b6cc7a00b7027c52fccbd6a18c8b1566b68d8a77de9b99370258daaf1a256cbb373283bc9fb578667e4992e68948549161e6f85ef1338fba10d1e4c62298dfc197dc21d06417848db4fe231ecf7c990bfa74f601f30bf32069bbcde6c4fb2cbd161eaff4da9e530ab82b006ae2bad1a845cabb5417d01c3c6a5c6e115c34db993adde1b55dab5938bb35fdfcee7e7fdba538e1dd3de95e89ae7068ad92208b220c9a87b5df8fbf1f15f10763567140e0000"
+    ],
+    "rawHeaders": {
+      "accept-ranges": "bytes",
+      "access-control-allow-credentials": "false",
+      "access-control-allow-origin": "*",
+      "access-control-expose-headers": "MediaWiki-API-Error, Retry-After, X-Database-Lag, MediaWiki-Login-Suppressed",
+      "age": "2",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Tue, 09 Jun 2026 05:41:41 GMT",
+      "mediawiki-login-suppressed": "true",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.codfw.main-678f4bd5bc-vg4h7",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp4044\"",
+      "set-cookie": "REDACTED",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp4044 miss, cp4044 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "76.104.248.98",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "c254dae9-fd75-4e7c-b851-09b5a5485ecd",
+      "x-search-id": "538mkmdr1c77ztgl4riidwscz"
+    },
+    "responseIsBinary": false
+  }
+]

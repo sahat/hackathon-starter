@@ -1,14 +1,12 @@
-process.env.API_TEST_FILE = 'e2e/lob.e2e.test.js';
 const { test, expect } = require('@playwright/test');
-const { registerTestInManifest, isInManifest } = require('../tools/fixture-helpers');
 
-// Self-register this test in the manifest when recording
-registerTestInManifest('e2e/lob.e2e.test.js');
-
-// Skip this file during replay if it's not in the manifest
-if (process.env.API_MODE === 'replay' && !isInManifest('e2e/lob.e2e.test.js')) {
-  console.log('[fixtures] skipping e2e/lob.e2e.test.js as it is not in manifest for replay mode - 3 tests');
-  test.skip(true, 'Not in manifest for replay mode');
+// Skip in any record/replay mode. The lob tests depend on a the browser
+// fetching a PDF based on their API response.  The PDFs have a 30 day
+// expiration, and since they are in the browser we can't intercept the
+// resuqest.
+if (process.env.API_MODE) {
+  console.log('[nock] skipping e2e/lob.e2e.test.js - because of their browser-side PDF fetch from lob-assets.com');
+  test.skip(true, 'Browser-side PDF fetch from lob-assets.com is not server-side interceptable');
 }
 
 test.describe('Lob API Integration', () => {

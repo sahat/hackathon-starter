@@ -1,17 +1,17 @@
-process.env.API_TEST_FILE = 'e2e/rag.e2e.test.js';
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
 const { MongoClient } = require('mongodb');
-const { registerTestInManifest, isInManifest } = require('../tools/fixture-helpers');
 
-// Self-register this test in the manifest when recording
-registerTestInManifest('e2e/rag.e2e.test.js');
-
-// Skip this file during replay if it's not in the manifest
-if (process.env.API_MODE === 'replay' && !isInManifest('e2e/rag.e2e.test.js')) {
-  console.log('[fixtures] skipping e2e/rag.e2e.test.js as it is not in manifest for replay mode - 2 tests');
-  test.skip(true, 'Not in manifest for replay mode');
+// The RAG e2e test depends on MongoDB Atlas vector-search indexing + live
+// Groq / HuggingFace APIs and waits up to 60s for the vector index to
+// become ready before asking a question. nock CAN intercept the underlying
+// fetch + Groq + HuggingFace HTTP calls, but the test's index-readiness
+// wait + multi-stage pipeline doesn't translate well to static recorded
+// fixtures. The skip is about pipeline complexity, not capability.
+if (process.env.API_MODE) {
+  console.log('[nock] skipping e2e/rag.e2e.test.js - 2 tests (Requires Atlas vector-index in addition to REST API record/replay)');
+  test.skip(true, 'Requires Atlas vector-index in addition to REST API record/replay');
 }
 
 /**

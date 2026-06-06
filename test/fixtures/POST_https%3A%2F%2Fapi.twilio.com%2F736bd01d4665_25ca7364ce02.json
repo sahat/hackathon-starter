@@ -1,0 +1,53 @@
+[
+  {
+    "scope": "https://api.twilio.com:443",
+    "method": "POST",
+    "path": "/736bd01d4665",
+    "body": "To=%2B12345678900&From=%2B15005550006&Body=Hello%2C%20from%20Twilio.",
+    "status": 201,
+    "response": {
+      "account_sid": "REDACTED",
+      "api_version": "2010-04-01",
+      "body": "Hello, from Twilio.",
+      "date_created": "Tue, 09 Jun 2026 05:40:40 +0000",
+      "date_sent": null,
+      "date_updated": "Tue, 09 Jun 2026 05:40:40 +0000",
+      "direction": "outbound-api",
+      "error_code": null,
+      "error_message": null,
+      "from": "+15005550006",
+      "messaging_service_sid": "REDACTED",
+      "num_media": "0",
+      "num_segments": "1",
+      "price": null,
+      "price_unit": "USD",
+      "sid": "REDACTED",
+      "status": "queued",
+      "subresource_uris": {
+        "media": "/2010-04-01/Accounts/:censored:34:fdecdfa787:/Messages/SMf8e777b85feed43e7b41309066efb6c4/Media.json"
+      },
+      "to": "+12345678900",
+      "uri": "/2010-04-01/Accounts/:censored:34:fdecdfa787:/Messages/SMf8e777b85feed43e7b41309066efb6c4.json"
+    },
+    "rawHeaders": {
+      "connection": "keep-alive",
+      "content-length": "783",
+      "content-type": "application/json;charset=utf-8",
+      "date": "Tue, 09 Jun 2026 05:40:40 GMT",
+      "strict-transport-security": "max-age=31536000",
+      "twilio-concurrent-requests": "1",
+      "twilio-request-duration": "0.086",
+      "twilio-request-id": "RQf8e777b85feed43e7b41309066efb6c4",
+      "vary": "Origin",
+      "via": "1.1 e6b2537b87653726af8a79e6da505188.cloudfront.net (CloudFront)",
+      "x-amz-cf-id": "a9B-QslM6e1DBecsudWbEj_stHY_8AfvYsLckDHkyRTkQWrA0cWVIg==",
+      "x-amz-cf-pop": "SEA900-P10",
+      "x-api-domain": "api.twilio.com",
+      "x-cache": "Miss from cloudfront",
+      "x-home-region": "us1",
+      "x-powered-by": "AT-5000",
+      "x-shenanigans": "none"
+    },
+    "responseIsBinary": false
+  }
+]

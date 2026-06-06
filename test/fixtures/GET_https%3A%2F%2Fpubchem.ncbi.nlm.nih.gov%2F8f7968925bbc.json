@@ -1,0 +1,35 @@
+[
+  {
+    "scope": "https://pubchem.ncbi.nlm.nih.gov:443",
+    "method": "GET",
+    "path": "/8f7968925bbc",
+    "body": "",
+    "status": 200,
+    "response": [
+      "1f8b08000000000000036d90516b833010c7dffd14479e8798689dcb9b4b375a58996c8516c61e3217ac103d8971544abffb88b4338c3e25fcfebf3beeee140090c260a78c1db7f24b2bc2e11400ccb8563de1f03131b864532ed64bc281b124b99be106b52a072dcd339a66d0927020e26195bd26e496b5537575b04ea25914d2d497f62f581584030d99479f8eb2b41bd9f7d7a228616c91ddc77ee9b678cf0987340e538f0a6c3aad8eb51ddddcd4ef2a0ed2546ef7c883ab476cbf97d8a21138b46e4afa3fcdcb52757616fc53bca195d69dd4895721f63b28f933e6169bbff6f1253c4fef67e07ee7e0172ccce543a5010000"
+    ],
+    "rawHeaders": {
+      "access-control-allow-origin": "*",
+      "cache-control": "private",
+      "connection": "Keep-Alive",
+      "content-encoding": "gzip",
+      "content-security-policy": "upgrade-insecure-requests",
+      "content-type": "application/json",
+      "date": "Tue, 09 Jun 2026 05:41:18 GMT",
+      "expires": "REDACTED",
+      "keep-alive": "timeout=4, max=40",
+      "ncbi-phid": "95B71846A27A77E10000000000000001.m_1",
+      "ncbi-sid": "95B71846A27A77E1_0000SID",
+      "referrer-policy": "origin-when-cross-origin",
+      "server": "Apache",
+      "set-cookie": "REDACTED",
+      "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding",
+      "x-throttling-control": "Request Count status: Green (0%), Request Time status: Green (0%), Service status: Green (37%)",
+      "x-ua-compatible": "IE=Edge",
+      "x-xss-protection": "1; mode=block"
+    },
+    "responseIsBinary": false
+  }
+]

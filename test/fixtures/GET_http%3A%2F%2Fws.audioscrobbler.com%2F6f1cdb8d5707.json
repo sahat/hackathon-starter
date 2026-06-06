@@ -1,0 +1,250 @@
+[
+  {
+    "scope": "http://ws.audioscrobbler.com:80",
+    "method": "GET",
+    "path": "/6f1cdb8d5707",
+    "body": "",
+    "status": 200,
+    "response": {
+      "artist": {
+        "name": "Roniit",
+        "mbid": "bffa862f-06ef-4c9d-81e7-3a79c6d3920e",
+        "url": "https://www.last.fm/music/Roniit",
+        "image": [
+          {
+            "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+            "size": "small"
+          },
+          {
+            "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+            "size": "medium"
+          },
+          {
+            "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+            "size": "large"
+          },
+          {
+            "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+            "size": "extralarge"
+          },
+          {
+            "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+            "size": "mega"
+          },
+          {
+            "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+            "size": ""
+          }
+        ],
+        "streamable": "0",
+        "ontour": "0",
+        "stats": {
+          "listeners": "32809",
+          "playcount": "437764"
+        },
+        "similar": {
+          "artist": [
+            {
+              "name": "Sølv",
+              "url": "https://www.last.fm/music/S%C3%B8lv",
+              "image": [
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "small"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "medium"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "large"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "extralarge"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "mega"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": ""
+                }
+              ]
+            },
+            {
+              "name": "Skott",
+              "url": "https://www.last.fm/music/Skott",
+              "image": [
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "small"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "medium"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "large"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "extralarge"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "mega"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": ""
+                }
+              ]
+            },
+            {
+              "name": "Ramsey",
+              "url": "https://www.last.fm/music/Ramsey",
+              "image": [
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "small"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "medium"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "large"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "extralarge"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "mega"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": ""
+                }
+              ]
+            },
+            {
+              "name": "Sam Short",
+              "url": "https://www.last.fm/music/Sam+Short",
+              "image": [
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "small"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "medium"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "large"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "extralarge"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "mega"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": ""
+                }
+              ]
+            },
+            {
+              "name": "Luna Shadows",
+              "url": "https://www.last.fm/music/Luna+Shadows",
+              "image": [
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "small"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "medium"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "large"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "extralarge"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": "mega"
+                },
+                {
+                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+                  "size": ""
+                }
+              ]
+            }
+          ]
+        },
+        "tags": {
+          "tag": [
+            {
+              "name": "dark pop",
+              "url": "https://www.last.fm/tag/dark+pop"
+            },
+            {
+              "name": "pop",
+              "url": "https://www.last.fm/tag/pop"
+            },
+            {
+              "name": "electronic",
+              "url": "https://www.last.fm/tag/electronic"
+            },
+            {
+              "name": "dark",
+              "url": "https://www.last.fm/tag/dark"
+            },
+            {
+              "name": "electronica",
+              "url": "https://www.last.fm/tag/electronica"
+            }
+          ]
+        },
+        "bio": {
+          "links": {
+            "link": {
+              "#text": "",
+              "rel": "original",
+              "href": "https://last.fm/music/Roniit/+wiki"
+            }
+          },
+          "published": "26 Feb 2011, 20:45",
+          "summary": "Roniit Alkayam, known mononymously as Roniit, is an independent dark electropop artist hailing from the mountains of Colorado, US, currently located in Los Angeles, CA, US. Harnessing her silvery voice and a keen ear for melody, Roniit writes catchy, dancy, upbeat yet somber electronic music from her small home studio. \n\nWith her dark and unique sound Roniit has captured the attention of fans locally and world wide. \"Every once in awhile, there is <a href=\"https://www.last.fm/music/Roniit\">Read more on Last.fm</a>",
+          "content": "Roniit Alkayam, known mononymously as Roniit, is an independent dark electropop artist hailing from the mountains of Colorado, US, currently located in Los Angeles, CA, US. Harnessing her silvery voice and a keen ear for melody, Roniit writes catchy, dancy, upbeat yet somber electronic music from her small home studio. \n\nWith her dark and unique sound Roniit has captured the attention of fans locally and world wide. \"Every once in awhile, there is an album that comes along that totally blows you away and Roniit‘s self titled release is one such album…\" says Migrate Music News. \n\nAll music, lyrics and production are her own handiwork, with drums and assistant production by Eric W. Brown (Rainbowdragoneyes, Magic Hammer). She is actively performing around the greater Denver area and was on full-US tour in 2012.  \n\nFree Download: https://bandcamp.com/roniit\nFacebook: www.facebook.com/roniitmusic\nOfficial:  www.roniit.com <a href=\"https://www.last.fm/music/Roniit\">Read more on Last.fm</a>. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply."
+        }
+      }
+    },
+    "rawHeaders": {
+      "access-control-allow-methods": "POST, GET, OPTIONS",
+      "access-control-allow-origin": "*",
+      "access-control-max-age": "86400",
+      "connection": "close",
+      "content-length": "6603",
+      "content-type": "application/json",
+      "date": "Tue, 09 Jun 2026 05:41:16 GMT",
+      "server": "openresty",
+      "via": "1.1 google"
+    },
+    "responseIsBinary": false
+  }
+]

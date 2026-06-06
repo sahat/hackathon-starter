@@ -605,6 +605,7 @@ Required to run the project before your modifications
 | @popperjs/core                | Frontend js library for poppers and tooltips.                         |
 | @simplewebauthn/browser       | WebAuthn frontend library (passkey / biometrics authentication)       |
 | @simplewebauthn/server        | WebAuthn backend library (passkey / biometrics authentication)        |
+| @zapier/secret-scrubber       | For redacting sensitive/secret values in objects                      |
 | bootstrap                     | CSS Framework.                                                        |
 | bootstrap-social              | Social buttons library.                                               |
 | bowser                        | User agent parser                                                     |
@@ -668,6 +669,7 @@ Required during code development for testing, Hygiene, code styling, etc.
 | husky                       | Git hook manager to automate tasks with git.                                |
 | mocha                       | Test framework.                                                             |
 | mongodb-memory-server       | In memory mongodb server for testing, so tests can be ran without a DB.     |
+| nock                        | HTTP server mocking and expectations library for Node.js.                   |
 | prettier                    | Code formatter.                                                             |
 | sinon                       | Test spies, stubs and mocks for JavaScript.                                 |
 | supertest                   | HTTP assertion library.                                                     |

@@ -1,35 +1,4 @@
-process.env.API_TEST_FILE = 'e2e/llm-classifier.e2e.test.js';
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const path = require('path');
-const { registerTestInManifest, isInManifest } = require('../tools/fixture-helpers');
-
-// Self-register this test in the manifest when recording
-registerTestInManifest('e2e/llm-classifier.e2e.test.js');
-
-// Skip this file during replay if it's not in the manifest
-if (process.env.API_MODE === 'replay' && !isInManifest('e2e/llm-classifier.e2e.test.js')) {
-  console.log('[fixtures] skipping e2e/llm-classifier.e2e.test.js as it is not in manifest for replay mode - 3 tests');
-  test.skip(true, 'Not in manifest for replay mode');
-}
-
-// Helper: extract Query per Minute (QPM) from the webserver log file if we get one.
-function extractQpmFromLog() {
-  try {
-    const webserverLog = path.resolve(__dirname, '..', '..', 'tmp', 'playwright-webserver.log');
-    if (!fs.existsSync(webserverLog)) return null;
-    const content = fs.readFileSync(webserverLog, 'utf8');
-    const marker = 'Groq API Error Response:';
-    const idx = content.lastIndexOf(marker);
-    if (idx === -1) return null;
-    const tail = content.slice(idx, idx + 400);
-    const m = /offers\s+(\d+)\s+queries/i.exec(tail);
-    if (!m) return null;
-    return parseInt(m[1], 10);
-  } catch {
-    return null;
-  }
-}
 
 test.describe('LLM Classifier Integration', () => {
   test.describe.configure({ mode: 'serial' });
@@ -58,9 +27,6 @@ test.describe('LLM Classifier Integration', () => {
   });
 
   test('should classify a user request and display all classification data', async ({ page }) => {
-    // Increase timeout to accommodate rate limiting wait in free tier
-    test.setTimeout(150000); // 2.5 minutes
-
     await page.goto('/ai/llm-classifier');
     await page.waitForLoadState('networkidle');
 
@@ -76,28 +42,6 @@ test.describe('LLM Classifier Integration', () => {
     await expect(page.locator('span.fw-bold.text-primary')).toContainText('Department:');
 
     const departmentValue = page.locator('span.ms-2.fs-4');
-    // Retry on rate-limit.
-    // Retry loop: up to 2 retries. If we cannot parse QPM from the log, fail immediately.
-    let attempt = 0;
-    const maxAttempts = 3; // initial try + 2 retries
-    while (attempt < maxAttempts) {
-      // small wait to let UI update
-      await page.waitForTimeout(500);
-      if ((await departmentValue.count()) > 0 && (await departmentValue.textContent()).trim().length > 0) {
-        break; // success
-      }
-      attempt += 1;
-      console.log(`LLM API rate limit: Retrying attempt ${attempt} of ${maxAttempts - 1}...`);
-      if (attempt >= maxAttempts) break;
-      const qpm = extractQpmFromLog();
-      if (!qpm) {
-        throw new Error('LLM API rate-limit log not found or QPM not parseable — failing test (no fallback)');
-      }
-      const waitSeconds = Math.ceil(60 / qpm) + 2;
-      await page.waitForTimeout(waitSeconds * 1000);
-      await page.click('button[type="submit"]');
-      await page.waitForLoadState('networkidle');
-    }
     await expect(departmentValue).toBeVisible();
     expect((await departmentValue.textContent()).trim().length).toBeGreaterThan(0);
 
@@ -126,29 +70,6 @@ test.describe('LLM Classifier Integration', () => {
     await page.fill('textarea#inputText', testMessage);
     await page.click('button[type="submit"]');
     await page.waitForLoadState('networkidle');
-    // Retry on rate-limit.
-    // Retry loop: up to 2 retries. If we cannot parse QPM from the log, fail immediately.
-    let attempt = 0;
-    const maxAttempts = 3; // initial try + 2 retries
-    while (attempt < maxAttempts) {
-      const departmentValue = page.locator('span.ms-2.fs-4');
-      // small wait to let UI update
-      await page.waitForTimeout(500);
-      if ((await departmentValue.count()) > 0 && (await departmentValue.textContent()).trim().length > 0) {
-        break; // success
-      }
-      attempt += 1;
-      if (attempt >= maxAttempts) break;
-      console.log(`LLM API rate limit: Retrying attempt ${attempt} of ${maxAttempts - 1}...`);
-      const qpm = extractQpmFromLog();
-      if (!qpm) {
-        throw new Error('LLM rate-limit log not found or QPM not parseable — failing test (no fallback)');
-      }
-      const waitSeconds = Math.ceil(60 / qpm) + 2;
-      await page.waitForTimeout(waitSeconds * 1000);
-      await page.click('button[type="submit"]');
-      await page.waitForLoadState('networkidle');
-    }
 
     // Verify input is preserved
     await expect(page.locator('textarea#inputText')).toHaveValue(testMessage);

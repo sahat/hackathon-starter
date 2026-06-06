@@ -1,0 +1,36 @@
+[
+  {
+    "scope": "https://api.twilio.com:443",
+    "method": "POST",
+    "path": "/736bd01d4665",
+    "body": "To=%2B15005550003&From=%2B15005550006&Body=Hello%2C%20from%20Twilio.",
+    "status": 400,
+    "response": {
+      "code": 21408,
+      "message": "Permission to send an SMS has not been enabled for the region indicated by the 'To' number: +1500555XXXX",
+      "more_info": "https://www.twilio.com/docs/errors/21408",
+      "status": 400
+    },
+    "rawHeaders": {
+      "connection": "keep-alive",
+      "content-length": "199",
+      "content-type": "application/json",
+      "date": "Tue, 09 Jun 2026 05:41:05 GMT",
+      "strict-transport-security": "max-age=31536000",
+      "twilio-concurrent-requests": "1",
+      "twilio-request-duration": "0.073",
+      "twilio-request-id": "RQ0964234511695425c0d8347a54b00b80",
+      "vary": "Origin",
+      "via": "1.1 d525041695bdb6325f78ebba5c11b8a2.cloudfront.net (CloudFront)",
+      "x-amz-cf-id": "6eX8VNYwV9hBH5lzWZririt2QpEqccaJHirVPvoklO6obGeEluuVJA==",
+      "x-amz-cf-pop": "SEA900-P10",
+      "x-api-domain": "api.twilio.com",
+      "x-cache": "Error from cloudfront",
+      "x-home-region": "us1",
+      "x-powered-by": "AT-5000",
+      "x-shenanigans": "none",
+      "x-twilio-error-code": "21408"
+    },
+    "responseIsBinary": false
+  }
+]

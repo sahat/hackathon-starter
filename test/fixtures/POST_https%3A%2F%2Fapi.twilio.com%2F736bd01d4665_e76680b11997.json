@@ -1,0 +1,36 @@
+[
+  {
+    "scope": "https://api.twilio.com:443",
+    "method": "POST",
+    "path": "/736bd01d4665",
+    "body": "To=%2B15005550009&From=%2B15005550006&Body=Hello%2C%20from%20Twilio.",
+    "status": 400,
+    "response": {
+      "code": 21614,
+      "message": "'To' number: +1500555XXXX, is not a valid mobile number",
+      "more_info": "https://www.twilio.com/docs/errors/21614",
+      "status": 400
+    },
+    "rawHeaders": {
+      "connection": "keep-alive",
+      "content-length": "150",
+      "content-type": "application/json",
+      "date": "Tue, 09 Jun 2026 05:41:11 GMT",
+      "strict-transport-security": "max-age=31536000",
+      "twilio-concurrent-requests": "1",
+      "twilio-request-duration": "0.085",
+      "twilio-request-id": "RQe994321c2e69e1b487379bc54271d2e0",
+      "vary": "Origin",
+      "via": "1.1 b669d9add7767f73665f1f8b7e8cd802.cloudfront.net (CloudFront)",
+      "x-amz-cf-id": "Xk7687iBuUxZ84e2lSOkfhozv4WEkDEf0rsWm4eAqJtzp2UD5N_6LA==",
+      "x-amz-cf-pop": "SEA900-P10",
+      "x-api-domain": "api.twilio.com",
+      "x-cache": "Error from cloudfront",
+      "x-home-region": "us1",
+      "x-powered-by": "AT-5000",
+      "x-shenanigans": "none",
+      "x-twilio-error-code": "21614"
+    },
+    "responseIsBinary": false
+  }
+]

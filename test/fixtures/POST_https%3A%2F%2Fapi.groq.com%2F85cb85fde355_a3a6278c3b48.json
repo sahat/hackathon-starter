@@ -1,0 +1,51 @@
+[
+  {
+    "scope": "https://api.groq.com:443",
+    "method": "POST",
+    "path": "/85cb85fde355",
+    "body": {
+      "model": "llama-3.3-70b-versatile",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a customer service classifier for an e-commerce platform. Your role is to identify the primary issue described by the customer and return the result in JSON format. Carefully analyze the customer's message and select one of the following departments as the classification result:\n\nOrder Tracking and Status\nReturns and Refunds\nPayments and Billing Issues\nAccount Management\nProduct Inquiries\nTechnical Support\nShipping and Delivery Issues\nPromotions and Discounts\nMarketplace Seller Support\nFeedback and Complaints\n\nProvide the output in this JSON structure:\n\n{\n  \"department\": \"<selected_department>\"\n}\nReplace <selected_department> with the name of the most relevant department from the list above. If the inquiry spans multiple categories, choose the department that is most likely to address the customer's issue promptly and effectively."
+        },
+        {
+          "role": "user",
+          "content": "I want a refund"
+        }
+      ],
+      "temperature": 0,
+      "max_tokens": 64
+    },
+    "status": 200,
+    "response": [
+      "1b6c02602c0aec368b7784ceacdae388ee81892198081747ba7bc4388c07929a5bca4f8f5dd6276d9de419082c16886a4e653beb4368642d5de83e40254c1685aed461e91bbc196866399e7ffc7d9a8616e0c3384bd36d7ed1d73994d4cdaea0daaf3fc0e1a7f57c9aac3b33817bd4b5e55eb7655c61d5ccd3c219e86eaaba8e4d0012a43c81df2344c40e37f02251a914769105e0dc585b3a740b1c9600d872c093527d0f05bb2f291670bb40737c297a02f8c4269503b4c377df4d5629bd7dcb0163bb6eca1ab364fa64dff6fdfb635adbd365adae10b2a84f4421d507ac8f78dc43209a8b979a3d843b2052706774a7cb3a9f6ea2c9c9155e39c8982350252210a05c80cb5671662134cc029a04ed8c83e303638cd1395096d81fb120c2c219a633242997e4711642496f803909827359782515f192e7b29e218c3f2e7a16ccf7b668f9be5dcda5ca94c3f2f2bcfcdae04a5c551bf89c9669c40f511dcad7eb05ac954be77231d30f"
+    ],
+    "rawHeaders": {
+      "alt-svc": "h3=\":443\"; ma=86400",
+      "cache-control": "private, max-age=0, no-store, no-cache, must-revalidate",
+      "cf-cache-status": "DYNAMIC",
+      "cf-ray": "a08dcd320e4dfbea-SEA",
+      "connection": "keep-alive",
+      "content-encoding": "br",
+      "content-type": "application/json",
+      "date": "Tue, 09 Jun 2026 05:40:26 GMT",
+      "server": "cloudflare",
+      "set-cookie": "REDACTED",
+      "strict-transport-security": "max-age=15552000",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "via": "1.1 google",
+      "x-groq-region": "dls",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "12000",
+      "x-ratelimit-remaining-requests": "998",
+      "x-ratelimit-remaining-tokens": "11741",
+      "x-ratelimit-reset-requests": "2m52.8s",
+      "x-ratelimit-reset-tokens": "1.295s",
+      "x-request-id": "req_01ktneaytsfrb9e6jnx118tg3s"
+    },
+    "responseIsBinary": false
+  }
+]

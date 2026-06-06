@@ -1,0 +1,41 @@
+[
+  {
+    "scope": "https://en.wikipedia.org:443",
+    "method": "GET",
+    "path": "/6cdd4d058049",
+    "body": "",
+    "status": 200,
+    "response": [
+      "1f8b08000000000000038d95db6edb3810865f85e0e5c2752cc93a58d82e90055a6c6fbac1f6b017492050d4586223910249393502bf7b211f39b20bf0ca3287fce7d36838ff1b7d655a0a591b9abfd18e0939fefe4173fa65280dd7a2046215b10d900e2ac15ec58b78c77af18e49a906c981744cb442d6a415c61266c99f8db5bdc9efeec605331f0fec4fce95aeef7a65acd2623087e8dd6dcdf9ada37f91b5d2442a2b3810b526f70f9f4805bd06ceac50d210262b526a602f230d6f98acc1ccc93703e4f1f14b0f5cb036bfefc5476076d0f0cdb01a9e9fc79733006418ff8eb22749a8c8fab0d390724bb66ad084f57d2b0ee9e67437a33dd3064ef57aa2bd56fd7b037c8ff34449c30c2901a4a339270f2d3033e603723c6115af98654f9408692cb06a4e77aeb815b6059ad3cfaa82f90f43c7500da2a279982c833889e2193d65a5f9e31bb58ab7b08196e6c18c1e9f684867b4157214fa478c1f614b67540e5d099ae634a0332a64053f8fcf6badbaebbce5d6825aaf0d589a2fd36c35a34cf24669a4d90af9723f5ddecd5cacf082155db0fed64c5642d6886bee92855e64c1581307cdd1456ce7750c77bb66ff6e406f04bcba70a18316f9a185419238688e2a423baffbd4eda16576ad744798e68db0c0c7a6459ca8884b3fd278858a784a524c9220ecdb9b7cdee193ac0663f59698a1ef95b618df2d74ec879f2e164b07ffa45f5cf411f955dca727fe83fd5d362e6ce4a0265ea8e1225bb937c9514588e7751fb4afc01b29386b4905968916312e1dc6d48f314ec285c378962f2ef208f67a835f1758d0924d6851f7669ebc69b2409fff223cf9eea7800fdfd746039b8ea8256acf951f5f12a5a89e8e30aee339e0c3f73dc3606e33060b3fb25510060ed95e12217dcffca612e32fa3a5764cb21a3a9016b3b94d18f8594eb88a23f7a61c531428051e48d73b7cd83f6c405ad22ad563e6d865f633a370956699c3bc972e8ed288d589f830fe0fe5bd31d095ed1643262ea49f2d458b24481d48ac8d28dd900fe66766c5064829f6563bb9d8a98beae74bd1224ddd7a1ef40b471fe14ec33eb3f341ab1fc02da9d5669c0d922333453de067465198466e798f090a9400f7edf50e3f435a8306c9b125a186f0f3a4284eb3047992233c71a573c487f0e3a06d039adc98a3a819fc6c298ab3c01d0847f5e237c3741af601fef0f3601064544265cd5c5e3f5b8a9215b2a593787112c703014777cf336a1af56a15a739a5bbdd2f6cd16fbebb0d0000"
+    ],
+    "rawHeaders": {
+      "access-control-allow-credentials": "false",
+      "access-control-allow-origin": "*",
+      "access-control-expose-headers": "MediaWiki-API-Error, Retry-After, X-Database-Lag, MediaWiki-Login-Suppressed",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Tue, 09 Jun 2026 05:41:42 GMT",
+      "mediawiki-login-suppressed": "true",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.codfw.main-678f4bd5bc-fggjr",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp4044\"",
+      "set-cookie": "REDACTED",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp4044 miss, cp4044 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "76.104.248.98",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "bb7a7ac3-ed3a-42bc-94e9-14d11fab32f0"
+    },
+    "responseIsBinary": false
+  }
+]

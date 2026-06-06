@@ -1,13 +1,17 @@
 const { test, expect } = require('@playwright/test');
 
-// Skip this suite entirely when running in replay/record-fixture mode.
-// We intentionally do not use browser-side record/replay for Google Maps.
-if (process.env.API_MODE === 'replay' || process.env.API_MODE === 'record') {
-  console.log('[fixtures] skipping google-maps.e2e.test.js in record/replay mode (browser-side fixtures disabled) - 6 tests');
-  test.skip(true, 'Skipping Google Maps tests in record/replay mode (browser-side fixtures disabled)');
+// Skip in any record/replay mode. Google Maps loads map tiles directly
+// from the browser (not via a server-side fetch), so the nock interceptor
+// (which lives in the webserver process) cannot capture them. The test
+// therefore needs the live API in any mode that records or replays.
+if (process.env.API_MODE) {
+  console.log('[nock] skipping e2e/google-maps.e2e.test.js - 6 tests (browser-side map tile loading is not server-side interceptable)');
+  test.skip(true, 'Browser-side map tile loading is not server-side interceptable');
 }
 
 test.describe('Google Maps API Integration', () => {
+  test.describe.configure({ mode: 'serial' });
+
   let sharedPage;
 
   test.beforeAll(async ({ browser }) => {

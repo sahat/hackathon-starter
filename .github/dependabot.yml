@@ -10,6 +10,8 @@ updates:
     commit-message:
       prefix: 'chore'
       include: 'scope'
+    ignore:
+      - dependency-name: 'nock'
     groups:
       major-updates:
         update-types: ['major']

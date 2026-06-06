@@ -1,0 +1,36 @@
+[
+  {
+    "scope": "https://api.twilio.com:443",
+    "method": "POST",
+    "path": "/736bd01d4665",
+    "body": "To=%2B15005550004&From=%2B15005550006&Body=Hello%2C%20from%20Twilio.",
+    "status": 400,
+    "response": {
+      "code": 21610,
+      "message": "Attempt to send to unsubscribed recipient",
+      "more_info": "https://www.twilio.com/docs/errors/21610",
+      "status": 400
+    },
+    "rawHeaders": {
+      "connection": "keep-alive",
+      "content-length": "136",
+      "content-type": "application/json",
+      "date": "Tue, 09 Jun 2026 05:41:08 GMT",
+      "strict-transport-security": "max-age=31536000",
+      "twilio-concurrent-requests": "1",
+      "twilio-request-duration": "0.055",
+      "twilio-request-id": "RQ3844a3f89c1063b2a5785400d985cc6c",
+      "vary": "Origin",
+      "via": "1.1 566cc276dff9847158a5a9854be4df42.cloudfront.net (CloudFront)",
+      "x-amz-cf-id": "QpX0gT8EbNmlMcuooO11YkOHhFj-qw5ewQrMfKXIVAYE-wrdBHDWVQ==",
+      "x-amz-cf-pop": "SEA900-P10",
+      "x-api-domain": "api.twilio.com",
+      "x-cache": "Error from cloudfront",
+      "x-home-region": "us1",
+      "x-powered-by": "AT-5000",
+      "x-shenanigans": "none",
+      "x-twilio-error-code": "21610"
+    },
+    "responseIsBinary": false
+  }
+]

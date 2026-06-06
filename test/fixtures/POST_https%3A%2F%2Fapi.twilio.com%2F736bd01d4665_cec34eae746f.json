@@ -1,0 +1,36 @@
+[
+  {
+    "scope": "https://api.twilio.com:443",
+    "method": "POST",
+    "path": "/736bd01d4665",
+    "body": "To=%2B15005550002&From=%2B15005550006&Body=Hello%2C%20from%20Twilio.",
+    "status": 400,
+    "response": {
+      "code": 21612,
+      "message": "Message cannot be sent with the current combination of 'To' (+1500555XXXX) and/or 'From' (+15005550006) parameters",
+      "more_info": "https://www.twilio.com/docs/errors/21612",
+      "status": 400
+    },
+    "rawHeaders": {
+      "connection": "keep-alive",
+      "content-length": "209",
+      "content-type": "application/json",
+      "date": "Tue, 09 Jun 2026 05:41:03 GMT",
+      "strict-transport-security": "max-age=31536000",
+      "twilio-concurrent-requests": "1",
+      "twilio-request-duration": "0.066",
+      "twilio-request-id": "RQ2e53e8025f412120f872edeca6a411e3",
+      "vary": "Origin",
+      "via": "1.1 7605973575a3551426b82751020317de.cloudfront.net (CloudFront)",
+      "x-amz-cf-id": "9GBuR00UrIrTNXW-Wd1AgFqWhmkHuSOsawEhN7oeBRq8qqMfzW-mgw==",
+      "x-amz-cf-pop": "SEA900-P10",
+      "x-api-domain": "api.twilio.com",
+      "x-cache": "Error from cloudfront",
+      "x-home-region": "us1",
+      "x-powered-by": "AT-5000",
+      "x-shenanigans": "none",
+      "x-twilio-error-code": "21612"
+    },
+    "responseIsBinary": false
+  }
+]

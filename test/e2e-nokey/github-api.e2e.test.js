@@ -1,17 +1,6 @@
-process.env.API_TEST_FILE = 'e2e-nokey/github-api.e2e.test.js';
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
-const { registerTestInManifest, isInManifest } = require('../tools/fixture-helpers');
-
-// Self-register this test in the manifest when recording
-registerTestInManifest('e2e-nokey/github-api.e2e.test.js');
-
-// Skip this file during replay if it's not in the manifest
-if (process.env.API_MODE === 'replay' && !isInManifest('e2e-nokey/github-api.e2e.test.js')) {
-  console.log('[fixtures] skipping e2e-nokey/github-api.e2e.test.js as it is not in manifest for replay mode - 3 tests');
-  test.skip(true, 'Not in manifest for replay mode');
-}
 
 // Increase timeout for GitHub API tests to allow waiting for rate-limit reset which seems to be around 6 minutes
 test.setTimeout(6 * 60 * 1000 + 5000); // add extra 5s buffer
@@ -55,6 +44,8 @@ async function gotoGithubWithRateLimitRetry(sharedPage, request) {
 }
 
 test.describe('GitHub API Integration', () => {
+  test.describe.configure({ mode: 'serial' });
+
   let sharedPage;
 
   test.beforeAll(async ({ browser }) => {

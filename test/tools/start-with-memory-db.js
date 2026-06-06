@@ -5,8 +5,7 @@
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const { installServerApiFixtures } = require('./server-fetch-fixtures');
-const { installServerAxiosFixtures } = require('./server-axios-fixtures');
+const { installNockReplayFixtures } = require('./nock-server-fixtures');
 
 (async function main() {
   try {
@@ -49,17 +48,26 @@ const { installServerAxiosFixtures } = require('./server-axios-fixtures');
       console.warn('[start-with-memory-db] SCSS build failed or not available:', e.message || e);
     }
 
-    // Install server-side API fixtures (record/replay) before app loads
-    try {
-      installServerApiFixtures({ mode: process.env.API_MODE });
-      installServerAxiosFixtures({ mode: process.env.API_MODE });
-    } catch {}
-
     // Import the application after env is set so app.js picks up MONGODB_URI
     const urlMod = await import('url');
     const { pathToFileURL } = urlMod;
     const appPath = path.join(__dirname, '..', '..', 'app.js');
     await import(pathToFileURL(appPath).href);
+
+    // Install server-side API fixtures (record/replay) AFTER app.js loads so
+    // that any fetch calls app.js makes during initialization are not seen by
+    // nock (which can cause "no match" errors on the first real request).
+    // In live mode (no API_MODE) the installer is a no-op; in record/replay
+    // modes nock is activated and (for replay) all per-URL fixture files
+    // under test/fixtures/ are loaded into the interceptor.
+    try {
+      const result = await installNockReplayFixtures({ mode: process.env.API_MODE });
+      if (process.env.API_MODE) {
+        console.log(`[start-with-memory-db] nock installed (mode=${result.mode}${result.loaded != null ? `, loaded ${result.loaded} scopes` : ''})`);
+      }
+    } catch (err) {
+      console.error('[start-with-memory-db] Failed to install nock fixtures:', err.message || err);
+    }
     // keep process alive; app.listen is called inside app.js
   } catch (err) {
     console.error('[start-with-memory-db] Error starting:', err);

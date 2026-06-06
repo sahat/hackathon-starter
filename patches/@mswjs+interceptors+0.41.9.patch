@@ -1,0 +1,188 @@
+diff --git a/node_modules/@mswjs/interceptors/lib/node/ClientRequest-2loAH7xM.cjs b/node_modules/@mswjs/interceptors/lib/node/ClientRequest-2loAH7xM.cjs
+index 6231f4d..dbd2960 100644
+--- a/node_modules/@mswjs/interceptors/lib/node/ClientRequest-2loAH7xM.cjs
++++ b/node_modules/@mswjs/interceptors/lib/node/ClientRequest-2loAH7xM.cjs
+@@ -312,6 +312,8 @@ var MockHttpSocket = class extends MockSocket {
+ 		};
+ 		this.onRequestStart = (versionMajor, versionMinor, rawHeaders, _, path, __, ___, ____, shouldKeepAlive) => {
+ 			this.shouldKeepAlive = shouldKeepAlive;
++			this.httpVersionMajor = versionMajor;
++			this.httpVersionMinor = versionMinor;
+ 			const url = new URL(path || "", this.baseUrl);
+ 			const method = this.connectionOptions.method?.toUpperCase() || "GET";
+ 			const headers = require_fetchUtils.FetchResponse.parseRawHeaders([...this.requestRawHeadersBuffer, ...rawHeaders || []]);
+@@ -516,7 +518,20 @@ var MockHttpSocket = class extends MockSocket {
+ 		this.mockConnect();
+ 		this.socketState = "mock";
+ 		this.flushWriteBuffer();
+-		const serverResponse = new node_http.ServerResponse(new node_http.IncomingMessage(this));
++		const incomingMessage = new node_http.IncomingMessage(this);
++
++		// Set the HTTP version on the IncomingMessage.
++		// This is critical for Node.js to correctly allow keep alive.
++		// By default, nodejs sets keepalive to false if the HttpVersion is not at least
++		// 1.1: https://github.com/nodejs/node/blob/70f6b58ac655234435a99d72b857dd7b316d34bf/lib/_http_server.js#L211
++		// The version should normally already have been set by the onRequestStart method
++		if (this.httpVersionMajor != null && this.httpVersionMinor != null) {
++			incomingMessage.httpVersion = `${this.httpVersionMajor}.${this.httpVersionMinor}`;
++			incomingMessage.httpVersionMajor = this.httpVersionMajor;
++			incomingMessage.httpVersionMinor = this.httpVersionMinor;
++		}
++
++		const serverResponse = new node_http.ServerResponse(incomingMessage);
+ 		/**
+ 		* Assign a mock socket instance to the server response to
+ 		* spy on the response chunk writes. Push the transformed response chunks
+diff --git a/node_modules/@mswjs/interceptors/lib/node/ClientRequest-DGhBX21V.mjs b/node_modules/@mswjs/interceptors/lib/node/ClientRequest-DGhBX21V.mjs
+index 1628fe7..8011798 100644
+--- a/node_modules/@mswjs/interceptors/lib/node/ClientRequest-DGhBX21V.mjs
++++ b/node_modules/@mswjs/interceptors/lib/node/ClientRequest-DGhBX21V.mjs
+@@ -308,6 +308,8 @@ var MockHttpSocket = class extends MockSocket {
+ 		};
+ 		this.onRequestStart = (versionMajor, versionMinor, rawHeaders, _, path, __, ___, ____, shouldKeepAlive) => {
+ 			this.shouldKeepAlive = shouldKeepAlive;
++			this.httpVersionMajor = versionMajor;
++			this.httpVersionMinor = versionMinor;
+ 			const url = new URL(path || "", this.baseUrl);
+ 			const method = this.connectionOptions.method?.toUpperCase() || "GET";
+ 			const headers = FetchResponse.parseRawHeaders([...this.requestRawHeadersBuffer, ...rawHeaders || []]);
+@@ -512,7 +514,20 @@ var MockHttpSocket = class extends MockSocket {
+ 		this.mockConnect();
+ 		this.socketState = "mock";
+ 		this.flushWriteBuffer();
+-		const serverResponse = new ServerResponse(new IncomingMessage(this));
++		const incomingMessage = new IncomingMessage(this);
++
++		// Set the HTTP version on the IncomingMessage.
++		// This is critical for Node.js to correctly allow keep alive.
++		// By default, nodejs sets keepalive to false if the HttpVersion is not at least
++		// 1.1: https://github.com/nodejs/node/blob/70f6b58ac655234435a99d72b857dd7b316d34bf/lib/_http_server.js#L211
++		// The version should normally already have been set by the onRequestStart method
++		if (this.httpVersionMajor != null && this.httpVersionMinor != null) {
++			incomingMessage.httpVersion = `${this.httpVersionMajor}.${this.httpVersionMinor}`;
++			incomingMessage.httpVersionMajor = this.httpVersionMajor;
++			incomingMessage.httpVersionMinor = this.httpVersionMinor;
++		}
++
++		const serverResponse = new ServerResponse(incomingMessage);
+ 		/**
+ 		* Assign a mock socket instance to the server response to
+ 		* spy on the response chunk writes. Push the transformed response chunks
+diff --git a/node_modules/@mswjs/interceptors/lib/node/fetch-CaC3rGEu.mjs b/node_modules/@mswjs/interceptors/lib/node/fetch-CaC3rGEu.mjs
+index db22608..97d2521 100644
+--- a/node_modules/@mswjs/interceptors/lib/node/fetch-CaC3rGEu.mjs
++++ b/node_modules/@mswjs/interceptors/lib/node/fetch-CaC3rGEu.mjs
+@@ -84,13 +84,28 @@ var BrotliDecompressionStream = class extends TransformStream {
+ 		super({ async transform(chunk, controller) {
+ 			const buffer = Buffer.from(chunk);
+ 			const decompressed = await new Promise((resolve, reject) => {
++				const chunks = [];
++				const onData = (data) => chunks.push(data);
++				const onError = (error) => {
++					decompress.off("data", onData);
++					reject(error);
++				};
++				decompress.on("data", onData);
++				decompress.once("error", onError);
+ 				decompress.write(buffer, (error) => {
+-					if (error) reject(error);
++					if (error) {
++						decompress.off("data", onData);
++						reject(error);
++					}
++				});
++				decompress.flush(() => {
++					// setImmediate ensures any pending 'data' events from this
++					// flush are delivered before we resolve.
++					setImmediate(() => {
++						decompress.off("data", onData);
++						resolve(Buffer.concat(chunks));
++					});
+ 				});
+-				decompress.flush();
+-				decompress.once("data", (data) => resolve(data));
+-				decompress.once("error", (error) => reject(error));
+-				decompress.once("end", () => controller.terminate());
+ 			}).catch((error) => {
+ 				controller.error(error);
+ 			});
+diff --git a/node_modules/@mswjs/interceptors/lib/node/fetch-D2ClLNN-.cjs b/node_modules/@mswjs/interceptors/lib/node/fetch-D2ClLNN-.cjs
+index 4743c60..bde87d9 100644
+--- a/node_modules/@mswjs/interceptors/lib/node/fetch-D2ClLNN-.cjs
++++ b/node_modules/@mswjs/interceptors/lib/node/fetch-D2ClLNN-.cjs
+@@ -86,13 +86,26 @@ var BrotliDecompressionStream = class extends TransformStream {
+ 		super({ async transform(chunk, controller) {
+ 			const buffer = Buffer.from(chunk);
+ 			const decompressed = await new Promise((resolve, reject) => {
++				const chunks = [];
++				const onData = (data) => chunks.push(data);
++				const onError = (error) => {
++					decompress.off("data", onData);
++					reject(error);
++				};
++				decompress.on("data", onData);
++				decompress.once("error", onError);
+ 				decompress.write(buffer, (error) => {
+-					if (error) reject(error);
++					if (error) {
++						decompress.off("data", onData);
++						reject(error);
++					}
++				});
++				decompress.flush(() => {
++					setImmediate(() => {
++						decompress.off("data", onData);
++						resolve(Buffer.concat(chunks));
++					});
+ 				});
+-				decompress.flush();
+-				decompress.once("data", (data) => resolve(data));
+-				decompress.once("error", (error) => reject(error));
+-				decompress.once("end", () => controller.terminate());
+ 			}).catch((error) => {
+ 				controller.error(error);
+ 			});
+diff --git a/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts b/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts
+index 4d6a730..0834ad9 100644
+--- a/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts
++++ b/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts
+@@ -61,6 +61,8 @@ export class MockHttpSocket extends MockSocket {
+   private requestParser: HTTPParser<0>
+   private requestStream?: Readable
+   private shouldKeepAlive?: boolean
++  private httpVersionMajor?: number
++  private httpVersionMinor?: number
+ 
+   private socketState: 'unknown' | 'mock' | 'passthrough' = 'unknown'
+   private responseParser: HTTPParser<1>
+@@ -353,7 +355,20 @@ export class MockHttpSocket extends MockSocket {
+ 
+     // Create a `ServerResponse` instance to delegate HTTP message parsing,
+     // Transfer-Encoding, and other things to Node.js internals.
+-    const serverResponse = new ServerResponse(new IncomingMessage(this))
++    const incomingMessage = new IncomingMessage(this)
++
++    // Set the HTTP version on the IncomingMessage.
++    // This is critical for Node.js to correctly allow keep alive.
++    // By default, nodejs sets keepalive to false if the HttpVersion is not at least
++    // 1.1: https://github.com/nodejs/node/blob/70f6b58ac655234435a99d72b857dd7b316d34bf/lib/_http_server.js#L211
++    // The version should normally already have been set by the onRequestStart method
++    if (this.httpVersionMajor != null && this.httpVersionMinor != null) {
++      incomingMessage.httpVersion = `${this.httpVersionMajor}.${this.httpVersionMinor}`
++      incomingMessage.httpVersionMajor = this.httpVersionMajor
++      incomingMessage.httpVersionMinor = this.httpVersionMinor
++    }
++
++    const serverResponse = new ServerResponse(incomingMessage)
+ 
+     /**
+      * Assign a mock socket instance to the server response to
+@@ -535,6 +550,8 @@ export class MockHttpSocket extends MockSocket {
+     shouldKeepAlive
+   ) => {
+     this.shouldKeepAlive = shouldKeepAlive
++    this.httpVersionMajor = versionMajor
++    this.httpVersionMinor = versionMinor
+ 
+     const url = new URL(path || '', this.baseUrl)
+     const method = this.connectionOptions.method?.toUpperCase() || 'GET'
