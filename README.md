@@ -719,6 +719,7 @@ Required during code development for testing, Hygiene, code styling, etc.
 | prettier                    | Code formatter.                                                             |
 | sinon                       | Test spies, stubs and mocks for JavaScript.                                 |
 | supertest                   | HTTP assertion library.                                                     |
+| lint-staged                 | Running tasks like formatters and linters against staged git files.         |
 
 ## Useful Tools and Resources
 
