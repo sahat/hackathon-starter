@@ -103,7 +103,7 @@
     "eslint-plugin-chai-friendly": "^1.2.1",
     "globals": "^17.6.0",
     "husky": "^9.1.7",
-    "mocha": "^12.0.0-beta-9.5",
+    "mocha": "^12.0.0-rc.1",
     "mongodb-memory-server": "^11.2.0",
     "nock": "15.0.0-beta.12",
     "prettier": "^3.8.4",
