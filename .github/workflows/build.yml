@@ -5,6 +5,7 @@ on:
     branches: ['master']
   pull_request:
     branches: ['master']
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -21,7 +22,7 @@ jobs:
       RUN_E2E: ${{ vars.RUN_E2E }} # from repository settings -> Actions -> Variables
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [24.x, 26.x]
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v6

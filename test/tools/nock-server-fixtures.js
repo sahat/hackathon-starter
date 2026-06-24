@@ -82,7 +82,7 @@ const IGNORE_ENV_EXAMPLE_VALUES = [
   'hackathon-starter-xxxxxx',
   '828110519058.apps.googleusercontent.com',
   'llama-3.3-70b-versatile',
-  'meta-llama/llama-4-scout-17b-16e-instruct',
+  'qwen/qwen3.6-27b',
   'meta-llama/llama-guard-4-12b',
   'BAAI/bge-small-en-v1.5',
   'hf-inference',

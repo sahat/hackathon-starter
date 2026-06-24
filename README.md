@@ -88,7 +88,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - **AI Examples and Boilerplates**
   - AI Agent ReAct (Reasoning + Acting) with tool calling, MongoDB session persistence, and input guardrails
   - RAG with semantic and embedding caching
-  - Llama 3.3, Llama 4 Scout (vision use case)
+  - Text and Image LLMs - Llama 3.3, Qwen3.6
   - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Groq, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
@@ -1121,7 +1121,7 @@ These functions handle streaming, parsing, and session management and typically 
 The AI Agent requires these environment variables:
 
 - `GROQ_API_KEY` : Your Groq API key
-- `GROQ_MODEL` : The main LLM model (e.g., `llama-3.3-70b-versatile`)
+- `GROQ_MODEL` : The main LLM model (e.g., `llama-3.3-70b-versatile`, `qwen/qwen3.6-27b`, etc.)
 - `GROQ_MODEL_PROMPT_GUARD` : The guard model for input safety (e.g., `meta-llama/llama-guard-4-12b`)
 
 ### How do I use Socket.io with Hackathon Starter?
