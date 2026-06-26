@@ -29,7 +29,7 @@
     "test:image-link": "mocha --timeout 300000 \"test/*links.test.js\""
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@fortawesome/fontawesome-free": "^7.3.0",
     "@googleapis/drive": "^20.2.0",
     "@googleapis/sheets": "^13.0.2",
     "@huggingface/inference": "^4.13.19",
@@ -65,7 +65,7 @@
     "lastfm": "^0.9.4",
     "lusca": "^1.7.0",
     "mailchecker": "^6.0.20",
-    "mongodb": "^7.3.0",
+    "mongodb": "^7.4.0",
     "mongoose": "^9.7.2",
     "morgan": "^1.11.0",
     "multer": "^2.2.0",
