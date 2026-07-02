@@ -47,6 +47,8 @@ function makeFakeUser(overrides = {}) {
       profile: { pictures: new Map(), picture: undefined, pictureSource: undefined },
       save: sinon.stub().resolves(),
       clearTwoFactorCode: sinon.spy(),
+      // consumeToken verifies-and-clears in one call; default to a valid token.
+      consumeToken: sinon.stub().returns(true),
     },
     overrides,
   );
@@ -812,7 +814,6 @@ describe('User Controller', () => {
         loginToken: 'validhex',
         loginExpires: Date.now() + 900000,
         loginIpHash: 'hashed-ip',
-        verifyTokenAndIp: sinon.stub().returns(true),
       });
       userFindOneStub = sinon.stub().resolves(fakeUser);
 
@@ -848,7 +849,7 @@ describe('User Controller', () => {
     });
 
     it('should flash error and redirect /login when token not found or invalid', async () => {
-      fakeUser.verifyTokenAndIp.returns(false);
+      fakeUser.consumeToken.returns(false);
       await userController.getLoginByEmail(req, res, next);
       expect(req.flash.calledWith('errors')).to.be.true;
       expect(res.redirect.calledWith('/login')).to.be.true;
@@ -873,6 +874,11 @@ describe('User Controller', () => {
       req.user = { id: 'already-logged-in' };
       await userController.getLoginByEmail(req, res, next);
       expect(res.redirect.calledWith('/')).to.be.true;
+    });
+
+    it('should invalidate the login token on success so the link is single-use', async () => {
+      await userController.getLoginByEmail(req, res, next);
+      expect(fakeUser.consumeToken.calledOnceWith(req.params.token, req.ip, 'login')).to.be.true;
     });
   });
 
@@ -958,7 +964,6 @@ describe('User Controller', () => {
     beforeEach(() => {
       fakeUser = makeFakeUser({
         passwordResetToken: 'a'.repeat(64),
-        verifyTokenAndIp: sinon.stub().returns(true),
       });
       userFindOneStub = sinon.stub().resolves(fakeUser);
       nodemailerSendMailStub = sinon.stub().resolves();
@@ -1007,10 +1012,20 @@ describe('User Controller', () => {
     });
 
     it('should flash error when token is invalid or expired', async () => {
-      fakeUser.verifyTokenAndIp.returns(false);
-      fakeUser.get = sinon.stub().returns(undefined);
+      fakeUser.consumeToken.returns(false);
       await userController.postReset(req, res, next);
       expect(req.flash.calledWith('errors')).to.be.true;
+      expect(res.redirect.calledWith('/forgot')).to.be.true;
+      expect(next.called).to.be.false;
+    });
+
+    it('should redirect /forgot without throwing when the token matches no user', async () => {
+      // Regression: a well-formed but unknown token made findOne return null,
+      // and the handler called user.get(...) on null -> TypeError -> HTTP 500.
+      userFindOneStub.resolves(null);
+      await userController.postReset(req, res, next);
+      expect(req.flash.calledWith('errors')).to.be.true;
+      expect(res.redirect.calledWith('/forgot')).to.be.true;
       expect(next.called).to.be.false;
     });
 
@@ -1022,6 +1037,13 @@ describe('User Controller', () => {
       expect(fakeUser.save.calledOnce).to.be.true;
       expect(nodemailerSendMailStub.calledOnce).to.be.true;
       expect(res.redirect.calledWith('/')).to.be.true;
+    });
+
+    it('should invalidate the reset token on success so the link is single-use', async () => {
+      await userController.postReset(req, res, next);
+      expect(fakeUser.consumeToken.calledOnceWith(req.params.token, req.ip, 'passwordReset')).to.be.true;
+      // Token must be consumed before the save that persists the change
+      expect(fakeUser.consumeToken.calledBefore(fakeUser.save)).to.be.true;
     });
   });
 
@@ -1885,7 +1907,7 @@ describe('User Controller', () => {
         user: {
           emailVerified: false,
           emailVerificationToken: 'a'.repeat(64),
-          verifyTokenAndIp: sinon.stub().returns(true),
+          consumeToken: sinon.stub().returns(true),
           save: sinon.stub().resolves(),
         },
         params: { token: 'a'.repeat(64) },
@@ -1916,7 +1938,7 @@ describe('User Controller', () => {
     });
 
     it('should flash error when token does not match', async () => {
-      req.user.verifyTokenAndIp.returns(false);
+      req.user.consumeToken.returns(false);
       await userController.getVerifyEmailToken(req, res, next);
       expect(req.flash.calledWith('errors')).to.be.true;
       expect(res.redirect.calledWith('/account')).to.be.true;
@@ -1929,6 +1951,12 @@ describe('User Controller', () => {
       expect(req.user.save.calledOnce).to.be.true;
       expect(req.flash.calledWith('success')).to.be.true;
       expect(res.redirect.calledWith('/account')).to.be.true;
+    });
+
+    it('should invalidate the verification token on success so the link is single-use', async () => {
+      await userController.getVerifyEmailToken(req, res, next);
+      // Must consume using the token from the URL, not the stored token
+      expect(req.user.consumeToken.calledOnceWith(req.params.token, req.ip, 'emailVerification')).to.be.true;
     });
   });
 });

@@ -104,21 +104,15 @@ userSchema.pre('save', function clearExpiredTokens() {
   const now = Date.now();
 
   if (this.passwordResetExpires && this.passwordResetExpires < now) {
-    this.passwordResetToken = undefined;
-    this.passwordResetExpires = undefined;
-    this.passwordResetIpHash = undefined;
+    this.clearToken('passwordReset');
   }
 
   if (this.emailVerificationExpires && this.emailVerificationExpires < now) {
-    this.emailVerificationToken = undefined;
-    this.emailVerificationExpires = undefined;
-    this.emailVerificationIpHash = undefined;
+    this.clearToken('emailVerification');
   }
 
   if (this.loginExpires && this.loginExpires < now) {
-    this.loginToken = undefined;
-    this.loginExpires = undefined;
-    this.loginIpHash = undefined;
+    this.clearToken('login');
   }
 
   if (this.twoFactorExpires && this.twoFactorExpires < now) {
@@ -191,6 +185,17 @@ userSchema.methods.clearTwoFactorCode = function clearTwoFactorCode() {
   this.twoFactorIpHash = undefined;
 };
 
+// Helper method for clearing the fields of a ${tokenType}Token/Expires/IpHash token
+// (after use or expiration). tokenType matches the values used by verifyTokenAndIp,
+// e.g. 'passwordReset', 'login', 'emailVerification'. Clearing on use is what makes
+// the corresponding link single-use. (2FA uses a different field naming scheme; see
+// clearTwoFactorCode.)
+userSchema.methods.clearToken = function clearToken(tokenType) {
+  this[`${tokenType}Token`] = undefined;
+  this[`${tokenType}Expires`] = undefined;
+  this[`${tokenType}IpHash`] = undefined;
+};
+
 // Helper methods for creating hashed IP addresses
 // This is used to prevent CSRF attacks by ensuring that the token is valid for
 // the IP address it was generated from
@@ -258,6 +263,24 @@ userSchema.methods.verifyCodeAndIp = function verifyCodeAndIp(code, ip, codeType
   } catch {
     return false;
   }
+};
+
+// Single-use token consumption helpers: verify the candidate token from the request
+// against the stored one and, on success, clear it so the link can only be used once.
+// These only mutate the in-memory document; the caller is responsible for the single
+// save() that persists the clear together with any other changes (e.g. the new
+// password) in one document write. Note that verify-then-save leaves a small
+// concurrency window between the check and the write; strictly serializing
+// consumption would need a conditional DB update (e.g. findOneAndUpdate with $unset),
+// at the cost of losing the token when a later step of the request fails (such as
+// the password hash), which would force the user to request a fresh link.
+// Read-only checks that must NOT consume the token (e.g. rendering the reset form
+// in getReset) should keep using verifyTokenAndIp directly. tokenType matches the
+// values used by verifyTokenAndIp, e.g. 'passwordReset', 'login', 'emailVerification'.
+userSchema.methods.consumeToken = function consumeToken(token, ip, tokenType) {
+  const valid = this.verifyTokenAndIp(token, ip, tokenType);
+  if (valid) this.clearToken(tokenType);
+  return valid;
 };
 
 const User = mongoose.model('User', userSchema);

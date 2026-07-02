@@ -494,7 +494,7 @@ exports.getLoginByEmail = async (req, res, next) => {
   try {
     const user = await User.findOne({ loginToken: { $eq: req.params.token } });
 
-    if (!user || !user.verifyTokenAndIp(user.loginToken, req.ip, 'login')) {
+    if (!user || !user.consumeToken(req.params.token, req.ip, 'login')) {
       req.flash('errors', { msg: 'Invalid or expired login link.' });
       return res.redirect('/login');
     }
@@ -561,7 +561,7 @@ exports.getVerifyEmailToken = async (req, res, next) => {
   }
 
   try {
-    if (!req.user.verifyTokenAndIp(req.user.emailVerificationToken, req.ip, 'emailVerification')) {
+    if (!req.user.consumeToken(req.params.token, req.ip, 'emailVerification')) {
       req.flash('errors', { msg: 'Invalid or expired verification link.' });
       return res.redirect('/account');
     }
@@ -651,9 +651,9 @@ exports.postReset = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ passwordResetToken: { $eq: req.params.token } });
-    if (!user || !user.verifyTokenAndIp(user.passwordResetToken, req.ip, 'passwordReset')) {
+    if (!user || !user.consumeToken(req.params.token, req.ip, 'passwordReset')) {
       req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
-      return res.redirect(user.get('Referrer') || '/');
+      return res.redirect('/forgot');
     }
     user.password = req.body.password;
     user.emailVerified = true; // Mark email as verified as well since they proved ownership

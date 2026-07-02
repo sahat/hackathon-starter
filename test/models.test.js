@@ -463,6 +463,74 @@ describe('User Model', () => {
     });
   });
 
+  describe('Single-use token consumption', () => {
+    const ip = '127.0.0.1';
+
+    it('consumeToken clears a passwordReset token on success and returns true', () => {
+      const token = 'a'.repeat(64);
+      const user = new User({
+        passwordResetToken: token,
+        passwordResetIpHash: User.hashIP(ip),
+        passwordResetExpires: Date.now() + 3600000,
+      });
+      expect(user.consumeToken(token, ip, 'passwordReset')).to.be.true;
+      expect(user.passwordResetToken).to.be.undefined;
+      expect(user.passwordResetExpires).to.be.undefined;
+      expect(user.passwordResetIpHash).to.be.undefined;
+      // A second attempt with the same token must now fail (single-use)
+      expect(user.consumeToken(token, ip, 'passwordReset')).to.be.false;
+    });
+
+    it('consumeToken does NOT clear the token on failure (wrong IP)', () => {
+      const token = 'a'.repeat(64);
+      const user = new User({
+        passwordResetToken: token,
+        passwordResetIpHash: User.hashIP('10.0.0.1'),
+        passwordResetExpires: Date.now() + 3600000,
+      });
+      expect(user.consumeToken(token, ip, 'passwordReset')).to.be.false;
+      // Token is preserved so a legitimate retry from the right IP still works
+      expect(user.passwordResetToken).to.equal(token);
+    });
+
+    it('consumeToken clears a login token on success and returns true', () => {
+      const token = 'b'.repeat(64);
+      const user = new User({
+        loginToken: token,
+        loginIpHash: User.hashIP(ip),
+        loginExpires: Date.now() + 3600000,
+      });
+      expect(user.consumeToken(token, ip, 'login')).to.be.true;
+      expect(user.loginToken).to.be.undefined;
+      expect(user.consumeToken(token, ip, 'login')).to.be.false;
+    });
+
+    it('consumeToken clears an emailVerification token on success and returns true', () => {
+      const token = 'c'.repeat(64);
+      const user = new User({
+        emailVerificationToken: token,
+        emailVerificationIpHash: User.hashIP(ip),
+        emailVerificationExpires: Date.now() + 3600000,
+      });
+      expect(user.consumeToken(token, ip, 'emailVerification')).to.be.true;
+      expect(user.emailVerificationToken).to.be.undefined;
+      expect(user.consumeToken(token, ip, 'emailVerification')).to.be.false;
+    });
+
+    it('consumeToken rejects a candidate token that does not match the stored one', () => {
+      // Regression: the handler must compare the token from the URL against the
+      // stored token, not the stored token against itself.
+      const token = 'c'.repeat(64);
+      const user = new User({
+        emailVerificationToken: token,
+        emailVerificationIpHash: User.hashIP(ip),
+        emailVerificationExpires: Date.now() + 3600000,
+      });
+      expect(user.consumeToken('d'.repeat(64), ip, 'emailVerification')).to.be.false;
+      expect(user.emailVerificationToken).to.equal(token);
+    });
+  });
+
   describe('IP Hashing', () => {
     it('should consistently hash the same IP', () => {
       const ip = '127.0.0.1';
