@@ -7,7 +7,8 @@ This document describes the test organization, fixture system, and how to create
 - [Overview](#overview)
 - [Test Organization](#test-organization)
 - [Fixture System](#fixture-system)
-- [Running Tests](#running-tests)
+- [Running E2E Tests](#running-e2e-tests)
+- [Link Checking](#link-checking)
 - [Creating New Tests](#creating-new-tests)
 - [Troubleshooting](#troubleshooting)
 
@@ -54,7 +55,8 @@ test/
 │   ├── upload.e2e.test.js
 │   └── wikipedia.e2e.test.js
 ├── app.test.js                  # Basic app structure tests - core unit test
-├── app-links.test.js            # Link validation tests
+├── app-links.test.js            # Link/image validation for views (views/ai, views/api, etc.)
+├── docs-links.test.js           # Link validation for README.md and PROD_CHECKLIST.md
 ├── cacheBust.test.js            # Cache-busting tests
 ├── contact.test.js              # Contact form tests
 ├── flash.test.js                # Flash message tests
@@ -142,6 +144,24 @@ npx playwright test test/e2e/.../testfile.e2e.test.js --config=test/playwright.c
 # Record mode (overwrites the file's fixtures)
 npx playwright test test/e2e/.../testfile.e2e.test.js --config=test/playwright.config.js --project=chromium-record
 ```
+
+## Link Checking
+
+`app-links.test.js` and `docs-links.test.js` (matched together by the `test/*links.test.js`
+glob) make a live HTTP request for every link/image found in the Pug views and in
+README.md/PROD_CHECKLIST.md, respectively (see `test/tools/simple-link-image-check.js`).
+They are excluded from `npm test` and are not run in CI, since a run this size hitting
+live third-party URLs is slow and prone to transient failures. Run them manually after
+changing links in those files:
+
+```bash
+npm run test:image-link
+```
+
+`SKIP_KEYWORDS` in `simple-link-image-check.js` skips certain URLs (including any
+containing `hackathon-starter`), so links back into this repo's own GitHub pages are not
+checked by this script — verify those by hand, including case, since GitHub blob URLs are
+case-sensitive.
 
 ## Creating New Tests
 

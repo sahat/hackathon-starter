@@ -4,7 +4,7 @@ If you are done with your hackathon and thinking about launching your project in
 - Add a proxy such as Cloudflare in front of your production deployment. Adjust the numberOfProxies logic in app.js if needed
 - Update the session cookie configs with sameSite attribute, domain, and path
 - Add Terms of Service and Privacy Policy
-- Update `LICENSE.md` and the relevant license field in package.json if applicable - See [npm's doc](https://docs.npmjs.com/files/package.json#license).
+- Update `LICENSE` and the relevant license field in package.json if applicable - See [npm's doc](https://docs.npmjs.com/files/package.json#license).
 - Add [sitemap.xml](https://en.wikipedia.org/wiki/Sitemaps) and [robots.txt](https://moz.com/learn/seo/robotstxt)
 - Update Google Analytics ID
 - Add Facebook App/Pixel ID
@@ -29,19 +29,22 @@ The following is a list of various code that you may not potentially be using an
   - All API example routes
   - OAuth routes for authentications that you are not using (i.e. GitHub, LinkedIn, etc. based on your app)
   - All OAuth authorization routes
-- passport.js all references and functions related to:
-  - Github, LinkedIn, OpenID, OAuth, OAuth2
-- model/User.js
-  - key pairs for Github, LinkedIn, Steam
+- passport.js
+  - `passport.use(...)` (and the matching `refresh.use(...)`, where present) for each OAuth provider you're not using
+- config/token-revocation.js
+  - the matching entry in `providerRevocationConfig` for each removed provider
+- models/User.js
+  - the provider key field(s) for each removed provider
 - package.json
-  - @octokit/rest, lastfm, lob, multer, node-linkedin, passport-github2, passport-linkedin-oauth2, passport-oauth, paypal-rest-sdk, stripe, twilio
-- /test
-  - Replace E2E and API example tests with new tests for your application
+  - the npm package(s) tied to each removed OAuth provider or API/AI example (remove with `npm uninstall`, don't hand-edit) — some packages (e.g. `passport-steam-openid`, `twitch-passport`) serve both an OAuth strategy and an API example, so confirm nothing else still needs it first
 - views/account/login.pug
-  - Some or all of the last form-group set, which are the social login choices
+  - the sign-in button block for each removed OAuth provider
 - views/account/profile.pug
-  - Link/unlink buttons for GitHub, LinkedIn, Steam
-- Remove README, changelog and this guide if not using them
+  - the link/unlink block for each removed OAuth provider
+- /test
+  - the unit test, e2e test, and fixtures for each removed OAuth provider or API/AI example
+- [AGENTS.md](AGENTS.md) has the full per-provider/per-feature breakdown (which files, env vars, and packages go together, and which OAuth providers double as an API example — Google, Facebook, and Twitch each do) plus a step-by-step removal checklist; use it as the reference for the bullets above instead of re-deriving the mapping from scratch
+- Remove README, AGENTS.md, CLAUDE.md, changelog and this guide if not using them
 - Create a domain whitelist for your app in Here's developer portal if you are using the HERE Maps API.
 - Add unit tests so you can test and incorporate dependency and upstream updates with less effort. GPT tools may create some good unit tests with very low effort.
 

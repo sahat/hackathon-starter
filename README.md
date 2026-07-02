@@ -119,9 +119,9 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - Command Line Tools
 - <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Apple_logo_grey.svg" height="17">&nbsp;**Mac OS X:** [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (or **OS X 10.9+**: `xcode-select --install`)
 - <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg" height="17">&nbsp;**Windows:** [Visual Studio Code](https://code.visualstudio.com) + [Windows Subsystem for Linux - Ubuntu](https://learn.microsoft.com/en-us/windows/wsl/install) OR [Visual Studio](https://www.visualstudio.com/products/visual-studio-community-vs)
-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/UbuntuCoF.svg/512px-UbuntuCoF.svg.png?20120210072525" height="17">&nbsp;**Ubuntu** / <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Linux_Mint_logo_without_wordmark.svg" height="17">&nbsp;**Linux Mint:** `sudo apt-get install build-essential`
+- <img src="https://i.imgur.com/SxtiAZc.png" height="17">&nbsp;**Ubuntu** / <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Linux_Mint_logo_without_wordmark.svg" height="17">&nbsp;**Linux Mint:** `sudo apt-get install build-essential`
 - <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg" height="17">&nbsp;**Fedora**: `sudo dnf groupinstall "Development Tools"`
-- <img src="https://en.opensuse.org/images/b/be/Logo-geeko_head.png" height="17">&nbsp;**OpenSUSE:** `sudo zypper install --type pattern devel_basis`
+- <img src="https://i.imgur.com/SJtKAkL.png" height="17">&nbsp;**OpenSUSE:** `sudo zypper install --type pattern devel_basis`
 
 **Note:** If you are new to Node or Express, you may find [Node.js & Express From Scratch series](https://www.youtube.com/watch?v=Ad2ngx6CT0M&list=PLillGF-RfqbYRpji8t4SxUkMxfowG4Kqp&index=3) helpful for learning the basics of Node and Express. Alternatively, here is another great tutorial for complete beginners - [Getting Started With Node.js, Express, MongoDB](https://www.freecodecamp.org/news/build-a-restful-api-using-node-express-and-mongodb/).
 
@@ -160,7 +160,7 @@ _What to get and configure:_
 - reCAPTCHA
   - For contact form submission, but you can skip it during your development
 - OAuth for social logins (Sign in with / Login with)
-  - Depending on your application need, obtain keys from Google, Facebook, X (Twitter), LinkedIn, Twitch, GitHub. You don't have to obtain valid keys for any provider that you don't need. Just remove the buttons and links in the login and account pug views before your demo.
+  - Depending on your application need, obtain keys from Google, Facebook, X (Twitter), LinkedIn, Twitch, GitHub, Discord, Microsoft. You don't have to obtain valid keys for any provider that you don't need. Just remove the buttons and links in the login and account pug views before your demo.
 - API keys for service providers that you need in the API Examples if you are planning to use them.
 
 - MongoDB Atlas
@@ -183,7 +183,7 @@ See
 See:
 
 - [Deployment](#deployment)
-- [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md)
+- [PROD_CHECKLIST.md](https://github.com/sahat/hackathon-starter/blob/master/PROD_CHECKLIST.md)
 
 ## HTTPS Proxy:
 
@@ -248,6 +248,8 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://i.imgur.com/jULUCKF.png" height="75">
 
+**Facebook**
+
 - Visit <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a>
 - Click **My Apps**, then select \*_Add a New App_ from the dropdown menu
 - Enter a new name for your app
@@ -269,6 +271,8 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://imgur.com/2P4UMvC.png" height="75">
 
+**Foursquare**
+
 - Go to <a href="https://foursquare.com/developers" target="_blank">Foursquare for Developers</a> and log in
 
 - Click on **Create a new project** button
@@ -283,6 +287,8 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://i.imgur.com/oUob1wG.png" height="75">
 
+**GitHub**
+
 - Go to <a href="https://github.com/settings/profile" target="_blank">Account Settings</a>
 - Select **Developer settings** from the sidebar
 - Then click on **OAuth Apps** and then on **Register new application**
@@ -295,6 +301,8 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <img src="https://i.imgur.com/ddl2VjR.png" height="75">
 
+**GIPHY**
+
 - Go to <a href="https://developers.giphy.com/" target="_blank">GIPHY Developers website</a>
 - Login or create a new account and login.
 - Select **Dashboard** from the navigation bar
@@ -304,7 +312,9 @@ Obtain SMTP credentials from a provider for transactional emails. Set the SMTP_U
 
 <hr>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1000px-Google_2015_logo.svg.png" height="50">
+<img src="https://i.imgur.com/uqiaSg6.png" height="50">
+
+**Google**
 
 - Visit <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a>
 - Click on the **Create Project** button
@@ -338,6 +348,8 @@ Next, create API keys for the services you enabled:
 
 <img src="https://cdn.worldvectorlogo.com/logos/discord-6.svg" height="50">
 
+**Discord**
+
 - Go to <a href="https://discord.com/developers/teams" target="_blank">Teams tab</a> in the Discord Developer Portal and create a new team. This allows you to manage your Discord applications under a team name instead of your personal account.
 - After creating a team, switch to the <a href="https://discord.com/developers/applications" target="_blank">Applications tab</a> in the Discord Developer Portal.
 - Click on **New Application** and give your app a name. When prompted, select your team as the owner.
@@ -352,6 +364,8 @@ Next, create API keys for the services you enabled:
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/HERE_logo.svg" height="75">
 
+**HERE Maps**
+
 - Go to <a href="https://developer.here.com" target="_blank">https://developer.here.com</a>
 - Sign up for the Base plan. The Base plan require a credit card to start, but you get 30,000 map renders for free each month.
 - Create JAVASCRIPT/REST credentials. Copy and paste the API key into the `.env` file as HERE_API_KEY, or set it up as an environment variable.
@@ -361,6 +375,8 @@ Next, create API keys for the services you enabled:
 
 <img src="https://i.imgur.com/OEVF7HK.png" height="75">
 
+**Hugging Face**
+
 - Go to <a href="https://huggingface.co" target="_blank">https://huggingface.co</a> and create an account.
 - Go to your Account Settings and create a new Access Token. Make sure you have granted the **"Make calls to Inference Provider"** permission to your token.
 - Add your token as `HUGGINGFACE_KEY` to your `.env` file or as an environment variable.
@@ -368,6 +384,8 @@ Next, create API keys for the services you enabled:
 <hr>
 
 <img src="https://i.imgur.com/Lw5Jb7A.png" height="50">
+
+**QuickBooks**
 
 - Go to <a href="https://developer.intuit.com/app/developer/qbo/docs/get-started" target="_blank">https://developer.intuit.com/app/developer/qbo/docs/get-started</a>
 - Use the Sign Up option in the upper right corner of the screen (navbar) to get a free developer account and a sandbox company.
@@ -377,6 +395,8 @@ Next, create API keys for the services you enabled:
 <hr>
 
 <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" height="50">
+
+**LinkedIn**
 
 - Sign in at <a href="https://developer.linkedin.com/" target="_blank">LinkedIn Developer Network</a>
 - From the account name dropdown menu select **API Keys**
@@ -396,6 +416,8 @@ Next, create API keys for the services you enabled:
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" height="50">
 
+**Microsoft**
+
 - Go to <a href="https://entra.microsoft.com/" target="_blank">Microsoft Entra admin center</a> and sign in
 - Click **App registrations** > **+ New registration**
 - Enter an application name (e.g., "Hackathon Starter App") and select **Accounts in any organizational directory and personal Microsoft accounts**
@@ -408,6 +430,8 @@ Next, create API keys for the services you enabled:
 
 <img src="https://s3-us-west-2.amazonaws.com/public.lob.com/dashboard/navbar/lob-logo.svg" height="50">
 
+**Lob**
+
 - Visit <a href="https://dashboard.lob.com/register" target="_blank">Lob Dashboard</a>
 - Create an account
 - Once logged into the dashboard, go to Settings in the bottom left corner of the page. (If there is a bottom pop-up, you may need to close it to see the Settings option.)
@@ -416,6 +440,8 @@ Next, create API keys for the services you enabled:
 <hr>
 
 <img src="https://imgur.com/VpWnjp1.png" height="75">
+
+**PayPal**
 
 - Visit <a href="https://developer.paypal.com" target="_blank">PayPal Developer</a>
 - Log in to your PayPal account
@@ -429,6 +455,8 @@ Next, create API keys for the services you enabled:
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Steam_logo.svg" height="75">
 
+**Steam**
+
 - Go to <a href="http://steamcommunity.com/dev/apikey" target="_blank">http://steamcommunity.com/dev/apikey</a>
 - Sign in with your existing Steam account
 - Enter your _Domain Name_ based on your BASE_URL, then and click **Register**
@@ -437,6 +465,8 @@ Next, create API keys for the services you enabled:
 <hr>
 
 <img src="https://stripe.com/img/about/logos/logos/black@2x.png" height="75">
+
+**Stripe**
 
 - <a href="https://stripe.com/" target="_blank">Sign up</a> or log into your <a href="https://manage.stripe.com" target="_blank">dashboard</a>
 - Click on your profile and click on Account Settings
@@ -447,6 +477,8 @@ Next, create API keys for the services you enabled:
 
 <img src="https://i.imgur.com/dSwblOk.png" height="50">
 
+**Groq**
+
 - Visit <a href="https://groq.com" target="_blank">Groq</a>
 - Sign in or create a Groq account.
 - Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
@@ -455,6 +487,8 @@ Next, create API keys for the services you enabled:
 <hr>
 
 <img src="https://i.imgur.com/Adtl9qg.png" height="75">
+
+**Trakt**
 
 - Sign up or sign in to your trakt.tv account and go to <a href="https://trakt.tv/oauth/applications" target="_blank">Trakt.tv Applications</a>.
 - Create a new application and fill in the required fields:
@@ -468,6 +502,8 @@ Next, create API keys for the services you enabled:
 
 <img src="https://i.imgur.com/gUngyyW.png" height="50">
 
+**Tumblr**
+
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
 - Fill in all the details
@@ -478,6 +514,8 @@ Next, create API keys for the services you enabled:
 <hr>
 
 <img src="https://www.freepnglogos.com/uploads/twitch-logo-image-hd-31.png" height="75">
+
+**Twitch**
 
 - Visit the <a href="https://dev.twitch.tv/console" target="_blank">Twitch developer console</a>
 - If prompted, authorize the dashboard to access your twitch account
@@ -493,6 +531,8 @@ Next, create API keys for the services you enabled:
 
 <img src="https://s3.amazonaws.com/ahoy-assets.twilio.com/global/images/wordmark.svg" height="75">
 
+**Twilio**
+
 - Go to <a href="https://www.twilio.com/try-twilio" target="_blank">https://www.twilio.com/try-twilio</a>
 - Sign up for an account.
 - Once logged into the dashboard, expand the link 'show api credentials'
@@ -502,6 +542,8 @@ Next, create API keys for the services you enabled:
 <hr>
 
 <img src="https://i.imgur.com/QMjwCk6.png" height="50">
+
+**X (Twitter)**
 
 - Sign in at <a href="https://developer.x.com/" target="_blank">https://developer.x.com/</a>
 - Start with the Free tier
@@ -550,6 +592,7 @@ The metadata for Open Graph is only set up for the home page (`home.pug`). Updat
 | **config**/passport.js           | Passport Local and OAuth strategies, plus login middleware.          |
 | **config**/token-revocation.js   | Helper for revoking OAuth tokens.                                    |
 | **controllers**/ai.js            | Controller for /ai route and all ai examples and boilerplates.       |
+| **controllers**/ai-agent.js      | Controller for /ai/ai-agent route (ReAct AI Agent boilerplate).      |
 | **controllers**/api.js           | Controller for /api route and all api examples.                      |
 | **controllers**/contact.js       | Controller for contact form.                                         |
 | **controllers**/home.js          | Controller for home page (index).                                    |
@@ -589,67 +632,70 @@ Just don't forget to update `extends ../layout` and corresponding
 
 Required to run the project before your modifications
 
-| Package                       | Description                                                           |
-| ----------------------------- | --------------------------------------------------------------------- |
-| @fortawesome/fontawesome-free | Symbol and Icon library.                                              |
-| @googleapis/drive             | Google Drive API integration library.                                 |
-| @googleapis/sheets            | Google Sheets API integration library.                                |
-| @huggingface/inference        | Client library for Hugging Face Inference providers                   |
-| @keyv/mongo                   | MongoDB storage adapter for Keyv                                      |
-| @langchain/core               | Base LangChain abstractions and Expression Language                   |
-| @langchain/mongodb            | MongoDB integrations for LangChain                                    |
-| @langchain/textsplitters      | LangChain text splitters for RAG pipelines                            |
-| @lob/lob-typescript-sdk       | Lob (USPS mailing / physical mailing service) library.                |
-| @node-rs/bcrypt               | Library for hashing and salting user passwords.                       |
-| @octokit/rest                 | GitHub API library.                                                   |
-| @passport-js/passport-twitter | X (Twitter) login support (OAuth 2).                                  |
-| @popperjs/core                | Frontend js library for poppers and tooltips.                         |
-| @simplewebauthn/browser       | WebAuthn frontend library (passkey / biometrics authentication)       |
-| @simplewebauthn/server        | WebAuthn backend library (passkey / biometrics authentication)        |
-| @zapier/secret-scrubber       | For redacting sensitive/secret values in objects                      |
-| bootstrap                     | CSS Framework.                                                        |
-| bootstrap-social              | Social buttons library.                                               |
-| bowser                        | User agent parser                                                     |
-| chart.js                      | Front-end js library for creating charts.                             |
-| cheerio                       | Scrape web pages using jQuery-style syntax.                           |
-| compression                   | Node.js compression middleware.                                       |
-| connect-mongo                 | MongoDB session store for Express.                                    |
-| errorhandler                  | Development-only error handler middleware.                            |
-| express                       | Node.js web framework.                                                |
-| express-rate-limit            | Rate limiting middleware for abuse protection.                        |
-| express-session               | Simple session middleware for Express.                                |
-| jquery                        | Front-end JS library to interact with HTML elements.                  |
-| keyv                          | key-value storage with support for multiple backends                  |
-| langchain                     | Framework for developing LLM applications                             |
-| lastfm                        | Last.fm API library.                                                  |
-| lusca                         | CSRF middleware.                                                      |
-| mailchecker                   | Verifies that an email address is valid and not a disposable address. |
-| mongodb                       | MongoDB driver                                                        |
-| mongoose                      | MongoDB ODM.                                                          |
-| morgan                        | HTTP request logger middleware for node.js.                           |
-| multer                        | Node.js middleware for handling `multipart/form-data`.                |
-| nodemailer                    | Node.js library for sending emails.                                   |
-| oauth                         | OAuth API library without middleware constraints.                     |
-| otpauth                       | One-Time Password (TOTP/HOTP) library for 2FA authenticator apps.     |
-| passport                      | Simple and elegant authentication library for node.js.                |
-| passport-facebook             | Sign-in with Facebook plugin.                                         |
-| passport-github2              | Sign-in with GitHub plugin.                                           |
-| passport-google-oauth         | Sign-in with Google plugin.                                           |
-| passport-local                | Sign-in with Username and Password plugin.                            |
-| passport-oauth1               | Allows you to set up your own OAuth 1.0a strategy.                    |
-| passport-oauth2               | Allows you to set up your own OAuth 2.0 strategy.                     |
-| passport-oauth2-refresh       | A library to refresh OAuth 2.0 access tokens using refresh tokens.    |
-| passport-steam-openid         | OpenID 2.0 Steam plugin.                                              |
-| patch-package                 | Fix broken node modules ahead of fixes by maintainers.                |
-| pdfjs-dist                    | PDF parser                                                            |
-| pug                           | Template engine for Express.                                          |
-| qr                            | Generate and decode QR codes                                          |
-| sass                          | Sass compiler to generate CSS with superpowers.                       |
-| stripe                        | Official Stripe API library.                                          |
-| twilio                        | Twilio API library.                                                   |
-| twitch-passport               | Sign-in with Twitch plugin.                                           |
-| validator                     | A library of string validators and sanitizers.                        |
-| vanilla-cookieconsent         | GDPR/CCPA-compliant cookie consent banner                             |
+| Package                                 | Description                                                           |
+| --------------------------------------- | --------------------------------------------------------------------- |
+| @fortawesome/fontawesome-free           | Symbol and Icon library.                                              |
+| @googleapis/drive                       | Google Drive API integration library.                                 |
+| @googleapis/sheets                      | Google Sheets API integration library.                                |
+| @huggingface/inference                  | Client library for Hugging Face Inference providers                   |
+| @keyv/mongo                             | MongoDB storage adapter for Keyv                                      |
+| @langchain/core                         | Base LangChain abstractions and Expression Language                   |
+| @langchain/groq                         | Groq chat model integration for LangChain                             |
+| @langchain/langgraph                    | Graph-based agent orchestration used by the AI Agent example          |
+| @langchain/langgraph-checkpoint-mongodb | MongoDB-backed session/checkpoint persistence for the AI Agent        |
+| @langchain/mongodb                      | MongoDB integrations for LangChain                                    |
+| @langchain/textsplitters                | LangChain text splitters for RAG pipelines                            |
+| @lob/lob-typescript-sdk                 | Lob (USPS mailing / physical mailing service) library.                |
+| @node-rs/bcrypt                         | Library for hashing and salting user passwords.                       |
+| @octokit/rest                           | GitHub API library.                                                   |
+| @passport-js/passport-twitter           | X (Twitter) login support (OAuth 2).                                  |
+| @popperjs/core                          | Frontend js library for poppers and tooltips.                         |
+| @simplewebauthn/browser                 | WebAuthn frontend library (passkey / biometrics authentication)       |
+| @simplewebauthn/server                  | WebAuthn backend library (passkey / biometrics authentication)        |
+| @zapier/secret-scrubber                 | For redacting sensitive/secret values in objects                      |
+| bootstrap                               | CSS Framework.                                                        |
+| bootstrap-social                        | Social buttons library.                                               |
+| bowser                                  | User agent parser                                                     |
+| chart.js                                | Front-end js library for creating charts.                             |
+| cheerio                                 | Scrape web pages using jQuery-style syntax.                           |
+| compression                             | Node.js compression middleware.                                       |
+| connect-mongo                           | MongoDB session store for Express.                                    |
+| errorhandler                            | Development-only error handler middleware.                            |
+| express                                 | Node.js web framework.                                                |
+| express-rate-limit                      | Rate limiting middleware for abuse protection.                        |
+| express-session                         | Simple session middleware for Express.                                |
+| jquery                                  | Front-end JS library to interact with HTML elements.                  |
+| keyv                                    | key-value storage with support for multiple backends                  |
+| langchain                               | Framework for developing LLM applications                             |
+| lastfm                                  | Last.fm API library.                                                  |
+| lusca                                   | CSRF middleware.                                                      |
+| mailchecker                             | Verifies that an email address is valid and not a disposable address. |
+| mongodb                                 | MongoDB driver                                                        |
+| mongoose                                | MongoDB ODM.                                                          |
+| morgan                                  | HTTP request logger middleware for node.js.                           |
+| multer                                  | Node.js middleware for handling `multipart/form-data`.                |
+| nodemailer                              | Node.js library for sending emails.                                   |
+| oauth                                   | OAuth API library without middleware constraints.                     |
+| otpauth                                 | One-Time Password (TOTP/HOTP) library for 2FA authenticator apps.     |
+| passport                                | Simple and elegant authentication library for node.js.                |
+| passport-facebook                       | Sign-in with Facebook plugin.                                         |
+| passport-github2                        | Sign-in with GitHub plugin.                                           |
+| passport-google-oauth                   | Sign-in with Google plugin.                                           |
+| passport-local                          | Sign-in with Username and Password plugin.                            |
+| passport-oauth1                         | Allows you to set up your own OAuth 1.0a strategy.                    |
+| passport-oauth2                         | Allows you to set up your own OAuth 2.0 strategy.                     |
+| passport-oauth2-refresh                 | A library to refresh OAuth 2.0 access tokens using refresh tokens.    |
+| passport-steam-openid                   | OpenID 2.0 Steam plugin.                                              |
+| patch-package                           | Fix broken node modules ahead of fixes by maintainers.                |
+| pdfjs-dist                              | PDF parser                                                            |
+| pug                                     | Template engine for Express.                                          |
+| qr                                      | Generate and decode QR codes                                          |
+| sass                                    | Sass compiler to generate CSS with superpowers.                       |
+| stripe                                  | Official Stripe API library.                                          |
+| twilio                                  | Twilio API library.                                                   |
+| twitch-passport                         | Sign-in with Twitch plugin.                                           |
+| validator                               | A library of string validators and sanitizers.                        |
+| vanilla-cookieconsent                   | GDPR/CCPA-compliant cookie consent banner                             |
 
 **Dev Dependencies**
 
@@ -665,7 +711,6 @@ Required during code development for testing, Hygiene, code styling, etc.
 | eslint-config-prettier      | Make ESLint and Prettier play nice with each other.                         |
 | eslint                      | Linter JavaScript.                                                          |
 | eslint-plugin-chai-friendly | Makes eslint friendly towards Chai.js 'expect' and 'should' statements.     |
-| eslint-plugin-import-x      | ESLint plugin with rules that help validate proper imports.                 |
 | globals                     | ESLint global identifiers from different JavaScript environments.           |
 | husky                       | Git hook manager to automate tasks with git.                                |
 | mocha                       | Test framework.                                                             |
@@ -1506,7 +1551,7 @@ Using a local instance on your laptop with ngrok is a good solution for your dem
 
 ## Production
 
-If you are starting with this boilerplate to build an application for prod deployment, or if after your hackathon you would like to get your project hardened for production use, see [prod-checklist.md](https://github.com/sahat/hackathon-starter/blob/master/prod-checklist.md).
+If you are starting with this boilerplate to build an application for prod deployment, or if after your hackathon you would like to get your project hardened for production use, see [PROD_CHECKLIST.md](https://github.com/sahat/hackathon-starter/blob/master/PROD_CHECKLIST.md).
 
 ## Testing
 
