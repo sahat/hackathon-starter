@@ -80,7 +80,7 @@
     "passport-oauth1": "^1.3.0",
     "passport-oauth2": "^1.8.0",
     "passport-oauth2-refresh": "^2.2.0",
-    "passport-steam-openid": "^1.1.10",
+    "passport-steam-openid": "^1.1.11",
     "patch-package": "^8.0.1",
     "pdfjs-dist": "^6.1.200",
     "pug": "^3.0.4",
