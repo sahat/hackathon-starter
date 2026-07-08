@@ -65,7 +65,7 @@
     "lastfm": "^0.9.4",
     "lusca": "^1.7.0",
     "mailchecker": "^6.0.20",
-    "mongodb": "^7.4.0",
+    "mongodb": "^7.5.0",
     "mongoose": "^9.7.4",
     "morgan": "^1.11.0",
     "multer": "^2.2.0",
