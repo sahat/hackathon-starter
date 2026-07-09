@@ -204,11 +204,6 @@ exports.getGithub = async (req, res, next) => {
       owner: 'sahat',
       repo: 'hackathon-starter',
     });
-    const { data: repoStargazers } = await github.activity.listStargazersForRepo({
-      owner: 'sahat',
-      repo: 'hackathon-starter',
-      per_page: limit,
-    });
 
     res.render('api/github', {
       title: 'GitHub API',
@@ -216,7 +211,6 @@ exports.getGithub = async (req, res, next) => {
       userInfo,
       userRepos,
       userEvents,
-      repoStargazers,
       limit,
       authFailure,
     });
