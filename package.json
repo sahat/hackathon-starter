@@ -103,6 +103,7 @@
     "eslint-plugin-chai-friendly": "^1.2.1",
     "globals": "^17.7.0",
     "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
     "mocha": "^12.0.0-rc.1",
     "mongodb-memory-server": "^11.2.0",
     "nock": "15.0.0-beta.12",
@@ -124,5 +125,13 @@
   "allowScripts": {
     "@parcel/watcher": true,
     "mongodb-memory-server": true
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ],
+    "*": [
+      "prettier --write --ignore-unknown"
+    ]
   }
 }
