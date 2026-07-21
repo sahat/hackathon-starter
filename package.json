@@ -66,7 +66,7 @@
     "lusca": "^1.7.0",
     "mailchecker": "^6.0.21",
     "mongodb": "^7.5.0",
-    "mongoose": "^9.7.4",
+    "mongoose": "^9.8.0",
     "morgan": "^1.11.0",
     "multer": "^2.2.0",
     "nodemailer": "^9.0.3",
@@ -108,7 +108,7 @@
     "mongodb-memory-server": "^11.2.0",
     "nock": "15.0.0-beta.12",
     "prettier": "^3.9.5",
-    "sinon": "^22.0.0",
+    "sinon": "^22.1.0",
     "supertest": "^7.2.2"
   },
   "overrides": {
