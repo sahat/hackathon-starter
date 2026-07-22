@@ -832,7 +832,7 @@ exports.getLLMClassifier = (req, res) => {
  * POST /ai/llm-classifier
  * LLM API Text Classification Example.
  * - Classifies customer service inquiries into departments.
- * - Uses Groq API with Llama model to classify the input text.
+ * - Uses Groq API to classify the input text with the model in GROQ_MODEL.
  * - The systemPrompt is the instructions from the developer to the model for processing
  *   the user input.
  */

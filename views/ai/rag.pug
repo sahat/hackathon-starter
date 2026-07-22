@@ -88,10 +88,10 @@ block content
             p.text-left Try asking a question about information in the ingested RAG documents that was not part of the LLM's training data.
             .fw-bold Example Questions:
             ul.ms-3.list-unstyled
-              li How much did Amazon make in 2024?
-              li How much debt did Amazon have at the end of 2024?
-              li How much was Microsoft's advertising expense in fiscal year 2024?
-              li What is the total amount of stock Microsoft gave to its employees in fiscal year 2024?
+              li How much was Amazon's Net Income in 2025?
+              li How much debt did Amazon have at the end of 2025?
+              li How much was Microsoft's advertising expense in fiscal year 2025?
+              li What is the total amount of stock Microsoft gave to its employees in fiscal year 2025?
             form(action='/ai/rag/ask', method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
               .form-group
@@ -115,7 +115,7 @@ block content
               ul
                 li LangChain.js 🦜️🔗 for the pipeline and integrations
                 li BAAI/bge-small-en-v1.5 embedding model through the Hugging Face 🤗 Inference API
-                li llama-3.3-70b-versatile 🦙 hosted by Groq as the LLM
+                li openai/gpt-oss-120b hosted by Groq as the LLM
                 li PDF.js for extracting text from PDF files
                 li MongoDB Atlas Vector Search as the vector DB for RAG document storage and LLM caching
                 li MongoDB as the key-value store for embedding caching

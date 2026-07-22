@@ -89,8 +89,8 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
 - **AI Examples and Boilerplates**
   - AI Agent ReAct (Reasoning + Acting) with tool calling, MongoDB session persistence, and input guardrails
   - RAG with semantic and embedding caching
-  - Text and Image LLMs - Llama 3.3, Qwen3.6
-  - Support for a range of foundational and embedding models (DeepSeek, Llama, Mistral, Sentence Transformers, etc.) via LangChain, Groq, and Hugging Face
+  - Text and Image LLMs - GPT-OSS, Qwen3.6
+  - Support for a range of foundational and embedding models (Qwen, DeepSeek, Kimi, MiniMax, OpenAI OSS, Mistral, Sentence Transformers, etc.) via LangChain, Groq, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
   - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Steam (OpenID), Web Scraping, GIPHY
@@ -1094,7 +1094,7 @@ LangChain v1 ReAct agent intended as a starting point for building new AI agents
 
 - **Tool execution** with automatic retry middleware for transient failures
 - **MongoDB session persistence** - Chat history persists across page reloads (authenticated users: permanent until account deletion; unauthenticated: tied to Express session lifecycle)
-- **Input guardrails** - Prompt injection/jailbreak detection using a guard model (e.g., Llama Guard 4)
+- **Input guardrails** - Prompt injection/jailbreak detection using a policy-following guard model (e.g., GPT-OSS-Safeguard)
 - **Conversation summarization** - Long conversations are condensed to stay within context limits
 - **Real-time streaming** - Server-Sent Events (SSE) for live responses
 
@@ -1168,8 +1168,8 @@ These functions handle streaming, parsing, and session management and typically 
 The AI Agent requires these environment variables:
 
 - `GROQ_API_KEY` : Your Groq API key
-- `GROQ_MODEL` : The main LLM model (e.g., `llama-3.3-70b-versatile`, `qwen/qwen3.6-27b`, etc.)
-- `GROQ_MODEL_PROMPT_GUARD` : The guard model for input safety (e.g., `meta-llama/llama-guard-4-12b`)
+- `GROQ_MODEL` : The main LLM model (e.g., `openai/gpt-oss-120b`, `qwen/qwen3.6-27b`, etc.)
+- `GROQ_MODEL_PROMPT_GUARD` : The policy-following guard model for input safety (e.g., `openai/gpt-oss-safeguard-20b`)
 
 ### How do I use Socket.io with Hackathon Starter?
 
