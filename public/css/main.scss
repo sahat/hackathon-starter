@@ -15,6 +15,13 @@ $color-mode-type: data;
 @import 'node_modules/@fortawesome/fontawesome-free/scss/regular';
 @import 'node_modules/@fortawesome/fontawesome-free/scss/solid';
 
+// `.btn-outline-secondary` has a transparent background by default, so it
+// takes on whatever background sits behind it — indistinguishable from the
+// page/card in both light and dark mode.
+.btn-outline-secondary {
+  --bs-btn-bg: var(--bs-secondary-bg);
+}
+
 // Basic Twitch Button CSS
 .btn-twitch {
   background-color: #6441a5;
@@ -122,6 +129,21 @@ $color-mode-type: data;
   // a light box. Flip the box to the dark body bg so the text stays legible.
   .response-box {
     background-color: var(--bs-body-bg) !important;
+  }
+
+  // The base `.btn-outline-secondary` fill above uses `--bs-secondary-bg`,
+  // but its text/border color is Bootstrap's fixed `$secondary` gray, which
+  // doesn't adapt to dark mode and reads too low-contrast against the darker
+  // fill. Swap in the theme-aware secondary color/bg pair instead.
+  .btn-outline-secondary {
+    --bs-btn-color: var(--bs-secondary-color);
+    --bs-btn-border-color: var(--bs-secondary-color);
+    --bs-btn-hover-color: var(--bs-body-bg);
+    --bs-btn-hover-bg: var(--bs-secondary-color);
+    --bs-btn-hover-border-color: var(--bs-secondary-color);
+    --bs-btn-active-color: var(--bs-body-bg);
+    --bs-btn-active-bg: var(--bs-secondary-color);
+    --bs-btn-active-border-color: var(--bs-secondary-color);
   }
 }
 
