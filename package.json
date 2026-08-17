@@ -87,7 +87,7 @@
     "qr": "^0.6.0",
     "sass": "^1.102.0",
     "stripe": "^22.5.0",
-    "twilio": "^6.0.2",
+    "twilio": "^6.1.0",
     "twitch-passport": "^1.0.6",
     "validator": "^13.15.35",
     "vanilla-cookieconsent": "^3.1.0"
@@ -101,7 +101,7 @@
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-chai-friendly": "^1.2.1",
-    "globals": "^17.9.0",
+    "globals": "^17.11.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.3.0",
     "mocha": "^12.0.0-rc.6",
