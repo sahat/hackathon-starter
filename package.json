@@ -46,7 +46,7 @@
     "@passport-js/passport-twitter": "^1.0.10",
     "@popperjs/core": "^2.11.8",
     "@simplewebauthn/browser": "^14.0.0",
-    "@simplewebauthn/server": "^14.0.1",
+    "@simplewebauthn/server": "^14.0.2",
     "@zapier/secret-scrubber": "^1.1.6",
     "bootstrap": "^5.3.8",
     "bootstrap-social": "github:SeattleDevs/bootstrap-social",
