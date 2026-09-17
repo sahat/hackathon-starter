@@ -68,7 +68,7 @@
     "mongodb": "^7.6.0",
     "mongoose": "^9.10.0",
     "morgan": "^1.12.1",
-    "multer": "^2.3.0",
+    "multer": "^2.4.0",
     "nodemailer": "^10.0.9",
     "oauth": "^0.10.2",
     "otpauth": "^9.5.2",
