@@ -93,7 +93,7 @@ I also tried to make it as **generic** and **reusable** as possible to cover mos
   - Support for a range of foundational and embedding models (Qwen, DeepSeek, Kimi, MiniMax, OpenAI OSS, Mistral, Sentence Transformers, etc.) via LangChain, Groq, and Hugging Face
 - **API Examples**
   - **Backoffice:** Lob (USPS Mail), Paypal, Quickbooks, Stripe, Twilio (text messaging)
-  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Trakt.tv (movies/TV), Twitch, Tumblr (OAuth 1.0a example), Steam (OpenID), Web Scraping, GIPHY
+  - **Data, Media & Entertainment:** Alpha Vantage (stocks and finance info) with ChartJS, Github, Foursquare, Last.fm, New York Times, PubChem (chemical information), Twitch, Tumblr (OAuth 1.0a example), Steam (OpenID), Web Scraping, GIPHY
   - **Maps and Location:** Google Maps, HERE Maps
   - **Productivity:** Google Drive, Google Sheets
 
@@ -483,20 +483,6 @@ Next, create API keys for the services you enabled:
 - Sign in or create a Groq account.
 - Click on **Create API Key** to generate a new key. You will also be able to access your API key under your account settings in the API Keys tab.
 - Copy and paste the generated API key into your `.env` file as `GROQ_API_KEY` or set it as an environment variable.
-
-<hr>
-
-<img src="https://i.imgur.com/Adtl9qg.png" height="75">
-
-**Trakt**
-
-- Sign up or sign in to your trakt.tv account and go to <a href="https://trakt.tv/oauth/applications" target="_blank">Trakt.tv Applications</a>.
-- Create a new application and fill in the required fields:
-  - **Name**: Your app name.
-  - **Redirect URI**: Set to your BASE_URL value followed by `/auth/trakt/callback` (i.e. `http://localhost:8080/auth/trakt/callback` or `ngrokURL/auth/trakt/callback`)
-  - Leave the JavaScript origins blank as we won't be using client-side API calls.
-- Click **Save App**.
-- Copy and paste the **Client ID** and **Client Secret** into your `.env` file as `TRAKT_ID` and `TRAKT_SECRET` or set them as your environment variables.
 
 <hr>
 

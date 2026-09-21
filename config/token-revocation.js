@@ -30,7 +30,6 @@ const REQUIRED_FIELDS = {
   basic: ['clientId', 'clientSecret'],
   body: ['clientId', 'clientSecret'],
   json_body: ['clientId', 'clientSecret'],
-  trakt: ['clientId', 'clientSecret'],
   client_id_only: ['clientId'],
   github: ['clientId', 'clientSecret'],
   oauth1: ['consumerKey', 'consumerSecret'],
@@ -82,13 +81,6 @@ async function revokeToken(revokeURL, token, tokenTypeHint, config, tokenSecret)
       }
       case 'json_body': {
         headers['Content-Type'] = 'application/json';
-        body = JSON.stringify({ token, client_id: config.clientId, client_secret: config.clientSecret });
-        break;
-      }
-      case 'trakt': {
-        headers['Content-Type'] = 'application/json';
-        headers['trakt-api-key'] = config.clientId;
-        headers['trakt-api-version'] = '2';
         body = JSON.stringify({ token, client_id: config.clientId, client_secret: config.clientSecret });
         break;
       }

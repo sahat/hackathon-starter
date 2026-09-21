@@ -13,7 +13,6 @@ const testProviders = {
   test_token_only: { revokeURL: 'https://test.example.com/revoke/token_only', authMethod: 'token_only' },
   test_client_id_only: { revokeURL: 'https://test.example.com/revoke/client_id_only', clientId: 'cid', authMethod: 'client_id_only' },
   test_json_body: { revokeURL: 'https://test.example.com/revoke/json', clientId: 'cid', clientSecret: 'csec', authMethod: 'json_body' },
-  test_trakt: { revokeURL: 'https://test.example.com/revoke/trakt', clientId: 'cid', clientSecret: 'csec', authMethod: 'trakt' },
   test_facebook: { revokeURL: 'https://test.example.com/me/permissions', authMethod: 'facebook' },
   test_github: { revokeURL: 'https://test.example.com/applications/cid/token', clientId: 'cid', clientSecret: 'csec', authMethod: 'github' },
   test_oauth1: { revokeURL: 'https://test.example.com/oauth/invalidate_token', consumerKey: 'ck', consumerSecret: 'cs', authMethod: 'oauth1' },
@@ -129,18 +128,6 @@ describe('Token Revocation', () => {
       await revokeProviderTokens('test_json_body', { accessToken: 'tok' });
       const [, options] = fetchStub.firstCall.args;
       expect(options.headers['Content-Type']).to.equal('application/json');
-      const parsed = JSON.parse(options.body);
-      expect(parsed.token).to.equal('tok');
-      expect(parsed.client_id).to.equal('cid');
-      expect(parsed.client_secret).to.equal('csec');
-    });
-
-    it('trakt: should send JSON body with trakt-api-key and trakt-api-version headers', async () => {
-      await revokeProviderTokens('test_trakt', { accessToken: 'tok' });
-      const [, options] = fetchStub.firstCall.args;
-      expect(options.headers['Content-Type']).to.equal('application/json');
-      expect(options.headers['trakt-api-key']).to.equal('cid');
-      expect(options.headers['trakt-api-version']).to.equal('2');
       const parsed = JSON.parse(options.body);
       expect(parsed.token).to.equal('tok');
       expect(parsed.client_id).to.equal('cid');

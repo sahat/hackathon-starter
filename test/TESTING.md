@@ -43,7 +43,6 @@ test/
 │   ├── lob.e2e.test.js
 │   ├── nyt.e2e.test.js
 │   ├── rag.e2e.test.js
-│   ├── trakt.e2e.test.js
 │   └── twilio.e2e.test.js
 ├── e2e-nokey/                   # Same as e2e/, but matched only by the
 │                                 # chromium-nokey-* Playwright projects

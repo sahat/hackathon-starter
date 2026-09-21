@@ -50,7 +50,6 @@ const userSchema = new mongoose.Schema(
     microsoft: String,
     quickbooks: String,
     steam: String,
-    trakt: String,
     tumblr: String,
     twitch: String,
     x: String,

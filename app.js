@@ -202,14 +202,13 @@ app.use((req, res, next) => {
 });
 
 /**
- * Creating static routes for files in public/, tmp/image-cache, and front-end libraries
+ * Creating static routes for files in public/ and front-end libraries
  *
  * 4 hr maxAge is the default that some CDNs like Cloudflare hence using it as the default maxAge
  * You can clear your browser cache or use getFileHash versioning for cache busting
  * See views/layout.pug for getFileHash usage example
  */
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: '4h' }));
-app.use('/image-cache', express.static(path.join(__dirname, 'tmp/image-cache'), { maxAge: '4h' }));
 
 const libFiles = new Map([
   // List client side libraries from node_modules (files needed in the web browser). Don't include files that are already in public/ folder.
@@ -317,7 +316,6 @@ app.get('/api/google/drive', passportConfig.isAuthenticated, passportConfig.isAu
 app.get('/api/chart', apiController.getChart);
 app.get('/api/google/sheets', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getGoogleSheets);
 app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getQuickbooks);
-app.get('/api/trakt', apiController.getTrakt);
 app.get('/api/pubchem', apiController.getPubChem);
 app.get('/api/wikipedia', apiController.getWikipedia);
 app.get('/api/giphy', apiController.getGiphy);
@@ -407,10 +405,6 @@ app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect:
 });
 app.get('/auth/steam', passport.authorize('steam-openid'));
 app.get('/auth/steam/callback', passport.authorize('steam-openid', { failureRedirect: '/auth/failure' }), (req, res) => {
-  res.redirect(req.session.returnTo || '/');
-});
-app.get('/auth/trakt', passport.authorize('trakt'));
-app.get('/auth/trakt/callback', passport.authorize('trakt', { failureRedirect: '/auth/failure' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/quickbooks', passport.authorize('quickbooks'));

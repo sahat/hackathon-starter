@@ -722,65 +722,6 @@ passport.use('quickbooks', quickbooksStrategyConfig);
 refresh.use('quickbooks', quickbooksStrategyConfig);
 
 /**
- * trakt.tv API OAuth.
- */
-const traktStrategyConfig = new OAuth2Strategy(
-  {
-    authorizationURL: 'https://api.trakt.tv/oauth/authorize',
-    tokenURL: 'https://api.trakt.tv/oauth/token',
-    clientID: process.env.TRAKT_ID,
-    clientSecret: process.env.TRAKT_SECRET,
-    callbackURL: `${process.env.BASE_URL}/auth/trakt/callback`,
-    state: true,
-    passReqToCallback: true,
-  },
-  async (req, accessToken, refreshToken, params, profile, done) => {
-    try {
-      const response = await fetch('https://api.trakt.tv/users/me?extended=full', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'trakt-api-version': 2,
-          'trakt-api-key': process.env.TRAKT_ID,
-          'Content-Type': 'application/json',
-          'User-Agent': 'Hackathon-Starter',
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      if (!data?.ids?.slug || !data?.name) {
-        req.flash('errors', { msg: 'Invalid Trakt profile data' });
-        return req.user ? done(null, req.user) : done(null, false);
-      }
-      const providerProfile = {
-        id: data.ids.slug,
-        name: data.name,
-        gender: data.gender,
-        picture: data.images?.avatar?.full,
-        location: data.location,
-      };
-      const sessionAlreadyLoggedIn = !!req.user;
-      try {
-        const user = await handleAuthLogin(req, accessToken, refreshToken, 'trakt', params, providerProfile, sessionAlreadyLoggedIn, null, true, { trakt: data.ids.slug }, params.x_refresh_token_expires_in || null);
-        if (sessionAlreadyLoggedIn && req.user.id === user.id) {
-          req.flash('info', { msg: 'Trakt account has been linked.' });
-        }
-        return done(null, user);
-      } catch (err) {
-        if (authError2Flash(err, req, done, 'Trakt')) return;
-        return done(err);
-      }
-    } catch (err) {
-      return done(err);
-    }
-  },
-);
-passport.use('trakt', traktStrategyConfig);
-refresh.use('trakt', traktStrategyConfig);
-
-/**
  * Sign in with Discord using OAuth2Strategy.
  */
 const discordStrategyConfig = new OAuth2Strategy(
@@ -847,7 +788,6 @@ refresh.use('discord', discordStrategyConfig);
  *   'token_only'     – only the token in form-encoded body
  *   'client_id_only' – client_id + token in body (no client_secret)
  *   'json_body'      – JSON body with token, client_id, client_secret
- *   'trakt'          – JSON body + trakt-api-key / trakt-api-version headers
  *   'facebook'       – HTTP DELETE with access_token as query param
  *   'github'         – HTTP DELETE with Basic auth + JSON body
  *   'oauth1'         – OAuth 1.0a signed POST (needs consumerKey/consumerSecret)
@@ -891,12 +831,6 @@ const providerRevocationConfig = {
     revokeURL: 'https://id.twitch.tv/oauth2/revoke',
     clientId: process.env.TWITCH_CLIENT_ID,
     authMethod: 'client_id_only',
-  },
-  trakt: {
-    revokeURL: 'https://api.trakt.tv/oauth/revoke',
-    clientId: process.env.TRAKT_ID,
-    clientSecret: process.env.TRAKT_SECRET,
-    authMethod: 'trakt',
   },
   quickbooks: {
     revokeURL: 'https://developer.api.intuit.com/v2/oauth2/tokens/revoke',
