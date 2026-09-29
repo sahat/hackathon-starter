@@ -6,7 +6,7 @@
     "body": "",
     "status": 200,
     "response": [
-      "1f8b08000000000000035d4fcb4ec4300cfc9595cfa1294bbb12f9843d70d923aa50da58a9212f12b70b5aedbfa31416217cb13de319792e306a9ee629fae49011148080f705f327a80b246db1d4617fe8eefbc3437f03c980ba61024201d50a6062571d9ea2c1e6b580009e173f064daeea4a5cf254f999391525e5925cd4a639d31b7934a49b98adac5baa9b9ca2f73114b9994823cda3fc717e71d1c6a6ac56f66d9b3eeefec34d0a16049cc9f00caa6b5b0133929d19d4beebafe23b82d7f6cfb7bfe2fa3666bfc5d68e7401f5bc1d81d8daf1048300a7477437a6861d04182c53a6c41443658e7ad5a70dd8e5253079dc615829c7e031300cd75a5f70ce405680010000"
+      "1f8b08000000000000035d504d4fc3300cfd2bc8074ea529b04ea2d2c47d072e3ba269ca1a2b35e48bc4dd40d3fe3b49cb36891c12fb3de7d9cf27d84bee87dedb6090113a800abe468c3fd09d20488da9044fcbc563bb7c6e2f2029e82e58052ed7341530b1290a6f5e61fd91b2100fa3dd3b49a6fc4b7e8c7de107e6903a2126b63ed2275954246b1fb528592899c82359efd25c2594502fe24f7867bcf6753a68d1364df87ef80fd7c1e9d791ed6eeeb842575f654b93fbc2f5d20649daad64a019f08ed1f1ea36730547523c40b768b2bb01490f9c6d2fda73352fc1e6ebe6f7dabf18c768a7c549433207ef535126cab3dec0b60223f7682e4c5957c614a63e5260f2ae306b79909b09b88ba3e3bca63b74078aded93c296ccfe5fc0288155c75c2010000"
     ],
     "rawHeaders": {
       "access-control-allow-credentials": "false",
@@ -16,15 +16,15 @@
       "cache-control": "private, must-revalidate, max-age=0",
       "content-disposition": "inline; filename=api-result.json",
       "content-encoding": "gzip",
-      "content-length": "263",
+      "content-length": "295",
       "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
       "content-type": "application/json; charset=utf-8",
-      "date": "Tue, 09 Jun 2026 05:41:42 GMT",
+      "date": "Tue, 29 Sep 2026 23:27:41 GMT",
       "mediawiki-login-suppressed": "true",
       "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
       "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
-      "server": "mw-api-ext.codfw.main-678f4bd5bc-tmfbg",
-      "server-timing": "cache;desc=\"pass\", host;desc=\"cp4044\"",
+      "server": "mw-api-ext.codfw.main-66f54b6ddc-knk7h",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp4044\",co_id;desc=\"4272342462\"",
       "set-cookie": "REDACTED",
       "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
       "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
@@ -34,7 +34,7 @@
       "x-client-ip": "76.104.248.98",
       "x-content-type-options": "nosniff",
       "x-frame-options": "DENY",
-      "x-request-id": "89f30ecd-421f-41b8-aed8-979fdad99212"
+      "x-request-id": "798985a6-588c-471a-a4a9-21c9a245591f"
     },
     "responseIsBinary": false
   }

@@ -6,7 +6,7 @@
     "body": "",
     "status": 200,
     "response": [
-      "1f8b080000000000000365544d8fdc360cfd2b842f69018fd3af04c5de8214051a14dda29b3697bd68648ead54261552b2d70df6bf1794d75d4f739a01c9c78ff79efcb939bbec47cf538a98b1b9699ab6f95450d6e6e67393dc806a7fbe7bfdc3b7af5e7fff6a0f86beb9d9636d43dadc7cd33639e4681d7ee31ebb8fdab40d3e64713e3fc7202838f0c2aaa7145dbeb04c2d70423a2917f108efdceceebc8494410ae5302120cd419826a40c797419bc234b02137c08d4f3a22dfc1aa83cb4f02785871626e76fef5a70d4c3c4821dece3a5901a2c8f087ffd781c863404c20d830fe84b463de63df7085cb2861ec1c18267380b2f8ad2c11bef59fa400364aeadefb2f37fc3ed8c7289bcc04f3863e484027745665c5b38d0c184c0970a9b586dd03431c5158a625fe764f42371e421a076f7b4635d8cbc28f47b73b5e945af28bcb0c02221db6ed6d8ae8b81103273d47aaca2cc28a77a975654a0a1833f0a91a1acd916de79db00b6faf5aa996140427119a15fc94dc1d7f5cd2fe099b2e977c60b0bd63e351e14b4eaba115714e5855eb3fb9649f15341caf1c09c601234a819eabe392a39a3accb8882f70d2427ae0fc3d442a17059eda205cf2797520cdee5c0b41358ede5840bf5e040030d1121090fe2a6c970d1d150dc601e51e094f8e9e862b5d087cb05c57aec755ad97f66ec04338a16051f0352de183f0c38483b3ad3c62ea17cea25cc48e0c48f21a3cf4510bc4bee1cab719caee44761e2a2f0cbcbdb0ede8fa8083d6a1808fcc8c1a3820b932dcb298729fc630a0897614c256f2ef02eba738821af10a80a70e04861097984c9916553c92fb964839aefb68acaca8231daaf1d2ee8e2a9bedf0fff6ff6157643d71e2acc488576419e38d9ecf9640318dc84fa75774fef47fccf047dd02ce15c32f6573226e18fe8332c4e2109ce818bc615069e51087b38af5597bdcdcf267a9dbdbd7fa39f78810965b03768b75bfdbbbb43a9b1699faf9ab94d4857d9eecb9079fde2bc71ecf2f312f5c375287ba1f09663746736666784dfb76374e7a56b1e1f1f1fff055c4a45f9b9050000"
+      "1f8b080000000000000365544d8fdc360cfd2b842f69018fd38fec22d85b90a24082a25b64d2ec652f1a99632b9129579267d65df4bff7511e67bdc91cec81443e92ef3dfab13a986c7b1b86d173e6eaa6aaeaea9f89e35cdd3c56a3e938e99f5fae5ffd7c75fdebd57ae8daea663dab2b41cc4f75955df68af06768b9f99c00c40f391a9b9fcec8253264634869377a938f210e3585916597c2142dd37b73327b1bdd98294e92ddc0c4727231c8c09229f7269335a2971484ee9cb4e19c6afac3c9f450d3dfe2f01c8cbdddd764a4a521446e682d8faca469b967faf47a5b8ca573c24b0e3fb09d32a7edbd050285292787b7a1331fe810519963436fac0db175d2510e057a9f8dfd42b7278e471fcef41b9fd863c848fb299e78ae69434710e01e4bda1092161a86207ea629715bea64b6bd041f3ac7a9b99735d77860276a57f0a4d591b4ed1afcd239baacbd29b04ee7312742834f65584c803e7765ae54b210dcd0874944b3146c395e795b12b4f5e7ada27ac7c2d164a6761633385bda57bf2054b2ea7760b4c405a79c0325155d17e200145fa4e7ecbe0d92189694ec37cc451e236baa1aeabeda2a89eee673cf91ef2b1489a6751d4c36893bce3a11c077661cbdb3263bcc7421b0d8cbc43081134309911e3dc6d045330c9ae78d74137a8647a0da3886cbd093c652eb8e479404c61a970afb4f8ced088f348136ef10b730be29b091b637aa8d4e82b8363abcd19aed1dac9027f067cd680ebe18c7a4596c8ffd08807ef7f2b6a18f3d88c158c97542b60fcea217e3066d3640dec1fdab0a60d4ae1fa7bcb8c01a6f0ecebb3c939322c0862328e2728fb512bd45ce4b6c82a6aaef9688c2ca99bdd7b70e1ed9f85dd9dfbb6fc17ee0a66bea4d841a09fa5c04b970b2d8f36203eaccc0e9477084e9be9aa075294777c0aeb6cf6404c267304567f4029b9c1cb8814dbb000504b187b9e8b2c2fcaea297dacbfe2bfd82bd1d3876ba833abbc6bfdf6f42954dfd7c959b5b7cc19edd36df1fa9d78fc62ac7263f35513e5c9b30d8ff6df0102328b327a6bf9661d2ca0b38b897ea3ffcfe07182b3a79bd050000"
     ],
     "rawHeaders": {
       "access-control-allow-credentials": "false",
@@ -16,15 +16,15 @@
       "cache-control": "private, must-revalidate, max-age=0",
       "content-disposition": "inline; filename=api-result.json",
       "content-encoding": "gzip",
-      "content-length": "774",
+      "content-length": "778",
       "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
       "content-type": "application/json; charset=utf-8",
-      "date": "Tue, 09 Jun 2026 05:41:42 GMT",
+      "date": "Tue, 29 Sep 2026 23:27:41 GMT",
       "mediawiki-login-suppressed": "true",
       "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
       "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
-      "server": "mw-api-ext.codfw.main-678f4bd5bc-pnnrz",
-      "server-timing": "cache;desc=\"pass\", host;desc=\"cp4044\"",
+      "server": "mw-api-ext.codfw.main-66f54b6ddc-xbrrf",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp4044\",co_id;desc=\"3815474029\"",
       "set-cookie": "REDACTED",
       "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
       "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
@@ -34,7 +34,7 @@
       "x-client-ip": "76.104.248.98",
       "x-content-type-options": "nosniff",
       "x-frame-options": "DENY",
-      "x-request-id": "275b24c2-9d1e-459a-98ba-91e684926d5b"
+      "x-request-id": "c7936eac-b7fa-4b93-8794-75701e3c9e7e"
     },
     "responseIsBinary": false
   }
