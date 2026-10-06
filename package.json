@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.3.1",
-    "@googleapis/drive": "^26.0.1",
+    "@googleapis/drive": "^26.0.2",
     "@googleapis/sheets": "^18.1.0",
     "@huggingface/inference": "^4.13.30",
     "@keyv/mongo": "^3.1.0",
@@ -66,7 +66,7 @@
     "lusca": "^1.7.0",
     "mailchecker": "^6.0.21",
     "mongodb": "^7.7.0",
-    "mongoose": "^9.10.3",
+    "mongoose": "^9.10.4",
     "morgan": "^1.12.1",
     "multer": "^2.4.0",
     "nodemailer": "^10.0.13",
@@ -95,7 +95,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
-    "@prettier/plugin-pug": "^3.5.0",
+    "@prettier/plugin-pug": "^3.5.1",
     "c8": "^12.0.0",
     "chai": "^6.3.0",
     "eslint": "^10.12.0",
@@ -109,7 +109,7 @@
     "nock": "^15.0.0-beta.15",
     "prettier": "^3.9.9",
     "sinon": "^22.1.0",
-    "supertest": "^7.3.0"
+    "supertest": "^7.3.1"
   },
   "overrides": {
     "@mswjs/interceptors": "^0.45.6",
