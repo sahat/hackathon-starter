@@ -82,7 +82,7 @@
     "passport-oauth2-refresh": "^2.2.0",
     "passport-steam-openid": "^1.1.12",
     "patch-package": "^8.0.1",
-    "pdfjs-dist": "^6.3.289",
+    "pdfjs-dist": "^6.4.299",
     "pug": "^3.0.4",
     "qr": "^0.7.2",
     "sass": "^1.105.1",
