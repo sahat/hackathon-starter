@@ -66,7 +66,7 @@
     "lusca": "^1.7.0",
     "mailchecker": "^6.0.21",
     "mongodb": "^7.7.0",
-    "mongoose": "^9.10.4",
+    "mongoose": "^9.11.0",
     "morgan": "^1.12.1",
     "multer": "^2.4.0",
     "nodemailer": "^10.0.15",
@@ -95,7 +95,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
-    "@prettier/plugin-pug": "^3.5.1",
+    "@prettier/plugin-pug": "^3.6.0",
     "c8": "^12.0.0",
     "chai": "^6.3.0",
     "eslint": "^10.12.0",
