@@ -4,6 +4,7 @@
 
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
+const { MongoClient } = require('mongodb');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const { installNockReplayFixtures } = require('./nock-server-fixtures');
 
@@ -12,6 +13,17 @@ const { installNockReplayFixtures } = require('./nock-server-fixtures');
     // If a real MONGODB_URI is already provided, prefer it.
     if (process.env.MONGODB_URI) {
       console.log('[start-with-memory-db] Using provided MONGODB_URI');
+      // Fail fast so an unusable DB is one clear error, not a crash mid-run.
+      const client = new MongoClient(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
+      try {
+        await client.connect();
+        await client.db().command({ ping: 1 });
+      } catch {
+        console.error('\x1b[31m[start-with-memory-db] Cannot connect to MONGODB_URI. Fix it, or unset the env variable to use mongodb-memory-server.\x1b[0m');
+        process.exit(1);
+      } finally {
+        await client.close();
+      }
     } else {
       const mongod = await MongoMemoryServer.create();
       const uri = mongod.getUri();
