@@ -577,14 +577,32 @@ describe('User Model', () => {
   });
 
   describe('User Password Handling', () => {
+    it('should report no match for a malformed password hash', async () => {
+      const user = new User({ password: 'invalid-hash' });
+      const cb = sinon.spy();
+      await user.comparePassword('password', cb);
+      sinon.assert.calledOnceWithExactly(cb, null, false);
+    });
+
     it('should handle error during password comparison', async () => {
       const user = new User({ password: 'invalid-hash' });
-      await new Promise((resolve) => {
-        user.comparePassword('password', (err) => {
-          expect(err).to.exist;
-          resolve();
-        });
-      });
+      const cb = sinon.spy();
+      sinon.stub(bcrypt, 'verify').rejects(new Error('Verify error'));
+      try {
+        await user.comparePassword('password', cb);
+      } finally {
+        bcrypt.verify.restore();
+      }
+      sinon.assert.calledOnce(cb);
+      expect(cb.firstCall.args[0].message).to.equal('Verify error');
+    });
+
+    it('should not call the callback again when the callback throws', async () => {
+      const user = new User({ password: '$2y$10$ux4O8y0CCilFQ5JS66namekb9Hbr1AN7kwEDn2ej6e6AYw3BPqAVa' });
+      const cb = sinon.stub().onFirstCall().throws(new Error('Callback error'));
+      const result = await user.comparePassword('root1234', cb).catch((err) => err);
+      sinon.assert.calledOnceWithExactly(cb, null, true);
+      expect(result.message).to.equal('Callback error');
     });
 
     it('should handle password hashing error', async () => {

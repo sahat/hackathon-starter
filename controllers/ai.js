@@ -178,6 +178,7 @@ function initializeEmbeddingCaches(mongoUri) {
       store: new KeyvMongo(mongoUri, { collection: 'doc_emb_cache' }),
       namespace: 'doc_embeddings',
     });
+    docEmbeddingsCache.on('error', (err) => console.error('[keyv] doc embeddings cache error:', err));
   }
   if (!queryEmbeddingsCache) {
     queryEmbeddingsCache = new Keyv({
@@ -185,6 +186,7 @@ function initializeEmbeddingCaches(mongoUri) {
       namespace: 'query_embeddings',
       ttl: 5184000000, // 60 days in milliseconds
     });
+    queryEmbeddingsCache.on('error', (err) => console.error('[keyv] query embeddings cache error:', err));
   }
 }
 

@@ -125,16 +125,18 @@ userSchema.pre('save', async function hashPassword() {
   if (!user.isModified('password')) {
     return;
   }
-  user.password = await bcrypt.hash(user.password, 10);
+  user.password = await bcrypt.hash(user.password, { cost: 10 });
 });
 
 // Helper method for validating password for login by password strategy
 userSchema.methods.comparePassword = async function comparePassword(candidatePassword, cb) {
+  let isMatch;
   try {
-    cb(null, await bcrypt.verify(candidatePassword, this.password));
+    isMatch = await bcrypt.verify(candidatePassword, this.password);
   } catch (err) {
-    cb(err);
+    return cb(err);
   }
+  cb(null, isMatch);
 };
 
 // Helper method for getting gravatar
