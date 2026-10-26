@@ -38,11 +38,14 @@ pipeline {
     }
 
     stage('Browser tests') {
-      steps {
-        bat 'npm.cmd run test:e2e:replay'
-      }
-    }
+  environment {
+    PORT = '8081'
+    BASE_URL = 'http://localhost:8081'
   }
+  steps {
+    bat 'npm.cmd run test:e2e:replay'
+  }
+}
 
   post {
     always {
