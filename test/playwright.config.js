@@ -88,7 +88,7 @@ module.exports = defineConfig({
   ],
   webServer: {
     command: 'node ./tools/playwright-start-and-log.js',
-    url: 'http://127.0.0.1:8080',
+    url: process.env.BASE_URL || 'http://127.0.0.1:8080',
     reuseExistingServer: !process.env.CI,
     env: webServerEnv,
   },
