@@ -230,7 +230,7 @@ for (const [fileUrl, filePath] of libFiles) {
   }
   const libFileHandler = (req, res) => {
     const absolutePath = path.resolve(__dirname, filePath);
-    console.log(`[libFile] ${req.originalUrl} -> ${absolutePath}; exists=${fs.existsSync(absolutePath)}`);
+    console.log(`[libFile] ${req.originalUrl} -> ${absolutePath};  exists=${fs.existsSync(absolutePath)}`);
     res.sendFile(absolutePath, { maxAge: '1y' });
   };
   app.head(fileUrl, libFileHandler); // to improve caching with some proxies/CDNs
