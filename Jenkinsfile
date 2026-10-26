@@ -47,6 +47,17 @@ pipeline {
   }
 }
 
+      stage('Browser tests') {
+      environment {
+        PORT = '8081'
+        BASE_URL = 'http://localhost:8081'
+      }
+      steps {
+        bat 'npm.cmd run test:e2e:replay'
+      }
+    }
+  }
+
   post {
     always {
       archiveArtifacts artifacts: 'tmp/**', allowEmptyArchive: true
