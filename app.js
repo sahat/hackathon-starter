@@ -228,11 +228,7 @@ for (const [fileUrl, filePath] of libFiles) {
   if (fs.existsSync(path.join(__dirname, 'public', fileUrl.slice(1)))) {
     throw new Error(`Duplicate mapping issue: the library file is already present at ${fileUrl}`);
   }
-  const libFileHandler = (req, res) => {
-    const absolutePath = path.resolve(__dirname, filePath);
-    console.log(`[libFile] ${req.originalUrl} -> ${absolutePath};  exists=${fs.existsSync(absolutePath)}`);
-    res.sendFile(absolutePath, { maxAge: '1y' });
-  };
+  const libFileHandler = (req, res) => res.sendFile(filePath, { root: __dirname, maxAge: '1y' });
   app.head(fileUrl, libFileHandler); // to improve caching with some proxies/CDNs
   app.get(fileUrl, libFileHandler);
   // Compute and cache libFile hashes so a bad file path or missing library fails fast during startup
