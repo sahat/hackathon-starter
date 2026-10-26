@@ -25,6 +25,7 @@ if (isRecord) {
 
 const webServerEnv = {
   ...process.env,
+  PORT: new URL(process.env.BASE_URL || 'http://localhost:8080').port || '8080',
   SESSION_SECRET: process.env.SESSION_SECRET || 'test_session_secret',
   RATE_LIMIT_GLOBAL: '500',
   RATE_LIMIT_STRICT: '20',
