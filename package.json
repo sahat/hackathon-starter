@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.3.1",
-    "@googleapis/drive": "^26.0.2",
+    "@googleapis/drive": "^27.0.0",
     "@googleapis/sheets": "^18.1.1",
     "@huggingface/inference": "^4.13.32",
     "@keyv/mongo": "^6.1.0",
