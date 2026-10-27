@@ -4,7 +4,7 @@ const { defineConfig, devices } = require('@playwright/test');
 // Preserve any MONGODB_URI that was set before loading env file, since it is set to the memory server starter
 const originalMongoUri = process.env.MONGODB_URI;
 process.loadEnvFile(path.resolve(__dirname, '.env.test'));
-// If MONGODB_URI was not set by the outer environment (originalMongoUri undefined)
+// If MONGODB_URI was not set by the outer environment (originalMongoUri undefined)    
 // but was loaded from the env file, remove it so the memory-server starter can create a DB.
 if (originalMongoUri !== undefined) {
   process.env.MONGODB_URI = originalMongoUri;
