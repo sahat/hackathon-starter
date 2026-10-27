@@ -4,7 +4,7 @@ const { defineConfig, devices } = require('@playwright/test');
 // Preserve any MONGODB_URI that was set before loading env file, since it is set to the memory server starter
 const originalMongoUri = process.env.MONGODB_URI;
 process.loadEnvFile(path.resolve(__dirname, '.env.test'));
-// If MONGODB_URI was not set by the outer environment (originalMongoUri undefined)
+// If MONGODB_URI was not set by the outer environment (originalMongoUri undefined)    
 // but was loaded from the env file, remove it so the memory-server starter can create a DB.
 if (originalMongoUri !== undefined) {
   process.env.MONGODB_URI = originalMongoUri;
@@ -27,7 +27,7 @@ const webServerEnv = {
   ...process.env,
   PORT: new URL(process.env.BASE_URL || 'http://localhost:8080').port || '8080',
   SESSION_SECRET: process.env.SESSION_SECRET || 'test_session_secret',
-  RATE_LIMIT_GLOBAL: '500',
+  RATE_LIMIT_GLOBAL: '5000',
   RATE_LIMIT_STRICT: '20',
   RATE_LIMIT_LOGIN: '50',
 };
