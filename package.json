@@ -34,9 +34,9 @@
     "@googleapis/sheets": "^18.1.2",
     "@huggingface/inference": "^4.13.32",
     "@keyv/mongo": "^6.1.0",
-    "@langchain/core": "^1.3.2",
+    "@langchain/core": "^1.3.4",
     "@langchain/groq": "^1.3.1",
-    "@langchain/langgraph": "^1.6.0",
+    "@langchain/langgraph": "^1.7.0",
     "@langchain/langgraph-checkpoint-mongodb": "^1.5.1",
     "@langchain/mongodb": "^1.3.1",
     "@langchain/textsplitters": "^1.0.2",
@@ -61,12 +61,12 @@
     "express-session": "^1.19.0",
     "jquery": "^4.0.0",
     "keyv": "^6.1.0",
-    "langchain": "^1.6.0",
+    "langchain": "^1.6.1",
     "lastfm": "^0.9.4",
     "lusca": "^1.7.0",
     "mailchecker": "^6.0.21",
     "mongodb": "^7.8.0",
-    "mongoose": "^9.11.4",
+    "mongoose": "^9.12.0",
     "morgan": "^1.12.1",
     "multer": "^2.5.0",
     "nodemailer": "^10.3.1",
@@ -90,7 +90,7 @@
     "twilio": "^6.2.0",
     "twitch-passport": "^1.0.6",
     "validator": "^13.15.35",
-    "vanilla-cookieconsent": "^3.2.1"
+    "vanilla-cookieconsent": "^3.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -114,12 +114,16 @@
   "overrides": {
     "@mswjs/interceptors": "^0.45.11",
     "encoding-sniffer": "github:SeattleDevs/encoding-sniffer",
-    "fetch-blob": "github:SeattleDevs/fetch-blob"
+    "fetch-blob": "github:SeattleDevs/fetch-blob",
+    "glob": "^14.0.3",
+    "minimatch": "^11.0.4"
   },
   "overrideReasons": {
     "@mswjs/interceptors": "nock beta 15",
     "encoding-sniffer": "cheerio",
-    "fetch-blob": "@googleapis/drive"
+    "fetch-blob": "@googleapis/drive",
+    "glob": "mocha, eslint, c8",
+    "minimatch": "mocha, c8"
   },
   "engines": {
     "node": ">=24.18.0"
