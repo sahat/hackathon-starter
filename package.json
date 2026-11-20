@@ -47,7 +47,7 @@
     "@popperjs/core": "^2.11.8",
     "@simplewebauthn/browser": "^14.0.0",
     "@simplewebauthn/server": "^14.1.0",
-    "@zapier/secret-scrubber": "^1.1.6",
+    "@zapier/secret-scrubber": "^1.2.0",
     "bootstrap": "^5.3.9",
     "bootstrap-social": "github:SeattleDevs/bootstrap-social",
     "bowser": "^2.15.0",
